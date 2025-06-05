@@ -11,7 +11,6 @@ RUN pip install --no-cache-dir -r requirements.txt && pip install prometheus_cli
 RUN python -m nltk.downloader punkt || true
 
 COPY documents/ ./documents/
-COPY llm-models/ ./llm-models/
 COPY gateway.py .
 
 EXPOSE 8000
