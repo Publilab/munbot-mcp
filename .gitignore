@@ -1,9 +1,4 @@
 # Archivos de entorno y configuración sensible
-.env
-.env.*
-!.env.example
-config.env
-!config.env.example
 *.key
 *.pem
 *.p12
