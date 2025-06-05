@@ -1,0 +1,87 @@
+publilab_consulting@munbot:~/munbot-mcp$ docker logs -f mcp-core
+INFO:root:Migración de sesiones de Redis a PostgreSQL completada.
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+INFO:     154.212.141.202:33044 - "GET / HTTP/1.1" 404 Not Found
+INFO:     154.212.141.232:45022 - "GET / HTTP/1.1" 404 Not Found
+INFO:     154.212.141.232:45340 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     172.18.0.9:43042 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:root:Prompt enviado al modelo Mistral 7B: Tienes que identificar la intención principal del usuario según el siguiente mensaje.
+Opciones válidas de intención:
+- complaint-registrar_reclamo
+- doc-buscar_fragmento_documento
+- doc-generar_respuesta_llm
+- scheduler-reservar_hora
+- scheduler-appointment_create
+- scheduler-listar_horas_disponibles
+- scheduler-cancelar_hora
+- scheduler-confirmar_hora
+Ejemplo de respuesta: complaint-registrar_reclamo
+Mensaje: Como te llamas
+Intención:
+INFO:     172.18.0.9:36668 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:root:Prompt enviado al modelo Mistral 7B: Tienes que identificar la intención principal del usuario según el siguiente mensaje.
+Opciones válidas de intención:
+- complaint-registrar_reclamo
+- doc-buscar_fragmento_documento
+- doc-generar_respuesta_llm
+- scheduler-reservar_hora
+- scheduler-appointment_create
+- scheduler-listar_horas_disponibles
+- scheduler-cancelar_hora
+- scheduler-confirmar_hora
+Ejemplo de respuesta: complaint-registrar_reclamo
+Mensaje: Que necesito para sacar un certificado de antecedentes?
+Intención:
+INFO:     172.18.0.9:59018 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:root:Prompt enviado al modelo Mistral 7B: Tienes que identificar la intención principal del usuario según el siguiente mensaje.
+Opciones válidas de intención:
+- complaint-registrar_reclamo
+- doc-buscar_fragmento_documento
+- doc-generar_respuesta_llm
+- scheduler-reservar_hora
+- scheduler-appointment_create
+- scheduler-listar_horas_disponibles
+- scheduler-cancelar_hora
+- scheduler-confirmar_hora
+Ejemplo de respuesta: complaint-registrar_reclamo
+Mensaje: Quiero registrar un reclamo
+Intención:
+INFO:     172.18.0.9:49102 - "POST /orchestrate HTTP/1.1" 200 OK
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+
+publilab_consulting@munbot:~/munbot-mcp$ docker logs -f web-interface
+Servidor WebSocket escuchando en el puerto 3000
+Un usuario se ha conectado
+Mensaje recibido del cliente: hola
+Mensaje recibido del cliente: Como te llamas
+Mensaje recibido del cliente: Que necesito para sacar un certificado de antecedentes?
+Mensaje recibido del cliente: Quiero registrar un reclamo
+
+publilab_consulting@munbot:~/munbot-mcp$ docker logs -f llm_docs-mcp
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started parent process [1]
+INFO:     Started server process [9]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Started server process [8]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     162.142.125.223:46114 - "GET / HTTP/1.1" 403 Forbidden
+INFO:     162.142.125.223:36248 - "GET / HTTP/1.1" 403 Forbidden
+INFO:     162.142.125.223:36260 - "PRI %2A HTTP/2.0" 403 Forbidden
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.223:36266 - "GET /favicon.ico HTTP/1.1" 403 Forbidden
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     162.142.125.223:51874 - "GET /security.txt HTTP/1.1" 403 Forbidden
+INFO:     162.142.125.223:51880 - "GET /favicon.ico HTTP/1.1" 403 Forbidden
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+INFO:     152.53.248.175:60212 - "CONNECT www.google.com%3A443 HTTP/1.1" 403 Forbidden
+INFO:     205.210.31.198:64446 - "GET / HTTP/1.1" 403 Forbidden
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.

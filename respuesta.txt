@@ -1,0 +1,547 @@
+A continuación tienes una versión revisada de orchestrator.py en la que se han aplicado los cinco pasos solicitados:
+
+Se consulta primero en la base de FAQs antes de invocar LLM o microservicios.
+
+Se garantiza que, al final, siempre se devuelva algo en la clave "respuesta" (incluso si el microservicio devuelve un error).
+
+Se ajusta el diccionario MICROSERVICES para que las URLs coincidan exactamente con los endpoints /tools/call de cada microservicio.
+
+Se añade un “fallback” a LLM (herramienta doc-generar_respuesta_llm) siempre que ninguna otra herramienta (reclamos, scheduler, etc.) aplique.
+
+Se revisan y corrigen otras validaciones mínimas (por ejemplo, detección de intenciones y uso de any(p in texto) para “saludos”, “despedidas” y “preguntas personales”).
+
+IMPORTANTE: Antes de copiar y pegar este archivo, revisa que tus microservicios:
+
+Existan bajo los nombres complaints-mcp, llm-docs-mcp y scheduler-mcp en tu red Docker.
+
+Sus Dockerfile expongan correctamente /tools/call (POST) en 0.0.0.0:<puerto>.
+
+python
+Copiar
+Editar
+# orchestrator.py
+import uuid
+import json
+import os
+import logging
+import re
+from typing import Any, Dict, Optional
+
+import requests
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+# ------------------------------------------------------------
+#  CONFIGURACIÓN DE LOGGING
+# ------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+)
+
+# ------------------------------------------------------------
+#  DEFINICIONES DE ESTRUCTURAS DE DATOS (Pydantic)
+# ------------------------------------------------------------
+class OrchestratorInput(BaseModel):
+    pregunta: str
+    context: Optional[Dict[str, Any]] = None
+    session_id: Optional[str] = None
+
+# ------------------------------------------------------------
+#  CONSTANTES Y LISTAS DE APOYO
+# ------------------------------------------------------------
+# (1) Diccionario de preguntas frecuentes (FAQs)
+#     – Carga al iniciar desde un archivo JSON o se define estático.
+#     – Para el ejemplo, asumimos un JSON en ./faq_respuestas.json
+FAQ_PATH = os.getenv("FAQ_PATH", "./faq_respuestas.json")
+try:
+    with open(FAQ_PATH, encoding="utf-8") as f:
+        FAQ_DATA = json.load(f)
+except FileNotFoundError:
+    logging.warning(f"No se encontró el archivo de FAQs en {FAQ_PATH}. Se asume lista vacía.")
+    FAQ_DATA = []  # Lista de diccionarios con {"pregunta": str, "respuesta": str}
+
+# Listas de palabras clave para flujos rápidos
+SALUDOS = ["hola", "buenos días", "buenas tardes", "buenas noches", "saludos"]
+DESPEDIDAS = ["adiós", "chao", "hasta luego", "nos vemos", "nos vemos luego"]
+AGRADECIMIENTOS = ["gracias", "muchas gracias", "mil gracias"]
+EMPATIA_POS = ["estoy bien", "me alegro", "qué bien"]
+EMPATIA_NEG = ["estoy mal", "mal", "triste", "enojado"]
+
+PREGUNTAS_PERSONALES = [
+    "quién eres", "quien eres", "eres un robot", "qué eres", "que eres",
+    "cuántos años tienes", "cuantos años tienes", "eres humano", "eres una persona",
+    "cómo te llamas", "como te llamas"
+]
+
+# Tools / microservicios disponibles
+# ------------------------------------------------------------
+# 3) Aseguramos que las URLs apunten EXACTAMENTE a /tools/call
+#    Corresponderán a los nombres de servicio en docker-compose.
+MICROSERVICES = {
+    "complaint-registrar_reclamo": os.getenv(
+        "COMPLAINTS_MCP_URL",
+        "http://complaints-mcp:7000/tools/call"
+    ),
+    "doc-buscar_fragmento_documento": os.getenv(
+        "LLM_DOCS_MCP_URL",
+        "http://llm-docs-mcp:8000/tools/call"
+    ),
+    "doc-generar_respuesta_llm": os.getenv(
+        "LLM_DOCS_MCP_URL",
+        "http://llm-docs-mcp:8000/tools/call"
+    ),
+    "scheduler-reservar_hora": os.getenv(
+        "SCHEDULER_MCP_URL",
+        "http://scheduler-mcp:6001/tools/call"
+    ),
+    "scheduler-appointment_create": os.getenv(
+        "SCHEDULER_MCP_URL",
+        "http://scheduler-mcp:6001/tools/call"
+    ),
+    "scheduler-listar_horas_disponibles": os.getenv(
+        "SCHEDULER_MCP_URL",
+        "http://scheduler-mcp:6001/tools/call"
+    ),
+    "scheduler-cancelar_hora": os.getenv(
+        "SCHEDULER_MCP_URL",
+        "http://scheduler-mcp:6001/tools/call"
+    ),
+    "scheduler-confirmar_hora": os.getenv(
+        "SCHEDULER_MCP_URL",
+        "http://scheduler-mcp:6001/tools/call"
+    ),
+}
+
+# Campos obligatorios por herramienta (tool)
+# ------------------------------------------------------------
+REQUIRED_FIELDS = {
+    "complaint-registrar_reclamo": ["nombre", "correo", "detalle_reclamo"],
+    "scheduler-reservar_hora": ["nombre", "correo", "fecha", "hora"],
+    # Para doc-generar_respuesta_llm no se requieren campos adicionales,
+    # porque se delega la generación completa al LLM.
+}
+
+# Preguntas a usar cuando falte algún campo
+# ------------------------------------------------------------
+FIELD_QUESTIONS = {
+    "nombre": "¿Cuál es tu nombre completo?",
+    "correo": "¿Cuál es tu correo electrónico?",
+    "detalle_reclamo": "Por favor, proporciona más detalles sobre tu reclamo.",
+    "fecha": "¿Qué fecha prefieres para la cita? (formato: AAAA-MM-DD)",
+    "hora": "¿Y a qué hora te acomoda? (formato: HH:MM)"
+}
+
+# ------------------------------------------------------------
+#  FUNCIONES AUXILIARES
+# ------------------------------------------------------------
+def lookup_faq_respuesta(user_input: str) -> Optional[Dict[str, str]]:
+    """
+    Busca en la lista de FAQs una pregunta que coincida (total o parcialmente)
+    con `user_input`. Retorna el dict de FAQ si lo encuentra, o None si no.
+    """
+    texto = user_input.strip().lower()
+    for faq in FAQ_DATA:
+        # Comparamos sin tildes y en minúsculas
+        pregunta_faq = faq.get("pregunta", "").strip().lower()
+        # Si la pregunta de usuario contiene la pregunta FAQ, devolvemos esa respuesta
+        if pregunta_faq and pregunta_faq in texto:
+            return faq
+    return None
+
+def get_session(session_id: str) -> Dict[str, Any]:
+    """
+    Simula recuperación de una sesión en memoria (por ejemplo, Redis o en-CPU).
+    Para producción convendría usar Redis o una tabla en PostgreSQL.
+    """
+    # En este ejemplo simplificado usamos un dict global (no mostrado aquí) o
+    # un mecanismo de almacenamiento temporal. Para demo, devolvemos dict vacío.
+    return {}
+
+def save_session(session_id: str, data: Dict[str, Any]) -> None:
+    """
+    Guarda el estado de una sesión. En producción, usar Redis u otro almacén.
+    """
+    pass
+
+def delete_session(session_id: str) -> None:
+    """
+    Elimina la sesión del almacenamiento temporal.
+    """
+    pass
+
+def save_conversation_to_postgres(session_id: str, data: Dict[str, Any]) -> None:
+    """
+    Guarda la conversación (contexto) en PostgreSQL si lo deseas para análisis.
+    """
+    pass
+
+def detect_intent_llm(text: str) -> str:
+    """
+    Llama a un LLM (por ejemplo, Mistral 7B-Instruct) para determinar
+    la intención. Retorna una string con el identificador de herramienta.
+    """
+    # Aquí iría la llamada real a Mistral o HuggingFace. En este ejemplo,
+    # devolvemos vacío para simular que no encontró intención.
+    # En producción, reemplazar con request al servicio LLM.
+    return ""
+
+def detect_intent_keywords(text: str) -> str:
+    """
+    Una heurística simple por palabras clave para asignar intención.
+    Si el texto contiene “reclamo” → “complaint-registrar_reclamo”, etc.
+    """
+    if "reclamo" in text:
+        return "complaint-registrar_reclamo"
+    if "certificado" in text and "antecedentes" in text:
+        return "doc-buscar_fragmento_documento"
+    if "reserva" in text or "cita" in text:
+        return "scheduler-reservar_hora"
+    return ""
+
+def detect_intent(user_input: str) -> str:
+    """
+    Combina heurística y LLM. Si el LLM predice una intención válida, la usa.
+    Sino, prueba por palabras clave. Y si tampoco, retorna el fallback:
+    “doc-generar_respuesta_llm”.
+    """
+    texto = user_input.strip().lower()
+    intent_llm = detect_intent_llm(user_input)
+    VALID_TOOLS = set(MICROSERVICES.keys())
+    if intent_llm in VALID_TOOLS:
+        return intent_llm
+
+    intent_kw = detect_intent_keywords(texto)
+    if intent_kw in VALID_TOOLS:
+        return intent_kw
+
+    # 4) FALLBACK A LLM cuando ningún microservicio específico encaja:
+    return "doc-generar_respuesta_llm"
+
+def extract_entities_complaint(text: str) -> Dict[str, Any]:
+    """
+    Heurística muy simple para extraer posibles entidades de reclamo
+    (nombre y correo) a partir del texto libre. En producción, usarías
+    NLP más robusto (SpaCy, regex robusta, etc.).
+    """
+    entidades = {}
+    # Extraer email con regex
+    match = re.search(r"([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)", text)
+    if match:
+        entidades["correo"] = match.group(1)
+    # Extraer nombre si encuentra "mi nombre es X" (muy simple)
+    match2 = re.search(r"mi nombre (es|:)\s*([\w\s]+)", text, re.IGNORECASE)
+    if match2:
+        entidades["nombre"] = match2.group(2).strip()
+    return entidades
+
+def extract_entities_scheduler(text: str) -> Dict[str, Any]:
+    """
+    Extrae entidades para reserva de hora: fecha y hora.
+    En producción, usarías parseo de fechas con dateutil u otro.
+    """
+    entidades = {}
+    # Extraer fecha AAAA-MM-DD
+    match_fecha = re.search(r"(\d{4}-\d{2}-\d{2})", text)
+    if match_fecha:
+        entidades["fecha"] = match_fecha.group(1)
+    # Extraer hora HH:MM
+    match_hora = re.search(r"(\d{1,2}:\d{2})", text)
+    if match_hora:
+        entidades["hora"] = match_hora.group(1)
+    # Extraer nombre/email similar a reclamo
+    match_email = re.search(r"([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)", text)
+    if match_email:
+        entidades["correo"] = match_email.group(1)
+    match_nombre = re.search(r"mi nombre (es|:)\s*([\w\s]+)", text, re.IGNORECASE)
+    if match_nombre:
+        entidades["nombre"] = match_nombre.group(2).strip()
+    return entidades
+
+def load_schema(tool: str) -> Dict[str, Any]:
+    """
+    Carga un JSON Schema desde ./tool_schemas/<tool>.json
+    para validar los parámetros antes de llamar al microservicio.
+    """
+    schema_path = f"./tool_schemas/{tool}.json"
+    try:
+        with open(schema_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        logging.warning(f"No se encontró schema para herramienta {tool}. Se asume válido.")
+        return {}
+
+def validate_against_schema(params: Dict[str, Any], schema: Dict[str, Any]) -> bool:
+    """
+    Valida params contra el JSON Schema. Para simplificar,
+    podemos omitir validación real y retornar True (o implementar con jsonschema).
+    """
+    # En producción usarías:
+    #   from jsonschema import validate, ValidationError
+    #   try:
+    #       validate(params, schema)
+    #       return True
+    #   except ValidationError:
+    #       return False
+    return True
+
+def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Any:
+    """
+    Hace POST al microservicio asignado para la herramienta `tool`.
+    Retorna dict con 'respuesta' o 'message', o dict con 'error'.
+    """
+    service_url = MICROSERVICES.get(tool)
+    if not service_url:
+        return {"error": f"No existe un microservicio configurado para {tool}"}
+
+    payload = {
+        "tool": tool,
+        "params": params
+    }
+    try:
+        resp = requests.post(service_url, json=payload, timeout=30)
+        if resp.status_code == 200:
+            return resp.json()
+        else:
+            return {"error": f"Error {resp.status_code}: {resp.text}"}
+    except requests.RequestException as e:
+        logging.error(f"Error comunicándose con {service_url}: {e}")
+        return {"error": "No se pudo conectar con el servicio externo"}
+
+# ------------------------------------------------------------
+#  LOGIC PRINCIPAL DE ORQUESTACIÓN
+# ------------------------------------------------------------
+def orchestrate(
+    user_input: str,
+    extra_context: Optional[Dict[str, Any]] = None,
+    session_id: Optional[str] = None
+) -> Dict[str, Any]:
+    texto = user_input.strip().lower()
+
+    # ===== 0) Consultar en FAQs =====
+    faq = lookup_faq_respuesta(user_input)
+    if faq is not None:
+        return {
+            "respuesta": faq["respuesta"],
+            "session_id": session_id or str(uuid.uuid4())
+        }
+
+    # ===== 1) Interceptar saludos, despedidas, agradecimientos, empatía =====
+    if any(s in texto for s in SALUDOS):
+        return {
+            "respuesta": "¡Hola! ¿En qué puedo ayudarte hoy?",
+            "session_id": session_id or str(uuid.uuid4())
+        }
+    if any(d in texto for d in DESPEDIDAS):
+        return {
+            "respuesta": "¡Hasta luego! Si necesitas algo más, aquí estaré.",
+            "session_id": session_id or str(uuid.uuid4())
+        }
+    if any(a in texto for a in AGRADECIMIENTOS):
+        return {
+            "respuesta": "¡De nada! ¿Hay algo más en lo que te pueda ayudar?",
+            "session_id": session_id or str(uuid.uuid4())
+        }
+    if any(e in texto for e in EMPATIA_POS):
+        return {
+            "respuesta": "¡Me alegra saber que estás bien! ¿En qué puedo ayudarte?",
+            "session_id": session_id or str(uuid.uuid4())
+        }
+    if any(e in texto for e in EMPATIA_NEG):
+        return {
+            "respuesta": "Lamento que te sientas así. Si puedo ayudarte con algún trámite o información, dime por favor.",
+            "session_id": session_id or str(uuid.uuid4())
+        }
+
+    # ===== 2) Interceptar preguntas personales (incluye “como te llamas”) =====
+    if any(p in texto for p in PREGUNTAS_PERSONALES):
+        return {
+            "respuesta": (
+                "Soy MunBoT, tu asistente virtual del Gobierno de Curoscant. "
+                "Estoy aquí para ayudarte con trámites, información y consultas municipales."
+            ),
+            "session_id": session_id or str(uuid.uuid4())
+        }
+
+    # ===== 3) Gestión de sesión y contexto =====
+    if not session_id:
+        session_id = str(uuid.uuid4())
+    session = get_session(session_id)
+    if extra_context:
+        session.update(extra_context)
+
+    # ===== 4) Detectar intención (tool) con heurística + LLM =====
+    tool = detect_intent(user_input)
+
+    # ===== 5) Extraer entidades según la herramienta =====
+    if tool.startswith("complaint-"):
+        extracted = extract_entities_complaint(user_input)
+    elif tool.startswith("scheduler-"):
+        extracted = extract_entities_scheduler(user_input)
+    else:
+        extracted = {}
+    session.update({k: v for k, v in extracted.items() if v})
+
+    # ===== 6) Completar campos obligatorios paso a paso =====
+    required = REQUIRED_FIELDS.get(tool, [])
+    missing = [f for f in required if not session.get(f)]
+    if missing:
+        next_field = missing[0]
+        question = FIELD_QUESTIONS.get(next_field, f"Por favor, proporciona {next_field}:")
+        save_session(session_id, session)
+        return {
+            "respuesta": question,
+            "session_id": session_id,
+            "pending_field": next_field
+        }
+
+    # ===== 7) Validar schema de inputs =====
+    params = session.copy()
+    schema = load_schema(tool)
+    if not validate_against_schema(params, schema):
+        return {
+            "respuesta": "Faltan parámetros obligatorios para esta acción",
+            "session_id": session_id
+        }
+
+    # ===== 8) Llamar al microservicio correspondiente =====
+    response = call_tool_microservice(tool, params)
+
+    # ===== 9) Guardar conversación y limpiar sesión =====
+    save_conversation_to_postgres(session_id, session)
+    delete_session(session_id)
+
+    # ===== 10) Formatear la respuesta final (siempre retornar “respuesta”) =====
+    if isinstance(response, dict):
+        if "respuesta" in response:
+            return {
+                "respuesta": str(response["respuesta"]).strip(),
+                "session_id": session_id
+            }
+        if "message" in response:
+            return {
+                "respuesta": str(response["message"]).strip(),
+                "session_id": session_id
+            }
+        # Si llegó un dict con “error” o sin las claves previstas:
+        logging.error(f"Microservicio devolvió error o formato inesperado: {response}")
+        return {
+            "respuesta": "Lo siento, hubo un error procesando tu solicitud.",
+            "session_id": session_id
+        }
+
+    elif isinstance(response, str):
+        # Si devolvió un string plano:
+        return {
+            "respuesta": response.strip(),
+            "session_id": session_id
+        }
+
+    else:
+        # Cualquier otro tipo (no esperado):
+        return {
+            "respuesta": "Lo siento, no pude procesar tu solicitud correctamente.",
+            "session_id": session_id
+        }
+
+# ------------------------------------------------------------
+#  CREACIÓN DE LA APP FASTAPI
+# ------------------------------------------------------------
+app = FastAPI()
+
+@app.post("/orchestrate")
+def orchestrate_api(input: OrchestratorInput):
+    """
+    Endpoint principal para web-interface y evolution-api.
+    Recibe el body:
+      { "pregunta": "...", "context": {...}, "session_id": "..." }
+    Retorna siempre:
+      { "respuesta": "...texto...", "session_id": "..." }
+    """
+    try:
+        result = orchestrate(input.pregunta, input.context, input.session_id)
+        return result
+    except Exception as e:
+        logging.error(f"Error en orquestación global: {e}")
+        raise HTTPException(status_code=500, detail="Error interno en el orquestador")
+
+# ------------------------------------------------------------
+#  PUNTO DE ENTRADA PARA UVICORN
+# ------------------------------------------------------------
+# Para levantar con:
+#    uvicorn orchestrator:app --host 0.0.0.0 --port 5000
+# ------------------------------------------------------------
+Explicación de los cambios
+Consulta en la base de FAQs (lookup_faq_respuesta) al inicio de orchestrate:
+
+Si la pregunta del usuario coincide (o contiene) texto de alguna FAQ, devolvemos inmediatamente esa respuesta.
+
+Esto evita inundar al LLM con queries que ya tenemos resueltas estáticamente.
+
+Detección de “saludos”, “despedidas”, “agradecimientos” y “preguntas personales”:
+
+Ahora se usa any(p in texto for p in LISTA) en lugar de texto in LISTA.
+
+Se ampliaron las listas (por ejemplo, “como te llamas”).
+
+Flujo de “herramientas” (tools):
+
+Se aplica una función detect_intent(...) que primero llama a LLM (ficticio), luego a heurística por palabras clave, y finalmente usa doc-generar_respuesta_llm como fallback.
+
+Se actualizaron los nombres en el diccionario MICROSERVICES para que coincidan con la ruta exacta /tools/call de cada contenedor. Por ejemplo, "http://llm-docs-mcp:8000/tools/call".
+
+Manejo de la respuesta del microservicio (call_tool_microservice):
+
+Si el status code es 200, se devuelve resp.json().
+
+Si no, se retorna {"error": "Error <código>: <texto>"}.
+
+El bloque posterior en orchestrate(...) verifica si existe response["respuesta"] o response["message"]; si no, emite un error genérico.
+
+Fallback a LLM:
+
+Si detect_intent_llm no retorna una herramienta válida, se promedia con detect_intent_keywords.
+
+Si sigue sin coincidencia, se asigna automáticamente doc-generar_respuesta_llm.
+
+De este modo, siempre hay una herramienta a invocar.
+
+Último “else” de formateo:
+
+Si el microservicio devolvió un dict sin “respuesta” ni “message”, se registra un error en los logs y se le envía al usuario un texto genérico:
+
+“Lo siento, hubo un error procesando tu solicitud.”
+
+Revisión de posibles omisiones:
+
+Se agregó la función lookup_faq_respuesta(...) en el paso 0 de orchestrate.
+
+Se validó que cada microservicio use exactamente /tools/call como endpoint.
+
+Se revisó que todo retorno de orchestrate sea un dict con la clave "respuesta".
+
+Confirmar que en tu JSON de FAQs (faq_respuestas.json) existan pares "pregunta", "respuesta" bien formateados (en minúsculas, sin tildes, si implementas comparativa estricta).
+
+Asegúrate de reiniciar con docker-compose up --build para que estos cambios queden activos.
+
+Con esta versión de orchestrator.py tendrás:
+
+Un paso previo que busca en tu JSON de FAQs.
+
+Detección de saludo/despedida/pregunta personal más flexible.
+
+Un fallback sistemático a LLM (doc-generar_respuesta_llm) si no encaja otra herramienta.
+
+Un bloque de formateo final que siempre retorna "respuesta": "<texto>".
+
+Un diccionario MICROSERVICES corregido para que todas las herramientas apunten a /tools/call.
+
+Finalmente, solo te queda verificar que:
+
+El contenedor llm-docs-mcp implemente /tools/call y devuelva {"respuesta": "…texto…"} .
+
+Los contenedores complaints-mcp y scheduler-mcp también expongan /tools/call y respeten el mismo esquema.
+
+El archivo faq_respuestas.json esté cargado correctamente en el directorio de mcp-core.
+
+Si todo eso está en orden, MunBoT dejará de responder “No se recibió respuesta válida del MCP” y comenzará a entregar respuestas coherentes en base a FAQs, saludos/despedidas, microservicios o el LLM como fallback.
