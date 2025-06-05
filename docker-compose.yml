@@ -152,7 +152,7 @@ services:
       - REDIS_HOST=redis
     volumes:
       - ./services/mcp-core:/app
-      - ./services/llm_docs-mcp/llm-models:/models
+
     networks:
       - munbot-net
     depends_on:
