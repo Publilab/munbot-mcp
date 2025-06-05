@@ -1,0 +1,34 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "generar_respuesta_llm",
+    "version": "1.0.0",
+    "description": "Genera una respuesta a una pregunta abierta usando el modelo LLM cuando no hay información relevante en los documentos.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "pregunta": {
+          "type": "string",
+          "description": "La pregunta abierta o general del usuario."
+        },
+        "language": {
+          "type": "string",
+          "description": "Código de idioma (por defecto 'es')."
+        }
+      },
+      "required": ["pregunta"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "respuesta": {
+          "type": "string",
+          "description": "Respuesta generada por el modelo LLM."
+        }
+      },
+      "required": ["respuesta"],
+      "additionalProperties": false
+    }
+  }
+  

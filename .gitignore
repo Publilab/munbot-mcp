@@ -1,0 +1,101 @@
+# Archivos de entorno y configuración sensible
+.env
+.env.*
+!.env.example
+config.env
+!config.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+PIPFILE.lock
+
+# Logs
+*.log
+logs/
+
+# Bases de datos
+*.sqlite3
+*.db
+
+# Docker
+.docker/
+docker-data/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Archivos temporales
+*.tmp
+*.temp
+.cache/
+
+# Archivos grandes
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Modelos LLM
+llm-models/
+*.gguf
+*.bin
+
+# Documentos sensibles
+docs/
+
+# Certificados y claves
+certs/
+keys/
+
+# Backups
+*.bak
+*.backup
+
+# OS específicos
+.DS_Store
+Icon
+Thumbs.db
+
+# Herramientas de túnel
+ngrox
+ngrox.zip
+tan
+
+# Carpetas específicas del proyecto
+Munvenv/
+github/

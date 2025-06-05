@@ -1,0 +1,47 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "doc-info_documento",
+    "version": "1.0.0",
+    "description": "Devuelve un campo específico de un documento oficial (requisitos, horario, dirección, etc.).",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "clave": {
+          "type": "string",
+          "description": "ID del documento o nombre aproximado."
+        },
+        "campo": {
+          "type": "string",
+          "enum": [
+            "requisitos",
+            "donde_obtener",
+            "horario",
+            "correo",
+            "direccion",
+            "holocom",
+            "notas",
+            "utilidad",
+            "penalidad",
+            "tiempo_validez",
+            "aplica_a"
+          ],
+          "description": "Atributo concreto que se solicita."
+        }
+      },
+      "required": ["clave", "campo"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "valor": {
+          "type": "string",
+          "description": "Contenido del campo solicitado."
+        }
+      },
+      "required": ["valor"],
+      "additionalProperties": false
+    }
+  }
+  

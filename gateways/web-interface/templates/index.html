@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gobierno de Curoscant</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="/static/images/logo_curoscant.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Importar fuente Orbitron para dar un toque futurista -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo">
+            <img src="/static/images/logo_curoscant.png" alt="Logo Curoscant">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Sobre Nosotros</a></li>
+                <li><a href="#">Servicios</a></li>
+                <li><a href="#">Noticias</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Barra de Búsqueda Principal -->
+    <section class="search-bar">
+        <div class="container">
+            <h1>Bienvenido a Curoscant - Sede del Gobierno de la Nueva República</h1>
+            <form action="/buscar" method="get">
+                <input type="text" name="q" placeholder="Buscar información..." required>
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Sección de Servicios -->
+    <section class="services">
+        <div class="container">
+            <h2>Servicios Principales</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <img src="/static/images/coruscant1.jpeg" alt="Servicio 1">
+                    <h3>Gestión de Impuestos</h3>
+                    <p>Accede y gestiona tus obligaciones fiscales de manera sencilla y segura.</p>
+                    <a href="#" class="btn">Más Información</a>
+                </div>
+                <div class="service-item">
+                    <img src="/static/images/coruscant2.jpeg" alt="Servicio 2">
+                    <h3>Servicios de Ciudadanía</h3>
+                    <p>Información sobre naturalización, ciudadanía y derechos ciudadanos.</p>
+                    <a href="#" class="btn">Más Información</a>
+                </div>
+                <div class="service-item">
+                    <img src="/static/images/coruscant3.jpeg" alt="Servicio 3">
+                    <h3>Asistencia Financiera</h3>
+                    <p>Programas de ayuda y asistencia financiera para los ciudadanos.</p>
+                    <a href="#" class="btn">Más Información</a>
+                </div>
+                <div class="service-item">
+                    <img src="/static/images/coruscant4.jpeg" alt="Servicio 4">
+                    <h3>Salud Pública</h3>
+                    <p>Servicios y programas para mejorar la salud y bienestar de la comunidad.</p>
+                    <a href="#" class="btn">Más Información</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Noticias -->
+    <section class="news">
+        <div class="container">
+            <h2>Noticias Recientes</h2>
+            <div class="news-container">
+                <article class="news-item">
+                    <h3>Implementación de Nuevas Políticas Fiscales</h3>
+                    <p>El Gobierno de Curoscant ha implementado nuevas políticas fiscales para el próximo año.</p>
+                    <span class="date">30 de Diciembre de 2024</span>
+                </article>
+                <article class="news-item">
+                    <h3>Lanzamiento del Programa de Salud Pública</h3>
+                    <p>Se ha lanzado un nuevo programa destinado a mejorar la salud pública en toda Curoscant.</p>
+                    <span class="date">29 de Diciembre de 2024</span>
+                </article>
+                <article class="news-item">
+                    <h3>Inauguración del Centro de Asistencia Financiera</h3>
+                    <p>El nuevo Centro de Asistencia Financiera abre sus puertas para brindar apoyo a los ciudadanos.</p>
+                    <span class="date">28 de Diciembre de 2024</span>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pie de Página -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>Gobierno de Curoscant</h3>
+                    <p>Promoviendo la paz, la prosperidad y el bienestar de todos los ciudadanos de Curoscant.</p>
+                </div>
+                <div class="footer-section links">
+                    <h3>Enlaces Útiles</h3>
+                    <ul>
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#">Sobre Nosotros</a></li>
+                        <li><a href="#">Servicios</a></li>
+                        <li><a href="#">Noticias</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>Contacto</h3>
+                    <p>1234 Avenida de la Paz, Curoscant</p>
+                    <p>+1 (555) 123-4567</p>
+                    <p>contacto@curoscant.gov</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Gobierno de Curoscant. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+<!-- Ventana de chat flotante -->
+<div id="chat-container" class="chat-container hidden">
+    <div id="chat-header" class="chat-header">
+        <!-- Contenedor Izquierdo: Logo o Ícono -->
+        <div class="chat-header-left">
+          <img src="/static/images/logo_curoscant.png" alt="Logo Curoscant" class="chat-header-logo">
+        </div>
+        
+        <!-- Contenedor Central: Título y Subtítulo -->
+        <div class="chat-header-center">
+          <div class="chat-header-info">
+            <div class="chat-header-title">MunBoT</div>
+            <div class="chat-header-subtitle">Asistente Virtual del Gobierno de Curoscant</div>
+          </div>
+        </div>
+        
+        <!-- Contenedor Derecho: Botón de Cierre -->
+        <div class="chat-header-right">
+          <button class="chat-header-close" id="chat-close"></button>
+        </div>
+      </div>
+    
+    <div id="chat-body" class="chat-body"></div>
+    
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Escribe tu mensaje...">
+        <button id="send-button">Enviar</button>
+    </div>
+</div>
+
+    <!-- Botón para abrir el chat -->
+    <button id="chat-toggle" class="chat-toggle"><i class="fa-brands fa-rocketchat"></i></button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

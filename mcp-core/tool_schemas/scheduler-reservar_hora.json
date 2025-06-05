@@ -1,0 +1,55 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "scheduler-reservar_hora",
+    "version": "1.0.0",
+    "description": "Bloquea un slot y crea una reserva en estado 'pendiente'.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "slot_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Identificador del slot a reservar."
+        },
+        "usuario_nombre": {
+          "type": "string",
+          "description": "Nombre completo del ciudadano."
+        },
+        "usuario_mail": {
+          "type": "string",
+          "format": "email",
+          "description": "Correo electrónico del ciudadano."
+        },
+        "usuario_whatsapp": {
+          "type": "string",
+          "pattern": "^\\+?[0-9]{7,15}$",
+          "description": "Número de WhatsApp del ciudadano (opcional)."
+        },
+        "motivo": {
+          "type": "string",
+          "description": "Breve descripción del motivo o trámite (opcional)."
+        }
+      },
+      "required": ["slot_id", "usuario_nombre", "usuario_mail"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "id_reserva": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Identificador único de la reserva."
+        },
+        "estado": {
+          "type": "string",
+          "enum": ["pendiente"],
+          "description": "Estado inicial de la reserva."
+        }
+      },
+      "required": ["id_reserva", "estado"],
+      "additionalProperties": false
+    }
+  }
+  

@@ -1,0 +1,166 @@
+services:
+  complaints-mcp:
+    build: ./services/complaints-mcp
+    container_name: complaints-mcp
+    env_file:
+      - ./services/complaints-mcp/config.env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=munbot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "7000:7000"
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    networks:
+      - munbot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  llm_docs-mcp:
+    build: ./services/llm_docs-mcp
+    container_name: llm_docs-mcp
+    env_file:
+      - ./services/llm_docs-mcp/config.env.example
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - munbot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  scheduler-mcp:
+    build: ./services/scheduler-mcp
+    container_name: scheduler-mcp
+    env_file:
+      - ./services/scheduler-mcp/config.env
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=munbot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "6001:6001"
+    restart: unless-stopped
+    networks:
+      - munbot-net
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  evolution-api:
+    build: ./gateways/evolution-api
+    container_name: evolution-api
+    env_file:
+      - ./gateways/evolution-api/.env.example
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - munbot-net
+    environment:
+      - REDIS_HOST=redis
+      - NODE_OPTIONS=--max-old-space-size=1024
+    depends_on:
+      - redis
+      - complaints-mcp
+      - llm_docs-mcp
+      - scheduler-mcp
+
+  evolution-manager:
+    build: ./gateways/evolution-manager
+    container_name: evolution-manager
+    env_file:
+      - ./gateways/evolution-manager/.env.example
+    ports:
+      - "9615:9615"
+    restart: unless-stopped
+    networks:
+      - munbot-net
+    depends_on:
+      - evolution-api
+
+  web-interface:
+    build: ./gateways/web-interface
+    container_name: web-interface
+    env_file:
+      - ./gateways/web-interface/.env.example
+    ports:
+      - "3000:3000"
+    environment:
+      - MCP_URL=http://mcp-core:5000/orchestrate
+    restart: unless-stopped
+    networks:
+      - munbot-net
+    depends_on:
+      - evolution-api
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_DB: munbot
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - munbot-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - munbot-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      
+  mcp-core:
+    build:
+      context: ./mcp-core
+      dockerfile: Dockerfile
+    container_name: mcp-core
+    ports:
+      - "5000:5000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - REDIS_HOST=redis
+    volumes:
+      - ./services/mcp-core:/app
+      - ./services/llm_docs-mcp/llm-models:/models
+    networks:
+      - munbot-net
+    depends_on:
+      - redis
+
+networks:
+  munbot-net:
+    driver: bridge
+
+volumes:
+  postgres_data:

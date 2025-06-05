@@ -1,0 +1,42 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "info-oficina_documento",
+    "version": "1.0.0",
+    "description": "Entrega la información de las oficinas donde se puede tramitar un documento concreto.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id_documento": {
+          "type": "string",
+          "description": "ID o nombre exacto del documento."
+        }
+      },
+      "required": ["id_documento"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "oficinas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "nombre":    { "type": "string" },
+              "direccion": { "type": "string" },
+              "horario":   { "type": "string" },
+              "correo":    { "type": "string" },
+              "holocom":   { "type": "string" }
+            },
+            "required": ["nombre", "direccion", "horario"],
+            "additionalProperties": false
+          },
+          "description": "Una o más oficinas que atienden el trámite."
+        }
+      },
+      "required": ["oficinas"],
+      "additionalProperties": false
+    }
+  }
+  

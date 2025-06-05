@@ -1,0 +1,26 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+
+scrape_configs:
+  - job_name: 'munbot_evolution_api'
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - evolution-api:8080
+
+  - job_name: 'munbot_llm_gateway'
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - llm-gateway:8000
+  
+  - job_name: scheduler
+    metrics_path: /metrics
+    static_configs:
+      - targets: [scheduler:6001]
+
+  - job_name: 'docker_engine'
+    static_configs:
+      - targets:
+          - cadvisor:8080           # (opcional, si añades cadvisor)

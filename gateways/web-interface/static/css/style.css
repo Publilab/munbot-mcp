@@ -1,0 +1,518 @@
+/* web_app/static/css/style.css */
+
+/* Reset de márgenes y paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Tipografía y fondo */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background: url('../images/fondo_espacial.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #d1d1d1;
+}
+
+/* Header Principal */
+header {
+    background: linear-gradient(135deg, #000814, #001d3d);
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+header .logo img {
+    height: 100px;
+    margin-left: 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin-right: 20px;
+}
+
+nav ul li {
+    margin-left: 30px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ffcc00;
+}
+
+/* Barra de Búsqueda Principal */
+.search-bar {
+    background: rgba(0, 29, 61, 0.8);
+    color: #ffffff;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.search-bar h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.8em;
+    margin-bottom: 20px;
+}
+
+.search-bar form {
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-bar input[type="text"] {
+    width: 80%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 1em;
+}
+
+.search-bar button {
+    padding: 15px;
+    border: none;
+    background-color: #ffcc00;
+    color: #003366;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #e6b800;
+}
+
+/* Sección de Servicios */
+.services {
+    padding: 40px 20px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.services .container h2 {
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #003366;
+}
+
+.services-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.service-item {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    width: 300px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.service-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.service-item h3 {
+    margin: 15px 0;
+    color: #003366;
+}
+
+.service-item p {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.service-item .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #003366;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.service-item .btn:hover {
+    background-color: #002244;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Sección de Noticias */
+.news {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.news .container h2 {
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #003366;
+}
+
+.news-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.news-item {
+    background-color: #fff;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.news-item h3 {
+    margin-bottom: 10px;
+    color: #003366;
+}
+
+.news-item p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.news-item .date {
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+/* Pie de Página */
+footer {
+    background-color: #003366;
+    color: #fff;
+    padding: 40px 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-section h3 {
+    margin-bottom: 15px;
+    color: #ffcc00;
+}
+
+.footer-section p,
+.footer-section ul li {
+    color: #fff;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #ffcc00;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    border-top: 1px solid #fff;
+    padding-top: 20px;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+/* Ventana de chat flotante */
+.chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #001d3d, #007bff); /* Degradado que coincide con el header */
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    font-size: 30px;  /* Ajusta el tamaño del ícono */
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.chat-container {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    max-height: 500px;
+    background: rgba(10, 10, 30, 0.9);
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Variables de color */
+:root {
+    --primary-dark: #001d3d;
+    --primary-light: #007bff;
+    --icon-default: #333333;
+    --icon-hover: #e63946;
+}
+
+/* Header del Chatbot */
+.chat-header {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-light));
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Contenedores internos del header del chatbot */
+.chat-header-left,
+.chat-header-center,
+.chat-header-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Contenedor izquierdo: Logo */
+.chat-header-left {
+    flex: 0 0 auto;
+    margin-right: 10px;
+}
+
+.chat-header-logo {
+    height: 50px;
+    display: block;
+}
+
+/* Contenedor central: Información del Chatbot */
+.chat-header-center {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 10px;
+}
+
+.chat-header-info {
+    background-color: rgba(255, 255, 255, 0.83); /* Rectángulo celeste claro */
+    border-radius: 10px;
+    padding: 5px 10px;
+    text-align: left;
+}
+
+.chat-header-title {
+    font-family: sans-serif;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #000;
+}
+
+.chat-header-subtitle {
+    font-family: sans-serif;
+    font-size: 0.7em;
+    font-weight: normal;
+    color: #000;
+}
+
+/* Contenedor derecho: Botón de cierre */
+.chat-header-right {
+    flex: 0 0 auto;
+    margin-left: 5px;
+}
+
+/* Botón de cierre utilizando background-image y transición */
+.chat-header-close {
+    width: 24px;
+    height: 24px;
+    background: url('../images/close-button-gray.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.3s ease;
+}
+
+.chat-header-close:hover {
+    background: url('../images/close-button-red.png') no-repeat center center;
+    background-size: contain;
+}
+
+/* Chat Body */
+.chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: rgba(208, 208, 212, 0.7);
+    color: #ffffff;
+    font-size: 0.95em;
+    white-space: pre-line;
+    display: flex;           /* Convertimos en contenedor flex */
+    flex-direction: column;  /* Apilamos los elementos verticalmente */
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    border-top: 1px solid #007bff;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-bottom-left-radius: 10px;
+    outline: none;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.chat-input button {
+    padding: 10px;
+    border: none;
+    background: #007bff;
+    color: #ffffff;
+    cursor: pointer;
+    border-bottom-right-radius: 10px;
+    font-family: 'Orbitron', sans-serif;
+    transition: background 0.3s ease;
+}
+
+.chat-input button:hover {
+    background: #0056b3;
+}
+
+/* Estilo general para mensajes */
+.message {
+    margin: 5px 0;
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 15px;
+    clear: both;
+    white-space: pre-line;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 13px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Mensajes del chatbot: alineados a la izquierda */
+.message.bot {
+    background: rgba(0, 0, 20, 0.7); /* Fondo oscuro */
+    color: #ffffff;
+    align-self: flex-start;  /* Alinea a la izquierda */
+    border-bottom-left-radius: 0;
+}
+
+/* Mensajes del usuario: alineados a la derecha */
+.message.user {
+    background: #ffffff; /* Fondo blanco */
+    color: #333333;
+    align-self: flex-end;  /* Alinea a la derecha */
+    border-bottom-right-radius: 0;
+}
+
+/* Mensajes del sistema (opcional) */
+.message.system {
+    background: transparent;
+    color: #999999;
+    font-size: 12px;
+    text-align: center;
+    float: none;
+}
+
+/* Indicador de "typing" con tres puntos parpadeantes */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  margin-top: auto;   /* Hace que se ubique al final del contenedor flex */
+  margin-bottom: 5px; /* Opcional: espacio inferior */
+  text-align: left;   /* O center, según prefieras */
+  gap: 4px; /* Espacio entre los puntos */
+  padding: 5px 0;
+}
+
+.typing-indicator span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: #000000;  /* Color de los puntos, ajústalo según tu diseño */
+  border-radius: 50%;
+  opacity: 0;
+  animation: blink 1.4s infinite both;
+}
+
+.typing-indicator span:nth-child(1) {
+  animation-delay: 0s;
+}
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0; }
+  40% { opacity: 1; }
+}

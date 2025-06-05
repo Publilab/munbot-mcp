@@ -1,0 +1,35 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "scheduler-confirmar_hora",
+    "version": "1.0.0",
+    "description": "Confirma una reserva existente y dispara las notificaciones correspondientes.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id_reserva": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Identificador de la reserva a confirmar."
+        }
+      },
+      "required": ["id_reserva"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "id_reserva": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "estado": {
+          "type": "string",
+          "enum": ["confirmada"]
+        }
+      },
+      "required": ["id_reserva", "estado"],
+      "additionalProperties": false
+    }
+  }
+  

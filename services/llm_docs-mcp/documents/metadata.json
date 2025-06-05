@@ -1,0 +1,17 @@
+{
+  "ORD-Transporte Basura Desecho.txt": {
+    "tags": ["transporte", "basura", "desecho", "ordenanza", "municipalidad"]
+  },
+  "MAN-Ayudas Sociales.txt": {
+    "tags": ["ayudas", "sociales", "beneficios", "municipalidad"]
+  },
+  "ORD-Funcionamiento del Comercio.txt": {
+    "tags": ["comercio", "funcionamiento", "ordenanza", "municipalidad"]
+  },
+  "ORD-Medio Ambiente.txt": {
+    "tags": ["medio ambiente", "ordenanza", "aseo", "ornato", "municipalidad"]
+  },
+  "ORD-Patente de Alcoholes.txt": {
+    "tags": ["patente", "alcoholes", "comercio", "ordenanza", "municipalidad"]
+  }
+} 

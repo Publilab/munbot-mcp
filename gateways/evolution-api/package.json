@@ -1,0 +1,17 @@
+{
+  "name": "evolution-api",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.2.0",
+    "redis": "^4.6.13",
+    "ws": "^8.12.0"
+  }
+}

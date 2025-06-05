@@ -1,0 +1,46 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "doc-buscar_fragmento_documento",
+    "version": "1.0.0",
+    "description": "Recupera los fragmentos de texto más relevantes de los documentos oficiales para una consulta dada.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "consulta": {
+          "type": "string",
+          "description": "Pregunta o frase que se utilizará para la búsqueda semántica."
+        },
+        "k": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 3,
+          "description": "Número de fragmentos a devolver (por defecto 3)."
+        }
+      },
+      "required": ["consulta"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "fragmentos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doc_id":    { "type": "string" },
+              "titulo":    { "type": "string" },
+              "parrafo":   { "type": "string" },
+              "puntaje":   { "type": "number" }
+            },
+            "required": ["doc_id", "titulo", "parrafo", "puntaje"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["fragmentos"],
+      "additionalProperties": false
+    }
+  }  

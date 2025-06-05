@@ -1,0 +1,46 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "doc-listar_documentos_oficiales",
+    "version": "1.0.0",
+    "description": "Devuelve el catálogo de documentos oficiales filtrado opcionalmente por tipo o año.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "tipo": {
+          "type": "string",
+          "description": "Categoría del documento (ordenanza, manual, informe, etc.)."
+        },
+        "anio": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2100,
+          "description": "Año de publicación."
+        }
+      },
+      "minProperties": 0,
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "documentos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doc_id": { "type": "string" },
+              "titulo": { "type": "string" },
+              "tipo":   { "type": "string" },
+              "fecha":  { "type": "string", "format": "date" }
+            },
+            "required": ["doc_id", "titulo", "tipo", "fecha"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["documentos"],
+      "additionalProperties": false
+    }
+  }
+  

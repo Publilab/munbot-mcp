@@ -1,0 +1,53 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "MunBoT-Health",
+    "tags": ["munbot", "health", "monitoring"],
+    "timezone": "browser",
+    "schemaVersion": 30,
+    "version": 1,
+    "refresh": "10s",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "CPU Usage",
+        "targets": [
+          {
+            "expr": "process_cpu_seconds_total",
+            "legendFormat": "{{instance}}",
+            "refId": "A"
+          }
+        ],
+        "datasource": "Prometheus",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "type": "graph",
+        "title": "Memory Usage",
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes",
+            "legendFormat": "{{instance}}",
+            "refId": "B"
+          }
+        ],
+        "datasource": "Prometheus",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      },
+      {
+        "type": "table",
+        "title": "Estado de Contenedores",
+        "targets": [
+          {
+            "expr": "up",
+            "legendFormat": "{{instance}}",
+            "refId": "C"
+          }
+        ],
+        "datasource": "Prometheus",
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8}
+      }
+    ]
+  },
+  "overwrite": true
+}

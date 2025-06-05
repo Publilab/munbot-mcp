@@ -1,0 +1,47 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "scheduler-listar_horas_disponibles",
+    "version": "1.0.0",
+    "description": "Devuelve los slots de atención libres para una fecha (y opcionalmente un funcionario).",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "fecha": {
+          "type": "string",
+          "format": "date",
+          "description": "Día para el que se buscan horas disponibles (AAAA-MM-DD)."
+        },
+        "cod_func": {
+          "type": "string",
+          "description": "Código de funcionario (opcional) si se desea filtrar por persona."
+        }
+      },
+      "required": ["fecha"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "slots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "slot_id":   { "type": "string", "format": "uuid" },
+              "fecha":     { "type": "string", "format": "date" },
+              "hora_ini":  { "type": "string", "pattern": "^[0-2][0-9]:[0-5][0-9]$" },
+              "hora_fin":  { "type": "string", "pattern": "^[0-2][0-9]:[0-5][0-9]$" },
+              "cod_func":  { "type": "string" },
+              "funcionario": { "type": "string" }
+            },
+            "required": ["slot_id", "fecha", "hora_ini", "hora_fin", "cod_func", "funcionario"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["slots"],
+      "additionalProperties": false
+    }
+  }
+  

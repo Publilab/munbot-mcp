@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "registrar_reclamo",
+  "version": "1.1.0",
+  "description": "Registra un reclamo o denuncia, guarda la información en la base de datos y envía un correo de confirmación al ciudadano.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "nombre": {
+        "type": "string",
+        "description": "Nombre completo de la persona que presenta el reclamo."
+      },
+      "mail": {
+        "type": "string",
+        "format": "email",
+        "description": "Correo electrónico del ciudadano para notificaciones."
+      },
+      "mensaje": {
+        "type": "string",
+        "description": "Descripción detallada del reclamo o denuncia."
+      },
+      "prioridad": {
+        "type": "integer",
+        "enum": [1, 3, 5],
+        "default": 3,
+        "description": "Nivel de prioridad: 1 = alta, 3 = normal, 5 = baja."
+      },
+      "categoria": {
+        "type": "integer",
+        "enum": [1, 2],
+        "description": "Tipo de registro: 1 = reclamo, 2 = denuncia."
+      },
+      "departamento": {
+        "type": "integer",
+        "enum": [1, 2, 3, 4],
+        "description": "Departamento destinatario: 1 = seguridad, 2 = obras, 3 = ambiente, 4 = otros."
+      }
+    },
+    "required": ["nombre", "mail", "mensaje", "categoria", "departamento"],
+    "additionalProperties": false
+  },
+  "result_schema": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "UUID asignado al reclamo para seguimiento.",
+        "format": "uuid"
+      },
+      "message": {
+        "type": "string",
+        "description": "Mensaje de confirmación devuelto por el servicio."
+      }
+    },
+    "required": ["id", "message"],
+    "additionalProperties": false
+  },
+  "type": "object"
+}

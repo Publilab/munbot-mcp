@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "name": "info-respuesta_faq",
+  "version": "1.0.0",
+  "description": "Responde preguntas frecuentes sobre MunBoT, su funcionamiento, privacidad, idiomas, contacto, etc.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "pregunta": {
+        "type": "string",
+        "description": "Pregunta frecuente del usuario."
+      }
+    },
+    "required": ["pregunta"],
+    "additionalProperties": false
+  },
+  "result_schema": {
+    "type": "object",
+    "properties": {
+      "respuesta": {
+        "type": "string",
+        "description": "Respuesta a la pregunta frecuente."
+      },
+      "categoria": {
+        "type": "string",
+        "description": "Categoría de la pregunta frecuente."
+      }
+    },
+    "required": ["respuesta"],
+    "additionalProperties": false
+  }
+}
+
