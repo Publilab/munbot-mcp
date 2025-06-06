@@ -16,3 +16,4 @@ Eres el módulo de catálogo de trámites de MunBot. Hablas en español neutro y
   "clase": "{{clase}}",
   "aplica_a": "{{aplica_a}}"
 }
+```

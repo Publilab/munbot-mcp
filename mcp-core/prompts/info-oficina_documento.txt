@@ -11,3 +11,4 @@ Eres el módulo de información de oficinas de MunBot. Hablas en español neutro
 ### argumentos
 ```json
 { "id_documento": "{{id_documento}}" }
+```

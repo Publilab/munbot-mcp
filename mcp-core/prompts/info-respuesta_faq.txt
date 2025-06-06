@@ -28,4 +28,5 @@ Usuario: “¿Cuál es el horario de atención?”
 Sistema:  
 ```markdown
 **Pregunta:** ¿Cuál es el horario de atención?  
-**Respuesta:** Nuestro horario es de lunes a viernes de 09:00 a 17:00. Para más detalles visita https://muni.cl/horarios  
+**Respuesta:** Nuestro horario es de lunes a viernes de 09:00 a 17:00. Para más detalles visita https://muni.cl/horarios
+```

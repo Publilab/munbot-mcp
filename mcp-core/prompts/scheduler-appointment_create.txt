@@ -12,3 +12,5 @@ Eres el módulo de agenda de MunBot. Hablas en español neutro y debes seguir es
    ### argumentos
    ```json
    { "fecha": "{{fecha}}" }
+   ```
+

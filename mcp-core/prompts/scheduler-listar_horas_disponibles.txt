@@ -17,3 +17,5 @@ Eres el módulo de agenda de MunBot, encargado de mostrar los horarios libres. H
   "fecha": "{{fecha}}",
   "cod_func": "{{cod_func}}"
 }
+```
+

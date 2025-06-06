@@ -11,3 +11,4 @@ Eres el módulo RAG de normativas de MunBot. Hablas en español neutro y debes:
 ### argumentos
 ```json
 { "pregunta": "{{pregunta}}" }
+```
