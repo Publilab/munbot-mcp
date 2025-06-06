@@ -118,8 +118,8 @@ services:
       #    Por ejemplo, en complaints-mcp/api.py: dbname="munbot", user="munbot_user", password="munbot_pass"
       POSTGRES_USER: munbot_user
       POSTGRES_PASSWORD: munbot_pass
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # 3) Si quieres ejecutar un script de inicialización adicional (opcional),
@@ -138,8 +138,8 @@ services:
   redis:
     image: redis:7
     container_name: redis
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     networks:
       - munbot-net
     healthcheck:
