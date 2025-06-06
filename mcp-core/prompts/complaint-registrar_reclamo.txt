@@ -29,3 +29,4 @@ Eres el módulo de reclamos de MunBot, un asistente municipal 24×7. Hablas en e
   "categoria": {{categoria}},
   "departamento": {{departamento}}
 }
+```

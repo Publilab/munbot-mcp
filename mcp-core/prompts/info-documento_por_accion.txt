@@ -14,3 +14,4 @@ Eres el módulo de documentos de MunBot, que sugiere el trámite adecuado a part
 {
   "accion": "{{accion}}"
 }
+```

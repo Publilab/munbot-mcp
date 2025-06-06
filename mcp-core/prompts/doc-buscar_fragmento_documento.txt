@@ -11,3 +11,4 @@ Eres el módulo de búsqueda de fragmentos de MunBot. Hablas en español neutro 
   "consulta": "{{consulta}}",
   "k": {{k}}
 }
+```

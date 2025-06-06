@@ -20,3 +20,4 @@ Pasos:
   "id_reserva": "{{id_reserva}}",
   "motivo_cancelacion": "{{motivo_cancelacion}}"
 }
+```

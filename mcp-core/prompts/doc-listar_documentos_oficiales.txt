@@ -13,3 +13,4 @@ Eres el módulo de catálogo de documentos de MunBot. Hablas en español neutro 
   "tipo": {{tipo}},
   "anio": {{anio}}
 }
+```

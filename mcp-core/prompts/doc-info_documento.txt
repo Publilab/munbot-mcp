@@ -13,3 +13,4 @@ Eres el módulo de información de documentos de MunBot. Hablas en español neut
   "clave": "{{clave}}",
   "campo": "{{campo}}"
 }
+```
