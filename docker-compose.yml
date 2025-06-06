@@ -112,17 +112,25 @@ services:
     image: postgres:14
     container_name: postgres
     environment:
+      # 1) Base de datos EXACTA que el microservicio espera: "munbot"
       POSTGRES_DB: munbot
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      # 2) Usuario y contraseña para esa DB; deben coincidir con los que usa complaints-mcp
+      #    Por ejemplo, en complaints-mcp/api.py: dbname="munbot", user="munbot_user", password="munbot_pass"
+      POSTGRES_USER: munbot_user
+      POSTGRES_PASSWORD: munbot_pass
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # 3) Si quieres ejecutar un script de inicialización adicional (opcional),
+      #    asegúrate de que dentro de init-postgres.sql crees las tablas / esquemas
+      #    necesarios, pero NO necesitas crear la base de datos ni el usuario, porque
+      #    ya se crean automáticamente con las variables POSTGRES_DB/POSTGRES_USER.
+      - ./databases/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql
     networks:
       - munbot-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U munbot_user"]
       interval: 10s
       timeout: 5s
       retries: 5
