@@ -4,11 +4,6 @@ services:
     container_name: complaints-mcp
     env_file:
       - ./services/complaints-mcp/config.env
-    environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_DB=munbot
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
     ports:
       - "7000:7000"
     restart: unless-stopped
@@ -26,7 +21,7 @@ services:
     build: ./services/llm_docs-mcp
     container_name: llm_docs-mcp
     env_file:
-      - ./services/llm_docs-mcp/config.env.example
+      - ./services/llm_docs-mcp/config.env
     ports:
       - "8000:8000"
     restart: unless-stopped
@@ -43,11 +38,6 @@ services:
     container_name: scheduler-mcp
     env_file:
       - ./services/scheduler-mcp/config.env
-    environment:
-      - POSTGRES_HOST=postgres
-      - POSTGRES_DB=munbot
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
     ports:
       - "6001:6001"
     restart: unless-stopped
@@ -65,7 +55,7 @@ services:
     build: ./gateways/evolution-api
     container_name: evolution-api
     env_file:
-      - ./gateways/evolution-api/.env.example
+      - ./gateways/evolution-api/.env
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -84,7 +74,7 @@ services:
     build: ./gateways/evolution-manager
     container_name: evolution-manager
     env_file:
-      - ./gateways/evolution-manager/.env.example
+      - ./gateways/evolution-manager/.env
     ports:
       - "9615:9615"
     restart: unless-stopped
@@ -97,7 +87,7 @@ services:
     build: ./gateways/web-interface
     container_name: web-interface
     env_file:
-      - ./gateways/web-interface/.env.example
+      - ./gateways/web-interface/.env
     ports:
       - "3000:3000"
     environment:
@@ -111,21 +101,12 @@ services:
   postgres:
     image: postgres:14
     container_name: postgres
-    environment:
-      # 1) Base de datos EXACTA que el microservicio espera: "munbot"
-      POSTGRES_DB: munbot
-      # 2) Usuario y contraseña para esa DB; deben coincidir con los que usa complaints-mcp
-      #    Por ejemplo, en complaints-mcp/api.py: dbname="munbot", user="munbot_user", password="munbot_pass"
-      POSTGRES_USER: munbot_user
-      POSTGRES_PASSWORD: munbot_pass
+    env_file:
+      - ./databases/postgres.env
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # 3) Si quieres ejecutar un script de inicialización adicional (opcional),
-      #    asegúrate de que dentro de init-postgres.sql crees las tablas / esquemas
-      #    necesarios, pero NO necesitas crear la base de datos ni el usuario, porque
-      #    ya se crean automáticamente con las variables POSTGRES_DB/POSTGRES_USER.
       - ./databases/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql
     networks:
       - munbot-net
@@ -155,13 +136,10 @@ services:
     container_name: mcp-core
     ports:
       - "5000:5000"
-    environment:
-      - PYTHONUNBUFFERED=1
-      - REDIS_HOST=redis
-      - HF_API_TOKEN=${HF_API_TOKEN}
+    env_file:
+      - ./.env
     volumes:
       - ./services/mcp-core:/app
-
     networks:
       - munbot-net
     depends_on:
