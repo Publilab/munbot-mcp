@@ -38,7 +38,7 @@ redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=Tr
 
 # Campos requeridos por tool
 REQUIRED_FIELDS = {
-    "complaint-registrar_reclamo": ["nombre", "mail", "mensaje", "prioridad", "categoria", "departamento"],
+    "complaint-registrar_reclamo": ["nombre", "mail", "mensaje", "categoria", "departamento"],
     "scheduler-appointment_create": ["usu_name", "usu_mail", "usu_whatsapp", "fecha", "hora", "motiv"],
 }
 
