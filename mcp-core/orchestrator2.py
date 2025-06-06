@@ -482,6 +482,8 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     session = get_session(session_id)
     if extra_context:
         session.update(extra_context)
+    # Guardar la consulta original para futuras validaciones
+    session["pregunta"] = user_input
     # Detectar intención
     tool = detect_intent(user_input)
     # Extraer entidades del input actual
@@ -489,6 +491,8 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         extracted = extract_entities_complaint(user_input)
     elif tool.startswith("scheduler-"):
         extracted = extract_entities_scheduler(user_input)
+    elif tool.startswith("doc-"):
+        extracted = extract_entities_llm_docs(user_input)
     else:
         extracted = {}
     session.update({k: v for k, v in extracted.items() if v})
