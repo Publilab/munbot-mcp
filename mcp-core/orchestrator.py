@@ -113,8 +113,9 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
 # === LLM para detección de intención ===
 def llamar_mistral(prompt):
     api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
+    token = os.getenv("HF_API_TOKEN")
     headers = {
-        "Authorization": f"Bearer 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",
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
     data = {
