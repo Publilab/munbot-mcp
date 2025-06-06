@@ -27,19 +27,30 @@ const io = new Server(server, {
 
 const MCP_URL = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate'; // Nueva URL del MCP
 
+// Mantiene el identificador de sesión obtenido del MCP
+let sessionId = null;
+
 io.on('connection', (socket) => {
     console.log('Un usuario se ha conectado');
 
     socket.on('message', async (msg) => {
         console.log('Mensaje recibido del cliente:', msg);
         try {
-            // Construir el payload para el MCP
+            // Construir el payload para el MCP incluyendo la session actual si existe
+            const context = { sender: socket.id };
+            if (sessionId) {
+                context.session_id = sessionId;
+            }
             const payload = {
                 pregunta: msg,
-                context: { sender: socket.id }
+                context
             };
             // Enviar el mensaje al MCP
             const response = await axios.post(MCP_URL, payload);
+            // Actualizar el identificador de sesion si es devuelto por el MCP
+            if (response.data) {
+                sessionId = response.data.session_id || sessionId;
+            }
             if (response.data && response.data.respuesta) {
                 socket.emit('bot_message', response.data.respuesta);
             } else if (response.data && response.data.message) {
@@ -55,6 +66,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('Un usuario se ha desconectado');
+        sessionId = null;
     });
 });
 
