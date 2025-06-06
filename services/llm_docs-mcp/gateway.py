@@ -32,7 +32,8 @@ app.add_middleware(
 )
 # Seguridad básica HTTP/IP
 security = HTTPBasic()
-ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,172.1.8.0.0/16,192.168.1.100").split(",")
+# Redes o direcciones IP permitidas por defecto
+ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16,192.168.1.100").split(",")
 API_USERNAME = os.getenv("API_USERNAME", "admin")
 API_PASSWORD = os.getenv("API_PASSWORD", "admin")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
