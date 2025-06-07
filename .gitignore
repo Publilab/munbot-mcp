@@ -9,6 +9,7 @@ config.env.example
 .example.env
 config.example.env
 Icon
+secrets/
 # Archivos de Python
 __pycache__/
 *.py[cod]
