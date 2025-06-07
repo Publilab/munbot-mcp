@@ -98,3 +98,4 @@ tan
 # Carpetas específicas del proyecto
 Munvenv/
 github/
+*.example
