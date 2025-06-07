@@ -5,6 +5,7 @@
 *.pfx
 .env
 config.env
+config.env.example
 .example.env
 config.example.env
 Icon
