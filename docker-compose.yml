@@ -136,8 +136,6 @@ services:
     container_name: mcp-core
     ports:
       - "5000:5000"
-    env_file:
-      - ./.env
     volumes:
       - ./services/mcp-core:/app
     networks:
