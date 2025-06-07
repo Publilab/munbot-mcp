@@ -3,7 +3,11 @@
 *.pem
 *.p12
 *.pfx
-
+.env
+config.env
+.example.env
+config.example.env
+Icon
 # Archivos de Python
 __pycache__/
 *.py[cod]

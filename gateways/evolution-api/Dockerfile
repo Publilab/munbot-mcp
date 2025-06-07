@@ -7,6 +7,7 @@ RUN apk add --no-cache python3 g++ make curl
 
 # Copiar e instalar dependencias
 COPY package*.json ./
+COPY .env ./
 RUN npm install --force --production
 
 # Copiar código fuente

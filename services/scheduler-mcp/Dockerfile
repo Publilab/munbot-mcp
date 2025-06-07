@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Copiar archivos del proyecto (sin generate_appointments.py)
 COPY requirements.txt ./
-COPY config.env ./
+COPY .env ./
 COPY app.py ./
 COPY tasks.py ./
 COPY notifications.py ./

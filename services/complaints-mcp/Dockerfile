@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Eliminar archivos sensibles si existen
-RUN rm -f .env config.env
+RUN rm -f .env
 
 # Cambiar permisos de trabajo
 RUN chown -R appuser:appuser /app

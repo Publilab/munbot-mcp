@@ -12,6 +12,7 @@ RUN python -m nltk.downloader punkt || true
 
 COPY documents/ ./documents/
 COPY gateway.py .
+COPY .env ./
 
 EXPOSE 8000
 

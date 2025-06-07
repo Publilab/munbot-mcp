@@ -7,6 +7,9 @@ from models import ComplaintModel  # asume que el modelo Pydantic no cambió
 from repository import ComplaintRepository
 from utils.email import send_email
 from utils.classifier import clasificar_departamento
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
