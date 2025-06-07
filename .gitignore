@@ -101,3 +101,13 @@ Munvenv/
 github/
 *.example
 *.example
+secrets/gateways/evolution-api/Icon
+secrets/gateways/evolution-manager/Icon
+secrets/gateways/Icon
+secrets/gateways/web-interface/Icon
+secrets/Icon
+secrets/services/complaints-mcp/Icon
+secrets/services/Icon
+secrets/services/llm_docs-mcp/Icon
+secrets/services/scheduler-mcp/Icon
+secrets/Icon
