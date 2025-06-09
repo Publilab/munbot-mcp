@@ -27,3 +27,38 @@ class ConversationalContextManager:
 
     def get_history_as_string(self, history: list) -> str:
         return "\n".join([f"{turn['role']}: {turn['content']}" for turn in history])
+
+    def get_fallback_count(self, session_id: str) -> int:
+        context = self.get_context(session_id)
+        return context.get("fallback_count", 0)
+
+    def increment_fallback_count(self, session_id: str):
+        context = self.get_context(session_id)
+        context["fallback_count"] = context.get("fallback_count", 0) + 1
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def reset_fallback_count(self, session_id: str):
+        context = self.get_context(session_id)
+        context["fallback_count"] = 0
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def set_last_sentiment(self, session_id: str, sentiment: str):
+        context = self.get_context(session_id)
+        context["last_sentiment"] = sentiment
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_last_sentiment(self, session_id: str) -> str:
+        context = self.get_context(session_id)
+        return context.get("last_sentiment", "neutral")

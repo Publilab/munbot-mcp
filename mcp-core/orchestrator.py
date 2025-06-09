@@ -135,14 +135,14 @@ def llamar_mistral(prompt):
         raise Exception(f"Error en la solicitud: {response.status_code} - {response.text}")
 
 def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
-    """Usa Mistral 7B para inferir intención y confianza."""
+    """Usa Mistral 7B para inferir intención, confianza y sentimiento."""
     history_text = ""
     if history:
         history_text = context_manager.get_history_as_string(history)
 
     prompt = (
         "Eres un orquestador inteligente. Analiza el mensaje del usuario y "
-        "devuelve un JSON con los campos 'intent' y 'confidence' (0-1).\n"
+        "devuelve un JSON con los campos 'intent', 'confidence' (0-1) y 'sentiment' (very_negative, negative, neutral, positive, very_positive).\n"
         "Opciones de intent:\n"
         "complaint-registrar_reclamo, doc-buscar_fragmento_documento, "
         "doc-generar_respuesta_llm, scheduler-reservar_hora, "
@@ -158,11 +158,12 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
             data = json.loads(match.group(0))
             intent = data.get("intent")
             confidence = float(data.get("confidence", 0))
-            return {"intent": intent, "confidence": confidence}
+            sentiment = data.get("sentiment", "neutral")
+            return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     except Exception as e:
         logging.error("Error durante la inferencia del modelo Mistral 7B: %s", e)
 
-    return {"intent": detect_intent_keywords(user_input), "confidence": 0.5}
+    return {"intent": detect_intent_keywords(user_input), "confidence": 0.5, "sentiment": "neutral"}
 
 def detect_intent_keywords(user_input: str) -> str:
     # Heurística como respaldo si no tienes LLM local
@@ -428,6 +429,8 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     if faq is not None:
         sid = session_id or str(uuid.uuid4())
         context_manager.update_context(sid, user_input, faq["respuesta"])
+        context_manager.reset_fallback_count(sid)
+        context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": faq["respuesta"], "session_id": sid}
 
     # Interceptar saludos, despedidas, agradecimientos y frases empáticas
@@ -509,10 +512,22 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     intent_data = detect_intent(user_input, convo_ctx.get("history"))
     tool = intent_data.get("intent")
     confidence = intent_data.get("confidence", 0)
-    if confidence < 0.6:
-        fallback_resp = "Lo siento, no estoy seguro de cómo ayudarte. Derivaré tu consulta a un agente humano."
-        context_manager.update_context(session_id, user_input, fallback_resp)
-        return {"respuesta": fallback_resp, "session_id": session_id}
+    sentiment = intent_data.get("sentiment", "neutral")
+    context_manager.set_last_sentiment(session_id, sentiment)
+    # Lógica de fallback y escalación
+    if confidence < 0.6 or sentiment in ["very_negative", "negative"]:
+        context_manager.increment_fallback_count(session_id)
+        fallback_count = context_manager.get_fallback_count(session_id)
+        if fallback_count >= 3 or sentiment == "very_negative":
+            fallback_resp = "Lo siento, no estoy seguro de cómo ayudarte. Derivaré tu consulta a un agente humano."
+            context_manager.update_context(session_id, user_input, fallback_resp)
+            return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
+        else:
+            fallback_resp = "No estoy seguro de cómo ayudarte, ¿puedes reformular tu pregunta?"
+            context_manager.update_context(session_id, user_input, fallback_resp)
+            return {"respuesta": fallback_resp, "session_id": session_id, "pending_field": None}
+    else:
+        context_manager.reset_fallback_count(session_id)
     # Extraer entidades del input actual
     if tool.startswith("complaint-"):
         extracted = extract_entities_complaint(user_input)
