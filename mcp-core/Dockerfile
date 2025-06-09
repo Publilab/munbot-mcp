@@ -8,6 +8,7 @@ WORKDIR /mcp-core
 ENV PYTHONPATH="${PYTHONPATH}:/mcp-core"
 
 # Copiar requirements si existiera (puedes agregarlo luego)
+COPY .env ./
 COPY orchestrator.py ./
 COPY context_manager.py ./
 COPY tool_schemas ./tool_schemas/

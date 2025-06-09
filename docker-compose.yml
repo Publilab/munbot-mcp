@@ -101,16 +101,17 @@ services:
       - ./services/complaints-mcp/.env
     ports:
       - "7000:7000"
-    restart: unless-stopped
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - munbot-net
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7000/health"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
 
   llm_docs-mcp:
     build: ./services/llm_docs-mcp

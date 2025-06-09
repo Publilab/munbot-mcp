@@ -8,6 +8,7 @@ from repository import ComplaintRepository
 from utils.email import send_email
 from utils.classifier import clasificar_departamento
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 
@@ -22,19 +23,27 @@ DB_NAME = os.getenv("POSTGRES_DB")
 DB_USER = os.getenv("POSTGRES_USER")
 DB_PASS = os.getenv("POSTGRES_PASSWORD")
 
-try:
-    conn = psycopg2.connect(
-        dbname=DB_NAME,
-        user=DB_USER,
-        password=DB_PASS,
-        host=DB_HOST,
-        port=DB_PORT
-    )
-except psycopg2.OperationalError as e:
-    # Si no se conecta, imprimimos el error y salimos
-    # Flask levantará igualmente pero no servirá consultas a BD.
-    app.logger.error(f"Error conectando a PostgreSQL: {e}")
-    conn = None
+MAX_RETRIES = 10
+RETRY_DELAY = 3  # segundos
+
+conn = None
+for attempt in range(MAX_RETRIES):
+    try:
+        conn = psycopg2.connect(
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            host=DB_HOST,
+            port=DB_PORT
+        )
+        app.logger.info("Conectado a PostgreSQL.")
+        break
+    except psycopg2.OperationalError as e:
+        app.logger.error(f"Error conectando a PostgreSQL (intento {attempt+1}/{MAX_RETRIES}): {e}")
+        time.sleep(RETRY_DELAY)
+
+if not conn:
+    app.logger.error("No se pudo conectar a PostgreSQL después de varios intentos.")
 
 repo = ComplaintRepository(conn)  # instancia del repositorio
 
