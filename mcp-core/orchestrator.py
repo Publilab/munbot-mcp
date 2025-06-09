@@ -12,6 +12,7 @@ import redis
 import uuid
 import threading
 import time
+from context_manager import ConversationalContextManager
 
 # === Configuración ===
 MICROSERVICES = {
@@ -35,6 +36,7 @@ DB_PASS = os.getenv("POSTGRES_PASSWORD", "postgres")
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
+context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 
 # Campos requeridos por tool
 REQUIRED_FIELDS = {
@@ -132,44 +134,35 @@ def llamar_mistral(prompt):
     else:
         raise Exception(f"Error en la solicitud: {response.status_code} - {response.text}")
 
-def detect_intent_llm(user_input: str) -> str:
-    """
-    Usa un LLM externo (Mistral 7B Instruct vía HuggingFace) para inferir intención.
-    """
+def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
+    """Usa Mistral 7B para inferir intención y confianza."""
+    history_text = ""
+    if history:
+        history_text = context_manager.get_history_as_string(history)
+
     prompt = (
-        "Tienes que identificar la intención principal del usuario según el siguiente mensaje.\n"
-        "Opciones válidas de intención:\n"
-        "- complaint-registrar_reclamo\n"
-        "- doc-buscar_fragmento_documento\n"
-        "- doc-generar_respuesta_llm\n"
-        "- scheduler-reservar_hora\n"
-        "- scheduler-appointment_create\n"
-        "- scheduler-listar_horas_disponibles\n"
-        "- scheduler-cancelar_hora\n"
-        "- scheduler-confirmar_hora\n"
-        "Ejemplo de respuesta: complaint-registrar_reclamo\n"
-        f"Mensaje: {user_input}\n"
-        "Intención:"
+        "Eres un orquestador inteligente. Analiza el mensaje del usuario y "
+        "devuelve un JSON con los campos 'intent' y 'confidence' (0-1).\n"
+        "Opciones de intent:\n"
+        "complaint-registrar_reclamo, doc-buscar_fragmento_documento, "
+        "doc-generar_respuesta_llm, scheduler-reservar_hora, "
+        "scheduler-appointment_create, scheduler-listar_horas_disponibles, "
+        "scheduler-cancelar_hora, scheduler-confirmar_hora.\n"
+        f"Historial:\n{history_text}\nMensaje: {user_input}\nJSON:"
     )
     logging.info("Prompt enviado al modelo Mistral 7B: %s", prompt)
     try:
         predicted = llamar_mistral(prompt).strip()
+        match = re.search(r"{.*}", predicted)
+        if match:
+            data = json.loads(match.group(0))
+            intent = data.get("intent")
+            confidence = float(data.get("confidence", 0))
+            return {"intent": intent, "confidence": confidence}
     except Exception as e:
         logging.error("Error durante la inferencia del modelo Mistral 7B: %s", e)
-        return detect_intent_keywords(user_input)
-    # Fallback si no reconoce
-    if predicted in [
-        "complaint-registrar_reclamo",
-        "doc-buscar_fragmento_documento",
-        "doc-generar_respuesta_llm",
-        "scheduler-reservar_hora",
-        "scheduler-appointment_create",
-        "scheduler-listar_horas_disponibles",
-        "scheduler-cancelar_hora",
-        "scheduler-confirmar_hora"
-    ]:
-        return predicted
-    return "doc-generar_respuesta_llm"
+
+    return {"intent": detect_intent_keywords(user_input), "confidence": 0.5}
 
 def detect_intent_keywords(user_input: str) -> str:
     # Heurística como respaldo si no tienes LLM local
@@ -191,9 +184,9 @@ def detect_intent_keywords(user_input: str) -> str:
             return v
     return "doc-generar_respuesta_llm"
 
-def detect_intent(user_input: str) -> str:
-    # Cambia aquí si prefieres siempre usar el LLM
-    return detect_intent_llm(user_input)
+def detect_intent(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
+    """Obtiene intención y confianza utilizando el LLM."""
+    return detect_intent_llm(user_input, history)
 
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
     """Busca una respuesta en la base de datos de FAQ por coincidencia exacta o fuzzy simple."""
@@ -433,7 +426,9 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # === 0) Consultar primero en la base de FAQs ===
     faq = lookup_faq_respuesta(user_input)
     if faq is not None:
-        return {"respuesta": faq["respuesta"], "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        context_manager.update_context(sid, user_input, faq["respuesta"])
+        return {"respuesta": faq["respuesta"], "session_id": sid}
 
     # Interceptar saludos, despedidas, agradecimientos y frases empáticas
     SALUDOS = [
@@ -462,31 +457,62 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     ]
     texto = user_input.strip().lower()
     if any(s in texto for s in SALUDOS):
-        return {"respuesta": "¡Hola! Soy MunBoT, tu asistente virtual del Gobierno de Curoscant. ¿En qué puedo ayudarte hoy?", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "¡Hola! Soy MunBoT, tu asistente virtual del Gobierno de Curoscant. ¿En qué puedo ayudarte hoy?"
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     if any(d in texto for d in DESPEDIDAS):
-        return {"respuesta": "¡Hasta luego! Si necesitas algo más, aquí estaré.", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "¡Hasta luego! Si necesitas algo más, aquí estaré."
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     if any(a in texto for a in AGRADECIMIENTOS):
-        return {"respuesta": "¡De nada! ¿Hay algo más en lo que te pueda ayudar?", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "¡De nada! ¿Hay algo más en lo que te pueda ayudar?"
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     if any(e in texto for e in EMPATIA_POS):
-        return {"respuesta": "¡Me alegra saber que estás bien! ¿En qué puedo ayudarte?", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "¡Me alegra saber que estás bien! ¿En qué puedo ayudarte?"
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     if any(e in texto for e in EMPATIA_NEG):
-        return {"respuesta": "Lamento que te sientas así. Si puedo ayudarte con algún trámite o información, dime por favor.", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "Lamento que te sientas así. Si puedo ayudarte con algún trámite o información, dime por favor."
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     if any(p in texto for p in PREGUNTAS_PERSONALES):
-        return {"respuesta": "Soy MunBoT, tu asistente virtual del Gobierno de Curoscant. Estoy aquí para ayudarte con trámites, información y consultas municipales.", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "Soy MunBoT, tu asistente virtual del Gobierno de Curoscant. Estoy aquí para ayudarte con trámites, información y consultas municipales."
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     if any(e in texto for e in PREGUNTAS_EDAD):
-        return {"respuesta": "Tengo solo unos pocos meses, aún no tengo un año de edad, pero tampoco tengo fecha de nacimiento", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "Tengo solo unos pocos meses, aún no tengo un año de edad, pero tampoco tengo fecha de nacimiento"
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     if any(e in texto for e in PREGUNTAS_NOMBRE):
-        return {"respuesta": "Me llamo MunBoT, tu asistente virtual del Gobierno de Curoscant. Estoy aquí para ayudarte con trámites, información y consultas municipales.", "session_id": session_id or str(uuid.uuid4())}
+        sid = session_id or str(uuid.uuid4())
+        ans = "Me llamo MunBoT, tu asistente virtual del Gobierno de Curoscant. Estoy aquí para ayudarte con trámites, información y consultas municipales."
+        context_manager.update_context(sid, user_input, ans)
+        return {"respuesta": ans, "session_id": sid}
     # Obtener o crear session_id
     if not session_id:
         session_id = str(uuid.uuid4())
     session = get_session(session_id)
+    convo_ctx = context_manager.get_context(session_id)
     if extra_context:
         session.update(extra_context)
     # Mantener la consulta original en la sesión para validaciones posteriores
     session["pregunta"] = user_input
     # Detectar intención
-    tool = detect_intent(user_input)
+    intent_data = detect_intent(user_input, convo_ctx.get("history"))
+    tool = intent_data.get("intent")
+    confidence = intent_data.get("confidence", 0)
+    if confidence < 0.6:
+        fallback_resp = "Lo siento, no estoy seguro de cómo ayudarte. Derivaré tu consulta a un agente humano."
+        context_manager.update_context(session_id, user_input, fallback_resp)
+        return {"respuesta": fallback_resp, "session_id": session_id}
     # Extraer entidades del input actual
     if tool.startswith("complaint-"):
         extracted = extract_entities_complaint(user_input)
@@ -504,6 +530,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         next_field = missing[0]
         question = FIELD_QUESTIONS.get(next_field, f"Por favor, proporciona {next_field}:")
         save_session(session_id, session)
+        context_manager.update_context(session_id, user_input, question)
         return {"respuesta": question, "session_id": session_id, "pending_field": next_field}
     # Si no faltan campos, llamar al microservicio
     params = session.copy()
@@ -511,23 +538,39 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     if not validate_against_schema(params, schema):
         return {"respuesta": "Faltan parámetros obligatorios para esta acción", "session_id": session_id}
     response = call_tool_microservice(tool, params)
+    if isinstance(response, dict) and "respuesta" in response:
+        context_manager.update_context(session_id, user_input, str(response["respuesta"]).strip())
+    elif isinstance(response, str):
+        context_manager.update_context(session_id, user_input, response.strip())
     # Guardar historial antes de limpiar
     save_conversation_to_postgres(session_id, session)
     delete_session(session_id)
     # Ajuste para asegurar que 'respuesta' siempre sea string plano y amigable
     if isinstance(response, dict):
         if "respuesta" in response:
-            return {"respuesta": str(response["respuesta"]).strip(), "session_id": session_id}
+            resp_text = str(response["respuesta"]).strip()
+            context_manager.update_context(session_id, user_input, resp_text)
+            return {"respuesta": resp_text, "session_id": session_id}
         elif "message" in response:
-            return {"respuesta": str(response["message"]).strip(), "session_id": session_id}
+            resp_text = str(response["message"]).strip()
+            context_manager.update_context(session_id, user_input, resp_text)
+            return {"respuesta": resp_text, "session_id": session_id}
         elif "error" in response:
-            return {"respuesta": "Lo siento, hubo un error procesando tu solicitud.", "session_id": session_id}
+            resp_text = "Lo siento, hubo un error procesando tu solicitud."
+            context_manager.update_context(session_id, user_input, resp_text)
+            return {"respuesta": resp_text, "session_id": session_id}
         else:
-            return {"respuesta": "Lo siento, no obtuve una respuesta válida del sistema.", "session_id": session_id}
+            resp_text = "Lo siento, no obtuve una respuesta válida del sistema."
+            context_manager.update_context(session_id, user_input, resp_text)
+            return {"respuesta": resp_text, "session_id": session_id}
     elif isinstance(response, str):
-        return {"respuesta": response.strip(), "session_id": session_id}
+        resp_text = response.strip()
+        context_manager.update_context(session_id, user_input, resp_text)
+        return {"respuesta": resp_text, "session_id": session_id}
     else:
-        return {"respuesta": "Lo siento, no pude procesar tu solicitud correctamente.", "session_id": session_id}
+        resp_text = "Lo siento, no pude procesar tu solicitud correctamente."
+        context_manager.update_context(session_id, user_input, resp_text)
+        return {"respuesta": resp_text, "session_id": session_id}
 
 # === API REST ===
 
