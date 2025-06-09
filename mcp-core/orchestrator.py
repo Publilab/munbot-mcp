@@ -26,11 +26,11 @@ TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH", "tool_schemas/")
 
 FAQ_DB_PATH = os.getenv("FAQ_DB_PATH", "databases/faq_respuestas.json")
 
-DB_HOST = os.getenv("POSTGRES_HOST", "localhost")
-DB_PORT = int(os.getenv("POSTGRES_PORT", 5432))
-DB_NAME = os.getenv("POSTGRES_DB", "munbot")
-DB_USER = os.getenv("POSTGRES_USER", "postgres")
-DB_PASS = os.getenv("POSTGRES_PASSWORD", "postgres")
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_PORT = int(os.getenv("POSTGRES_PORT"))
+DB_NAME = os.getenv("POSTGRES_DB")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASS = os.getenv("POSTGRES_PASSWORD")
 
 # Configuración de Redis
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")

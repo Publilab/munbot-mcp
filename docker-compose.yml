@@ -1,56 +1,4 @@
 services:
-  complaints-mcp:
-    build: ./services/complaints-mcp
-    container_name: complaints-mcp
-    env_file:
-      - ./services/complaints-mcp/.env
-    ports:
-      - "7000:7000"
-    restart: unless-stopped
-    depends_on:
-      - postgres
-    networks:
-      - munbot-net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  llm_docs-mcp:
-    build: ./services/llm_docs-mcp
-    container_name: llm_docs-mcp
-    env_file:
-      - ./services/llm_docs-mcp/.env
-    ports:
-      - "8000:8000"
-    restart: unless-stopped
-    networks:
-      - munbot-net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  scheduler-mcp:
-    build: ./services/scheduler-mcp
-    container_name: scheduler-mcp
-    env_file:
-      - ./services/scheduler-mcp/.env
-    ports:
-      - "6001:6001"
-    restart: unless-stopped
-    networks:
-      - munbot-net
-    depends_on:
-      - postgres
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6001/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
   evolution-api:
     build: ./gateways/evolution-api
     container_name: evolution-api
@@ -136,12 +84,67 @@ services:
       context: ./mcp-core
       dockerfile: Dockerfile
     container_name: mcp-core
+    env_file:
+      - ./mcp-core/.env
     ports:
       - "5000:5000"
     networks:
       - munbot-net
     depends_on:
       - redis
+      - postgres
+
+  complaints-mcp:
+    build: ./services/complaints-mcp
+    container_name: complaints-mcp
+    env_file:
+      - ./services/complaints-mcp/.env
+    ports:
+      - "7000:7000"
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    networks:
+      - munbot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  llm_docs-mcp:
+    build: ./services/llm_docs-mcp
+    container_name: llm_docs-mcp
+    env_file:
+      - ./services/llm_docs-mcp/.env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - munbot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  scheduler-mcp:
+    build: ./services/scheduler-mcp
+    container_name: scheduler-mcp
+    env_file:
+      - ./services/scheduler-mcp/.env
+    ports:
+      - "6001:6001"
+    restart: unless-stopped
+    networks:
+      - munbot-net
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 networks:
   munbot-net:
