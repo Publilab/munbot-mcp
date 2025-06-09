@@ -98,6 +98,7 @@ services:
       - munbot-net
     depends_on:
       - evolution-api
+      - mcp-core
 
   postgres:
     image: postgres:14
@@ -112,7 +113,7 @@ services:
     networks:
       - munbot-net
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U munbot_user"]
+      test: ["CMD-SHELL", "pg_isready -U munbot"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -137,8 +138,6 @@ services:
     container_name: mcp-core
     ports:
       - "5000:5000"
-    volumes:
-      - ./services/mcp-core:/app
     networks:
       - munbot-net
     depends_on:
