@@ -16,11 +16,11 @@ app = Flask(__name__)
 # ------------------------------------------------------------
 #  1) CONEXIÓN A POSTGRES USANDO VARIABLES DE ENTORNO
 # ------------------------------------------------------------
-DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
-DB_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
-DB_NAME = os.getenv("POSTGRES_DB", "munbot")
-DB_USER = os.getenv("POSTGRES_USER", "munbot_user")
-DB_PASS = os.getenv("POSTGRES_PASSWORD", "munbot_pass")
+DB_HOST = os.getenv("POSTGRES_HOST")
+DB_PORT = int(os.getenv("POSTGRES_PORT"))
+DB_NAME = os.getenv("POSTGRES_DB")
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASS = os.getenv("POSTGRES_PASSWORD")
 
 try:
     conn = psycopg2.connect(
