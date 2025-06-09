@@ -5,15 +5,19 @@ services:
     image: "gabrielpastori1/evolution-manager:latest"
     ports:
       - "9615:9615"
+    environment:
+      - NODE_ENV=production
     labels:
       - traefik.enable=true
       - traefik.http.routers.evolution-manager.service=evolution-manager
       - traefik.http.services.evolution-manager.loadbalancer.server.port=9615
-      - traefik.http.routers.evolution-manager.rule=Host(`manager.yourdomain.com`) #Replace this with the subdomain that you wishes, dont forget to point the domain to your VPS ip address
-      - traefik.http.routers.evolution-manager.entrypoints=https # Some people name the entrypoint as "websecure" look at your original traefik compose file to find the correct entrypoint name
-      - traefik.http.routers.evolution-manager.tls.certresolver=letsencrypt # Some people name the certResolver as "le" look at your original traefik compose file to find the correct certResolver name
+      - traefik.http.routers.evolution-manager.rule=Host(`manager.yourdomain.com`) # Cambia esto por tu subdominio real y apunta el dominio a la IP de tu VPS
+      - traefik.http.routers.evolution-manager.entrypoints=https # Cambia "https" por el nombre real del entrypoint si es diferente (ej: websecure)
+      - traefik.http.routers.evolution-manager.tls.certresolver=letsencrypt # Cambia "letsencrypt" por el nombre real del certResolver si es diferente (ej: le)
     networks:
       - traefik_public_example_network
+
+# Cambia el nombre de la red si tu traefik usa otra
 networks:
   traefik_public_example_network:
     external: true

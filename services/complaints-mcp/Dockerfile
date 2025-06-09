@@ -36,4 +36,4 @@ EXPOSE 7000
 USER appuser
 
 # Ejecutar la aplicación con Gunicorn
-CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:7000", "--timeout", "120", "--preload", "api:app"]
+CMD ["postgres:5432", "--", "gunicorn", "-w", "2", "-b", "0.0.0.0:7000", "--timeout", "120", "--preload", "api:app"]
