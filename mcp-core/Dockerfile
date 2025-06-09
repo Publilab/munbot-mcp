@@ -4,8 +4,12 @@ FROM python:3.10-slim
 # Establecer el directorio de trabajo
 WORKDIR /mcp-core
 
+# Asegurar que el directorio de trabajo esté en el PYTHONPATH
+ENV PYTHONPATH="${PYTHONPATH}:/mcp-core"
+
 # Copiar requirements si existiera (puedes agregarlo luego)
 COPY orchestrator.py ./
+COPY context_manager.py ./
 COPY tool_schemas ./tool_schemas/
 COPY prompts ./prompts
 COPY requirements.txt ./
