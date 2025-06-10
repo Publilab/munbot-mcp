@@ -17,15 +17,15 @@ import unicodedata
 
 # === Configuración ===
 MICROSERVICES = {
-    "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL", "http://complaints-mcp:7000/tools/call"),
-    "llm_docs-mcp": os.getenv("LLM_DOCS_MCP_URL", "http://llm-docs-mcp:8000/tools/call"),
-    "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL", "http://scheduler-mcp:6001/tools/call"),
+    "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL"),
+    "llm_docs-mcp": os.getenv("LLM_DOCS_MCP_URL"),
+    "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL"),
 }
 
-PROMPTS_PATH = os.getenv("PROMPTS_PATH", "prompts/")
-TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH", "tool_schemas/")
+PROMPTS_PATH = os.getenv("PROMPTS_PATH")
+TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
 
-FAQ_DB_PATH = os.getenv("FAQ_DB_PATH", "databases/faq_respuestas.json")
+FAQ_DB_PATH = os.getenv("FAQ_DB_PATH")
 
 DB_HOST = os.getenv("POSTGRES_HOST")
 DB_PORT = int(os.getenv("POSTGRES_PORT"))
