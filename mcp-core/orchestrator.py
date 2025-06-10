@@ -13,6 +13,7 @@ import uuid
 import threading
 import time
 from context_manager import ConversationalContextManager
+import unicodedata
 
 # === Configuración ===
 MICROSERVICES = {
@@ -130,12 +131,30 @@ def llamar_mistral(prompt):
     }
     response = requests.post(api_url, headers=headers, json=data)
     if response.status_code == 200:
-        return response.json()[0]["generated_text"]
+        predicted = response.json()[0]["generated_text"].strip()
+        logging.info(f"LLM raw response: {predicted}")
+        match = re.search(r"{.*}", predicted)
+        if match:
+            data = json.loads(match.group(0))
+            intent = data.get("intent")
+            confidence = float(data.get("confidence", 0))
+            sentiment = data.get("sentiment", "neutral")
+            return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     else:
         raise Exception(f"Error en la solicitud: {response.status_code} - {response.text}")
 
 def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
     """Usa Mistral 7B para inferir intención, confianza y sentimiento."""
+    VALID_INTENTS = {
+        "complaint-registrar_reclamo",
+        "doc-buscar_fragmento_documento",
+        "doc-generar_respuesta_llm",
+        "scheduler-reservar_hora",
+        "scheduler-appointment_create",
+        "scheduler-listar_horas_disponibles",
+        "scheduler-cancelar_hora",
+        "scheduler-confirmar_hora"
+    }
     history_text = ""
     if history:
         history_text = context_manager.get_history_as_string(history)
@@ -153,37 +172,53 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
     logging.info("Prompt enviado al modelo Mistral 7B: %s", prompt)
     try:
         predicted = llamar_mistral(prompt).strip()
+        logging.info(f"LLM raw response: {predicted}")
         match = re.search(r"{.*}", predicted)
         if match:
             data = json.loads(match.group(0))
             intent = data.get("intent")
             confidence = float(data.get("confidence", 0))
             sentiment = data.get("sentiment", "neutral")
+            if not intent or intent not in VALID_INTENTS or confidence < 0.6:
+                # usar matcher keywords antes de fallback total
+                intent = detect_intent_keywords(user_input)
+                confidence = 0.6
+                logging.info(f"Intento forzado por matcher: {intent}")
             return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     except Exception as e:
         logging.error("Error durante la inferencia del modelo Mistral 7B: %s", e)
 
-    return {"intent": detect_intent_keywords(user_input), "confidence": 0.5, "sentiment": "neutral"}
+    # Fallback total si todo falla
+    intent = detect_intent_keywords(user_input)
+    logging.info(f"Intento fallback por matcher: {intent}")
+    return {"intent": intent, "confidence": 0.5, "sentiment": "neutral"}
+
+def normalize(text):
+    """Convierte texto a minúsculas y elimina tildes."""
+    text = text.lower()
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', text)
+        if unicodedata.category(c) != 'Mn'
+    )
 
 def detect_intent_keywords(user_input: str) -> str:
-    # Heurística como respaldo si no tienes LLM local
-    intent_map = {
-        "reclamo": "complaint-registrar_reclamo",
-        "denuncia": "complaint-registrar_reclamo",
-        "documento": "doc-buscar_fragmento_documento",
-        "norma": "doc-buscar_fragmento_documento",
-        "ordenanza": "doc-buscar_fragmento_documento",
-        "ayuda": "doc-generar_respuesta_llm",
-        "agendar": "scheduler-reservar_hora",
-        "cita": "scheduler-appointment_create",
-        "hora": "scheduler-listar_horas_disponibles",
-        "cancelar": "scheduler-cancelar_hora",
-        "confirmar": "scheduler-confirmar_hora"
-    }
-    for k, v in intent_map.items():
-        if k in user_input.lower():
-            return v
-    return "doc-generar_respuesta_llm"
+    text = normalize(user_input)
+    
+    # Reclamos y quejas
+    if re.search(r"\b(reclamo|reclamar|queja|denuncia|denunciar|problema|problemas|reporte|reportar|sugerencia|inconformidad)\b", text):
+        return "complaint-registrar_reclamo"
+    
+    # Agendar cita/hora/turno
+    if re.search(r"\b(agendar|agenda|reservar|reserva|hora|cita|turno|atencion|atención|pedir|solicitar|sacar)\b", text):
+        return "scheduler-appointment_create"
+    
+    # Consultar documentos
+    if re.search(r"\b(documento|documentos|certificado|certificados|ordenanza|ordenanzas|norma|normas|reglamento|reglamentos|buscar|busqueda|consulta|consultar)\b", text):
+        return "doc-buscar_fragmento_documento"
+    
+    # Añade más intents según necesidades del bot
+    
+    return "unknown"
 
 def detect_intent(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
     """Obtiene intención y confianza utilizando el LLM."""
