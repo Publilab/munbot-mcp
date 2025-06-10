@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y gcc libssl-dev build-essential libffi-d
 
 WORKDIR /app
 COPY api.py ./
+COPY .env ./
 COPY repository.py ./
 COPY models.py ./
 COPY requirements.txt ./
