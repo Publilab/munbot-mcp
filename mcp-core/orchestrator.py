@@ -41,23 +41,19 @@ context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 
 # Campos requeridos por tool
 REQUIRED_FIELDS = {
-    "complaint-registrar_reclamo": ["nombre", "mail", "mensaje", "categoria", "departamento"],
-    "scheduler-appointment_create": ["usu_name", "usu_mail", "usu_whatsapp", "fecha", "hora", "motiv"],
+    "complaint-registrar_reclamo": ["datos_reclamo", "mensaje_reclamo", "depto_reclamo", "mail_reclamo"],
+    "scheduler-appointment_create": ["datos_cita", "depto_cita", "motiv_cita", "bloque_cita", "mail_cita"],
 }
 
 FIELD_QUESTIONS = {
-    "nombre": "¿Cuál es tu nombre completo?",
-    "mail": "¿Cuál es tu correo electrónico?",
-    "mensaje": "¿Cuál es el motivo de tu reclamo?",
-    "prioridad": "¿Qué prioridad tiene tu reclamo? (1=alta, 3=normal, 5=baja)",
-    "categoria": "¿Es un reclamo (1) o una denuncia (2)?",
-    "departamento": "¿A qué departamento corresponde? (1=seguridad, 2=obras, 3=ambiente, 4=otros)",
-    "usu_name": "¿Cuál es tu nombre completo?",
-    "usu_mail": "¿Cuál es tu correo electrónico?",
-    "usu_whatsapp": "¿Cuál es tu número de WhatsApp?",
-    "fecha": "¿Para qué fecha deseas agendar la cita? (AAAA-MM-DD)",
-    "hora": "¿A qué hora prefieres la cita? (HH:MM)",
-    "motiv": "¿Cuál es el motivo de la cita?",
+    "datos_reclamo": "Para procesar tu reclamo necesito que me proporciones tu nombre completo y RUT (ejemplo: Juan Pérez 12.345.678-5)",
+    "mensaje_reclamo": "¿Cuál es tu reclamo o denuncia?",
+    "depto_reclamo": "¿A qué departamento crees que corresponde atender tu reclamo?\n 1. Alcaldía \n2. Social \n3. Vivienda \n4. Tesorería \n5. Obras \n6. Medio Ambiente \n7. Finanzas \n8. Otros. \nEscribe el número al que corresponde el departamento seleccionado",
+    "mail_reclamo": "¿Puedes proporcionarme una dirección de EMAIL para enviarte el comprobante del RECLAMO?",
+    "datos_cita": "Antes de procesar tu cita, necesito algunos datos de contacto. Proporcióname tu nombre completo y rut",
+    "depto_cita": "Con qué departamento quieres solicitar una cita. Escribe el número del DEPARTAMENTO.\n1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros",
+    "motiv_cita": "¿Cuál es el motivo de la cita?",
+    "mail_cita": "Proporcióname un MAIL para enviarte el comprobante de la CITA"
 }
 
 # PostgreSQL para historial de conversaciones
@@ -182,7 +178,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
             if not intent or intent not in VALID_INTENTS or confidence < 0.6:
                 # usar matcher keywords antes de fallback total
                 intent = detect_intent_keywords(user_input)
-                confidence = 0.6
+                confidence = 0.8
                 logging.info(f"Intento forzado por matcher: {intent}")
             return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     except Exception as e:
@@ -191,7 +187,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
     # Fallback total si todo falla
     intent = detect_intent_keywords(user_input)
     logging.info(f"Intento fallback por matcher: {intent}")
-    return {"intent": intent, "confidence": 0.5, "sentiment": "neutral"}
+    return {"intent": intent, "confidence": 0.6, "sentiment": "neutral"}
 
 def normalize(text):
     """Convierte texto a minúsculas y elimina tildes."""
@@ -221,7 +217,18 @@ def detect_intent_keywords(user_input: str) -> str:
     return "unknown"
 
 def detect_intent(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
-    """Obtiene intención y confianza utilizando el LLM."""
+    """Obtiene intención priorizando matcher de palabras clave y desactiva LLM en tests."""
+    # 4) Desactivar LLM en entorno de test
+    if os.getenv("ENV") == "test":
+        intent = detect_intent_keywords(user_input)
+        return {"intent": intent, "confidence": 0.8, "sentiment": "neutral"}
+
+    # 2) Priorizar matcher de palabras clave
+    kw_intent = detect_intent_keywords(user_input)
+    if kw_intent != "unknown":
+        return {"intent": kw_intent, "confidence": 0.8, "sentiment": "neutral"}
+
+    # Llamar al LLM para casos no detectados por matcher
     return detect_intent_llm(user_input, history)
 
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
@@ -338,10 +345,12 @@ def buscar_listar_documentos(clase: str = None, aplica_a: str = None):
 
 # === Orquestador principal ===
 def extract_entities_complaint(text: str) -> dict:
-    nombre = None
-    nombre_match = re.search(r"mi nombre es ([A-Za-zÁÉÍÓÚáéíóúñÑ ]+)", text, re.IGNORECASE)
-    if nombre_match:
-        nombre = nombre_match.group(1).strip()
+    # Extrae nombre y RUT juntos
+    nombre, rut = None, None
+    match = re.search(r"([A-Za-zÁÉÍÓÚáéíóúñÑ ]+)\s+([0-9]{1,2}\.?[0-9]{3}\.?[0-9]{3}-[0-9Kk])", text)
+    if match:
+        nombre = match.group(1).strip()
+        rut = match.group(2).strip()
     mail = None
     mail_match = re.search(r"([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)", text)
     if mail_match:
@@ -361,8 +370,9 @@ def extract_entities_complaint(text: str) -> dict:
         departamento = 1
     elif "bache" in text.lower() or "calle" in text.lower() or "obra" in text.lower():
         departamento = 2
+    datos_reclamo = {"nombre": nombre, "rut": rut} if nombre and rut else None
     return {
-        "nombre": nombre,
+        "datos_reclamo": datos_reclamo,
         "mail": mail,
         "mensaje": mensaje,
         "prioridad": prioridad,
@@ -573,6 +583,16 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     else:
         extracted = {}
     session.update({k: v for k, v in extracted.items() if v})
+    # Validación de RUT si corresponde
+    if tool == "complaint-registrar_reclamo" and session.get("datos_reclamo"):
+        rut = session["datos_reclamo"].get("rut")
+        if not rut or not validar_rut(rut):
+            # Borrar datos inválidos
+            session["datos_reclamo"] = None
+            save_session(session_id, session)
+            msg = "El RUT ingresado no es válido. Por favor, proporciona tu nombre completo y un RUT válido (ejemplo: Juan Pérez 12.345.678-5)"
+            context_manager.update_context(session_id, user_input, msg)
+            return {"respuesta": msg, "session_id": session_id, "pending_field": "datos_reclamo"}
     # Revisar campos requeridos
     required = REQUIRED_FIELDS.get(tool, [])
     missing = [f for f in required if not session.get(f)]
@@ -587,16 +607,27 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     schema = load_schema(tool)
     if not validate_against_schema(params, schema):
         return {"respuesta": "Faltan parámetros obligatorios para esta acción", "session_id": session_id}
+    # Mensaje de espera antes de procesar reclamo
+    if tool == "complaint-registrar_reclamo":
+        espera_msg = "Procesando tu reclamo, por favor espera un momento..."
+        context_manager.update_context(session_id, user_input, espera_msg)
+        # Devuelvo el mensaje de espera y un flag especial para frontend
+        return {"respuesta": espera_msg, "session_id": session_id, "processing": True}
     response = call_tool_microservice(tool, params)
-    if isinstance(response, dict) and "respuesta" in response:
-        context_manager.update_context(session_id, user_input, str(response["respuesta"]).strip())
-    elif isinstance(response, str):
-        context_manager.update_context(session_id, user_input, response.strip())
     # Guardar historial antes de limpiar
     save_conversation_to_postgres(session_id, session)
     delete_session(session_id)
     # Ajuste para asegurar que 'respuesta' siempre sea string plano y amigable
     if isinstance(response, dict):
+        if tool == "complaint-registrar_reclamo" and "respuesta" in response:
+            # Buscar el ID en la respuesta
+            import re
+            match = re.search(r"ID ([a-f0-9\-]+)", response["respuesta"], re.IGNORECASE)
+            if match:
+                reclamo_id = match.group(1)
+                cierre = f"Gracias, tu reclamo ha sido registrado con ID {reclamo_id}. ¡Hasta pronto!"
+                context_manager.update_context(session_id, user_input, cierre)
+                return {"respuesta": cierre, "session_id": session_id}
         if "respuesta" in response:
             resp_text = str(response["respuesta"]).strip()
             context_manager.update_context(session_id, user_input, resp_text)
@@ -630,13 +661,18 @@ class OrchestratorInput(BaseModel):
     session_id: Optional[str] = None
 
 @app.post("/orchestrate")
-def orchestrate_api(input: OrchestratorInput):
+def orchestrate_api(input: OrchestratorInput, request: Request):
     """
     Endpoint principal para web-interface, evolution-api, etc.
     Recibe una pregunta o instrucción del usuario, y (opcional) contexto extra.
     """
     try:
-        result = orchestrate(input.pregunta, input.context, input.session_id)
+        # Extraer IP del usuario
+        ip = request.client.host if request and request.client else None
+        extra_context = input.context or {}
+        if ip:
+            extra_context['ip'] = ip
+        result = orchestrate(input.pregunta, extra_context, input.session_id)
         return result
     except Exception as e:
         logging.error(f"Error en orquestación: {e}")
@@ -790,4 +826,26 @@ if __name__ == "__main__":
             break
         except Exception as e:
             print(f"Error: {e}")
+
+# --- Validación de RUT chileno ---
+def validar_rut(rut: str) -> bool:
+    rut = rut.replace(".", "").replace("-", "").upper()
+    if not rut[:-1].isdigit() or len(rut) < 2:
+        return False
+    cuerpo, dv = rut[:-1], rut[-1]
+    suma = 0
+    multiplo = 2
+    for c in reversed(cuerpo):
+        suma += int(c) * multiplo
+        multiplo = 9 if multiplo == 2 else multiplo - 1
+        if multiplo < 2:
+            multiplo = 7
+    res = 11 - (suma % 11)
+    if res == 11:
+        dv_calc = '0'
+    elif res == 10:
+        dv_calc = 'K'
+    else:
+        dv_calc = str(res)
+    return dv == dv_calc
 
