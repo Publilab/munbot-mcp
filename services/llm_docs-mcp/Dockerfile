@@ -23,6 +23,7 @@ RUN pip install --no-cache-dir transformers huggingface-hub
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código fuente
+COPY .env ./
 COPY . .
 
 # Crear directorios necesarios
@@ -31,13 +32,10 @@ RUN mkdir -p prompts
 RUN mkdir -p tools
 RUN mkdir -p models
 
-# Descargar modelo si no existe (esto puede tardar)
-RUN python -c "from huggingface_hub import snapshot_download; from os.path import exists; \
-    if not exists('models/Llama-3.2-3B-Instruct-Q6_K.gguf'): \
-        snapshot_download(repo_id='bartowski/Llama-3.2-3B-Instruct-GGUF', \
-        local_dir='models', allow_patterns=['Llama-3.2-3B-Instruct-Q6_K.gguf'])"
+# Copiar código fuente y modelo
+COPY . .
 
-# Descargar tokenizer de Hugging Face si no existe
+# Descargar tokenizer de Hugging Face
 RUN python -c "from transformers import LlamaTokenizer; LlamaTokenizer.from_pretrained('meta-llama/Llama-2-7b-hf')"
 
 # Exponer puerto

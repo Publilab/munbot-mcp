@@ -115,3 +115,4 @@ secrets/Icon
 logs.txt
 Icon
 Icon
+services/llm_docs-mcp/config.env.example
