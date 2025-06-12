@@ -25,5 +25,8 @@ COPY .env orchestrator.py context_manager.py ./
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
 
+ENV NO_PROXY=localhost,127.0.0.1
+ENV no_proxy=localhost,127.0.0.1
+
 EXPOSE 5000
 CMD ["uvicorn", "orchestrator:app", "--host", "0.0.0.0", "--port", "5000"]

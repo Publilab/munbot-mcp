@@ -531,7 +531,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # ------ Nuevo bloque de Slot Filling para RECLAMO ------
     # Recuperar estado de la sesión
     ctx = context_manager.get_context(session_id) if session_id else {}
-    pending = ctx.get("pending_field")
+    pending = ctx.get("pending_field", None)  # Aseguramos que pending tenga un valor por defecto
 
     # Si aún no hemos iniciado un reclamo y el usuario lo pide...
     if not pending and re.search(r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE):
@@ -715,7 +715,6 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     if isinstance(response, dict):
         if tool == "complaint-registrar_reclamo" and "respuesta" in response:
             # Buscar el ID en la respuesta
-            import re
             match = re.search(r"ID ([a-f0-9\-]+)", response["respuesta"], re.IGNORECASE)
             if match:
                 reclamo_id = match.group(1)
