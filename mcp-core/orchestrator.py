@@ -15,6 +15,8 @@ import time
 from context_manager import ConversationalContextManager
 import unicodedata
 from llama_cpp import Llama
+from transformers import LlamaTokenizer
+import numpy as np
 
 # === Configuración ===
 MICROSERVICES = {
@@ -43,6 +45,7 @@ context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 # Campos requeridos por tool
 REQUIRED_FIELDS = {
     "complaint-registrar_reclamo": ["datos_reclamo", "mensaje_reclamo", "depto_reclamo", "mail_reclamo"],
+    "complaint-register_user": ["nombre", "rut"],
     "scheduler-appointment_create": ["datos_cita", "depto_cita", "motiv_cita", "bloque_cita", "mail_cita"],
 }
 
@@ -65,17 +68,60 @@ app = FastAPI()
 logging.basicConfig(level=logging.INFO)
 
 # === Carga y utilidades ===
+
 def load_schema(tool_name: str) -> dict:
+    # 1. Comprobar que existe la carpeta de esquemas
+    if not os.path.isdir(TOOL_SCHEMAS_PATH):
+        raise HTTPException(
+            status_code=500,
+            detail=f"Directory for tool schemas not found: {TOOL_SCHEMAS_PATH}"
+        )
+
+    # 2. Buscar el JSON que coincide con tool_name
     for fname in os.listdir(TOOL_SCHEMAS_PATH):
         if fname.startswith(tool_name) and fname.endswith('.json'):
-            with open(os.path.join(TOOL_SCHEMAS_PATH, fname), 'r', encoding='utf-8') as f:
-                return json.load(f)
-    raise FileNotFoundError(f"Schema not found for tool: {tool_name}")
+            schema_path = os.path.join(TOOL_SCHEMAS_PATH, fname)
+            try:
+                with open(schema_path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Error loading schema file {schema_path}: {e}"
+                )
+
+    # 3. No se encontró el esquema
+    raise HTTPException(
+        status_code=400,
+        detail=f"Schema not found for tool '{tool_name}'."
+    )
+
 
 def load_prompt(prompt_name: str) -> str:
+    # 1. Comprobar que existe la carpeta de prompts
+    if not os.path.isdir(PROMPTS_PATH):
+        raise HTTPException(
+            status_code=500,
+            detail=f"Prompts directory not found: {PROMPTS_PATH}"
+        )
+
+    # 2. Comprobar que existe el archivo de prompt
     prompt_file = os.path.join(PROMPTS_PATH, prompt_name)
-    with open(prompt_file, 'r', encoding='utf-8') as f:
-        return f.read()
+    if not os.path.isfile(prompt_file):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Prompt not found: '{prompt_name}'."
+        )
+
+    # 3. Leer y devolver el contenido
+    try:
+        with open(prompt_file, 'r', encoding='utf-8') as f:
+            return f.read()
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error reading prompt file {prompt_file}: {e}"
+        )
 
 def route_to_service(tool: str) -> str:
     if tool.startswith("complaint-"):
@@ -117,15 +163,28 @@ llm = Llama.from_pretrained(
     repo_id="bartowski/Llama-3.2-3B-Instruct-GGUF",
     filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
     local_dir=MODEL_DIR,
-    verbose=True,
+    verbose=False,  # Cambiado a False para reducir logs
     n_ctx=2048,
 )
+
+# Inicializar el tokenizer de Hugging Face
+tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
+
 def generate_response(prompt: str) -> str:
-    res = llm.create_chat_completion(
-        messages=[{"role": "user", "content": prompt}],
+    # Usar el tokenizer de Hugging Face para preprocesar los tokens
+    inputs = tokenizer(prompt, return_tensors="np")
+    input_ids = inputs["input_ids"][0].tolist()
+    
+    # Generar respuesta usando los tokens preprocesados
+    output = llm.create_completion(
+        prompt=None,  # No usamos el prompt directo
+        tokens_list=input_ids,  # Usamos los tokens preprocesados
         max_tokens=256,
     )
-    return res["choices"][0]["message"]["content"]
+    
+    # Extraer y decodificar los tokens de respuesta
+    output_ids = output["choices"][0]["text"]
+    return tokenizer.decode(output_ids, skip_special_tokens=True)
 
 def infer_intent_with_llm(prompt):
     return generate_response(prompt)
@@ -468,6 +527,50 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         context_manager.reset_fallback_count(sid)
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": faq["respuesta"], "session_id": sid}
+
+    # ------ Nuevo bloque de Slot Filling para RECLAMO ------
+    # Recuperar estado de la sesión
+    ctx = context_manager.get_context(session_id) if session_id else {}
+    pending = ctx.get("pending_field")
+
+    # Si aún no hemos iniciado un reclamo y el usuario lo pide...
+    if not pending and re.search(r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE):
+        sid = session_id or str(uuid.uuid4())
+        # Iniciar slot-filling pidiendo el nombre
+        context_manager.update_context(sid, user_input, "")
+        context_manager.update_pending_field(sid, "nombre")
+        pregunta = "Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas? (ej. Juan Pérez)"
+        return {"respuesta": pregunta, "session_id": sid}
+
+    # Si estamos esperando el NOMBRE...
+    if pending == "nombre":
+        nombre = user_input.strip()
+        # Validación muy básica: no vacío y al menos dos palabras
+        if len(nombre.split()) < 2:
+            return {"respuesta": "Por favor, ingresa tu nombre completo (p. ej. Juan Pérez).", "session_id": session_id}
+        # Guardar nombre y pasar al siguiente slot
+        ctx["nombre"] = nombre
+        context_manager.update_context(session_id, user_input, f"¡Gracias, {nombre}!")
+        context_manager.update_pending_field(session_id, "rut")
+        return {"respuesta": f"Genial, {nombre}. Ahora, ¿puedes darme tu RUT? (ej. 12.345.678-5)", "session_id": session_id}
+
+    # Si estamos esperando el RUT...
+    if pending == "rut":
+        rut = user_input.strip()
+        if not validar_rut(rut):
+            return {"respuesta": "El formato de RUT parece inválido, inténtalo así: 12.345.678-5", "session_id": session_id}
+        # Guardar RUT y limpiar pending_field
+        ctx["rut"] = rut
+        context_manager.update_context(session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut}).")
+        context_manager.clear_pending_field(session_id)
+        # Llamar al microservicio para registrar nombre+y rut
+        params = {"nombre": ctx["nombre"], "rut": rut}
+        response = call_tool_microservice("complaint-register_user", params)
+        # Tras registrar usuario, iniciar flujo de reclamo
+        pregunta = "Ahora que te tengo registrado, ¿cuál es tu reclamo?"
+        context_manager.update_context(session_id, pregunta, "")
+        return {"respuesta": pregunta, "session_id": session_id}
+    # -------------------------------------------------------
 
     # Interceptar saludos, despedidas, agradecimientos y frases empáticas
     SALUDOS = [

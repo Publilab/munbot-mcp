@@ -61,79 +61,99 @@ def tools_call():
     tool = payload.get("tool", "")
     params = payload.get("params", {})
 
-    # Solo soportamos la herramienta de registrar reclamo
-    if tool != "complaint-registrar_reclamo":
+    # Soportamos registrar reclamo y registrar usuario
+    if tool == "complaint-registrar_reclamo":
+        # Extraemos campos esperados desde params
+        # Se asume que el orquestador envía params con:
+        #   { "nombre": "...", "mail": "...", "mensaje": "...", "departamento": Optional[...] }
+        nombre = params.get("nombre")
+        mail = params.get("correo") or params.get("mail")  # posible key "mail" o "correo"
+        mensaje = params.get("detalle_reclamo") or params.get("mensaje")
+        departamento = params.get("departamento")
+
+        # Validamos que vengan al menos los campos obligatorios
+        missing = []
+        if not nombre:
+            missing.append("nombre")
+        if not mail:
+            missing.append("correo")
+        if not mensaje:
+            missing.append("detalle_reclamo")
+
+        if missing:
+            campo = missing[0]
+            preguntas = {
+                "nombre": "Por favor, proporciona tu nombre completo.",
+                "correo": "Por favor, proporciona tu correo electrónico.",
+                "detalle_reclamo": "Por favor, describe tu reclamo con más detalle."
+            }
+            return jsonify({
+                "respuesta": preguntas.get(campo, f"Falta el campo {campo}."),
+                "pending_field": campo
+            }), 200
+
+        # Si no se indicó departamento, lo clasificamos automáticamente
+        if not departamento:
+            departamento = clasificar_departamento(mensaje)
+
+        # Obtenemos la IP remota para almacenarla
+        ip = request.remote_addr or "unknown"
+
+        # Construimos el objeto ComplaintModel para validar
+        try:
+            complaint_data = {
+                "nombre": nombre,
+                "mail": mail,
+                "mensaje": mensaje,
+                "departamento": departamento
+            }
+            complaint = ComplaintModel(**complaint_data)
+        except Exception as e:
+            return jsonify({"respuesta": f"Error en datos del reclamo: {e}"}), 400
+
+        # Guardamos en la base de datos
+        try:
+            complaint_id = repo.add_complaint(complaint, ip)
+        except Exception as e:
+            app.logger.error(f"Error guardando reclamo en BD: {e}")
+            return jsonify({"respuesta": "Error interno al registrar tu reclamo."}), 500
+
+        # Enviamos correo de confirmación (en producción, esto podría ser asíncrono)
+        try:
+            send_email(
+                to=complaint.mail,
+                subject="Reclamo registrado",
+                body=f"Su reclamo fue registrado con ID {complaint_id}."
+            )
+        except Exception as e:
+            app.logger.warning(f"No se pudo enviar email: {e}")
+            # No abortamos: el reclamo ya está en BD, devolvemos éxito al cliente
+
+        return jsonify({"respuesta": f"Reclamo registrado con ID {complaint_id}."}), 201
+    
+    elif tool == "complaint-register_user":
+        # Sólo guardamos nombre y rut en BD
+        nombre = params.get("nombre")
+        rut    = params.get("rut")
+        missing = []
+        if not nombre: missing.append("nombre")
+        if not rut:    missing.append("rut")
+        if missing:
+            campo = missing[0]
+            text = "Por favor, proporciona tu nombre completo." if campo=="nombre" else "Por favor, proporciona tu RUT."
+            return jsonify({"respuesta": text, "pending_field": campo}), 200
+        # Llamamos al repositorio
+        try:
+            user_id = repo.register_user(nombre, rut, request.remote_addr)
+        except Exception as e:
+            app.logger.error(f"Error registrando usuario: {e}")
+            return jsonify({"respuesta": "Error interno al guardar tus datos personales."}), 500
+        return jsonify({"respuesta": "¡Tus datos han sido registrados con éxito!"}), 201
+    
+    else:
         return jsonify({
             "respuesta": f"Tool '{tool}' no está soportada por complaints-mcp."
         }), 400
-
-    # Extraemos campos esperados desde params
-    # Se asume que el orquestador envía params con:
-    #   { "nombre": "...", "mail": "...", "mensaje": "...", "departamento": Optional[...] }
-    nombre = params.get("nombre")
-    mail = params.get("correo") or params.get("mail")  # posible key "mail" o "correo"
-    mensaje = params.get("detalle_reclamo") or params.get("mensaje")
-    departamento = params.get("departamento")
-
-    # Validamos que vengan al menos los campos obligatorios
-    missing = []
-    if not nombre:
-        missing.append("nombre")
-    if not mail:
-        missing.append("correo")
-    if not mensaje:
-        missing.append("detalle_reclamo")
-
-    if missing:
-        campo = missing[0]
-        preguntas = {
-            "nombre": "Por favor, proporciona tu nombre completo.",
-            "correo": "Por favor, proporciona tu correo electrónico.",
-            "detalle_reclamo": "Por favor, describe tu reclamo con más detalle."
-        }
-        return jsonify({
-            "respuesta": preguntas.get(campo, f"Falta el campo {campo}."),
-            "pending_field": campo
-        }), 200
-
-    # Si no se indicó departamento, lo clasificamos automáticamente
-    if not departamento:
-        departamento = clasificar_departamento(mensaje)
-
-    # Obtenemos la IP remota para almacenarla
-    ip = request.remote_addr or "unknown"
-
-    # Construimos el objeto ComplaintModel para validar
-    try:
-        complaint_data = {
-            "nombre": nombre,
-            "mail": mail,
-            "mensaje": mensaje,
-            "departamento": departamento
-        }
-        complaint = ComplaintModel(**complaint_data)
-    except Exception as e:
-        return jsonify({"respuesta": f"Error en datos del reclamo: {e}"}), 400
-
-    # Guardamos en la base de datos
-    try:
-        complaint_id = repo.add_complaint(complaint, ip)
-    except Exception as e:
-        app.logger.error(f"Error guardando reclamo en BD: {e}")
-        return jsonify({"respuesta": "Error interno al registrar tu reclamo."}), 500
-
-    # Enviamos correo de confirmación (en producción, esto podría ser asíncrono)
-    try:
-        send_email(
-            to=complaint.mail,
-            subject="Reclamo registrado",
-            body=f"Su reclamo fue registrado con ID {complaint_id}."
-        )
-    except Exception as e:
-        app.logger.warning(f"No se pudo enviar email: {e}")
-        # No abortamos: el reclamo ya está en BD, devolvemos éxito al cliente
-
-    return jsonify({"respuesta": f"Reclamo registrado con ID {complaint_id}."}), 201
 
 
 # ------------------------------------------------------------

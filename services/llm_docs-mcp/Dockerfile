@@ -1,36 +1,47 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-# Configurar zona horaria
+# Zona horaria
 ENV TZ=America/Santiago
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# 1. Instala dependencias del sistema (incluye git)
-RUN apt-get update && apt-get install -y \
-    build-essential cmake libopenblas-dev git && \
-    rm -rf /var/lib/apt/lists/*
+# Instalar dependencias del sistema
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    git \
+    libopenblas-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copia todo el código y el modelo
+# Copiar e instalar dependencias
+COPY requirements.txt .
+RUN pip install --no-cache-dir -U pip
+# Instalación explícita para garantizar que transformers y huggingface-hub existen
+RUN pip install --no-cache-dir transformers huggingface-hub
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar código fuente
 COPY . .
 
-# 2. Instala las dependencias de Python
-RUN pip install --upgrade pip setuptools wheel
+# Crear directorios necesarios
+RUN mkdir -p documents
+RUN mkdir -p prompts
+RUN mkdir -p tools
+RUN mkdir -p models
 
-# 3. Instala llama-cpp-python usando OpenBLAS
-ENV CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
-RUN pip install llama-cpp-python
+# Descargar modelo si no existe (esto puede tardar)
+RUN python -c "from huggingface_hub import snapshot_download; from os.path import exists; \
+    if not exists('models/Llama-3.2-3B-Instruct-Q6_K.gguf'): \
+        snapshot_download(repo_id='bartowski/Llama-3.2-3B-Instruct-GGUF', \
+        local_dir='models', allow_patterns=['Llama-3.2-3B-Instruct-Q6_K.gguf'])"
 
-# 4. Instala el resto de dependencias de tu proyecto
-RUN pip install -r requirements.txt
+# Descargar tokenizer de Hugging Face si no existe
+RUN python -c "from transformers import LlamaTokenizer; LlamaTokenizer.from_pretrained('meta-llama/Llama-2-7b-hf')"
 
-RUN python -m nltk.downloader punkt || true
-
-COPY documents/ ./documents/
-COPY gateway.py .
-COPY .env ./
-COPY models/ ./models
-
+# Exponer puerto
 EXPOSE 8000
 
+# Comando para iniciar la aplicación
 CMD ["uvicorn", "gateway:app", "--host", "0.0.0.0", "--port", "8000"]

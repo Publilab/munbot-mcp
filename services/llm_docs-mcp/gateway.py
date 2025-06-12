@@ -12,6 +12,8 @@ from starlette.responses import JSONResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from llama_cpp import Llama
+from transformers import LlamaTokenizer
+import numpy as np
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -122,15 +124,28 @@ llm = Llama.from_pretrained(
     repo_id="bartowski/Llama-3.2-3B-Instruct-GGUF",
     filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
     local_dir=MODEL_DIR,
-    verbose=True,
+    verbose=False,  # Cambiado a False para reducir logs
     n_ctx=2048,
 )
+
+# Inicializar el tokenizer de Hugging Face
+tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
+
 def generate_response(prompt: str) -> str:
-    res = llm.create_chat_completion(
-        messages=[{"role": "user", "content": prompt}],
+    # Usar el tokenizer de Hugging Face para preprocesar los tokens
+    inputs = tokenizer(prompt, return_tensors="np")
+    input_ids = inputs["input_ids"][0].tolist()
+    
+    # Generar respuesta usando los tokens preprocesados
+    output = llm.create_completion(
+        prompt=None,  # No usamos el prompt directo
+        tokens_list=input_ids,  # Usamos los tokens preprocesados
         max_tokens=256,
     )
-    return res["choices"][0]["message"]["content"]
+    
+    # Extraer y decodificar los tokens de respuesta
+    output_ids = output["choices"][0]["text"]
+    return tokenizer.decode(output_ids, skip_special_tokens=True)
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")

@@ -62,3 +62,24 @@ class ConversationalContextManager:
     def get_last_sentiment(self, session_id: str) -> str:
         context = self.get_context(session_id)
         return context.get("last_sentiment", "neutral")
+
+    def update_pending_field(self, session_id: str, field_name: str):
+        """Establece el campo pendiente que se está esperando del usuario."""
+        context = self.get_context(session_id)
+        context["pending_field"] = field_name
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+        
+    def clear_pending_field(self, session_id: str):
+        """Limpia el campo pendiente cuando ya se ha completado."""
+        context = self.get_context(session_id)
+        if "pending_field" in context:
+            del context["pending_field"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )

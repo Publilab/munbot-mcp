@@ -21,7 +21,9 @@ RUN pip install llama-cpp-python huggingface-hub
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 3) Código de la aplicación
-COPY .env orchestrator.py context_manager.py tool_schemas/ prompts/ ./
+COPY .env orchestrator.py context_manager.py 
+COPY tool_schemas/ ./tool_schemas/
+COPY prompts/ ./prompts/
 
 EXPOSE 5000
 CMD ["uvicorn", "orchestrator:app", "--host", "0.0.0.0", "--port", "5000"]
