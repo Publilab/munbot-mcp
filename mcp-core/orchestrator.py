@@ -15,7 +15,7 @@ import time
 from context_manager import ConversationalContextManager
 import unicodedata
 from llama_cpp import Llama
-from transformers import LlamaTokenizer
+from transformers import AutoTokenizer
 import numpy as np
 
 # === Configuración ===
@@ -167,8 +167,8 @@ llm = Llama.from_pretrained(
     n_ctx=2048,
 )
 
-# Inicializar el tokenizer de Hugging Face
-tokenizer = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
+# Inicializar el tokenizer de Hugging Face (usando un modelo público)
+tokenizer = AutoTokenizer.from_pretrained("hf-internal-testing/llama-tokenizer")
 
 def generate_response(prompt: str) -> str:
     # Usar el tokenizer de Hugging Face para preprocesar los tokens

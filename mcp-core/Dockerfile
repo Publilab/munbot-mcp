@@ -16,12 +16,12 @@ WORKDIR /mcp-core
 COPY requirements.txt ./
 RUN pip install --upgrade pip setuptools wheel
 # Instalación explícita para garantizar que huggingface-hub existe
-RUN pip install llama-cpp-python huggingface-hub
+RUN pip install llama-cpp-python huggingface-hub sentencepiece
 # Resto de dependencias, incluidas fastapi, redis, etc.
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 3) Código de la aplicación
-COPY .env orchestrator.py context_manager.py 
+COPY .env orchestrator.py context_manager.py ./
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
 

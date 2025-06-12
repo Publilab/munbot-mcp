@@ -20,11 +20,15 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -U pip
 # Instalación explícita para garantizar que transformers y huggingface-hub existen
 RUN pip install --no-cache-dir transformers huggingface-hub
+# Instalar sentencepiece para LlamaTokenizer
+RUN pip install --no-cache-dir sentencepiece
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código fuente
 COPY .env ./
 COPY . .
+COPY documents/ ./documents/
+COPY models/Llama-3.2-3B-Instruct-Q6_K.gguf ./models/Llama-3.2-3B-Instruct-Q6_K.gguf
 
 # Crear directorios necesarios
 RUN mkdir -p documents
@@ -32,11 +36,8 @@ RUN mkdir -p prompts
 RUN mkdir -p tools
 RUN mkdir -p models
 
-# Copiar código fuente y modelo
-COPY . .
-
-# Descargar tokenizer de Hugging Face
-RUN python -c "from transformers import LlamaTokenizer; LlamaTokenizer.from_pretrained('meta-llama/Llama-2-7b-hf')"
+# Usar un tokenizador público que no requiere autenticación
+RUN python -c "from transformers import AutoTokenizer; AutoTokenizer.from_pretrained('hf-internal-testing/llama-tokenizer')"
 
 # Exponer puerto
 EXPOSE 8000
