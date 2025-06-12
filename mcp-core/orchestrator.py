@@ -14,6 +14,7 @@ import threading
 import time
 from context_manager import ConversationalContextManager
 import unicodedata
+from llama_cpp import Llama
 
 # === Configuración ===
 MICROSERVICES = {
@@ -110,37 +111,27 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         return {"error": f"Error {resp.status_code}: {resp.text}"}
 
 # === LLM para detección de intención ===
-def llamar_mistral(prompt):
-    api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
-    token = os.getenv("HF_API_TOKEN")
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "inputs": prompt,
-        "parameters": {
-            "max_new_tokens": 256,
-            "temperature": 0.7,
-            "return_full_text": False
-        }
-    }
-    response = requests.post(api_url, headers=headers, json=data)
-    if response.status_code == 200:
-        predicted = response.json()[0]["generated_text"].strip()
-        logging.info(f"LLM raw response: {predicted}")
-        match = re.search(r"{.*}", predicted)
-        if match:
-            data = json.loads(match.group(0))
-            intent = data.get("intent")
-            confidence = float(data.get("confidence", 0))
-            sentiment = data.get("sentiment", "neutral")
-            return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
-    else:
-        raise Exception(f"Error en la solicitud: {response.status_code} - {response.text}")
+# Instancia global del modelo Llama (solo una vez)
+MODEL_DIR = os.path.join(os.path.dirname(__file__), "../services/llm_docs-mcp/models")
+llm = Llama.from_pretrained(
+    repo_id="bartowski/Llama-3.2-3B-Instruct-GGUF",
+    filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
+    local_dir=MODEL_DIR,
+    verbose=True,
+    n_ctx=2048,
+)
+def generate_response(prompt: str) -> str:
+    res = llm.create_chat_completion(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=256,
+    )
+    return res["choices"][0]["message"]["content"]
+
+def infer_intent_with_llm(prompt):
+    return generate_response(prompt)
 
 def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
-    """Usa Mistral 7B para inferir intención, confianza y sentimiento."""
+    """Usa Llama local para inferir intención, confianza y sentimiento."""
     VALID_INTENTS = {
         "complaint-registrar_reclamo",
         "doc-buscar_fragmento_documento",
@@ -165,9 +156,9 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
         "scheduler-cancelar_hora, scheduler-confirmar_hora.\n"
         f"Historial:\n{history_text}\nMensaje: {user_input}\nJSON:"
     )
-    logging.info("Prompt enviado al modelo Mistral 7B: %s", prompt)
+    logging.info("Prompt enviado al modelo Llama local: %s", prompt)
     try:
-        predicted = llamar_mistral(prompt).strip()
+        predicted = infer_intent_with_llm(prompt).strip()
         logging.info(f"LLM raw response: {predicted}")
         match = re.search(r"{.*}", predicted)
         if match:
@@ -182,7 +173,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
                 logging.info(f"Intento forzado por matcher: {intent}")
             return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     except Exception as e:
-        logging.error("Error durante la inferencia del modelo Mistral 7B: %s", e)
+        logging.error("Error durante la inferencia del modelo Llama local: %s", e)
 
     # Fallback total si todo falla
     intent = detect_intent_keywords(user_input)

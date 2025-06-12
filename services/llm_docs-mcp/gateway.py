@@ -11,6 +11,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from llama_cpp import Llama
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -115,26 +116,21 @@ def buscar_similitud_en_documentos(pregunta, docs_relevantes):
         return corpus[idx_max], nombres[idx_max]
     return None, None
 
-def llamar_mistral(prompt):
-    api_url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
-    token = os.getenv("HF_API_TOKEN")
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "inputs": prompt,
-        "parameters": {
-            "max_new_tokens": 256,
-            "temperature": 0.7,
-            "return_full_text": False
-        }
-    }
-    response = requests.post(api_url, headers=headers, json=data)
-    if response.status_code == 200:
-        return response.json()[0]["generated_text"]
-    else:
-        raise Exception(f"Error en la solicitud: {response.status_code} - {response.text}")
+# === Llama.cpp local ===
+MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
+llm = Llama.from_pretrained(
+    repo_id="bartowski/Llama-3.2-3B-Instruct-GGUF",
+    filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
+    local_dir=MODEL_DIR,
+    verbose=True,
+    n_ctx=2048,
+)
+def generate_response(prompt: str) -> str:
+    res = llm.create_chat_completion(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=256,
+    )
+    return res["choices"][0]["message"]["content"]
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
@@ -163,18 +159,18 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
                 "tipo": "documento"
             }
         # Fallback LLM
-        respuesta = llamar_mistral(pregunta)
-        logger.info("Respuesta generada por Mistral-7B (fallback MCP)")
+        respuesta = generate_response(pregunta)
+        logger.info("Respuesta generada por Llama-3.2 (fallback MCP)")
         return {
             "respuesta": respuesta,
-            "fuente": "mistral-7b",
+            "fuente": "llama-3.2",
             "tipo": "modelo"
         }
     elif tool == "generar_respuesta_llm":
         pregunta = params["pregunta"]
         language = params.get("language", "es")
-        respuesta = llamar_mistral(pregunta)
-        logger.info("Respuesta generada por Mistral-7B (tool directo MCP)")
+        respuesta = generate_response(pregunta)
+        logger.info("Respuesta generada por Llama-3.2 (tool directo MCP)")
         return {"respuesta": respuesta}
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
