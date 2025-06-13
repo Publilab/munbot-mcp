@@ -18,6 +18,12 @@ WORKDIR /app
 # Copiar e instalar dependencias
 COPY requirements.txt .
 RUN pip install --no-cache-dir -U pip
+
+# Instalar frameworks de ML
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir tensorflow
+RUN pip install --no-cache-dir flax
+
 # Instalación explícita para garantizar que transformers y huggingface-hub existen
 RUN pip install --no-cache-dir transformers huggingface-hub
 # Instalar sentencepiece para LlamaTokenizer

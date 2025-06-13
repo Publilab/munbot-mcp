@@ -3,6 +3,8 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, EmailStr
 from datetime import date, datetime
 from notifications import send_email, send_whatsapp
@@ -23,6 +25,54 @@ def get_db():
     return conn
 
 app = FastAPI()
+
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Middleware para manejar peticiones inválidas
+class RequestValidationMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        # Lista de rutas válidas
+        valid_routes = {
+            "/appointments/available": ["GET"],
+            "/appointments/reserve": ["POST"],
+            "/appointments/confirm": ["POST"],
+            "/appointments/cancel": ["POST"],
+            "/appointments/{id}": ["GET"],
+            "/health": ["GET"],
+            "/": ["GET"]
+        }
+        
+        # Permitir siempre healthcheck y raíz
+        if request.url.path in ["/health", "/"]:
+            return await call_next(request)
+            
+        # Verificar si la ruta y método son válidos
+        is_valid = False
+        for route, methods in valid_routes.items():
+            if request.url.path.startswith(route.replace("{id}", "")) and request.method in methods:
+                is_valid = True
+                break
+                
+        if not is_valid:
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "detail": "Invalid request",
+                    "message": "Esta ruta o método no está soportado",
+                    "valid_routes": list(valid_routes.keys())
+                }
+            )
+            
+        return await call_next(request)
+
+app.add_middleware(RequestValidationMiddleware)
 
 # =====================
 # Esquemas de Pydantic (para validación y autocompletado)
@@ -52,6 +102,22 @@ class AppointmentCancel(BaseModel):
 # =====================
 # Endpoints RESTful alineados a MCP
 # =====================
+
+@app.get("/")
+def root():
+    """Endpoint raíz con información del servicio"""
+    return {
+        "status": "MunBoT Scheduler MCP running",
+        "endpoints": [
+            "GET /appointments/available",
+            "POST /appointments/reserve",
+            "POST /appointments/confirm",
+            "POST /appointments/cancel",
+            "GET /appointments/{id}",
+            "GET /health"
+        ],
+        "version": "1.0.0"
+    }
 
 @app.get("/appointments/available")
 def list_available(fecha: date = None):

@@ -41,6 +41,10 @@ API_USERNAME = os.getenv("API_USERNAME", "admin")
 API_PASSWORD = os.getenv("API_PASSWORD", "admin")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+        # Permitir acceso sin restricciones a healthcheck y raíz
+        if request.url.path in ("/health", "/"):
+            return await call_next(request)
+            
         client_ip = request.client.host
         if client_ip not in ALLOWED_IPS:
             return JSONResponse(status_code=403, content={"detail": "IP no autorizada"})
@@ -193,6 +197,14 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+@app.get("/")
+def root():
+    return {
+        "status": "MunBoT LLM Docs MCP running",
+        "endpoints": ["/tools/list", "/tools/call", "/health"],
+        "version": "1.0.0"
+    }
 
 # === Legacy endpoints (opcional, pueden eliminarse si usas solo MCP) ===
 # Los endpoints antiguos como /process y /rasa-action pueden quedar solo si mantienes compatibilidad

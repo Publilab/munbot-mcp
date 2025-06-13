@@ -164,7 +164,7 @@ llm = Llama.from_pretrained(
     filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
     local_dir=MODEL_DIR,
     verbose=False,  # Cambiado a False para reducir logs
-    n_ctx=2048,
+    n_ctx=4096,
 )
 
 # Inicializar el tokenizer de Hugging Face (usando un modelo público)
@@ -774,6 +774,14 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+@app.get("/")
+def root():
+    return {
+        "status": "MunBoT MCP Orchestrator running",
+        "endpoints": ["/orchestrate", "/health"],
+        "version": "1.0.0"
+    }
 
 # === Endpoints de administración de documentos ===
 

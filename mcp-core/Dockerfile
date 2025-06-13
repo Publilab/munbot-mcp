@@ -15,6 +15,10 @@ WORKDIR /mcp-core
 # 2) Python – copiar e instalar deps
 COPY requirements.txt ./
 RUN pip install --upgrade pip setuptools wheel
+
+# Instalar PyTorch CPU
+RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
+
 # Instalación explícita para garantizar que huggingface-hub existe
 RUN pip install llama-cpp-python huggingface-hub sentencepiece
 # Resto de dependencias, incluidas fastapi, redis, etc.
