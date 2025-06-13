@@ -1,6 +1,6 @@
 import redis
 import json
-from typing import Dict
+from typing import Dict, Optional, Any, List
 
 class ConversationalContextManager:
     def __init__(self, host: str = 'localhost', port: int = 6379, db: int = 0):
@@ -83,3 +83,31 @@ class ConversationalContextManager:
             json.dumps(context),
             ex=self.session_expiry_seconds,
         )
+
+    def update_complaint_state(self, session_id: str, state: str):
+        """Actualiza el estado del reclamo en la sesión."""
+        self.redis_client.hset(f"session:{session_id}", "complaint_state", state)
+    
+    def clear_complaint_state(self, session_id: str):
+        """Limpia el estado del reclamo en la sesión."""
+        self.redis_client.hdel(f"session:{session_id}", "complaint_state")
+    
+    def get_complaint_state(self, session_id: str) -> Optional[str]:
+        """Obtiene el estado actual del reclamo."""
+        return self.redis_client.hget(f"session:{session_id}", "complaint_state")
+    
+    def update_pending_field(self, session_id: str, field: Optional[str]):
+        """Actualiza el campo pendiente en la sesión."""
+        if field:
+            self.redis_client.hset(f"session:{session_id}", "pending_field", field)
+        else:
+            self.redis_client.hdel(f"session:{session_id}", "pending_field")
+    
+    def get_pending_field(self, session_id: str) -> Optional[str]:
+        """Obtiene el campo pendiente actual."""
+        return self.redis_client.hget(f"session:{session_id}", "pending_field")
+    
+    def get_history(self, session_id: str) -> List[Dict[str, Any]]:
+        """Obtiene el historial de la conversación."""
+        history = self.redis_client.get(f"history:{session_id}")
+        return json.loads(history) if history else []

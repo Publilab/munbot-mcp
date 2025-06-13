@@ -9,6 +9,8 @@ from utils.email import send_email
 from utils.classifier import clasificar_departamento
 from dotenv import load_dotenv
 import time
+import re
+from datetime import datetime
 
 load_dotenv()
 
@@ -64,33 +66,45 @@ def tools_call():
     # Soportamos registrar reclamo y registrar usuario
     if tool == "complaint-registrar_reclamo":
         # Extraemos campos esperados desde params
-        # Se asume que el orquestador envía params con:
-        #   { "nombre": "...", "mail": "...", "mensaje": "...", "departamento": Optional[...] }
         nombre = params.get("nombre")
-        mail = params.get("correo") or params.get("mail")  # posible key "mail" o "correo"
+        mail = params.get("correo") or params.get("mail")
         mensaje = params.get("detalle_reclamo") or params.get("mensaje")
         departamento = params.get("departamento")
+        categoria = params.get("categoria", 1)  # 1 = reclamo por defecto
+        prioridad = params.get("prioridad", 3)  # 3 = normal por defecto
 
-        # Validamos que vengan al menos los campos obligatorios
-        missing = []
-        if not nombre:
-            missing.append("nombre")
-        if not mail:
-            missing.append("correo")
-        if not mensaje:
-            missing.append("detalle_reclamo")
-
-        if missing:
-            campo = missing[0]
-            preguntas = {
-                "nombre": "Por favor, proporciona tu nombre completo.",
-                "correo": "Por favor, proporciona tu correo electrónico.",
-                "detalle_reclamo": "Por favor, describe tu reclamo con más detalle."
+        # Validaciones detalladas
+        validations = {
+            "nombre": {
+                "value": nombre,
+                "valid": bool(nombre and len(nombre) >= 3),
+                "message": "El nombre debe tener al menos 3 caracteres."
+            },
+            "mail": {
+                "value": mail,
+                "valid": bool(mail and re.match(r"[^@]+@[^@]+\.[^@]+", mail)),
+                "message": "Por favor, proporciona un correo electrónico válido."
+            },
+            "mensaje": {
+                "value": mensaje,
+                "valid": bool(mensaje and len(mensaje) >= 10),
+                "message": "El mensaje debe tener al menos 10 caracteres."
+            },
+            "departamento": {
+                "value": departamento,
+                "valid": bool(departamento and departamento in [1, 2, 3, 4]),
+                "message": "El departamento debe ser un número entre 1 y 4."
             }
-            return jsonify({
-                "respuesta": preguntas.get(campo, f"Falta el campo {campo}."),
-                "pending_field": campo
-            }), 200
+        }
+
+        # Verificar validaciones
+        for field, validation in validations.items():
+            if not validation["valid"]:
+                return jsonify({
+                    "respuesta": validation["message"],
+                    "pending_field": field,
+                    "error": True
+                }), 200
 
         # Si no se indicó departamento, lo clasificamos automáticamente
         if not departamento:
@@ -105,54 +119,89 @@ def tools_call():
                 "nombre": nombre,
                 "mail": mail,
                 "mensaje": mensaje,
-                "departamento": departamento
+                "departamento": departamento,
+                "categoria": categoria,
+                "prioridad": prioridad
             }
             complaint = ComplaintModel(**complaint_data)
         except Exception as e:
-            return jsonify({"respuesta": f"Error en datos del reclamo: {e}"}), 400
+            return jsonify({
+                "respuesta": f"Error en datos del reclamo: {str(e)}",
+                "error": True
+            }), 400
 
         # Guardamos en la base de datos
         try:
             complaint_id = repo.add_complaint(complaint, ip)
         except Exception as e:
             app.logger.error(f"Error guardando reclamo en BD: {e}")
-            return jsonify({"respuesta": "Error interno al registrar tu reclamo."}), 500
+            return jsonify({
+                "respuesta": "Error interno al registrar tu reclamo.",
+                "error": True
+            }), 500
 
-        # Enviamos correo de confirmación (en producción, esto podría ser asíncrono)
+        # Enviamos correo de confirmación
         try:
             send_email(
                 to=complaint.mail,
                 subject="Reclamo registrado",
-                body=f"Su reclamo fue registrado con ID {complaint_id}."
+                body=f"Su reclamo fue registrado con ID {complaint_id}.\n\nDetalles:\n- Nombre: {nombre}\n- Departamento: {departamento}\n- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\nGracias por contactarnos."
             )
         except Exception as e:
             app.logger.warning(f"No se pudo enviar email: {e}")
-            # No abortamos: el reclamo ya está en BD, devolvemos éxito al cliente
+            # No abortamos: el reclamo ya está en BD
 
-        return jsonify({"respuesta": f"Reclamo registrado con ID {complaint_id}."}), 201
+        return jsonify({
+            "respuesta": f"Reclamo registrado con ID {complaint_id}. Te hemos enviado un correo de confirmación.",
+            "complaint_id": complaint_id
+        }), 201
     
     elif tool == "complaint-register_user":
-        # Sólo guardamos nombre y rut en BD
+        # Validación de nombre y RUT
         nombre = params.get("nombre")
-        rut    = params.get("rut")
-        missing = []
-        if not nombre: missing.append("nombre")
-        if not rut:    missing.append("rut")
-        if missing:
-            campo = missing[0]
-            text = "Por favor, proporciona tu nombre completo." if campo=="nombre" else "Por favor, proporciona tu RUT."
-            return jsonify({"respuesta": text, "pending_field": campo}), 200
+        rut = params.get("rut")
+        
+        validations = {
+            "nombre": {
+                "value": nombre,
+                "valid": bool(nombre and len(nombre) >= 3),
+                "message": "El nombre debe tener al menos 3 caracteres."
+            },
+            "rut": {
+                "value": rut,
+                "valid": bool(rut and validar_rut(rut)),
+                "message": "Por favor, proporciona un RUT válido (ejemplo: 12.345.678-9)."
+            }
+        }
+
+        # Verificar validaciones
+        for field, validation in validations.items():
+            if not validation["valid"]:
+                return jsonify({
+                    "respuesta": validation["message"],
+                    "pending_field": field,
+                    "error": True
+                }), 200
+
         # Llamamos al repositorio
         try:
             user_id = repo.register_user(nombre, rut, request.remote_addr)
         except Exception as e:
             app.logger.error(f"Error registrando usuario: {e}")
-            return jsonify({"respuesta": "Error interno al guardar tus datos personales."}), 500
-        return jsonify({"respuesta": "¡Tus datos han sido registrados con éxito!"}), 201
+            return jsonify({
+                "respuesta": "Error interno al guardar tus datos personales.",
+                "error": True
+            }), 500
+
+        return jsonify({
+            "respuesta": "¡Tus datos han sido registrados con éxito!",
+            "user_id": user_id
+        }), 201
     
     else:
         return jsonify({
-            "respuesta": f"Tool '{tool}' no está soportada por complaints-mcp."
+            "respuesta": f"Tool '{tool}' no está soportada por complaints-mcp.",
+            "error": True
         }), 400
 
 
