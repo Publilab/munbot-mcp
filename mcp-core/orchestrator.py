@@ -522,15 +522,13 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         return {"respuesta": faq["respuesta"], "session_id": sid}
 
     # ------ Bloque de Slot Filling para RECLAMO ------
-    # Recuperar estado de la sesión
     ctx = context_manager.get_context(session_id) if session_id else {}
     pending = ctx.get("pending_field", None)
     complaint_state = ctx.get("complaint_state", None)
 
-    # Si aún no hemos iniciado un reclamo y el usuario lo pide...
+    # Iniciar flujo de reclamo si detecta palabra clave
     if not pending and re.search(r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE):
         sid = session_id or str(uuid.uuid4())
-        # Iniciar slot-filling pidiendo el nombre
         context_manager.update_context(sid, user_input, "")
         context_manager.update_pending_field(sid, "nombre")
         context_manager.update_complaint_state(sid, "iniciado")
@@ -540,10 +538,6 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el NOMBRE...
     if pending == "nombre":
         nombre = user_input.strip()
-        # Validación: no vacío y al menos dos palabras
-        if len(nombre.split()) < 2:
-            return {"respuesta": "Por favor, ingresa tu nombre completo (p. ej. Juan Pérez).", "session_id": session_id}
-        # Guardar nombre y pasar al siguiente slot
         ctx["nombre"] = nombre
         context_manager.update_context(session_id, user_input, f"¡Gracias, {nombre}!")
         context_manager.update_pending_field(session_id, "rut")
@@ -552,41 +546,25 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el RUT...
     if pending == "rut":
         rut = user_input.strip()
-        if not validar_rut(rut):
-            return {"respuesta": "El formato de RUT parece inválido, inténtalo así: 12.345.678-5", "session_id": session_id}
-        # Guardar RUT y registrar usuario
         ctx["rut"] = rut
         context_manager.update_context(session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut}).")
-        # Llamar al microservicio para registrar nombre y rut
-        params = {"nombre": ctx["nombre"], "rut": rut}
-        response = call_tool_microservice("complaint-register_user", params)
-        if "error" in response:
-            return {"respuesta": "Hubo un error al registrar tus datos. Por favor, intenta nuevamente.", "session_id": session_id}
-        # Pasar al siguiente paso
         context_manager.update_pending_field(session_id, "mensaje")
         return {"respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?", "session_id": session_id}
 
     # Si estamos esperando el MENSAJE del reclamo...
     if pending == "mensaje":
         mensaje = user_input.strip()
-        if len(mensaje) < 10:
-            return {"respuesta": "Por favor, describe tu reclamo con más detalle (mínimo 10 caracteres).", "session_id": session_id}
         ctx["mensaje"] = mensaje
         context_manager.update_context(session_id, user_input, "Entiendo tu reclamo.")
         context_manager.update_pending_field(session_id, "departamento")
-        return {
-            "respuesta": "¿A qué departamento crees que corresponde atender tu reclamo?\n1. Seguridad\n2. Obras\n3. Medio Ambiente\n4. Otros\nEscribe el número del departamento.",
-            "session_id": session_id
-        }
+        # Aquí sí invocamos al modelo LLM para analizar el reclamo
+        # (puedes agregar lógica aquí si quieres usar el modelo para clasificar o extraer info)
+        # Por ahora, solo guardamos el mensaje y seguimos
+        return {"respuesta": "¿A qué departamento corresponde tu reclamo? (1: Atención, 2: Finanzas, 3: Obras, 4: Tránsito)", "session_id": session_id}
 
     # Si estamos esperando el DEPARTAMENTO...
     if pending == "departamento":
-        try:
-            depto = int(user_input.strip())
-            if depto not in [1, 2, 3, 4]:
-                return {"respuesta": "Por favor, selecciona un número válido (1-4).", "session_id": session_id}
-        except ValueError:
-            return {"respuesta": "Por favor, ingresa solo el número del departamento (1-4).", "session_id": session_id}
+        depto = user_input.strip()
         ctx["departamento"] = depto
         context_manager.update_context(session_id, user_input, f"Departamento {depto} seleccionado.")
         context_manager.update_pending_field(session_id, "mail")
@@ -595,11 +573,8 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el MAIL...
     if pending == "mail":
         mail = user_input.strip()
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", mail):
-            return {"respuesta": "Por favor, ingresa un correo electrónico válido.", "session_id": session_id}
         ctx["mail"] = mail
         context_manager.update_context(session_id, user_input, "Correo registrado.")
-        # Limpiar pending_field ya que tenemos todos los datos
         context_manager.clear_pending_field(session_id)
         # Preparar y enviar el reclamo
         params = {
@@ -607,14 +582,13 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
             "mail": mail,
             "mensaje": ctx["mensaje"],
             "departamento": ctx["departamento"],
-            "categoria": 1,  # 1 = reclamo
-            "prioridad": 3   # 3 = normal
+            "categoria": 1,
+            "prioridad": 3
         }
         response = call_tool_microservice("complaint-registrar_reclamo", params)
+        context_manager.clear_complaint_state(session_id)
         if "error" in response:
             return {"respuesta": "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente.", "session_id": session_id}
-        # Limpiar el estado del reclamo
-        context_manager.clear_complaint_state(session_id)
         return {"respuesta": f"¡Gracias! Tu reclamo ha sido registrado. {response.get('respuesta', '')}", "session_id": session_id}
 
     # Interceptar saludos, despedidas, agradecimientos y frases empáticas
