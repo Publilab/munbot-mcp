@@ -490,16 +490,16 @@ def save_conversation_to_postgres(session_id, session_data):
         logging.error(f"Error guardando historial en PostgreSQL: {e}")
 
 def get_session(session_id):
-    session_data = redis_client.get(session_id)
+    session_data = redis_client.get(f"session:{session_id}")
     if session_data:
         return json.loads(session_data)
     return {}
 
 def save_session(session_id, data):
-    redis_client.set(session_id, json.dumps(data), ex=3600*24*7)  # 1 semana de expiración
+    redis_client.set(f"session:{session_id}", json.dumps(data), ex=3600*24*7)  # 1 semana de expiración
 
 def delete_session(session_id):
-    redis_client.delete(session_id)
+    redis_client.delete(f"session:{session_id}")
 
 def migrate_sessions_to_postgres():
     for key in redis_client.scan_iter():
