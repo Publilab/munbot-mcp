@@ -171,20 +171,13 @@ llm = Llama.from_pretrained(
 tokenizer = AutoTokenizer.from_pretrained("hf-internal-testing/llama-tokenizer")
 
 def generate_response(prompt: str) -> str:
-    # Usar el tokenizer de Hugging Face para preprocesar los tokens
-    inputs = tokenizer(prompt, return_tensors="np")
-    input_ids = inputs["input_ids"][0].tolist()
-    
-    # Generar respuesta usando los tokens preprocesados
+    # Llama directamente al modelo con el prompt como string
     output = llm.create_completion(
-        prompt=None,  # No usamos el prompt directo
-        tokens_list=input_ids,  # Usamos los tokens preprocesados
+        prompt=prompt,
         max_tokens=256,
     )
-    
-    # Extraer y decodificar los tokens de respuesta
-    output_ids = output["choices"][0]["text"]
-    return tokenizer.decode(output_ids, skip_special_tokens=True)
+    # Extraer el texto generado
+    return output["choices"][0]["text"]
 
 def infer_intent_with_llm(prompt):
     return generate_response(prompt)
