@@ -161,3 +161,7 @@ monitoring/prometheus/Icon
 .tmp.driveupload/50633
 .tmp.driveupload/50635
 .tmp.driveupload/50637
+services/Icon
+services/llm_docs-mcp/Icon
+services/scheduler-mcp/Icon
+services/complaints-mcp/Icon

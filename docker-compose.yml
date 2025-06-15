@@ -124,9 +124,10 @@ services:
     networks:
       - munbot-net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "python", "-c", "import urllib.request,sys; \
+            sys.exit(urllib.request.urlopen('http://localhost:8000/health').getcode()!=200)"]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       retries: 3
     volumes:
       - ./services/llm_docs-mcp/models:/app/services/llm_docs-mcp/models
