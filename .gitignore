@@ -76,8 +76,6 @@ llm-models/
 *.gguf
 *.bin
 
-# Documentos sensibles
-docs/
 
 # Certificados y claves
 certs/

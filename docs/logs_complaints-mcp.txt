@@ -1,0 +1,8 @@
+publilab_consulting@munbot:~$ docker logs complaints-mcp
+[2025-06-13 22:29:01 +0000] [1] [INFO] Starting gunicorn 21.2.0
+[2025-06-13 22:29:01 +0000] [1] [INFO] Listening at: http://0.0.0.0:7000 (1)
+[2025-06-13 22:29:01 +0000] [1] [INFO] Using worker: sync
+[2025-06-13 22:29:01 +0000] [7] [INFO] Booting worker with pid: 7
+[2025-06-13 22:29:02 +0000] [8] [INFO] Booting worker with pid: 8
+[2025-06-13 22:29:02 +0000] [9] [INFO] Booting worker with pid: 9
+[2025-06-13 22:29:02 +0000] [10] [INFO] Booting worker with pid: 10
