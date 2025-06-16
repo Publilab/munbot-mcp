@@ -275,20 +275,60 @@ def detect_intent(user_input: str, history: List[Dict[str, str]] = None) -> Dict
     return detect_intent_llm(user_input, history)
 
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
-    """Busca una respuesta en la base de datos de FAQ por coincidencia exacta o fuzzy simple."""
+    """Busca una respuesta en la base de datos de FAQ.
+
+    Primero intenta una coincidencia exacta y luego aplica un filtrado de tokens
+    ignorando stopwords. Retorna una FAQ solo si al menos dos palabras relevantes
+    coinciden o si la similitud de conjuntos supera un umbral.
+    """
+
+    STOPWORDS = {
+        "a",
+        "al",
+        "del",
+        "de",
+        "la",
+        "el",
+        "los",
+        "las",
+        "un",
+        "una",
+        "unos",
+        "unas",
+        "y",
+        "o",
+        "en",
+        "para",
+        "por",
+    }
+
+    def tokenize(text: str) -> List[str]:
+        words = re.findall(r"\w+", text.lower())
+        return [w for w in words if len(w) >= 3 and w not in STOPWORDS]
+
     try:
         with open(FAQ_DB_PATH, "r", encoding="utf-8") as f:
             faqs = json.load(f)
-        pregunta_lower = pregunta.strip().lower()
+
+        pregunta_norm = pregunta.strip().lower()
+        pregunta_tokens = set(tokenize(pregunta_norm))
+
         for entry in faqs:
-            if entry["pregunta"].strip().lower() == pregunta_lower:
+            entry_text = entry["pregunta"].strip().lower()
+            if entry_text == pregunta_norm:
                 return entry
-        # Fuzzy: contiene palabras clave
+
         for entry in faqs:
-            if any(word in pregunta_lower for word in entry["pregunta"].lower().split()):
+            entry_tokens = set(tokenize(entry["pregunta"]))
+            if not entry_tokens:
+                continue
+            inter = pregunta_tokens & entry_tokens
+            if len(inter) >= 2 or len(inter) / len(entry_tokens) >= 0.5:
                 return entry
+
     except Exception as e:
         logging.warning(f"No se pudo consultar FAQ: {e}")
+
     return None
 
 def get_db():
