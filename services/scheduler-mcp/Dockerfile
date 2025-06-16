@@ -14,6 +14,7 @@ COPY .env ./
 COPY app.py ./
 COPY tasks.py ./
 COPY notifications.py ./
+COPY ../databases/appointments.sql ./databases/appointments.sql
 
 # Instalar dependencias del sistema necesarias para compilar paquetes Python
 RUN apt-get update && apt-get install -y gcc libssl-dev build-essential libffi-dev curl && rm -rf /var/lib/apt/lists/*

@@ -93,8 +93,6 @@ services:
     depends_on:
       - redis
       - postgres
-    volumes:
-      - ./databases:/mcp-core/databases
 
   complaints-mcp:
     build: ./services/complaints-mcp

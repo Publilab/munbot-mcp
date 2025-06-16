@@ -18,14 +18,12 @@ COPY repository.py ./
 COPY models.py ./
 COPY requirements.txt ./
 COPY utils ./utils
+COPY ./databases/reclamos.sql ./databases/reclamos.sql
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar código y configuraciones
 COPY . .
-
-# Eliminar archivos sensibles si existen
-RUN rm -f .env
 
 # Cambiar permisos de trabajo
 RUN chown -R appuser:appuser /app

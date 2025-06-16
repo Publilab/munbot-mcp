@@ -28,6 +28,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY .env orchestrator.py context_manager.py ./
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
+COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json
 
 ENV NO_PROXY=localhost,127.0.0.1
 ENV no_proxy=localhost,127.0.0.1
