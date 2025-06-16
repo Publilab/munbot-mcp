@@ -7,7 +7,7 @@ class ConversationalContextManager:
     def __init__(self, host: str = 'localhost', port: int = 6379, db: int = 0):
         """Inicializa el gestor de contexto con valores por defecto."""
         self.redis_client = redis.Redis(host=host, port=port, db=db, decode_responses=True)
-        self.session_expiry_seconds = 3600  # 1 hora
+        self.session_expiry_seconds = 300  # 5 minutos
 
     def get_context(self, session_id: str) -> Dict[str, Any]:
         """Obtiene el contexto completo de la sesión."""
