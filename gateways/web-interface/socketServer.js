@@ -38,14 +38,12 @@ io.on('connection', (socket) => {
     socket.on('message', async (msg) => {
         console.log('Mensaje recibido del cliente:', msg);
         try {
-            // Construir el payload para el MCP incluyendo la session actual si existe
-            const context = { sender: socket.id };
-            if (sessionId) {
-                context.session_id = sessionId;
-            }
+            // Construir el payload para el MCP. La session_id debe enviarse en la
+            // raiz del JSON para que el orquestador pueda recuperarla.
             const payload = {
                 pregunta: msg,
-                context
+                context: { sender: socket.id },
+                session_id: sessionId
             };
             // Enviar el mensaje al MCP
             const response = await axios.post(MCP_URL, payload);
