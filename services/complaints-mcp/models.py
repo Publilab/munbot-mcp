@@ -6,7 +6,7 @@ class ComplaintModel(BaseModel):
     mail: EmailStr
     mensaje: str = Field(..., min_length=10)
     categoria: int  # 1 reclamo, 2 denuncia
-    departamento: Optional[int] = None  # 1 seguridad, etc. Si falta, se clasifica automáticamente
+    departamento: Optional[int] = Field(None, ge=1, le=8)  # 1-8 según nuevos departamentos
     prioridad: Optional[int] = 3  # 1 alta, 3 normal, 5 baja (opcional)
 
 class ComplaintOut(BaseModel):

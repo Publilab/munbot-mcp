@@ -94,8 +94,8 @@ def tools_call():
             },
             "departamento": {
                 "value": departamento,
-                "valid": bool(departamento and departamento in [1, 2, 3, 4]),
-                "message": "El departamento debe ser un número entre 1 y 4."
+                "valid": bool(departamento and departamento in [1, 2, 3, 4, 5, 6, 7, 8]),
+                "message": "El departamento debe ser un número entre 1 y 8."
             }
         }
 
