@@ -10,6 +10,10 @@
         "type": "string",
         "description": "Nombre completo de la persona que presenta el reclamo."
       },
+      "rut": {
+        "type": "string",
+        "description": "RUT chileno de la persona que presenta el reclamo."
+      },
       "mail": {
         "type": "string",
         "format": "email",
@@ -36,7 +40,7 @@
         "description": "Departamento destinatario: 1 = seguridad, 2 = obras, 3 = ambiente, 4 = otros."
       }
     },
-    "required": ["nombre", "mail", "mensaje", "categoria", "departamento"],
+    "required": ["nombre", "rut", "mail", "mensaje", "categoria", "departamento"],
     "additionalProperties": false
   },
   "result_schema": {

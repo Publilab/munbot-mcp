@@ -1,9 +1,17 @@
-publilab_consulting@munbot:~/munbot-mcp/mcp-core$ docker logs web-interface
+publilab_consulting@munbot:~$ docker logs web-interface
 Servidor WebSocket escuchando en el puerto 3000
 Un usuario se ha conectado
-Mensaje recibido del cliente: hola
-Mensaje recibido del cliente: quiero poner un reclamo
+Mensaje recibido del cliente: Quiero poner un reclamo
 Mensaje recibido del cliente: Emilio Ibarra
+Mensaje recibido del cliente: 13.123.455.3
+Mensaje recibido del cliente: 12.123.456-3
+Mensaje recibido del cliente: 12.345.678-9
+Mensaje recibido del cliente: 13064173-3
+Mensaje recibido del cliente: Los perros comen mucho y hacen ruido en la viña
+Mensaje recibido del cliente: 8
+Mensaje recibido del cliente: ei@publilab.cl
+Mensaje recibido del cliente: Hola
+Mensaje recibido del cliente: Nueva sesion
 Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
     at settle (/app/node_modules/axios/dist/node/axios.cjs:2031:12)
     at IncomingMessage.handleStreamEnd (/app/node_modules/axios/dist/node/axios.cjs:3148:11)
@@ -12,7 +20,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
     at processTicksAndRejections (node:internal/process/task_queues:83:21)
     at Axios.request (/app/node_modules/axios/dist/node/axios.cjs:4258:41)
     at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at async Socket.<anonymous> (/app/socketServer.js:51:30) {
+    at async Socket.<anonymous> (/app/socketServer.js:48:30) {
   code: 'ERR_BAD_RESPONSE',
   config: {
     transitional: {
@@ -34,12 +42,12 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
       'User-Agent': 'axios/1.8.4',
-      'Content-Length': '124',
+      'Content-Length': '123',
       'Accept-Encoding': 'gzip, compress, deflate, br'
     },
     method: 'post',
     url: 'http://mcp-core:5000/orchestrate',
-    data: '{"pregunta":"Emilio Ibarra","context":{"sender":"idJiyFvntslFznx9AAAB","session_id":"24f77aab-c4ff-4c52-a003-96cc3202b41e"}}',
+    data: '{"pregunta":"Nueva sesion","context":{"sender":"z6oCB4K7CDKJ2Q1UAAAB"},"session_id":"4bf388ea-3c75-4039-a0d9-0fb96dbf67e5"}',
     allowAbsoluteUrls: true
   },
   request: <ref *1> ClientRequest {
@@ -69,7 +77,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
     _removedContLen: false,
     _removedTE: false,
     strictContentLength: false,
-    _contentLength: '124',
+    _contentLength: '123',
     _hasBody: true,
     _trailer: '',
     finished: true,
@@ -94,7 +102,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
       _server: null,
       parser: null,
       _httpMessage: [Circular *1],
-      [Symbol(async_id_symbol)]: 242,
+      [Symbol(async_id_symbol)]: 611,
       [Symbol(kHandle)]: [TCP],
       [Symbol(lastWriteQueueSize)]: 0,
       [Symbol(timeout)]: null,
@@ -113,7 +121,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
       'Accept: application/json, text/plain, */*\r\n' +
       'Content-Type: application/json\r\n' +
       'User-Agent: axios/1.8.4\r\n' +
-      'Content-Length: 124\r\n' +
+      'Content-Length: 123\r\n' +
       'Accept-Encoding: gzip, compress, deflate, br\r\n' +
       'Host: mcp-core:5000\r\n' +
       'Connection: close\r\n' +
@@ -194,7 +202,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
       _ending: true,
       _redirectCount: 0,
       _redirects: [],
-      _requestBodyLength: 124,
+      _requestBodyLength: 123,
       _requestBodyBuffers: [],
       _onNativeResponse: [Function (anonymous)],
       _currentRequest: [Circular *1],
@@ -220,7 +228,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
     status: 500,
     statusText: 'Internal Server Error',
     headers: Object [AxiosHeaders] {
-      date: 'Sat, 14 Jun 2025 01:37:25 GMT',
+      date: 'Tue, 17 Jun 2025 20:15:42 GMT',
       server: 'uvicorn',
       'content-length': '54',
       'content-type': 'application/json',
@@ -241,7 +249,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
       headers: [Object [AxiosHeaders]],
       method: 'post',
       url: 'http://mcp-core:5000/orchestrate',
-      data: '{"pregunta":"Emilio Ibarra","context":{"sender":"idJiyFvntslFznx9AAAB","session_id":"24f77aab-c4ff-4c52-a003-96cc3202b41e"}}',
+      data: '{"pregunta":"Nueva sesion","context":{"sender":"z6oCB4K7CDKJ2Q1UAAAB"},"session_id":"4bf388ea-3c75-4039-a0d9-0fb96dbf67e5"}',
       allowAbsoluteUrls: true
     },
     request: <ref *1> ClientRequest {
@@ -263,7 +271,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
       _removedContLen: false,
       _removedTE: false,
       strictContentLength: false,
-      _contentLength: '124',
+      _contentLength: '123',
       _hasBody: true,
       _trailer: '',
       finished: true,
@@ -274,7 +282,7 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
         'Accept: application/json, text/plain, */*\r\n' +
         'Content-Type: application/json\r\n' +
         'User-Agent: axios/1.8.4\r\n' +
-        'Content-Length: 124\r\n' +
+        'Content-Length: 123\r\n' +
         'Accept-Encoding: gzip, compress, deflate, br\r\n' +
         'Host: mcp-core:5000\r\n' +
         'Connection: close\r\n' +
@@ -310,200 +318,3 @@ Error al comunicarse con el MCP: AxiosError: Request failed with status code 500
   },
   status: 500
 }
-Un usuario se ha desconectado
-Un usuario se ha conectado
-Mensaje recibido del cliente: hola
-Error al comunicarse con el MCP: AxiosError: connect ECONNREFUSED 172.18.0.6:5000
-    at Function.AxiosError.from (/app/node_modules/axios/dist/node/axios.cjs:857:14)
-    at RedirectableRequest.handleRequestError (/app/node_modules/axios/dist/node/axios.cjs:3169:25)
-    at RedirectableRequest.emit (node:events:513:28)
-    at ClientRequest.eventHandlers.<computed> (/app/node_modules/follow-redirects/index.js:49:24)
-    at ClientRequest.emit (node:events:513:28)
-    at Socket.socketErrorListener (node:_http_client:494:9)
-    at Socket.emit (node:events:513:28)
-    at emitErrorNT (node:internal/streams/destroy:157:8)
-    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
-    at processTicksAndRejections (node:internal/process/task_queues:83:21)
-    at Axios.request (/app/node_modules/axios/dist/node/axios.cjs:4258:41)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at async Socket.<anonymous> (/app/socketServer.js:51:30) {
-  port: 5000,
-  address: '172.18.0.6',
-  syscall: 'connect',
-  code: 'ECONNREFUSED',
-  errno: -111,
-  config: {
-    transitional: {
-      silentJSONParsing: true,
-      forcedJSONParsing: true,
-      clarifyTimeoutError: false
-    },
-    adapter: [ 'xhr', 'http', 'fetch' ],
-    transformRequest: [ [Function: transformRequest] ],
-    transformResponse: [ [Function: transformResponse] ],
-    timeout: 0,
-    xsrfCookieName: 'XSRF-TOKEN',
-    xsrfHeaderName: 'X-XSRF-TOKEN',
-    maxContentLength: -1,
-    maxBodyLength: -1,
-    env: { FormData: [Function [FormData]], Blob: null },
-    validateStatus: [Function: validateStatus],
-    headers: Object [AxiosHeaders] {
-      Accept: 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-      'User-Agent': 'axios/1.8.4',
-      'Content-Length': '63',
-      'Accept-Encoding': 'gzip, compress, deflate, br'
-    },
-    method: 'post',
-    url: 'http://mcp-core:5000/orchestrate',
-    data: '{"pregunta":"hola","context":{"sender":"sFeNvr2gRNBjiBZ9AAAD"}}',
-    allowAbsoluteUrls: true
-  },
-  request: <ref *1> Writable {
-    _writableState: WritableState {
-      objectMode: false,
-      highWaterMark: 16384,
-      finalCalled: false,
-      needDrain: false,
-      ending: false,
-      ended: false,
-      finished: false,
-      destroyed: false,
-      decodeStrings: true,
-      defaultEncoding: 'utf8',
-      length: 0,
-      writing: false,
-      corked: 0,
-      sync: true,
-      bufferProcessing: false,
-      onwrite: [Function: bound onwrite],
-      writecb: null,
-      writelen: 0,
-      afterWriteTickInfo: null,
-      buffered: [],
-      bufferedIndex: 0,
-      allBuffers: true,
-      allNoop: true,
-      pendingcb: 0,
-      constructed: true,
-      prefinished: false,
-      errorEmitted: false,
-      emitClose: true,
-      autoDestroy: true,
-      errored: null,
-      closed: false,
-      closeEmitted: false,
-      [Symbol(kOnFinished)]: []
-    },
-    _events: [Object: null prototype] {
-      response: [Function: handleResponse],
-      error: [Function: handleRequestError],
-      socket: [Function: handleRequestSocket]
-    },
-    _eventsCount: 3,
-    _maxListeners: undefined,
-    _options: {
-      maxRedirects: 21,
-      maxBodyLength: Infinity,
-      protocol: 'http:',
-      path: '/orchestrate',
-      method: 'POST',
-      headers: [Object: null prototype],
-      agents: [Object],
-      auth: undefined,
-      family: undefined,
-      beforeRedirect: [Function: dispatchBeforeRedirect],
-      beforeRedirects: [Object],
-      hostname: 'mcp-core',
-      port: '5000',
-      agent: undefined,
-      nativeProtocols: [Object],
-      pathname: '/orchestrate'
-    },
-    _ended: false,
-    _ending: true,
-    _redirectCount: 0,
-    _redirects: [],
-    _requestBodyLength: 63,
-    _requestBodyBuffers: [ [Object] ],
-    _onNativeResponse: [Function (anonymous)],
-    _currentRequest: ClientRequest {
-      _events: [Object: null prototype],
-      _eventsCount: 7,
-      _maxListeners: undefined,
-      outputData: [],
-      outputSize: 0,
-      writable: true,
-      destroyed: false,
-      _last: true,
-      chunkedEncoding: false,
-      shouldKeepAlive: false,
-      maxRequestsOnConnectionReached: false,
-      _defaultKeepAlive: true,
-      useChunkedEncodingByDefault: true,
-      sendDate: false,
-      _removedConnection: false,
-      _removedContLen: false,
-      _removedTE: false,
-      strictContentLength: false,
-      _contentLength: '63',
-      _hasBody: true,
-      _trailer: '',
-      finished: false,
-      _headerSent: true,
-      _closed: false,
-      socket: [Socket],
-      _header: 'POST /orchestrate HTTP/1.1\r\n' +
-        'Accept: application/json, text/plain, */*\r\n' +
-        'Content-Type: application/json\r\n' +
-        'User-Agent: axios/1.8.4\r\n' +
-        'Content-Length: 63\r\n' +
-        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
-        'Host: mcp-core:5000\r\n' +
-        'Connection: close\r\n' +
-        '\r\n',
-      _keepAliveTimeout: 0,
-      _onPendingData: [Function: nop],
-      agent: [Agent],
-      socketPath: undefined,
-      method: 'POST',
-      maxHeaderSize: undefined,
-      insecureHTTPParser: undefined,
-      path: '/orchestrate',
-      _ended: false,
-      res: null,
-      aborted: false,
-      timeoutCb: null,
-      upgradeOrConnect: false,
-      parser: null,
-      maxHeadersCount: null,
-      reusedSocket: false,
-      host: 'mcp-core',
-      protocol: 'http:',
-      _redirectable: [Circular *1],
-      [Symbol(kCapture)]: false,
-      [Symbol(kBytesWritten)]: 0,
-      [Symbol(kEndCalled)]: false,
-      [Symbol(kNeedDrain)]: false,
-      [Symbol(corked)]: 0,
-      [Symbol(kOutHeaders)]: [Object: null prototype],
-      [Symbol(kUniqueHeaders)]: null
-    },
-    _currentUrl: 'http://mcp-core:5000/orchestrate',
-    [Symbol(kCapture)]: false
-  },
-  cause: Error: connect ECONNREFUSED 172.18.0.6:5000
-      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1278:16) {
-    errno: -111,
-    code: 'ECONNREFUSED',
-    syscall: 'connect',
-    address: '172.18.0.6',
-    port: 5000
-  }
-}
-Un usuario se ha desconectado
-Un usuario se ha conectado
-Mensaje recibido del cliente: hola
-Mensaje recibido del cliente: Quiero poner un reclamo
-Mensaje recibido del cliente: Emilio Ibarra

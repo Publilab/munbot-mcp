@@ -592,16 +592,21 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el RUT...
     if pending == "rut":
         rut = user_input.strip()
-        # Validar RUT
-        if not validar_rut(rut):
+        rut_formateado = validar_y_formatear_rut(rut)
+        if not rut_formateado:
             return {"respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).", "session_id": session_id, "pending_field": "rut"}
-        ctx["rut"] = rut
+        ctx["rut"] = rut_formateado
         save_session(session_id, ctx)
-        # (Opcional) Simular registro en BD de RUT
-        # print(f"Registrando RUT en BD: {rut}")
-        context_manager.update_context(session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut}).")
+        context_manager.update_context(session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado}).")
         context_manager.update_pending_field(session_id, "mensaje")
         return {"respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?", "session_id": session_id}
+
+    # Si ctx['rut'] ya existe y es válido, no volver a pedirlo ni borrarlo.
+    if ctx.get("rut") and validar_y_formatear_rut(ctx["rut"]):
+        # Saltar pedir RUT
+        if pending == "rut":
+            context_manager.update_pending_field(session_id, "mensaje")
+            return {"respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?", "session_id": session_id}
 
     # Si estamos esperando el MENSAJE del reclamo...
     if pending == "mensaje":
@@ -647,6 +652,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
             "categoria": 1,
             "prioridad": 3
         }
+        logging.info(f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}")
         response = call_tool_microservice("complaint-registrar_reclamo", params)
         context_manager.clear_complaint_state(session_id)
         if "error" in response:
@@ -784,7 +790,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Validación de RUT si corresponde
     if tool == "complaint-registrar_reclamo" and session.get("datos_reclamo"):
         rut = session["datos_reclamo"].get("rut")
-        if not rut or not validar_rut(rut):
+        if not rut or not validar_y_formatear_rut(rut):
             # Borrar datos inválidos
             session["datos_reclamo"] = None
             save_session(session_id, session)
@@ -1032,29 +1038,22 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Error: {e}")
 
-# --- Validación de RUT chileno ---
-def validar_rut(rut: str) -> bool:
-    """Valida el formato y dígito verificador del RUT chileno."""
-    # Limpiar el RUT
-    rut = rut.replace(".", "").replace("-", "").upper()
-    if not rut or len(rut) < 2:
-        return False
-    
-    # Separar número y dígito verificador
+# --- Validación y formateo de RUT chileno ---
+def validar_y_formatear_rut(rut: str) -> str:
+    if not rut:
+        return None
+    rut = rut.replace('.', '').replace('-', '').upper().strip()
+    if len(rut) < 8:
+        return None
     numero = rut[:-1]
     dv = rut[-1]
-    
-    # Validar que el número sea numérico
     if not numero.isdigit():
-        return False
-    
-    # Calcular dígito verificador
+        return None
     suma = 0
     multiplicador = 2
     for r in reversed(numero):
         suma += int(r) * multiplicador
         multiplicador = multiplicador + 1 if multiplicador < 7 else 2
-    
     dvr = 11 - (suma % 11)
     if dvr == 11:
         dvr = '0'
@@ -1062,6 +1061,8 @@ def validar_rut(rut: str) -> bool:
         dvr = 'K'
     else:
         dvr = str(dvr)
-    
-    return dv == dvr
+    if dv != dvr:
+        return None
+    rut_formateado = f"{int(numero):,}".replace(",", ".") + "-" + dv
+    return rut_formateado
 
