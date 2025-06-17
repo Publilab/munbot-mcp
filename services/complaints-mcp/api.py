@@ -63,6 +63,8 @@ def tools_call():
     tool = payload.get("tool", "")
     params = payload.get("params", {})
 
+    app.logger.info(f"[tools_call] tool={tool} params={params}")
+
     # Soportamos registrar reclamo y registrar usuario
     if tool == "complaint-registrar_reclamo":
         # Extraemos campos esperados desde params
@@ -100,6 +102,7 @@ def tools_call():
         # Verificar validaciones
         for field, validation in validations.items():
             if not validation["valid"]:
+                app.logger.warning(f"[tools_call] Validación fallida: {field} valor={validation['value']}")
                 return jsonify({
                     "respuesta": validation["message"],
                     "pending_field": field,
@@ -109,6 +112,7 @@ def tools_call():
         # Si no se indicó departamento, lo clasificamos automáticamente
         if not departamento:
             departamento = clasificar_departamento(mensaje)
+            app.logger.info(f"[tools_call] Departamento clasificado automáticamente: {departamento}")
 
         # Obtenemos la IP remota para almacenarla
         ip = request.remote_addr or "unknown"
@@ -123,8 +127,10 @@ def tools_call():
                 "categoria": categoria,
                 "prioridad": prioridad
             }
+            app.logger.info(f"[tools_call] complaint_data={complaint_data}")
             complaint = ComplaintModel(**complaint_data)
         except Exception as e:
+            app.logger.error(f"[tools_call] Error en datos del reclamo: {str(e)}")
             return jsonify({
                 "respuesta": f"Error en datos del reclamo: {str(e)}",
                 "error": True
@@ -133,8 +139,9 @@ def tools_call():
         # Guardamos en la base de datos
         try:
             complaint_id = repo.add_complaint(complaint, ip)
+            app.logger.info(f"[tools_call] Reclamo guardado con ID: {complaint_id}")
         except Exception as e:
-            app.logger.error(f"Error guardando reclamo en BD: {e}")
+            app.logger.error(f"[tools_call] Error guardando reclamo en BD: {e}")
             return jsonify({
                 "respuesta": "Error interno al registrar tu reclamo.",
                 "error": True
@@ -147,10 +154,12 @@ def tools_call():
                 subject="Reclamo registrado",
                 body=f"Su reclamo fue registrado con ID {complaint_id}.\n\nDetalles:\n- Nombre: {nombre}\n- Departamento: {departamento}\n- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\nGracias por contactarnos."
             )
+            app.logger.info(f"[tools_call] Correo de confirmación enviado a: {complaint.mail}")
         except Exception as e:
-            app.logger.warning(f"No se pudo enviar email: {e}")
+            app.logger.warning(f"[tools_call] No se pudo enviar email: {e}")
             # No abortamos: el reclamo ya está en BD
 
+        app.logger.info(f"[tools_call] Reclamo registrado exitosamente para {nombre} <{mail}>")
         return jsonify({
             "respuesta": f"Reclamo registrado con ID {complaint_id}. Te hemos enviado un correo de confirmación.",
             "complaint_id": complaint_id

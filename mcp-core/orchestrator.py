@@ -578,8 +578,13 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el NOMBRE...
     if pending == "nombre":
         nombre = user_input.strip()
+        # Validar nombre (mínimo dos palabras)
+        if len(nombre.split()) < 2:
+            return {"respuesta": "Por favor, ingresa tu nombre completo (nombre y apellido).", "session_id": session_id, "pending_field": "nombre"}
         ctx["nombre"] = nombre
         save_session(session_id, ctx)
+        # (Opcional) Simular registro en BD de nombre
+        # print(f"Registrando nombre en BD: {nombre}")
         context_manager.update_context(session_id, user_input, f"¡Gracias, {nombre}!")
         context_manager.update_pending_field(session_id, "rut")
         return {"respuesta": f"Genial, {nombre}. Ahora, ¿puedes darme tu RUT? (ej. 12.345.678-5)", "session_id": session_id}
@@ -587,8 +592,13 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el RUT...
     if pending == "rut":
         rut = user_input.strip()
+        # Validar RUT
+        if not validar_rut(rut):
+            return {"respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).", "session_id": session_id, "pending_field": "rut"}
         ctx["rut"] = rut
         save_session(session_id, ctx)
+        # (Opcional) Simular registro en BD de RUT
+        # print(f"Registrando RUT en BD: {rut}")
         context_manager.update_context(session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut}).")
         context_manager.update_pending_field(session_id, "mensaje")
         return {"respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?", "session_id": session_id}
@@ -596,18 +606,22 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el MENSAJE del reclamo...
     if pending == "mensaje":
         mensaje = user_input.strip()
+        if len(mensaje) < 10:
+            return {"respuesta": "Por favor, describe tu reclamo con al menos 10 caracteres.", "session_id": session_id, "pending_field": "mensaje"}
         ctx["mensaje"] = mensaje
         save_session(session_id, ctx)
         context_manager.update_context(session_id, user_input, "Entiendo tu reclamo.")
         context_manager.update_pending_field(session_id, "departamento")
-        # Aquí sí invocamos al modelo LLM para analizar el reclamo
-        # (puedes agregar lógica aquí si quieres usar el modelo para clasificar o extraer info)
-        # Por ahora, solo guardamos el mensaje y seguimos
-        return {"respuesta": "¿A qué departamento corresponde tu reclamo? (1: Atención, 2: Finanzas, 3: Obras, 4: Tránsito)", "session_id": session_id}
+        # Mostrar todas las opciones de departamento
+        opciones = "¿A qué departamento crees que corresponde atender tu reclamo?\n" \
+                  "1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\nEscribe el número al que corresponde el departamento seleccionado."
+        return {"respuesta": opciones, "session_id": session_id}
 
     # Si estamos esperando el DEPARTAMENTO...
     if pending == "departamento":
         depto = user_input.strip()
+        if depto not in [str(i) for i in range(1, 9)]:
+            return {"respuesta": "Por favor, selecciona un número de departamento válido (1-8).", "session_id": session_id, "pending_field": "departamento"}
         ctx["departamento"] = depto
         save_session(session_id, ctx)
         context_manager.update_context(session_id, user_input, f"Departamento {depto} seleccionado.")
@@ -617,6 +631,9 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     # Si estamos esperando el MAIL...
     if pending == "mail":
         mail = user_input.strip()
+        # Validar email
+        if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", mail):
+            return {"respuesta": "El correo electrónico ingresado no es válido. Por favor, ingresa un email válido.", "session_id": session_id, "pending_field": "mail"}
         ctx["mail"] = mail
         save_session(session_id, ctx)
         context_manager.update_context(session_id, user_input, "Correo registrado.")
