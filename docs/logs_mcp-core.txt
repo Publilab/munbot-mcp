@@ -1,8 +1,15 @@
-publilab_consulting@munbot:~/munbot-mcp/mcp-core$ docker logs mcp-core
+publilab_consulting@munbot:~/munbot-mcp$ docker logs -f mcp-core
 llama_context: n_ctx_per_seq (4096) < n_ctx_train (131072) -- the full capacity of the model will not be utilized
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+INFO:root:Migración de sesiones de Redis a PostgreSQL completada.
 INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-INFO:root:Migración de sesiones de Redis a PostgreSQL completada.
+INFO:     172.18.0.9:41266 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.9:52334 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.9:33102 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.9:52234 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.9:37032 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.9:49356 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.9:50752 - "POST /orchestrate HTTP/1.1" 200 OK

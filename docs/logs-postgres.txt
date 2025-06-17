@@ -1,0 +1,92 @@
+publilab_consulting@munbot:~/munbot-mcp$ docker logs -f postgres
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... Etc/UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+initdb: warning: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+waiting for server to start....2025-06-17 14:43:44.427 UTC [47] LOG:  starting PostgreSQL 14.18 (Debian 14.18-1.pgdg120+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+2025-06-17 14:43:44.435 UTC [47] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-06-17 14:43:44.449 UTC [48] LOG:  database system was shut down at 2025-06-17 14:43:43 UTC
+2025-06-17 14:43:44.480 UTC [47] LOG:  database system is ready to accept connections
+ done
+server started
+CREATE DATABASE
+
+
+/usr/local/bin/docker-entrypoint.sh: running /docker-entrypoint-initdb.d/init-postgres.sql
+CREATE EXTENSION
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+INSERT 0 8
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+INSERT 0 3
+INSERT 0 9
+INSERT 0 3
+INSERT 0 3
+INSERT 0 4
+INSERT 0 3
+2025-06-17 14:43:45.774 UTC [61] WARNING:  there is no transaction in progress
+psql:/docker-entrypoint-initdb.d/init-postgres.sql:181: WARNING:  there is no transaction in progress
+COMMIT
+
+
+2025-06-17 14:43:45.793 UTC [47] LOG:  received fast shutdown request
+waiting for server to shut down....2025-06-17 14:43:45.802 UTC [47] LOG:  aborting any active transactions
+2025-06-17 14:43:45.847 UTC [47] LOG:  background worker "logical replication launcher" (PID 54) exited with exit code 1
+2025-06-17 14:43:45.850 UTC [49] LOG:  shutting down
+2025-06-17 14:43:45.910 UTC [47] LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+2025-06-17 14:43:46.139 UTC [1] LOG:  starting PostgreSQL 14.18 (Debian 14.18-1.pgdg120+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+2025-06-17 14:43:46.143 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2025-06-17 14:43:46.144 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2025-06-17 14:43:46.148 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-06-17 14:43:46.154 UTC [64] LOG:  database system was shut down at 2025-06-17 14:43:45 UTC
+2025-06-17 14:43:46.180 UTC [1] LOG:  database system is ready to accept connections

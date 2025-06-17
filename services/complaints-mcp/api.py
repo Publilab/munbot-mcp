@@ -19,11 +19,18 @@ app = Flask(__name__)
 # ------------------------------------------------------------
 #  1) CONEXIÓN A POSTGRES USANDO VARIABLES DE ENTORNO
 # ------------------------------------------------------------
-DB_HOST = os.getenv("POSTGRES_HOST")
-DB_PORT = int(os.getenv("POSTGRES_PORT"))
-DB_NAME = os.getenv("POSTGRES_DB")
-DB_USER = os.getenv("POSTGRES_USER")
-DB_PASS = os.getenv("POSTGRES_PASSWORD")
+DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
+DB_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
+DB_NAME = os.getenv("POSTGRES_DB", "munbot")
+DB_USER = os.getenv("POSTGRES_USER", "munbot")
+DB_PASS = os.getenv("POSTGRES_PASSWORD", "1234")
+
+print(f"[DEBUG] Variables de entorno para Postgres:")
+print(f"  POSTGRES_HOST={DB_HOST}")
+print(f"  POSTGRES_PORT={DB_PORT}")
+print(f"  POSTGRES_DB={DB_NAME}")
+print(f"  POSTGRES_USER={DB_USER}")
+print(f"  POSTGRES_PASSWORD={'<oculto>' if DB_PASS else None}")
 
 MAX_RETRIES = 10
 RETRY_DELAY = 3  # segundos
@@ -31,6 +38,7 @@ RETRY_DELAY = 3  # segundos
 conn = None
 for attempt in range(MAX_RETRIES):
     try:
+        print(f"[DEBUG] Intento {attempt+1}: Conectando a {DB_HOST}:{DB_PORT}/{DB_NAME} como {DB_USER}")
         conn = psycopg2.connect(
             dbname=DB_NAME,
             user=DB_USER,
@@ -38,14 +46,14 @@ for attempt in range(MAX_RETRIES):
             host=DB_HOST,
             port=DB_PORT
         )
-        app.logger.info("Conectado a PostgreSQL.")
+        print("[DEBUG] Conexión a PostgreSQL exitosa.")
         break
     except psycopg2.OperationalError as e:
-        app.logger.error(f"Error conectando a PostgreSQL (intento {attempt+1}/{MAX_RETRIES}): {e}")
+        print(f"[ERROR] Error conectando a PostgreSQL (intento {attempt+1}/{MAX_RETRIES}): {e}")
         time.sleep(RETRY_DELAY)
 
 if not conn:
-    app.logger.error("No se pudo conectar a PostgreSQL después de varios intentos.")
+    print("[ERROR] No se pudo conectar a PostgreSQL después de varios intentos.")
 
 repo = ComplaintRepository(conn)  # instancia del repositorio
 
