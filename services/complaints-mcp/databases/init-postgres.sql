@@ -8,6 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS complaints (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     nombre VARCHAR(255) NOT NULL,
+    rut VARCHAR(20),
     mail VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     mensaje TEXT NOT NULL,

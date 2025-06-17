@@ -645,6 +645,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         context_manager.clear_pending_field(session_id)
         # Preparar y enviar el reclamo
         params = {
+            "rut": ctx["rut"],
             "nombre": ctx["nombre"],
             "mail": mail,
             "mensaje": ctx["mensaje"],
@@ -1065,4 +1066,3 @@ def validar_y_formatear_rut(rut: str) -> str:
         return None
     rut_formateado = f"{int(numero):,}".replace(",", ".") + "-" + dv
     return rut_formateado
-
