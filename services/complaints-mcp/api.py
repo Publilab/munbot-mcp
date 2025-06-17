@@ -4,6 +4,7 @@ import os
 import psycopg2
 from flask import Flask, request, jsonify
 from models import ComplaintModel  # asume que el modelo Pydantic no cambió
+from utils.rut_utils import validar_y_formatear_rut
 from repository import ComplaintRepository
 from utils.email import send_email
 from utils.classifier import clasificar_departamento
@@ -98,7 +99,7 @@ def tools_call():
     if tool == "complaint-registrar_reclamo":
         # Extraemos campos esperados desde params
         nombre = params.get("nombre")
-        rut = params.get("rut")
+        rut_original = params.get("rut")
         mail = params.get("correo") or params.get("mail")
         mensaje = params.get("detalle_reclamo") or params.get("mensaje")
         
@@ -106,13 +107,16 @@ def tools_call():
         categoria_str = params.get("categoria", "1")  # Default "1" (reclamo)
         prioridad_str = params.get("prioridad", "3")  # Default "3" (normal)
 
+        # Validar y formatear RUT
+        rut_formateado = validar_y_formatear_rut(rut_original)
+        if not rut_formateado:
+            app.logger.warning(f"[tools_call] Validación fallida: RUT='{rut_original}' no es válido.")
+            return jsonify({"respuesta": "Por favor, proporciona un RUT válido (ej. 12.345.678-K).", "pending_field": "rut", "error": True}), 200
+
         # Validaciones básicas de presencia y formato
         if not (nombre and len(nombre) >= 3):
             app.logger.warning(f"[tools_call] Validación fallida: nombre='{nombre}'")
             return jsonify({"respuesta": "El nombre debe tener al menos 3 caracteres.", "pending_field": "nombre", "error": True}), 200
-        if not (rut and len(rut) >= 7):
-            app.logger.warning(f"[tools_call] Validación fallida: rut='{rut}'")
-            return jsonify({"respuesta": "Por favor, proporciona un RUT válido.", "pending_field": "rut", "error": True}), 200
         if not (mail and re.match(r"[^@]+@[^@]+\.[^@]+", mail)):
             app.logger.warning(f"[tools_call] Validación fallida: mail='{mail}'")
             return jsonify({"respuesta": "Por favor, proporciona un correo electrónico válido.", "pending_field": "mail", "error": True}), 200
@@ -136,7 +140,7 @@ def tools_call():
         try:
             complaint_data = {
                 "nombre": nombre,
-                "rut": rut,
+                "rut": rut_formateado, # Usar RUT formateado y validado
                 "mail": mail,
                 "mensaje": mensaje,
                 "departamento": departamento_param_for_model,
@@ -164,7 +168,7 @@ def tools_call():
 
         # Guardar usuario en tabla users
         try:
-            repo.register_user(nombre, rut, ip)
+            repo.register_user(nombre, rut_formateado, ip) # Usar RUT formateado
         except Exception as e:
             app.logger.warning(f"[tools_call] No se pudo registrar usuario en tabla users: {e}")
             # No abortamos, seguimos con el reclamo
@@ -185,7 +189,7 @@ def tools_call():
             send_email(
                 to=complaint.mail,
                 subject="Reclamo registrado",
-                body=f"Su reclamo fue registrado con ID {complaint_id}.\n\nDetalles:\n- Nombre: {complaint.nombre}\n- RUT: {complaint.rut}\n- Departamento: {complaint.departamento}\n- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\nGracias por contactarnos."
+                body=f"Su reclamo fue registrado con ID {complaint_id}.\n\nDetalles:\n- Nombre: {complaint.nombre}\n- RUT: {rut_formateado}\n- Departamento: {complaint.departamento}\n- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\nGracias por contactarnos."
             )
             app.logger.info(f"[tools_call] Correo de confirmación enviado a: {complaint.mail}")
         except Exception as e:
@@ -200,33 +204,30 @@ def tools_call():
     elif tool == "complaint-register_user":
         # Validación de nombre y RUT
         nombre = params.get("nombre")
-        rut = params.get("rut")
+        rut_original = params.get("rut")
         
-        validations = {
-            "nombre": {
-                "value": nombre,
-                "valid": bool(nombre and len(nombre) >= 3),
-                "message": "El nombre debe tener al menos 3 caracteres."
-            },
-            "rut": {
-                "value": rut,
-                "valid": bool(rut and validar_rut(rut)),
-                "message": "Por favor, proporciona un RUT válido (ejemplo: 12.345.678-9)."
-            }
-        }
+        # Validar y formatear RUT
+        rut_formateado = validar_y_formatear_rut(rut_original)
+        if not rut_formateado:
+            app.logger.warning(f"[tools_call] Validación fallida para register_user: RUT='{rut_original}' no es válido.")
+            return jsonify({
+                "respuesta": "Por favor, proporciona un RUT válido (ej. 12.345.678-K).",
+                "pending_field": "rut",
+                "error": True
+            }), 200
 
-        # Verificar validaciones
-        for field, validation in validations.items():
-            if not validation["valid"]:
-                return jsonify({
-                    "respuesta": validation["message"],
-                    "pending_field": field,
-                    "error": True
-                }), 200
+        # Validar nombre
+        if not (nombre and len(nombre) >= 3):
+            app.logger.warning(f"[tools_call] Validación fallida para register_user: nombre='{nombre}'.")
+            return jsonify({
+                "respuesta": "El nombre debe tener al menos 3 caracteres.",
+                "pending_field": "nombre",
+                "error": True
+            }), 200
 
         # Llamamos al repositorio
         try:
-            user_id = repo.register_user(nombre, rut, request.remote_addr)
+            user_id = repo.register_user(nombre, rut_formateado, request.remote_addr) # Usar RUT formateado
         except Exception as e:
             app.logger.error(f"Error registrando usuario: {e}")
             return jsonify({
@@ -286,4 +287,4 @@ def health():
 #  5) ARRANQUE DE LA APP
 # ------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=7000)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 7000)))
