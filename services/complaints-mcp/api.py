@@ -25,12 +25,11 @@ DB_NAME = os.getenv("POSTGRES_DB", "munbot")
 DB_USER = os.getenv("POSTGRES_USER", "munbot")
 DB_PASS = os.getenv("POSTGRES_PASSWORD", "1234")
 
-print(f"[DEBUG] Variables de entorno para Postgres:")
-print(f"  POSTGRES_HOST={DB_HOST}")
-print(f"  POSTGRES_PORT={DB_PORT}")
-print(f"  POSTGRES_DB={DB_NAME}")
-print(f"  POSTGRES_USER={DB_USER}")
-print(f"  POSTGRES_PASSWORD={'<oculto>' if DB_PASS else None}")
+app.logger.info(f"[DB_CONFIG] POSTGRES_HOST={DB_HOST}")
+app.logger.info(f"[DB_CONFIG] POSTGRES_PORT={DB_PORT}")
+app.logger.info(f"[DB_CONFIG] POSTGRES_DB={DB_NAME}")
+app.logger.info(f"[DB_CONFIG] POSTGRES_USER={DB_USER}")
+app.logger.info(f"[DB_CONFIG] POSTGRES_PASSWORD={'<presente>' if DB_PASS else '<no presente>'}")
 
 MAX_RETRIES = 10
 RETRY_DELAY = 3  # segundos
@@ -38,7 +37,7 @@ RETRY_DELAY = 3  # segundos
 conn = None
 for attempt in range(MAX_RETRIES):
     try:
-        print(f"[DEBUG] Intento {attempt+1}: Conectando a {DB_HOST}:{DB_PORT}/{DB_NAME} como {DB_USER}")
+        app.logger.info(f"[DB_CONNECT] Intento {attempt+1}/{MAX_RETRIES}: Conectando a {DB_HOST}:{DB_PORT}/{DB_NAME} como {DB_USER}...")
         conn = psycopg2.connect(
             dbname=DB_NAME,
             user=DB_USER,
@@ -46,23 +45,45 @@ for attempt in range(MAX_RETRIES):
             host=DB_HOST,
             port=DB_PORT
         )
-        print("[DEBUG] Conexión a PostgreSQL exitosa.")
+        app.logger.info("[DB_CONNECT] Conexión a PostgreSQL exitosa.")
         break
     except psycopg2.OperationalError as e:
-        print(f"[ERROR] Error conectando a PostgreSQL (intento {attempt+1}/{MAX_RETRIES}): {e}")
+        app.logger.error(f"[DB_CONNECT] Error conectando a PostgreSQL (intento {attempt+1}/{MAX_RETRIES}): {e}")
+        if attempt + 1 == MAX_RETRIES:
+            app.logger.error("[DB_CONNECT] Se agotaron los intentos para conectar a PostgreSQL.")
         time.sleep(RETRY_DELAY)
 
 if not conn:
-    print("[ERROR] No se pudo conectar a PostgreSQL después de varios intentos.")
+    app.logger.critical("[DB_CONNECT] FATAL: No se pudo conectar a PostgreSQL después de varios intentos. El servicio podría no funcionar correctamente.")
 
 repo = ComplaintRepository(conn)  # instancia del repositorio
 
+# Helper function to redact sensitive information from dictionaries for logging
+def _get_redacted_log_data(data_dict: dict) -> dict:
+    """Creates a copy of a dictionary with sensitive fields redacted or truncated."""
+    if not isinstance(data_dict, dict):
+        return {} # Or handle as an error
+    
+    data_to_log = data_dict.copy()
+    sensitive_fields_to_redact = ["rut", "mail", "correo", "nombre"]
+    message_fields_to_truncate = ["mensaje", "detalle_reclamo"]
+
+    for field in sensitive_fields_to_redact:
+        if field in data_to_log:
+            data_to_log[field] = "<redactado>"
+
+    for field in message_fields_to_truncate:
+        if field in data_to_log and isinstance(data_to_log[field], str):
+            msg = data_to_log[field]
+            data_to_log[field] = (msg[:50] + "...") if len(msg) > 50 else msg
+    
+    return data_to_log
 
 # ------------------------------------------------------------
 #  2) ENDPOINT /tools/call
 #     - El Orquestador hace POST a /tools/call con JSON:
 #         { "tool": "<tool_name>", "params": { ... } }
-#     - Aquí manejamos únicamente "complaint-registrar_reclamo".
+#     - Aquí manejamos "complaint-registrar_reclamo" y "complaint-register_user".
 #     - Devolvemos JSON con "respuesta": "<texto>".
 # ------------------------------------------------------------
 @app.route("/tools/call", methods=["POST"])
@@ -71,80 +92,84 @@ def tools_call():
     tool = payload.get("tool", "")
     params = payload.get("params", {})
 
-    app.logger.info(f"[tools_call] tool={tool} params={params}")
+    app.logger.info(f"[tools_call] tool={tool} params={_get_redacted_log_data(params)}")
 
     # Soportamos registrar reclamo y registrar usuario
     if tool == "complaint-registrar_reclamo":
         # Extraemos campos esperados desde params
         nombre = params.get("nombre")
+        rut = params.get("rut")
         mail = params.get("correo") or params.get("mail")
         mensaje = params.get("detalle_reclamo") or params.get("mensaje")
-        departamento = params.get("departamento")
-        categoria = params.get("categoria", 1)  # 1 = reclamo por defecto
-        prioridad = params.get("prioridad", 3)  # 3 = normal por defecto
+        
+        departamento_str = params.get("departamento") # Puede ser None o un string "1", "2", etc.
+        categoria_str = params.get("categoria", "1")  # Default "1" (reclamo)
+        prioridad_str = params.get("prioridad", "3")  # Default "3" (normal)
 
-        # Validaciones detalladas
-        validations = {
-            "nombre": {
-                "value": nombre,
-                "valid": bool(nombre and len(nombre) >= 3),
-                "message": "El nombre debe tener al menos 3 caracteres."
-            },
-            "mail": {
-                "value": mail,
-                "valid": bool(mail and re.match(r"[^@]+@[^@]+\.[^@]+", mail)),
-                "message": "Por favor, proporciona un correo electrónico válido."
-            },
-            "mensaje": {
-                "value": mensaje,
-                "valid": bool(mensaje and len(mensaje) >= 10),
-                "message": "El mensaje debe tener al menos 10 caracteres."
-            },
-            "departamento": {
-                "value": departamento,
-                "valid": bool(departamento and departamento in [1, 2, 3, 4, 5, 6, 7, 8]),
-                "message": "El departamento debe ser un número entre 1 y 8."
-            }
-        }
+        # Validaciones básicas de presencia y formato
+        if not (nombre and len(nombre) >= 3):
+            app.logger.warning(f"[tools_call] Validación fallida: nombre='{nombre}'")
+            return jsonify({"respuesta": "El nombre debe tener al menos 3 caracteres.", "pending_field": "nombre", "error": True}), 200
+        if not (rut and len(rut) >= 7):
+            app.logger.warning(f"[tools_call] Validación fallida: rut='{rut}'")
+            return jsonify({"respuesta": "Por favor, proporciona un RUT válido.", "pending_field": "rut", "error": True}), 200
+        if not (mail and re.match(r"[^@]+@[^@]+\.[^@]+", mail)):
+            app.logger.warning(f"[tools_call] Validación fallida: mail='{mail}'")
+            return jsonify({"respuesta": "Por favor, proporciona un correo electrónico válido.", "pending_field": "mail", "error": True}), 200
+        if not (mensaje and len(mensaje) >= 10):
+            app.logger.warning(f"[tools_call] Validación fallida: mensaje de longitud {len(mensaje) if mensaje else 0}")
+            return jsonify({"respuesta": "El mensaje debe tener al menos 10 caracteres.", "pending_field": "mensaje", "error": True}), 200
 
-        # Verificar validaciones
-        for field, validation in validations.items():
-            if not validation["valid"]:
-                app.logger.warning(f"[tools_call] Validación fallida: {field} valor={validation['value']}")
-                return jsonify({
-                    "respuesta": validation["message"],
-                    "pending_field": field,
-                    "error": True
-                }), 200
+        departamento_param_for_model = None
+        if departamento_str:
+            departamento_param_for_model = departamento_str
+        else:
+            if mensaje:
+                classified_dept = clasificar_departamento(mensaje)
+                app.logger.info(f"[tools_call] Departamento clasificado automáticamente: {classified_dept}")
+                departamento_param_for_model = classified_dept
+            else:
+                app.logger.warning("[tools_call] No se proporcionó departamento y no hay mensaje para clasificarlo.")
 
-        # Si no se indicó departamento, lo clasificamos automáticamente
-        if not departamento:
-            departamento = clasificar_departamento(mensaje)
-            app.logger.info(f"[tools_call] Departamento clasificado automáticamente: {departamento}")
-
-        # Obtenemos la IP remota para almacenarla
         ip = request.remote_addr or "unknown"
 
-        # Construimos el objeto ComplaintModel para validar
         try:
             complaint_data = {
                 "nombre": nombre,
+                "rut": rut,
                 "mail": mail,
                 "mensaje": mensaje,
-                "departamento": departamento,
-                "categoria": categoria,
-                "prioridad": prioridad
+                "departamento": departamento_param_for_model,
+                "categoria": categoria_str,
+                "prioridad": prioridad_str
             }
-            app.logger.info(f"[tools_call] complaint_data={complaint_data}")
+            app.logger.info(f"[tools_call] Datos para ComplaintModel: {_get_redacted_log_data(complaint_data)}")
             complaint = ComplaintModel(**complaint_data)
+            app.logger.info(f"[tools_call] ComplaintModel creado exitosamente: {_get_redacted_log_data(complaint.model_dump())}")
         except Exception as e:
-            app.logger.error(f"[tools_call] Error en datos del reclamo: {str(e)}")
+            app.logger.error(f"[tools_call] Error de validación Pydantic para el reclamo: {str(e)}", exc_info=True)
+            error_messages = []
+            if hasattr(e, 'errors') and callable(e.errors):
+                for error in e.errors():
+                    field = " -> ".join(map(str, error.get('loc', ['desconocido'])))
+                    message = error.get('msg', 'Error desconocido')
+                    error_messages.append(f"Campo '{field}': {message}")
+                user_message = f"Error en los datos del reclamo: {'; '.join(error_messages)}"
+            else:
+                user_message = "Error en los datos proporcionados para el reclamo."
             return jsonify({
-                "respuesta": f"Error en datos del reclamo: {str(e)}",
+                "respuesta": user_message,
                 "error": True
             }), 400
 
-        # Guardamos en la base de datos
+        # Guardar usuario en tabla users
+        try:
+            repo.register_user(nombre, rut, ip)
+        except Exception as e:
+            app.logger.warning(f"[tools_call] No se pudo registrar usuario en tabla users: {e}")
+            # No abortamos, seguimos con el reclamo
+
+        # Guardamos en la base de datos (tabla complaints)
         try:
             complaint_id = repo.add_complaint(complaint, ip)
             app.logger.info(f"[tools_call] Reclamo guardado con ID: {complaint_id}")
@@ -160,14 +185,13 @@ def tools_call():
             send_email(
                 to=complaint.mail,
                 subject="Reclamo registrado",
-                body=f"Su reclamo fue registrado con ID {complaint_id}.\n\nDetalles:\n- Nombre: {nombre}\n- Departamento: {departamento}\n- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\nGracias por contactarnos."
+                body=f"Su reclamo fue registrado con ID {complaint_id}.\n\nDetalles:\n- Nombre: {complaint.nombre}\n- RUT: {complaint.rut}\n- Departamento: {complaint.departamento}\n- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\nGracias por contactarnos."
             )
             app.logger.info(f"[tools_call] Correo de confirmación enviado a: {complaint.mail}")
         except Exception as e:
             app.logger.warning(f"[tools_call] No se pudo enviar email: {e}")
-            # No abortamos: el reclamo ya está en BD
 
-        app.logger.info(f"[tools_call] Reclamo registrado exitosamente para {nombre} <{mail}>")
+        app.logger.info(f"[tools_call] Reclamo {complaint_id} registrado exitosamente.")
         return jsonify({
             "respuesta": f"Reclamo registrado con ID {complaint_id}. Te hemos enviado un correo de confirmación.",
             "complaint_id": complaint_id

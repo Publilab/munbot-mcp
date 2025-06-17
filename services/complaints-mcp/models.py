@@ -3,6 +3,7 @@ from typing import Optional
 
 class ComplaintModel(BaseModel):
     nombre: str = Field(..., min_length=3, max_length=120)
+    rut: str = Field(..., min_length=7, max_length=15)
     mail: EmailStr
     mensaje: str = Field(..., min_length=10)
     categoria: int  # 1 reclamo, 2 denuncia
@@ -15,6 +16,7 @@ class ComplaintOut(BaseModel):
     creado_en: str
     mensaje: str
     nombre: str
+    rut: str
     categoria: int
     departamento: int
     prioridad: int

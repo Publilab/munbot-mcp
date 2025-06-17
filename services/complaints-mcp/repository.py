@@ -33,16 +33,17 @@ class ComplaintRepository:
         with self.conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO complaints (
-                    id, nombre, mail, mensaje, categoria, departamento, prioridad, estado, ip
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    id, nombre, rut, mail, mensaje, categoria, departamento, prioridad, estado, ip
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (
                 complaint_id,
                 complaint.nombre,
+                complaint.rut,
                 complaint.mail,
                 complaint.mensaje,
                 complaint.categoria,
                 complaint.departamento,
-                getattr(complaint, 'prioridad', 3),
+                complaint.prioridad,
                 'pendiente',
                 ip
             ))
