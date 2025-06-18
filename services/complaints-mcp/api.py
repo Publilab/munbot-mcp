@@ -184,12 +184,23 @@ def tools_call():
                 "error": True
             }), 500
 
+        # Preparamos el texto del comprobante con los datos principales
+        receipt_text = (
+            f"Su reclamo fue registrado con ID {complaint_id}.\n\n"
+            f"Detalles:\n"
+            f"- Nombre: {complaint.nombre}\n"
+            f"- RUT: {rut_formateado}\n"
+            f"- Departamento: {complaint.departamento}\n"
+            f"- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\n"
+            "Gracias por contactarnos."
+        )
+
         # Enviamos correo de confirmación
         try:
             send_email(
                 to=complaint.mail,
                 subject="Reclamo registrado",
-                body=f"Su reclamo fue registrado con ID {complaint_id}.\n\nDetalles:\n- Nombre: {complaint.nombre}\n- RUT: {rut_formateado}\n- Departamento: {complaint.departamento}\n- Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\nGracias por contactarnos."
+                body=receipt_text,
             )
             app.logger.info(f"[tools_call] Correo de confirmación enviado a: {complaint.mail}")
         except Exception as e:
@@ -197,7 +208,7 @@ def tools_call():
 
         app.logger.info(f"[tools_call] Reclamo {complaint_id} registrado exitosamente.")
         return jsonify({
-            "respuesta": f"Reclamo registrado con ID {complaint_id}. Te hemos enviado un correo de confirmación.",
+            "respuesta": receipt_text,
             "complaint_id": complaint_id
         }), 201
     
