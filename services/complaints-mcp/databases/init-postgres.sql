@@ -16,12 +16,12 @@ CREATE TABLE IF NOT EXISTS complaints (
     prioridad SMALLINT NOT NULL DEFAULT 1,
     estado TEXT NOT NULL DEFAULT 'pendiente',
     ip INET,
-    creado_en TIMESTAMPTZ DEFAULT now(),
+    created_at TIMESTAMPTZ DEFAULT now(),
     asignado_a TEXT
 );
 
 -- Índices para optimizar consultas
-CREATE INDEX IF NOT EXISTS idx_complaints_created_at ON complaints(created_en);
+CREATE INDEX IF NOT EXISTS idx_complaints_created_at ON complaints(created_at);
 CREATE INDEX IF NOT EXISTS idx_complaints_departamento ON complaints(departamento);
 CREATE INDEX IF NOT EXISTS idx_complaints_mail ON complaints(mail);
 
