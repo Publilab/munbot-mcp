@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from models import ComplaintModel  # asume que el modelo Pydantic no cambió
 from utils.rut_utils import validar_y_formatear_rut
 from repository import ComplaintRepository
-from utils.email import send_email
+from utils.email_utils import send_email
 from utils.classifier import clasificar_departamento
 from dotenv import load_dotenv
 import time
