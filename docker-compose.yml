@@ -58,6 +58,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./databases/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql
+      - ./databases/reclamos.sql:/docker-entrypoint-initdb.d/reclamos.sql
     networks:
       - munbot-net
     healthcheck:

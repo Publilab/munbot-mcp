@@ -7,19 +7,21 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- Tabla de reclamos (complaints)
 CREATE TABLE IF NOT EXISTS complaints (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    nombre VARCHAR(255) NOT NULL,
-    rut VARCHAR(20),
-    mail VARCHAR(255) NOT NULL,
-    telefono VARCHAR(20),
+    nombre TEXT NOT NULL,
+    rut TEXT NOT NULL,
+    mail TEXT NOT NULL,
     mensaje TEXT NOT NULL,
-    departamento VARCHAR(100),
-    ip_address INET,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    departamento SMALLINT NOT NULL,
+    categoria SMALLINT NOT NULL DEFAULT 1,
+    prioridad SMALLINT NOT NULL DEFAULT 1,
+    estado TEXT NOT NULL DEFAULT 'pendiente',
+    ip INET,
+    creado_en TIMESTAMPTZ DEFAULT now(),
+    asignado_a TEXT
 );
 
 -- Índices para optimizar consultas
-CREATE INDEX IF NOT EXISTS idx_complaints_created_at ON complaints(created_at);
+CREATE INDEX IF NOT EXISTS idx_complaints_created_at ON complaints(created_en);
 CREATE INDEX IF NOT EXISTS idx_complaints_departamento ON complaints(departamento);
 CREATE INDEX IF NOT EXISTS idx_complaints_mail ON complaints(mail);
 
@@ -33,9 +35,9 @@ CREATE TABLE IF NOT EXISTS appointments (
     usu_mail VARCHAR(255) NOT NULL,
     usu_whatsapp VARCHAR(20) NOT NULL,
     fecha DATE NOT NULL,
-    hora VARCHAR(10) NOT NULL,
-    avlb INTEGER DEFAULT 1,
-    usu_conf INTEGER DEFAULT 0,
+    hora TIME NOT NULL,
+    avlb BOOLEAN DEFAULT TRUE,
+    usu_conf BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -69,14 +71,14 @@ CREATE TRIGGER update_appointments_updated_at
 -- Insertar datos de ejemplo para citas disponibles
 INSERT INTO appointments (func, cod_func, fecha, hora, avlb, usu_conf, usu_name, usu_mail, usu_whatsapp)
 VALUES 
-    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '1 day', '09:00', 1, 0, '', '', ''),
-    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '1 day', '10:00', 1, 0, '', '', ''),
-    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '1 day', '11:00', 1, 0, '', '', ''),
-    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '2 days', '09:00', 1, 0, '', '', ''),
-    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '2 days', '10:00', 1, 0, '', '', ''),
-    ('Obras Públicas', 'OP001', CURRENT_DATE + INTERVAL '1 day', '14:00', 1, 0, '', '', ''),
-    ('Obras Públicas', 'OP001', CURRENT_DATE + INTERVAL '1 day', '15:00', 1, 0, '', '', ''),
-    ('Obras Públicas', 'OP001', CURRENT_DATE + INTERVAL '2 days', '14:00', 1, 0, '', '', '')
+    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '1 day', '09:00:00', TRUE, FALSE, '', '', ''),
+    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '1 day', '10:00:00', TRUE, FALSE, '', '', ''),
+    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '1 day', '11:00:00', TRUE, FALSE, '', '', ''),
+    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '2 days', '09:00:00', TRUE, FALSE, '', '', ''),
+    ('Atención Ciudadana', 'AC001', CURRENT_DATE + INTERVAL '2 days', '10:00:00', TRUE, FALSE, '', '', ''),
+    ('Obras Públicas', 'OP001', CURRENT_DATE + INTERVAL '1 day', '14:00:00', TRUE, FALSE, '', '', ''),
+    ('Obras Públicas', 'OP001', CURRENT_DATE + INTERVAL '1 day', '15:00:00', TRUE, FALSE, '', '', ''),
+    ('Obras Públicas', 'OP001', CURRENT_DATE + INTERVAL '2 days', '14:00:00', TRUE, FALSE, '', '', '')
 ON CONFLICT DO NOTHING;
 
 -- Tabla de documentos oficiales
