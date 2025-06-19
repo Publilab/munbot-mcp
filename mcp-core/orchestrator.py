@@ -656,9 +656,13 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         logging.info(f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}")
         response = call_tool_microservice("complaint-registrar_reclamo", params)
         context_manager.clear_complaint_state(session_id)
-        if "error" in response:
+        if response.get("error"):
             return {"respuesta": "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente.", "session_id": session_id}
-        return {"respuesta": f"¡Gracias! Tu reclamo ha sido registrado. {response.get('respuesta', '')}", "session_id": session_id}
+        success_msg = (
+            "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
+            "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
+        )
+        return {"respuesta": success_msg, "session_id": session_id}
 
     # Interceptar saludos, despedidas, agradecimientos y frases empáticas
     SALUDOS = [
