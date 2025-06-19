@@ -658,7 +658,13 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         context_manager.clear_complaint_state(session_id)
         if "error" in response:
             return {"respuesta": "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente.", "session_id": session_id}
-        return {"respuesta": f"¡Gracias! Tu reclamo ha sido registrado. {response.get('respuesta', '')}", "session_id": session_id}
+        success_msg = (
+            "He registrado tu reclamo en mi base de datos y he enviado la "
+            "información del registro para que puedas comprobar el estado de avances. "
+            "Uno de nuestros funcionarios se encargará de dar respuesta a tu "
+            "reclamo y se pondrá en contacto contigo"
+        )
+        return {"respuesta": success_msg, "session_id": session_id}
 
     # Interceptar saludos, despedidas, agradecimientos y frases empáticas
     SALUDOS = [
