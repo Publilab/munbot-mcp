@@ -151,7 +151,7 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         "params": params
     }
     resp = requests.post(service_url, json=payload, timeout=30)
-    if resp.status_code == 200:
+    if 200 <= resp.status_code < 300:
         return resp.json()
     else:
         return {"error": f"Error {resp.status_code}: {resp.text}"}
