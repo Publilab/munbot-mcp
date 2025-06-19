@@ -207,6 +207,7 @@ def tools_call():
             app.logger.warning(f"[tools_call] No se pudo enviar email: {e}")
 
         app.logger.info(f"[tools_call] Reclamo {complaint_id} registrado exitosamente.")
+        app.logger.info(f"[tools_call] Respuesta enviada al orquestador: {{'respuesta': receipt_text, 'complaint_id': complaint_id}}")
         return jsonify({
             "respuesta": receipt_text,
             "complaint_id": complaint_id
