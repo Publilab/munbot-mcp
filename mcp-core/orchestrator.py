@@ -16,6 +16,7 @@ from context_manager import ConversationalContextManager
 import unicodedata
 from mistral_client import MistralClient
 import numpy as np
+from rapidfuzz import fuzz
 
 # === Configuración ===
 MICROSERVICES = {
@@ -65,6 +66,76 @@ HISTORIAL_TABLE = "conversaciones_historial"
 # Inicializa el FastAPI
 app = FastAPI()
 logging.basicConfig(level=logging.INFO)
+
+# --- CACHE FAQ EN MEMORIA ---
+_FAQ_CACHE = None
+
+def load_faq_cache() -> list:
+    global _FAQ_CACHE
+    if _FAQ_CACHE is None:
+        try:
+            with open(FAQ_DB_PATH, "r", encoding="utf-8") as f:
+                _FAQ_CACHE = json.load(f)
+        except Exception as e:
+            logging.warning(f"No se pudo cargar FAQ: {e}")
+            _FAQ_CACHE = []
+    return _FAQ_CACHE
+
+def normalize_text(text: str) -> str:
+    text = text.lower().strip()
+    text = ''.join(
+        c for c in unicodedata.normalize('NFD', text)
+        if unicodedata.category(c) != 'Mn'
+    )
+    text = ''.join(c for c in text if c.isalnum() or c.isspace())
+    return text
+
+def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
+    """Busca una respuesta en la base de datos de FAQ con normalización y fuzzy matching.
+    Si no hay coincidencia exacta, sugiere la más parecida si el score es razonable.
+    Loguea preguntas no encontradas.
+    """
+    try:
+        faqs = load_faq_cache()
+        pregunta_norm = normalize_text(pregunta)
+        best_score = 0
+        best_entry = None
+        best_alt = None
+
+        # Coincidencia exacta (normalizada)
+        for entry in faqs:
+            entry_preguntas = entry["pregunta"]
+            if isinstance(entry_preguntas, str):
+                entry_preguntas = [entry_preguntas]
+            for alt in entry_preguntas:
+                alt_norm = normalize_text(alt)
+                if alt_norm == pregunta_norm:
+                    return entry
+
+        # Fuzzy matching y score
+        for entry in faqs:
+            entry_preguntas = entry["pregunta"]
+            if isinstance(entry_preguntas, str):
+                entry_preguntas = [entry_preguntas]
+            for alt in entry_preguntas:
+                alt_norm = normalize_text(alt)
+                score = fuzz.ratio(pregunta_norm, alt_norm)
+                if score > best_score:
+                    best_score = score
+                    best_entry = entry
+                    best_alt = alt
+                # Si es muy alto, devolvemos de inmediato
+                if score == 100:
+                    return entry
+        # Si hay una coincidencia razonable (>80), la devolvemos
+        if best_score > 80:
+            logging.info(f"FAQ: Coincidencia fuzzy ({best_score}) para '{pregunta}' ≈ '{best_alt}'")
+            return best_entry
+        # Si no hay coincidencia, loguear
+        logging.warning(f"FAQ: Pregunta no encontrada: '{pregunta}' (mejor score: {best_score} con '{best_alt}')")
+    except Exception as e:
+        logging.warning(f"No se pudo consultar FAQ: {e}")
+    return None
 
 # === Carga y utilidades ===
 
@@ -268,39 +339,6 @@ def detect_intent(user_input: str, history: List[Dict[str, str]] = None) -> Dict
     # Llamar al LLM para casos no detectados por matcher
     return detect_intent_llm(user_input, history)
 
-def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
-    """Busca una respuesta en la base de datos de FAQ.
-
-    Primero intenta una coincidencia exacta y luego aplica un filtrado de tokens
-    ignorando stopwords. Retorna una FAQ solo si al menos dos palabras relevantes
-    coinciden o si la similitud de conjuntos supera un umbral.
-    """
-
-    try:
-        with open(FAQ_DB_PATH, "r", encoding="utf-8") as f:
-            faqs = json.load(f)
-
-        pregunta_norm = pregunta.strip().lower()
-        pregunta_tokens = set(tokenize(pregunta_norm))
-
-        for entry in faqs:
-            entry_text = entry["pregunta"].strip().lower()
-            if entry_text == pregunta_norm:
-                return entry
-
-        for entry in faqs:
-            entry_tokens = set(tokenize(entry["pregunta"]))
-            if not entry_tokens:
-                continue
-            inter = pregunta_tokens & entry_tokens
-            if len(inter) >= 2 or len(inter) / len(entry_tokens) >= 0.5:
-                return entry
-
-    except Exception as e:
-        logging.warning(f"No se pudo consultar FAQ: {e}")
-
-    return None
-
 def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
     """Devuelve fragmentos relevantes de FAQ o documentos oficiales."""
     snippets: List[str] = []
@@ -311,11 +349,16 @@ def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
             faqs = json.load(f)
         pregunta_tokens = set(tokenize(pregunta))
         for entry in faqs:
-            entry_tokens = set(tokenize(entry["pregunta"]))
-            if pregunta_tokens & entry_tokens:
-                snippets.append(entry["respuesta"].strip())
-                if len(snippets) >= limit:
-                    break
+            entry_preguntas = entry["pregunta"]
+            if isinstance(entry_preguntas, str):
+                entry_preguntas = [entry_preguntas]
+            for alt in entry_preguntas:
+                entry_tokens = set(tokenize(alt))
+                if pregunta_tokens & entry_tokens:
+                    snippets.append(entry["respuesta"].strip())
+                    break  # Solo una vez por entrada
+            if len(snippets) >= limit:
+                break
     except Exception as e:
         logging.warning(f"No se pudo consultar contexto FAQ: {e}")
 
@@ -730,84 +773,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         ans = generate_response(prompt)
         context_manager.update_context(session_id, user_input, ans)
         return {"respuesta": ans, "session_id": session_id}
-    # Extraer entidades del input actual
-    if tool.startswith("complaint-"):
-        extracted = extract_entities_complaint(user_input)
-    elif tool.startswith("scheduler-"):
-        extracted = extract_entities_scheduler(user_input)
-    elif tool.startswith("doc-"):
-        extracted = extract_entities_llm_docs(user_input)
-    else:
-        extracted = {}
-    session.update({k: v for k, v in extracted.items() if v})
-    # Validación de RUT si corresponde
-    if tool == "complaint-registrar_reclamo" and session.get("datos_reclamo"):
-        rut = session["datos_reclamo"].get("rut")
-        if not rut or not validar_y_formatear_rut(rut):
-            # Borrar datos inválidos
-            session["datos_reclamo"] = None
-            save_session(session_id, session)
-            msg = "El RUT ingresado no es válido. Por favor, proporciona tu nombre completo y un RUT válido (ejemplo: Juan Pérez 12.345.678-5)"
-            context_manager.update_context(session_id, user_input, msg)
-            return {"respuesta": msg, "session_id": session_id, "pending_field": "datos_reclamo"}
-    # Revisar campos requeridos
-    required = REQUIRED_FIELDS.get(tool, [])
-    missing = [f for f in required if not session.get(f)]
-    if missing:
-        next_field = missing[0]
-        question = FIELD_QUESTIONS.get(next_field, f"Por favor, proporciona {next_field}:")
-        save_session(session_id, session)
-        context_manager.update_context(session_id, user_input, question)
-        return {"respuesta": question, "session_id": session_id, "pending_field": next_field}
-    # Si no faltan campos, llamar al microservicio
-    params = session.copy()
-    schema = load_schema(tool)
-    if not validate_against_schema(params, schema):
-        return {"respuesta": "Faltan parámetros obligatorios para esta acción", "session_id": session_id}
-    # Mensaje de espera antes de procesar reclamo
-    if tool == "complaint-registrar_reclamo":
-        espera_msg = "Procesando tu reclamo, por favor espera un momento..."
-        context_manager.update_context(session_id, user_input, espera_msg)
-        # Devuelvo el mensaje de espera y un flag especial para frontend
-        return {"respuesta": espera_msg, "session_id": session_id, "processing": True}
-    response = call_tool_microservice(tool, params)
-    # Guardar historial antes de limpiar
-    save_conversation_to_postgres(session_id, session)
-    delete_session(session_id)
-    # Ajuste para asegurar que 'respuesta' siempre sea string plano y amigable
-    if isinstance(response, dict):
-        if tool == "complaint-registrar_reclamo" and "respuesta" in response:
-            # Buscar el ID en la respuesta
-            match = re.search(r"ID ([a-f0-9\-]+)", response["respuesta"], re.IGNORECASE)
-            if match:
-                reclamo_id = match.group(1)
-                cierre = f"Gracias, tu reclamo ha sido registrado con ID {reclamo_id}. ¡Hasta pronto!"
-                context_manager.update_context(session_id, user_input, cierre)
-                return {"respuesta": cierre, "session_id": session_id}
-        if "respuesta" in response:
-            resp_text = str(response["respuesta"]).strip()
-            context_manager.update_context(session_id, user_input, resp_text)
-            return {"respuesta": resp_text, "session_id": session_id}
-        elif "message" in response:
-            resp_text = str(response["message"]).strip()
-            context_manager.update_context(session_id, user_input, resp_text)
-            return {"respuesta": resp_text, "session_id": session_id}
-        elif "error" in response:
-            resp_text = "Lo siento, hubo un error procesando tu solicitud."
-            context_manager.update_context(session_id, user_input, resp_text)
-            return {"respuesta": resp_text, "session_id": session_id}
-        else:
-            resp_text = "Lo siento, no obtuve una respuesta válida del sistema."
-            context_manager.update_context(session_id, user_input, resp_text)
-            return {"respuesta": resp_text, "session_id": session_id}
-    elif isinstance(response, str):
-        resp_text = response.strip()
-        context_manager.update_context(session_id, user_input, resp_text)
-        return {"respuesta": resp_text, "session_id": session_id}
-    else:
-        resp_text = "Lo siento, no pude procesar tu solicitud correctamente."
-        context_manager.update_context(session_id, user_input, resp_text)
-        return {"respuesta": resp_text, "session_id": session_id}
+ 
 
 # === API REST ===
 

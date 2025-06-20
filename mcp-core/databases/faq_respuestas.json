@@ -1,11 +1,52 @@
 [
   {
-    "pregunta": "¿Cómo estás?",
+    "pregunta": ["Hola", "buenos días", "buenas tardes", "buenas noches", "saludos", "hey", "holi", "hello", "hi", "buenas"],
+    "respuesta": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Curoscant. ¿En qué puedo ayudarte hoy?",
+    "categoria": "saludos"
+  },
+  {
+    "pregunta": ["adiós", "hasta luego", "nos vemos", "chau", "chao", "bye", "hasta pronto", "hasta la próxima", "me despido",
+        "no necesito más ayuda", "no necesito ayuda", "eso es todo", "terminé", "ya está", "ya terminé"],
+    "respuesta": "¡Hasta luego! Tu sesión ha terminado. Si necesitas algo más, inicia una nueva conversación.",
+    "categoria": "despedidas"
+  },
+  {
+    "pregunta": ["gracias", "muchas gracias", "te agradezco", "se agradece", "gracias!", "gracias.", "mil gracias"],
+    "respuesta": "¡De nada! Si tienes alguna otra pregunta, no dudes en preguntar.",
+    "categoria": "agradecimientos"
+  },
+  {
+    "pregunta": ["estoy bien", "me alegro", "todo bien", "genial", "excelente", "perfecto", "feliz"],
+    "respuesta": "¡De nada! Recuerda que estoy aquí para ayudarte",
+    "categoria": "estado_animo"
+  },
+  {
+    "pregunta": ["no me siento bien", "no estoy bien", "me siento mal", "me siento mal", "me siento mal", "me siento mal", "me siento mal"],
+    "respuesta": "Lamento que te sientas así. Realmente lamento leer eso. Si puedo ayudarte solo dímelo.",
+    "categoria": "estado_animo"
+  },
+  {
+    "pregunta": ["estoy mal", "no me siento bien", "no estoy bien", "me siento mal", "me siento mal", "me siento mal", "me siento mal"],
+    "respuesta": "¡Me alegra que estés bien! ¿En qué puedo ayudarte hoy?",
+    "categoria": "estado_animo"
+  },
+  {
+    "pregunta": [ "no es la respuesta que esperaba", "mala respuesta", "no me ayudaste", "no resolviste mi problema", "no entendiste", "no me diste solución", "no me diste una solución", "no me sirvió", "no fue útil", "no fue de ayuda", "no me atendiste bien", "no me atendiste bien", "no me diste la información que necesitaba",
+    "no me diste lo que pedí", "no era lo que buscaba", "no era lo que necesitaba", "no era lo que quería",
+    "no me diste respuesta", "no me diste una respuesta clara", "no me diste una respuesta útil", "no me diste una respuesta concreta", "no me diste una respuesta satisfactoria", "no me diste una respuesta correcta", "no me diste una respuesta adecuada", "no me diste una respuesta", "no me diste una solución clara", "no me diste una solución útil", "no me diste una solución concreta",
+    "no me diste una solución satisfactoria", "no me diste una solución correcta", "no me diste una solución adecuada", "no me diste una solución", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería",
+    "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí",
+    "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba"],
+    "respuesta": "Lo siento, pero no puedo ayudarte con eso. Si tienes alguna otra pregunta, no dudes en preguntar.",
+    "categoria": "decepcion"
+  },
+  {
+    "pregunta": ["¿Cómo estás?", "como estas", "que cuentas", "que tal", "que tal estas"],
     "respuesta": "Creo que bien, pero no puedo sentirme como un humano, mi función aquí es ayudarte con tus trámites y consultas.",
     "categoria": "funcion_munbot"
   },
   {
-    "pregunta": "¿Qué haces?",
+    "pregunta": ["¿Qué haces?", "a que te dedicas", "que haces", "para que te crearon"],
     "respuesta": "Soy un asistente virtual dispuesto a responder las preguntas que tengas sobre el gobierno de Curoscant. Estoy diseñado para un gran número de tareas, desde entregar información hasta entregar documentación oficial de tu interés.",
     "categoria": "funcion_munbot"
   },
