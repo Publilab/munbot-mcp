@@ -14,7 +14,7 @@ import threading
 import time
 from context_manager import ConversationalContextManager
 import unicodedata
-from mistral_client import MistralClient
+from llama_client import LlamaClient
 import numpy as np
 from rapidfuzz import fuzz
 
@@ -226,12 +226,12 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
     else:
         return {"error": f"Error {resp.status_code}: {resp.text}"}
 
-# === LLM para detección de intención ===
-mistral = MistralClient()
+# === Cliente Llama ===
+llama = LlamaClient()
 
 def generate_response(prompt: str) -> str:
-    """Genera una respuesta utilizando el modelo Mistral vía HuggingFace."""
-    return mistral.generate(prompt)
+    """Genera una respuesta utilizando el modelo Llama local."""
+    return llama.generate(prompt)
 
 def infer_intent_with_llm(prompt):
     return generate_response(prompt)
@@ -262,7 +262,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
         "scheduler-cancelar_hora, scheduler-confirmar_hora.\n"
         f"Historial:\n{history_text}\nMensaje: {user_input}\nJSON:"
     )
-    logging.info("Prompt enviado a Mistral: %s", prompt)
+    logging.info("Prompt enviado a Llama: %s", prompt)
     try:
         predicted = infer_intent_with_llm(prompt).strip()
         logging.info(f"LLM raw response: {predicted}")
@@ -279,7 +279,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
                 logging.info(f"Intento forzado por matcher: {intent}")
             return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     except Exception as e:
-        logging.error("Error durante la inferencia con Mistral: %s", e)
+        logging.error("Error durante la inferencia con Llama: %s", e)
 
     # Fallback total si todo falla
     intent = detect_intent_keywords(user_input)

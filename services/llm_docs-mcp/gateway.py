@@ -11,7 +11,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from mistral_client import MistralClient
+from llama_client import LlamaClient
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -120,12 +120,12 @@ def buscar_similitud_en_documentos(pregunta, docs_relevantes):
         return corpus[idx_max], nombres[idx_max]
     return None, None
 
-# === Cliente Mistral ===
-mistral = MistralClient()
+# === Cliente Llama ===
+llama = LlamaClient()
 
 def generate_response(prompt: str) -> str:
-    """Genera una respuesta utilizando el modelo Mistral vía HuggingFace."""
-    return mistral.generate(prompt)
+    """Genera una respuesta utilizando el modelo Llama local."""
+    return llama.generate(prompt)
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
@@ -148,25 +148,17 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         texto, docname = buscar_similitud_en_documentos(pregunta, docs_filtrados)
         if texto:
             logger.info(f"Respuesta encontrada en documento: {docname}")
-            return {
-                "respuesta": texto,
-                "fuente": docname,
-                "tipo": "documento"
-            }
+            return texto  # Solo el texto
         # Fallback LLM
         respuesta = generate_response(pregunta)
-        logger.info("Respuesta generada por Mistral (fallback MCP)")
-        return {
-            "respuesta": respuesta,
-            "fuente": "mistral",
-            "tipo": "modelo"
-        }
+        logger.info("Respuesta generada por Llama (fallback MCP)")
+        return respuesta  # Solo el texto
     elif tool == "generar_respuesta_llm":
         pregunta = params["pregunta"]
         language = params.get("language", "es")
         respuesta = generate_response(pregunta)
-        logger.info("Respuesta generada por Mistral (tool directo MCP)")
-        return {"respuesta": respuesta}
+        logger.info("Respuesta generada por Llama (tool directo MCP)")
+        return respuesta  # Solo el texto
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
 
