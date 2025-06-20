@@ -14,8 +14,7 @@ import threading
 import time
 from context_manager import ConversationalContextManager
 import unicodedata
-from llama_cpp import Llama
-from transformers import AutoTokenizer
+from mistral_client import MistralClient
 import numpy as np
 
 # === Configuración ===
@@ -157,33 +156,17 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         return {"error": f"Error {resp.status_code}: {resp.text}"}
 
 # === LLM para detección de intención ===
-# Instancia global del modelo Llama (solo una vez)
-MODEL_DIR = os.path.join(os.path.dirname(__file__), "../services/llm_docs-mcp/models")
-llm = Llama.from_pretrained(
-    repo_id="bartowski/Llama-3.2-3B-Instruct-GGUF",
-    filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
-    local_dir=MODEL_DIR,
-    verbose=False,  # Cambiado a False para reducir logs
-    n_ctx=4096,
-)
-
-# Inicializar el tokenizer de Hugging Face (usando un modelo público)
-tokenizer = AutoTokenizer.from_pretrained("hf-internal-testing/llama-tokenizer")
+mistral = MistralClient()
 
 def generate_response(prompt: str) -> str:
-    # Llama directamente al modelo con el prompt como string
-    output = llm.create_completion(
-        prompt=prompt,
-        max_tokens=256,
-    )
-    # Extraer el texto generado
-    return output["choices"][0]["text"]
+    """Genera una respuesta utilizando el modelo Mistral vía HuggingFace."""
+    return mistral.generate(prompt)
 
 def infer_intent_with_llm(prompt):
     return generate_response(prompt)
 
 def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
-    """Usa Llama local para inferir intención, confianza y sentimiento."""
+    """Usa Mistral vía HuggingFace API para inferir intención, confianza y sentimiento."""
     VALID_INTENTS = {
         "complaint-registrar_reclamo",
         "doc-buscar_fragmento_documento",
@@ -208,7 +191,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
         "scheduler-cancelar_hora, scheduler-confirmar_hora.\n"
         f"Historial:\n{history_text}\nMensaje: {user_input}\nJSON:"
     )
-    logging.info("Prompt enviado al modelo Llama local: %s", prompt)
+    logging.info("Prompt enviado a Mistral: %s", prompt)
     try:
         predicted = infer_intent_with_llm(prompt).strip()
         logging.info(f"LLM raw response: {predicted}")
@@ -225,7 +208,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
                 logging.info(f"Intento forzado por matcher: {intent}")
             return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     except Exception as e:
-        logging.error("Error durante la inferencia del modelo Llama local: %s", e)
+        logging.error("Error durante la inferencia con Mistral: %s", e)
 
     # Fallback total si todo falla
     intent = detect_intent_keywords(user_input)

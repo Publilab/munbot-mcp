@@ -11,9 +11,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from llama_cpp import Llama
-from transformers import AutoTokenizer
-import numpy as np
+from mistral_client import MistralClient
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -122,34 +120,12 @@ def buscar_similitud_en_documentos(pregunta, docs_relevantes):
         return corpus[idx_max], nombres[idx_max]
     return None, None
 
-# === Llama.cpp local ===
-MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
-llm = Llama.from_pretrained(
-    repo_id="bartowski/Llama-3.2-3B-Instruct-GGUF",
-    filename="Llama-3.2-3B-Instruct-Q6_K.gguf",
-    local_dir=MODEL_DIR,
-    verbose=False,  # Cambiado a False para reducir logs
-    n_ctx=2048,
-)
-
-# Inicializar el tokenizer de Hugging Face (usando un modelo público)
-tokenizer = AutoTokenizer.from_pretrained("hf-internal-testing/llama-tokenizer")
+# === Cliente Mistral ===
+mistral = MistralClient()
 
 def generate_response(prompt: str) -> str:
-    # Usar el tokenizer de Hugging Face para preprocesar los tokens
-    inputs = tokenizer(prompt, return_tensors="np")
-    input_ids = inputs["input_ids"][0].tolist()
-    
-    # Generar respuesta usando los tokens preprocesados
-    output = llm.create_completion(
-        prompt=None,  # No usamos el prompt directo
-        tokens_list=input_ids,  # Usamos los tokens preprocesados
-        max_tokens=256,
-    )
-    
-    # Extraer y decodificar los tokens de respuesta
-    output_ids = output["choices"][0]["text"]
-    return tokenizer.decode(output_ids, skip_special_tokens=True)
+    """Genera una respuesta utilizando el modelo Mistral vía HuggingFace."""
+    return mistral.generate(prompt)
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
