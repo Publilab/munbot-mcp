@@ -155,17 +155,17 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
             }
         # Fallback LLM
         respuesta = generate_response(pregunta)
-        logger.info("Respuesta generada por Llama-3.2 (fallback MCP)")
+        logger.info("Respuesta generada por Mistral (fallback MCP)")
         return {
             "respuesta": respuesta,
-            "fuente": "llama-3.2",
+            "fuente": "mistral",
             "tipo": "modelo"
         }
     elif tool == "generar_respuesta_llm":
         pregunta = params["pregunta"]
         language = params.get("language", "es")
         respuesta = generate_response(pregunta)
-        logger.info("Respuesta generada por Llama-3.2 (tool directo MCP)")
+        logger.info("Respuesta generada por Mistral (tool directo MCP)")
         return {"respuesta": respuesta}
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
