@@ -223,6 +223,17 @@ def normalize(text):
         if unicodedata.category(c) != 'Mn'
     )
 
+# Lista de stopwords simples para tokenización básica
+STOPWORDS = {
+    "a", "al", "del", "de", "la", "el", "los", "las",
+    "un", "una", "unos", "unas", "y", "o", "en", "para", "por",
+}
+
+def tokenize(text: str) -> List[str]:
+    """Tokeniza una cadena ignorando stopwords y palabras cortas."""
+    words = re.findall(r"\w+", text.lower())
+    return [w for w in words if len(w) >= 3 and w not in STOPWORDS]
+
 def detect_intent_keywords(user_input: str) -> str:
     text = normalize(user_input)
     
@@ -265,30 +276,6 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
     coinciden o si la similitud de conjuntos supera un umbral.
     """
 
-    STOPWORDS = {
-        "a",
-        "al",
-        "del",
-        "de",
-        "la",
-        "el",
-        "los",
-        "las",
-        "un",
-        "una",
-        "unos",
-        "unas",
-        "y",
-        "o",
-        "en",
-        "para",
-        "por",
-    }
-
-    def tokenize(text: str) -> List[str]:
-        words = re.findall(r"\w+", text.lower())
-        return [w for w in words if len(w) >= 3 and w not in STOPWORDS]
-
     try:
         with open(FAQ_DB_PATH, "r", encoding="utf-8") as f:
             faqs = json.load(f)
@@ -313,6 +300,47 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
         logging.warning(f"No se pudo consultar FAQ: {e}")
 
     return None
+
+def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
+    """Devuelve fragmentos relevantes de FAQ o documentos oficiales."""
+    snippets: List[str] = []
+
+    # 1) Buscar coincidencias en FAQ
+    try:
+        with open(FAQ_DB_PATH, "r", encoding="utf-8") as f:
+            faqs = json.load(f)
+        pregunta_tokens = set(tokenize(pregunta))
+        for entry in faqs:
+            entry_tokens = set(tokenize(entry["pregunta"]))
+            if pregunta_tokens & entry_tokens:
+                snippets.append(entry["respuesta"].strip())
+                if len(snippets) >= limit:
+                    break
+    except Exception as e:
+        logging.warning(f"No se pudo consultar contexto FAQ: {e}")
+
+    # 2) Consultar documentos en la base de datos
+    try:
+        if len(snippets) < limit:
+            conn = get_db()
+            cur = conn.cursor(cursor_factory=RealDictCursor)
+            like = f"%{pregunta.lower()}%"
+            cur.execute(
+                "SELECT nombre, descripcion FROM documentos WHERE LOWER(nombre) LIKE %s OR LOWER(descripcion) LIKE %s LIMIT %s",
+                (like, like, limit - len(snippets)),
+            )
+            docs = cur.fetchall()
+            for doc in docs:
+                texto = doc.get("descripcion") or doc.get("nombre")
+                if texto:
+                    snippets.append(texto.strip())
+                    if len(snippets) >= limit:
+                        break
+            conn.close()
+    except Exception as e:
+        logging.warning(f"No se pudo consultar documentos: {e}")
+
+    return snippets[:limit]
 
 def get_db():
     return psycopg2.connect(
@@ -680,14 +708,25 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     else:
         context_manager.reset_fallback_count(session_id)
 
-    if tool == "unknown":
+    if tool in ("unknown", "doc-generar_respuesta_llm"):
         faq_hit = lookup_faq_respuesta(user_input)
         if faq_hit:
             context_manager.update_context(session_id, user_input, faq_hit["respuesta"])
             return {"respuesta": faq_hit["respuesta"], "session_id": session_id}
+
+        snippets = retrieve_context_snippets(user_input)
         history = convo_ctx.get("history", [])
         history_text = context_manager.get_history_as_string(history)
-        prompt = f"{history_text}\nUsuario: {user_input}\nMunBoT:"
+        prompt_template = load_prompt("doc-generar_respuesta_llm.txt")
+        prompt = fill_prompt(
+            prompt_template,
+            {
+                "pregunta": user_input,
+                "language": "es",
+                "faq_context": "\n".join(snippets),
+            },
+        )
+        prompt = f"{history_text}\n{prompt}"
         ans = generate_response(prompt)
         context_manager.update_context(session_id, user_input, ans)
         return {"respuesta": ans, "session_id": session_id}
