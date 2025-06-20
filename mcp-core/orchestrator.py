@@ -650,95 +650,6 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         )
         return {"respuesta": success_msg, "session_id": session_id}
 
-    # Interceptar saludos, despedidas, agradecimientos y frases empáticas
-    SALUDOS = [
-        "hola", "buenos días", "buenas tardes", "buenas noches", "saludos", "hey", "holi", "hello", "hi", "buenas"
-    ]
-    DESPEDIDAS = [
-        "adiós", "hasta luego", "nos vemos", "chau", "chao", "bye", "hasta pronto", "hasta la próxima", "me despido",
-        "no necesito más ayuda", "no necesito ayuda", "eso es todo", "terminé", "ya está", "ya terminé"
-    ]
-    AGRADECIMIENTOS = [
-        "gracias", "muchas gracias", "te agradezco", "se agradece", "gracias!", "gracias.", "mil gracias"
-    ]
-    EMPATIA_POS = [
-        "estoy bien", "me alegro", "todo bien", "genial", "excelente", "perfecto", "feliz"
-    ]
-    EMPATIA_NEG = [
-        "estoy mal", "me siento mal", "triste", "frustrado", "decepcionado", "no estoy bien", "no me encuentro bien", "estoy realmente mal"
-    ]
-    ENOJO = [
-        "estoy enojado", "estoy enojada", "estoy molesto", "molesto", "molesta", "enfadado", "enfadada", "enojado", "enojada", "choreado", "choreada"
-    ]
-    MAL_ATENCION = [
-        "no es la respuesta que esperaba", "mala respuesta", "no me ayudaste", "no resolviste mi problema", "no entendiste", "no me diste solución", "no me diste una solución", "no me sirvió", "no fue útil", "no fue de ayuda", "no me atendiste bien", "no me atendiste bien", "no me diste la información que necesitaba",
-        "no me diste lo que pedí", "no era lo que buscaba", "no era lo que necesitaba", "no era lo que quería",
-        "no me diste respuesta", "no me diste una respuesta clara", "no me diste una respuesta útil", "no me diste una respuesta concreta", "no me diste una respuesta satisfactoria", "no me diste una respuesta correcta", "no me diste una respuesta adecuada", "no me diste una respuesta", "no me diste una solución clara", "no me diste una solución útil", "no me diste una solución concreta",
-        "no me diste una solución satisfactoria", "no me diste una solución correcta", "no me diste una solución adecuada", "no me diste una solución", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería",
-        "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí",
-        "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba"
-    ]
-    QUE_ERES = [
-        "que eres"
-    ]
-    PREGUNTA_NOMBRE = [
-        "como te llamas", "cual es tu nombre", "tienes nombre", "como te llamas", "cual es tu nombre", "tienes nombre"
-    ]
-    PREGUNTAS_EDAD = [
-        "cuantos años tienes", "que edad tienes", "tienes edad", "cuantos años tienes", "que edad tienes", "tienes edad"
-    ]
-    texto = user_input.strip().lower()
-    if any(s in texto for s in SALUDOS):
-        sid = session_id or str(uuid.uuid4())
-        ans = "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Curoscant. ¿En qué puedo ayudarte hoy?"
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(d in texto for d in DESPEDIDAS):
-        sid = session_id or str(uuid.uuid4())
-        ans = "¡Hasta luego! Tu sesión ha terminado. Si necesitas algo más, inicia una nueva conversación."
-        context_manager.update_context(sid, user_input, ans)
-        delete_session(sid)  # Cierra la sesión inmediatamente
-        return {"respuesta": ans, "session_id": sid, "session_ended": True}
-    if any(a in texto for a in AGRADECIMIENTOS):
-        sid = session_id or str(uuid.uuid4())
-        ans = "¡De nada! Recuerda que estoy aquí para ayudarte"
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(e in texto for e in EMPATIA_POS):
-        sid = session_id or str(uuid.uuid4())
-        ans = "¡Me alegra saber que estás bien! Espero colaborar en algo que te haga sentir bien"
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(e in texto for e in EMPATIA_NEG):
-        sid = session_id or str(uuid.uuid4())
-        ans = "Lamento que te sientas así. Realmente lamento leer eso. Si puedo ayudarte solo dímelo."
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(e in texto for e in ENOJO):
-        sid = session_id or str(uuid.uuid4())
-        ans = "No es saludable el enojo. Si puedo ayudarte a pasar el mal rato no dudes en pedirme ayuda"
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(e in texto for e in MAL_ATENCION):
-        sid = session_id or str(uuid.uuid4())
-        ans = "Lamento no poder resolver tu problema. Si quieres comenzamos de nuevo"
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(p in texto for p in QUE_ERES):
-        sid = session_id or str(uuid.uuid4())
-        ans = "Soy un asistente virtual creado para ayudarte con trámites, información y consultas municipales."
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(e in texto for e in PREGUNTAS_EDAD):
-        sid = session_id or str(uuid.uuid4())
-        ans = "Tengo solo unos pocos meses, pero por mis capacidades creo que represento mucho más"
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
-    if any(e in texto for e in PREGUNTA_NOMBRE):
-        sid = session_id or str(uuid.uuid4())
-        ans = "Mi nombre es MunBoT"
-        context_manager.update_context(sid, user_input, ans)
-        return {"respuesta": ans, "session_id": sid}
     # Obtener o crear session_id
     if not session_id:
         session_id = str(uuid.uuid4())
@@ -768,6 +679,18 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
             return {"respuesta": fallback_resp, "session_id": session_id, "pending_field": None}
     else:
         context_manager.reset_fallback_count(session_id)
+
+    if tool == "unknown":
+        faq_hit = lookup_faq_respuesta(user_input)
+        if faq_hit:
+            context_manager.update_context(session_id, user_input, faq_hit["respuesta"])
+            return {"respuesta": faq_hit["respuesta"], "session_id": session_id}
+        history = convo_ctx.get("history", [])
+        history_text = context_manager.get_history_as_string(history)
+        prompt = f"{history_text}\nUsuario: {user_input}\nMunBoT:"
+        ans = generate_response(prompt)
+        context_manager.update_context(session_id, user_input, ans)
+        return {"respuesta": ans, "session_id": session_id}
     # Extraer entidades del input actual
     if tool.startswith("complaint-"):
         extracted = extract_entities_complaint(user_input)
