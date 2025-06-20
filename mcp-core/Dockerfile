@@ -22,7 +22,7 @@ RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 3) Código de la aplicación
-COPY .env orchestrator.py context_manager.py ./
+COPY .env orchestrator.py context_manager.py mistral_client.py ./
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
 COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json
