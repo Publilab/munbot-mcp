@@ -20,7 +20,7 @@ PROMPTS_PATH = os.getenv("PROMPTS_PATH", "prompts/")
 TOOLS_PATH = os.getenv("TOOLS_PATH", "tools/")
 SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.2))
 N_THREADS = int(os.getenv("N_THREADS", 2))
-N_CTX = int(os.getenv("N_CTX", 512))
+N_CTX = int(os.getenv("N_CTX", 4096))
 
 # ==== FastAPI y Seguridad ====
 app = FastAPI()
