@@ -6,7 +6,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Instalar dependencias del sistema
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git \
+    apt-get install -y --no-install-recommends git gcc g++ cmake \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

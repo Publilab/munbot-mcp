@@ -7,3 +7,4 @@ gunicorn
 redis
 numpy
 llama-cpp-python>=0.2.24
+rapidfuzz

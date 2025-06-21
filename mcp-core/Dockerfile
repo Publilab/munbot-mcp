@@ -6,7 +6,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # 1) Sistema
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git \
+    apt-get install -y --no-install-recommends git build-essential cmake gcc g++ \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /mcp-core
@@ -22,7 +22,7 @@ RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 3) Código de la aplicación
-COPY .env orchestrator.py context_manager.py mistral_client.py ./
+COPY .env orchestrator.py context_manager.py llama_client.py ./
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
 COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json

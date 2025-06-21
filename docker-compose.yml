@@ -90,6 +90,8 @@ services:
       - "5000:5000"
     networks:
       - munbot-net
+    volumes:
+    - ./services/llm_docs-mcp/models:/mcp-core/models
     depends_on:
       - redis
       - postgres
