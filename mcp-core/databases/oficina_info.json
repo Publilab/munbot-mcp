@@ -1,0 +1,630 @@
+﻿[
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MAI-001",
+        "Nombre_Ministerio": "Ministerio de Asuntos Internos",
+        "Descripcion_Ministerio": "El Ministerio de Asuntos Internos es responsable de la administración interna de la República Galáctica, asegurando la cohesión y cooperación entre los sistemas estelares miembros.",
+        "Tareas": [
+            "Supervisar la implementación de políticas internas.",
+            "Coordinar con los gobiernos planetarios y regionales.",
+            "Gestionar el registro y documentación de ciudadanos.",
+            "Mantener la seguridad interna y el orden público.",
+            "Proporcionar servicios administrativos esenciales."
+        ],
+        "Nombre_Encargado": "Zara Antilles",
+        "ID_Subministerio": "AI-001",
+        "Nombre_Subministerio": "Coordinación Regional",
+        "Holocom_Number": "COM-482716592041",
+        "Correo_Electronico": "coordinacion.regional@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
+        "Documentos": [
+            "DOC-006"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MAI-001",
+        "Nombre_Ministerio": "Ministerio de Asuntos Internos",
+        "Descripcion_Ministerio": "El Ministerio de Asuntos Internos es responsable de la administración interna de la República Galáctica, asegurando la cohesión y cooperación entre los sistemas estelares miembros.",
+        "Tareas": [
+            "Supervisar la implementación de políticas internas.",
+            "Coordinar con los gobiernos planetarios y regionales.",
+            "Gestionar el registro y documentación de ciudadanos.",
+            "Mantener la seguridad interna y el orden público.",
+            "Proporcionar servicios administrativos esenciales."
+        ],
+        "Nombre_Encargado": "Zara Antilles",
+        "ID_Subministerio": "AI-002",
+        "Nombre_Subministerio": "Registro de Ciudadanos",
+        "Holocom_Number": "COM-953827104658",
+        "Correo_Electronico": "registro.ciudadanos@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 2412",
+        "Documentos": [
+            "DOC-001",
+            "DOC-010"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MCE-002",
+        "Nombre_Ministerio": "Ministerio de Comercio y Economía Galáctica",
+        "Descripcion_Ministerio": "El Ministerio de Comercio y Economía Galáctica regula y fomenta el comercio interestelar, asegurando un crecimiento económico sostenible y equitativo en toda la galaxia.",
+        "Tareas": [
+            "Regular el comercio y los mercados.",
+            "Fomentar el desarrollo económico en los sistemas estelares.",
+            "Supervisar las transacciones comerciales.",
+            "Implementar políticas fiscales y económicas."
+        ],
+        "Nombre_Encargado": "Admiral Ackbar",
+        "ID_Subministerio": "CE-101",
+        "Nombre_Subministerio": "Regulación Comercial",
+        "Holocom_Number": "COM-374829105672",
+        "Correo_Electronico": "regulacion.comercial@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Torre de Comercio. Sector E-5377",
+        "Documentos": [
+            "DOC-014",
+            "DOC-015"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MCE-002",
+        "Nombre_Ministerio": "Ministerio de Comercio y Economía Galáctica",
+        "Descripcion_Ministerio": "El Ministerio de Comercio y Economía Galáctica regula y fomenta el comercio interestelar, asegurando un crecimiento económico sostenible y equitativo en toda la galaxia.",
+        "Tareas": [
+            "Regular el comercio y los mercados.",
+            "Fomentar el desarrollo económico en los sistemas estelares.",
+            "Supervisar las transacciones comerciales.",
+            "Implementar políticas fiscales y económicas."
+        ],
+        "Nombre_Encargado": "Admiral Ackbar",
+        "ID_Subministerio": "CE-102",
+        "Nombre_Subministerio": "Desarrollo Económico",
+        "Holocom_Number": "COM-481927365049",
+        "Correo_Electronico": "desarrollo.economico@coruscant.sw",
+        "Dias_Atencion": "Martes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Fortaleza Ciudad Nube. Sector C-981",
+        "Documentos": [
+            "DOC-013"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MDG-003",
+        "Nombre_Ministerio": "Ministerio de Defensa Galáctica",
+        "Descripcion_Ministerio": "El Ministerio de Defensa Galáctica es responsable de la protección y defensa de la República Galáctica contra amenazas internas y externas.",
+        "Tareas": [
+            "Supervisar las Fuerzas Armadas de la República.",
+            "Coordinar con la Orden Jedi para misiones de seguridad.",
+            "Implementar estrategias de defensa y seguridad.",
+            "Mantener instalaciones militares y bases estelares."
+        ],
+        "Nombre_Encargado": "Bail Organa",
+        "ID_Subministerio": "DG-201",
+        "Nombre_Subministerio": "Estrategia Militar",
+        "Holocom_Number": "COM-105374829061",
+        "Correo_Electronico": "estrategia.militar@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Cuartel General de la Defensa. Nivel 212",
+        "Documentos": [
+            "DOC-016"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MDG-003",
+        "Nombre_Ministerio": "Ministerio de Defensa Galáctica",
+        "Descripcion_Ministerio": "El Ministerio de Defensa Galáctica es responsable de la protección y defensa de la República Galáctica contra amenazas internas y externas.",
+        "Tareas": [
+            "Supervisar las Fuerzas Armadas de la República.",
+            "Coordinar con la Orden Jedi para misiones de seguridad.",
+            "Implementar estrategias de defensa y seguridad.",
+            "Mantener instalaciones militares y bases estelares."
+        ],
+        "Nombre_Encargado": "Bail Organa",
+        "ID_Subministerio": "DG-202",
+        "Nombre_Subministerio": "Logística y Abastecimiento",
+        "Holocom_Number": "COM-758492036147",
+        "Correo_Electronico": "logistica.abastecimiento@coruscant.sw",
+        "Dias_Atencion": "Miércoles a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 3122",
+        "Documentos": [
+            "DOC-017"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MEI-004",
+        "Nombre_Ministerio": "Ministerio de Educación e Instrucción",
+        "Descripcion_Ministerio": "El Ministerio de Educación e Instrucción promueve el desarrollo educativo y cultural en la República Galáctica, asegurando el acceso a la educación para todos los ciudadanos.",
+        "Tareas": [
+            "Desarrollar y supervisar programas educativos.",
+            "Preservar y promover el patrimonio cultural galáctico.",
+            "Proveer formación y capacitación para ciudadanos.",
+            "Coordinar con instituciones educativas y culturales."
+        ],
+        "Nombre_Encargado": "Jocasta Nu",
+        "ID_Subministerio": "EI-301",
+        "Nombre_Subministerio": "Educación Primaria y Secundaria",
+        "Holocom_Number": "COM-203948576194",
+        "Correo_Electronico": "educacion@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Torre Academia Jedi. Nivel 3B120",
+        "Documentos": [
+            "DOC-018"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MEI-004",
+        "Nombre_Ministerio": "Ministerio de Educación e Instrucción",
+        "Descripcion_Ministerio": "El Ministerio de Educación e Instrucción promueve el desarrollo educativo y cultural en la República Galáctica, asegurando el acceso a la educación para todos los ciudadanos.",
+        "Tareas": [
+            "Desarrollar y supervisar programas educativos.",
+            "Preservar y promover el patrimonio cultural galáctico.",
+            "Proveer formación y capacitación para ciudadanos.",
+            "Coordinar con instituciones educativas y culturales."
+        ],
+        "Nombre_Encargado": "Jocasta Nu",
+        "ID_Subministerio": "EI-302",
+        "Nombre_Subministerio": "Preservación Cultural",
+        "Holocom_Number": "COM-384759102846",
+        "Correo_Electronico": "preservacion.cultural@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Palacio de la Cultura. Sector Central",
+        "Documentos": [
+            "DOC-019"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MEC-005",
+        "Nombre_Ministerio": "Ministerio de Exploración y Colonización",
+        "Descripcion_Ministerio": "El Ministerio de Exploración y Colonización es responsable de la expansión territorial y la exploración de nuevos sistemas estelares, promoviendo la colonización y el desarrollo de nuevos planetas.",
+        "Tareas": [
+            "Planificar y ejecutar misiones de exploración.",
+            "Facilitar la colonización de nuevos planetas.",
+            "Coordinar con entidades científicas y de investigación.",
+            "Asegurar la sostenibilidad de los nuevos asentamientos."
+        ],
+        "Nombre_Encargado": "Hera Syndulla",
+        "ID_Subministerio": "EC-401",
+        "Nombre_Subministerio": "Misiones de Exploración",
+        "Holocom_Number": "COM-572849103756",
+        "Correo_Electronico": "misiones.exploracion@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Centro de Exploración Espacial. Nivel Central, Ala B",
+        "Documentos": [
+            "DOC-011"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MEC-005",
+        "Nombre_Ministerio": "Ministerio de Exploración y Colonización",
+        "Descripcion_Ministerio": "El Ministerio de Exploración y Colonización es responsable de la expansión territorial y la exploración de nuevos sistemas estelares, promoviendo la colonización y el desarrollo de nuevos planetas.",
+        "Tareas": [
+            "Planificar y ejecutar misiones de exploración.",
+            "Facilitar la colonización de nuevos planetas.",
+            "Coordinar con entidades científicas y de investigación.",
+            "Asegurar la sostenibilidad de los nuevos asentamientos."
+        ],
+        "Nombre_Encargado": "Hera Syndulla",
+        "ID_Subministerio": "EC-402",
+        "Nombre_Subministerio": "Asentamientos Coloniales y Desarrollo Inmobiliario",
+        "Holocom_Number": "COM-485902716384",
+        "Correo_Electronico": "asentamientos.coloniales@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Palacio de la Cancillería. Nivel 332",
+        "Documentos": [
+            "DOC-012"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MJO-006",
+        "Nombre_Ministerio": "Ministerio de Justicia y Orden Público",
+        "Descripcion_Ministerio": "El Ministerio de Justicia y Orden Público garantiza el cumplimiento de las leyes de la República, asegurando la justicia y el orden en todos los sistemas estelares.",
+        "Tareas": [
+            "Supervisar el sistema judicial.",
+            "Coordinar con las fuerzas de seguridad y la policía.",
+            "Implementar políticas de justicia y orden público.",
+            "Garantizar los derechos de los ciudadanos."
+        ],
+        "Nombre_Encargado": "Mace Windu",
+        "ID_Subministerio": "JO-501",
+        "Nombre_Subministerio": "Administración de Justicia",
+        "Holocom_Number": "COM-275830194756",
+        "Correo_Electronico": "administracion.justicia@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio de la Justicia Coruscant. Tribunal Supremo de la República",
+        "Documentos": [
+            "DOC-027"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MJO-006",
+        "Nombre_Ministerio": "Ministerio de Justicia y Orden Público",
+        "Descripcion_Ministerio": "El Ministerio de Justicia y Orden Público garantiza el cumplimiento de las leyes de la República, asegurando la justicia y el orden en todos los sistemas estelares.",
+        "Tareas": [
+            "Supervisar el sistema judicial.",
+            "Coordinar con las fuerzas de seguridad y la policía.",
+            "Implementar políticas de justicia y orden público.",
+            "Garantizar los derechos de los ciudadanos."
+        ],
+        "Nombre_Encargado": "Mace Windu",
+        "ID_Subministerio": "JO-502",
+        "Nombre_Subministerio": "Seguridad Pública",
+        "Holocom_Number": "COM-184726593048",
+        "Correo_Electronico": "seguridad.publica@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Oficina Central de Seguridad. Nivel 212",
+        "Documentos": [
+            "DOC-020"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MRI-007",
+        "Nombre_Ministerio": "Ministerio de Relaciones Interplanetarias",
+        "Descripcion_Ministerio": "El Ministerio de Relaciones Interplanetarias maneja las relaciones diplomáticas de la República, asegurando la cooperación y paz entre los diferentes sistemas estelares.",
+        "Tareas": [
+            "Establecer y mantener relaciones diplomáticas.",
+            "Coordinar misiones y embajadas diplomáticas.",
+            "Negociar tratados y acuerdos interplanetarios.",
+            "Promover la paz y la cooperación galáctica."
+        ],
+        "Nombre_Encargado": "Mon Mothma",
+        "ID_Subministerio": "RI-601",
+        "Nombre_Subministerio": "Embajadas y Misiones Diplomáticas",
+        "Holocom_Number": "COM-937485102846",
+        "Correo_Electronico": "embajadas.diplomaticas@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Palacio de la Cancillería. Nivel 1832",
+        "Documentos": [
+            "DOC-021"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MRI-007",
+        "Nombre_Ministerio": "Ministerio de Relaciones Interplanetarias",
+        "Descripcion_Ministerio": "El Ministerio de Relaciones Interplanetarias maneja las relaciones diplomáticas de la República, asegurando la cooperación y paz entre los diferentes sistemas estelares.",
+        "Tareas": [
+            "Establecer y mantener relaciones diplomáticas.",
+            "Coordinar misiones y embajadas diplomáticas.",
+            "Negociar tratados y acuerdos interplanetarios.",
+            "Promover la paz y la cooperación galáctica."
+        ],
+        "Nombre_Encargado": "Mon Mothma",
+        "ID_Subministerio": "RI-602",
+        "Nombre_Subministerio": "Cooperación Interplanetaria",
+        "Holocom_Number": "COM-302948576194",
+        "Correo_Electronico": "cooperacion.interplanetaria@coruscant.sw",
+        "Dias_Atencion": "Martes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Palacio de la Cancillería. Nivel 1832",
+        "Documentos": [
+            "DOC-021"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MSB-008",
+        "Nombre_Ministerio": "Ministerio de Salud y Bienestar Galáctico",
+        "Descripcion_Ministerio": "El Ministerio de Salud y Bienestar Galáctico asegura el bienestar de los ciudadanos de la República, proporcionando servicios de salud y bienestar social en toda la galaxia.",
+        "Tareas": [
+            "Supervisar los servicios de salud pública.",
+            "Implementar programas de bienestar social.",
+            "Coordinar con instituciones médicas y hospitales.",
+            "Promover la salud y el bienestar de los ciudadanos."
+        ],
+        "Nombre_Encargado": "Aayla Secura",
+        "ID_Subministerio": "SB-701",
+        "Nombre_Subministerio": "Servicios de Salud Pública",
+        "Holocom_Number": "COM-482716593048",
+        "Correo_Electronico": "servicios.saludpublica@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Sede Federal de la Salud Intergalactica. Nivel 1",
+        "Documentos": [
+            "DOC-025"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MSB-008",
+        "Nombre_Ministerio": "Ministerio de Salud y Bienestar Galáctico",
+        "Descripcion_Ministerio": "El Ministerio de Salud y Bienestar Galáctico asegura el bienestar de los ciudadanos de la República, proporcionando servicios de salud y bienestar social en toda la galaxia.",
+        "Tareas": [
+            "Supervisar los servicios de salud pública.",
+            "Implementar programas de bienestar social.",
+            "Coordinar con instituciones médicas y hospitales.",
+            "Promover la salud y el bienestar de los ciudadanos."
+        ],
+        "Nombre_Encargado": "Aayla Secura",
+        "ID_Subministerio": "SB-702",
+        "Nombre_Subministerio": "Programas de Bienestar",
+        "Holocom_Number": "COM-759203846175",
+        "Correo_Electronico": "programas.bienestar@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Sede Federal de la Salud Intergalactica. Nivel 2",
+        "Documentos": [
+            "DOC-022"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-009",
+        "Nombre_Ministerio": "Ministerio de Tecnología y Ciencia",
+        "Descripcion_Ministerio": "El Ministerio de Tecnología y Ciencia promueve la investigación científica y el desarrollo tecnológico en la República, asegurando el avance y la innovación en todos los campos.",
+        "Tareas": [
+            "Fomentar la investigación y desarrollo en ciencia y tecnología.",
+            "Coordinar con universidades, laboratorios y centros de investigación.",
+            "Regular el uso de tecnologías avanzadas.",
+            "Facilitar la transferencia de tecnología entre sistemas estelares."
+        ],
+        "Nombre_Encargado": "Galen Erso",
+        "ID_Subministerio": "TC-801",
+        "Nombre_Subministerio": "Investigación Científica",
+        "Holocom_Number": "COM-174829506372",
+        "Correo_Electronico": "investigacion.cientifica@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala A",
+        "Documentos": [
+            "DOC-023"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-009",
+        "Nombre_Ministerio": "Ministerio de Tecnología y Ciencia",
+        "Descripcion_Ministerio": "El Ministerio de Tecnología y Ciencia promueve la investigación científica y el desarrollo tecnológico en la República, asegurando el avance y la innovación en todos los campos.",
+        "Tareas": [
+            "Fomentar la investigación y desarrollo en ciencia y tecnología.",
+            "Coordinar con universidades, laboratorios y centros de investigación.",
+            "Regular el uso de tecnologías avanzadas.",
+            "Facilitar la transferencia de tecnología entre sistemas estelares."
+        ],
+        "Nombre_Encargado": "Galen Erso",
+        "ID_Subministerio": "TC-802",
+        "Nombre_Subministerio": "Desarrollo Tecnológico",
+        "Holocom_Number": "COM-385720194865",
+        "Correo_Electronico": "desarrollo.tecnologico@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala B",
+        "Documentos": [
+            "DOC-024"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-010",
+        "Nombre_Ministerio": "Ministerio de Transporte y Comunicaciones",
+        "Descripcion_Ministerio": "El Ministerio de Transporte y Comunicaciones supervisa las rutas de transporte interestelar y la infraestructura de comunicaciones, asegurando la conectividad y accesibilidad en toda la galaxia.",
+        "Tareas": [
+            "Regular y supervisar el transporte espacial y terrestre.",
+            "Mantener y desarrollar la infraestructura de comunicaciones.",
+            "Facilitar el comercio y la movilidad entre sistemas estelares.",
+            "Coordinar la seguridad y eficiencia en las rutas de transporte."
+        ],
+        "Nombre_Encargado": "Qui-Gon Jinn",
+        "ID_Subministerio": "TC-901",
+        "Nombre_Subministerio": "Transporte Interestelar",
+        "Holocom_Number": "COM-582937104658",
+        "Correo_Electronico": "transporte.interestelar@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
+        "Documentos": [
+            "DOC-025"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-010",
+        "Nombre_Ministerio": "Ministerio de Transporte y Comunicaciones",
+        "Descripcion_Ministerio": "El Ministerio de Transporte y Comunicaciones supervisa las rutas de transporte interestelar y la infraestructura de comunicaciones, asegurando la conectividad y accesibilidad en toda la galaxia.",
+        "Tareas": [
+            "Regular y supervisar el transporte espacial y terrestre.",
+            "Mantener y desarrollar la infraestructura de comunicaciones.",
+            "Facilitar el comercio y la movilidad entre sistemas estelares.",
+            "Coordinar la seguridad y eficiencia en las rutas de transporte."
+        ],
+        "Nombre_Encargado": "Qui-Gon Jinn",
+        "ID_Subministerio": "TC-902",
+        "Nombre_Subministerio": "Comunicaciones Galácticas",
+        "Holocom_Number": "COM-493857201846",
+        "Correo_Electronico": "comunicaciones.galacticas@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 9233",
+        "Documentos": [
+            "DOC-026"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MSB-008",
+        "Nombre_Ministerio": "Ministerio de Salud y Bienestar Galáctico",
+        "Descripcion_Ministerio": "El Ministerio de Salud y Bienestar Galáctico asegura el bienestar de los ciudadanos de la República, proporcionando servicios de salud y bienestar social en toda la galaxia.",
+        "Tareas": [
+            "Supervisar los servicios de salud pública.",
+            "Implementar programas de bienestar social.",
+            "Coordinar con instituciones médicas y hospitales.",
+            "Promover la salud y el bienestar de los ciudadanos."
+        ],
+        "Nombre_Encargado": "Aayla Secura",
+        "ID_Subministerio": "SB-701",
+        "Nombre_Subministerio": "Servicios de Salud Pública",
+        "Holocom_Number": "COM-482716593048",
+        "Correo_Electronico": "servicios.saludpublica@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Sede Federal de la Salud Intergalactica. Nivel 1",
+        "Documentos": [
+            "DOC-025"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MSB-008",
+        "Nombre_Ministerio": "Ministerio de Salud y Bienestar Galáctico",
+        "Descripcion_Ministerio": "El Ministerio de Salud y Bienestar Galáctico asegura el bienestar de los ciudadanos de la República, proporcionando servicios de salud y bienestar social en toda la galaxia.",
+        "Tareas": [
+            "Supervisar los servicios de salud pública.",
+            "Implementar programas de bienestar social.",
+            "Coordinar con instituciones médicas y hospitales.",
+            "Promover la salud y el bienestar de los ciudadanos."
+        ],
+        "Nombre_Encargado": "Aayla Secura",
+        "ID_Subministerio": "SB-702",
+        "Nombre_Subministerio": "Programas de Bienestar",
+        "Holocom_Number": "COM-759203846175",
+        "Correo_Electronico": "programas.bienestar@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Sede Federal de la Salud Intergalactica. Nivel 2",
+        "Documentos": [
+            "DOC-022"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-009",
+        "Nombre_Ministerio": "Ministerio de Tecnología y Ciencia",
+        "Descripcion_Ministerio": "El Ministerio de Tecnología y Ciencia promueve la investigación científica y el desarrollo tecnológico en la República, asegurando el avance y la innovación en todos los campos.",
+        "Tareas": [
+            "Fomentar la investigación y desarrollo en ciencia y tecnología.",
+            "Coordinar con universidades, laboratorios y centros de investigación.",
+            "Regular el uso de tecnologías avanzadas.",
+            "Facilitar la transferencia de tecnología entre sistemas estelares."
+        ],
+        "Nombre_Encargado": "Galen Erso",
+        "ID_Subministerio": "TC-801",
+        "Nombre_Subministerio": "Investigación Científica",
+        "Holocom_Number": "COM-174829506372",
+        "Correo_Electronico": "investigacion.cientifica@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala A",
+        "Documentos": [
+            "DOC-023"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-009",
+        "Nombre_Ministerio": "Ministerio de Tecnología y Ciencia",
+        "Descripcion_Ministerio": "El Ministerio de Tecnología y Ciencia promueve la investigación científica y el desarrollo tecnológico en la República, asegurando el avance y la innovación en todos los campos.",
+        "Tareas": [
+            "Fomentar la investigación y desarrollo en ciencia y tecnología.",
+            "Coordinar con universidades, laboratorios y centros de investigación.",
+            "Regular el uso de tecnologías avanzadas.",
+            "Facilitar la transferencia de tecnología entre sistemas estelares."
+        ],
+        "Nombre_Encargado": "Galen Erso",
+        "ID_Subministerio": "TC-802",
+        "Nombre_Subministerio": "Desarrollo Tecnológico",
+        "Holocom_Number": "COM-385720194865",
+        "Correo_Electronico": "desarrollo.tecnologico@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala B",
+        "Documentos": [
+            "DOC-024"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-010",
+        "Nombre_Ministerio": "Ministerio de Transporte y Comunicaciones",
+        "Descripcion_Ministerio": "El Ministerio de Transporte y Comunicaciones supervisa las rutas de transporte interestelar y la infraestructura de comunicaciones, asegurando la conectividad y accesibilidad en toda la galaxia.",
+        "Tareas": [
+            "Regular y supervisar el transporte espacial y terrestre.",
+            "Mantener y desarrollar la infraestructura de comunicaciones.",
+            "Facilitar el comercio y la movilidad entre sistemas estelares.",
+            "Coordinar la seguridad y eficiencia en las rutas de transporte."
+        ],
+        "Nombre_Encargado": "Qui-Gon Jinn",
+        "ID_Subministerio": "TC-901",
+        "Nombre_Subministerio": "Transporte Interestelar",
+        "Holocom_Number": "COM-582937104658",
+        "Correo_Electronico": "transporte.interestelar@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
+        "Documentos": [
+            "DOC-025"
+        ]
+    },
+    {
+        "ID_Gobierno": "COR-001",
+        "Nombre_Gobierno": "Gobierno de Coruscant",
+        "ID_Ministerio": "MTC-010",
+        "Nombre_Ministerio": "Ministerio de Transporte y Comunicaciones",
+        "Descripcion_Ministerio": "El Ministerio de Transporte y Comunicaciones supervisa las rutas de transporte interestelar y la infraestructura de comunicaciones, asegurando la conectividad y accesibilidad en toda la galaxia.",
+        "Tareas": [
+            "Regular y supervisar el transporte espacial y terrestre.",
+            "Mantener y desarrollar la infraestructura de comunicaciones.",
+            "Facilitar el comercio y la movilidad entre sistemas estelares.",
+            "Coordinar la seguridad y eficiencia en las rutas de transporte."
+        ],
+        "Nombre_Encargado": "Qui-Gon Jinn",
+        "ID_Subministerio": "TC-902",
+        "Nombre_Subministerio": "Comunicaciones Galácticas",
+        "Holocom_Number": "COM-493857201846",
+        "Correo_Electronico": "comunicaciones.galacticas@coruscant.sw",
+        "Dias_Atencion": "Lunes a Viernes",
+        "Horario_Atencion": "8:00 a 17:00",
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 9233",
+        "Documentos": [
+            "DOC-026"
+        ]
+    }
+]

@@ -105,7 +105,8 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
         # Coincidencia exacta (normalizada)
         for entry in faqs:
             entry_preguntas = entry["pregunta"]
-            if isinstance(entry_preguntas, str):
+            # Forzar a array siempre
+            if not isinstance(entry_preguntas, list):
                 entry_preguntas = [entry_preguntas]
             for alt in entry_preguntas:
                 alt_norm = normalize_text(alt)
@@ -115,7 +116,7 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
         # Fuzzy matching y score
         for entry in faqs:
             entry_preguntas = entry["pregunta"]
-            if isinstance(entry_preguntas, str):
+            if not isinstance(entry_preguntas, list):
                 entry_preguntas = [entry_preguntas]
             for alt in entry_preguntas:
                 alt_norm = normalize_text(alt)
@@ -615,6 +616,15 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": faq["respuesta"], "session_id": sid}
 
+    # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
+    respuesta_doc = responder_sobre_documento(user_input)
+    if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
+        sid = session_id or str(uuid.uuid4())
+        context_manager.update_context(sid, user_input, respuesta_doc)
+        context_manager.reset_fallback_count(sid)
+        context_manager.set_last_sentiment(sid, "neutral")
+        return {"respuesta": respuesta_doc, "session_id": sid}
+
     # ------ Bloque de Slot Filling para RECLAMO ------
     ctx = context_manager.get_context(session_id) if session_id else {}
     pending = ctx.get("pending_field", None)
@@ -789,7 +799,6 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
     Recibe una pregunta o instrucción del usuario, y (opcional) contexto extra.
     """
     try:
-        # Extraer IP del usuario
         ip = request.client.host if request and request.client else None
         extra_context = input.context or {}
         if ip:
@@ -797,8 +806,8 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
         result = orchestrate(input.pregunta, extra_context, input.session_id)
         return result
     except Exception as e:
-        logging.error(f"Error en orquestación: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logging.error(f"Error en orquestación: {e}", exc_info=True)
+        return {"respuesta": "Lo siento, hubo un error interno. Por favor, intenta de nuevo.", "session_id": getattr(input, 'session_id', None)}
 
 @app.get("/health")
 def health():
@@ -984,3 +993,106 @@ def validar_y_formatear_rut(rut: str) -> str:
         return None
     rut_formateado = f"{int(numero):,}".replace(",", ".") + "-" + dv
     return rut_formateado
+
+# --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---
+import json
+
+# Cargar los JSON locales una sola vez (puedes mover esto a un lugar más apropiado si lo deseas)
+DOCUMENTOS_PATH = os.path.join(os.path.dirname(__file__), 'databases/documento_requisito.json')
+OFICINAS_PATH = os.path.join(os.path.dirname(__file__), 'databases/oficina_info.json')
+FAQS_PATH = os.path.join(os.path.dirname(__file__), 'databases/faq_respuestas.json')
+
+def cargar_json(path):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+documentos = cargar_json(DOCUMENTOS_PATH)
+oficinas = cargar_json(OFICINAS_PATH)
+faqs = cargar_json(FAQS_PATH)
+
+def formatear_lista(lista):
+    return "\n- " + "\n- ".join(lista)
+
+def armar_respuesta_combinada(doc, campos):
+    partes = []
+    for campo in campos:
+        if campo in doc:
+            valor = doc[campo]
+            if isinstance(valor, list):
+                valor = formatear_lista(valor)
+            partes.append(f"**{campo.replace('_', ' ')}:** {valor}")
+    return "\n".join(partes)
+
+def detectar_tipo_documento(pregunta):
+    tipos = ["permiso", "certificado", "patente", "licencia", "cédula"]
+    for tipo in tipos:
+        if tipo in pregunta.lower():
+            return tipo
+    return None
+
+def listar_documentos_por_tipo(tipo):
+    encontrados = []
+    for doc in documentos:
+        if tipo in doc["Nombre_Documento"].lower():
+            encontrados.append(doc["Nombre_Documento"])
+    return encontrados
+
+def buscar_documento_por_nombre(nombre):
+    for doc in documentos:
+        if nombre.lower() in doc["Nombre_Documento"].lower():
+            return doc
+    return None
+
+def buscar_oficina_por_documento(nombre_doc):
+    for oficina in oficinas:
+        if "Documentos" in oficina and any(nombre_doc in d for d in oficina["Documentos"]):
+            return oficina
+    return None
+
+def buscar_faq_por_pregunta(pregunta):
+    for entry in faqs:
+        for alt in entry["pregunta"]:
+            if pregunta.lower() == alt.lower():
+                return entry
+    return None
+
+def responder_sobre_documento(pregunta_usuario):
+    tipo = detectar_tipo_documento(pregunta_usuario)
+    nombre = None
+    for doc in documentos:
+        if doc["Nombre_Documento"].lower() in pregunta_usuario.lower():
+            nombre = doc["Nombre_Documento"]
+            break
+    if tipo and not nombre:
+        opciones = listar_documentos_por_tipo(tipo)
+        if opciones:
+            return f"¿Sobre qué {tipo} necesitas información? Estos son los disponibles:\n- " + "\n- ".join(opciones)
+        else:
+            return f"No encontré {tipo}s disponibles."
+    elif tipo and nombre:
+        doc = buscar_documento_por_nombre(nombre)
+        if doc:
+            campos = []
+            if "requisito" in pregunta_usuario.lower():
+                campos.append("Requisitos")
+            if "dónde" in pregunta_usuario.lower() or "donde" in pregunta_usuario.lower():
+                campos.append("Dónde_Obtener")
+            if "horario" in pregunta_usuario.lower():
+                campos.append("Horario_Atencion")
+            if "correo" in pregunta_usuario.lower():
+                campos.append("Correo_Electronico")
+            if "direccion" in pregunta_usuario.lower():
+                campos.append("Direccion")
+            if not campos:
+                campos = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
+            return armar_respuesta_combinada(doc, campos)
+        else:
+            return "No encontré información específica sobre ese documento."
+    else:
+        faq = buscar_faq_por_pregunta(pregunta_usuario)
+        if faq:
+            return f"**Pregunta:** {pregunta_usuario}\n**Respuesta:** {faq['respuesta']}"
+        return "¿Podrías especificar si buscas un permiso, certificado, patente, etc.?"
+
+# --- INTEGRACIÓN EN EL ORQUESTADOR ---
+# Puedes llamar a responder_sobre_documento(user_input) en orchestrate() antes de llamar al LLM o fallback.

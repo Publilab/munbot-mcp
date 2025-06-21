@@ -118,4 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
             processBotQueue();
         }, 2000);
     }
+
+    function handleConnectionError() {
+        alert('Hubo un error, reiniciando el chat...');
+        window.location.reload();
+    }
 });

@@ -1,0 +1,365 @@
+[
+  {
+    "ID_Documento": "CRD-001",
+    "Nombre_Documento": "Certificado de Residencia Definitiva",
+    "Requisitos": [
+      "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
+      "Comprobante de Residencia",
+      "Formulario de Solicitud Completo",
+      "Pago de Tarifas Administrativas"
+    ],
+    "Dónde_Obtener": "Departamento de Registro Civil, Edificio Consistorial Coruscant. Nivel 1313",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "registro.civil@coruscant.sw",
+    "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
+    "Holocom_Number": "COM-056555-0101",
+    "Notas": "Asegúrate de subir todos los documentos originales y copias certificadas.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Acreditación de residencia permanente en sistemas centrales",
+      "Acceso a servicios municipales y de bienestar"
+    ],
+    "penalidad": "La omisión de este certificado puede acarrear la prohibición de acceso a servicios locales y la inhabilitación para registrarse en el sistema de salud intergaláctico.",
+  },
+  {
+    "ID_Documento": "CET-008",
+    "Nombre_Documento": "Certificado de Estadía Temporal",
+    "Requisitos": [
+      "Carta de Invitación de un Ciudadano de Coruscant",
+      "Identificación Oficial",
+      "Formulario de Solicitud Completo",
+      "Comprobante de Medios Económicos"
+    ],
+    "Dónde_Obtener": "Departamento de Registro Civil, Edificio Consistorial Coruscant. Nivel 1313",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "registro.civil@coruscant.sw",
+    "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
+    "Holocom_Number": "COM-056555-0101",
+    "Notas": "Asegúrate de traer todos los documentos originales y copias certificadas.",
+    "tiempo_validez": "3 meses",
+    "utilidad": [
+      "Acredita temporalmente la estadía en sistemas federados",
+      "Permite el acceso a servicios básicos por un período limitado"
+    ],
+    "penalidad": "La falta de este certificado implica la expulsión inmediata de naves visitantes y la denegación de acceso a zonas privilegiadas del sistema.",
+  },
+  {
+    "ID_Documento": "CEP-011",
+    "Nombre_Documento": "Certificado de Extracción Productiva",
+    "Requisitos": [
+      "Plan de Negocios Detallado",
+      "Comprobante de Inversión Inicial",
+      "Identificación Fiscal",
+      "Formulario de Solicitud Completo",
+      "Evaluación de Impacto Económico"
+    ],
+    "Dónde_Obtener": "Oficina de Desarrollo Económico, Torre de Comercio. Sector E-5377",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "desarrollo.economico@coruscant.sw",
+    "Direccion": "Torre de Comercio. Sector E-5377",
+    "Holocom_Number": "COM-056555-1201",
+    "Notas": "Se requiere una evaluación de impacto económico previa a la aprobación.",
+    "tiempo_validez": "6 meses",
+    "utilidad": [
+      "Autoriza la extracción de recursos energéticos y minerales",
+      "Garantiza el respaldo económico para operaciones industriales"
+    ],
+    "penalidad": "La extracción sin certificado resultará en la incautación de la nave y la pérdida de créditos intergalácticos.",
+  },
+  {
+    "ID_Documento": "CEM-013",
+    "Nombre_Documento": "Certificado de Enrolamiento Militar de la República",
+    "Requisitos": [
+      "Identificación Oficial",
+      "Certificado Médico Militar",
+      "Carta de Recomendación",
+      "Formulario de Enrolamiento Completo",
+      "Pago de Tarifas de Enrolamiento"
+    ],
+    "Dónde_Obtener": "Cuartel General de la Defensa, Nivel 212",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "enrolamiento.defensa@coruscant.sw",
+    "Direccion": "Cuartel General de la Defensa. Nivel 212",
+    "Holocom_Number": "COM-056555-1301",
+    "Notas": "Es obligatorio presentar una carta de recomendación de un oficial superior.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Habilita el servicio activo en unidades militares",
+      "Permite acceder a misiones estratégicas y de combate"
+    ],
+    "penalidad": "Sin el enrolamiento, se prohíbe el servicio militar, afectando la carrera y la participación en operaciones defensivas de la República.",
+  },
+  {
+    "ID_Documento": "CRC-014",
+    "Nombre_Documento": "Certificado Registro de Carga",
+    "Requisitos": [
+      "Documentación de Mercancías",
+      "Permiso de Transporte Militar",
+      "Identificación Oficial",
+      "Formulario de Registro Completo",
+      "Evaluación de Seguridad de la Carga"
+    ],
+    "Dónde_Obtener": "Oficina de Logística y Abastecimiento, Edificio Consistorial Coruscant. Nivel 3122",
+    "Horario_Atencion": "Miércoles a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "logistica.abastecimiento@coruscant.sw",
+    "Direccion": "Edificio Consistorial Coruscant. Nivel 3122",
+    "Holocom_Number": "COM-056555-1401",
+    "Notas": "Todas las cargas deben pasar por una evaluación de seguridad antes del registro.",
+    "tiempo_validez": "6 meses",
+    "utilidad": [
+      "Certifica la seguridad y el cumplimiento de normativas en el transporte de mercancías",
+      "Facilita la operación logística en rutas interplanetarias"
+    ],
+    "penalidad": "No presentar este certificado puede resultar en la detención de la carga y sanciones por contrabando a nivel intergaláctico.",
+  },
+  {
+    "ID_Documento": "CAT-019",
+    "Nombre_Documento": "Certificado de Antecedentes",
+    "Requisitos": [
+      "Solicitud de Certificación",
+      "Identificación Oficial",
+      "Historia de Empleo y Residencia",
+      "Formulario de Solicitud Completo",
+      "Pago de Tarifas Administrativas"
+    ],
+    "Dónde_Obtener": "Edificio de la Justicia Coruscant. Tribunal Supremo de la República",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "administracion.justicia@coruscant.sw",
+    "Direccion": "Edificio de la Justicia Coruscant. Tribunal Supremo de la República",
+    "Holocom_Number": "COM-056555-2401",
+    "Notas": "Asegúrate de completar todos los campos y proporcionar la documentación necesaria.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Verifica los antecedentes laborales y de residencia",
+      "Es requisito para realizar trámites oficiales en la Federación"
+    ],
+    "penalidad": "La falta de este certificado puede llevar a la cancelación de contratos oficiales y restricciones de empleo en entidades federadas.",
+  },
+  {
+    "ID_Documento": "RDD-017",
+    "Nombre_Documento": "Certificado Registro de Droides",
+    "Requisitos": [
+      "Certificado de Fabricación",
+      "Identificación Oficial",
+      "Evaluación de Seguridad de Droids",
+      "Formulario de Registro Completo",
+      "Prueba de Funcionalidad"
+    ],
+    "Dónde_Obtener": "Torre Holistica de la Ciencia. Piso 1. Ala B",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "desarrollo.tecnologico@coruscant.sw",
+    "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala B",
+    "Holocom_Number": "COM-056555-2101",
+    "Notas": "Cada dróide debe pasar una prueba de funcionalidad antes del registro.",
+    "tiempo_validez": "6 meses",
+    "utilidad": [
+      "Certifica la integridad y funcionamiento de droides oficiales",
+      "Permite operar en redes de transporte automatizadas"
+    ],
+    "penalidad": "Sin este registro, los droides serán confiscados y el operador enfrentará restricciones en el uso de sistemas automatizados.",
+  },
+  {
+    "ID_Documento": "CPF-002",
+    "Nombre_Documento": "Licencia Oficial Piloto Federado",
+    "Requisitos": [
+      "Comprobante de Formación como Piloto",
+      "Certificado Médico Militar",
+      "Formulario de Solicitud Completo",
+      "Pago de Tarifas de Identificación"
+    ],
+    "Dónde_Obtener": "Centro de Formación Aeronáutica, Sector F-404",
+    "Horario_Atencion": "Martes a Sábado, 9:00 a 18:00",
+    "Correo_Electronico": "identificacion.piloto@coruscant.sw",
+    "Direccion": "Centro de Formación Aeronáutica. Sector F-404",
+    "Holocom_Number": "COM-056555-0202",
+    "Notas": "Es obligatorio presentar el certificado médico vigente.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Habilita el pilotaje de naves oficiales y civiles",
+      "Permite el acceso a rutas aéreas y espaciales restringidas"
+    ],
+    "penalidad": "Sin esta cédula, se prohíbe el pilotaje en rutas oficiales y se impide participar en misiones de la Flota Republicana.",
+  },
+  {
+    "ID_Documento": "LTE-003",
+    "Nombre_Documento": "Licencia de Transporte Espacial",
+    "Requisitos": [
+      "Certificado de Navegación Espacial",
+      "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
+      "Formulario de Solicitud Completo",
+      "Pago de Tarifas de Licencia"
+    ],
+    "Dónde_Obtener": "Oficina de Transporte Espacial, Edificio Consistorial Coruscant. Nivel 5143",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "urbanismo@coruscant.sw",
+    "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
+    "Holocom_Number": "COM-056555-0303",
+    "Notas": "La licencia es válida por un año y es obligatorio renovarla antes de su vencimiento.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Transporte interplanetario de carga y pasajeros",
+      "Acceso a rutas comerciales privilegiadas"
+    ],
+    "penalidad": "No contar con esta licencia impide operar en rutas oficiales y puede resultar en sanciones económicas severas por la Federación del Comercio.",
+  },
+  {
+    "ID_Documento": "ISP-005",
+    "Nombre_Documento": "Cédula Única Sistema Planetario",
+    "Requisitos": [
+      "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
+      "Formulario de Solicitud Completo",
+      "Foto Tamaño Identificación",
+      "Comprobante de Pago"
+    ],
+    "Dónde_Obtener": "Departamento de Identificación, Edificio Consistorial Coruscant. Nivel 1313",
+    "Horario_Atencion": "Lunes a Sábado, 9:00 a 18:00",
+    "Correo_Electronico": "identificacion@coruscant.sw",
+    "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
+    "Holocom_Number": "COM-056555-0707",
+    "Notas": "El documento tiene una validez de 5 años y es obligatorio renovarlo antes de su vencimiento.",
+    "tiempo_validez": "5 años",
+    "utilidad": [
+      "Acreditación de identidad a nivel galáctico",
+      "Acceso a servicios interplanetarios oficiales"
+    ],
+    "penalidad": "No disponer de esta identificación puede resultar en la imposibilidad de realizar transacciones oficiales y prohibición de acceso a sistemas federados.",
+  },
+  {
+    "ID_Documento": "CBS-015",
+    "Nombre_Documento": "Cédula de Bienestar Social",
+    "Requisitos": [
+      "Comprobante de Participación en Programas de Bienestar",
+      "Identificación Oficial",
+      "Formulario de Solicitud Completo",
+      "Evaluación de Impacto Personal",
+      "Referencias de Programas Anteriores"
+    ],
+    "Dónde_Obtener": "Sede Federal de la Salud Intergalactica. Nivel 2",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "programas.bienestar@coruscant.sw",
+    "Direccion": "Sede Federal de la Salud Intergalactica. Nivel 2",
+    "Holocom_Number": "COM-056555-1901",
+    "Notas": "Es necesario presentar referencias de programas de bienestar en los que hayas participado previamente.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Acredita la participación en programas sociales",
+      "Permite acceder a subvenciones y beneficios de la Federación"
+    ],
+    "penalidad": "La falta de esta cédula ocasiona la pérdida de acceso a programas sociales y ayudas federales, afectando el bienestar individual.",
+  },
+  {
+    "ID_Documento": "PEP-009",
+    "Nombre_Documento": "Permiso de Exploración Planetaria",
+    "Requisitos": [
+      "Carta de Misión",
+      "Identificación Oficial",
+      "Plan de Exploración Detallado",
+      "Formulario de Solicitud Completo",
+      "Certificado de Seguridad de la Misión"
+    ],
+    "Dónde_Obtener": "Centro de Exploración Espacial, Nivel Central, Ala B",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "exploracion.espacial@coruscant.sw",
+    "Direccion": "Centro de Exploración Espacial. Nivel Central, Ala B",
+    "Holocom_Number": "COM-056555-1001",
+    "Notas": "La misión debe estar aprobada por el Ministerio de Defensa Galáctica.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Autoriza incursiones de exploración en territorios inexplorados",
+      "Facilita el acceso a recursos y rutas secretas"
+    ],
+    "penalidad": "Sin este permiso, los exploradores serán declarados fuera de la ley y sujetos a medidas de confinamiento en estaciones militares.",
+  },
+  {
+    "ID_Documento": "RAS-010",
+    "Nombre_Documento": "Permiso de Asentamientos Coloniales",
+    "Requisitos": [
+      "Comprobante de Terreno",
+      "Identificación Oficial",
+      "Formulario de Registro Completo",
+      "Certificado de Seguridad Inmobiliaria",
+      "Plan de Desarrollo Inmobiliario"
+    ],
+    "Dónde_Obtener": "Oficina de Colonización, Palacio de la Cancillería. Nivel 1832",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "colonizacion@coruscant.sw",
+    "Direccion": "Palacio de la Cancillería. Nivel 1832",
+    "Holocom_Number": "COM-056555-1101",
+    "Notas": "El plan de desarrollo debe incluir medidas de sostenibilidad ambiental.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Registra asentamientos en nuevos territorios",
+      "Facilita la planificación y ejecución de proyectos coloniales"
+    ],
+    "penalidad": "Sin este registro, los asentamientos serán desmantelados y se impondrán sanciones de exclusión de zonas habitables de la Federación.",
+  },
+  {
+    "ID_Documento": "PAT-018",
+    "Nombre_Documento": "Permiso de Aterrizaje",
+    "Requisitos": [
+      "Licencia de Transporte Espacial",
+      "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
+      "Plan de Ruta Detallado",
+      "Formulario de Solicitud Completo",
+      "Evaluación de Seguridad de Nave"
+    ],
+    "Dónde_Obtener": "Edificio Consistorial Coruscant. Nivel 5143",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "transporte.interestelar@coruscant.sw",
+    "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
+    "Holocom_Number": "COM-056555-2201",
+    "Notas": "Se requiere una evaluación de seguridad de la nave antes de emitir el permiso.",
+    "tiempo_validez": "3 meses",
+    "utilidad": [
+      "Autorización para el aterrizaje temporal en plataformas de Coruscant",
+      "Acceso a zonas de desembarque y controles migratorios"
+    ],
+    "penalidad": "La infracción conlleva la expulsión de naves visitantes y sanciones que incluyen prohibiciones en futuros aterrizajes.",
+  },
+  {
+    "ID_Documento": "PCI-012",
+    "Nombre_Documento": "Patente Comercial Intergalaáctica",
+    "Requisitos": [
+      "Registro de Empresa a Nivel Galáctico",
+      "Identificación Fiscal Internacional",
+      "Certificado de Buenas Prácticas Comerciales",
+      "Formulario de Solicitud Completo",
+      "Pago de Tarifas Internacionales"
+    ],
+    "Dónde_Obtener": "Oficina de Desarrollo Económico, Torre de Comercio. Sector E-5377",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "desarrollo.economico@coruscant.sw",
+    "Direccion": "Torre de Comercio. Sector E-5377",
+    "Holocom_Number": "COM-056555-1201",
+    "Notas": "Se requiere una evaluación de impacto económico previa a la aprobación.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Permite la operación de negocios interplanetarios",
+      "Facilita la apertura de sucursales en sistemas afiliados"
+    ],
+    "penalidad": "Sin patente, se vetará el comercio en sistemas asociados y se confiscará el equipamiento comercial.",
+  },
+  {
+    "ID_Documento": "RIV-016",
+    "Nombre_Documento": "Patente de Inventos",
+    "Requisitos": [
+      "Descripción Detallada del Invento",
+      "Prototipo o Demostración Funcional",
+      "Identificación Oficial",
+      "Formulario de Registro Completo",
+      "Evaluación de Innovación Tecnológica"
+    ],
+    "Dónde_Obtener": "Torre Holistica de la Ciencia. Piso 1. Ala A",
+    "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
+    "Correo_Electronico": "investigacion.cientifica@coruscant.sw",
+    "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala A",
+    "Holocom_Number": "COM-056555-2001",
+    "Notas": "El invento debe demostrar innovación tecnológica significativa.",
+    "tiempo_validez": "1 año",
+    "utilidad": [
+      "Registra nuevas invenciones y desarrollos tecnológicos",
+      "Facilita el acceso a fondos de investigación y desarrollo"
+    ],
+    "penalidad": "La omisión del registro puede provocar la pérdida de derechos sobre el invento y sanciones por plagio o uso indebido de tecnología.",
+  }
+]

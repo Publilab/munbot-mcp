@@ -95,6 +95,7 @@ services:
     depends_on:
       - redis
       - postgres
+    restart: unless-stopped
 
   complaints-mcp:
     build: ./services/complaints-mcp

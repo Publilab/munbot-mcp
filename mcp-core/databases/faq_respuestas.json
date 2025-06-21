@@ -51,68 +51,68 @@
     "categoria": "funcion_munbot"
   },
   {
-    "pregunta": "¿A qué horas estás disponible?",
+    "pregunta": ["¿A qué horas estás disponible?"],
     "respuesta": "Me puedes encontrar las 24 horas del día, los 7 días a la semana. Puedes contactarme en cualquier momento y a cualquier hora.",
     "categoria": "disponibilidad"
   },
   {
-    "pregunta": "¿En qué idiomas hablas?",
+    "pregunta": ["¿En qué idiomas hablas?"],
     "respuesta": "Actualmente, hablo solamente español porque es el idioma oficial de La República. Si no hablas español puedes buscar un traductor en línea para que podamos comunicarnos.",
     "categoria": "idiomas"
   },
   {
-    "pregunta": "¿Cómo proteges mis datos?",
+    "pregunta": ["¿Cómo proteges mis datos?"],
     "respuesta": "Tu privacidad es muy importante para nosotros. Protegemos tu información y no compartimos tus datos con terceros. Puedes confiar que trataremos los datos que nos proporciones con la mayor confidencialidad.",
     "categoria": "privacidad"
   },
   {
-    "pregunta": "¿Dónde estás ubicado?",
+    "pregunta": ["¿Dónde estás ubicado?"],
     "respuesta": "Mi oficina virtual está en la Ciudad de Coruscant. Pero en realidad estoy donde tú me necesites. No poseo un cuerpo, pero tengo la capacidad de asistirte en lo que necesites.",
     "categoria": "ubicacion"
   },
   {
-    "pregunta": "¿Cómo puedo contactar a un humano?",
+    "pregunta": ["¿Cómo puedo contactar a un humano?"],
     "respuesta": "Si necesitas urgente hablar con un agente humano, envía un correo a contacto@coruscant.gov o llama al 123-456-7890. También puedo ayudarte en un montón de servicios, ¿te gustaría probar qué tan bueno soy?",
     "categoria": "contacto_humano"
   },
   {
-    "pregunta": "¿Qué funcionalidades incluye este demo?",
+    "pregunta": ["¿Qué funcionalidades incluye este demo?"],
     "respuesta": "Esta demo es solo un vistazo de las funcionalidades de MunBoT: permite integrar trámites, agendar citas, presentar reclamos, solicitar documentos y hacer consultas pertinentes a la institución.",
     "categoria": "alcance_demo"
   },
   {
-    "pregunta": "¿Con qué tecnología está construido MunBoT?",
+    "pregunta": ["¿Con qué tecnología está construido MunBoT?"],
     "respuesta": "MunBoT está desarrollado con Rasa (Python), microservicios en Docker y se integra a Evolution API para WhatsApp, todo desplegable en Kubernetes.",
     "categoria": "tecnologias"
   },
   {
-    "pregunta": "¿Con qué herramientas puedes integrarte?",
+    "pregunta": ["¿Con qué herramientas puedes integrarte?"],
     "respuesta": "En el demo se integra a distintas APIs como WhatsApp, una plataforma web, un sistema para agendar horas, consultas sobre trámites y denuncias ciudadanas. En producción puede conectarse a cualquier API REST municipal que programemos o diseñemos.",
     "categoria": "integraciones"
   },
   {
-    "pregunta": "¿Cómo proteges mi información?",
+    "pregunta": ["¿Cómo proteges mi información?"],
     "respuesta": "Los datos se transmiten mediante HTTPS, se almacenan cifrados y MunBoT cumple con la LOPD chilena; en la demo usamos una base temporal purgada diariamente.",
     "categoria": "seguridad_datos"
   },
   {
-    "pregunta": "¿Cuál es la hoja de ruta de desarrollo de MunBoT?",
+    "pregunta": ["¿Cuál es la hoja de ruta de desarrollo de MunBoT?"],
     "respuesta": "Planeamos incluir reconocimiento de voz, generación automática de documentos y análisis predictivo de demanda ciudadana en versiones sucesivas. Nuestro siguiente paso es integrar la información completa para asistirte mejor.",
     "categoria": "hoja_ruta"
   },
   {
-    "pregunta": "¿Cómo puedo reportar errores o sugerencias?",
+    "pregunta": ["¿Cómo puedo reportar errores o sugerencias?"],
     "respuesta": "Puedes enviarnos tus observaciones a contacto@publilab.cl; tu retroalimentación es clave para mejorar el servicio.",
     "categoria": "feedback"
   },
   {
-    "pregunta": "¿Cómo contrato este servicio para mi municipalidad?",
+    "pregunta": ["¿Cómo contrato este servicio para mi municipalidad?"],
     "respuesta": "Puedes contactar a un representante comercial al mail ei@publilab.cl o al número (+56) 9 2734 3333.",
     "categoria": "contacto_comercial"
   },
   {
-    "pregunta": "¿Cuánto cuesta MunBoT?",
+    "pregunta": ["¿Cuánto cuesta MunBoT?"],
     "respuesta": "El precio depende de las necesidades de tu institución y lo que quieras incluir en tu paquete de implementación. Contacta a un representante comercial al mail ei@publilab.cl o al número (+56) 9 2705 3400.",
     "categoria": "costos"
-  }
+  },
 ] 
