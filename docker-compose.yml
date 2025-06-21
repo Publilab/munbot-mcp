@@ -13,11 +13,16 @@ services:
       - REDIS_HOST=redis
       - NODE_OPTIONS=--max-old-space-size=1024
     depends_on:
-      - postgres
-      - redis
-      - complaints-mcp
-      - llm_docs-mcp
-      - scheduler-mcp
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      complaints-mcp:
+        condition: service_started
+      llm_docs-mcp:
+        condition: service_started
+      scheduler-mcp:
+        condition: service_started
 
   evolution-manager:
     build: ./gateways/evolution-manager
@@ -86,6 +91,8 @@ services:
     container_name: mcp-core
     env_file:
       - ./mcp-core/.env
+    environment:
+      - REDIS_HOST=redis
     ports:
       - "5000:5000"
     networks:
@@ -93,8 +100,10 @@ services:
     volumes:
     - ./services/llm_docs-mcp/models:/mcp-core/models
     depends_on:
-      - redis
-      - postgres
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
 
   complaints-mcp:
@@ -102,6 +111,8 @@ services:
     container_name: complaints-mcp
     env_file:
       - ./services/complaints-mcp/.env
+    environment:
+      - REDIS_HOST=redis
     ports:
       - "7000:7000"
     depends_on:
@@ -121,6 +132,8 @@ services:
     container_name: llm_docs-mcp
     env_file:
       - ./services/llm_docs-mcp/.env
+    environment:
+      - REDIS_HOST=redis
     ports:
       - "8000:8000"
     restart: unless-stopped
@@ -140,6 +153,8 @@ services:
     container_name: scheduler-mcp
     env_file:
       - ./services/scheduler-mcp/.env
+    environment:
+      - REDIS_HOST=redis
     ports:
       - "6001:6001"
     restart: unless-stopped
