@@ -998,9 +998,9 @@ def validar_y_formatear_rut(rut: str) -> str:
 import json
 
 # Cargar los JSON locales una sola vez (puedes mover esto a un lugar más apropiado si lo deseas)
-DOCUMENTOS_PATH = os.path.join(os.path.dirname(__file__), 'databases/documento_requisito.json')
-OFICINAS_PATH = os.path.join(os.path.dirname(__file__), 'databases/oficina_info.json')
-FAQS_PATH = os.path.join(os.path.dirname(__file__), 'databases/faq_respuestas.json')
+DOCUMENTOS_PATH = os.path.join(os.path.dirname(__file__), "databases/documento_requisito.json")
+OFICINAS_PATH = os.path.join(os.path.dirname(__file__), "databases/oficina_info.json")
+FAQS_PATH = os.path.join(os.path.dirname(__file__), "databases/faq_respuestas.json")
 
 def cargar_json(path):
     with open(path, "r", encoding="utf-8") as f:

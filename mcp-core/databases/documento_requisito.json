@@ -19,7 +19,7 @@
       "Acreditación de residencia permanente en sistemas centrales",
       "Acceso a servicios municipales y de bienestar"
     ],
-    "penalidad": "La omisión de este certificado puede acarrear la prohibición de acceso a servicios locales y la inhabilitación para registrarse en el sistema de salud intergaláctico.",
+    "penalidad": "La omisión de este certificado puede acarrear la prohibición de acceso a servicios locales y la inhabilitación para registrarse en el sistema de salud intergaláctico."
   },
   {
     "ID_Documento": "CET-008",
@@ -41,7 +41,7 @@
       "Acredita temporalmente la estadía en sistemas federados",
       "Permite el acceso a servicios básicos por un período limitado"
     ],
-    "penalidad": "La falta de este certificado implica la expulsión inmediata de naves visitantes y la denegación de acceso a zonas privilegiadas del sistema.",
+    "penalidad": "La falta de este certificado implica la expulsión inmediata de naves visitantes y la denegación de acceso a zonas privilegiadas del sistema."
   },
   {
     "ID_Documento": "CEP-011",
@@ -64,7 +64,7 @@
       "Autoriza la extracción de recursos energéticos y minerales",
       "Garantiza el respaldo económico para operaciones industriales"
     ],
-    "penalidad": "La extracción sin certificado resultará en la incautación de la nave y la pérdida de créditos intergalácticos.",
+    "penalidad": "La extracción sin certificado resultará en la incautación de la nave y la pérdida de créditos intergalácticos."
   },
   {
     "ID_Documento": "CEM-013",
@@ -87,7 +87,7 @@
       "Habilita el servicio activo en unidades militares",
       "Permite acceder a misiones estratégicas y de combate"
     ],
-    "penalidad": "Sin el enrolamiento, se prohíbe el servicio militar, afectando la carrera y la participación en operaciones defensivas de la República.",
+    "penalidad": "Sin el enrolamiento, se prohíbe el servicio militar, afectando la carrera y la participación en operaciones defensivas de la República."
   },
   {
     "ID_Documento": "CRC-014",
@@ -110,7 +110,7 @@
       "Certifica la seguridad y el cumplimiento de normativas en el transporte de mercancías",
       "Facilita la operación logística en rutas interplanetarias"
     ],
-    "penalidad": "No presentar este certificado puede resultar en la detención de la carga y sanciones por contrabando a nivel intergaláctico.",
+    "penalidad": "No presentar este certificado puede resultar en la detención de la carga y sanciones por contrabando a nivel intergaláctico."
   },
   {
     "ID_Documento": "CAT-019",
@@ -133,7 +133,7 @@
       "Verifica los antecedentes laborales y de residencia",
       "Es requisito para realizar trámites oficiales en la Federación"
     ],
-    "penalidad": "La falta de este certificado puede llevar a la cancelación de contratos oficiales y restricciones de empleo en entidades federadas.",
+    "penalidad": "La falta de este certificado puede llevar a la cancelación de contratos oficiales y restricciones de empleo en entidades federadas."
   },
   {
     "ID_Documento": "RDD-017",
@@ -156,7 +156,7 @@
       "Certifica la integridad y funcionamiento de droides oficiales",
       "Permite operar en redes de transporte automatizadas"
     ],
-    "penalidad": "Sin este registro, los droides serán confiscados y el operador enfrentará restricciones en el uso de sistemas automatizados.",
+    "penalidad": "Sin este registro, los droides serán confiscados y el operador enfrentará restricciones en el uso de sistemas automatizados."
   },
   {
     "ID_Documento": "CPF-002",
@@ -178,7 +178,7 @@
       "Habilita el pilotaje de naves oficiales y civiles",
       "Permite el acceso a rutas aéreas y espaciales restringidas"
     ],
-    "penalidad": "Sin esta cédula, se prohíbe el pilotaje en rutas oficiales y se impide participar en misiones de la Flota Republicana.",
+    "penalidad": "Sin esta cédula, se prohíbe el pilotaje en rutas oficiales y se impide participar en misiones de la Flota Republicana."
   },
   {
     "ID_Documento": "LTE-003",
@@ -200,7 +200,7 @@
       "Transporte interplanetario de carga y pasajeros",
       "Acceso a rutas comerciales privilegiadas"
     ],
-    "penalidad": "No contar con esta licencia impide operar en rutas oficiales y puede resultar en sanciones económicas severas por la Federación del Comercio.",
+    "penalidad": "No contar con esta licencia impide operar en rutas oficiales y puede resultar en sanciones económicas severas por la Federación del Comercio."
   },
   {
     "ID_Documento": "ISP-005",
@@ -222,7 +222,7 @@
       "Acreditación de identidad a nivel galáctico",
       "Acceso a servicios interplanetarios oficiales"
     ],
-    "penalidad": "No disponer de esta identificación puede resultar en la imposibilidad de realizar transacciones oficiales y prohibición de acceso a sistemas federados.",
+    "penalidad": "No disponer de esta identificación puede resultar en la imposibilidad de realizar transacciones oficiales y prohibición de acceso a sistemas federados."
   },
   {
     "ID_Documento": "CBS-015",
@@ -245,7 +245,7 @@
       "Acredita la participación en programas sociales",
       "Permite acceder a subvenciones y beneficios de la Federación"
     ],
-    "penalidad": "La falta de esta cédula ocasiona la pérdida de acceso a programas sociales y ayudas federales, afectando el bienestar individual.",
+    "penalidad": "La falta de esta cédula ocasiona la pérdida de acceso a programas sociales y ayudas federales, afectando el bienestar individual."
   },
   {
     "ID_Documento": "PEP-009",
@@ -268,7 +268,7 @@
       "Autoriza incursiones de exploración en territorios inexplorados",
       "Facilita el acceso a recursos y rutas secretas"
     ],
-    "penalidad": "Sin este permiso, los exploradores serán declarados fuera de la ley y sujetos a medidas de confinamiento en estaciones militares.",
+    "penalidad": "Sin este permiso, los exploradores serán declarados fuera de la ley y sujetos a medidas de confinamiento en estaciones militares."
   },
   {
     "ID_Documento": "RAS-010",
@@ -291,7 +291,7 @@
       "Registra asentamientos en nuevos territorios",
       "Facilita la planificación y ejecución de proyectos coloniales"
     ],
-    "penalidad": "Sin este registro, los asentamientos serán desmantelados y se impondrán sanciones de exclusión de zonas habitables de la Federación.",
+    "penalidad": "Sin este registro, los asentamientos serán desmantelados y se impondrán sanciones de exclusión de zonas habitables de la Federación."
   },
   {
     "ID_Documento": "PAT-018",
@@ -314,7 +314,7 @@
       "Autorización para el aterrizaje temporal en plataformas de Coruscant",
       "Acceso a zonas de desembarque y controles migratorios"
     ],
-    "penalidad": "La infracción conlleva la expulsión de naves visitantes y sanciones que incluyen prohibiciones en futuros aterrizajes.",
+    "penalidad": "La infracción conlleva la expulsión de naves visitantes y sanciones que incluyen prohibiciones en futuros aterrizajes."
   },
   {
     "ID_Documento": "PCI-012",
@@ -337,7 +337,7 @@
       "Permite la operación de negocios interplanetarios",
       "Facilita la apertura de sucursales en sistemas afiliados"
     ],
-    "penalidad": "Sin patente, se vetará el comercio en sistemas asociados y se confiscará el equipamiento comercial.",
+    "penalidad": "Sin patente, se vetará el comercio en sistemas asociados y se confiscará el equipamiento comercial."
   },
   {
     "ID_Documento": "RIV-016",
@@ -360,6 +360,6 @@
       "Registra nuevas invenciones y desarrollos tecnológicos",
       "Facilita el acceso a fondos de investigación y desarrollo"
     ],
-    "penalidad": "La omisión del registro puede provocar la pérdida de derechos sobre el invento y sanciones por plagio o uso indebido de tecnología.",
+    "penalidad": "La omisión del registro puede provocar la pérdida de derechos sobre el invento y sanciones por plagio o uso indebido de tecnología."
   }
 ]
