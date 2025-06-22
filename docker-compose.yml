@@ -98,7 +98,7 @@ services:
     networks:
       - munbot-net
     volumes:
-    - ./services/llm_docs-mcp/models:/mcp-core/models
+    - ./services/mcp-core/models:/mcp-core/models
     depends_on:
       redis:
         condition: service_healthy
