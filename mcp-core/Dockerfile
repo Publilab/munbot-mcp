@@ -25,8 +25,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY .env orchestrator.py context_manager.py llama_client.py ./
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
+COPY models/ ./models/
 COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json
-COPY models/Llama-3.2-3B-Instruct-Q6_K.gguf ./models/Llama-3.2-3B-Instruct-Q6_K.gguf
+
 
 ENV NO_PROXY=localhost,127.0.0.1
 ENV no_proxy=localhost,127.0.0.1
