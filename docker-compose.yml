@@ -95,11 +95,11 @@ services:
       - REDIS_HOST=redis
     ports:
       - "5000:5000"
-  networks:
+    networks:
       - munbot-net
-  volumes:
+    volumes:
     - ./mcp-core/models:/mcp-core/models
-  depends_on:
+    depends_on:
       redis:
         condition: service_healthy
       postgres:
