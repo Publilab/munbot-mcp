@@ -1600,6 +1600,31 @@ documentos = cargar_json(DOCUMENTOS_PATH)
 oficinas = cargar_json(OFICINAS_PATH)
 faqs = cargar_json(FAQS_PATH)
 
+# Controla si se incluyen todos los campos del documento cuando
+# el usuario no especifica un dato particular.
+INCLUIR_FICHA_COMPLETA_POR_DEFECTO = False
+
+# Mapeo de palabras clave a campos del JSON de documentos. Las palabras se
+# normalizan sin tildes para realizar la comparación.
+KEYWORD_FIELDS = {
+    "Requisitos": ["requisito", "necesito", "condicion", "condiciones"],
+    "Dónde_Obtener": ["donde", "dónde"],
+    "Horario_Atencion": ["horario", "horarios", "hora de atencion", "cuando", "cuándo"],
+    "Correo_Electronico": ["correo", "mail", "email"],
+    "telefono": ["telefono", "teléfono", "numero", "número", "contacto", "fono"],
+    "Direccion": ["direccion", "dirección", "ubicacion", "ubicación", "direcciones"],
+    "tiempo_validez": ["vigencia", "validez", "duracion", "duración", "valido", "válido"],
+    "utilidad": ["utilidad", "para que sirve", "beneficio"],
+    "penalidad": ["penalidad", "sancion", "sanción", "que pasa si no", "multas"],
+    "costo": ["costo", "precio", "valor"],
+}
+
+# Alias conocidos para referirse a algunos documentos con nombres alternativos.
+DOC_ALIASES = {
+    normalize_text("licencia de conducir"): "Licencia Oficial Piloto Federado",
+    normalize_text("permiso de circulacion"): "Permiso de Aterrizaje",
+}
+
 CAMPO_LABELS = {
     "Nombre_Documento": "Nombre del documento",
     "Requisitos": "Requisitos",
@@ -1619,15 +1644,27 @@ def formatear_lista(lista):
 
 
 def armar_respuesta_combinada(doc, campos):
-    partes = []
+    """Devuelve una respuesta lista para el usuario con los campos solicitados.
+    Siempre menciona el nombre del documento para mantener contexto."""
+    doc_name = doc.get("Nombre_Documento", "")
+    partes: List[Tuple[str, str]] = []
     for campo in campos:
         if campo in doc:
             valor = doc[campo]
             if isinstance(valor, list):
                 valor = formatear_lista(valor)
             etiqueta = CAMPO_LABELS.get(campo, campo.replace("_", " ").capitalize())
-            partes.append(f"**{etiqueta}:** {valor}")
-    return "\n".join(partes)
+            partes.append((etiqueta, valor))
+
+    if not partes:
+        return ""
+
+    if len(partes) == 1:
+        etiqueta, valor = partes[0]
+        return f"Para el trámite **{doc_name}**, {etiqueta.lower()}: {valor}"
+
+    cuerpo = "\n".join(f"**{e}:** {v}" for e, v in partes)
+    return f"**{doc_name}**\n{cuerpo}"
 
 
 def detectar_tipo_documento(pregunta):
@@ -1710,6 +1747,13 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
             nombre = doc["Nombre_Documento"]
             break
 
+    # Revisar alias conocidos
+    if not nombre:
+        for alias_norm, real in DOC_ALIASES.items():
+            if alias_norm in pregunta_norm:
+                nombre = real
+                break
+
     # si no hubo match directo, probar búsqueda difusa
     if not nombre:
         best_doc, score = buscar_documento_fuzzy(pregunta_usuario)
@@ -1738,35 +1782,21 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
                 context_manager.set_selected_document(session_id, nombre)
                 context_manager.clear_document_options(session_id)
 
-            KEYWORDS = {
-                "Requisitos": ["requisito"],
-                "Dónde_Obtener": ["donde", "dónde"],
-                "Horario_Atencion": ["horario"],
-                "Correo_Electronico": ["correo"],
-                "Direccion": ["direccion", "dirección"],
-                "telefono": ["telefono", "teléfono", "numero", "número", "contacto"],
-                "tiempo_validez": [
-                    "vigencia",
-                    "validez",
-                    "valido",
-                    "válido",
-                    "duracion",
-                    "duración",
-                ],
-                "utilidad": ["para que", "para qué", "utilidad", "beneficio"],
-                "penalidad": ["penalidad", "sancion", "sanción"],
-                "costo": ["costo", "valor", "precio"],
-            }
-
-            campos_solicitados = []
-            for campo, kws in KEYWORDS.items():
+            campos_solicitados: List[str] = []
+            for campo, kws in KEYWORD_FIELDS.items():
                 for kw in kws:
-                    if kw in pregunta_norm:
+                    kw_norm = normalize_text(kw)
+                    if kw_norm in pregunta_norm:
                         campos_solicitados.append(campo)
                         break
 
             if not campos_solicitados:
-                campos_solicitados = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
+                if INCLUIR_FICHA_COMPLETA_POR_DEFECTO:
+                    campos_solicitados = [
+                        c for c in CAMPO_LABELS.keys() if doc.get(c)
+                    ]
+                else:
+                    campos_solicitados = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
 
             campos_existentes = [c for c in campos_solicitados if doc.get(c)]
             missing = [c for c in campos_solicitados if not doc.get(c)]
@@ -1774,35 +1804,6 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
             if not campos_existentes:
                 faltantes = ", ".join(CAMPO_LABELS.get(c, c) for c in missing)
                 return f"El documento {doc['Nombre_Documento']} no tiene registrado {faltantes.lower()}."
-
-            if len(campos_existentes) == 1:
-                campo = campos_existentes[0]
-                valor = doc[campo]
-                if isinstance(valor, list):
-                    valor = formatear_lista(valor)
-                if campo == "Dónde_Obtener":
-                    respuesta = (
-                        f"Puedes obtener **{doc['Nombre_Documento']}** en: {valor}"
-                    )
-                elif campo == "Horario_Atencion":
-                    respuesta = f"El horario de atención de **{doc['Nombre_Documento']}** es: {valor}"
-                elif campo == "tiempo_validez":
-                    respuesta = (
-                        f"La vigencia de **{doc['Nombre_Documento']}** es: {valor}"
-                    )
-                elif campo == "Correo_Electronico":
-                    respuesta = f"El correo de contacto de **{doc['Nombre_Documento']}** es: {valor}"
-                elif campo == "telefono":
-                    respuesta = f"El teléfono de contacto de **{doc['Nombre_Documento']}** es: {valor}"
-                else:
-                    etiqueta = CAMPO_LABELS.get(
-                        campo, campo.replace("_", " ").capitalize()
-                    )
-                    respuesta = f"**{etiqueta}:** {valor}"
-                if missing:
-                    falt = ", ".join(CAMPO_LABELS.get(c, c) for c in missing)
-                    respuesta += f"\nNo contamos con información de {falt.lower()}."
-                return respuesta
 
             respuesta = armar_respuesta_combinada(doc, campos_existentes)
             if missing:
