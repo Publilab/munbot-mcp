@@ -34,7 +34,9 @@ FAQ_DB_PATH = os.getenv("FAQ_DB_PATH")
 FUZZY_STRICT_THRESHOLD = 90
 FUZZY_CLARIFY_THRESHOLD = 80
 BEST_ALT_THRESHOLD = 70
-MISSED_LOG_PATH = os.path.join(os.path.dirname(__file__), "databases", "missed_questions.csv")
+MISSED_LOG_PATH = os.path.join(
+    os.path.dirname(__file__), "databases", "missed_questions.csv"
+)
 
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
 DB_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
@@ -50,9 +52,20 @@ context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 
 # Campos requeridos por tool
 REQUIRED_FIELDS = {
-    "complaint-registrar_reclamo": ["datos_reclamo", "mensaje_reclamo", "depto_reclamo", "mail_reclamo"],
+    "complaint-registrar_reclamo": [
+        "datos_reclamo",
+        "mensaje_reclamo",
+        "depto_reclamo",
+        "mail_reclamo",
+    ],
     "complaint-register_user": ["nombre", "rut"],
-    "scheduler-appointment_create": ["datos_cita", "depto_cita", "motiv_cita", "bloque_cita", "mail_cita"],
+    "scheduler-appointment_create": [
+        "datos_cita",
+        "depto_cita",
+        "motiv_cita",
+        "bloque_cita",
+        "mail_cita",
+    ],
 }
 
 FIELD_QUESTIONS = {
@@ -63,7 +76,7 @@ FIELD_QUESTIONS = {
     "datos_cita": "Antes de procesar tu cita, necesito algunos datos de contacto. Proporcióname tu nombre completo y rut",
     "depto_cita": "Con qué departamento quieres solicitar una cita. Escribe el número del DEPARTAMENTO.\n1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros",
     "motiv_cita": "¿Cuál es el motivo de la cita?",
-    "mail_cita": "Proporcióname un MAIL para enviarte el comprobante de la CITA"
+    "mail_cita": "Proporcióname un MAIL para enviarte el comprobante de la CITA",
 }
 
 # PostgreSQL para historial de conversaciones
@@ -76,6 +89,7 @@ logging.basicConfig(level=logging.INFO)
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
 
+
 def load_faq_cache() -> list:
     global _FAQ_CACHE
     if _FAQ_CACHE is None:
@@ -87,22 +101,26 @@ def load_faq_cache() -> list:
             _FAQ_CACHE = []
     return _FAQ_CACHE
 
+
 def normalize_text(text: str) -> str:
     text = text.lower().strip()
-    text = ''.join(
-        c for c in unicodedata.normalize('NFD', text)
-        if unicodedata.category(c) != 'Mn'
+    text = "".join(
+        c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
     )
-    text = ''.join(c for c in text if c.isalnum() or c.isspace())
+    text = "".join(c for c in text if c.isalnum() or c.isspace())
     return text
+
 
 def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     """Adaptar formato Markdown según el canal."""
     if channel in ["web", "whatsapp", None]:
         return text
     text = text.replace("**", "")
-    text = re.sub(r"^(.*):", lambda m: m.group(1).upper() + ":", text, flags=re.MULTILINE)
+    text = re.sub(
+        r"^(.*):", lambda m: m.group(1).upper() + ":", text, flags=re.MULTILINE
+    )
     return text
+
 
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
     """Busca la mejor coincidencia en la base de FAQ y devuelve información
@@ -140,7 +158,9 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
                 alt_norm = normalize_text(alt)
                 score = fuzz.ratio(pregunta_norm, alt_norm)
                 if score >= FUZZY_STRICT_THRESHOLD:
-                    high_matches.append({"entry": entry, "pregunta": alt, "score": score})
+                    high_matches.append(
+                        {"entry": entry, "pregunta": alt, "score": score}
+                    )
                 if score > best_score:
                     best_score = score
                     best_entry = entry
@@ -213,6 +233,7 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
         logging.warning(f"No se pudo consultar FAQ: {e}")
     return None
 
+
 def lookup_multiple_faqs(pregunta: str) -> Optional[str]:
     """Intenta dividir la consulta en posibles subpreguntas y responde a cada una."""
     partes = re.split(r"\?|\by\b|\be\b", pregunta)
@@ -228,33 +249,34 @@ def lookup_multiple_faqs(pregunta: str) -> Optional[str]:
         return "\n".join(f"- {r}" for r in respuestas)
     return None
 
+
 # === Carga y utilidades ===
+
 
 def load_schema(tool_name: str) -> dict:
     # 1. Comprobar que existe la carpeta de esquemas
     if not os.path.isdir(TOOL_SCHEMAS_PATH):
         raise HTTPException(
             status_code=500,
-            detail=f"Directory for tool schemas not found: {TOOL_SCHEMAS_PATH}"
+            detail=f"Directory for tool schemas not found: {TOOL_SCHEMAS_PATH}",
         )
 
     # 2. Buscar el JSON que coincide con tool_name
     for fname in os.listdir(TOOL_SCHEMAS_PATH):
-        if fname.startswith(tool_name) and fname.endswith('.json'):
+        if fname.startswith(tool_name) and fname.endswith(".json"):
             schema_path = os.path.join(TOOL_SCHEMAS_PATH, fname)
             try:
-                with open(schema_path, 'r', encoding='utf-8') as f:
+                with open(schema_path, "r", encoding="utf-8") as f:
                     return json.load(f)
             except Exception as e:
                 raise HTTPException(
                     status_code=500,
-                    detail=f"Error loading schema file {schema_path}: {e}"
+                    detail=f"Error loading schema file {schema_path}: {e}",
                 )
 
     # 3. No se encontró el esquema
     raise HTTPException(
-        status_code=400,
-        detail=f"Schema not found for tool '{tool_name}'."
+        status_code=400, detail=f"Schema not found for tool '{tool_name}'."
     )
 
 
@@ -262,27 +284,25 @@ def load_prompt(prompt_name: str) -> str:
     # 1. Comprobar que existe la carpeta de prompts
     if not os.path.isdir(PROMPTS_PATH):
         raise HTTPException(
-            status_code=500,
-            detail=f"Prompts directory not found: {PROMPTS_PATH}"
+            status_code=500, detail=f"Prompts directory not found: {PROMPTS_PATH}"
         )
 
     # 2. Comprobar que existe el archivo de prompt
     prompt_file = os.path.join(PROMPTS_PATH, prompt_name)
     if not os.path.isfile(prompt_file):
         raise HTTPException(
-            status_code=400,
-            detail=f"Prompt not found: '{prompt_name}'."
+            status_code=400, detail=f"Prompt not found: '{prompt_name}'."
         )
 
     # 3. Leer y devolver el contenido
     try:
-        with open(prompt_file, 'r', encoding='utf-8') as f:
+        with open(prompt_file, "r", encoding="utf-8") as f:
             return f.read()
     except Exception as e:
         raise HTTPException(
-            status_code=500,
-            detail=f"Error reading prompt file {prompt_file}: {e}"
+            status_code=500, detail=f"Error reading prompt file {prompt_file}: {e}"
         )
+
 
 def route_to_service(tool: str) -> str:
     if tool.startswith("complaint-"):
@@ -293,11 +313,13 @@ def route_to_service(tool: str) -> str:
         return MICROSERVICES["scheduler-mcp"]
     raise Exception(f"No se encuentra microservicio para tool {tool}")
 
+
 def validate_against_schema(data: Dict[str, Any], schema: Dict[str, Any]) -> bool:
-    for req in schema.get('input_schema', {}).get('required', []):
+    for req in schema.get("input_schema", {}).get("required", []):
         if req not in data:
             return False
     return True
+
 
 def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
     prompt = prompt_template
@@ -305,29 +327,33 @@ def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
         prompt = prompt.replace(f"{{{{{k}}}}}", str(v))
     return prompt
 
+
 def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
     service_url = route_to_service(tool)
-    payload = {
-        "tool": tool,
-        "params": params
-    }
+    payload = {"tool": tool, "params": params}
     resp = requests.post(service_url, json=payload, timeout=30)
     if 200 <= resp.status_code < 300:
         return resp.json()
     else:
         return {"error": f"Error {resp.status_code}: {resp.text}"}
 
+
 # === Cliente Llama ===
 llama = LlamaClient()
+
 
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
     return llama.generate(prompt)
 
+
 def infer_intent_with_llm(prompt):
     return generate_response(prompt)
 
-def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
+
+def detect_intent_llm(
+    user_input: str, history: List[Dict[str, str]] = None
+) -> Dict[str, Any]:
     """Usa Mistral vía HuggingFace API para inferir intención, confianza y sentimiento."""
     VALID_INTENTS = {
         "complaint-registrar_reclamo",
@@ -337,7 +363,7 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
         "scheduler-appointment_create",
         "scheduler-listar_horas_disponibles",
         "scheduler-cancelar_hora",
-        "scheduler-confirmar_hora"
+        "scheduler-confirmar_hora",
     }
     history_text = ""
     if history:
@@ -377,45 +403,75 @@ def detect_intent_llm(user_input: str, history: List[Dict[str, str]] = None) -> 
     logging.info(f"Intento fallback por matcher: {intent}")
     return {"intent": intent, "confidence": 0.6, "sentiment": "neutral"}
 
+
 def normalize(text):
     """Convierte texto a minúsculas y elimina tildes."""
     text = text.lower()
-    return ''.join(
-        c for c in unicodedata.normalize('NFD', text)
-        if unicodedata.category(c) != 'Mn'
+    return "".join(
+        c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
     )
+
 
 # Lista de stopwords simples para tokenización básica
 STOPWORDS = {
-    "a", "al", "del", "de", "la", "el", "los", "las",
-    "un", "una", "unos", "unas", "y", "o", "en", "para", "por",
+    "a",
+    "al",
+    "del",
+    "de",
+    "la",
+    "el",
+    "los",
+    "las",
+    "un",
+    "una",
+    "unos",
+    "unas",
+    "y",
+    "o",
+    "en",
+    "para",
+    "por",
 }
+
 
 def tokenize(text: str) -> List[str]:
     """Tokeniza una cadena ignorando stopwords y palabras cortas."""
     words = re.findall(r"\w+", text.lower())
     return [w for w in words if len(w) >= 3 and w not in STOPWORDS]
 
+
 def detect_intent_keywords(user_input: str) -> str:
     text = normalize(user_input)
-    
+
     # Reclamos y quejas
-    if re.search(r"\b(reclamo|reclamar|reclamacion|reclamaciones|queja|quejas|protesta|demanda|denuncia|denunciar|problema|problemas|reporte|reportar|sugerencia|inconformidad)\b", text):
+    if re.search(
+        r"\b(reclamo|reclamar|reclamacion|reclamaciones|queja|quejas|protesta|demanda|denuncia|denunciar|problema|problemas|reporte|reportar|sugerencia|inconformidad)\b",
+        text,
+    ):
         return "complaint-registrar_reclamo"
-    
+
     # Agendar cita/hora/turno
-    if re.search(r"\b(agendar|agenda|reservar|reserva|programar|concertar|coordinar una cita|solicitar una cita|hora|cita|turno|atencion|atención|visita|pedir|solicitar|sacar)\b", text):
+    if re.search(
+        r"\b(agendar|agenda|reservar|reserva|programar|concertar|coordinar una cita|solicitar una cita|hora|cita|turno|atencion|atención|visita|pedir|solicitar|sacar)\b",
+        text,
+    ):
         return "scheduler-appointment_create"
-    
+
     # Consultar documentos
-    if re.search(r"\b(documento|documentos|certificado|certificados|ordenanza|ordenanzas|norma|normas|reglamento|reglamentos|buscar|busqueda|consulta|consultar)\b", text):
+    if re.search(
+        r"\b(documento|documentos|certificado|certificados|ordenanza|ordenanzas|norma|normas|reglamento|reglamentos|buscar|busqueda|consulta|consultar)\b",
+        text,
+    ):
         return "doc-buscar_fragmento_documento"
-    
+
     # Añade más intents según necesidades del bot
-    
+
     return "unknown"
 
-def detect_intent(user_input: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
+
+def detect_intent(
+    user_input: str, history: List[Dict[str, str]] = None
+) -> Dict[str, Any]:
     """Obtiene intención priorizando matcher de palabras clave y desactiva LLM en tests."""
     # 4) Desactivar LLM en entorno de test
     if os.getenv("ENV") == "test":
@@ -429,6 +485,7 @@ def detect_intent(user_input: str, history: List[Dict[str, str]] = None) -> Dict
 
     # Llamar al LLM para casos no detectados por matcher
     return detect_intent_llm(user_input, history)
+
 
 def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
     """Devuelve fragmentos relevantes de FAQ o documentos oficiales."""
@@ -476,6 +533,7 @@ def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
 
     return snippets[:limit]
 
+
 def get_best_faq_match(pregunta: str):
     """Devuelve la pregunta más parecida y su puntaje."""
     faqs = load_faq_cache()
@@ -496,6 +554,7 @@ def get_best_faq_match(pregunta: str):
                 best_alt = alt
     return best_alt, best_score, best_entry
 
+
 def find_related_faqs(pregunta: str, limit: int = 3) -> List[str]:
     """Busca preguntas frecuentes que compartan palabras clave."""
     faqs = load_faq_cache()
@@ -513,7 +572,10 @@ def find_related_faqs(pregunta: str, limit: int = 3) -> List[str]:
                 break
     return related
 
-def log_missed_question(question: str, best_alt: Optional[str] = None, best_score: Optional[int] = None):
+
+def log_missed_question(
+    question: str, best_alt: Optional[str] = None, best_score: Optional[int] = None
+):
     """Registra preguntas no respondidas en un archivo CSV."""
     try:
         first = not os.path.exists(MISSED_LOG_PATH)
@@ -525,7 +587,14 @@ def log_missed_question(question: str, best_alt: Optional[str] = None, best_scor
     except Exception as e:
         logging.warning(f"No se pudo registrar pregunta no respondida: {e}")
 
-def registrar_pregunta_no_contestada(texto_pregunta: str, respuesta_dada: str, intent_detectada: str = "unknown", canal: Optional[str] = None, usuario_id: Optional[str] = None) -> Optional[int]:
+
+def registrar_pregunta_no_contestada(
+    texto_pregunta: str,
+    respuesta_dada: str,
+    intent_detectada: str = "unknown",
+    canal: Optional[str] = None,
+    usuario_id: Optional[str] = None,
+) -> Optional[int]:
     """Inserta en la BD una pregunta no respondida y devuelve su ID."""
     try:
         conn = get_db()
@@ -546,7 +615,10 @@ def registrar_pregunta_no_contestada(texto_pregunta: str, respuesta_dada: str, i
         logging.warning(f"No se pudo registrar en BD la pregunta no contestada: {e}")
         return None
 
-def registrar_feedback_usuario(pregunta_id: Optional[int], feedback_texto: str, usuario_id: Optional[str] = None):
+
+def registrar_feedback_usuario(
+    pregunta_id: Optional[int], feedback_texto: str, usuario_id: Optional[str] = None
+):
     """Guarda el feedback del usuario asociado a una pregunta no contestada."""
     try:
         conn = get_db()
@@ -563,27 +635,35 @@ def registrar_feedback_usuario(pregunta_id: Optional[int], feedback_texto: str, 
     except Exception as e:
         logging.warning(f"No se pudo registrar feedback de usuario: {e}")
 
+
 def get_db():
     return psycopg2.connect(
         host=DB_HOST, port=DB_PORT, dbname=DB_NAME, user=DB_USER, password=DB_PASS
     )
 
+
 def buscar_documento_por_accion(accion: str):
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT * FROM documentos WHERE LOWER(nombre) LIKE %s OR LOWER(descripcion) LIKE %s LIMIT 1", (f"%{accion.lower()}%", f"%{accion.lower()}%"))
+    cur.execute(
+        "SELECT * FROM documentos WHERE LOWER(nombre) LIKE %s OR LOWER(descripcion) LIKE %s LIMIT 1",
+        (f"%{accion.lower()}%", f"%{accion.lower()}%"),
+    )
     doc = cur.fetchone()
     if not doc:
         conn.close()
         return None
-    cur.execute("SELECT requisito FROM documento_requisitos WHERE documento_id=%s", (doc["id"],))
+    cur.execute(
+        "SELECT requisito FROM documento_requisitos WHERE documento_id=%s", (doc["id"],)
+    )
     requisitos = [r["requisito"] for r in cur.fetchall()]
     conn.close()
     return {
         "id_documento": doc["id_documento"],
         "nombre": doc["nombre"],
-        "requisitos": requisitos
+        "requisitos": requisitos,
     }
+
 
 def buscar_oficina_documento(id_documento: str):
     conn = get_db()
@@ -593,15 +673,22 @@ def buscar_oficina_documento(id_documento: str):
     if not doc:
         conn.close()
         return None
-    cur.execute("SELECT nombre, direccion, horario, correo, holocom FROM documento_oficinas WHERE documento_id=%s", (doc["id"],))
+    cur.execute(
+        "SELECT nombre, direccion, horario, correo, holocom FROM documento_oficinas WHERE documento_id=%s",
+        (doc["id"],),
+    )
     oficinas = cur.fetchall()
     conn.close()
     return {"oficinas": oficinas}
 
+
 def buscar_info_documento_campo(clave: str, campo: str):
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s OR LOWER(nombre) LIKE %s", (clave, f"%{clave.lower()}%"))
+    cur.execute(
+        "SELECT id FROM documentos WHERE id_documento=%s OR LOWER(nombre) LIKE %s",
+        (clave, f"%{clave.lower()}%"),
+    )
     doc = cur.fetchone()
     if not doc:
         conn.close()
@@ -609,38 +696,62 @@ def buscar_info_documento_campo(clave: str, campo: str):
     doc_id = doc["id"]
     valor = None
     if campo == "requisitos":
-        cur.execute("SELECT requisito FROM documento_requisitos WHERE documento_id=%s", (doc_id,))
+        cur.execute(
+            "SELECT requisito FROM documento_requisitos WHERE documento_id=%s",
+            (doc_id,),
+        )
         valor = ", ".join([r["requisito"] for r in cur.fetchall()])
     elif campo == "horario":
-        cur.execute("SELECT horario FROM documento_oficinas WHERE documento_id=%s LIMIT 1", (doc_id,))
+        cur.execute(
+            "SELECT horario FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
+            (doc_id,),
+        )
         r = cur.fetchone()
         valor = r["horario"] if r else None
     elif campo == "direccion":
-        cur.execute("SELECT direccion FROM documento_oficinas WHERE documento_id=%s LIMIT 1", (doc_id,))
+        cur.execute(
+            "SELECT direccion FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
+            (doc_id,),
+        )
         r = cur.fetchone()
         valor = r["direccion"] if r else None
     elif campo == "correo":
-        cur.execute("SELECT correo FROM documento_oficinas WHERE documento_id=%s LIMIT 1", (doc_id,))
+        cur.execute(
+            "SELECT correo FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
+            (doc_id,),
+        )
         r = cur.fetchone()
         valor = r["correo"] if r else None
     elif campo == "holocom":
-        cur.execute("SELECT holocom FROM documento_oficinas WHERE documento_id=%s LIMIT 1", (doc_id,))
+        cur.execute(
+            "SELECT holocom FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
+            (doc_id,),
+        )
         r = cur.fetchone()
         valor = r["holocom"] if r else None
     elif campo == "tiempo_validez":
-        cur.execute("SELECT duracion FROM documento_duracion WHERE documento_id=%s LIMIT 1", (doc_id,))
+        cur.execute(
+            "SELECT duracion FROM documento_duracion WHERE documento_id=%s LIMIT 1",
+            (doc_id,),
+        )
         r = cur.fetchone()
         valor = r["duracion"] if r else None
     elif campo == "penalidad":
-        cur.execute("SELECT sancion FROM documento_sanciones WHERE documento_id=%s LIMIT 1", (doc_id,))
+        cur.execute(
+            "SELECT sancion FROM documento_sanciones WHERE documento_id=%s LIMIT 1",
+            (doc_id,),
+        )
         r = cur.fetchone()
         valor = r["sancion"] if r else None
     elif campo == "notas":
-        cur.execute("SELECT nota FROM documento_notas WHERE documento_id=%s LIMIT 1", (doc_id,))
+        cur.execute(
+            "SELECT nota FROM documento_notas WHERE documento_id=%s LIMIT 1", (doc_id,)
+        )
         r = cur.fetchone()
         valor = r["nota"] if r else None
     conn.close()
     return {"valor": valor} if valor else None
+
 
 def buscar_listar_documentos(clase: str = None, aplica_a: str = None):
     conn = get_db()
@@ -658,11 +769,14 @@ def buscar_listar_documentos(clase: str = None, aplica_a: str = None):
     conn.close()
     return {"documentos": docs}
 
+
 # === Orquestador principal ===
 def extract_entities_complaint(text: str) -> dict:
     # Extrae nombre y RUT juntos
     nombre, rut = None, None
-    match = re.search(r"([A-Za-zÁÉÍÓÚáéíóúñÑ ]+)\s+([0-9]{1,2}\.?[0-9]{3}\.?[0-9]{3}-[0-9Kk])", text)
+    match = re.search(
+        r"([A-Za-zÁÉÍÓÚáéíóúñÑ ]+)\s+([0-9]{1,2}\.?[0-9]{3}\.?[0-9]{3}-[0-9Kk])", text
+    )
     if match:
         nombre = match.group(1).strip()
         rut = match.group(2).strip()
@@ -679,7 +793,11 @@ def extract_entities_complaint(text: str) -> dict:
     prioridad = 3
     categoria = 1
     departamento = 4
-    if "ruido" in text.lower() or "basura" in text.lower() or "contaminación" in text.lower():
+    if (
+        "ruido" in text.lower()
+        or "basura" in text.lower()
+        or "contaminación" in text.lower()
+    ):
         departamento = 3
     elif "robo" in text.lower() or "seguridad" in text.lower():
         departamento = 1
@@ -692,13 +810,16 @@ def extract_entities_complaint(text: str) -> dict:
         "mensaje": mensaje,
         "prioridad": prioridad,
         "categoria": categoria,
-        "departamento": departamento
+        "departamento": departamento,
     }
+
 
 def extract_entities_scheduler(text: str) -> dict:
     # Heurística simple para agendamiento
     nombre = None
-    nombre_match = re.search(r"mi nombre es ([A-Za-zÁÉÍÓÚáéíóúñÑ ]+)", text, re.IGNORECASE)
+    nombre_match = re.search(
+        r"mi nombre es ([A-Za-zÁÉÍÓÚáéíóúñÑ ]+)", text, re.IGNORECASE
+    )
     if nombre_match:
         nombre = nombre_match.group(1).strip()
     mail = None
@@ -718,7 +839,9 @@ def extract_entities_scheduler(text: str) -> dict:
     if hora_match:
         hora = hora_match.group(1)
     motiv = None
-    motiv_match = re.search(r"motivo (de la cita|de la reunión|):? ([^\.]+)", text, re.IGNORECASE)
+    motiv_match = re.search(
+        r"motivo (de la cita|de la reunión|):? ([^\.]+)", text, re.IGNORECASE
+    )
     if motiv_match:
         motiv = motiv_match.group(2).strip()
     return {
@@ -727,32 +850,40 @@ def extract_entities_scheduler(text: str) -> dict:
         "usu_whatsapp": whatsapp,
         "fecha": fecha,
         "hora": hora,
-        "motiv": motiv
+        "motiv": motiv,
     }
+
 
 def extract_entities_llm_docs(text: str) -> dict:
     # Para llm_docs-mcp, normalmente solo se requiere la pregunta
     return {"pregunta": text}
 
+
 def save_conversation_to_postgres(session_id, session_data):
     try:
         conn = get_db()
         cur = conn.cursor()
-        cur.execute(f"""
+        cur.execute(
+            f"""
             CREATE TABLE IF NOT EXISTS {HISTORIAL_TABLE} (
                 session_id VARCHAR(64) PRIMARY KEY,
                 data JSONB,
                 created_at TIMESTAMPTZ DEFAULT now()
             )
-        """)
-        cur.execute(f"""
+        """
+        )
+        cur.execute(
+            f"""
             INSERT INTO {HISTORIAL_TABLE} (session_id, data) VALUES (%s, %s)
             ON CONFLICT (session_id) DO UPDATE SET data = EXCLUDED.data
-        """, (session_id, json.dumps(session_data)))
+        """,
+            (session_id, json.dumps(session_data)),
+        )
         conn.commit()
         conn.close()
     except Exception as e:
         logging.error(f"Error guardando historial en PostgreSQL: {e}")
+
 
 def get_session(session_id):
     session_data = redis_client.get(f"session:{session_id}")
@@ -760,11 +891,16 @@ def get_session(session_id):
         return json.loads(session_data)
     return {}
 
+
 def save_session(session_id, data):
-    redis_client.set(f"session:{session_id}", json.dumps(data), ex=3600*24*7)  # 1 semana de expiración
+    redis_client.set(
+        f"session:{session_id}", json.dumps(data), ex=3600 * 24 * 7
+    )  # 1 semana de expiración
+
 
 def delete_session(session_id):
     redis_client.delete(f"session:{session_id}")
+
 
 def migrate_sessions_to_postgres():
     for key in redis_client.scan_iter():
@@ -775,15 +911,22 @@ def migrate_sessions_to_postgres():
             delete_session(session_id)
     logging.info("Migración de sesiones de Redis a PostgreSQL completada.")
 
+
 def periodic_migration():
     while True:
         migrate_sessions_to_postgres()
         time.sleep(3600 * 24 * 7)  # Ejecutar cada semana
 
+
 # Lanzar el thread de migración periódica
 threading.Thread(target=periodic_migration, daemon=True).start()
 
-def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None, session_id: Optional[str] = None) -> Dict[str, Any]:
+
+def orchestrate(
+    user_input: str,
+    extra_context: Optional[Dict[str, Any]] = None,
+    session_id: Optional[str] = None,
+) -> Dict[str, Any]:
     sid = session_id or str(uuid.uuid4())
 
     # --- Manejar feedback pendiente ---
@@ -791,7 +934,11 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     if pending_feedback is not None:
         registrar_feedback_usuario(pending_feedback, user_input)
         context_manager.clear_feedback_pending(sid)
-        ack = "Gracias por tu respuesta." if re.fullmatch(r"(?i)s[ií]|si|yes|no|n|nope", user_input.strip()) else "Gracias por tu comentario."
+        ack = (
+            "Gracias por tu respuesta."
+            if re.fullmatch(r"(?i)s[ií]|si|yes|no|n|nope", user_input.strip())
+            else "Gracias por tu comentario."
+        )
         context_manager.update_context(sid, user_input, ack)
         return {"respuesta": ack, "session_id": sid}
 
@@ -840,9 +987,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
             nombre = pending_docs[idx]
             context_manager.set_selected_document(sid, nombre)
             context_manager.clear_document_options(sid)
-            msg = (
-                f"Entendido. ¿Qué te interesa saber del {nombre}? Puedes preguntarme requisitos, horario, correo o dirección."
-            )
+            msg = f"Entendido. ¿Qué te interesa saber del {nombre}? Puedes preguntarme requisitos, horario, correo o dirección."
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
         else:
@@ -865,10 +1010,12 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
                 msg = f"¿Quisiste decir '{faq['pregunta']}'?"
             else:
                 opts = "\n".join(
-                    f"{i+1}. {q}" for i, q in enumerate(faq.get('alternatives', []))
+                    f"{i+1}. {q}" for i, q in enumerate(faq.get("alternatives", []))
                 )
                 msg = (
-                    "Encontré varias preguntas similares:\n" + opts + "\nPor favor, ingresa el número de la opción deseada."
+                    "Encontré varias preguntas similares:\n"
+                    + opts
+                    + "\nPor favor, ingresa el número de la opción deseada."
                 )
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
@@ -894,7 +1041,9 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     complaint_state = ctx.get("complaint_state", None)
 
     # Iniciar flujo de reclamo si detecta palabra clave
-    if not pending and re.search(r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE):
+    if not pending and re.search(
+        r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE
+    ):
         sid = session_id or str(uuid.uuid4())
         context_manager.update_context(sid, user_input, "")
         context_manager.update_pending_field(sid, "nombre")
@@ -907,65 +1056,103 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         nombre = user_input.strip()
         # Validar nombre (mínimo dos palabras)
         if len(nombre.split()) < 2:
-            return {"respuesta": "Por favor, ingresa tu nombre completo (nombre y apellido).", "session_id": session_id, "pending_field": "nombre"}
+            return {
+                "respuesta": "Por favor, ingresa tu nombre completo (nombre y apellido).",
+                "session_id": session_id,
+                "pending_field": "nombre",
+            }
         ctx["nombre"] = nombre
         save_session(session_id, ctx)
         # (Opcional) Simular registro en BD de nombre
         # print(f"Registrando nombre en BD: {nombre}")
         context_manager.update_context(session_id, user_input, f"¡Gracias, {nombre}!")
         context_manager.update_pending_field(session_id, "rut")
-        return {"respuesta": f"Genial, {nombre}. Ahora, ¿puedes darme tu RUT? (ej. 12.345.678-5)", "session_id": session_id}
+        return {
+            "respuesta": f"Genial, {nombre}. Ahora, ¿puedes darme tu RUT? (ej. 12.345.678-5)",
+            "session_id": session_id,
+        }
 
     # Si estamos esperando el RUT...
     if pending == "rut":
         rut = user_input.strip()
         rut_formateado = validar_y_formatear_rut(rut)
         if not rut_formateado:
-            return {"respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).", "session_id": session_id, "pending_field": "rut"}
+            return {
+                "respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).",
+                "session_id": session_id,
+                "pending_field": "rut",
+            }
         ctx["rut"] = rut_formateado
         save_session(session_id, ctx)
-        context_manager.update_context(session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado}).")
+        context_manager.update_context(
+            session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado})."
+        )
         context_manager.update_pending_field(session_id, "mensaje")
-        return {"respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?", "session_id": session_id}
+        return {
+            "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
+            "session_id": session_id,
+        }
 
     # Si ctx['rut'] ya existe y es válido, no volver a pedirlo ni borrarlo.
     if ctx.get("rut") and validar_y_formatear_rut(ctx["rut"]):
         # Saltar pedir RUT
         if pending == "rut":
             context_manager.update_pending_field(session_id, "mensaje")
-            return {"respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?", "session_id": session_id}
+            return {
+                "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
+                "session_id": session_id,
+            }
 
     # Si estamos esperando el MENSAJE del reclamo...
     if pending == "mensaje":
         mensaje = user_input.strip()
         if len(mensaje) < 10:
-            return {"respuesta": "Por favor, describe tu reclamo con al menos 10 caracteres.", "session_id": session_id, "pending_field": "mensaje"}
+            return {
+                "respuesta": "Por favor, describe tu reclamo con al menos 10 caracteres.",
+                "session_id": session_id,
+                "pending_field": "mensaje",
+            }
         ctx["mensaje"] = mensaje
         save_session(session_id, ctx)
         context_manager.update_context(session_id, user_input, "Entiendo tu reclamo.")
         context_manager.update_pending_field(session_id, "departamento")
         # Mostrar todas las opciones de departamento
-        opciones = "¿A qué departamento crees que corresponde atender tu reclamo?\n" \
-                  "1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\nEscribe el número al que corresponde el departamento seleccionado."
+        opciones = (
+            "¿A qué departamento crees que corresponde atender tu reclamo?\n"
+            "1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\nEscribe el número al que corresponde el departamento seleccionado."
+        )
         return {"respuesta": opciones, "session_id": session_id}
 
     # Si estamos esperando el DEPARTAMENTO...
     if pending == "departamento":
         depto = user_input.strip()
         if depto not in [str(i) for i in range(1, 9)]:
-            return {"respuesta": "Por favor, selecciona un número de departamento válido (1-8).", "session_id": session_id, "pending_field": "departamento"}
+            return {
+                "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
+                "session_id": session_id,
+                "pending_field": "departamento",
+            }
         ctx["departamento"] = depto
         save_session(session_id, ctx)
-        context_manager.update_context(session_id, user_input, f"Departamento {depto} seleccionado.")
+        context_manager.update_context(
+            session_id, user_input, f"Departamento {depto} seleccionado."
+        )
         context_manager.update_pending_field(session_id, "mail")
-        return {"respuesta": "Por último, ¿cuál es tu correo electrónico para enviarte el comprobante?", "session_id": session_id}
+        return {
+            "respuesta": "Por último, ¿cuál es tu correo electrónico para enviarte el comprobante?",
+            "session_id": session_id,
+        }
 
     # Si estamos esperando el MAIL...
     if pending == "mail":
         mail = user_input.strip()
         # Validar email
         if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", mail):
-            return {"respuesta": "El correo electrónico ingresado no es válido. Por favor, ingresa un email válido.", "session_id": session_id, "pending_field": "mail"}
+            return {
+                "respuesta": "El correo electrónico ingresado no es válido. Por favor, ingresa un email válido.",
+                "session_id": session_id,
+                "pending_field": "mail",
+            }
         ctx["mail"] = mail
         save_session(session_id, ctx)
         context_manager.update_context(session_id, user_input, "Correo registrado.")
@@ -978,14 +1165,19 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
             "mensaje": ctx["mensaje"],
             "departamento": ctx["departamento"],
             "categoria": 1,
-            "prioridad": 3
+            "prioridad": 3,
         }
-        logging.info(f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}")
+        logging.info(
+            f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}"
+        )
         response = call_tool_microservice("complaint-registrar_reclamo", params)
         logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
         context_manager.clear_complaint_state(session_id)
         if "error" in response:
-            return {"respuesta": "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente.", "session_id": session_id}
+            return {
+                "respuesta": "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente.",
+                "session_id": session_id,
+            }
         success_msg = (
             "He registrado tu reclamo en mi base de datos y he enviado la "
             "información del registro para que puedas comprobar el estado de avances. "
@@ -1024,28 +1216,37 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
 
         if escalate:
             fallback_resp = "Lo siento, derivaré tu consulta a un agente humano."
-            qid = registrar_pregunta_no_contestada(user_input, fallback_resp, intent_detectada=tool)
+            qid = registrar_pregunta_no_contestada(
+                user_input, fallback_resp, intent_detectada=tool
+            )
             context_manager.update_context(session_id, user_input, fallback_resp)
             if qid:
                 context_manager.set_feedback_pending(session_id, qid)
                 fallback_resp += "\n¿Te fue útil mi respuesta? (Sí/No)"
-            return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
+            return {
+                "respuesta": fallback_resp,
+                "session_id": session_id,
+                "escalado": True,
+            }
 
         if best_alt and best_score >= BEST_ALT_THRESHOLD:
-            context_manager.set_faq_clarification(session_id, {
-                "entry": best_entry,
-                "pregunta": best_alt,
-                "needs_confirmation": True,
-                "type": "confirm",
-            })
-            fallback_resp = (
-                f"No encontré información exacta sobre eso. ¿Quizás te refieres a '{best_alt}'? Responde 'sí' para confirmar."
+            context_manager.set_faq_clarification(
+                session_id,
+                {
+                    "entry": best_entry,
+                    "pregunta": best_alt,
+                    "needs_confirmation": True,
+                    "type": "confirm",
+                },
             )
+            fallback_resp = f"No encontré información exacta sobre eso. ¿Quizás te refieres a '{best_alt}'? Responde 'sí' para confirmar."
         else:
             related = find_related_faqs(user_input)
             if related:
                 sugerencias = ", ".join(f"'{q}'" for q in related)
-                fallback_resp = f"No encontré esa información. Tal vez te interese: {sugerencias}"
+                fallback_resp = (
+                    f"No encontré esa información. Tal vez te interese: {sugerencias}"
+                )
             else:
                 ejemplos = "‘¿Cuáles son los requisitos para X?’, ‘¿Dónde puedo pagar mi patente?’, ‘¿Cómo agendar una cita médica?’"
                 fallback_resp = (
@@ -1056,12 +1257,18 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         if offer_human:
             fallback_resp += " Sigo sin poder ayudarte. Si gustas, puedo pasarte con un humano ahora o intenta formularlo de otra manera."
 
-        qid = registrar_pregunta_no_contestada(user_input, fallback_resp, intent_detectada=tool)
+        qid = registrar_pregunta_no_contestada(
+            user_input, fallback_resp, intent_detectada=tool
+        )
         if qid:
             context_manager.set_feedback_pending(session_id, qid)
             fallback_resp += "\n¿Te fue útil mi respuesta? (Sí/No)"
         context_manager.update_context(session_id, user_input, fallback_resp)
-        return {"respuesta": fallback_resp, "session_id": session_id, "pending_field": None}
+        return {
+            "respuesta": fallback_resp,
+            "session_id": session_id,
+            "pending_field": None,
+        }
     else:
         context_manager.reset_fallback_count(session_id)
 
@@ -1074,10 +1281,13 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
                     msg = f"¿Quisiste decir '{faq_hit['pregunta']}'?"
                 else:
                     opts = "\n".join(
-                        f"{i+1}. {q}" for i, q in enumerate(faq_hit.get('alternatives', []))
+                        f"{i+1}. {q}"
+                        for i, q in enumerate(faq_hit.get("alternatives", []))
                     )
                     msg = (
-                        "Encontré varias preguntas similares:\n" + opts + "\nPor favor, ingresa el número de la opción deseada."
+                        "Encontré varias preguntas similares:\n"
+                        + opts
+                        + "\nPor favor, ingresa el número de la opción deseada."
                     )
                 context_manager.update_context(session_id, user_input, msg)
                 return {"respuesta": msg, "session_id": session_id}
@@ -1106,15 +1316,17 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         context_manager.set_feedback_pending(session_id, None)
         context_manager.update_context(session_id, user_input, ans)
         return {"respuesta": ans, "session_id": session_id}
- 
+
 
 # === API REST ===
+
 
 class OrchestratorInput(BaseModel):
     pregunta: str
     context: Optional[Dict[str, Any]] = None
     session_id: Optional[str] = None
     channel: Optional[str] = None
+
 
 @app.post("/orchestrate")
 def orchestrate_api(input: OrchestratorInput, request: Request):
@@ -1126,28 +1338,37 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
         ip = request.client.host if request and request.client else None
         extra_context = input.context or {}
         if ip:
-            extra_context['ip'] = ip
+            extra_context["ip"] = ip
         result = orchestrate(input.pregunta, extra_context, input.session_id)
         if result.get("respuesta"):
-            result["respuesta"] = adapt_markdown_for_channel(result["respuesta"], input.channel)
+            result["respuesta"] = adapt_markdown_for_channel(
+                result["respuesta"], input.channel
+            )
         return result
     except Exception as e:
         logging.error(f"Error en orquestación: {e}", exc_info=True)
-        return {"respuesta": "Lo siento, hubo un error interno. Por favor, intenta de nuevo.", "session_id": getattr(input, 'session_id', None)}
+        return {
+            "respuesta": "Lo siento, hubo un error interno. Por favor, intenta de nuevo.",
+            "session_id": getattr(input, "session_id", None),
+        }
+
 
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
 
 @app.get("/")
 def root():
     return {
         "status": "MunBoT MCP Orchestrator running",
         "endpoints": ["/orchestrate", "/health"],
-        "version": "1.0.0"
+        "version": "1.0.0",
     }
 
+
 # === Endpoints de administración de documentos ===
+
 
 @app.post("/admin/documento")
 def admin_create_documento(data: dict = Body(...)):
@@ -1173,6 +1394,7 @@ def admin_create_documento(data: dict = Body(...)):
     conn.close()
     return doc
 
+
 @app.post("/admin/documento/{id_documento}/requisito")
 def admin_add_requisito(id_documento: str, data: dict = Body(...)):
     """Agregar un requisito a un documento."""
@@ -1191,6 +1413,7 @@ def admin_add_requisito(id_documento: str, data: dict = Body(...)):
     conn.commit()
     conn.close()
     return req
+
 
 @app.post("/admin/documento/{id_documento}/oficina")
 def admin_add_oficina(id_documento: str, data: dict = Body(...)):
@@ -1221,6 +1444,7 @@ def admin_add_oficina(id_documento: str, data: dict = Body(...)):
     conn.close()
     return oficina
 
+
 @app.post("/admin/documento/{id_documento}/duracion")
 def admin_add_duracion(id_documento: str, data: dict = Body(...)):
     """Agregar duración/validez a un documento."""
@@ -1239,6 +1463,7 @@ def admin_add_duracion(id_documento: str, data: dict = Body(...)):
     conn.commit()
     conn.close()
     return dur
+
 
 @app.post("/admin/documento/{id_documento}/sancion")
 def admin_add_sancion(id_documento: str, data: dict = Body(...)):
@@ -1259,6 +1484,7 @@ def admin_add_sancion(id_documento: str, data: dict = Body(...)):
     conn.close()
     return sanc
 
+
 @app.post("/admin/documento/{id_documento}/nota")
 def admin_add_nota(id_documento: str, data: dict = Body(...)):
     """Agregar nota a un documento."""
@@ -1278,6 +1504,7 @@ def admin_add_nota(id_documento: str, data: dict = Body(...)):
     conn.close()
     return nota
 
+
 # === CLI para pruebas ===
 if __name__ == "__main__":
     print("MCP Orchestrator inicializado.")
@@ -1292,11 +1519,12 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"Error: {e}")
 
+
 # --- Validación y formateo de RUT chileno ---
 def validar_y_formatear_rut(rut: str) -> str:
     if not rut:
         return None
-    rut = rut.replace('.', '').replace('-', '').upper().strip()
+    rut = rut.replace(".", "").replace("-", "").upper().strip()
     if len(rut) < 8:
         return None
     numero = rut[:-1]
@@ -1310,9 +1538,9 @@ def validar_y_formatear_rut(rut: str) -> str:
         multiplicador = multiplicador + 1 if multiplicador < 7 else 2
     dvr = 11 - (suma % 11)
     if dvr == 11:
-        dvr = '0'
+        dvr = "0"
     elif dvr == 10:
-        dvr = 'K'
+        dvr = "K"
     else:
         dvr = str(dvr)
     if dv != dvr:
@@ -1320,13 +1548,17 @@ def validar_y_formatear_rut(rut: str) -> str:
     rut_formateado = f"{int(numero):,}".replace(",", ".") + "-" + dv
     return rut_formateado
 
+
 # --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---
 import json
 
 # Cargar los JSON locales una sola vez (puedes mover esto a un lugar más apropiado si lo deseas)
-DOCUMENTOS_PATH = os.path.join(os.path.dirname(__file__), "databases/documento_requisito.json")
+DOCUMENTOS_PATH = os.path.join(
+    os.path.dirname(__file__), "databases/documento_requisito.json"
+)
 OFICINAS_PATH = os.path.join(os.path.dirname(__file__), "databases/oficina_info.json")
 FAQS_PATH = os.path.join(os.path.dirname(__file__), "databases/faq_respuestas.json")
+
 
 def cargar_json(path):
     # Use ``utf-8-sig`` to seamlessly handle JSON files that may include a
@@ -1336,6 +1568,7 @@ def cargar_json(path):
     # present while remaining compatible with regular UTF-8 files.
     with open(path, "r", encoding="utf-8-sig") as f:
         return json.load(f)
+
 
 documentos = cargar_json(DOCUMENTOS_PATH)
 oficinas = cargar_json(OFICINAS_PATH)
@@ -1347,15 +1580,17 @@ CAMPO_LABELS = {
     "Dónde_Obtener": "Dónde se obtiene",
     "Horario_Atencion": "Horario de atención",
     "Correo_Electronico": "Correo electrónico de contacto",
-    "Holocom_Number": "Teléfono de contacto",
+    "telefono": "Teléfono de contacto",
     "Direccion": "Dirección",
     "utilidad": "¿Para qué sirve?",
     "penalidad": "Penalidad",
     "tiempo_validez": "Vigencia",
 }
 
+
 def formatear_lista(lista):
     return "\n- " + "\n- ".join(lista)
+
 
 def armar_respuesta_combinada(doc, campos):
     partes = []
@@ -1364,16 +1599,30 @@ def armar_respuesta_combinada(doc, campos):
             valor = doc[campo]
             if isinstance(valor, list):
                 valor = formatear_lista(valor)
-            etiqueta = CAMPO_LABELS.get(campo, campo.replace('_', ' ').capitalize())
+            etiqueta = CAMPO_LABELS.get(campo, campo.replace("_", " ").capitalize())
             partes.append(f"**{etiqueta}:** {valor}")
     return "\n".join(partes)
 
+
 def detectar_tipo_documento(pregunta):
-    tipos = ["permiso", "certificado", "patente", "licencia", "cédula"]
+    """Intenta identificar el tipo general del documento mencionado."""
+    tipos = ["permiso", "certificado", "patente", "licencia", "cédula", "cedula"]
+    pregunta_norm = normalize_text(pregunta)
     for tipo in tipos:
         if tipo in pregunta.lower():
-            return tipo
+            return "cédula" if tipo in ("cédula", "cedula") else tipo
+    # matching difuso por si el usuario escribe con errores
+    best_score = 0
+    best_tipo = None
+    for tipo in tipos:
+        score = fuzz.partial_ratio(pregunta_norm, normalize_text(tipo))
+        if score > best_score:
+            best_score = score
+            best_tipo = tipo
+    if best_score >= 85:
+        return "cédula" if best_tipo in ("cédula", "cedula") else best_tipo
     return None
+
 
 def listar_documentos_por_tipo(tipo):
     encontrados = []
@@ -1382,17 +1631,39 @@ def listar_documentos_por_tipo(tipo):
             encontrados.append(doc["Nombre_Documento"])
     return encontrados
 
+
 def buscar_documento_por_nombre(nombre):
     for doc in documentos:
-        if nombre.lower() in doc["Nombre_Documento"].lower():
+        if (
+            nombre.lower() == doc["Nombre_Documento"].lower()
+            or nombre.lower() in doc["Nombre_Documento"].lower()
+        ):
             return doc
     return None
 
+
+def buscar_documento_fuzzy(pregunta):
+    """Devuelve el documento con mejor coincidencia difusa y su puntuación."""
+    pregunta_norm = normalize_text(pregunta)
+    best_doc = None
+    best_score = 0
+    for doc in documentos:
+        nombre_norm = normalize_text(doc["Nombre_Documento"])
+        score = fuzz.partial_ratio(pregunta_norm, nombre_norm)
+        if score > best_score:
+            best_score = score
+            best_doc = doc
+    return best_doc, best_score
+
+
 def buscar_oficina_por_documento(nombre_doc):
     for oficina in oficinas:
-        if "Documentos" in oficina and any(nombre_doc in d for d in oficina["Documentos"]):
+        if "Documentos" in oficina and any(
+            nombre_doc in d for d in oficina["Documentos"]
+        ):
             return oficina
     return None
+
 
 def buscar_faq_por_pregunta(pregunta):
     for entry in faqs:
@@ -1401,14 +1672,25 @@ def buscar_faq_por_pregunta(pregunta):
                 return entry
     return None
 
+
 def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None):
     tipo = detectar_tipo_documento(pregunta_usuario)
     nombre = None
+    pregunta_norm = normalize_text(pregunta_usuario)
+
+    # coincidencia directa por substring
     for doc in documentos:
         if doc["Nombre_Documento"].lower() in pregunta_usuario.lower():
             nombre = doc["Nombre_Documento"]
             break
 
+    # si no hubo match directo, probar búsqueda difusa
+    if not nombre:
+        best_doc, score = buscar_documento_fuzzy(pregunta_usuario)
+        if score >= 90 and best_doc:
+            nombre = best_doc["Nombre_Documento"]
+
+    # usar el contexto si el usuario ya había seleccionado un documento
     if session_id and not nombre:
         seleccionado = context_manager.get_selected_document(session_id)
         if seleccionado:
@@ -1420,9 +1702,7 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
             if session_id:
                 context_manager.set_document_options(session_id, opciones)
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
-            return (
-                f"¿Sobre qué {tipo} necesitas información?\n{listado}\nPor favor, ingresa el número de la opción deseada."
-            )
+            return f"¿Sobre qué {tipo} necesitas información?\n{listado}\nPor favor, ingresa el número de la opción deseada."
         else:
             return f"No encontré {tipo}s disponibles."
     elif nombre:
@@ -1431,29 +1711,92 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
             if session_id:
                 context_manager.set_selected_document(session_id, nombre)
                 context_manager.clear_document_options(session_id)
-            campos = []
-            if "requisito" in pregunta_usuario.lower():
-                campos.append("Requisitos")
-            if "dónde" in pregunta_usuario.lower() or "donde" in pregunta_usuario.lower():
-                campos.append("Dónde_Obtener")
-            if "horario" in pregunta_usuario.lower():
-                campos.append("Horario_Atencion")
-            if "correo" in pregunta_usuario.lower():
-                campos.append("Correo_Electronico")
-            if "direccion" in pregunta_usuario.lower():
-                campos.append("Direccion")
-            if not campos:
-                return (
-                    f"Entendido. ¿Qué te interesa saber del {nombre}? Puedes preguntarme requisitos, horario, correo o dirección."
+
+            KEYWORDS = {
+                "Requisitos": ["requisito"],
+                "Dónde_Obtener": ["donde", "dónde"],
+                "Horario_Atencion": ["horario"],
+                "Correo_Electronico": ["correo"],
+                "Direccion": ["direccion", "dirección"],
+                "telefono": ["telefono", "teléfono", "numero", "número", "contacto"],
+                "tiempo_validez": [
+                    "vigencia",
+                    "validez",
+                    "valido",
+                    "válido",
+                    "duracion",
+                    "duración",
+                ],
+                "utilidad": ["para que", "para qué", "utilidad", "beneficio"],
+                "penalidad": ["penalidad", "sancion", "sanción"],
+                "costo": ["costo", "valor", "precio"],
+            }
+
+            campos_solicitados = []
+            for campo, kws in KEYWORDS.items():
+                for kw in kws:
+                    if kw in pregunta_norm:
+                        campos_solicitados.append(campo)
+                        break
+
+            if not campos_solicitados:
+                campos_solicitados = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
+
+            campos_existentes = [c for c in campos_solicitados if doc.get(c)]
+            missing = [c for c in campos_solicitados if not doc.get(c)]
+
+            if not campos_existentes:
+                faltantes = ", ".join(CAMPO_LABELS.get(c, c) for c in missing)
+                return f"El documento {doc['Nombre_Documento']} no tiene registrado {faltantes.lower()}."
+
+            if len(campos_existentes) == 1:
+                campo = campos_existentes[0]
+                valor = doc[campo]
+                if isinstance(valor, list):
+                    valor = formatear_lista(valor)
+                if campo == "Dónde_Obtener":
+                    respuesta = (
+                        f"Puedes obtener **{doc['Nombre_Documento']}** en: {valor}"
+                    )
+                elif campo == "Horario_Atencion":
+                    respuesta = f"El horario de atención de **{doc['Nombre_Documento']}** es: {valor}"
+                elif campo == "tiempo_validez":
+                    respuesta = (
+                        f"La vigencia de **{doc['Nombre_Documento']}** es: {valor}"
+                    )
+                elif campo == "Correo_Electronico":
+                    respuesta = f"El correo de contacto de **{doc['Nombre_Documento']}** es: {valor}"
+                elif campo == "telefono":
+                    respuesta = f"El teléfono de contacto de **{doc['Nombre_Documento']}** es: {valor}"
+                else:
+                    etiqueta = CAMPO_LABELS.get(
+                        campo, campo.replace("_", " ").capitalize()
+                    )
+                    respuesta = f"**{etiqueta}:** {valor}"
+                if missing:
+                    falt = ", ".join(CAMPO_LABELS.get(c, c) for c in missing)
+                    respuesta += f"\nNo contamos con información de {falt.lower()}."
+                return respuesta
+
+            respuesta = armar_respuesta_combinada(doc, campos_existentes)
+            if missing:
+                respuesta += (
+                    "\n"
+                    + "No contamos con información de "
+                    + ", ".join(CAMPO_LABELS.get(c, c).lower() for c in missing)
+                    + "."
                 )
-            return armar_respuesta_combinada(doc, campos)
+            return respuesta
         else:
             return "No encontré información específica sobre ese documento."
     else:
         faq = buscar_faq_por_pregunta(pregunta_usuario)
         if faq:
-            return f"**Pregunta:** {pregunta_usuario}\n**Respuesta:** {faq['respuesta']}"
+            return (
+                f"**Pregunta:** {pregunta_usuario}\n**Respuesta:** {faq['respuesta']}"
+            )
         return "¿Podrías especificar si buscas un permiso, certificado, patente, etc.?"
+
 
 # --- INTEGRACIÓN EN EL ORQUESTADOR ---
 # Puedes llamar a responder_sobre_documento(user_input) en orchestrate() antes de llamar al LLM o fallback.
