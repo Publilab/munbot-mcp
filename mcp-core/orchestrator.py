@@ -30,6 +30,9 @@ TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
 
 FAQ_DB_PATH = os.getenv("FAQ_DB_PATH")
 
+FUZZY_STRICT_THRESHOLD = 90
+FUZZY_CLARIFY_THRESHOLD = 80
+
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
 DB_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
 DB_NAME = os.getenv("POSTGRES_DB", "munbot")
@@ -91,27 +94,31 @@ def normalize_text(text: str) -> str:
     return text
 
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
-    """Busca una respuesta en la base de datos de FAQ con normalización y fuzzy matching.
-    Si no hay coincidencia exacta, sugiere la más parecida si el score es razonable.
-    Loguea preguntas no encontradas.
-    """
+    """Busca la mejor coincidencia en la base de FAQ y devuelve información
+    para decidir la respuesta final."""
     try:
         faqs = load_faq_cache()
         pregunta_norm = normalize_text(pregunta)
+
         best_score = 0
         best_entry = None
         best_alt = None
+        high_matches: List[Dict[str, Any]] = []
 
         # Coincidencia exacta (normalizada)
         for entry in faqs:
             entry_preguntas = entry["pregunta"]
-            # Forzar a array siempre
             if not isinstance(entry_preguntas, list):
                 entry_preguntas = [entry_preguntas]
             for alt in entry_preguntas:
                 alt_norm = normalize_text(alt)
                 if alt_norm == pregunta_norm:
-                    return entry
+                    return {
+                        "entry": entry,
+                        "pregunta": alt,
+                        "score": 100,
+                        "needs_confirmation": False,
+                    }
 
         # Fuzzy matching y score
         for entry in faqs:
@@ -121,19 +128,76 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
             for alt in entry_preguntas:
                 alt_norm = normalize_text(alt)
                 score = fuzz.ratio(pregunta_norm, alt_norm)
+                if score >= FUZZY_STRICT_THRESHOLD:
+                    high_matches.append({"entry": entry, "pregunta": alt, "score": score})
                 if score > best_score:
                     best_score = score
                     best_entry = entry
                     best_alt = alt
-                # Si es muy alto, devolvemos de inmediato
-                if score == 100:
-                    return entry
-        # Si hay una coincidencia razonable (>80), la devolvemos
-        if best_score > 80:
-            logging.info(f"FAQ: Coincidencia fuzzy ({best_score}) para '{pregunta}' ≈ '{best_alt}'")
-            return best_entry
-        # Si no hay coincidencia, loguear
-        logging.warning(f"FAQ: Pregunta no encontrada: '{pregunta}' (mejor score: {best_score} con '{best_alt}')")
+
+        if high_matches:
+            high_matches.sort(key=lambda x: x["score"], reverse=True)
+            if len(high_matches) == 1:
+                m = high_matches[0]
+                logging.info(
+                    f"FAQ: Coincidencia fuzzy alta ({m['score']}) para '{pregunta}' ≈ '{m['pregunta']}'"
+                )
+                return {
+                    "entry": m["entry"],
+                    "pregunta": m["pregunta"],
+                    "score": m["score"],
+                    "needs_confirmation": False,
+                }
+            else:
+                logging.info(
+                    f"FAQ: Varias coincidencias fuzzy altas para '{pregunta}': {[m['pregunta'] for m in high_matches]}"
+                )
+                return {
+                    "alternatives": [m["pregunta"] for m in high_matches[:3]],
+                    "matches": [m["entry"] for m in high_matches[:3]],
+                    "score": high_matches[0]["score"],
+                    "needs_confirmation": True,
+                    "type": "choose",
+                }
+
+        if best_score >= FUZZY_CLARIFY_THRESHOLD and best_entry is not None:
+            logging.info(
+                f"FAQ: Coincidencia intermedia ({best_score}) para '{pregunta}' ≈ '{best_alt}'"
+            )
+            return {
+                "entry": best_entry,
+                "pregunta": best_alt,
+                "score": best_score,
+                "needs_confirmation": True,
+                "type": "confirm",
+            }
+
+        # Búsqueda por palabras clave
+        pregunta_tokens = set(tokenize(pregunta_norm))
+        keyword_hits = []
+        for entry in faqs:
+            entry_preguntas = entry["pregunta"]
+            if isinstance(entry_preguntas, str):
+                entry_preguntas = [entry_preguntas]
+            for alt in entry_preguntas:
+                entry_tokens = set(tokenize(alt))
+                if pregunta_tokens & entry_tokens:
+                    keyword_hits.append({"entry": entry, "pregunta": alt})
+                    break
+        if keyword_hits:
+            logging.info(
+                f"FAQ: Sugiriendo temas por palabras clave para '{pregunta}': {[h['pregunta'] for h in keyword_hits]}"
+            )
+            return {
+                "alternatives": [h["pregunta"] for h in keyword_hits[:3]],
+                "matches": [h["entry"] for h in keyword_hits[:3]],
+                "needs_confirmation": True,
+                "type": "choose",
+            }
+
+        logging.warning(
+            f"FAQ: Pregunta no encontrada: '{pregunta}' (mejor score: {best_score} con '{best_alt}')"
+        )
     except Exception as e:
         logging.warning(f"No se pudo consultar FAQ: {e}")
     return None
@@ -607,14 +671,66 @@ def periodic_migration():
 threading.Thread(target=periodic_migration, daemon=True).start()
 
 def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None, session_id: Optional[str] = None) -> Dict[str, Any]:
+    sid = session_id or str(uuid.uuid4())
+
+    # --- Manejar aclaraciones pendientes de FAQ ---
+    pending_faq = context_manager.get_faq_clarification(sid)
+    if pending_faq:
+        if pending_faq.get("type") == "confirm":
+            if re.fullmatch(r"(?i)s[ií]|si|yes", user_input.strip()):
+                answer = pending_faq["entry"]["respuesta"]
+                context_manager.update_context(sid, user_input, answer)
+                context_manager.clear_faq_clarification(sid)
+                context_manager.reset_fallback_count(sid)
+                context_manager.set_last_sentiment(sid, "neutral")
+                return {"respuesta": answer, "session_id": sid}
+            if re.fullmatch(r"(?i)no|n|nope", user_input.strip()):
+                context_manager.clear_faq_clarification(sid)
+            else:
+                return {
+                    "respuesta": "Por favor responde 'sí' o 'no'.",
+                    "session_id": sid,
+                }
+        elif pending_faq.get("type") == "choose":
+            opciones = pending_faq.get("alternatives", [])
+            m = re.fullmatch(r"(\d+)", user_input.strip())
+            if m and 1 <= int(m.group(1)) <= len(opciones):
+                idx = int(m.group(1)) - 1
+                entry = pending_faq["matches"][idx]
+                answer = entry["respuesta"]
+                context_manager.update_context(sid, user_input, answer)
+                context_manager.clear_faq_clarification(sid)
+                context_manager.reset_fallback_count(sid)
+                context_manager.set_last_sentiment(sid, "neutral")
+                return {"respuesta": answer, "session_id": sid}
+            else:
+                return {
+                    "respuesta": "Por favor indica un número de la lista previa.",
+                    "session_id": sid,
+                }
+
     # === 0) Consultar primero en la base de FAQs ===
     faq = lookup_faq_respuesta(user_input)
     if faq is not None:
-        sid = session_id or str(uuid.uuid4())
-        context_manager.update_context(sid, user_input, faq["respuesta"])
+        if faq.get("needs_confirmation"):
+            context_manager.set_faq_clarification(sid, faq)
+            if faq.get("type") == "confirm":
+                msg = f"¿Quisiste decir '{faq['pregunta']}'?"
+            else:
+                opts = "\n".join(
+                    f"{i+1}. {q}" for i, q in enumerate(faq.get('alternatives', []))
+                )
+                msg = (
+                    "Encontré varias preguntas similares:\n" + opts + "\nIndica el número correspondiente."
+                )
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
+
+        answer = faq["entry"]["respuesta"]
+        context_manager.update_context(sid, user_input, answer)
         context_manager.reset_fallback_count(sid)
         context_manager.set_last_sentiment(sid, "neutral")
-        return {"respuesta": faq["respuesta"], "session_id": sid}
+        return {"respuesta": answer, "session_id": sid}
 
     # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
     respuesta_doc = responder_sobre_documento(user_input)
@@ -764,8 +880,22 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     if tool in ("unknown", "doc-generar_respuesta_llm"):
         faq_hit = lookup_faq_respuesta(user_input)
         if faq_hit:
-            context_manager.update_context(session_id, user_input, faq_hit["respuesta"])
-            return {"respuesta": faq_hit["respuesta"], "session_id": session_id}
+            if faq_hit.get("needs_confirmation"):
+                context_manager.set_faq_clarification(session_id, faq_hit)
+                if faq_hit.get("type") == "confirm":
+                    msg = f"¿Quisiste decir '{faq_hit['pregunta']}'?"
+                else:
+                    opts = "\n".join(
+                        f"{i+1}. {q}" for i, q in enumerate(faq_hit.get('alternatives', []))
+                    )
+                    msg = (
+                        "Encontré varias preguntas similares:\n" + opts + "\nIndica el número correspondiente."
+                    )
+                context_manager.update_context(session_id, user_input, msg)
+                return {"respuesta": msg, "session_id": session_id}
+
+            context_manager.update_context(session_id, user_input, faq_hit["entry"]["respuesta"])
+            return {"respuesta": faq_hit["entry"]["respuesta"], "session_id": session_id}
 
         snippets = retrieve_context_snippets(user_input)
         history = convo_ctx.get("history", [])
