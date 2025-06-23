@@ -331,11 +331,13 @@ def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
 def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
     service_url = route_to_service(tool)
     payload = {"tool": tool, "params": params}
-    resp = requests.post(service_url, json=payload, timeout=30)
-    if 200 <= resp.status_code < 300:
-        return resp.json()
-    else:
+    try:
+        resp = requests.post(service_url, json=payload, timeout=30)
+        if 200 <= resp.status_code < 300:
+            return resp.json()
         return {"error": f"Error {resp.status_code}: {resp.text}"}
+    except requests.RequestException as e:
+        return {"error": f"Connection error: {e}"}
 
 
 # === Cliente Llama ===
@@ -929,6 +931,26 @@ def orchestrate(
 ) -> Dict[str, Any]:
     sid = session_id or str(uuid.uuid4())
 
+    ctx = context_manager.get_context(sid)
+
+    # Si se proporcionó una sesión pero no hay contexto, informar expiración
+    if session_id and not ctx:
+        msg = (
+            "Hola de nuevo, la sesión anterior ya había finalizado. ¿En qué te puedo ayudar hoy?"
+        )
+        context_manager.update_context(sid, user_input, msg)
+        return {"respuesta": msg, "session_id": sid}
+
+    # Comando para cancelar flujo en curso
+    if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
+        if ctx.get("pending_field") or ctx.get("complaint_state"):
+            context_manager.clear_pending_field(sid)
+            context_manager.clear_complaint_state(sid)
+            cancel_msg = "He cancelado el proceso en curso. ¿En qué más puedo ayudarte?"
+            context_manager.update_context(sid, user_input, cancel_msg)
+            return {"respuesta": cancel_msg, "session_id": sid}
+
+
     # --- Manejar feedback pendiente ---
     pending_feedback = context_manager.get_feedback_pending(sid)
     if pending_feedback is not None:
@@ -1174,10 +1196,14 @@ def orchestrate(
         logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
         context_manager.clear_complaint_state(session_id)
         if "error" in response:
-            return {
-                "respuesta": "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente.",
-                "session_id": session_id,
-            }
+            err = response.get("error", "")
+            if "Connection error" in err or "Error 5" in err:
+                msg_err = (
+                    "No pude registrar tu reclamo por un problema técnico. Por favor intenta más tarde."
+                )
+            else:
+                msg_err = "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente."
+            return {"respuesta": msg_err, "session_id": session_id}
         success_msg = (
             "He registrado tu reclamo en mi base de datos y he enviado la "
             "información del registro para que puedas comprobar el estado de avances. "
