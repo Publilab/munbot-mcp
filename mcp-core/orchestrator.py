@@ -1190,7 +1190,12 @@ OFICINAS_PATH = os.path.join(os.path.dirname(__file__), "databases/oficina_info.
 FAQS_PATH = os.path.join(os.path.dirname(__file__), "databases/faq_respuestas.json")
 
 def cargar_json(path):
-    with open(path, "r", encoding="utf-8") as f:
+    # Use ``utf-8-sig`` to seamlessly handle JSON files that may include a
+    # UTF-8 BOM (Byte Order Mark). ``json.load`` does not skip the BOM by
+    # default which results in ``JSONDecodeError`` when such a file is read
+    # with ``utf-8``. The ``utf-8-sig`` codec transparently strips the BOM if
+    # present while remaining compatible with regular UTF-8 files.
+    with open(path, "r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 documentos = cargar_json(DOCUMENTOS_PATH)
