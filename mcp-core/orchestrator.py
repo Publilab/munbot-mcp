@@ -93,6 +93,14 @@ def normalize_text(text: str) -> str:
     text = ''.join(c for c in text if c.isalnum() or c.isspace())
     return text
 
+def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
+    """Adaptar formato Markdown según el canal."""
+    if channel in ["web", "whatsapp", None]:
+        return text
+    text = text.replace("**", "")
+    text = re.sub(r"^(.*):", lambda m: m.group(1).upper() + ":", text, flags=re.MULTILINE)
+    return text
+
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
     """Busca la mejor coincidencia en la base de FAQ y devuelve información
     para decidir la respuesta final."""
@@ -967,6 +975,7 @@ class OrchestratorInput(BaseModel):
     pregunta: str
     context: Optional[Dict[str, Any]] = None
     session_id: Optional[str] = None
+    channel: Optional[str] = None
 
 @app.post("/orchestrate")
 def orchestrate_api(input: OrchestratorInput, request: Request):
@@ -980,6 +989,8 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
         if ip:
             extra_context['ip'] = ip
         result = orchestrate(input.pregunta, extra_context, input.session_id)
+        if result.get("respuesta"):
+            result["respuesta"] = adapt_markdown_for_channel(result["respuesta"], input.channel)
         return result
     except Exception as e:
         logging.error(f"Error en orquestación: {e}", exc_info=True)
@@ -1186,6 +1197,19 @@ documentos = cargar_json(DOCUMENTOS_PATH)
 oficinas = cargar_json(OFICINAS_PATH)
 faqs = cargar_json(FAQS_PATH)
 
+CAMPO_LABELS = {
+    "Nombre_Documento": "Nombre del documento",
+    "Requisitos": "Requisitos",
+    "Dónde_Obtener": "Dónde se obtiene",
+    "Horario_Atencion": "Horario de atención",
+    "Correo_Electronico": "Correo electrónico de contacto",
+    "Holocom_Number": "Teléfono de contacto",
+    "Direccion": "Dirección",
+    "utilidad": "¿Para qué sirve?",
+    "penalidad": "Penalidad",
+    "tiempo_validez": "Vigencia",
+}
+
 def formatear_lista(lista):
     return "\n- " + "\n- ".join(lista)
 
@@ -1196,7 +1220,8 @@ def armar_respuesta_combinada(doc, campos):
             valor = doc[campo]
             if isinstance(valor, list):
                 valor = formatear_lista(valor)
-            partes.append(f"**{campo.replace('_', ' ')}:** {valor}")
+            etiqueta = CAMPO_LABELS.get(campo, campo.replace('_', ' ').capitalize())
+            partes.append(f"**{etiqueta}:** {valor}")
     return "\n".join(partes)
 
 def detectar_tipo_documento(pregunta):

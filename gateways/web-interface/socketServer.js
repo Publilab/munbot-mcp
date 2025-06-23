@@ -42,7 +42,8 @@ io.on('connection', (socket) => {
             const payload = {
                 pregunta: msg,
                 context: { sender: socket.id },
-                session_id: socket.sessionId // USAR sessionId del socket
+                session_id: socket.sessionId, // USAR sessionId del socket
+                channel: 'web'
             };
             // Enviar el mensaje al MCP
             const response = await axios.post(MCP_URL, payload);
