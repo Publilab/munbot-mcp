@@ -31,6 +31,9 @@ class ConversationalContextManager:
             "content": bot_response,
             "timestamp": datetime.now().isoformat()
         })
+
+        # Registrar última actividad
+        context["last_activity"] = datetime.now().isoformat()
         
         # Mantener solo los últimos 10 mensajes
         context["history"] = context["history"][-10:]
@@ -90,6 +93,11 @@ class ConversationalContextManager:
         """Obtiene el historial de la conversación."""
         context = self.get_context(session_id)
         return context.get("history", [])
+
+    def get_last_activity(self, session_id: str) -> Optional[str]:
+        """Devuelve la marca de tiempo de la última actividad."""
+        context = self.get_context(session_id)
+        return context.get("last_activity")
 
     def get_history_as_string(self, history: List[Dict[str, str]]) -> str:
         """Convierte el historial en una cadena de texto."""
