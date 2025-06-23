@@ -16,28 +16,18 @@
     "categoria": "agradecimientos"
   },
   {
-    "pregunta": ["estoy bien", "me alegro", "todo bien", "genial", "excelente", "perfecto", "feliz"],
-    "respuesta": "¡De nada! Recuerda que estoy aquí para ayudarte",
+    "pregunta": ["estoy bien", "me siento bien", "todo bien", "genial", "excelente", "perfecto", "feliz"],
+    "respuesta": "¡Me alegro que estés bien! 😊",
     "categoria": "estado_animo"
   },
   {
-    "pregunta": ["no me siento bien", "no estoy bien", "me siento mal", "me siento mal", "me siento mal", "me siento mal", "me siento mal"],
-    "respuesta": "Lamento que te sientas así. Realmente lamento leer eso. Si puedo ayudarte solo dímelo.",
+    "pregunta": ["no estoy bien", "no me siento bien", "me siento mal", "estoy mal", "no me encuentro bien"],
+    "respuesta": "Lamento oír eso. Si puedo ayudarte en algo, aquí estoy.",
     "categoria": "estado_animo"
   },
   {
-    "pregunta": ["estoy mal", "no me siento bien", "no estoy bien", "me siento mal", "me siento mal", "me siento mal", "me siento mal"],
-    "respuesta": "¡Me alegra que estés bien! ¿En qué puedo ayudarte hoy?",
-    "categoria": "estado_animo"
-  },
-  {
-    "pregunta": [ "no es la respuesta que esperaba", "mala respuesta", "no me ayudaste", "no resolviste mi problema", "no entendiste", "no me diste solución", "no me diste una solución", "no me sirvió", "no fue útil", "no fue de ayuda", "no me atendiste bien", "no me atendiste bien", "no me diste la información que necesitaba",
-    "no me diste lo que pedí", "no era lo que buscaba", "no era lo que necesitaba", "no era lo que quería",
-    "no me diste respuesta", "no me diste una respuesta clara", "no me diste una respuesta útil", "no me diste una respuesta concreta", "no me diste una respuesta satisfactoria", "no me diste una respuesta correcta", "no me diste una respuesta adecuada", "no me diste una respuesta", "no me diste una solución clara", "no me diste una solución útil", "no me diste una solución concreta",
-    "no me diste una solución satisfactoria", "no me diste una solución correcta", "no me diste una solución adecuada", "no me diste una solución", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería",
-    "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí",
-    "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba"],
-    "respuesta": "Lo siento, pero no puedo ayudarte con eso. Si tienes alguna otra pregunta, no dudes en preguntar.",
+    "pregunta": ["no me ayudaste", "no fue útil", "no diste respuesta", "no era lo que buscaba", "no me diste la información que necesitaba", "no resolviste mi problema", "me decepcionaste", "no me diste solución", "no me sirvió"],
+    "respuesta": "Lo siento si no pude ayudarte como esperabas. ¿Hay algo más en lo que pueda asistirte?",
     "categoria": "decepcion"
   },
   {
