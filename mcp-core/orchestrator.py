@@ -17,6 +17,7 @@ import unicodedata
 from llama_client import LlamaClient
 import numpy as np
 from rapidfuzz import fuzz
+from datetime import datetime
 
 # === Configuración ===
 MICROSERVICES = {
@@ -32,6 +33,8 @@ FAQ_DB_PATH = os.getenv("FAQ_DB_PATH")
 
 FUZZY_STRICT_THRESHOLD = 90
 FUZZY_CLARIFY_THRESHOLD = 80
+BEST_ALT_THRESHOLD = 70
+MISSED_LOG_PATH = os.path.join(os.path.dirname(__file__), "databases", "missed_questions.csv")
 
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
 DB_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
@@ -472,6 +475,55 @@ def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
         logging.warning(f"No se pudo consultar documentos: {e}")
 
     return snippets[:limit]
+
+def get_best_faq_match(pregunta: str):
+    """Devuelve la pregunta más parecida y su puntaje."""
+    faqs = load_faq_cache()
+    pregunta_norm = normalize_text(pregunta)
+    best_score = 0
+    best_entry = None
+    best_alt = None
+    for entry in faqs:
+        entry_preguntas = entry["pregunta"]
+        if not isinstance(entry_preguntas, list):
+            entry_preguntas = [entry_preguntas]
+        for alt in entry_preguntas:
+            alt_norm = normalize_text(alt)
+            score = fuzz.ratio(pregunta_norm, alt_norm)
+            if score > best_score:
+                best_score = score
+                best_entry = entry
+                best_alt = alt
+    return best_alt, best_score, best_entry
+
+def find_related_faqs(pregunta: str, limit: int = 3) -> List[str]:
+    """Busca preguntas frecuentes que compartan palabras clave."""
+    faqs = load_faq_cache()
+    tokens = set(tokenize(normalize_text(pregunta)))
+    related = []
+    for entry in faqs:
+        if len(related) >= limit:
+            break
+        entry_preguntas = entry["pregunta"]
+        if isinstance(entry_preguntas, str):
+            entry_preguntas = [entry_preguntas]
+        for alt in entry_preguntas:
+            if tokens & set(tokenize(normalize_text(alt))):
+                related.append(alt)
+                break
+    return related
+
+def log_missed_question(question: str, best_alt: Optional[str] = None, best_score: Optional[int] = None):
+    """Registra preguntas no respondidas en un archivo CSV."""
+    try:
+        first = not os.path.exists(MISSED_LOG_PATH)
+        with open(MISSED_LOG_PATH, "a", encoding="utf-8") as f:
+            if first:
+                f.write("timestamp,question,best_alt,best_score\n")
+            line = f"{datetime.now().isoformat()},{question.replace(',', ' ')},{best_alt or ''},{best_score or ''}\n"
+            f.write(line)
+    except Exception as e:
+        logging.warning(f"No se pudo registrar pregunta no respondida: {e}")
 
 def get_db():
     return psycopg2.connect(
@@ -914,20 +966,44 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     if confidence < 0.6 or sentiment in ["very_negative", "negative"]:
         context_manager.increment_fallback_count(session_id)
         fallback_count = context_manager.get_fallback_count(session_id)
-        escalate = False
-        if fallback_count >= 3 or sentiment == "very_negative":
-            escalate = True
-        elif fallback_count >= 2 and sentiment in ["negative", "very_negative"]:
-            escalate = True
+        escalate = fallback_count >= 3 or sentiment == "very_negative"
+        offer_human = fallback_count >= 2 and not escalate
+
+        best_alt, best_score, best_entry = get_best_faq_match(user_input)
+        log_missed_question(user_input, best_alt, best_score)
 
         if escalate:
-            fallback_resp = "Entiendo tu frustración. Si quieres, puedo derivarte con un agente humano ahora mismo."
+            fallback_resp = "Lo siento, derivaré tu consulta a un agente humano."
             context_manager.update_context(session_id, user_input, fallback_resp)
             return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
+
+        if best_alt and best_score >= BEST_ALT_THRESHOLD:
+            context_manager.set_faq_clarification(session_id, {
+                "entry": best_entry,
+                "pregunta": best_alt,
+                "needs_confirmation": True,
+                "type": "confirm",
+            })
+            fallback_resp = (
+                f"No encontré información exacta sobre eso. ¿Quizás te refieres a '{best_alt}'? Responde 'sí' para confirmar."
+            )
         else:
-            fallback_resp = "No estoy seguro de cómo ayudarte, ¿puedes reformular tu pregunta?"
-            context_manager.update_context(session_id, user_input, fallback_resp)
-            return {"respuesta": fallback_resp, "session_id": session_id, "pending_field": None}
+            related = find_related_faqs(user_input)
+            if related:
+                sugerencias = ", ".join(f"'{q}'" for q in related)
+                fallback_resp = f"No encontré esa información. Tal vez te interese: {sugerencias}"
+            else:
+                ejemplos = "‘¿Cuáles son los requisitos para X?’, ‘¿Dónde puedo pagar mi patente?’, ‘¿Cómo agendar una cita médica?’"
+                fallback_resp = (
+                    "Puedo ayudarte con consultas sobre trámites municipales, horarios de atención, reclamos y más. "
+                    f"Ejemplos: {ejemplos}"
+                )
+
+        if offer_human:
+            fallback_resp += " Sigo sin poder ayudarte. Si gustas, puedo pasarte con un humano ahora o intenta formularlo de otra manera."
+
+        context_manager.update_context(session_id, user_input, fallback_resp)
+        return {"respuesta": fallback_resp, "session_id": session_id, "pending_field": None}
     else:
         context_manager.reset_fallback_count(session_id)
 
