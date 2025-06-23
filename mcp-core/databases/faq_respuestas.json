@@ -129,5 +129,10 @@
     "pregunta": ["¿Cómo puedo agendar una cita?", "¿Cómo puedo pedir una hora?", "¿Cómo puedo pedir una cita?"],
     "respuesta": "Para agendar una cita puedes hacer la solicitud en este mismo mensaje y te ayudaré a generarla. ¿Quieres agendar una cita ahora?",
     "categoria": "citas"
+  },
+  {
+    "pregunta": ["¿Cómo obtengo mi clave única?", "¿Cuál es el proceso para obtener la clave única?", "¿Cómo sacar la clave única?"],
+    "respuesta": "1. Ingresa a https://claveunica.gob.cl\n2. Selecciona \"Obtener Clave Única\"\n3. Sigue las instrucciones y valida tu identidad en línea o en una oficina.",
+    "categoria": "tramites"
   }
-] 
+]
