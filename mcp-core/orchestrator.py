@@ -202,6 +202,21 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
         logging.warning(f"No se pudo consultar FAQ: {e}")
     return None
 
+def lookup_multiple_faqs(pregunta: str) -> Optional[str]:
+    """Intenta dividir la consulta en posibles subpreguntas y responde a cada una."""
+    partes = re.split(r"\?|\by\b|\be\b", pregunta)
+    partes = [p.strip() for p in partes if p.strip()]
+    if len(partes) < 2:
+        return None
+    respuestas = []
+    for p in partes:
+        faq = lookup_faq_respuesta(p)
+        if faq and not faq.get("needs_confirmation"):
+            respuestas.append(faq["entry"]["respuesta"])
+    if len(respuestas) >= 2:
+        return "\n".join(f"- {r}" for r in respuestas)
+    return None
+
 # === Carga y utilidades ===
 
 def load_schema(tool_name: str) -> dict:
@@ -709,7 +724,32 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
                     "session_id": sid,
                 }
 
+    # --- Manejar selección de documentos pendientes ---
+    pending_docs = context_manager.get_document_options(sid)
+    if pending_docs:
+        m = re.fullmatch(r"(\d+)", user_input.strip())
+        if m and 1 <= int(m.group(1)) <= len(pending_docs):
+            idx = int(m.group(1)) - 1
+            nombre = pending_docs[idx]
+            context_manager.set_selected_document(sid, nombre)
+            context_manager.clear_document_options(sid)
+            msg = (
+                f"Entendido. ¿Qué te interesa saber del {nombre}? Puedes preguntarme requisitos, horario, correo o dirección."
+            )
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
+        else:
+            return {
+                "respuesta": "Por favor ingresa un número válido de la lista anterior.",
+                "session_id": sid,
+            }
+
     # === 0) Consultar primero en la base de FAQs ===
+    multi = lookup_multiple_faqs(user_input)
+    if multi:
+        context_manager.update_context(sid, user_input, multi)
+        return {"respuesta": multi, "session_id": sid}
+
     faq = lookup_faq_respuesta(user_input)
     if faq is not None:
         if faq.get("needs_confirmation"):
@@ -721,7 +761,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
                     f"{i+1}. {q}" for i, q in enumerate(faq.get('alternatives', []))
                 )
                 msg = (
-                    "Encontré varias preguntas similares:\n" + opts + "\nIndica el número correspondiente."
+                    "Encontré varias preguntas similares:\n" + opts + "\nPor favor, ingresa el número de la opción deseada."
                 )
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
@@ -733,7 +773,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         return {"respuesta": answer, "session_id": sid}
 
     # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
-    respuesta_doc = responder_sobre_documento(user_input)
+    respuesta_doc = responder_sobre_documento(user_input, sid)
     if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
         sid = session_id or str(uuid.uuid4())
         context_manager.update_context(sid, user_input, respuesta_doc)
@@ -866,8 +906,14 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
     if confidence < 0.6 or sentiment in ["very_negative", "negative"]:
         context_manager.increment_fallback_count(session_id)
         fallback_count = context_manager.get_fallback_count(session_id)
+        escalate = False
         if fallback_count >= 3 or sentiment == "very_negative":
-            fallback_resp = "Lo siento, no estoy seguro de cómo ayudarte. Derivaré tu consulta a un agente humano."
+            escalate = True
+        elif fallback_count >= 2 and sentiment in ["negative", "very_negative"]:
+            escalate = True
+
+        if escalate:
+            fallback_resp = "Entiendo tu frustración. Si quieres, puedo derivarte con un agente humano ahora mismo."
             context_manager.update_context(session_id, user_input, fallback_resp)
             return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
         else:
@@ -889,7 +935,7 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
                         f"{i+1}. {q}" for i, q in enumerate(faq_hit.get('alternatives', []))
                     )
                     msg = (
-                        "Encontré varias preguntas similares:\n" + opts + "\nIndica el número correspondiente."
+                        "Encontré varias preguntas similares:\n" + opts + "\nPor favor, ingresa el número de la opción deseada."
                     )
                 context_manager.update_context(session_id, user_input, msg)
                 return {"respuesta": msg, "session_id": session_id}
@@ -1186,22 +1232,36 @@ def buscar_faq_por_pregunta(pregunta):
                 return entry
     return None
 
-def responder_sobre_documento(pregunta_usuario):
+def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None):
     tipo = detectar_tipo_documento(pregunta_usuario)
     nombre = None
     for doc in documentos:
         if doc["Nombre_Documento"].lower() in pregunta_usuario.lower():
             nombre = doc["Nombre_Documento"]
             break
+
+    if session_id and not nombre:
+        seleccionado = context_manager.get_selected_document(session_id)
+        if seleccionado:
+            nombre = seleccionado
+
     if tipo and not nombre:
         opciones = listar_documentos_por_tipo(tipo)
         if opciones:
-            return f"¿Sobre qué {tipo} necesitas información? Estos son los disponibles:\n- " + "\n- ".join(opciones)
+            if session_id:
+                context_manager.set_document_options(session_id, opciones)
+            listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
+            return (
+                f"¿Sobre qué {tipo} necesitas información?\n{listado}\nPor favor, ingresa el número de la opción deseada."
+            )
         else:
             return f"No encontré {tipo}s disponibles."
-    elif tipo and nombre:
+    elif nombre:
         doc = buscar_documento_por_nombre(nombre)
         if doc:
+            if session_id:
+                context_manager.set_selected_document(session_id, nombre)
+                context_manager.clear_document_options(session_id)
             campos = []
             if "requisito" in pregunta_usuario.lower():
                 campos.append("Requisitos")
@@ -1214,7 +1274,9 @@ def responder_sobre_documento(pregunta_usuario):
             if "direccion" in pregunta_usuario.lower():
                 campos.append("Direccion")
             if not campos:
-                campos = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
+                return (
+                    f"Entendido. ¿Qué te interesa saber del {nombre}? Puedes preguntarme requisitos, horario, correo o dirección."
+                )
             return armar_respuesta_combinada(doc, campos)
         else:
             return "No encontré información específica sobre ese documento."
