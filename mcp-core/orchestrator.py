@@ -525,6 +525,44 @@ def log_missed_question(question: str, best_alt: Optional[str] = None, best_scor
     except Exception as e:
         logging.warning(f"No se pudo registrar pregunta no respondida: {e}")
 
+def registrar_pregunta_no_contestada(texto_pregunta: str, respuesta_dada: str, intent_detectada: str = "unknown", canal: Optional[str] = None, usuario_id: Optional[str] = None) -> Optional[int]:
+    """Inserta en la BD una pregunta no respondida y devuelve su ID."""
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO preguntas_no_contestadas (texto_pregunta, respuesta_dada, intent_detectada, canal, usuario_id)
+                VALUES (%s, %s, %s, %s, %s)
+                RETURNING id
+                """,
+                (texto_pregunta, respuesta_dada, intent_detectada, canal, usuario_id),
+            )
+            qid = cur.fetchone()[0]
+            conn.commit()
+        conn.close()
+        return qid
+    except Exception as e:
+        logging.warning(f"No se pudo registrar en BD la pregunta no contestada: {e}")
+        return None
+
+def registrar_feedback_usuario(pregunta_id: Optional[int], feedback_texto: str, usuario_id: Optional[str] = None):
+    """Guarda el feedback del usuario asociado a una pregunta no contestada."""
+    try:
+        conn = get_db()
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO feedback_usuario (pregunta_id, feedback_texto, usuario_id)
+                VALUES (%s, %s, %s)
+                """,
+                (pregunta_id, feedback_texto, usuario_id),
+            )
+            conn.commit()
+        conn.close()
+    except Exception as e:
+        logging.warning(f"No se pudo registrar feedback de usuario: {e}")
+
 def get_db():
     return psycopg2.connect(
         host=DB_HOST, port=DB_PORT, dbname=DB_NAME, user=DB_USER, password=DB_PASS
@@ -748,6 +786,15 @@ threading.Thread(target=periodic_migration, daemon=True).start()
 def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None, session_id: Optional[str] = None) -> Dict[str, Any]:
     sid = session_id or str(uuid.uuid4())
 
+    # --- Manejar feedback pendiente ---
+    pending_feedback = context_manager.get_feedback_pending(sid)
+    if pending_feedback is not None:
+        registrar_feedback_usuario(pending_feedback, user_input)
+        context_manager.clear_feedback_pending(sid)
+        ack = "Gracias por tu respuesta." if re.fullmatch(r"(?i)s[ií]|si|yes|no|n|nope", user_input.strip()) else "Gracias por tu comentario."
+        context_manager.update_context(sid, user_input, ack)
+        return {"respuesta": ack, "session_id": sid}
+
     # --- Manejar aclaraciones pendientes de FAQ ---
     pending_faq = context_manager.get_faq_clarification(sid)
     if pending_faq:
@@ -945,6 +992,9 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
             "Uno de nuestros funcionarios se encargará de dar respuesta a tu "
             "reclamo y se pondrá en contacto contigo"
         )
+        success_msg += "\n¿Te fue útil mi respuesta? (Sí/No)"
+        context_manager.set_feedback_pending(session_id, None)
+        context_manager.update_context(session_id, user_input, success_msg)
         return {"respuesta": success_msg, "session_id": session_id}
 
     # Obtener o crear session_id
@@ -974,7 +1024,11 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
 
         if escalate:
             fallback_resp = "Lo siento, derivaré tu consulta a un agente humano."
+            qid = registrar_pregunta_no_contestada(user_input, fallback_resp, intent_detectada=tool)
             context_manager.update_context(session_id, user_input, fallback_resp)
+            if qid:
+                context_manager.set_feedback_pending(session_id, qid)
+                fallback_resp += "\n¿Te fue útil mi respuesta? (Sí/No)"
             return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
 
         if best_alt and best_score >= BEST_ALT_THRESHOLD:
@@ -1002,6 +1056,10 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         if offer_human:
             fallback_resp += " Sigo sin poder ayudarte. Si gustas, puedo pasarte con un humano ahora o intenta formularlo de otra manera."
 
+        qid = registrar_pregunta_no_contestada(user_input, fallback_resp, intent_detectada=tool)
+        if qid:
+            context_manager.set_feedback_pending(session_id, qid)
+            fallback_resp += "\n¿Te fue útil mi respuesta? (Sí/No)"
         context_manager.update_context(session_id, user_input, fallback_resp)
         return {"respuesta": fallback_resp, "session_id": session_id, "pending_field": None}
     else:
@@ -1024,8 +1082,11 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
                 context_manager.update_context(session_id, user_input, msg)
                 return {"respuesta": msg, "session_id": session_id}
 
-            context_manager.update_context(session_id, user_input, faq_hit["entry"]["respuesta"])
-            return {"respuesta": faq_hit["entry"]["respuesta"], "session_id": session_id}
+            answer = faq_hit["entry"]["respuesta"]
+            answer += "\n¿Te fue útil mi respuesta? (Sí/No)"
+            context_manager.set_feedback_pending(session_id, None)
+            context_manager.update_context(session_id, user_input, answer)
+            return {"respuesta": answer, "session_id": session_id}
 
         snippets = retrieve_context_snippets(user_input)
         history = convo_ctx.get("history", [])
@@ -1041,6 +1102,8 @@ def orchestrate(user_input: str, extra_context: Optional[Dict[str, Any]] = None,
         )
         prompt = f"{history_text}\n{prompt}"
         ans = generate_response(prompt)
+        ans += "\n¿Te fue útil mi respuesta? (Sí/No)"
+        context_manager.set_feedback_pending(session_id, None)
         context_manager.update_context(session_id, user_input, ans)
         return {"respuesta": ans, "session_id": session_id}
  

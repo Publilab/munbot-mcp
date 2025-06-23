@@ -178,4 +178,24 @@ INSERT INTO documento_notas (documento_id, nota) VALUES
   ((SELECT id FROM documentos WHERE id_documento='DOC002'), 'El certificado es requerido para trámites de postulación a beneficios.'),
   ((SELECT id FROM documentos WHERE id_documento='DOC003'), 'La ayuda social está sujeta a evaluación y disponibilidad de recursos.');
 
+-- Tabla para registrar preguntas no contestadas por el bot
+CREATE TABLE IF NOT EXISTS preguntas_no_contestadas (
+    id SERIAL PRIMARY KEY,
+    texto_pregunta TEXT NOT NULL,
+    fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    usuario_id VARCHAR(255),
+    intent_detectada TEXT DEFAULT 'unknown',
+    respuesta_dada TEXT,
+    canal TEXT
+);
+
+-- Feedback explícito entregado por el usuario sobre la respuesta
+CREATE TABLE IF NOT EXISTS feedback_usuario (
+    id SERIAL PRIMARY KEY,
+    pregunta_id INTEGER REFERENCES preguntas_no_contestadas(id) ON DELETE CASCADE,
+    feedback_texto TEXT,
+    fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    usuario_id VARCHAR(255)
+);
+
 COMMIT;

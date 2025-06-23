@@ -227,3 +227,30 @@ class ConversationalContextManager:
             json.dumps(context),
             ex=self.session_expiry_seconds
         )
+
+    # ---- Manejo de feedback de usuario ----
+    def set_feedback_pending(self, session_id: str, pregunta_id: Optional[int]):
+        """Marca una pregunta como pendiente de recibir feedback."""
+        context = self.get_context(session_id)
+        context["feedback_question"] = pregunta_id
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def get_feedback_pending(self, session_id: str) -> Optional[int]:
+        """Obtiene el ID de la pregunta pendiente de feedback."""
+        context = self.get_context(session_id)
+        return context.get("feedback_question")
+
+    def clear_feedback_pending(self, session_id: str):
+        """Limpia el indicador de feedback pendiente."""
+        context = self.get_context(session_id)
+        if "feedback_question" in context:
+            del context["feedback_question"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
