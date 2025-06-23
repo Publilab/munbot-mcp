@@ -12,7 +12,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "registro.civil@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
-    "Holocom_Number": "COM-056555-0101",
+    "telefono": "COM-056555-0101",
     "Notas": "Asegúrate de subir todos los documentos originales y copias certificadas.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -34,7 +34,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "registro.civil@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
-    "Holocom_Number": "COM-056555-0101",
+    "telefono": "COM-056555-0101",
     "Notas": "Asegúrate de traer todos los documentos originales y copias certificadas.",
     "tiempo_validez": "3 meses",
     "utilidad": [
@@ -57,7 +57,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "desarrollo.economico@coruscant.sw",
     "Direccion": "Torre de Comercio. Sector E-5377",
-    "Holocom_Number": "COM-056555-1201",
+    "telefono": "COM-056555-1201",
     "Notas": "Se requiere una evaluación de impacto económico previa a la aprobación.",
     "tiempo_validez": "6 meses",
     "utilidad": [
@@ -80,7 +80,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "enrolamiento.defensa@coruscant.sw",
     "Direccion": "Cuartel General de la Defensa. Nivel 212",
-    "Holocom_Number": "COM-056555-1301",
+    "telefono": "COM-056555-1301",
     "Notas": "Es obligatorio presentar una carta de recomendación de un oficial superior.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -103,7 +103,7 @@
     "Horario_Atencion": "Miércoles a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "logistica.abastecimiento@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 3122",
-    "Holocom_Number": "COM-056555-1401",
+    "telefono": "COM-056555-1401",
     "Notas": "Todas las cargas deben pasar por una evaluación de seguridad antes del registro.",
     "tiempo_validez": "6 meses",
     "utilidad": [
@@ -126,7 +126,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "administracion.justicia@coruscant.sw",
     "Direccion": "Edificio de la Justicia Coruscant. Tribunal Supremo de la República",
-    "Holocom_Number": "COM-056555-2401",
+    "telefono": "COM-056555-2401",
     "Notas": "Asegúrate de completar todos los campos y proporcionar la documentación necesaria.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -149,7 +149,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "desarrollo.tecnologico@coruscant.sw",
     "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala B",
-    "Holocom_Number": "COM-056555-2101",
+    "telefono": "COM-056555-2101",
     "Notas": "Cada dróide debe pasar una prueba de funcionalidad antes del registro.",
     "tiempo_validez": "6 meses",
     "utilidad": [
@@ -171,7 +171,7 @@
     "Horario_Atencion": "Martes a Sábado, 9:00 a 18:00",
     "Correo_Electronico": "identificacion.piloto@coruscant.sw",
     "Direccion": "Centro de Formación Aeronáutica. Sector F-404",
-    "Holocom_Number": "COM-056555-0202",
+    "telefono": "COM-056555-0202",
     "Notas": "Es obligatorio presentar el certificado médico vigente.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -193,7 +193,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "urbanismo@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
-    "Holocom_Number": "COM-056555-0303",
+    "telefono": "COM-056555-0303",
     "Notas": "La licencia es válida por un año y es obligatorio renovarla antes de su vencimiento.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -215,7 +215,7 @@
     "Horario_Atencion": "Lunes a Sábado, 9:00 a 18:00",
     "Correo_Electronico": "identificacion@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
-    "Holocom_Number": "COM-056555-0707",
+    "telefono": "COM-056555-0707",
     "Notas": "El documento tiene una validez de 5 años y es obligatorio renovarlo antes de su vencimiento.",
     "tiempo_validez": "5 años",
     "utilidad": [
@@ -238,7 +238,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "programas.bienestar@coruscant.sw",
     "Direccion": "Sede Federal de la Salud Intergalactica. Nivel 2",
-    "Holocom_Number": "COM-056555-1901",
+    "telefono": "COM-056555-1901",
     "Notas": "Es necesario presentar referencias de programas de bienestar en los que hayas participado previamente.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -261,7 +261,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "exploracion.espacial@coruscant.sw",
     "Direccion": "Centro de Exploración Espacial. Nivel Central, Ala B",
-    "Holocom_Number": "COM-056555-1001",
+    "telefono": "COM-056555-1001",
     "Notas": "La misión debe estar aprobada por el Ministerio de Defensa Galáctica.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -284,7 +284,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "colonizacion@coruscant.sw",
     "Direccion": "Palacio de la Cancillería. Nivel 1832",
-    "Holocom_Number": "COM-056555-1101",
+    "telefono": "COM-056555-1101",
     "Notas": "El plan de desarrollo debe incluir medidas de sostenibilidad ambiental.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -307,7 +307,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "transporte.interestelar@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
-    "Holocom_Number": "COM-056555-2201",
+    "telefono": "COM-056555-2201",
     "Notas": "Se requiere una evaluación de seguridad de la nave antes de emitir el permiso.",
     "tiempo_validez": "3 meses",
     "utilidad": [
@@ -330,7 +330,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "desarrollo.economico@coruscant.sw",
     "Direccion": "Torre de Comercio. Sector E-5377",
-    "Holocom_Number": "COM-056555-1201",
+    "telefono": "COM-056555-1201",
     "Notas": "Se requiere una evaluación de impacto económico previa a la aprobación.",
     "tiempo_validez": "1 año",
     "utilidad": [
@@ -353,7 +353,7 @@
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "investigacion.cientifica@coruscant.sw",
     "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala A",
-    "Holocom_Number": "COM-056555-2001",
+    "telefono": "COM-056555-2001",
     "Notas": "El invento debe demostrar innovación tecnológica significativa.",
     "tiempo_validez": "1 año",
     "utilidad": [
