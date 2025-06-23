@@ -114,5 +114,20 @@
     "pregunta": ["¿Cuánto cuesta MunBoT?"],
     "respuesta": "El precio depende de las necesidades de tu institución y lo que quieras incluir en tu paquete de implementación. Contacta a un representante comercial al mail ei@publilab.cl o al número (+56) 9 2705 3400.",
     "categoria": "costos"
+  },
+  {
+    "pregunta": ["¿Cómo puedo hacer un reclamo?"],
+    "respuesta": "Para hacer un reclamo puedes pedirlo en este mismo mensaje y te ayudaré a generarlo. ¿Quieres hacer un reclamo ahora?",
+    "categoria": "reclamos"
+  },
+  {
+    "pregunta": ["¿Cómo puedo hacer una denuncia?"],
+    "respuesta": "Para hacer una denuncia puedes hacerla en este mismo mensaje y te ayudaré a generarla. Recuerda que los datos que te pida solo serán de uso interno y no serán divulgados. ¿Quieres hacer un reclamo ahora?",
+    "categoria": "reclamos"
+  },
+  {
+    "pregunta": ["¿Cómo puedo agendar una cita?", "¿Cómo puedo pedir una hora?", "¿Cómo puedo pedir una cita?"],
+    "respuesta": "Para agendar una cita puedes hacer la solicitud en este mismo mensaje y te ayudaré a generarla. ¿Quieres agendar una cita ahora?",
+    "categoria": "citas"
   }
 ] 
