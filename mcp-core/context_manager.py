@@ -174,3 +174,56 @@ class ConversationalContextManager:
             json.dumps(context),
             ex=self.session_expiry_seconds
         )
+
+    # ---- Manejo de selección de documentos ----
+    def set_document_options(self, session_id: str, options: List[str]):
+        """Guarda en contexto una lista de documentos para que el usuario elija."""
+        context = self.get_context(session_id)
+        context["doc_options"] = options
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def get_document_options(self, session_id: str) -> Optional[List[str]]:
+        """Obtiene la lista de documentos pendientes de selección."""
+        context = self.get_context(session_id)
+        return context.get("doc_options")
+
+    def clear_document_options(self, session_id: str):
+        """Elimina las opciones de documentos almacenadas."""
+        context = self.get_context(session_id)
+        if "doc_options" in context:
+            del context["doc_options"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def set_selected_document(self, session_id: str, name: str):
+        """Guarda el documento seleccionado por el usuario."""
+        context = self.get_context(session_id)
+        context["selected_document"] = name
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def get_selected_document(self, session_id: str) -> Optional[str]:
+        """Obtiene el documento previamente seleccionado."""
+        context = self.get_context(session_id)
+        return context.get("selected_document")
+
+    def clear_selected_document(self, session_id: str):
+        """Elimina cualquier documento seleccionado del contexto."""
+        context = self.get_context(session_id)
+        if "selected_document" in context:
+            del context["selected_document"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
