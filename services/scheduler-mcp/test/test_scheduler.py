@@ -1,4 +1,7 @@
+import os
 import pytest
+os.environ["POSTGRES_PORT"] = "5432"
+os.environ["TESTING"] = "1"
 from fastapi.testclient import TestClient
 from app import app
 

@@ -5,6 +5,8 @@ import types
 import fakeredis
 from fastapi.testclient import TestClient
 
+os.environ["DISABLE_PERIODIC_MIGRATION"] = "1"
+
 # Mock llama_cpp before importing orchestrator
 fake_llama = types.ModuleType('llama_cpp')
 class FakeLlama:
