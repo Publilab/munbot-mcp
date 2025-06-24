@@ -392,7 +392,10 @@ def detect_intent_llm(
         "doc-generar_respuesta_llm, scheduler-reservar_hora, "
         "scheduler-appointment_create, scheduler-listar_horas_disponibles, "
         "scheduler-cancelar_hora, scheduler-confirmar_hora.\n"
-        f"Historial:\n{history_text}\nMensaje: {user_input}\nJSON:"
+        f"Historial:\n{history_text}\nMensaje: {user_input}\n"
+        "Ejemplo de respuesta JSON:\n"
+        '{"intent": "doc-generar_respuesta_llm", "confidence": 0.95, "sentiment": "neutral"}'
+        "\nJSON:"
     )
     logging.info("Prompt enviado a Llama: %s", prompt)
     try:
@@ -560,9 +563,6 @@ def detect_intent_keywords(user_input: str) -> str:
     # Reclamos y quejas
     if re.search(
         r"\b(reclamo|reclamar|reclamacion|reclamaciones|queja|quejas|protesta|demanda|denuncia|denunciar|problema|problemas|reporte|reportar|sugerencia|inconformidad)\b",
-        text,
-    ) or re.search(
-        r"\b(no\s+tengo|no\s+funciona|nadie\s+viene|no\s+me\s+atienden|no\s+hay)\b",
         text,
     ):
         return "complaint-registrar_reclamo"
@@ -1173,40 +1173,6 @@ def orchestrate(
         context_manager.reset_fallback_count(sid)
         return {"respuesta": resp, "session_id": sid}
 
-    # --- Detección temprana de intención ---
-    intent_data = detect_intent(user_input, ctx.get("history"))
-    tool = intent_data.get("intent")
-    confidence = intent_data.get("confidence", 0)
-    sentiment = intent_data.get("sentiment", "neutral")
-    context_manager.set_last_sentiment(sid, sentiment)
-
-    if tool == "complaint-registrar_reclamo" and confidence >= 0.6:
-        pending = ctx.get("pending_field")
-        if not pending:
-            context_manager.update_context(sid, user_input, "")
-            context_manager.update_pending_field(sid, "nombre")
-            context_manager.update_complaint_state(sid, "iniciado")
-            pregunta = (
-                "Para procesar tu reclamo necesito algunos datos personales.\n"
-                "¿Cómo te llamas? (ej. Juan Pérez)"
-            )
-            return {"respuesta": pregunta, "session_id": sid}
-
-    if tool.startswith("scheduler-") and confidence >= 0.6:
-        params = extract_entities_scheduler(user_input)
-        response = call_tool_microservice(tool, params)
-        msg = response.get("respuesta") or response.get("error", "")
-        context_manager.update_context(sid, user_input, msg)
-        return {"respuesta": msg, "session_id": sid}
-
-    if tool == "doc-buscar_fragmento_documento" and confidence >= 0.6:
-        respuesta_doc = responder_sobre_documento(user_input, sid)
-        if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
-            context_manager.update_context(sid, user_input, respuesta_doc)
-            context_manager.set_current_flow(sid, "documento")
-            context_manager.reset_fallback_count(sid)
-            return {"respuesta": respuesta_doc, "session_id": sid}
-
     # === 0) Consultar primero en la base de FAQs ===
     multi = lookup_multiple_faqs(user_input)
     if multi:
@@ -1214,9 +1180,6 @@ def orchestrate(
         return {"respuesta": multi, "session_id": sid}
 
     faq = lookup_faq_respuesta(user_input)
-    if faq is not None:
-        if tool in ("complaint-registrar_reclamo",) or tool.startswith("scheduler-") or re.search(r"\b(quiero|necesito|solicita|ay\u00fadame)\b", normalize_text(user_input)):
-            faq = None
     if faq is not None:
         if faq.get("needs_confirmation"):
             context_manager.set_faq_clarification(sid, faq)
@@ -1255,8 +1218,10 @@ def orchestrate(
     pending = ctx.get("pending_field", None)
     complaint_state = ctx.get("complaint_state", None)
 
-    # Iniciar flujo de reclamo si la intención detectada es reclamo
-    if not pending and tool == "complaint-registrar_reclamo":
+    # Iniciar flujo de reclamo si detecta palabra clave
+    if not pending and re.search(
+        r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE
+    ):
         sid = session_id or str(uuid.uuid4())
         context_manager.update_context(sid, user_input, "")
         context_manager.update_pending_field(sid, "nombre")
@@ -1415,6 +1380,11 @@ def orchestrate(
         session.update(extra_context)
     # Mantener la consulta original en la sesión para validaciones posteriores
     session["pregunta"] = user_input
+    # Detectar intención
+    intent_data = detect_intent(user_input, convo_ctx.get("history"))
+    tool = intent_data.get("intent")
+    confidence = intent_data.get("confidence", 0)
+    sentiment = intent_data.get("sentiment", "neutral")
     context_manager.set_last_sentiment(session_id, sentiment)
     # Lógica de fallback y escalación simplificada
     if confidence < 0.6 or sentiment in ["very_negative", "negative"]:

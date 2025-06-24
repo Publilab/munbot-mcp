@@ -8,11 +8,10 @@ class LlamaClient:
         self.n_threads = int(os.getenv("N_THREADS", n_threads))
         self.llm = Llama(model_path=self.model_path, n_ctx=self.n_ctx, n_threads=self.n_threads)
 
-    def generate(self, prompt: str, max_tokens: int = 256, temperature: float = 0.7) -> str:
+    def generate(self, prompt: str, max_tokens: int = 512, temperature: float = 0.7) -> str:
         output = self.llm(
             prompt,
             max_tokens=max_tokens,
-            temperature=temperature,
-            stop=["</s>", "<|endoftext|>"]
+            temperature=temperature
         )
-        return output["choices"][0]["text"].strip() 
+        return output["choices"][0]["text"].strip()
