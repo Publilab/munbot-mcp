@@ -1049,7 +1049,7 @@ def orchestrate(
     ctx = context_manager.get_context(sid)
 
     if context_manager.get_pending_confirmation(sid):
-        if re.fullmatch(r"(?i)(s[ií]?|si|ok|okay|vale|dale)", user_input.strip()):
+        if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
             context_manager.update_context(sid, user_input, resp)
             return {"respuesta": resp, "session_id": sid}
@@ -1078,11 +1078,12 @@ def orchestrate(
     if pending_feedback is not None:
         registrar_feedback_usuario(pending_feedback, user_input)
         context_manager.clear_feedback_pending(sid)
-        ack = (
-            "Gracias por tu respuesta."
-            if re.fullmatch(r"(?i)s[ií]|si|yes|no|n|nope", user_input.strip())
-            else "Gracias por tu comentario."
-        )
+        if re.fullmatch(r"(?i)(sí|si|yes|ok|okay|vale)", user_input.strip()):
+            ack = "Gracias, me alegra que te haya ayudado."
+        elif re.fullmatch(r"(?i)(no|n|nope)", user_input.strip()):
+            ack = "Entiendo, seguiré mejorando. Gracias por tu feedback."
+        else:
+            ack = "Gracias por tu comentario."
         context_manager.update_context(sid, user_input, ack)
         return {"respuesta": ack, "session_id": sid}
 
@@ -1090,7 +1091,7 @@ def orchestrate(
     pending_faq = context_manager.get_faq_clarification(sid)
     if pending_faq:
         if pending_faq.get("type") == "confirm":
-            if re.fullmatch(r"(?i)s[ií]|si|yes", user_input.strip()):
+            if re.fullmatch(r"(?i)(sí|si|yes|ok|okay|vale|claro)", user_input.strip()):
                 answer = pending_faq["entry"]["respuesta"]
                 context_manager.update_context(sid, user_input, answer)
                 context_manager.clear_faq_clarification(sid)
@@ -1125,7 +1126,7 @@ def orchestrate(
     # --- Manejar aclaraciones pendientes de documento ---
     pending_doc = context_manager.get_doc_clarification(sid)
     if pending_doc:
-        if re.fullmatch(r"(?i)s[ií]?|si|yes|ok|vale|dale", user_input.strip()):
+        if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             orig_q = pending_doc.get("question", "")
             doc_name = pending_doc.get("doc")
             context_manager.clear_doc_clarification(sid)
@@ -1155,10 +1156,11 @@ def orchestrate(
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
         else:
-            return {
-                "respuesta": "Por favor ingresa un número válido de la lista anterior.",
-                "session_id": sid,
-            }
+            if re.fullmatch(r"(?i)(sí|si|ok|okay|vale)", user_input.strip()):
+                msg = "Necesito que elijas una opción con su número. Por favor intenta de nuevo."
+            else:
+                msg = "Por favor ingresa un número válido de la lista anterior."
+            return {"respuesta": msg, "session_id": sid}
 
     # --- Listado de trámites solicitado directamente ---
     if is_list_request(user_input):
