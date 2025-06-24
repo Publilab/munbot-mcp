@@ -262,3 +262,43 @@ class ConversationalContextManager:
             json.dumps(context),
             ex=self.session_expiry_seconds
         )
+
+    # ---- Manejo de confirmaciones y flujo activo ----
+    def set_pending_confirmation(self, session_id: str, value: bool = True):
+        context = self.get_context(session_id)
+        context["pending_confirmation"] = value
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_pending_confirmation(self, session_id: str) -> bool:
+        context = self.get_context(session_id)
+        return bool(context.get("pending_confirmation"))
+
+    def clear_pending_confirmation(self, session_id: str):
+        context = self.get_context(session_id)
+        if "pending_confirmation" in context:
+            del context["pending_confirmation"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def set_current_flow(self, session_id: str, flow: Optional[str]):
+        context = self.get_context(session_id)
+        if flow:
+            context["current_flow"] = flow
+        elif "current_flow" in context:
+            del context["current_flow"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_current_flow(self, session_id: str) -> Optional[str]:
+        context = self.get_context(session_id)
+        return context.get("current_flow")
