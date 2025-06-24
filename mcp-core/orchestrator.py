@@ -1768,27 +1768,117 @@ def formatear_lista(lista):
 
 
 def armar_respuesta_combinada(doc, campos):
-    """Devuelve una respuesta lista para el usuario con los campos solicitados.
-    Siempre menciona el nombre del documento para mantener contexto."""
+    """Construye una respuesta conversacional para los campos solicitados."""
     doc_name = doc.get("Nombre_Documento", "")
-    partes: List[Tuple[str, str]] = []
-    for campo in campos:
-        if campo in doc:
-            valor = doc[campo]
-            if isinstance(valor, list):
-                valor = formatear_lista(valor)
-            etiqueta = CAMPO_LABELS.get(campo, campo.replace("_", " ").capitalize())
-            partes.append((etiqueta, valor))
 
-    if not partes:
+    if not campos:
         return ""
 
-    if len(partes) == 1:
-        etiqueta, valor = partes[0]
-        return f"Para el trámite **{doc_name}**, {etiqueta.lower()}: {valor}"
+    def bullet_list(items):
+        return "\n".join(f"- {it}" for it in items)
 
-    cuerpo = "\n".join(f"**{e}:** {v}" for e, v in partes)
-    return f"**{doc_name}**\n{cuerpo}"
+    # --- Caso: solo un campo solicitado ---
+    if len(campos) == 1:
+        campo = campos[0]
+        valor = doc.get(campo)
+        if isinstance(valor, list):
+            lista = bullet_list(valor)
+        else:
+            lista = valor
+
+        if campo == "Requisitos":
+            respuesta = f"Para obtener **{doc_name}**, necesitas:\n{lista}"
+        elif campo == "Dónde_Obtener":
+            respuesta = f"Puedes obtener **{doc_name}** en {lista}."
+        elif campo == "Horario_Atencion":
+            respuesta = f"El horario de atención para **{doc_name}** es: {lista}."
+        elif campo == "Correo_Electronico":
+            respuesta = f"El correo de contacto para **{doc_name}** es {lista}."
+        elif campo == "telefono":
+            respuesta = f"El teléfono de contacto para **{doc_name}** es {lista}."
+        elif campo == "Direccion":
+            respuesta = f"La dirección para tramitar **{doc_name}** es {lista}."
+        elif campo == "tiempo_validez":
+            respuesta = f"**{doc_name}** es válido por {lista}."
+        elif campo == "costo":
+            respuesta = f"**{doc_name}** tiene un costo de {lista}."
+        elif campo == "utilidad":
+            if isinstance(valor, list):
+                respuesta = f"**{doc_name}** sirve para:\n{lista}"
+            else:
+                respuesta = f"**{doc_name}** sirve para {lista}."
+        elif campo == "penalidad":
+            respuesta = f"No cumplir con **{doc_name}** conlleva: {lista}."
+        elif campo.lower() in ["nota", "notas"]:
+            respuesta = f"Nota sobre **{doc_name}**: {lista}"
+        else:
+            etiqueta = CAMPO_LABELS.get(campo, campo.replace("_", " ").capitalize())
+            respuesta = f"{etiqueta} de **{doc_name}**: {lista}"
+
+        return respuesta + "\n\n¿Quieres saber algo más sobre este trámite?"
+
+    # --- Caso: múltiples campos ---
+    respuesta = []
+    respuesta.append(f"Te cuento sobre el **{doc_name}**:")
+
+    if "utilidad" in campos and doc.get("utilidad"):
+        util = doc["utilidad"]
+        util_txt = bullet_list(util) if isinstance(util, list) else util
+        respuesta.append(f"Sirve para:\n{util_txt}")
+
+    if "Requisitos" in campos and doc.get("Requisitos"):
+        req = doc["Requisitos"]
+        req_txt = bullet_list(req) if isinstance(req, list) else req
+        respuesta.append(f"Para obtenerlo, necesitas:\n{req_txt}")
+
+    if (
+        "Dónde_Obtener" in campos
+        or "Horario_Atencion" in campos
+        or "Direccion" in campos
+    ):
+        lugar = doc.get("Dónde_Obtener") if "Dónde_Obtener" in campos else None
+        direccion = doc.get("Direccion") if "Direccion" in campos else None
+        horas = doc.get("Horario_Atencion") if "Horario_Atencion" in campos else None
+        frase = ""
+        if lugar:
+            frase = f"Se tramita en {lugar}"
+            if direccion:
+                frase += f", ubicado en {direccion}"
+        elif direccion:
+            frase = f"La dirección es {direccion}"
+        if horas:
+            if frase:
+                frase += f" (Horario: {horas})"
+            else:
+                frase = f"El horario de atención es {horas}"
+        if frase:
+            respuesta.append(frase + ".")
+
+    contactos = []
+    if "Correo_Electronico" in campos and doc.get("Correo_Electronico"):
+        contactos.append(doc["Correo_Electronico"])
+    if "telefono" in campos and doc.get("telefono"):
+        contactos.append(doc["telefono"])
+    if contactos:
+        respuesta.append(f"Para más info, puedes contactar: {', '.join(contactos)}.")
+
+    if "tiempo_validez" in campos and doc.get("tiempo_validez"):
+        respuesta.append(f"Este documento es válido por {doc['tiempo_validez']}.")
+
+    if "penalidad" in campos and doc.get("penalidad"):
+        respuesta.append(f"No contar con él implica: {doc['penalidad']}.")
+
+    if "costo" in campos and doc.get("costo"):
+        respuesta.append(f"Tiene un costo de {doc['costo']}.")
+
+    if any(c in campos for c in ["nota", "notas", "Notas"]) and (
+        doc.get("Notas") or doc.get("nota")
+    ):
+        nota_val = doc.get("Notas") or doc.get("nota")
+        respuesta.append(f"Nota: {nota_val}")
+
+    respuesta_final = "\n\n".join(respuesta)
+    return respuesta_final + "\n\n¿Quieres saber algo más sobre este trámite?"
 
 
 def detectar_tipo_documento(pregunta):
@@ -1863,7 +1953,12 @@ def buscar_faq_por_pregunta(pregunta):
     return None
 
 
-def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None, listar_todo: bool = False):
+def responder_sobre_documento(
+    pregunta_usuario,
+    session_id: Optional[str] = None,
+    listar_todo: bool = False,
+    channel: Optional[str] = None,
+):
     tipo = detectar_tipo_documento(pregunta_usuario)
     nombre = None
     pregunta_norm = normalize_text(pregunta_usuario)
@@ -1888,7 +1983,10 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
             nombre = best_doc["Nombre_Documento"]
         elif best_doc and 80 <= score < 90 and session_id:
             context_manager.set_doc_clarification(session_id, best_doc["Nombre_Documento"], pregunta_usuario)
-            return f"¿Quizás te refieres al **{best_doc['Nombre_Documento']}**? Responde 'sí' o 'no'."
+            return adapt_markdown_for_channel(
+                f"¿Quizás te refieres al **{best_doc['Nombre_Documento']}**? Responde 'sí' o 'no'.",
+                channel,
+            )
 
     # usar el contexto si el usuario ya había seleccionado un documento
     if session_id and not nombre:
@@ -1902,9 +2000,10 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
             if session_id:
                 context_manager.set_document_options(session_id, opciones)
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
-            return (
+            mensaje = (
                 f"Estos son los {tipo}s disponibles:\n{listado}\nPuedes elegir una opción por número o nombre."
             )
+            return adapt_markdown_for_channel(mensaje, channel)
         # continuar flujo normal si no hay opciones
 
     if tipo and not nombre:
@@ -1913,9 +2012,14 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
             if session_id:
                 context_manager.set_document_options(session_id, opciones)
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
-            return f"¿Sobre qué {tipo} necesitas información?\n{listado}\nPor favor, ingresa el número de la opción deseada."
+            mensaje = (
+                f"¿Sobre qué {tipo} necesitas información?\n{listado}\nPor favor, ingresa el número de la opción deseada."
+            )
+            return adapt_markdown_for_channel(mensaje, channel)
         else:
-            return f"No encontré {tipo}s disponibles."
+            return adapt_markdown_for_channel(
+                f"No encontré {tipo}s disponibles.", channel
+            )
     elif nombre:
         doc = buscar_documento_por_nombre(nombre)
         if doc:
@@ -1947,7 +2051,10 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
 
             if not campos_existentes:
                 faltantes = ", ".join(CAMPO_LABELS.get(c, c) for c in missing)
-                return f"El documento {doc['Nombre_Documento']} no tiene registrado {faltantes.lower()}."
+                return adapt_markdown_for_channel(
+                    f"El documento {doc['Nombre_Documento']} no tiene registrado {faltantes.lower()}.",
+                    channel,
+                )
 
             respuesta = armar_respuesta_combinada(doc, campos_existentes)
             if missing:
@@ -1957,16 +2064,23 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
                     + ", ".join(CAMPO_LABELS.get(c, c).lower() for c in missing)
                     + "."
                 )
-            return respuesta
+            return adapt_markdown_for_channel(respuesta, channel)
         else:
-            return "No encontré información específica sobre ese documento."
+            return adapt_markdown_for_channel(
+                "No encontré información específica sobre ese documento.",
+                channel,
+            )
     else:
         faq = buscar_faq_por_pregunta(pregunta_usuario)
         if faq:
-            return (
-                f"**Pregunta:** {pregunta_usuario}\n**Respuesta:** {faq['respuesta']}"
+            return adapt_markdown_for_channel(
+                f"**Pregunta:** {pregunta_usuario}\n**Respuesta:** {faq['respuesta']}",
+                channel,
             )
-        return "¿Podrías especificar si buscas un permiso, certificado, patente, etc.?"
+        return adapt_markdown_for_channel(
+            "¿Podrías especificar si buscas un permiso, certificado, patente, etc.?",
+            channel,
+        )
 
 
 # --- INTEGRACIÓN EN EL ORQUESTADOR ---
