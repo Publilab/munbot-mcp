@@ -1,6 +1,6 @@
 [
   {
-    "pregunta": ["Hola", "buenos días", "buenas tardes", "buenas noches", "saludos", "hey", "holi", "hello", "hi", "buenas"],
+    "pregunta": ["Hola", "buenos días", "buen dia", "buenas tardes", "buena tarde", "buenas noches", "buena noche", "saludos", "hey", "holi", "hello", "hi", "buenas"],
     "respuesta": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Curoscant. ¿En qué puedo ayudarte hoy?",
     "categoria": "saludos"
   },
@@ -16,18 +16,28 @@
     "categoria": "agradecimientos"
   },
   {
-    "pregunta": ["estoy bien", "me siento bien", "todo bien", "genial", "excelente", "perfecto", "feliz"],
-    "respuesta": "¡Me alegro que estés bien! 😊",
+    "pregunta": ["estoy bien", "me alegro", "todo bien", "genial", "excelente", "perfecto", "feliz"],
+    "respuesta": "¡De nada! Recuerda que estoy aquí para ayudarte",
     "categoria": "estado_animo"
   },
   {
-    "pregunta": ["no estoy bien", "no me siento bien", "me siento mal", "estoy mal", "no me encuentro bien"],
-    "respuesta": "Lamento oír eso. Si puedo ayudarte en algo, aquí estoy.",
+    "pregunta": ["no me siento bien", "no estoy bien", "me siento mal", "me siento mal", "me siento mal", "me siento mal", "me siento mal"],
+    "respuesta": "Lamento que te sientas así. Realmente lamento leer eso. Si puedo ayudarte solo dímelo.",
     "categoria": "estado_animo"
   },
   {
-    "pregunta": ["no me ayudaste", "no fue útil", "no diste respuesta", "no era lo que buscaba", "no me diste la información que necesitaba", "no resolviste mi problema", "me decepcionaste", "no me diste solución", "no me sirvió"],
-    "respuesta": "Lo siento si no pude ayudarte como esperabas. ¿Hay algo más en lo que pueda asistirte?",
+    "pregunta": ["estoy mal", "no me siento bien", "no estoy bien", "me siento mal", "me siento mal", "me siento mal", "me siento mal"],
+    "respuesta": "¡Me alegra que estés bien! ¿En qué puedo ayudarte hoy?",
+    "categoria": "estado_animo"
+  },
+  {
+    "pregunta": [ "no es la respuesta que esperaba", "mala respuesta", "no me ayudaste", "no resolviste mi problema", "no entendiste", "no me diste solución", "no me diste una solución", "no me sirvió", "no fue útil", "no fue de ayuda", "no me atendiste bien", "no me atendiste bien", "no me diste la información que necesitaba",
+    "no me diste lo que pedí", "no era lo que buscaba", "no era lo que necesitaba", "no era lo que quería",
+    "no me diste respuesta", "no me diste una respuesta clara", "no me diste una respuesta útil", "no me diste una respuesta concreta", "no me diste una respuesta satisfactoria", "no me diste una respuesta correcta", "no me diste una respuesta adecuada", "no me diste una respuesta", "no me diste una solución clara", "no me diste una solución útil", "no me diste una solución concreta",
+    "no me diste una solución satisfactoria", "no me diste una solución correcta", "no me diste una solución adecuada", "no me diste una solución", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería",
+    "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí",
+    "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba"],
+    "respuesta": "Lo siento, pero no puedo ayudarte con eso. Si tienes alguna otra pregunta, no dudes en preguntar.",
     "categoria": "decepcion"
   },
   {
@@ -56,8 +66,8 @@
     "categoria": "privacidad"
   },
   {
-    "pregunta": ["¿Dónde estás ubicado?", "Donde puedo ubicarte", "¿Dónde te encuentro?", "¿Dónde está tu oficina?", "Dónde están tus oficinas", "¿Dónde está tu sede?", "¿Dónde atiendes?"],
-    "respuesta": "Mi oficina virtual está en la Ciudad de Coruscant. Pero en realidad estoy donde tú me necesites. No poseo un cuerpo, pero tengo la capacidad de asistirte en lo que necesites.",
+    "pregunta": ["¿Dónde estás ubicado?", "¿Donde puedo ubicarte?", "¿Dónde te encuentro?", "¿Dónde está tu oficina?", "Dónde están tus oficinas", "¿Dónde está tu sede?", "¿Dónde atiendes?"],
+    "respuesta": "No tengo oficina virtual, pero supongo que mi servidor está en la Ciudad de Coruscant. Pero en realidad estoy donde tú me necesites. No poseo un cuerpo, pero tengo la capacidad de asistirte en lo que necesites.",
     "categoria": "ubicacion"
   },
   {
@@ -102,7 +112,7 @@
   },
   {
     "pregunta": ["¿Cuánto cuesta MunBoT?"],
-    "respuesta": "El precio depende de las necesidades de tu institución y lo que quieras incluir en tu paquete de implementación. Contacta a un representante comercial al mail ei@publilab.cl o al número (+56) 9 2705 3400.",
+    "respuesta": "El precio depende de las necesidades de tu institución y lo que quieras incluir en tu paquete de implementación. Contacta a un representante comercial al mail ei@publilab.cl o al número (+56) 9 3402 9207.",
     "categoria": "costos"
   },
   {
@@ -124,5 +134,30 @@
     "pregunta": ["¿Cómo obtengo mi clave única?", "¿Cuál es el proceso para obtener la clave única?", "¿Cómo sacar la clave única?"],
     "respuesta": "1. Ingresa a https://claveunica.gob.cl\n2. Selecciona \"Obtener Clave Única\"\n3. Sigue las instrucciones y valida tu identidad en línea o en una oficina.",
     "categoria": "tramites"
+  },
+  {
+    "pregunta": ["Qué tipo de consultas puedo hacer?", "¿Qué trámites puedo realizar?", "¿Qué te puedo preguntar?"],
+    "respuesta": "Soy un demo de un Agente Virtual, por lo que no tengo disponible todas Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por unos documentos específicos. Si tienes alguna consulta específica, no dudes en preguntar.",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "pregunta": ["¿Cómo puedo obtener un certificado?", "¿Cómo puedo solicitar un certificado?"],
+    "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "pregunta": ["¿Cómo puedo obtener un permiso?", "¿Cómo puedo solicitar un permiso?"],
+    "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por un permiso en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "pregunta": ["¿Cómo puedo obtener una licencia?", "¿Cómo puedo solicitar una licencia?"],
+    "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "pregunta": ["¿Cómo puedo obtener una patente?", "¿Cómo puedo solicitar una patente?"],
+    "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
+    "categoria": "consultas_tramites"
   }
 ]

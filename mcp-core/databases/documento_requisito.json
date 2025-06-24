@@ -8,7 +8,7 @@
       "Formulario de Solicitud Completo",
       "Pago de Tarifas Administrativas"
     ],
-    "Dónde_Obtener": "Departamento de Registro Civil, Edificio Consistorial Coruscant. Nivel 1313",
+    "Dónde_Obtener": "Departamento de Registro Civil",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "registro.civil@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
@@ -30,7 +30,7 @@
       "Formulario de Solicitud Completo",
       "Comprobante de Medios Económicos"
     ],
-    "Dónde_Obtener": "Departamento de Registro Civil, Edificio Consistorial Coruscant. Nivel 1313",
+    "Dónde_Obtener": "Departamento de Registro Civil",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "registro.civil@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
@@ -53,7 +53,7 @@
       "Formulario de Solicitud Completo",
       "Evaluación de Impacto Económico"
     ],
-    "Dónde_Obtener": "Oficina de Desarrollo Económico, Torre de Comercio. Sector E-5377",
+    "Dónde_Obtener": "Oficina de Desarrollo Económico",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "desarrollo.economico@coruscant.sw",
     "Direccion": "Torre de Comercio. Sector E-5377",
@@ -76,7 +76,7 @@
       "Formulario de Enrolamiento Completo",
       "Pago de Tarifas de Enrolamiento"
     ],
-    "Dónde_Obtener": "Cuartel General de la Defensa, Nivel 212",
+    "Dónde_Obtener": "Cuartel General de la Defensa",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "enrolamiento.defensa@coruscant.sw",
     "Direccion": "Cuartel General de la Defensa. Nivel 212",
@@ -99,7 +99,7 @@
       "Formulario de Registro Completo",
       "Evaluación de Seguridad de la Carga"
     ],
-    "Dónde_Obtener": "Oficina de Logística y Abastecimiento, Edificio Consistorial Coruscant. Nivel 3122",
+    "Dónde_Obtener": "Oficina de Logística y Abastecimiento",
     "Horario_Atencion": "Miércoles a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "logistica.abastecimiento@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 3122",
@@ -122,7 +122,7 @@
       "Formulario de Solicitud Completo",
       "Pago de Tarifas Administrativas"
     ],
-    "Dónde_Obtener": "Edificio de la Justicia Coruscant. Tribunal Supremo de la República",
+    "Dónde_Obtener": "Edificio de la Justicia Coruscant",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "administracion.justicia@coruscant.sw",
     "Direccion": "Edificio de la Justicia Coruscant. Tribunal Supremo de la República",
@@ -145,7 +145,7 @@
       "Formulario de Registro Completo",
       "Prueba de Funcionalidad"
     ],
-    "Dónde_Obtener": "Torre Holistica de la Ciencia. Piso 1. Ala B",
+    "Dónde_Obtener": "Torre Holistica de la Ciencia.",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "desarrollo.tecnologico@coruscant.sw",
     "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala B",
@@ -167,7 +167,7 @@
       "Formulario de Solicitud Completo",
       "Pago de Tarifas de Identificación"
     ],
-    "Dónde_Obtener": "Centro de Formación Aeronáutica, Sector F-404",
+    "Dónde_Obtener": "Centro de Formación Aeronáutica",
     "Horario_Atencion": "Martes a Sábado, 9:00 a 18:00",
     "Correo_Electronico": "identificacion.piloto@coruscant.sw",
     "Direccion": "Centro de Formación Aeronáutica. Sector F-404",
@@ -189,7 +189,7 @@
       "Formulario de Solicitud Completo",
       "Pago de Tarifas de Licencia"
     ],
-    "Dónde_Obtener": "Oficina de Transporte Espacial, Edificio Consistorial Coruscant. Nivel 5143",
+    "Dónde_Obtener": "Oficina de Transporte Espacial",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "urbanismo@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
@@ -211,7 +211,7 @@
       "Foto Tamaño Identificación",
       "Comprobante de Pago"
     ],
-    "Dónde_Obtener": "Departamento de Identificación, Edificio Consistorial Coruscant. Nivel 1313",
+    "Dónde_Obtener": "Departamento de Identificación",
     "Horario_Atencion": "Lunes a Sábado, 9:00 a 18:00",
     "Correo_Electronico": "identificacion@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
@@ -234,7 +234,7 @@
       "Evaluación de Impacto Personal",
       "Referencias de Programas Anteriores"
     ],
-    "Dónde_Obtener": "Sede Federal de la Salud Intergalactica. Nivel 2",
+    "Dónde_Obtener": "Sede Federal de la Salud Intergalactica",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "programas.bienestar@coruscant.sw",
     "Direccion": "Sede Federal de la Salud Intergalactica. Nivel 2",
@@ -257,7 +257,7 @@
       "Formulario de Solicitud Completo",
       "Certificado de Seguridad de la Misión"
     ],
-    "Dónde_Obtener": "Centro de Exploración Espacial, Nivel Central, Ala B",
+    "Dónde_Obtener": "Centro de Exploración Espacial",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "exploracion.espacial@coruscant.sw",
     "Direccion": "Centro de Exploración Espacial. Nivel Central, Ala B",
@@ -280,7 +280,7 @@
       "Certificado de Seguridad Inmobiliaria",
       "Plan de Desarrollo Inmobiliario"
     ],
-    "Dónde_Obtener": "Oficina de Colonización, Palacio de la Cancillería. Nivel 1832",
+    "Dónde_Obtener": "Oficina de Colonización",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "colonizacion@coruscant.sw",
     "Direccion": "Palacio de la Cancillería. Nivel 1832",
@@ -303,7 +303,7 @@
       "Formulario de Solicitud Completo",
       "Evaluación de Seguridad de Nave"
     ],
-    "Dónde_Obtener": "Edificio Consistorial Coruscant. Nivel 5143",
+    "Dónde_Obtener": "Edificio Consistorial Coruscant",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "transporte.interestelar@coruscant.sw",
     "Direccion": "Edificio Consistorial Coruscant. Nivel 5143",
@@ -326,7 +326,7 @@
       "Formulario de Solicitud Completo",
       "Pago de Tarifas Internacionales"
     ],
-    "Dónde_Obtener": "Oficina de Desarrollo Económico, Torre de Comercio. Sector E-5377",
+    "Dónde_Obtener": "Oficina de Desarrollo Económico",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "desarrollo.economico@coruscant.sw",
     "Direccion": "Torre de Comercio. Sector E-5377",
@@ -349,7 +349,7 @@
       "Formulario de Registro Completo",
       "Evaluación de Innovación Tecnológica"
     ],
-    "Dónde_Obtener": "Torre Holistica de la Ciencia. Piso 1. Ala A",
+    "Dónde_Obtener": "Torre Holistica de la Ciencia",
     "Horario_Atencion": "Lunes a Viernes, 8:00 a 17:00",
     "Correo_Electronico": "investigacion.cientifica@coruscant.sw",
     "Direccion": "Torre Holistica de la Ciencia. Piso 1. Ala A",
