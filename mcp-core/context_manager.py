@@ -236,6 +236,33 @@ class ConversationalContextManager:
             ex=self.session_expiry_seconds
         )
 
+    # ---- Aclaración de documentos ----
+    def set_doc_clarification(self, session_id: str, name: str, question: str):
+        """Almacena un documento sugerido pendiente de confirmación."""
+        context = self.get_context(session_id)
+        context["doc_clarify"] = {"doc": name, "question": question}
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_doc_clarification(self, session_id: str) -> Optional[Dict[str, str]]:
+        """Obtiene la aclaración de documento pendiente, si la hay."""
+        context = self.get_context(session_id)
+        return context.get("doc_clarify")
+
+    def clear_doc_clarification(self, session_id: str):
+        """Limpia la aclaración de documento pendiente."""
+        context = self.get_context(session_id)
+        if "doc_clarify" in context:
+            del context["doc_clarify"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
     # ---- Manejo de feedback de usuario ----
     def set_feedback_pending(self, session_id: str, pregunta_id: Optional[int]):
         """Marca una pregunta como pendiente de recibir feedback."""

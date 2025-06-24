@@ -56,3 +56,18 @@ def test_fuzzy_typo():
     resp = orchestrator.responder_sobre_documento('permissso de atterizage requisitos')
     assert 'permiso de aterrizaje' in resp.lower()
     assert 'opcion' in resp.lower() or 'opción' in resp.lower()
+
+
+def test_doc_clarification_flow():
+    sid = 'clarify1'
+    resp1 = orchestrator.responder_sobre_documento('permiso aterizaj horario', sid)
+    assert 'quizás te refieres' in resp1.lower()
+    resp2 = orchestrator.orchestrate('si', session_id=sid)
+    assert 'permiso de aterrizaje' in resp2['respuesta'].lower()
+    assert 'horario' in resp2['respuesta'].lower()
+
+
+def test_keyword_fuzzy():
+    resp = orchestrator.responder_sobre_documento('cual es el coste del Permiso de Aterrizaje')
+    assert 'permiso de aterrizaje' in resp.lower()
+    assert 'costo' in resp.lower() or 'precio' in resp.lower()

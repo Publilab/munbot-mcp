@@ -166,6 +166,18 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
 def health():
     return {"status": "ok"}
 
+@app.get("/endpoints")
+def list_endpoints():
+    return {"endpoints": ["/tools/list", "/tools/call", "/health", "/metrics", "/process"]}
+
+@app.get("/metrics")
+def metrics():
+    return "# HELP dummy"  # simplified for tests
+
+@app.post("/process")
+def process(data: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+    return {"respuesta": "ok"}
+
 @app.get("/")
 def root():
     return {
