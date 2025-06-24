@@ -353,6 +353,19 @@ def infer_intent_with_llm(prompt):
     return generate_response(prompt)
 
 
+def handle_confirmation(session_id: str) -> str:
+    """Continúa el flujo activo tras recibir una confirmación genérica."""
+    flow = context_manager.get_current_flow(session_id)
+    if flow == "documento":
+        doc = context_manager.get_selected_document(session_id)
+        if doc:
+            return (
+                f"¿Qué te interesa saber del {doc}? Puedes preguntar requisitos, horario, correo o dirección."
+            )
+    context_manager.clear_pending_confirmation(session_id)
+    return "Entendido. ¿En qué más puedo ayudarte?"
+
+
 def detect_intent_llm(
     user_input: str, history: List[Dict[str, str]] = None
 ) -> Dict[str, Any]:
@@ -1034,6 +1047,12 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    if context_manager.get_pending_confirmation(sid):
+        if re.fullmatch(r"(?i)(s[ií]?|si|ok|okay|vale|dale)", user_input.strip()):
+            resp = handle_confirmation(sid)
+            context_manager.update_context(sid, user_input, resp)
+            return {"respuesta": resp, "session_id": sid}
+
     # Si se proporcionó una sesión pero no hay contexto, informar expiración
     if session_id and not ctx:
         msg = (
@@ -1111,6 +1130,7 @@ def orchestrate(
             context_manager.set_selected_document(sid, nombre)
             context_manager.clear_document_options(sid)
             msg = f"Entendido. ¿Qué te interesa saber del {nombre}? Puedes preguntarme requisitos, horario, correo o dirección."
+            context_manager.set_current_flow(sid, "documento")
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
         else:
@@ -1118,6 +1138,14 @@ def orchestrate(
                 "respuesta": "Por favor ingresa un número válido de la lista anterior.",
                 "session_id": sid,
             }
+
+    # --- Listado de trámites solicitado directamente ---
+    if is_list_request(user_input):
+        resp = responder_sobre_documento(user_input, sid, listar_todo=True)
+        context_manager.set_current_flow(sid, "documento")
+        context_manager.update_context(sid, user_input, resp)
+        context_manager.reset_fallback_count(sid)
+        return {"respuesta": resp, "session_id": sid}
 
     # === 0) Consultar primero en la base de FAQs ===
     multi = lookup_multiple_faqs(user_input)
@@ -1154,6 +1182,7 @@ def orchestrate(
     if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
         sid = session_id or str(uuid.uuid4())
         context_manager.update_context(sid, user_input, respuesta_doc)
+        context_manager.set_current_flow(sid, "documento")
         context_manager.reset_fallback_count(sid)
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": respuesta_doc, "session_id": sid}
@@ -1331,71 +1360,22 @@ def orchestrate(
     confidence = intent_data.get("confidence", 0)
     sentiment = intent_data.get("sentiment", "neutral")
     context_manager.set_last_sentiment(session_id, sentiment)
-    # Lógica de fallback y escalación
+    # Lógica de fallback y escalación simplificada
     if confidence < 0.6 or sentiment in ["very_negative", "negative"]:
         context_manager.increment_fallback_count(session_id)
         fallback_count = context_manager.get_fallback_count(session_id)
-        escalate = fallback_count >= 3 or sentiment == "very_negative"
-        offer_human = fallback_count >= 2 and not escalate
-
-        best_alt, best_score, best_entry = get_best_faq_match(user_input)
-        log_missed_question(user_input, best_alt, best_score)
-
-        if escalate:
-            fallback_resp = "Lo siento, derivaré tu consulta a un agente humano."
-            qid = registrar_pregunta_no_contestada(
-                user_input, fallback_resp, intent_detectada=tool
-            )
+        if fallback_count >= 3 or sentiment == "very_negative":
+            fallback_resp = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
             context_manager.update_context(session_id, user_input, fallback_resp)
-            if qid:
-                context_manager.set_feedback_pending(session_id, qid)
-                fallback_resp += "\n¿Te fue útil mi respuesta? (Sí/No)"
-            return {
-                "respuesta": fallback_resp,
-                "session_id": session_id,
-                "escalado": True,
-            }
-
-        if best_alt and best_score >= BEST_ALT_THRESHOLD:
-            context_manager.set_faq_clarification(
-                session_id,
-                {
-                    "entry": best_entry,
-                    "pregunta": best_alt,
-                    "needs_confirmation": True,
-                    "type": "confirm",
-                },
+            return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
+        elif fallback_count == 2:
+            fallback_resp = (
+                "Aún no logro entender. Puedo ayudarte con trámites, horarios, reclamos o certificados… ¿prefieres que siga o te conecto a un agente?"
             )
-            fallback_resp = f"No encontré información exacta sobre eso. ¿Quizás te refieres a '{best_alt}'? Responde 'sí' para confirmar."
         else:
-            related = find_related_faqs(user_input)
-            if related:
-                sugerencias = ", ".join(f"'{q}'" for q in related)
-                fallback_resp = (
-                    f"No encontré esa información. Tal vez te interese: {sugerencias}"
-                )
-            else:
-                ejemplos = "‘¿Cuáles son los requisitos para X?’, ‘¿Dónde puedo pagar mi patente?’, ‘¿Cómo agendar una cita médica?’"
-                fallback_resp = (
-                    "Puedo ayudarte con consultas sobre trámites municipales, horarios de atención, reclamos y más. "
-                    f"Ejemplos: {ejemplos}"
-                )
-
-        if offer_human:
-            fallback_resp += " Sigo sin poder ayudarte. Si gustas, puedo pasarte con un humano ahora o intenta formularlo de otra manera."
-
-        qid = registrar_pregunta_no_contestada(
-            user_input, fallback_resp, intent_detectada=tool
-        )
-        if qid:
-            context_manager.set_feedback_pending(session_id, qid)
-            fallback_resp += "\n¿Te fue útil mi respuesta? (Sí/No)"
+            fallback_resp = "No encontré información precisa. ¿Podrías darme más detalles o especificar el trámite?"
         context_manager.update_context(session_id, user_input, fallback_resp)
-        return {
-            "respuesta": fallback_resp,
-            "session_id": session_id,
-            "pending_field": None,
-        }
+        return {"respuesta": fallback_resp, "session_id": session_id}
     else:
         context_manager.reset_fallback_count(session_id)
 
@@ -1740,6 +1720,26 @@ CAMPO_LABELS = {
 }
 
 
+def is_list_request(msg: str) -> bool:
+    """Detecta si el usuario pregunta por un listado de trámites."""
+    msg_norm = normalize_text(msg)
+    if not re.search(r"\b(que|cuales?)\b", msg_norm):
+        return False
+    keywords = [
+        "certificado",
+        "permiso",
+        "licencia",
+        "patente",
+        "tramite",
+        "tramites",
+        "tramite",
+        "tramites",
+    ]
+    has_kw = any(k in msg_norm for k in keywords)
+    trigger = re.search(r"(puedo|hay|existen|disponible|disponibles|listar|lista)", msg_norm)
+    return bool(has_kw and trigger)
+
+
 def formatear_lista(lista):
     return "\n- " + "\n- ".join(lista)
 
@@ -1837,7 +1837,7 @@ def buscar_faq_por_pregunta(pregunta):
     return None
 
 
-def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None):
+def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None, listar_todo: bool = False):
     tipo = detectar_tipo_documento(pregunta_usuario)
     nombre = None
     pregunta_norm = normalize_text(pregunta_usuario)
@@ -1866,6 +1866,17 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
         seleccionado = context_manager.get_selected_document(session_id)
         if seleccionado:
             nombre = seleccionado
+
+    if listar_todo and tipo:
+        opciones = listar_documentos_por_tipo(tipo)
+        if opciones:
+            if session_id:
+                context_manager.set_document_options(session_id, opciones)
+            listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
+            return (
+                f"Estos son los {tipo}s disponibles:\n{listado}\nPuedes elegir una opción por número o nombre."
+            )
+        # continuar flujo normal si no hay opciones
 
     if tipo and not nombre:
         opciones = listar_documentos_por_tipo(tipo)
