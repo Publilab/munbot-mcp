@@ -32,8 +32,8 @@ TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
 FAQ_DB_PATH = os.getenv("FAQ_DB_PATH")
 
 FUZZY_STRICT_THRESHOLD = 90
-FUZZY_CLARIFY_THRESHOLD = 80
-BEST_ALT_THRESHOLD = 70
+FUZZY_CLARIFY_THRESHOLD = 85
+BEST_ALT_THRESHOLD = 80
 MISSED_LOG_PATH = os.path.join(
     os.path.dirname(__file__), "databases", "missed_questions.csv"
 )
@@ -433,6 +433,105 @@ STOPWORDS = {
     "en",
     "para",
     "por",
+    "municipalidad",
+    "municipio",
+    "gobierno",
+    "coruscant",
+    "yo",
+    "me",
+    "mi",
+    "conmigo",
+    "tu",
+    "te",
+    "ti",
+    "contigo",
+    "vos",
+    "usted",
+    "el",
+    "lo",
+    "le",
+    "se",
+    "si",
+    "ella",
+    "la",
+    "ello",
+    "nosotros",
+    "nosotras",
+    "nos",
+    "vosotros",
+    "vosotras",
+    "os",
+    "ustedes",
+    "ellos",
+    "ellas",
+    "los",
+    "las",
+    "les",
+    "mio",
+    "mia",
+    "mios",
+    "mias",
+    "tuyo",
+    "tuya",
+    "tuyos",
+    "tuyas",
+    "suyo",
+    "suya",
+    "suyos",
+    "suyas",
+    "nuestro",
+    "nuestra",
+    "nuestros",
+    "nuestras",
+    "vuestro",
+    "vuestra",
+    "vuestros",
+    "vuestras",
+    "este",
+    "esta",
+    "esto",
+    "estos",
+    "estas",
+    "ese",
+    "esa",
+    "eso",
+    "esos",
+    "esas",
+    "aquel",
+    "aquella",
+    "aquello",
+    "aquellos",
+    "aquellas",
+    "regular",
+    "asi",
+    "alto",
+    "bajo",
+    "rapido",
+    "lento",
+    "deprisa",
+    "despacio",
+    "especialmente",
+    "rapidamente",
+    "facilmente",
+    "frecuentemente",
+    "claramente",
+    "directamente",
+    "silenciosamente",
+    "suavemente",
+    "puntualmente",
+    "responsablemente",
+    "voluntariamente",
+    "formalmente",
+    "minuciosamente",
+    "elocuentemente",
+    "elegantemente",
+    "brillantemente",
+    "cuidadosamente",
+    "alegremente",
+    "generosamente",
+    "intelectualmente",
+    "sigilosamente",
+    "prudentemente",
 }
 
 
@@ -569,7 +668,9 @@ def find_related_faqs(pregunta: str, limit: int = 3) -> List[str]:
         if isinstance(entry_preguntas, str):
             entry_preguntas = [entry_preguntas]
         for alt in entry_preguntas:
-            if tokens & set(tokenize(normalize_text(alt))):
+            entry_tokens = set(tokenize(normalize_text(alt)))
+            common = tokens & entry_tokens
+            if len(common) >= 2:
                 related.append(alt)
                 break
     return related
