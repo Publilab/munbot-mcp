@@ -19,6 +19,20 @@ DB_USER = os.getenv("POSTGRES_USER")
 DB_PASS = os.getenv("POSTGRES_PASSWORD")
 
 def get_db():
+    if os.getenv("TESTING") == "1":
+        class Dummy:
+            def cursor(self, *a, **k):
+                class C:
+                    def execute(self, *a, **k):
+                        pass
+                    def fetchall(self):
+                        return []
+                    def fetchone(self):
+                        return None
+                return C()
+            def close(self):
+                pass
+        return Dummy()
     conn = psycopg2.connect(
         host=DB_HOST, port=DB_PORT, dbname=DB_NAME, user=DB_USER, password=DB_PASS
     )

@@ -1034,8 +1034,9 @@ def periodic_migration():
         time.sleep(3600 * 24 * 7)  # Ejecutar cada semana
 
 
-# Lanzar el thread de migración periódica
-threading.Thread(target=periodic_migration, daemon=True).start()
+# Lanzar el thread de migración periódica (omitable en tests)
+if os.getenv("DISABLE_PERIODIC_MIGRATION") != "1":
+    threading.Thread(target=periodic_migration, daemon=True).start()
 
 
 def orchestrate(
@@ -1063,9 +1064,10 @@ def orchestrate(
 
     # Comando para cancelar flujo en curso
     if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
-        if ctx.get("pending_field") or ctx.get("complaint_state"):
+        if ctx.get("pending_field") or ctx.get("complaint_state") or ctx.get("selected_document"):
             context_manager.clear_pending_field(sid)
             context_manager.clear_complaint_state(sid)
+            context_manager.clear_selected_document(sid)
             cancel_msg = "He cancelado el proceso en curso. ¿En qué más puedo ayudarte?"
             context_manager.update_context(sid, user_input, cancel_msg)
             return {"respuesta": cancel_msg, "session_id": sid}
@@ -1119,6 +1121,25 @@ def orchestrate(
                     "respuesta": "Por favor indica un número de la lista previa.",
                     "session_id": sid,
                 }
+
+    # --- Manejar aclaraciones pendientes de documento ---
+    pending_doc = context_manager.get_doc_clarification(sid)
+    if pending_doc:
+        if re.fullmatch(r"(?i)s[ií]?|si|yes|ok|vale|dale", user_input.strip()):
+            orig_q = pending_doc.get("question", "")
+            doc_name = pending_doc.get("doc")
+            context_manager.clear_doc_clarification(sid)
+            resp = responder_sobre_documento(f"{doc_name} {orig_q}", sid)
+            context_manager.update_context(sid, user_input, resp)
+            context_manager.set_current_flow(sid, "documento")
+            return {"respuesta": resp, "session_id": sid}
+        if re.fullmatch(r"(?i)no|n|nope", user_input.strip()):
+            context_manager.clear_doc_clarification(sid)
+            msg = "Entendido, ¿podrías indicar el nombre correcto del documento?"
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
+        else:
+            return {"respuesta": "Por favor responde 'sí' o 'no'.", "session_id": sid}
 
     # --- Manejar selección de documentos pendientes ---
     pending_docs = context_manager.get_document_options(sid)
@@ -1697,7 +1718,7 @@ KEYWORD_FIELDS = {
     "tiempo_validez": ["vigencia", "validez", "duracion", "duración", "valido", "válido"],
     "utilidad": ["utilidad", "para que sirve", "beneficio"],
     "penalidad": ["penalidad", "sancion", "sanción", "que pasa si no", "multas"],
-    "costo": ["costo", "precio", "valor"],
+    "costo": ["costo", "precio", "valor", "coste"],
 }
 
 # Alias conocidos para referirse a algunos documentos con nombres alternativos.
@@ -1813,7 +1834,10 @@ def buscar_documento_fuzzy(pregunta):
     best_score = 0
     for doc in documentos:
         nombre_norm = normalize_text(doc["Nombre_Documento"])
-        score = fuzz.partial_ratio(pregunta_norm, nombre_norm)
+        score = max(
+            fuzz.partial_ratio(pregunta_norm, nombre_norm),
+            fuzz.token_set_ratio(pregunta_norm, nombre_norm),
+        )
         if score > best_score:
             best_score = score
             best_doc = doc
@@ -1860,6 +1884,9 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
         best_doc, score = buscar_documento_fuzzy(pregunta_usuario)
         if score >= 90 and best_doc:
             nombre = best_doc["Nombre_Documento"]
+        elif best_doc and 80 <= score < 90 and session_id:
+            context_manager.set_doc_clarification(session_id, best_doc["Nombre_Documento"], pregunta_usuario)
+            return f"¿Quizás te refieres al **{best_doc['Nombre_Documento']}**? Responde 'sí' o 'no'."
 
     # usar el contexto si el usuario ya había seleccionado un documento
     if session_id and not nombre:
@@ -1899,6 +1926,9 @@ def responder_sobre_documento(pregunta_usuario, session_id: Optional[str] = None
                 for kw in kws:
                     kw_norm = normalize_text(kw)
                     if kw_norm in pregunta_norm:
+                        campos_solicitados.append(campo)
+                        break
+                    if fuzz.partial_ratio(pregunta_norm, kw_norm) >= 85:
                         campos_solicitados.append(campo)
                         break
 
