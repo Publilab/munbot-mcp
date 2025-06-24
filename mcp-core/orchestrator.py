@@ -1721,6 +1721,7 @@ KEYWORD_FIELDS = {
     "utilidad": ["utilidad", "para que sirve", "beneficio"],
     "penalidad": ["penalidad", "sancion", "sanción", "que pasa si no", "multas"],
     "costo": ["costo", "precio", "valor", "coste"],
+    "Notas": ["nota", "notas"],
 }
 
 # Alias conocidos para referirse a algunos documentos con nombres alternativos.
@@ -1740,6 +1741,7 @@ CAMPO_LABELS = {
     "utilidad": "¿Para qué sirve?",
     "penalidad": "Penalidad",
     "tiempo_validez": "Vigencia",
+    "Notas": "Nota",
 }
 
 
@@ -1788,6 +1790,8 @@ def armar_respuesta_combinada(doc, campos):
 
         if campo == "Requisitos":
             respuesta = f"Para obtener **{doc_name}**, necesitas:\n{lista}"
+            if doc.get("Notas"):
+                respuesta += f"\n**Nota:** {doc['Notas']}"
         elif campo == "Dónde_Obtener":
             respuesta = f"Puedes obtener **{doc_name}** en {lista}."
         elif campo == "Horario_Atencion":
@@ -1876,6 +1880,8 @@ def armar_respuesta_combinada(doc, campos):
     ):
         nota_val = doc.get("Notas") or doc.get("nota")
         respuesta.append(f"Nota: {nota_val}")
+    elif doc.get("Notas") and ("Requisitos" in campos or len(campos) > 1):
+        respuesta.append(f"Nota: {doc['Notas']}")
 
     respuesta_final = "\n\n".join(respuesta)
     return respuesta_final + "\n\n¿Quieres saber algo más sobre este trámite?"
@@ -2057,6 +2063,10 @@ def responder_sobre_documento(
                 )
 
             respuesta = armar_respuesta_combinada(doc, campos_existentes)
+            if doc.get("Notas") and "Nota:" not in respuesta and (
+                "Requisitos" in campos_existentes or len(campos_existentes) > 1
+            ):
+                respuesta += f"\n\n**Nota:** {doc['Notas']}"
             if missing:
                 respuesta += (
                     "\n"

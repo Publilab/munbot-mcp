@@ -4,6 +4,8 @@ import os
 import types
 import fakeredis
 
+os.environ["DISABLE_PERIODIC_MIGRATION"] = "1"
+
 # Mock llama_cpp before importing orchestrator
 fake_llama = types.ModuleType('llama_cpp')
 class FakeLlama:
@@ -71,3 +73,15 @@ def test_keyword_fuzzy():
     resp = orchestrator.responder_sobre_documento('cual es el coste del Permiso de Aterrizaje')
     assert 'permiso de aterrizaje' in resp.lower()
     assert 'costo' in resp.lower() or 'precio' in resp.lower()
+
+
+def test_requisitos_include_nota():
+    resp = orchestrator.responder_sobre_documento('requisitos del Certificado de Residencia Definitiva')
+    assert 'certificado de residencia definitiva' in resp.lower()
+    assert 'nota' in resp.lower()
+
+
+def test_general_query_includes_nota():
+    resp = orchestrator.responder_sobre_documento('Como obtener el Certificado de Residencia Definitiva')
+    assert 'certificado de residencia definitiva' in resp.lower()
+    assert 'nota' in resp.lower()
