@@ -1949,18 +1949,17 @@ INCLUIR_FICHA_COMPLETA_POR_DEFECTO = False
 # Mapeo de palabras clave a campos del JSON de documentos. Las palabras se
 # normalizan sin tildes para realizar la comparación.
 KEYWORD_FIELDS = {
-    "Requisitos": ["requisito", "necesito", "condicion", "condiciones"],
-    "Dónde_Obtener": ["donde", "dónde"],
-    "Horario_Atencion": ["horario", "horarios", "hora de atencion", "cuando", "cuándo"],
-    "Correo_Electronico": ["correo", "mail", "email"],
-    "telefono": ["telefono", "teléfono", "numero", "número", "contacto", "fono"],
-    "Direccion": ["direccion", "dirección", "ubicacion", "ubicación", "direcciones"],
-    "tiempo_validez": ["vigencia", "validez", "duracion", "duración", "valido", "válido"],
-    "utilidad": ["utilidad", "para que sirve", "beneficio"],
-    "penalidad": ["penalidad", "sancion", "sanción", "que pasa si no", "multas"],
-    "costo": ["costo", "precio", "valor", "coste"],
-    "Notas": ["nota", "notas"],
-}
+    "Requisitos": ["Que requisitos necesito", "cuales son los requisitos", "que necesito para obtenerlo", "qué necesito para sacarlo", "que tengo que traer", "que papeles tengo que traer", "que papel tengo que traer", "que papeles tengo que llevar", "que papel tengo que llevar", "que documentos necesito", "que documentos tengo que llevar", "que documentos tengo que traer", "que documentos tengo que presentar", "que documentos tengo que mostrar", "que documentos tengo que entregar", "que documentos tengo que llevar para obtenerlo", "que documentos tengo que llevar para sacarlo", "que documentos tengo que llevar para solicitarlo", "que documentos tengo que llevar para pedirlo", "que papeles necesito", "que papeles tengo que llevar", "que papeles tengo que traer", "que papeles tengo que presentar", "que papeles tengo que mostrar", "que papeles tengo que entregar", "que papeles tengo que llevar para obtenerlo", "que papeles tengo que llevar para sacarlo", "que papeles tengo que llevar para solicitarlo", "que papeles tengo que llevar para pedirlo"],
+    "Dónde_Obtener": ["donde puedo obtenerlo", "donde puedo sacarlo", "donde lo saco", "donde lo consigo", "donde lo obtengo", "donde puedo conseguirlo", "donde puedo sacarlo", "donde puedo pedirlo", "donde puedo solicitarlo", "donde lo solicito", "donde lo pido"],
+    "Horario_Atencion": ["cual es el horario de atencion", "horario de atencion", "A que hora atienden", "A que hora puedo ir", "A que hora abren"],
+    "Correo_Electronico": ["a que correo", "a que mail", "email" "mail", "dame el mail", "dame el correo", "dame el correo electronico", "correo electrónico", "correo", "me puedes dar el correo", "me puedes dar el mail", "me puedes dar el email"],
+    "telefono": ["cual es el telefono", "cual es el numero", "cual es el número de telefono", "dame el telefono", "dame el numero de telefono", "a que telefono puedo llamar", "a que numero puedo llamar", "telefono", "número de teléfono", "número de telefono", "me puedes dar el telefono", "me puedes dar el número de telefono", "me puedes dar el número de teléfono", "dar el telefono", "dar el número de teléfono", "dar el número de telefono"],
+    "Direccion": ["Cual es la direccion", "dirección", "Cual es la ubicacion", "ubicación", "A que direccion", "donde queda", "donde esta", "donde está", "donde se encuentra", "donde queda la oficina", "donde esta la oficina", "donde está la oficina", "donde se encuentra la oficina", "direccion", "dirección de la oficina", "ubicación de la oficina", "donde queda las oficinas", "donde esta las oficinas", "donde está las oficinas", "donde se encuentra las oficinas", "direccion", "dirección de las oficinas", "ubicación de las oficinas", "donde queda el departamento", "donde esta el departamento", "donde está el departamento", "donde se encuentra el departamento", "direccion", "dirección de el departamento", "ubicación de el departamento"],
+    "tiempo_validez": ["Cual es su vigencia", "cuando es el tiempo de vigencia", "Cual es la vigencia", "vigencia", "validez", "Cuanto es el tiempo de validez", "duracion", "Cuanto dura","valido", "válido", "Cuanto tiempo es valido"],
+    "utilidad": ["para que sirve", "para qué sirve", "cual es su utilidad", "cual es la utilidad", "utilidad", "para que sirve este documento", "para qué sirve este documento", "para que sirve este trámite", "para qué sirve este trámite", "para que sirve este permiso", "para qué sirve este permiso", "para que sirve esta licencia", "para qué sirve esta licencia", "para que sirve esta cedula", "para qué sirve esta cédula", "para que sirve este certificado", "para qué sirve este certificado", "para que sirve este registro", "para qué sirve este registro", "para que sirve este documento oficial", "para qué sirve este documento oficial"],
+    "penalidad": ["que pasa si no lo saco", "que pasa si no lo tengo", "que pasa si no lo obtengo", "que pasa si no lo solicito", "que pasa si no lo pido", "cuales son las sanciones"],
+    "costo": ["Cuanto cuesta", "cual es el costo", "cual es el valor", "cual es el precio", "Cuanto vale", "Cuanto cuesta", "Cuanto es el costo", "Cuanto es el valor", "Cuanto es el precio", "costo", "valor", "precio"]
+    }
 
 # Alias conocidos para referirse a algunos documentos con nombres alternativos.
 DOC_ALIASES = {

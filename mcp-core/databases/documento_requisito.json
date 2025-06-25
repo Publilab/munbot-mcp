@@ -2,6 +2,14 @@
   {
     "ID_Documento": "CRD-001",
     "Nombre_Documento": "Certificado de Residencia Definitiva",
+    "alias": [
+    "residencia definitiva",
+    "certificado de residencia",
+    "certificado residencia",
+    "certificado residencia definitiva",
+    "de residencia",
+    "residencia"
+  ],
     "Requisitos": [
       "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
       "Comprobante de Residencia",
@@ -24,6 +32,13 @@
   {
     "ID_Documento": "CET-008",
     "Nombre_Documento": "Certificado de Estadía Temporal",
+    "alias": [
+      "certificado estadía temporal",
+      "certificado de estadía",
+      "certificado estadía",
+      "estadía temporal",
+      "estadía"
+    ],
     "Requisitos": [
       "Carta de Invitación de un Ciudadano de Coruscant",
       "Identificación Oficial",
@@ -46,6 +61,13 @@
   {
     "ID_Documento": "CEP-011",
     "Nombre_Documento": "Certificado de Extracción Productiva",
+    "alias": [
+      "certificado extracción productiva",
+      "certificado de extracción",
+      "certificado extracción",
+      "extracción productiva",
+      "extracción"
+    ],
     "Requisitos": [
       "Plan de Negocios Detallado",
       "Comprobante de Inversión Inicial",
@@ -69,6 +91,16 @@
   {
     "ID_Documento": "CEM-013",
     "Nombre_Documento": "Certificado de Enrolamiento Militar de la República",
+    "alias": [
+      "certificado de enrolamiento militar",
+      "certificado enrolamiento militar",
+      "enrolamiento militar",
+      "enrolamiento",
+      "militar",
+      "certificado militar",
+      "certificado enrolamiento",
+      "certificado de enrolamiento"
+    ],
     "Requisitos": [
       "Identificación Oficial",
       "Certificado Médico Militar",
@@ -92,6 +124,16 @@
   {
     "ID_Documento": "CRC-014",
     "Nombre_Documento": "Certificado Registro de Carga",
+    "alias": [
+      "certificado de registro de carga",
+      "certificado registro carga",
+      "registro de carga",
+      "registro carga",
+      "carga",
+      "certificado carga",
+      "certificado de carga",
+      "de carga"
+    ],
     "Requisitos": [
       "Documentación de Mercancías",
       "Permiso de Transporte Militar",
@@ -115,6 +157,13 @@
   {
     "ID_Documento": "CAT-019",
     "Nombre_Documento": "Certificado de Antecedentes",
+    "alias": [
+      "certificado antecedentes",
+      "antecedentes",
+      "de antecedentes",
+      "antecedentes penales",
+      "certificado de antecedentes penales"
+    ],
     "Requisitos": [
       "Solicitud de Certificación",
       "Identificación Oficial",
@@ -138,6 +187,16 @@
   {
     "ID_Documento": "RDD-017",
     "Nombre_Documento": "Certificado Registro de Droides",
+    "alias": [
+      "certificado de registro de droides",
+      "certificado registro droides",
+      "registro de droides",
+      "registro droides",
+      "droides",
+      "certificado droides",
+      "certificado de droides",
+      "de droides"
+    ],
     "Requisitos": [
       "Certificado de Fabricación",
       "Identificación Oficial",
@@ -161,6 +220,16 @@
   {
     "ID_Documento": "CPF-002",
     "Nombre_Documento": "Licencia Oficial Piloto Federado",
+    "alias": [
+      "licencia oficial piloto",
+      "licencia oficial de piloto",
+      "licencia piloto federado",
+      "licencia piloto",
+      "piloto federado",
+      "de piloto federado",
+      "licencia de piloto",
+      "licencia de piloto oficial"
+    ],
     "Requisitos": [
       "Comprobante de Formación como Piloto",
       "Certificado Médico Militar",
@@ -183,6 +252,13 @@
   {
     "ID_Documento": "LTE-003",
     "Nombre_Documento": "Licencia de Transporte Espacial",
+    "alias": [
+      "licencia transporte espacial",
+      "transporte espacial",
+      "licencia de transporte",
+      "licencia de transporte interplanetario",
+      "transporte interplanetario"
+    ],
     "Requisitos": [
       "Certificado de Navegación Espacial",
       "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
@@ -205,6 +281,16 @@
   {
     "ID_Documento": "ISP-005",
     "Nombre_Documento": "Cédula Única Sistema Planetario",
+    "alias": [
+      "cédula sistema planetario",
+      "cédula única",
+      "cédula de identificación",
+      "sistema planetario",
+      "carne de identidad",
+      "cédula de identidad",
+      "de identidad",
+      "identificación oficial"
+    ],
     "Requisitos": [
       "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
       "Formulario de Solicitud Completo",
@@ -227,6 +313,14 @@
   {
     "ID_Documento": "CBS-015",
     "Nombre_Documento": "Cédula de Bienestar Social",
+    "alias": [
+      "cédula bienestar social",
+      "bienestar social",
+      "cédula de bienestar",
+      "bienestar",
+      "cédula social",
+      "carne social"
+    ],
     "Requisitos": [
       "Comprobante de Participación en Programas de Bienestar",
       "Identificación Oficial",
@@ -250,6 +344,14 @@
   {
     "ID_Documento": "PEP-009",
     "Nombre_Documento": "Permiso de Exploración Planetaria",
+    "alias": [
+      "de exploracion planetaria",
+      "permiso de exploracion",
+      "exploracion planetaria",
+      "exploracion",
+      "permiso exploracion",
+      "de exploracion"
+    ],
     "Requisitos": [
       "Carta de Misión",
       "Identificación Oficial",
@@ -273,6 +375,17 @@
   {
     "ID_Documento": "RAS-010",
     "Nombre_Documento": "Permiso de Asentamientos Coloniales",
+    "alias": [
+      "permiso de asentamientos",
+      "asentamientos coloniales",
+      "de asentamientos coloniales",
+      "asentamientos",
+      "permiso de colonizacion",
+      "de asentamientos",
+      "asentamiento",
+      "asentamiento colonial",
+      "colonial"
+    ],
     "Requisitos": [
       "Comprobante de Terreno",
       "Identificación Oficial",
@@ -296,6 +409,11 @@
   {
     "ID_Documento": "PAT-018",
     "Nombre_Documento": "Permiso de Aterrizaje",
+    "alias": [
+      "permiso aterrizaje",
+      "aterrizaje",
+      "de aterrizaje"
+    ],
     "Requisitos": [
       "Licencia de Transporte Espacial",
       "Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
@@ -318,7 +436,19 @@
   },
   {
     "ID_Documento": "PCI-012",
-    "Nombre_Documento": "Patente Comercial Intergalaáctica",
+    "Nombre_Documento": "Patente Comercial Intergaláctica",
+    "alias": [
+      "patente comercial",
+      "comercial intergaláctica",
+      "comercial",
+      "patente de comercio",
+      "patente de comercio intergaláctico",
+      "patente para negocio",
+      "de negocio",
+      "patente para comercio",
+      "patente para poner un negocio",
+      "para negocio"
+    ],
     "Requisitos": [
       "Registro de Empresa a Nivel Galáctico",
       "Identificación Fiscal Internacional",
@@ -342,6 +472,13 @@
   {
     "ID_Documento": "RIV-016",
     "Nombre_Documento": "Patente de Inventos",
+    "alias": [
+      "patente inventos",
+      "inventos",
+      "de inventos",
+      "patente para registrar un invento",
+      "para registrar un invento"
+    ],
     "Requisitos": [
       "Descripción Detallada del Invento",
       "Prototipo o Demostración Funcional",
