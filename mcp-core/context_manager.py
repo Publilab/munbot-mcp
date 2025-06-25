@@ -214,6 +214,30 @@ class ConversationalContextManager:
             ex=self.session_expiry_seconds
         )
 
+    # ---- Manejo de consultas de trámites pendientes ----
+    def set_consultas_tramites_pending(self, session_id: str, value: bool = True):
+        context = self.get_context(session_id)
+        context["consultas_tramites_pending"] = value
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def get_consultas_tramites_pending(self, session_id: str) -> bool:
+        context = self.get_context(session_id)
+        return bool(context.get("consultas_tramites_pending"))
+
+    def clear_consultas_tramites_pending(self, session_id: str):
+        context = self.get_context(session_id)
+        if "consultas_tramites_pending" in context:
+            del context["consultas_tramites_pending"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
     def clear_suggestion_state(self, session_id: str):
         """Limpia cualquier estado relacionado con sugerencias pendientes."""
         context = self.get_context(session_id)

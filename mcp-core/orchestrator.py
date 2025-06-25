@@ -1120,6 +1120,35 @@ def orchestrate(
     # Remover frases introductorias para clasificar correctamente
     user_input = strip_intro_phrase(user_input)
 
+    # Consultas rápidas tras listar trámites
+    if context_manager.get_consultas_tramites_pending(sid):
+        m = re.search(
+            r"(?i)(requisitos|d[oó]nde obtener|tel[eé]fono|horario)\s+(?:del\s+)?(certificado|permiso|licencia|patente)\s+(.+)",
+            user_input,
+        )
+        if m:
+            campo_raw, tipo, nombre = m.groups()
+            campo_map = {
+                "requisitos": "Requisitos",
+                "dónde obtener": "Dónde_Obtener",
+                "donde obtener": "Dónde_Obtener",
+                "teléfono": "telefono",
+                "telefono": "telefono",
+                "horario": "Horario_Atencion",
+            }
+            campo = campo_map.get(campo_raw.lower())
+            if campo:
+                resp = responder_sobre_documento(
+                    user_input,
+                    sid,
+                    tipo=tipo + "s",
+                    nombre=nombre,
+                    campos=[campo],
+                )
+                context_manager.clear_consultas_tramites_pending(sid)
+                context_manager.update_context(sid, user_input, resp)
+                return {"respuesta": resp, "session_id": sid}
+
     if context_manager.get_pending_confirmation(sid):
         if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
