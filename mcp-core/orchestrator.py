@@ -122,6 +122,26 @@ def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     return text
 
 
+# Frases introductorias a ignorar al inicio de la consulta del usuario
+INTRO_PHRASES = [
+    "quiero saber",
+    "me gustaria saber",
+    "quisiera saber",
+    "deseo saber",
+    "podrías decirme",
+    "me puedes informar sobre",
+]
+
+
+def strip_intro_phrase(text: str) -> str:
+    """Elimina frases introductorias comunes al inicio de la pregunta."""
+    lowered = text.lower().strip()
+    for phrase in INTRO_PHRASES:
+        if lowered.startswith(phrase):
+            return text[len(phrase) :].lstrip(",. ")
+    return text
+
+
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
     """Busca la mejor coincidencia en la base de FAQ y devuelve información
     para decidir la respuesta final."""
@@ -172,6 +192,7 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
 
         if high_matches:
             high_matches.sort(key=lambda x: x["score"], reverse=True)
+          knxx12-codex/modificar-lógica-del-orquestador-para-saludos
             # FILTRO: DESPEDIDAS SIEMPRE TIENEN PRIORIDAD
             high_matches = apply_priority_filter(high_matches)
             # FILTRO SALUDOS/ESTADO_ANIMO + OTRA CATEGORIA
@@ -184,6 +205,10 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
                     for m in high_matches
                     if m["entry"].get("categoria") not in ("saludos", "estado_animo")
                 ]
+            # FILTRO SALUDOS + OTRA CATEGORIA
+            if len(high_matches) > 1 and any(m["entry"].get("categoria") == "saludos" for m in high_matches):
+                high_matches = [m for m in high_matches if m["entry"].get("categoria") != "saludos"]
+         main
 
             if len(high_matches) == 1:
                 m = high_matches[0]
@@ -1087,6 +1112,9 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    # Remover frases introductorias para clasificar correctamente
+    user_input = strip_intro_phrase(user_input)
+
     if context_manager.get_pending_confirmation(sid):
         if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
@@ -1133,9 +1161,10 @@ def orchestrate(
     despedida_entry = next((e for e in faqs if e.get("categoria") == "despedidas"), None)
     if despedida_entry:
         despedida_terms = despedida_entry["pregunta"]
-        # Creamos un patrón de regex para buscar cualquiera de los términos de despedida como palabras completas
-        pattern = r"\b(" + "|".join(re.escape(term.strip()) for term in despedida_terms) + r")\b"
-        if re.search(pattern, user_input, re.IGNORECASE):
+        # Normalizar términos y entrada para una coincidencia sin tildes
+        despedida_terms_norm = [normalize_text(t) for t in despedida_terms]
+        pattern = r"\b(" + "|".join(re.escape(term) for term in despedida_terms_norm) + r")\b"
+        if re.search(pattern, normalize_text(user_input)):
             # Al detectar una despedida, se limpia el contexto para finalizar la sesión.
             # NOTA: Se asume que context_manager tiene un método `clear_context` que elimina
             # todas las claves de Redis para la sesión. Si no existe, debería ser creado.
