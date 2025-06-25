@@ -88,6 +88,8 @@ logging.basicConfig(level=logging.INFO)
 
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
+_FAREWELL_PATTERNS = None
+_FAREWELL_RESPONSE = None
 
 
 def load_faq_cache() -> list:
@@ -100,6 +102,39 @@ def load_faq_cache() -> list:
             logging.warning(f"No se pudo cargar FAQ: {e}")
             _FAQ_CACHE = []
     return _FAQ_CACHE
+
+
+def _load_farewell_data():
+    """Carga frases y respuesta de despedida desde las FAQ."""
+    global _FAREWELL_PATTERNS, _FAREWELL_RESPONSE
+    if _FAREWELL_PATTERNS is not None:
+        return
+    _FAREWELL_PATTERNS = []
+    _FAREWELL_RESPONSE = ""
+    for entry in load_faq_cache():
+        if entry.get("categoria") == "despedidas":
+            pats = entry.get("pregunta", [])
+            if isinstance(pats, str):
+                pats = [pats]
+            _FAREWELL_PATTERNS = [normalize_text(p) for p in pats]
+            _FAREWELL_RESPONSE = entry.get("respuesta", "")
+            break
+
+
+def is_farewell(text: str) -> bool:
+    _load_farewell_data()
+    norm = normalize_text(text)
+    for pat in _FAREWELL_PATTERNS:
+        if re.search(rf"\b{re.escape(pat)}\b", norm):
+            return True
+        if pat in norm:
+            return True
+    return False
+
+
+def get_farewell_response() -> str:
+    _load_farewell_data()
+    return _FAREWELL_RESPONSE or "¡Hasta luego!"
 
 
 def normalize_text(text: str) -> str:
@@ -1050,6 +1085,11 @@ def orchestrate(
     sid = session_id or str(uuid.uuid4())
 
     ctx = context_manager.get_context(sid)
+
+    if is_farewell(user_input):
+        farewell_msg = get_farewell_response()
+        delete_session(sid)
+        return {"respuesta": farewell_msg, "session_id": sid}
 
     if context_manager.get_pending_confirmation(sid):
         if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
