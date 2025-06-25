@@ -1110,6 +1110,25 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    # --- Manejar seguimiento de consultas sobre trámites ---
+    if context_manager.get_context_field(sid, "consultas_tramites_pending"):
+        if re.fullmatch(r"(?i)(sí|si|ok|okay|vale|claro|si quiero saber)", user_input.strip()):
+            tipo = context_manager.get_context_field(sid, "consultas_tramites_tipo")
+            opciones = listar_documentos_por_tipo(tipo) if tipo else []
+            listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones)) if opciones else ""
+            msg = (
+                f"Estos son los {tipo}s disponibles:\n{listado}\nPor favor, ingresa el número de la opción deseada."
+                if opciones
+                else f"No encontré {tipo}s disponibles."
+            )
+            context_manager.update_context_data(
+                sid,
+                {"pending_doc_list": opciones, "pending_doc_type": tipo},
+            )
+            context_manager.clear_context_field(sid, "consultas_tramites_pending")
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
+
     # Cerrar tema documental si el usuario responde de forma negativa
     if ctx.get("doc_actual") and re.fullmatch(r"(?i)(no|ya ?est[aá]|gracias)", user_input.strip()):
         context_manager.clear_context_field(sid, "doc_actual")
@@ -1324,6 +1343,16 @@ def orchestrate(
             return {"respuesta": msg, "session_id": sid}
 
         answer = faq["entry"]["respuesta"]
+        if faq["entry"].get("categoria") == "consultas_tramites":
+            tipo_detectado = infer_type_from_doc_name(user_input)
+            if tipo_detectado:
+                context_manager.update_context_data(
+                    sid,
+                    {
+                        "consultas_tramites_pending": True,
+                        "consultas_tramites_tipo": tipo_detectado,
+                    },
+                )
         if faq["entry"].get("categoria") == "despedidas":
             context_manager.clear_context(sid)
             delete_session(sid)
