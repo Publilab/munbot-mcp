@@ -10,10 +10,7 @@ class ConversationalContextManager:
         self.session_expiry_seconds = 300  # 5 minutos
 
     def clear_context(self, session_id: str):
-      knxx12-codex/modificar-lógica-del-orquestador-para-saludos
         """Elimina todo el contexto almacenado para la sesión."""
-        """Elimina todos los datos asociados a la sesión."""
-   main
         self.redis_client.delete(f"session:{session_id}")
 
     def get_context(self, session_id: str) -> Dict[str, Any]:
@@ -347,3 +344,30 @@ class ConversationalContextManager:
     def get_current_flow(self, session_id: str) -> Optional[str]:
         context = self.get_context(session_id)
         return context.get("current_flow")
+
+    # ---- Utilidades genéricas de contexto ----
+    def update_context_data(self, session_id: str, data: Dict[str, Any]):
+        """Actualiza el contexto agregando campos arbitrarios."""
+        context = self.get_context(session_id)
+        context.update(data)
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def clear_context_field(self, session_id: str, field: str):
+        """Elimina un campo específico del contexto de la sesión."""
+        context = self.get_context(session_id)
+        if field in context:
+            del context[field]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_context_field(self, session_id: str, field: str) -> Optional[Any]:
+        """Obtiene un campo arbitrario del contexto."""
+        context = self.get_context(session_id)
+        return context.get(field)
