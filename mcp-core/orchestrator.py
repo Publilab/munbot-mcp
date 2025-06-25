@@ -192,7 +192,6 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
 
         if high_matches:
             high_matches.sort(key=lambda x: x["score"], reverse=True)
-          knxx12-codex/modificar-lógica-del-orquestador-para-saludos
             # FILTRO: DESPEDIDAS SIEMPRE TIENEN PRIORIDAD
             high_matches = apply_priority_filter(high_matches)
             # FILTRO SALUDOS/ESTADO_ANIMO + OTRA CATEGORIA
@@ -208,7 +207,6 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
             # FILTRO SALUDOS + OTRA CATEGORIA
             if len(high_matches) > 1 and any(m["entry"].get("categoria") == "saludos" for m in high_matches):
                 high_matches = [m for m in high_matches if m["entry"].get("categoria") != "saludos"]
-         main
 
             if len(high_matches) == 1:
                 m = high_matches[0]
@@ -1112,6 +1110,13 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    # Cerrar tema documental si el usuario responde de forma negativa
+    if ctx.get("doc_actual") and re.fullmatch(r"(?i)(no|ya ?est[aá]|gracias)", user_input.strip()):
+        context_manager.clear_context_field(sid, "doc_actual")
+        msg = "Entendido. Si necesitas información sobre otro trámite o documento, solo indícame su nombre."
+        context_manager.update_context(sid, user_input, msg)
+        return {"respuesta": msg, "session_id": sid}
+
     # Remover frases introductorias para clasificar correctamente
     user_input = strip_intro_phrase(user_input)
 
@@ -1292,6 +1297,7 @@ def orchestrate(
     multi = lookup_multiple_faqs(user_input)
     if multi:
         context_manager.update_context(sid, user_input, multi)
+        context_manager.clear_context_field(sid, "doc_actual")
         return {"respuesta": multi, "session_id": sid}
 
     faq = lookup_faq_respuesta(user_input)
@@ -1314,6 +1320,7 @@ def orchestrate(
                     + "\nPor favor, ingresa el número de la opción deseada."
                 )
             context_manager.update_context(sid, user_input, msg)
+            context_manager.clear_context_field(sid, "doc_actual")
             return {"respuesta": msg, "session_id": sid}
 
         answer = faq["entry"]["respuesta"]
@@ -1322,6 +1329,7 @@ def orchestrate(
             delete_session(sid)
             return {"respuesta": answer, "session_id": sid}
         context_manager.update_context(sid, user_input, answer)
+        context_manager.clear_context_field(sid, "doc_actual")
         context_manager.reset_fallback_count(sid)
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": answer, "session_id": sid}
@@ -1345,6 +1353,7 @@ def orchestrate(
     if not pending and re.search(
         r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE
     ):
+        context_manager.clear_context_field(sid, "doc_actual")
         sid = session_id or str(uuid.uuid4())
         context_manager.update_context(sid, user_input, "")
         context_manager.update_pending_field(sid, "nombre")
@@ -1524,6 +1533,7 @@ def orchestrate(
         else:
             fallback_resp = "No encontré información precisa. ¿Podrías darme más detalles o especificar el trámite?"
         context_manager.update_context(session_id, user_input, fallback_resp)
+        context_manager.clear_context_field(session_id, "doc_actual")
         return {"respuesta": fallback_resp, "session_id": session_id}
     else:
         context_manager.reset_fallback_count(session_id)
@@ -1546,12 +1556,14 @@ def orchestrate(
                         + "\nPor favor, ingresa el número de la opción deseada."
                     )
                 context_manager.update_context(session_id, user_input, msg)
+                context_manager.clear_context_field(session_id, "doc_actual")
                 return {"respuesta": msg, "session_id": session_id}
 
             answer = faq_hit["entry"]["respuesta"]
             answer += "\n¿Te fue útil mi respuesta? (Sí/No)"
             context_manager.set_feedback_pending(session_id, None)
             context_manager.update_context(session_id, user_input, answer)
+            context_manager.clear_context_field(session_id, "doc_actual")
             return {"respuesta": answer, "session_id": session_id}
 
         snippets = retrieve_context_snippets(user_input)
@@ -1571,6 +1583,7 @@ def orchestrate(
         ans += "\n¿Te fue útil mi respuesta? (Sí/No)"
         context_manager.set_feedback_pending(session_id, None)
         context_manager.update_context(session_id, user_input, ans)
+        context_manager.clear_context_field(session_id, "doc_actual")
         return {"respuesta": ans, "session_id": session_id}
 
 
@@ -1945,7 +1958,7 @@ def armar_respuesta_combinada(doc, campos):
             etiqueta = CAMPO_LABELS.get(campo, campo.replace("_", " ").capitalize())
             respuesta = f"{etiqueta} de **{doc_name}**: {lista}"
 
-        return respuesta + "\n\n¿Quieres saber algo más sobre este trámite?"
+        return respuesta + "\n\n¿Tienes alguna otra consulta sobre este documento o quieres consultar sobre otro trámite?"
 
     # --- Caso: múltiples campos ---
     respuesta = []
@@ -2010,7 +2023,7 @@ def armar_respuesta_combinada(doc, campos):
         respuesta.append(f"Nota: {doc['Notas']}")
 
     respuesta_final = "\n\n".join(respuesta)
-    return respuesta_final + "\n\n¿Quieres saber algo más sobre este trámite?"
+    return respuesta_final + "\n\n¿Tienes alguna otra consulta sobre este documento o quieres consultar sobre otro trámite?"
 
 
 def detectar_tipo_documento(pregunta):
@@ -2030,6 +2043,18 @@ def detectar_tipo_documento(pregunta):
             best_tipo = tipo
     if best_score >= 85:
         return "cédula" if best_tipo in ("cédula", "cedula") else best_tipo
+    return None
+
+
+def infer_type_from_doc_name(name: str) -> Optional[str]:
+    """Inferir el tipo de documento a partir de su nombre."""
+    if not name:
+        return None
+    tipos = ["permiso", "certificado", "patente", "licencia", "cédula", "cedula"]
+    name_norm = normalize_text(name)
+    for tipo in tipos:
+        if tipo in name_norm:
+            return "cédula" if tipo in ("cédula", "cedula") else tipo
     return None
 
 
@@ -2094,6 +2119,12 @@ def responder_sobre_documento(
     tipo = detectar_tipo_documento(pregunta_usuario)
     nombre = None
     pregunta_norm = normalize_text(pregunta_usuario)
+    ctx = context_manager.get_context(session_id) if session_id else {}
+
+    # Reutilizar documento en contexto si no se menciona uno nuevo
+    if not tipo and not nombre and ctx.get("doc_actual"):
+        nombre = ctx.get("doc_actual")
+        tipo = infer_type_from_doc_name(nombre)
 
     # coincidencia directa por substring
     for doc in documentos:
@@ -2160,6 +2191,8 @@ def responder_sobre_documento(
             if session_id:
                 context_manager.set_selected_document(session_id, nombre)
                 context_manager.clear_document_options(session_id)
+                if ctx.get("doc_actual") != nombre:
+                    context_manager.update_context_data(session_id, {"doc_actual": nombre})
 
             campos_solicitados: List[str] = []
             for campo, kws in KEYWORD_FIELDS.items():
