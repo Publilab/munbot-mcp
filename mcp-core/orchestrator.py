@@ -88,8 +88,6 @@ logging.basicConfig(level=logging.INFO)
 
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
-_FAREWELL_PATTERNS = None
-_FAREWELL_RESPONSE = None
 
 
 def load_faq_cache() -> list:
@@ -102,39 +100,6 @@ def load_faq_cache() -> list:
             logging.warning(f"No se pudo cargar FAQ: {e}")
             _FAQ_CACHE = []
     return _FAQ_CACHE
-
-
-def _load_farewell_data():
-    """Carga frases y respuesta de despedida desde las FAQ."""
-    global _FAREWELL_PATTERNS, _FAREWELL_RESPONSE
-    if _FAREWELL_PATTERNS is not None:
-        return
-    _FAREWELL_PATTERNS = []
-    _FAREWELL_RESPONSE = ""
-    for entry in load_faq_cache():
-        if entry.get("categoria") == "despedidas":
-            pats = entry.get("pregunta", [])
-            if isinstance(pats, str):
-                pats = [pats]
-            _FAREWELL_PATTERNS = [normalize_text(p) for p in pats]
-            _FAREWELL_RESPONSE = entry.get("respuesta", "")
-            break
-
-
-def is_farewell(text: str) -> bool:
-    _load_farewell_data()
-    norm = normalize_text(text)
-    for pat in _FAREWELL_PATTERNS:
-        if re.search(rf"\b{re.escape(pat)}\b", norm):
-            return True
-        if pat in norm:
-            return True
-    return False
-
-
-def get_farewell_response() -> str:
-    _load_farewell_data()
-    return _FAREWELL_RESPONSE or "¡Hasta luego!"
 
 
 def normalize_text(text: str) -> str:
@@ -1086,11 +1051,6 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
-    if is_farewell(user_input):
-        farewell_msg = get_farewell_response()
-        delete_session(sid)
-        return {"respuesta": farewell_msg, "session_id": sid}
-
     if context_manager.get_pending_confirmation(sid):
         if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
@@ -1107,14 +1067,50 @@ def orchestrate(
 
     # Comando para cancelar flujo en curso
     if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
-        if ctx.get("pending_field") or ctx.get("complaint_state") or ctx.get("selected_document"):
+        # Comprobamos si hay algún flujo o aclaración pendiente que se pueda cancelar
+        is_cancellable_state = (
+            ctx.get("pending_field")
+            or ctx.get("complaint_state")
+            or ctx.get("selected_document")
+            or ctx.get("faq_pending")
+            or ctx.get("doc_clarify")
+            or ctx.get("doc_options")
+        )
+        if is_cancellable_state:
             context_manager.clear_pending_field(sid)
             context_manager.clear_complaint_state(sid)
             context_manager.clear_selected_document(sid)
+            context_manager.clear_faq_clarification(sid)
+            context_manager.clear_doc_clarification(sid)
+            context_manager.clear_document_options(sid)
             cancel_msg = "He cancelado el proceso en curso. ¿En qué más puedo ayudarte?"
             context_manager.update_context(sid, user_input, cancel_msg)
             return {"respuesta": cancel_msg, "session_id": sid}
+        else:
+            # Si no hay nada que cancelar, se responde amablemente.
+            no_cancel_msg = "No hay ningún proceso activo para cancelar. ¿En qué puedo ayudarte?"
+            context_manager.update_context(sid, user_input, no_cancel_msg)
+            return {"respuesta": no_cancel_msg, "session_id": sid}
 
+    # --- Manejar despedidas de forma prioritaria ---
+    faqs = load_faq_cache()
+    despedida_entry = next((e for e in faqs if e.get("categoria") == "despedidas"), None)
+    if despedida_entry:
+        despedida_terms = despedida_entry["pregunta"]
+        # Creamos un patrón de regex para buscar cualquiera de los términos de despedida como palabras completas
+        pattern = r"\b(" + "|".join(re.escape(term.strip()) for term in despedida_terms) + r")\b"
+        if re.search(pattern, user_input, re.IGNORECASE):
+            # Al detectar una despedida, se limpia el contexto para finalizar la sesión.
+            # NOTA: Se asume que context_manager tiene un método `clear_context` que elimina
+            # todas las claves de Redis para la sesión. Si no existe, debería ser creado.
+            # Ejemplo de implementación en ConversationalContextManager:
+            # def clear_context(self, session_id: str):
+            #     for key in self.redis_client.scan_iter(f"ctx:{session_id}:*"):
+            #         self.redis_client.delete(key)
+            context_manager.clear_context(sid)
+            delete_session(sid) # Limpia también el estado de la sesión de slot-filling (legado)
+            respuesta_despedida = despedida_entry["respuesta"]
+            return {"respuesta": respuesta_despedida, "session_id": sid}
 
     # --- Manejar feedback pendiente ---
     pending_feedback = context_manager.get_feedback_pending(sid)
