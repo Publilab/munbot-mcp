@@ -43,3 +43,10 @@ def test_tramites_menu_flow():
     assert 'certificado de residencia definitiva' in resp
     assert orchestrator.context_manager.get_context_field(sid, 'pending_doc_list')
     assert orchestrator.context_manager.get_context_field(sid, 'consultas_tramites_pending') is None
+
+    r3 = orchestrator.orchestrate('1', session_id=sid)
+    resp3 = r3['respuesta'].lower()
+    assert 'qué te interesa saber del certificado de residencia definitiva' in resp3
+    assert orchestrator.context_manager.get_context_field(sid, 'pending_doc_list') is None
+    assert orchestrator.context_manager.get_context_field(sid, 'pending_doc_type') is None
+    assert orchestrator.context_manager.get_context_field(sid, 'doc_actual') == 'Certificado de Residencia Definitiva'

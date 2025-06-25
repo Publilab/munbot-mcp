@@ -1121,10 +1121,9 @@ def orchestrate(
                 if opciones
                 else f"No encontré {tipo}s disponibles."
             )
-            context_manager.update_context_data(
-                sid,
-                {"pending_doc_list": opciones, "pending_doc_type": tipo},
-            )
+            context_manager.set_pending_doc_list(sid, opciones)
+            if tipo:
+                context_manager.set_pending_doc_type(sid, tipo)
             context_manager.clear_context_field(sid, "consultas_tramites_pending")
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
@@ -1305,6 +1304,28 @@ def orchestrate(
             return {"respuesta": msg, "session_id": sid}
         else:
             return {"respuesta": "Por favor responde 'sí' o 'no'.", "session_id": sid}
+
+    # --- Selección de documentos desde menú de trámites ---
+    pending_menu = context_manager.get_pending_doc_list(sid)
+    if pending_menu:
+        m = re.fullmatch(r"(\d+)", user_input.strip())
+        if m and 1 <= int(m.group(1)) <= len(pending_menu):
+            idx = int(m.group(1)) - 1
+            nombre = pending_menu[idx]
+            context_manager.update_context_data(sid, {"doc_actual": nombre})
+            context_manager.set_selected_document(sid, nombre)
+            context_manager.clear_pending_doc_list(sid)
+            context_manager.clear_pending_doc_type(sid)
+            msg = f"Entendido. ¿Qué te interesa saber del {nombre}? Puedes preguntarme requisitos, horario, correo o dirección."
+            context_manager.set_current_flow(sid, "documento")
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
+        else:
+            if re.fullmatch(r"(?i)(sí|si|ok|okay|vale)", user_input.strip()):
+                msg = "Necesito que elijas una opción con su número. Por favor intenta de nuevo."
+            else:
+                msg = "Por favor ingresa un número válido de la lista anterior."
+            return {"respuesta": msg, "session_id": sid}
 
     # --- Manejar selección de documentos pendientes ---
     pending_docs = context_manager.get_document_options(sid)
