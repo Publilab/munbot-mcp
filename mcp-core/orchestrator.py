@@ -1328,6 +1328,14 @@ def orchestrate(
             context_manager.clear_context(sid)
             delete_session(sid)
             return {"respuesta": answer, "session_id": sid}
+
+        if faq["entry"].get("categoria") == "consultas_tramites":
+            tipo = detectar_tipo_documento(user_input)
+            context_manager.update_context_data(
+                sid,
+                {"consultas_tramites_pending": True, "consultas_tramites_tipo": tipo},
+            )
+
         context_manager.update_context(sid, user_input, answer)
         context_manager.clear_context_field(sid, "doc_actual")
         context_manager.reset_fallback_count(sid)
