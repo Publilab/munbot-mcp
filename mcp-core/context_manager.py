@@ -214,6 +214,59 @@ class ConversationalContextManager:
             ex=self.session_expiry_seconds
         )
 
+    # ---- Manejo de listas de documentos pendientes ----
+    def set_pending_doc_list(self, session_id: str, opciones: List[str]):
+        """Guarda una lista de documentos pendiente de selección."""
+        context = self.get_context(session_id)
+        context["pending_doc_list"] = opciones
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_pending_doc_list(self, session_id: str) -> Optional[List[str]]:
+        """Obtiene la lista de documentos pendiente de selección."""
+        context = self.get_context(session_id)
+        return context.get("pending_doc_list")
+
+    def clear_pending_doc_list(self, session_id: str):
+        """Elimina la lista de documentos pendiente."""
+        context = self.get_context(session_id)
+        if "pending_doc_list" in context:
+            del context["pending_doc_list"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def set_pending_doc_type(self, session_id: str, tipo: str):
+        """Guarda el tipo de documento asociado a la lista pendiente."""
+        context = self.get_context(session_id)
+        context["pending_doc_type"] = tipo
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_pending_doc_type(self, session_id: str) -> Optional[str]:
+        """Obtiene el tipo de documento para la lista pendiente."""
+        context = self.get_context(session_id)
+        return context.get("pending_doc_type")
+
+    def clear_pending_doc_type(self, session_id: str):
+        """Elimina el tipo de documento pendiente."""
+        context = self.get_context(session_id)
+        if "pending_doc_type" in context:
+            del context["pending_doc_type"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
     # ---- Manejo de consultas de trámites pendientes ----
     def set_consultas_tramites_pending(self, session_id: str, value: bool = True):
         context = self.get_context(session_id)
