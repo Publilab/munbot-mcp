@@ -1110,6 +1110,18 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    # --- Finalizar consulta documental si el usuario responde "no" ---
+    if context_manager.get_context_field(sid, "doc_actual") and re.fullmatch(
+        r"(?i)no", user_input.strip()
+    ):
+        context_manager.clear_context_field(sid, "doc_actual")
+        msg = (
+            "Perfecto. Si quieres consultar sobre otro trámite, dime cuál o ingr"
+            "esa otra consulta."
+        )
+        context_manager.update_context(sid, user_input, msg)
+        return {"respuesta": msg, "session_id": sid}
+
     # --- Manejar seguimiento de consultas sobre trámites ---
     if context_manager.get_context_field(sid, "consultas_tramites_pending"):
         if re.fullmatch(r"(?i)(sí|si|ok|okay|vale|claro|si quiero saber)", user_input.strip()):
@@ -1129,7 +1141,7 @@ def orchestrate(
             return {"respuesta": msg, "session_id": sid}
 
     # Cerrar tema documental si el usuario responde de forma negativa
-    if ctx.get("doc_actual") and re.fullmatch(r"(?i)(no|ya ?est[aá]|gracias)", user_input.strip()):
+    if ctx.get("doc_actual") and re.fullmatch(r"(?i)(ya ?est[aá]|gracias)", user_input.strip()):
         context_manager.clear_context_field(sid, "doc_actual")
         msg = "Entendido. Si necesitas información sobre otro trámite o documento, solo indícame su nombre."
         context_manager.update_context(sid, user_input, msg)
@@ -2045,7 +2057,7 @@ def armar_respuesta_combinada(doc, campos):
             etiqueta = CAMPO_LABELS.get(campo, campo.replace("_", " ").capitalize())
             respuesta = f"{etiqueta} de **{doc_name}**: {lista}"
 
-        return respuesta + "\n\n¿Tienes alguna otra consulta sobre este documento o quieres consultar sobre otro trámite?"
+        return respuesta + "\n\n¿Quieres consultar algo más sobre este documento? (sí/no)"
 
     # --- Caso: múltiples campos ---
     respuesta = []
@@ -2110,7 +2122,7 @@ def armar_respuesta_combinada(doc, campos):
         respuesta.append(f"Nota: {doc['Notas']}")
 
     respuesta_final = "\n\n".join(respuesta)
-    return respuesta_final + "\n\n¿Tienes alguna otra consulta sobre este documento o quieres consultar sobre otro trámite?"
+    return respuesta_final + "\n\n¿Quieres consultar algo más sobre este documento? (sí/no)"
 
 
 def detectar_tipo_documento(pregunta):
