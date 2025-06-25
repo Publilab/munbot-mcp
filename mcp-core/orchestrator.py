@@ -88,6 +88,8 @@ logging.basicConfig(level=logging.INFO)
 
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
+_FAREWELL_PATTERNS = None
+_FAREWELL_RESPONSE = None
 
 
 def load_faq_cache() -> list:
@@ -100,6 +102,39 @@ def load_faq_cache() -> list:
             logging.warning(f"No se pudo cargar FAQ: {e}")
             _FAQ_CACHE = []
     return _FAQ_CACHE
+
+
+def _load_farewell_data():
+    """Carga frases y respuesta de despedida desde las FAQ."""
+    global _FAREWELL_PATTERNS, _FAREWELL_RESPONSE
+    if _FAREWELL_PATTERNS is not None:
+        return
+    _FAREWELL_PATTERNS = []
+    _FAREWELL_RESPONSE = ""
+    for entry in load_faq_cache():
+        if entry.get("categoria") == "despedidas":
+            pats = entry.get("pregunta", [])
+            if isinstance(pats, str):
+                pats = [pats]
+            _FAREWELL_PATTERNS = [normalize_text(p) for p in pats]
+            _FAREWELL_RESPONSE = entry.get("respuesta", "")
+            break
+
+
+def is_farewell(text: str) -> bool:
+    _load_farewell_data()
+    norm = normalize_text(text)
+    for pat in _FAREWELL_PATTERNS:
+        if re.search(rf"\b{re.escape(pat)}\b", norm):
+            return True
+        if pat in norm:
+            return True
+    return False
+
+
+def get_farewell_response() -> str:
+    _load_farewell_data()
+    return _FAREWELL_RESPONSE or "¡Hasta luego!"
 
 
 def normalize_text(text: str) -> str:
@@ -1051,6 +1086,11 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    if is_farewell(user_input):
+        farewell_msg = get_farewell_response()
+        delete_session(sid)
+        return {"respuesta": farewell_msg, "session_id": sid}
+
     if context_manager.get_pending_confirmation(sid):
         if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
@@ -1113,6 +1153,13 @@ def orchestrate(
             m = re.fullmatch(r"(\d+)", user_input.strip())
             if m and 1 <= int(m.group(1)) <= len(opciones):
                 idx = int(m.group(1)) - 1
+                if idx >= len(pending_faq.get("matches", [])):
+                    context_manager.clear_suggestion_state(sid)
+                    msg = (
+                        "Entiendo. Cuéntame con tus propias palabras qué necesitas y te ayudaré."
+                    )
+                    context_manager.update_context(sid, user_input, msg)
+                    return {"respuesta": msg, "session_id": sid}
                 entry = pending_faq["matches"][idx]
                 answer = entry["respuesta"]
                 context_manager.update_context(sid, user_input, answer)
@@ -1151,6 +1198,13 @@ def orchestrate(
         m = re.fullmatch(r"(\d+)", user_input.strip())
         if m and 1 <= int(m.group(1)) <= len(pending_docs):
             idx = int(m.group(1)) - 1
+            if idx == len(pending_docs) - 1:
+                context_manager.clear_suggestion_state(sid)
+                msg = (
+                    "Entiendo. Cuéntame con tus propias palabras qué necesitas y te ayudaré."
+                )
+                context_manager.update_context(sid, user_input, msg)
+                return {"respuesta": msg, "session_id": sid}
             nombre = pending_docs[idx]
             context_manager.set_selected_document(sid, nombre)
             context_manager.clear_document_options(sid)
@@ -1182,12 +1236,16 @@ def orchestrate(
     faq = lookup_faq_respuesta(user_input)
     if faq is not None:
         if faq.get("needs_confirmation"):
+            alts = faq.get("alternatives", [])
+            if faq.get("type") == "choose":
+                alts = list(alts) + ["Mi opción no está en la lista"]
+                faq["alternatives"] = alts
             context_manager.set_faq_clarification(sid, faq)
             if faq.get("type") == "confirm":
                 msg = f"¿Quisiste decir '{faq['pregunta']}'?"
             else:
                 opts = "\n".join(
-                    f"{i+1}. {q}" for i, q in enumerate(faq.get("alternatives", []))
+                    f"{i+1}. {q}" for i, q in enumerate(alts)
                 )
                 msg = (
                     "Encontré varias preguntas similares:\n"
@@ -2006,6 +2064,7 @@ def responder_sobre_documento(
     if listar_todo and tipo:
         opciones = listar_documentos_por_tipo(tipo)
         if opciones:
+            opciones = list(opciones) + ["Mi opción no está en la lista"]
             if session_id:
                 context_manager.set_document_options(session_id, opciones)
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
@@ -2018,6 +2077,7 @@ def responder_sobre_documento(
     if tipo and not nombre:
         opciones = listar_documentos_por_tipo(tipo)
         if opciones:
+            opciones = list(opciones) + ["Mi opción no está en la lista"]
             if session_id:
                 context_manager.set_document_options(session_id, opciones)
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
