@@ -145,6 +145,10 @@ def strip_intro_phrase(text: str) -> str:
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
     """Busca la mejor coincidencia en la base de FAQ y devuelve información
     para decidir la respuesta final."""
+    def apply_priority_filter(matches: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        if any(m["entry"].get("categoria") == "despedidas" for m in matches):
+            return [m for m in matches if m["entry"].get("categoria") == "despedidas"]
+        return matches
     try:
         faqs = load_faq_cache()
         pregunta_norm = normalize_text(pregunta)
@@ -188,9 +192,23 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
 
         if high_matches:
             high_matches.sort(key=lambda x: x["score"], reverse=True)
+          knxx12-codex/modificar-lógica-del-orquestador-para-saludos
+            # FILTRO: DESPEDIDAS SIEMPRE TIENEN PRIORIDAD
+            high_matches = apply_priority_filter(high_matches)
+            # FILTRO SALUDOS/ESTADO_ANIMO + OTRA CATEGORIA
+            if len(high_matches) > 1 and any(
+                m["entry"].get("categoria") in ("saludos", "estado_animo")
+                for m in high_matches
+            ):
+                high_matches = [
+                    m
+                    for m in high_matches
+                    if m["entry"].get("categoria") not in ("saludos", "estado_animo")
+                ]
             # FILTRO SALUDOS + OTRA CATEGORIA
             if len(high_matches) > 1 and any(m["entry"].get("categoria") == "saludos" for m in high_matches):
                 high_matches = [m for m in high_matches if m["entry"].get("categoria") != "saludos"]
+         main
 
             if len(high_matches) == 1:
                 m = high_matches[0]
@@ -243,6 +261,25 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
             logging.info(
                 f"FAQ: Sugiriendo temas por palabras clave para '{pregunta}': {[h['pregunta'] for h in keyword_hits]}"
             )
+            keyword_hits = apply_priority_filter(keyword_hits)
+            # FILTRO SALUDOS/ESTADO_ANIMO + OTRA CATEGORIA
+            if len(keyword_hits) > 1 and any(
+                k["entry"].get("categoria") in ("saludos", "estado_animo")
+                for k in keyword_hits
+            ):
+                keyword_hits = [
+                    k
+                    for k in keyword_hits
+                    if k["entry"].get("categoria") not in ("saludos", "estado_animo")
+                ]
+            if len(keyword_hits) == 1:
+                m = keyword_hits[0]
+                return {
+                    "entry": m["entry"],
+                    "pregunta": m["pregunta"],
+                    "score": 0,
+                    "needs_confirmation": False,
+                }
             return {
                 "alternatives": [h["pregunta"] for h in keyword_hits[:3]],
                 "matches": [h["entry"] for h in keyword_hits[:3]],
@@ -1280,6 +1317,10 @@ def orchestrate(
             return {"respuesta": msg, "session_id": sid}
 
         answer = faq["entry"]["respuesta"]
+        if faq["entry"].get("categoria") == "despedidas":
+            context_manager.clear_context(sid)
+            delete_session(sid)
+            return {"respuesta": answer, "session_id": sid}
         context_manager.update_context(sid, user_input, answer)
         context_manager.reset_fallback_count(sid)
         context_manager.set_last_sentiment(sid, "neutral")

@@ -10,7 +10,10 @@ class ConversationalContextManager:
         self.session_expiry_seconds = 300  # 5 minutos
 
     def clear_context(self, session_id: str):
+      knxx12-codex/modificar-lógica-del-orquestador-para-saludos
+        """Elimina todo el contexto almacenado para la sesión."""
         """Elimina todos los datos asociados a la sesión."""
+   main
         self.redis_client.delete(f"session:{session_id}")
 
     def get_context(self, session_id: str) -> Dict[str, Any]:
