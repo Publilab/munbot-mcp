@@ -37,7 +37,7 @@
     "no me diste una solución satisfactoria", "no me diste una solución correcta", "no me diste una solución adecuada", "no me diste una solución", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería",
     "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí",
     "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba"],
-    "respuesta": "Lo siento, pero no puedo ayudarte con eso. Si tienes alguna otra pregunta, no dudes en preguntar.",
+    "respuesta": "Lamento no poder ayudarte. Si te parece puedes reformular la pregunta, así que no dudes en preguntar.",
     "categoria": "decepcion"
   },
   {
@@ -46,12 +46,12 @@
     "categoria": "funcion_munbot"
   },
   {
-    "pregunta": ["¿Qué haces?", "a que te dedicas", "que haces", "para que te crearon", "Qué es lo que puedes hacer"],
-    "respuesta": "Soy un asistente virtual dispuesto a responder las preguntas que tengas sobre el gobierno de Curoscant. Estoy diseñado para un gran número de tareas, desde entregar información hasta entregar documentación oficial de tu interés.",
+    "pregunta": ["¿Qué haces?", "a que te dedicas", "que haces", "que es lo que haces", "para que te crearon", "Qué es lo que puedes hacer"],
+    "respuesta": "Puedo responder las preguntas que tengas sobre el gobierno de Curoscant. Estoy diseñado para un gran número de tareas, desde entregar información hasta entregar documentación oficial de tu interés.",
     "categoria": "funcion_munbot"
   },
   {
-    "pregunta": ["¿A qué horas estás disponible?", "¿Cuál es tu horario de atención", "¿A qué hora puedo contactarte?", "¿Cuándo puedo hablar contigo?"],
+    "pregunta": ["¿A qué horas estás disponible?", "¿Cuál es tu horario de atención", "¿A qué hora puedo contactarte?", "¿Cuándo puedo hablar contigo?", "Quiero saber cual es tu horario de atención", "Me gustaria saber cual es tu horario de atencion"],
     "respuesta": "Me puedes encontrar las 24 horas del día, los 7 días a la semana. Puedes contactarme en cualquier momento y a cualquier hora.",
     "categoria": "disponibilidad"
   },
@@ -137,21 +137,21 @@
   },
   {
     "pregunta": ["Qué tipo de consultas puedo hacer?", "¿Qué trámites puedo realizar?", "¿Qué te puedo preguntar?"],
-    "respuesta": "Soy un demo de un Agente Virtual, por lo que no tengo disponible todas Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por unos documentos específicos. Si tienes alguna consulta específica, no dudes en preguntar.",
+    "respuesta": "Soy un demo de un Agente Virtual, y no tengo disponible todas las consultas. Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por unos documentos específicos. Si tienes alguna consulta específica, no dudes en preguntar.",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener un certificado?", "¿Cómo puedo solicitar un certificado?"],
+    "pregunta": ["¿Cómo puedo obtener un certificado?", "¿Cómo puedo solicitar un certificado?", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "quiero sacar un certificado"],
     "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por un certificado en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener un permiso?", "¿Cómo puedo solicitar un permiso?"],
+    "pregunta": ["¿Cómo puedo obtener un permiso?", "¿Cómo puedo solicitar un permiso?", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "quiero sacar un permiso"],
     "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por un permiso en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener una licencia?", "¿Cómo puedo solicitar una licencia?"],
+    "pregunta": ["¿Cómo puedo obtener una licencia?", "¿Cómo puedo solicitar una licencia?", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "quiero sacar una licencia"],
     "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
     "categoria": "consultas_tramites"
   },
