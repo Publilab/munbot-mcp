@@ -168,6 +168,10 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
 
         if high_matches:
             high_matches.sort(key=lambda x: x["score"], reverse=True)
+            # FILTRO SALUDOS + OTRA CATEGORIA
+            if len(high_matches) > 1 and any(m["entry"].get("categoria") == "saludos" for m in high_matches):
+                high_matches = [m for m in high_matches if m["entry"].get("categoria") != "saludos"]
+
             if len(high_matches) == 1:
                 m = high_matches[0]
                 logging.info(
