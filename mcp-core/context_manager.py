@@ -9,6 +9,10 @@ class ConversationalContextManager:
         self.redis_client = redis.Redis(host=host, port=port, db=db, decode_responses=True)
         self.session_expiry_seconds = 300  # 5 minutos
 
+    def clear_context(self, session_id: str):
+        """Elimina todos los datos asociados a la sesión."""
+        self.redis_client.delete(f"session:{session_id}")
+
     def get_context(self, session_id: str) -> Dict[str, Any]:
         """Obtiene el contexto completo de la sesión."""
         context_str = self.redis_client.get(f"session:{session_id}")
