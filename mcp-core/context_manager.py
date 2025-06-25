@@ -210,6 +210,17 @@ class ConversationalContextManager:
             ex=self.session_expiry_seconds
         )
 
+    def clear_suggestion_state(self, session_id: str):
+        """Limpia cualquier estado relacionado con sugerencias pendientes."""
+        context = self.get_context(session_id)
+        for key in ("faq_pending", "doc_clarify", "doc_options"):
+            context.pop(key, None)
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
     def set_selected_document(self, session_id: str, name: str):
         """Guarda el documento seleccionado por el usuario."""
         context = self.get_context(session_id)

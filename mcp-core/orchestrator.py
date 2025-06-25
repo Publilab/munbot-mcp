@@ -1153,6 +1153,13 @@ def orchestrate(
             m = re.fullmatch(r"(\d+)", user_input.strip())
             if m and 1 <= int(m.group(1)) <= len(opciones):
                 idx = int(m.group(1)) - 1
+                if idx >= len(pending_faq.get("matches", [])):
+                    context_manager.clear_suggestion_state(sid)
+                    msg = (
+                        "Entiendo. Cuéntame con tus propias palabras qué necesitas y te ayudaré."
+                    )
+                    context_manager.update_context(sid, user_input, msg)
+                    return {"respuesta": msg, "session_id": sid}
                 entry = pending_faq["matches"][idx]
                 answer = entry["respuesta"]
                 context_manager.update_context(sid, user_input, answer)
@@ -1191,6 +1198,13 @@ def orchestrate(
         m = re.fullmatch(r"(\d+)", user_input.strip())
         if m and 1 <= int(m.group(1)) <= len(pending_docs):
             idx = int(m.group(1)) - 1
+            if idx == len(pending_docs) - 1:
+                context_manager.clear_suggestion_state(sid)
+                msg = (
+                    "Entiendo. Cuéntame con tus propias palabras qué necesitas y te ayudaré."
+                )
+                context_manager.update_context(sid, user_input, msg)
+                return {"respuesta": msg, "session_id": sid}
             nombre = pending_docs[idx]
             context_manager.set_selected_document(sid, nombre)
             context_manager.clear_document_options(sid)
@@ -1222,12 +1236,16 @@ def orchestrate(
     faq = lookup_faq_respuesta(user_input)
     if faq is not None:
         if faq.get("needs_confirmation"):
+            alts = faq.get("alternatives", [])
+            if faq.get("type") == "choose":
+                alts = list(alts) + ["Mi opción no está en la lista"]
+                faq["alternatives"] = alts
             context_manager.set_faq_clarification(sid, faq)
             if faq.get("type") == "confirm":
                 msg = f"¿Quisiste decir '{faq['pregunta']}'?"
             else:
                 opts = "\n".join(
-                    f"{i+1}. {q}" for i, q in enumerate(faq.get("alternatives", []))
+                    f"{i+1}. {q}" for i, q in enumerate(alts)
                 )
                 msg = (
                     "Encontré varias preguntas similares:\n"
@@ -2046,6 +2064,7 @@ def responder_sobre_documento(
     if listar_todo and tipo:
         opciones = listar_documentos_por_tipo(tipo)
         if opciones:
+            opciones = list(opciones) + ["Mi opción no está en la lista"]
             if session_id:
                 context_manager.set_document_options(session_id, opciones)
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
@@ -2058,6 +2077,7 @@ def responder_sobre_documento(
     if tipo and not nombre:
         opciones = listar_documentos_por_tipo(tipo)
         if opciones:
+            opciones = list(opciones) + ["Mi opción no está en la lista"]
             if session_id:
                 context_manager.set_document_options(session_id, opciones)
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
