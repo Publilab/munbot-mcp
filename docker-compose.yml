@@ -134,8 +134,8 @@ services:
       - ./services/llm_docs-mcp/.env
     environment:
       - REDIS_HOST=redis
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     restart: unless-stopped
     networks:
       - munbot-net
