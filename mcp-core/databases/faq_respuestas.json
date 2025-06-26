@@ -42,7 +42,7 @@
   },
   {
     "pregunta": ["¿Cómo estás?", "como estas", "que cuentas", "que tal", "que tal estas"],
-    "respuesta": "Creo que bien, pero no puedo sentirme como un humano, mi función aquí es ayudarte con tus trámites y consultas.",
+    "respuesta": "Creo que bien, pero no puedo sentirme como un humano, mi función aquí es ayudarte con tus trámites y consultas. ¿Puedo ayudarte con algo?",
     "categoria": "funcion_munbot"
   },
   {
