@@ -159,5 +159,20 @@
     "pregunta": ["¿Cómo puedo obtener una patente?", "¿Cómo puedo solicitar una patente?"],
     "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
     "categoria": "consultas_tramites"
+  },
+  {
+    "pregunta": ["¿Cuál es el correo electrónico de contacto?"],
+    "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
+    "categoria": "contacto_humano"
+  },
+  {
+    "pregunta": ["¿Qué requisitos necesito para obtener una cédula de identidad?"],
+    "respuesta": "Para obtener la Cédula Única Sistema Planetario necesitas Identificación Oficial Planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago.",
+    "categoria": "tramites"
+  },
+  {
+    "pregunta": ["¿Cómo tramitar un permiso de aterrizaje?"],
+    "respuesta": "Debes presentar tu Licencia de Transporte Espacial, identificación oficial, un plan de ruta, el formulario de solicitud y la evaluación de seguridad de la nave en el Edificio Consistorial de Coruscant.",
+    "categoria": "tramites"
   }
 ]
