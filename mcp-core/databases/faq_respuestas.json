@@ -169,10 +169,5 @@
     "pregunta": ["¿Qué requisitos necesito para obtener una cédula de identidad?"],
     "respuesta": "Para obtener la Cédula Única Sistema Planetario necesitas Identificación Oficial Planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago.",
     "categoria": "tramites"
-  },
-  {
-    "pregunta": ["¿Cómo tramitar un permiso de aterrizaje?"],
-    "respuesta": "Debes presentar tu Licencia de Transporte Espacial, identificación oficial, un plan de ruta, el formulario de solicitud y la evaluación de seguridad de la nave en el Edificio Consistorial de Coruscant.",
-    "categoria": "tramites"
   }
 ]
