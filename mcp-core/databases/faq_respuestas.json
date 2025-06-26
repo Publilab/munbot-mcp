@@ -51,7 +51,7 @@
     "categoria": "funcion_munbot"
   },
   {
-    "pregunta": ["¿A qué horas estás disponible?", "¿Cuál es tu horario de atención", "¿A qué hora puedo contactarte?", "¿Cuándo puedo hablar contigo?", "Quiero saber cual es tu horario de atención", "Me gustaria saber cual es tu horario de atencion"],
+    "pregunta": ["¿A qué horas estás disponible?", "horario de atención", "puedo contactarte", "puedo hablar contigo", "Quiero saber cual es tu horario de atención", "Me gustaria saber cual es tu horario de atencion"],
     "respuesta": "Me puedes encontrar las 24 horas del día, los 7 días a la semana. Puedes contactarme en cualquier momento y a cualquier hora.",
     "categoria": "disponibilidad"
   },
@@ -66,42 +66,42 @@
     "categoria": "privacidad"
   },
   {
-    "pregunta": ["¿Dónde estás ubicado?", "¿Donde puedo ubicarte?", "¿Dónde te encuentro?", "¿Dónde está tu oficina?", "Dónde están tus oficinas", "¿Dónde está tu sede?", "¿Dónde atiendes?"],
+    "pregunta": ["¿Dónde estás ubicado?", "¿Donde puedo ubicarte?", "¿Dónde te encuentro?", "¿Dónde está tu oficina?", "Dónde están tus oficinas", "¿Dónde está tu sede?", "¿Dónde atiendes?", "Cual es tu dirección", "¿Dónde está tu dirección?", "¿Dónde está tu oficina virtual?", "¿Dónde está tu oficina virtual?", "donde atiendes"],
     "respuesta": "No tengo oficina virtual, pero supongo que mi servidor está en la Ciudad de Coruscant. Pero en realidad estoy donde tú me necesites. No poseo un cuerpo, pero tengo la capacidad de asistirte en lo que necesites.",
     "categoria": "ubicacion"
   },
   {
-    "pregunta": ["¿Cómo puedo contactar a un humano?"],
+    "pregunta": ["contactar a un humano?", "contactar un funcionario", "hablar con un humano", "hablar con un funcionario", "hablar humano", "hablar funcionario", "contactar humano", "contactar funcionario", "quiero hablar con un humano", "quiero hablar con un funcionario", "quiero contactar a un humano", "quiero contactar a un funcionario"],
     "respuesta": "Si necesitas urgente hablar con un agente humano, envía un correo a contacto@coruscant.gov o llama al 123-456-7890. También puedo ayudarte en un montón de servicios, ¿te gustaría probar qué tan bueno soy?",
     "categoria": "contacto_humano"
   },
   {
-    "pregunta": ["¿Qué funcionalidades incluye este demo?", "demo"],
+    "pregunta": ["Qué funcionalidades", "incluye este demo", "tiene esta demo"],
     "respuesta": "Esta demo es solo un vistazo de las funcionalidades de MunBoT: permite integrar trámites, agendar citas, presentar reclamos, solicitar documentos y hacer consultas pertinentes a la institución.",
     "categoria": "alcance_demo"
   },
   {
-    "pregunta": ["¿Con qué tecnología estás construido?", "Que tecnologia tienes incorporada", "Qué tecnologías usas", "Qué tecnologías tienes", "Qué tecnologías usas", "Qué tecnologías tienes incorporadas", "Qué tecnologías tienes integradas"],
+    "pregunta": ["¿Con qué tecnología estás construido?", "Que tecnologia tienes incorporada", "Qué tecnologías usas", "Qué tecnologías tienes", "Qué tecnologías usas", "Qué tecnologías tienes incorporadas", "Qué tecnologías tienes integradas", "Que tecnología tienes integrada"],
     "respuesta": "MunBoT está desarrollado con RGA (Python), microservicios en Docker y se integra a Evolution API para WhatsApp, todo desplegable en Kubernetes.",
     "categoria": "tecnologias"
   },
   {
-    "pregunta": ["¿Con qué herramientas puedes integrarte?"],
+    "pregunta": ["¿Con qué herramientas puedes integrarte?", "Con qué herramientas puedo integrarme", "Con qué herramientas puedo conectarme", "Con qué herramientas puedo interactuar", "Con qué herramientas puedo trabajar", "Con qué herramientas puedo colaborar"],
     "respuesta": "En el demo se integra a distintas APIs como WhatsApp, una plataforma web, un sistema para agendar horas, consultas sobre trámites y denuncias ciudadanas. En producción puede conectarse a cualquier API REST municipal que programemos o diseñemos.",
     "categoria": "integraciones"
   },
   {
-    "pregunta": ["¿Cómo proteges mi información?"],
+    "pregunta": ["¿Cómo proteges mi información?", "Cómo proteges mis datos", "Cómo proteges mis datos personales", "Cómo proteges mi información personal", "Cómo proteges mi información sensible", "Cómo proteges mis datos sensibles", "Cómo proteges"],
     "respuesta": "Los datos se transmiten mediante HTTPS, se almacenan cifrados y MunBoT cumple con la LOPD chilena; en la demo usamos una base temporal purgada diariamente.",
     "categoria": "seguridad_datos"
   },
   {
-    "pregunta": ["¿Cuál es la hoja de ruta de desarrollo de MunBoT?"],
+    "pregunta": ["¿Cuál es la hoja de ruta de desarrollo de MunBoT?", "Que plan tienes para el futuro", "Que funcionalidades nuevas se agregarán", "Que mejoras se implementarán", "Que nuevas funcionalidades se agregarán", "Que nuevas funcionalidades se implementarán"],
     "respuesta": "Planeamos incluir reconocimiento de voz, generación automática de documentos y análisis predictivo de demanda ciudadana en versiones sucesivas. Nuestro siguiente paso es integrar la información completa para asistirte mejor.",
     "categoria": "hoja_ruta"
   },
   {
-    "pregunta": ["¿Cómo puedo reportar errores o sugerencias?"],
+    "pregunta": ["¿Cómo puedo reportar errores o sugerencias?", "como puedo reportar errores", "como puedo hacer sugerencias", "como puedo enviar sugerencias", "como puedo enviar observaciones", "como puedo enviar comentarios", "como puedo enviar feedback"],
     "respuesta": "Puedes enviarnos tus observaciones a contacto@publilab.cl; tu retroalimentación es clave para mejorar el servicio.",
     "categoria": "feedback"
   },
@@ -141,23 +141,28 @@
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener un certificado?", "¿Cómo puedo solicitar un certificado?", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "quiero sacar un certificado"],
+    "pregunta": ["obtener un certificado?", "solicitar un certificado?", "quiero solicitar un certificado", "quiero un certificado", "quiero sacar un certificado"],
     "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por un certificado en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener un permiso?", "¿Cómo puedo solicitar un permiso?", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "quiero sacar un permiso"],
+    "pregunta": ["obtener un permiso", "solicitar un permiso", "quiero un permiso", "sacar un permiso"],
     "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por un permiso en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener una licencia?", "¿Cómo puedo solicitar una licencia?", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "quiero sacar una licencia"],
+    "pregunta": ["obtener una licencia?", "solicitar una licencia?", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"],
     "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener una patente?", "¿Cómo puedo solicitar una patente?"],
+    "pregunta": ["obtener una patente?", "solicitar una patente?", "quiero solicitar una patente", "quiero una patente", "sacar una patente"],
     "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "pregunta": ["obtener una cedula?", "solicitar una cedula?", "quiero solicitar una cedula", "quiero una cedula", "sacar una cedula", "obtener un carne?", "solicitar un carne?", "quiero solicitar un carne", "quiero un carne", "sacar un carne"],
+    "respuesta": "Dependiendo de la cedula que desees, puedes solicitarla en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una cedula en particular?",
     "categoria": "consultas_tramites"
   }
 ]
