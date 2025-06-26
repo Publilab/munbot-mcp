@@ -252,7 +252,10 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
                 entry_preguntas = [entry_preguntas]
             for alt in entry_preguntas:
                 entry_tokens = set(tokenize(alt))
-                if pregunta_tokens & entry_tokens:
+                common = pregunta_tokens & entry_tokens
+                union = pregunta_tokens | entry_tokens
+                jaccard = len(common) / len(union) if union else 0
+                if len(common) >= 2 or jaccard >= 0.3:
                     keyword_hits.append({"entry": entry, "pregunta": alt})
                     break
         if keyword_hits:
