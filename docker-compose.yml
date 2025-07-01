@@ -38,7 +38,9 @@ services:
       - evolution-api
 
   web-interface:
-    build: ./gateways/web-interface
+    build: 
+      context: ./gateways/web-interface
+      dockerfile: Dockerfile
     container_name: web-interface
     env_file:
       - ./gateways/web-interface/.env
@@ -107,7 +109,9 @@ services:
     restart: unless-stopped
 
   complaints-mcp:
-    build: ./services/complaints-mcp
+    build: 
+      context: ./services/complaints-mcp
+      dockerfile: Dockerfile
     container_name: complaints-mcp
     env_file:
       - ./services/complaints-mcp/.env
@@ -149,7 +153,9 @@ services:
       - ./services/llm_docs-mcp/models:/app/services/llm_docs-mcp/models
 
   scheduler-mcp:
-    build: ./services/scheduler-mcp
+    build: 
+      context: ./services/scheduler-mcp
+      dockerfile: Dockerfile
     container_name: scheduler-mcp
     env_file:
       - ./services/scheduler-mcp/.env

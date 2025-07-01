@@ -18,7 +18,7 @@ COPY repository.py ./
 COPY models.py ./
 COPY requirements.txt ./
 COPY utils ./utils
-COPY ./databases/reclamos.sql ./databases/reclamos.sql
+COPY ./databases/init-postgres.sql ./databases/init-postgres.sql
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 

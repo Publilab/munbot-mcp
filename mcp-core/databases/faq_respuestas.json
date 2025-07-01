@@ -66,17 +66,17 @@
     "categoria": "privacidad"
   },
   {
-    "pregunta": ["¿Dónde estás ubicado?", "¿Donde puedo ubicarte?", "¿Dónde te encuentro?", "¿Dónde está tu oficina?", "Dónde están tus oficinas", "¿Dónde está tu sede?", "¿Dónde atiendes?"],
+    "pregunta": ["¿Dónde estás ubicado?", "¿Donde puedo ubicarte?", "¿Dónde te encuentro?", "¿Dónde está tu oficina?", "Dónde están tus oficinas", "cual es tu direccion", "¿Dónde atiendes?"],
     "respuesta": "No tengo oficina virtual, pero supongo que mi servidor está en la Ciudad de Coruscant. Pero en realidad estoy donde tú me necesites. No poseo un cuerpo, pero tengo la capacidad de asistirte en lo que necesites.",
     "categoria": "ubicacion"
   },
   {
-    "pregunta": ["¿Cómo puedo contactar a un humano?"],
+    "pregunta": ["¿contactar a un humano?", "contactar un funcionatio", "hablar con un humano", "hablar con un funcionario", "ser atendido por un humano", "ser atendido por un funcionario", "hablar con un agente humano", "hablar con un agente de atención al cliente", "hablar con un agente de servicio al cliente", "hablar con un agente de soporte"],
     "respuesta": "Si necesitas urgente hablar con un agente humano, envía un correo a contacto@coruscant.gov o llama al 123-456-7890. También puedo ayudarte en un montón de servicios, ¿te gustaría probar qué tan bueno soy?",
     "categoria": "contacto_humano"
   },
   {
-    "pregunta": ["¿Qué funcionalidades incluye este demo?", "demo"],
+    "pregunta": ["funcionalidades incluye este demo", "hace esta demo", "hacer esta demo", "lo que puede hacer la demo"],
     "respuesta": "Esta demo es solo un vistazo de las funcionalidades de MunBoT: permite integrar trámites, agendar citas, presentar reclamos, solicitar documentos y hacer consultas pertinentes a la institución.",
     "categoria": "alcance_demo"
   },
@@ -91,7 +91,7 @@
     "categoria": "integraciones"
   },
   {
-    "pregunta": ["¿Cómo proteges mi información?"],
+    "pregunta": ["¿Cómo proteges mi información?", "politica de privacidad", "seguridad de datos", "cómo manejas mis datos", "cómo proteges mis datos personales", "cómo proteges mi información personal"],
     "respuesta": "Los datos se transmiten mediante HTTPS, se almacenan cifrados y MunBoT cumple con la LOPD chilena; en la demo usamos una base temporal purgada diariamente.",
     "categoria": "seguridad_datos"
   },
@@ -106,27 +106,27 @@
     "categoria": "feedback"
   },
   {
-    "pregunta": ["¿Cómo contrato este servicio para mi municipalidad?"],
+    "pregunta": ["contrato este servicio", "compro el chatbot"],
     "respuesta": "Puedes contactar a un representante comercial al mail ei@publilab.cl o al número (+56) 9 2734 3333.",
     "categoria": "contacto_comercial"
   },
   {
-    "pregunta": ["¿Cuánto cuesta MunBoT?"],
+    "pregunta": ["¿Cuánto cuesta MunBoT?", "¿Cuál es el precio de MunBoT?", "¿Cuánto cuesta el servicio?", "¿Cuánto cuesta la implementación?", "¿Cuánto cuesta contratar MunBoT?", "¿Cuánto cuesta el chatbot?"],
     "respuesta": "El precio depende de las necesidades de tu institución y lo que quieras incluir en tu paquete de implementación. Contacta a un representante comercial al mail ei@publilab.cl o al número (+56) 9 3402 9207.",
     "categoria": "costos"
   },
   {
-    "pregunta": ["¿Cómo puedo hacer un reclamo?"],
+    "pregunta": ["hacer un reclamo?", "dejar un reclamo", "escribir un reclamo", "hacer una queja", "dejar una queja", "escribir una queja", "reclamar", "quejarme"],
     "respuesta": "Para hacer un reclamo puedes pedirlo en este mismo mensaje y te ayudaré a generarlo. ¿Quieres hacer un reclamo ahora?",
     "categoria": "reclamos"
   },
   {
-    "pregunta": ["¿Cómo puedo hacer una denuncia?"],
+    "pregunta": ["hacer una denuncia?", "escribir una denuncia", "denunciar"],
     "respuesta": "Para hacer una denuncia puedes hacerla en este mismo mensaje y te ayudaré a generarla. Recuerda que los datos que te pida solo serán de uso interno y no serán divulgados. ¿Quieres hacer un reclamo ahora?",
     "categoria": "reclamos"
   },
   {
-    "pregunta": ["¿Cómo puedo agendar una cita?", "¿Cómo puedo pedir una hora?", "¿Cómo puedo pedir una cita?"],
+    "pregunta": ["agendar una cita", "pedir una hora", "pedir una cita?", "que me atienda un funcionario", "agendar una hora"],
     "respuesta": "Para agendar una cita puedes hacer la solicitud en este mismo mensaje y te ayudaré a generarla. ¿Quieres agendar una cita ahora?",
     "categoria": "citas"
   },
@@ -141,33 +141,33 @@
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener un certificado?", "¿Cómo puedo solicitar un certificado?", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "quiero sacar un certificado"],
-    "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por un certificado en particular?",
+    "pregunta": ["obtener un certificado", "solicitar un certificado", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "sacar un certificado"],
+    "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún certificado en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener un permiso?", "¿Cómo puedo solicitar un permiso?", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "quiero sacar un permiso"],
-    "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por un permiso en particular?",
+    "pregunta": ["obtener un permiso", "solicitar un permiso", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "sacar un permiso"],
+    "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún permiso en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener una licencia?", "¿Cómo puedo solicitar una licencia?", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "quiero sacar una licencia"],
+    "pregunta": ["obtener una licencia", "solicitar una licencia", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"],
     "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
     "categoria": "consultas_tramites"
   },
   {
-    "pregunta": ["¿Cómo puedo obtener una patente?", "¿Cómo puedo solicitar una patente?"],
+    "pregunta": ["obtener una patente", "solicitar una patente", "quiero obtener una patente", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"],
     "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
     "categoria": "consultas_tramites"
-  },
-  {
-    "pregunta": ["¿Cuál es el correo electrónico de contacto?"],
-    "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
-    "categoria": "contacto_humano"
   },
   {
     "pregunta": ["¿Qué requisitos necesito para obtener una cédula de identidad?"],
     "respuesta": "Para obtener la Cédula Única Sistema Planetario necesitas Identificación Oficial Planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago.",
     "categoria": "tramites"
+  },
+  {
+    "pregunta": ["¿Cuál es el correo electrónico de contacto?"],
+    "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
+    "categoria": "contacto_humano"
   }
 ]
