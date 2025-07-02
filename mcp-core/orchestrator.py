@@ -625,7 +625,8 @@ STOPWORDS = {
 
 def tokenize(text: str) -> List[str]:
     """Tokeniza una cadena ignorando stopwords y palabras cortas."""
-    words = re.findall(r"\w+", text.lower())
+    text = normalize(text)
+    words = re.findall(r"\w+", text)
     return [w for w in words if len(w) >= 3 and w not in STOPWORDS]
 
 
