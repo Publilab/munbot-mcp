@@ -33,7 +33,7 @@ orchestrator.context_manager.redis_client = fake
 def test_tramites_menu_flow():
     r1 = orchestrator.orchestrate('¿Cómo puedo obtener un certificado?')
     sid = r1['session_id']
-    assert 'consultar por un certificado en particular' in r1['respuesta'].lower()
+    assert 'información relevante de algún certificado en particular' in r1['respuesta'].lower()
     assert orchestrator.context_manager.get_context_field(sid, 'consultas_tramites_pending')
     assert orchestrator.context_manager.get_context_field(sid, 'consultas_tramites_tipo') == 'certificado'
 

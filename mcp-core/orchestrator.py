@@ -1187,7 +1187,7 @@ def orchestrate(
                 context_manager.update_context(sid, user_input, resp)
                 return {"respuesta": resp, "session_id": sid}
 
-    if context_manager.get_pending_confirmation(sid):
+    if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid):
         if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
             context_manager.update_context(sid, user_input, resp)
@@ -1441,6 +1441,24 @@ def orchestrate(
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": answer, "session_id": sid}
 
+    # --- Manejar confirmación para iniciar reclamo ---
+    if context_manager.get_pending_confirmation(sid):
+        if re.fullmatch(r"(?i)(sí|si|claro|por supuesto|ok|vale)", user_input.strip()):
+            context_manager.clear_pending_confirmation(sid)
+            # Miguel: aquí iniciamos el flujo de datos del reclamo
+            context_manager.clear_context_field(sid, "doc_actual")
+            context_manager.update_pending_field(sid, "nombre")
+            context_manager.update_complaint_state(sid, "iniciado")
+            pregunta = (
+                "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n"
+                "¿Cómo te llamas? (ej. Juan Pérez)"
+            )
+            return {"respuesta": pregunta, "session_id": sid}
+        context_manager.clear_pending_confirmation(sid)
+        msg = "Entendido. ¿En qué más puedo ayudarte?"
+        context_manager.update_context(sid, user_input, msg)
+        return {"respuesta": msg, "session_id": sid}
+
     # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
     respuesta_doc = responder_sobre_documento(user_input, sid)
     if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
@@ -1456,16 +1474,20 @@ def orchestrate(
     pending = ctx.get("pending_field", None)
     complaint_state = ctx.get("complaint_state", None)
 
-    # Iniciar flujo de reclamo si detecta palabra clave
+    # --- Detectar intención de reclamo y preguntar antes de slot-filling ---
+    ctx = context_manager.get_context(sid)
+    pending = ctx.get("pending_field")
     if not pending and re.search(
-        r"\b(reclamo|queja|denuncia)\b", user_input, re.IGNORECASE
+        r"\b(?:c\xc3\xb3mo|como|d\xc3\xb3nde|donde|qu\xc3\xa9|que)?\s*(?:puedo|necesito)?\s*(reclamo|queja|denuncia)\b",
+        user_input,
+        re.IGNORECASE,
     ):
-        context_manager.clear_context_field(sid, "doc_actual")
-        sid = session_id or str(uuid.uuid4())
-        context_manager.update_context(sid, user_input, "")
-        context_manager.update_pending_field(sid, "nombre")
-        context_manager.update_complaint_state(sid, "iniciado")
-        pregunta = "Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas? (ej. Juan Pérez)"
+        context_manager.set_pending_confirmation(sid, True)
+        pregunta = (
+            "Si quieres hacer un reclamo o una denuncia estoy a tu disposici\xc3\xb3n para registrarlo. "
+            "¿Te gustar\xc3\xada registrar el reclamo en estos momentos?"
+        )
+        context_manager.update_context(sid, user_input, pregunta)
         return {"respuesta": pregunta, "session_id": sid}
 
     # Si estamos esperando el NOMBRE...
