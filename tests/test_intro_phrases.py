@@ -36,3 +36,8 @@ def test_intro_phrase_disponibilidad():
     resp = orchestrator.orchestrate('Quiero saber cual es tu horario de atención')
     assert '24 horas' in resp['respuesta']
 
+
+def test_intro_phrase_accented():
+    resp = orchestrator.orchestrate('Me gustaría saber cual es tu horario de atención')
+    assert '24 horas' in resp['respuesta']
+
