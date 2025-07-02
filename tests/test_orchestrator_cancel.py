@@ -36,7 +36,12 @@ def test_cancel_reclamo_flow():
     assert r.status_code == 200
     data = r.json()
     sid = data['session_id']
-    assert '¿Cómo te llamas' in data['respuesta']
+    assert 'registrarlo' in data['respuesta'].lower()
+
+    r = client.post('/orchestrate', json={'pregunta': 'sí', 'session_id': sid})
+    assert r.status_code == 200
+    data = r.json()
+    assert '¿cómo te llamas' in data['respuesta'].lower()
 
     r = client.post('/orchestrate', json={'pregunta': 'Juan Perez', 'session_id': sid})
     assert r.status_code == 200
