@@ -1070,6 +1070,135 @@ if os.getenv("DISABLE_PERIODIC_MIGRATION") != "1":
     threading.Thread(target=periodic_migration, daemon=True).start()
 
 
+def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Procesa el flujo de registro de reclamos cuando hay campos pendientes."""
+
+    pending = ctx.get("pending_field")
+    if not pending:
+        return None
+
+    # NOMBRE
+    if pending == "nombre":
+        nombre = user_input.strip()
+        if len(nombre.split()) < 2:
+            return {
+                "respuesta": "Por favor, ingresa tu nombre completo (nombre y apellido).",
+                "session_id": sid,
+                "pending_field": "nombre",
+            }
+        ctx["nombre"] = nombre
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_input, f"¡Gracias, {nombre}!")
+        context_manager.update_pending_field(sid, "rut")
+        return {
+            "respuesta": f"Genial, {nombre}. Ahora, ¿puedes darme tu RUT? (ej. 12.345.678-5)",
+            "session_id": sid,
+        }
+
+    # RUT
+    if pending == "rut":
+        rut = user_input.strip()
+        rut_formateado = validar_y_formatear_rut(rut)
+        if not rut_formateado:
+            return {
+                "respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).",
+                "session_id": sid,
+                "pending_field": "rut",
+            }
+        ctx["rut"] = rut_formateado
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado}).")
+        context_manager.update_pending_field(sid, "mensaje")
+        return {
+            "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
+            "session_id": sid,
+        }
+
+    # MENSAJE
+    if pending == "mensaje":
+        mensaje = user_input.strip()
+        if len(mensaje) < 10:
+            return {
+                "respuesta": "Por favor, describe tu reclamo con al menos 10 caracteres.",
+                "session_id": sid,
+                "pending_field": "mensaje",
+            }
+        ctx["mensaje"] = mensaje
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_input, "Entiendo tu reclamo.")
+        context_manager.update_pending_field(sid, "departamento")
+        opciones = (
+            "¿A qué departamento crees que corresponde atender tu reclamo?\n"
+            "1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\n"
+            "Escribe el número al que corresponde el departamento seleccionado."
+        )
+        return {"respuesta": opciones, "session_id": sid}
+
+    # DEPARTAMENTO
+    if pending == "departamento":
+        depto = user_input.strip()
+        if depto not in [str(i) for i in range(1, 9)]:
+            return {
+                "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
+                "session_id": sid,
+                "pending_field": "departamento",
+            }
+        ctx["departamento"] = depto
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_input, f"Departamento {depto} seleccionado.")
+        context_manager.update_pending_field(sid, "mail")
+        return {
+            "respuesta": "Por último, ¿cuál es tu correo electrónico para enviarte el comprobante?",
+            "session_id": sid,
+        }
+
+    # MAIL
+    if pending == "mail":
+        mail = user_input.strip()
+        if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", mail):
+            return {
+                "respuesta": "El correo electrónico ingresado no es válido. Por favor, ingresa un email válido.",
+                "session_id": sid,
+                "pending_field": "mail",
+            }
+        ctx["mail"] = mail
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_input, "Correo registrado.")
+        context_manager.clear_pending_field(sid)
+        params = {
+            "rut": ctx["rut"],
+            "nombre": ctx["nombre"],
+            "mail": mail,
+            "mensaje": ctx["mensaje"],
+            "departamento": ctx["departamento"],
+            "categoria": 1,
+            "prioridad": 3,
+        }
+        logging.info(
+            f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}"
+        )
+        response = call_tool_microservice("complaint-registrar_reclamo", params)
+        logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
+        context_manager.clear_complaint_state(sid)
+        if "error" in response:
+            err = response.get("error", "")
+            if "Connection error" in err or "Error 5" in err:
+                msg_err = "No pude registrar tu reclamo por un problema técnico. Por favor intenta más tarde."
+            else:
+                msg_err = "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente."
+            return {"respuesta": msg_err, "session_id": sid}
+        success_msg = (
+            "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
+            "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
+        )
+        success_msg += "\n¿Te fue útil mi respuesta? (Sí/No)"
+        context_manager.set_feedback_pending(sid, None)
+        context_manager.update_context(sid, user_input, success_msg)
+        return {"respuesta": success_msg, "session_id": sid}
+
+    return None
+
+
 def orchestrate(
     user_input: str,
     extra_context: Optional[Dict[str, Any]] = None,
@@ -1078,6 +1207,21 @@ def orchestrate(
     sid = session_id or str(uuid.uuid4())
 
     ctx = context_manager.get_context(sid)
+
+    raw = user_input.strip()
+    pending = ctx.get("pending_field")
+    if not pending and not (
+        context_manager.get_faq_clarification(sid)
+        or context_manager.get_pending_doc_list(sid)
+        or context_manager.get_document_options(sid)
+    ):
+        if (
+            re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", raw)
+            or re.match(r"^\d{7,8}-[kK\d]$", raw)
+            or re.fullmatch(r"\d+", raw)
+        ):
+            msg = "Si deseas registrar un reclamo, primero indícame 'sí' cuando te pregunte."
+            return {"respuesta": msg, "session_id": sid}
 
     # --- Finalizar consulta documental si el usuario responde "no" ---
     if context_manager.get_context_field(sid, "doc_actual") and re.fullmatch(
@@ -1188,6 +1332,11 @@ def orchestrate(
             no_cancel_msg = "No hay ningún proceso activo para cancelar. ¿En qué puedo ayudarte?"
             context_manager.update_context(sid, user_input, no_cancel_msg)
             return {"respuesta": no_cancel_msg, "session_id": sid}
+
+    # Procesar formulario de reclamo si hay campos pendientes
+    resp = _handle_slot_filling(user_input, sid, ctx)
+    if resp:
+        return resp
 
     # --- Manejar despedidas de forma prioritaria ---
     faqs = load_faq_cache()
@@ -1433,7 +1582,7 @@ def orchestrate(
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
         answer = user_input.strip().lower()
-        ok = bool(re.fullmatch(r"(sí|si|claro|ok|vale|por supuesto)", answer))
+        ok = bool(re.search(r"\b(s[ií]|si|claro|ok|vale|por supuesto)\b", answer, re.IGNORECASE))
         flow = context_manager.get_current_flow(sid)
         context_manager.clear_pending_confirmation(sid)
 
@@ -1461,153 +1610,6 @@ def orchestrate(
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": respuesta_doc, "session_id": sid}
 
-    # ------ Bloque de Slot Filling para RECLAMO ------
-    ctx = context_manager.get_context(session_id) if session_id else {}
-    pending = ctx.get("pending_field", None)
-    complaint_state = ctx.get("complaint_state", None)
-
-
-    # Si estamos esperando el NOMBRE...
-    if pending == "nombre":
-        nombre = user_input.strip()
-        # Validar nombre (mínimo dos palabras)
-        if len(nombre.split()) < 2:
-            return {
-                "respuesta": "Por favor, ingresa tu nombre completo (nombre y apellido).",
-                "session_id": session_id,
-                "pending_field": "nombre",
-            }
-        ctx["nombre"] = nombre
-        save_session(session_id, ctx)
-        # (Opcional) Simular registro en BD de nombre
-        # print(f"Registrando nombre en BD: {nombre}")
-        context_manager.update_context(session_id, user_input, f"¡Gracias, {nombre}!")
-        context_manager.update_pending_field(session_id, "rut")
-        return {
-            "respuesta": f"Genial, {nombre}. Ahora, ¿puedes darme tu RUT? (ej. 12.345.678-5)",
-            "session_id": session_id,
-        }
-
-    # Si estamos esperando el RUT...
-    if pending == "rut":
-        rut = user_input.strip()
-        rut_formateado = validar_y_formatear_rut(rut)
-        if not rut_formateado:
-            return {
-                "respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).",
-                "session_id": session_id,
-                "pending_field": "rut",
-            }
-        ctx["rut"] = rut_formateado
-        save_session(session_id, ctx)
-        context_manager.update_context(
-            session_id, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado})."
-        )
-        context_manager.update_pending_field(session_id, "mensaje")
-        return {
-            "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
-            "session_id": session_id,
-        }
-
-    # Si ctx['rut'] ya existe y es válido, no volver a pedirlo ni borrarlo.
-    if ctx.get("rut") and validar_y_formatear_rut(ctx["rut"]):
-        # Saltar pedir RUT
-        if pending == "rut":
-            context_manager.update_pending_field(session_id, "mensaje")
-            return {
-                "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
-                "session_id": session_id,
-            }
-
-    # Si estamos esperando el MENSAJE del reclamo...
-    if pending == "mensaje":
-        mensaje = user_input.strip()
-        if len(mensaje) < 10:
-            return {
-                "respuesta": "Por favor, describe tu reclamo con al menos 10 caracteres.",
-                "session_id": session_id,
-                "pending_field": "mensaje",
-            }
-        ctx["mensaje"] = mensaje
-        save_session(session_id, ctx)
-        context_manager.update_context(session_id, user_input, "Entiendo tu reclamo.")
-        context_manager.update_pending_field(session_id, "departamento")
-        # Mostrar todas las opciones de departamento
-        opciones = (
-            "¿A qué departamento crees que corresponde atender tu reclamo?\n"
-            "1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\nEscribe el número al que corresponde el departamento seleccionado."
-        )
-        return {"respuesta": opciones, "session_id": session_id}
-
-    # Si estamos esperando el DEPARTAMENTO...
-    if pending == "departamento":
-        depto = user_input.strip()
-        if depto not in [str(i) for i in range(1, 9)]:
-            return {
-                "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
-                "session_id": session_id,
-                "pending_field": "departamento",
-            }
-        ctx["departamento"] = depto
-        save_session(session_id, ctx)
-        context_manager.update_context(
-            session_id, user_input, f"Departamento {depto} seleccionado."
-        )
-        context_manager.update_pending_field(session_id, "mail")
-        return {
-            "respuesta": "Por último, ¿cuál es tu correo electrónico para enviarte el comprobante?",
-            "session_id": session_id,
-        }
-
-    # Si estamos esperando el MAIL...
-    if pending == "mail":
-        mail = user_input.strip()
-        # Validar email
-        if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", mail):
-            return {
-                "respuesta": "El correo electrónico ingresado no es válido. Por favor, ingresa un email válido.",
-                "session_id": session_id,
-                "pending_field": "mail",
-            }
-        ctx["mail"] = mail
-        save_session(session_id, ctx)
-        context_manager.update_context(session_id, user_input, "Correo registrado.")
-        context_manager.clear_pending_field(session_id)
-        # Preparar y enviar el reclamo
-        params = {
-            "rut": ctx["rut"],
-            "nombre": ctx["nombre"],
-            "mail": mail,
-            "mensaje": ctx["mensaje"],
-            "departamento": ctx["departamento"],
-            "categoria": 1,
-            "prioridad": 3,
-        }
-        logging.info(
-            f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}"
-        )
-        response = call_tool_microservice("complaint-registrar_reclamo", params)
-        logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
-        context_manager.clear_complaint_state(session_id)
-        if "error" in response:
-            err = response.get("error", "")
-            if "Connection error" in err or "Error 5" in err:
-                msg_err = (
-                    "No pude registrar tu reclamo por un problema técnico. Por favor intenta más tarde."
-                )
-            else:
-                msg_err = "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente."
-            return {"respuesta": msg_err, "session_id": session_id}
-        success_msg = (
-            "He registrado tu reclamo en mi base de datos y he enviado la "
-            "información del registro para que puedas comprobar el estado de avances. "
-            "Uno de nuestros funcionarios se encargará de dar respuesta a tu "
-            "reclamo y se pondrá en contacto contigo"
-        )
-        success_msg += "\n¿Te fue útil mi respuesta? (Sí/No)"
-        context_manager.set_feedback_pending(session_id, None)
-        context_manager.update_context(session_id, user_input, success_msg)
-        return {"respuesta": success_msg, "session_id": session_id}
 
     # Obtener o crear session_id
     if not session_id:
