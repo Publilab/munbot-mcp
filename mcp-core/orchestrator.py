@@ -138,9 +138,10 @@ INTRO_PHRASES = [
 
 def strip_intro_phrase(text: str) -> str:
     """Elimina frases introductorias comunes al inicio de la pregunta."""
-    lowered = text.lower().strip()
+    normalized = normalize_text(text).strip()
     for phrase in INTRO_PHRASES:
-        if lowered.startswith(phrase):
+        phrase_norm = normalize_text(phrase)
+        if normalized.startswith(phrase_norm):
             return text[len(phrase) :].lstrip(",. ")
     return text
 
