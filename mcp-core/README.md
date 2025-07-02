@@ -4,6 +4,8 @@ This directory contains the core logic for the Modular Conversational Platform (
 
 ## Structure
 - `orchestrator.py`: Main LLM-based orchestrator for intent recognition and tool invocation.
+- It also defines a minimal `STOPWORDS` list used for tokenization. Duplicates and
+  rarely helpful adverbs were removed to avoid filtering meaningful tokens.
 - `tool_schemas/`: JSON schemas describing each microservice's API as callable tools.
 - `prompts/`: Prompt templates for the LLM to guide tool usage and conversation flow.
 

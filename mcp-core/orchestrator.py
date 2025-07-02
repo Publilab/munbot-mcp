@@ -500,6 +500,8 @@ def normalize(text):
 
 
 # Lista de stopwords simples para tokenización básica
+# Stopwords include articles, pronouns and other very common words. Keep this
+# list short to avoid removing meaningful tokens when tokenizing.
 STOPWORDS = {
     "a",
     "al",
@@ -535,13 +537,11 @@ STOPWORDS = {
     "contigo",
     "vos",
     "usted",
-    "el",
     "lo",
     "le",
     "se",
     "si",
     "ella",
-    "la",
     "ello",
     "nosotros",
     "nosotras",
@@ -552,8 +552,6 @@ STOPWORDS = {
     "ustedes",
     "ellos",
     "ellas",
-    "los",
-    "las",
     "les",
     "mio",
     "mia",
@@ -590,36 +588,6 @@ STOPWORDS = {
     "aquello",
     "aquellos",
     "aquellas",
-    "regular",
-    "asi",
-    "alto",
-    "bajo",
-    "rapido",
-    "lento",
-    "deprisa",
-    "despacio",
-    "especialmente",
-    "rapidamente",
-    "facilmente",
-    "frecuentemente",
-    "claramente",
-    "directamente",
-    "silenciosamente",
-    "suavemente",
-    "puntualmente",
-    "responsablemente",
-    "voluntariamente",
-    "formalmente",
-    "minuciosamente",
-    "elocuentemente",
-    "elegantemente",
-    "brillantemente",
-    "cuidadosamente",
-    "alegremente",
-    "generosamente",
-    "intelectualmente",
-    "sigilosamente",
-    "prudentemente",
 }
 
 
