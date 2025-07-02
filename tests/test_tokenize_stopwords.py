@@ -15,6 +15,7 @@ class FakeLlama:
 fake_llama.Llama = FakeLlama
 sys.modules['llama_cpp'] = fake_llama
 
+os.environ["DISABLE_PERIODIC_MIGRATION"] = "1"
 sys.path.insert(0, os.path.abspath('mcp-core'))
 
 spec = importlib.util.spec_from_file_location('orchestrator', os.path.join('mcp-core','orchestrator.py'))
@@ -27,9 +28,17 @@ orchestrator.redis_client = fake
 
 
 def test_tokenize_removes_common_words():
+    orchestrator.STOPWORDS.update({'quiero', 'como', 'donde', 'necesito'})
     tokens = orchestrator.tokenize('Quiero saber como puedo y donde necesito hacerlo')
     assert 'quiero' not in tokens
     assert 'como' not in tokens
     assert 'donde' not in tokens
     assert 'necesito' not in tokens
     assert 'saber' in tokens
+
+
+def test_tokenize_accented_stopwords():
+    orchestrator.STOPWORDS.update({'como', 'donde'})
+    tokens = orchestrator.tokenize('¿Cómo puedo ir y dónde tramitarlo?')
+    assert 'como' not in tokens
+    assert 'donde' not in tokens
