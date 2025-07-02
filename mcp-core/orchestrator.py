@@ -1221,6 +1221,7 @@ def orchestrate(
         context_manager.get_faq_clarification(sid)
         or context_manager.get_pending_doc_list(sid)
         or context_manager.get_document_options(sid)
+        or ctx.get("pending_field")
     ):
         if re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", raw) or re.match(r"^\d{7,8}-[kK\d]$", raw) or re.fullmatch(r"\d+", raw):
             msg = "Si deseas registrar un reclamo, primero indícame 'sí' cuando te pregunte."
