@@ -129,7 +129,10 @@ INTRO_PHRASES = [
     "quisiera saber",
     "deseo saber",
     "podrías decirme",
-    "me puedes informar sobre",
+    "me puedes",
+    "me puedes decir",
+    "me gutaria",
+    "me podrías",
 ]
 
 
@@ -509,12 +512,6 @@ STOPWORDS = {
     "y",
     "o",
     "en",
-    "que",
-    "necesito",
-    "quiero",
-    "como",
-    "donde",
-    "para",
     "por",
     "municipalidad",
     "municipio",
