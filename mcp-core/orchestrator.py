@@ -14,6 +14,7 @@ import threading
 import time
 from context_manager import ConversationalContextManager
 import unicodedata
+from utils.text import normalize_text
 from llama_client import LlamaClient
 import numpy as np
 from rapidfuzz import fuzz
@@ -102,14 +103,6 @@ def load_faq_cache() -> list:
     return _FAQ_CACHE
 
 
-def normalize_text(text: str) -> str:
-    text = text.lower().strip()
-    text = "".join(
-        c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
-    )
-    text = "".join(c for c in text if c.isalnum() or c.isspace())
-    return text
-
 
 def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     """Adaptar formato Markdown según el canal."""
@@ -124,26 +117,20 @@ def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
 
 # Frases introductorias a ignorar al inicio de la consulta del usuario
 INTRO_PHRASES = [
-    "quiero saber",
-    "me gustaria saber",
-    "quisiera saber",
-    "deseo saber",
-    "podrías decirme",
-    "me puedes",
-    "me puedes decir",
-    "me gutaria",
-    "me podrías",
+    "quiero saber", "me gustaría saber", "quisiera saber", "deseo saber",
+    "podrías decirme", "me puedes informar sobre"
 ]
 
-
 def strip_intro_phrase(text: str) -> str:
-    """Elimina frases introductorias comunes al inicio de la pregunta."""
-    normalized = normalize_text(text).strip()
-    for phrase in INTRO_PHRASES:
-        phrase_norm = normalize_text(phrase)
-        if normalized.startswith(phrase_norm):
-            return text[len(phrase) :].lstrip(",. ")
     return text
+
+def preprocess_input(text: str) -> str:
+    t = normalize_text(text).strip()
+    for phrase in INTRO_PHRASES:
+        ph = normalize_text(phrase)
+        if t.startswith(ph):
+            return t[len(ph):].lstrip()
+    return t
 
 
 def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
@@ -258,7 +245,7 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
             if isinstance(entry_preguntas, str):
                 entry_preguntas = [entry_preguntas]
             for alt in entry_preguntas:
-                entry_tokens = set(tokenize(alt))
+                entry_tokens = set(tokenize(normalize_text(alt)))
                 common = pregunta_tokens & entry_tokens
                 union = pregunta_tokens | entry_tokens
                 jaccard = len(common) / len(union) if union else 0
@@ -659,7 +646,7 @@ def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
             if isinstance(entry_preguntas, str):
                 entry_preguntas = [entry_preguntas]
             for alt in entry_preguntas:
-                entry_tokens = set(tokenize(alt))
+                entry_tokens = set(tokenize(normalize_text(alt)))
                 if pregunta_tokens & entry_tokens:
                     snippets.append(entry["respuesta"].strip())
                     break  # Solo una vez por entrada
@@ -1130,7 +1117,7 @@ def orchestrate(
         return {"respuesta": msg, "session_id": sid}
 
     # Remover frases introductorias para clasificar correctamente
-    user_input = strip_intro_phrase(user_input)
+    user_input = preprocess_input(user_input)
 
     # Consultas rápidas tras listar trámites
     if context_manager.get_consultas_tramites_pending(sid):
@@ -1161,7 +1148,7 @@ def orchestrate(
                 context_manager.update_context(sid, user_input, resp)
                 return {"respuesta": resp, "session_id": sid}
 
-    if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid):
+    if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid) == "documento":
         if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
             context_manager.update_context(sid, user_input, resp)
@@ -1361,8 +1348,22 @@ def orchestrate(
     pending = ctx.get("pending_field")
     if not pending:
         kw_intent = detect_intent_keywords(user_input)
+        if re.search(
+            r"\b(?:c(?:o|ó)mo|d(?:o|ó)nde|qu(?:é|e))?\s*(?:puedo|necesito)?\s*(agendar|reservar|cita|hora|turno)\b",
+            user_input,
+            re.IGNORECASE,
+        ):
+            context_manager.set_pending_confirmation(sid, True)
+            context_manager.set_current_flow(sid, "cita")
+            msg = (
+                "Si quieres agendar una cita, puedo ayudarte a coordinarla. "
+                "¿Quieres hacerlo ahora?"
+            )
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
         if kw_intent == "complaint-registrar_reclamo":
             context_manager.set_pending_confirmation(sid, True)
+            context_manager.set_current_flow(sid, "reclamo")
             pregunta = (
                 "Si quieres hacer un reclamo o una denuncia estoy a tu disposición para registrarlo. "
                 "¿Te gustaría registrar el reclamo en estos momentos?"
@@ -1429,28 +1430,31 @@ def orchestrate(
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": answer, "session_id": sid}
 
-    # --- Manejar confirmación para iniciar reclamo ---
+    # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
-        if re.fullmatch(r"(?i)(sí|si|claro|por supuesto|ok|vale)", user_input.strip()):
-            context_manager.clear_pending_confirmation(sid)
-            # Miguel: aquí iniciamos el flujo de datos del reclamo
-            context_manager.clear_context_field(sid, "doc_actual")
-            context_manager.update_pending_field(sid, "nombre")
-            context_manager.update_complaint_state(sid, "iniciado")
-            pregunta = (
-                "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n"
-                "¿Cómo te llamas? (ej. Juan Pérez)"
-            )
-            return {"respuesta": pregunta, "session_id": sid}
+        answer = user_input.strip().lower()
+        ok = bool(re.fullmatch(r"(sí|si|claro|ok|vale|por supuesto)", answer))
+        flow = context_manager.get_current_flow(sid)
         context_manager.clear_pending_confirmation(sid)
-        msg = "Entendido. ¿En qué más puedo ayudarte?"
-        context_manager.update_context(sid, user_input, msg)
-        return {"respuesta": msg, "session_id": sid}
+
+        if ok:
+            if flow == "reclamo":
+                context_manager.clear_context_field(sid, "doc_actual")
+                context_manager.update_pending_field(sid, "nombre")
+                context_manager.update_complaint_state(sid, "iniciado")
+                pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
+            else:  # flow == "cita"
+                context_manager.update_pending_field(sid, "datos_cita")
+                pregunta = "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
+            return {"respuesta": pregunta, "session_id": sid}
+        else:
+            msg = "Entendido. ¿En qué más puedo ayudarte?"
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
 
     # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
     respuesta_doc = responder_sobre_documento(user_input, sid)
     if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
-        sid = session_id or str(uuid.uuid4())
         context_manager.update_context(sid, user_input, respuesta_doc)
         context_manager.set_current_flow(sid, "documento")
         context_manager.reset_fallback_count(sid)
