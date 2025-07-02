@@ -1136,21 +1136,29 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
 
     # DEPARTAMENTO
     if pending == "departamento":
-        depto = user_input.strip()
-        if depto not in [str(i) for i in range(1, 9)]:
+        try:
+            depto = int(user_input.strip())
+            if 1 <= depto <= 8:
+                ctx["departamento"] = depto
+                save_session(sid, ctx)
+                context_manager.update_context(sid, user_input, f"Departamento seleccionado: {depto}")
+                context_manager.update_pending_field(sid, "mail")
+                return {
+                    "respuesta": "Perfecto, ahora indícame tu correo electrónico.",
+                    "session_id": sid,
+                }
+            else:
+                return {
+                    "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
+                    "session_id": sid,
+                    "pending_field": "departamento",
+                }
+        except ValueError:
             return {
                 "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
                 "session_id": sid,
                 "pending_field": "departamento",
             }
-        ctx["departamento"] = depto
-        save_session(sid, ctx)
-        context_manager.update_context(sid, user_input, f"Departamento {depto} seleccionado.")
-        context_manager.update_pending_field(sid, "mail")
-        return {
-            "respuesta": "Por último, ¿cuál es tu correo electrónico para enviarte el comprobante?",
-            "session_id": sid,
-        }
 
     # MAIL
     if pending == "mail":
@@ -1786,14 +1794,6 @@ def admin_add_requisito(id_documento: str, data: dict = Body(...)):
     conn.close()
     return req
 
-
-@app.post("/admin/documento/{id_documento}/oficina")
-def admin_add_oficina(id_documento: str, data: dict = Body(...)):
-    """Agregar una oficina a un documento."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-    doc = cur.fetchone()
     if not doc:
         conn.close()
         return {"error": "Documento no encontrado"}
