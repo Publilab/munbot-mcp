@@ -157,6 +157,9 @@ def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
         faqs = load_faq_cache()
         pregunta_norm = normalize_text(pregunta)
 
+        if "cedula" in pregunta_norm and "identidad" not in pregunta_norm:
+            return None
+
         best_score = 0
         best_entry = None
         best_alt = None
@@ -514,6 +517,10 @@ STOPWORDS = {
     "o",
     "en",
     "por",
+    "quiero",
+    "como",
+    "donde",
+    "necesito",
     "municipalidad",
     "municipio",
     "gobierno",
@@ -1380,6 +1387,20 @@ def orchestrate(
         context_manager.reset_fallback_count(sid)
         return {"respuesta": resp, "session_id": sid}
 
+    # --- Detectar intención de reclamo o cita antes de consultar FAQ ---
+    ctx = context_manager.get_context(sid)
+    pending = ctx.get("pending_field")
+    if not pending:
+        kw_intent = detect_intent_keywords(user_input)
+        if kw_intent == "complaint-registrar_reclamo":
+            context_manager.set_pending_confirmation(sid, True)
+            pregunta = (
+                "Si quieres hacer un reclamo o una denuncia estoy a tu disposición para registrarlo. "
+                "¿Te gustaría registrar el reclamo en estos momentos?"
+            )
+            context_manager.update_context(sid, user_input, pregunta)
+            return {"respuesta": pregunta, "session_id": sid}
+
     # === 0) Consultar primero en la base de FAQs ===
     multi = lookup_multiple_faqs(user_input)
     if multi:
@@ -1472,21 +1493,6 @@ def orchestrate(
     pending = ctx.get("pending_field", None)
     complaint_state = ctx.get("complaint_state", None)
 
-    # --- Detectar intención de reclamo y preguntar antes de slot-filling ---
-    ctx = context_manager.get_context(sid)
-    pending = ctx.get("pending_field")
-    if not pending and re.search(
-        r"\b(?:c\xc3\xb3mo|como|d\xc3\xb3nde|donde|qu\xc3\xa9|que)?\s*(?:puedo|necesito)?\s*(reclamo|queja|denuncia)\b",
-        user_input,
-        re.IGNORECASE,
-    ):
-        context_manager.set_pending_confirmation(sid, True)
-        pregunta = (
-            "Si quieres hacer un reclamo o una denuncia estoy a tu disposici\xc3\xb3n para registrarlo. "
-            "¿Te gustar\xc3\xada registrar el reclamo en estos momentos?"
-        )
-        context_manager.update_context(sid, user_input, pregunta)
-        return {"respuesta": pregunta, "session_id": sid}
 
     # Si estamos esperando el NOMBRE...
     if pending == "nombre":
