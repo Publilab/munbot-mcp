@@ -1209,12 +1209,17 @@ def orchestrate(
     ctx = context_manager.get_context(sid)
 
     raw = user_input.strip()
-    if not (
+    pending = ctx.get("pending_field")
+    if not pending and not (
         context_manager.get_faq_clarification(sid)
         or context_manager.get_pending_doc_list(sid)
         or context_manager.get_document_options(sid)
     ):
-        if re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", raw) or re.match(r"^\d{7,8}-[kK\d]$", raw) or re.fullmatch(r"\d+", raw):
+        if (
+            re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", raw)
+            or re.match(r"^\d{7,8}-[kK\d]$", raw)
+            or re.fullmatch(r"\d+", raw)
+        ):
             msg = "Si deseas registrar un reclamo, primero indícame 'sí' cuando te pregunte."
             return {"respuesta": msg, "session_id": sid}
 
