@@ -26,6 +26,7 @@ COPY .env orchestrator.py context_manager.py llama_client.py ./
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
 COPY models/ ./models/
+COPY ./utils ./utils
 COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json
 COPY ./databases/documento_requisito.json ./databases/documento_requisito.json
 COPY ./databases/oficina_info.json ./databases/oficina_info.json 
