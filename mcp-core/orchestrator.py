@@ -1928,9 +1928,12 @@ def es_email_valido(email: str) -> bool:
         return False
     try:
         from email_validator import validate_email, EmailNotValidError
-        validate_email(email)
+        # Se deshabilita la comprobación de DNS (check_deliverability) para evitar
+        # problemas de red en entornos de contenedores. Solo se valida el formato.
+        validate_email(email, check_deliverability=False)
         return True
-    except Exception:
+    except (EmailNotValidError, ImportError):
+        # Si el formato es inválido o la librería no está instalada, se considera inválido.
         return False
 
 
