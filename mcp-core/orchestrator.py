@@ -1163,7 +1163,7 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
     # MAIL
     if pending == "mail":
         mail = user_input.strip()
-        if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", mail):
+        if not es_email_valido(mail):
             return {
                 "respuesta": "El correo electrónico ingresado no es válido. Por favor, ingresa un email válido.",
                 "session_id": sid,
@@ -1920,6 +1920,18 @@ def validar_y_formatear_rut(rut: str) -> str:
         return None
     rut_formateado = f"{int(numero):,}".replace(",", ".") + "-" + dv
     return rut_formateado
+
+
+def es_email_valido(email: str) -> bool:
+    """Valida el formato de un correo electrónico usando email-validator."""
+    if not email:
+        return False
+    try:
+        from email_validator import validate_email, EmailNotValidError
+        validate_email(email)
+        return True
+    except Exception:
+        return False
 
 
 # --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---
