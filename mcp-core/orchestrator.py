@@ -8,6 +8,7 @@ import logging
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import re
+from email.utils import parseaddr
 import redis
 import uuid
 import threading
@@ -15,11 +16,12 @@ import time
 from context_manager import ConversationalContextManager
 import unicodedata
 from utils.text import normalize_text
+from typing import Optional
 from llama_client import LlamaClient
 import numpy as np
 from rapidfuzz import fuzz
 from datetime import datetime
-from email.utils import parseaddr
+
 
 # === Configuración ===
 MICROSERVICES = {
@@ -91,6 +93,33 @@ logging.basicConfig(level=logging.INFO)
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
 
+# --- Instancia tu LLM local ---
+llm = LlamaClient()
+
+def extract_name_with_llm(user_text: str) -> Optional[str]:
+    prompt = (
+        "Eres un extractor de nombres propios. Recibirás la frase completa que "
+        "escribió un usuario y debes devolver ÚNICAMENTE su nombre completo "
+        "(nombre y apellido). Si no identificas un nombre válido, responde 'None'.\n\n"
+        f"Usuario: \"{user_text}\""
+    )
+    resp = llm.generate(prompt)
+    name = resp.strip().splitlines()[0]
+    if name.lower() == "none" or len(name.split()) < 2:
+        return None
+    return name
+
+def extract_email_with_llm(user_text: str) -> Optional[str]:
+    prompt = (
+        "Eres un extractor y validador de correos electrónicos. Recibirás la frase "
+        "completa de un usuario y debes devolver SOLO la dirección de email si está "
+        "en un formato correcto (usuario@dominio.ext). Responde 'None' si no "
+        "encuentras un email válido.\n\n"
+        f"Usuario: \"{user_text}\""
+    )
+    resp = llm.generate(prompt)
+    email = resp.strip().splitlines()[0]
+    return None if email.lower() == "none" else email
 
 def load_faq_cache() -> list:
     global _FAQ_CACHE
@@ -1078,12 +1107,15 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
     if not pending:
         return None
 
-    # NOMBRE
+# NOMBRE (LLM extraction)
     if pending == "nombre":
-        nombre = user_input.strip()
-        if len(nombre.split()) < 2:
+        nombre = extract_name_with_llm(user_input)
+        if not nombre:
             return {
-                "respuesta": "Por favor, ingresa tu nombre completo (nombre y apellido).",
+                "respuesta": (
+                    "No he podido identificar un nombre completo válido. "
+                    "Por favor, escríbelo con tu nombre y apellido."
+                ),
                 "session_id": sid,
                 "pending_field": "nombre",
             }
@@ -1092,7 +1124,7 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
         context_manager.update_context(sid, user_input, f"¡Gracias, {nombre}!")
         context_manager.update_pending_field(sid, "rut")
         return {
-            "respuesta": f"Genial, {nombre}. Ahora, ¿puedes darme tu RUT? (ej. 12.345.678-5)",
+            "respuesta": f"Perfecto, {nombre}. Ahora, por favor indícame tu RUT (ej. 12.345.678-5).",
             "session_id": sid,
         }
 
@@ -1161,18 +1193,21 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
                 "pending_field": "departamento",
             }
 
-    # MAIL
+    # MAIL (LLM extraction & validation)
     if pending == "mail":
-        mail = user_input.strip()
-        if not es_email_valido(mail):
+        mail = extract_email_with_llm(user_input)
+        if not mail:
             return {
-                "respuesta": "El correo electrónico ingresado no es válido. Por favor, ingresa un email válido.",
+                "respuesta": (
+                    "No logré extraer un correo válido de lo que escribiste. "
+                    "Por favor, indícalo en el formato usuario@dominio.com"
+                ),
                 "session_id": sid,
                 "pending_field": "mail",
             }
         ctx["mail"] = mail
         save_session(sid, ctx)
-        context_manager.update_context(sid, user_input, "Correo registrado.")
+        context_manager.update_context(sid, user_input, f"Correo registrado: {mail}")
         context_manager.clear_pending_field(sid)
         params = {
             "rut": ctx["rut"],
@@ -1660,8 +1695,7 @@ def orchestrate(
                     msg = f"¿Quisiste decir '{faq_hit['pregunta']}'?"
                 else:
                     opts = "\n".join(
-                        f"{i+1}. {q}"
-                        for i, q in enumerate(faq_hit.get("alternatives", []))
+                        f"{i+1}. {q}" for i, q in enumerate(faq_hit.get("alternatives", []))
                     )
                     msg = (
                         "Encontré varias preguntas similares:\n"
@@ -1778,6 +1812,7 @@ def admin_create_documento(data: dict = Body(...)):
 
 
 @app.post("/admin/documento/{id_documento}/requisito")
+def admin_add_requisito(id_documento: str, data: dict = Body(...)):
 def admin_add_requisito(id_documento: str, data: dict = Body(...)):
     """Agregar un requisito a un documento."""
     conn = get_db()
