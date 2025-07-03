@@ -1103,9 +1103,161 @@ if os.getenv("DISABLE_PERIODIC_MIGRATION") != "1":
 def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Procesa el flujo de registro de reclamos cuando hay campos pendientes."""
 
-    pending = ctx.get("pending_field")
-    if not pending:
-        return None
+    try:
+        pending = ctx.get("pending_field")
+        if not pending:
+            return None
+
+        # NOMBRE
+        if pending == "nombre":
+            m = re.search(r"(?i)^(?:mi nombre es|me llamo|soy)\s+(.+)", user_input.strip())
+            nombre = m.group(1).strip().rstrip('.!?') if m else None
+            if not nombre:
+                try:
+                    nombre = extract_name_with_llm(user_input)
+                except Exception:
+                    logging.error("Error al extraer nombre con LLM", exc_info=True)
+                    return {
+                        "respuesta": "Lo siento, hubo un error procesando tu nombre. Intenta de nuevo.",
+                        "session_id": sid,
+                        "pending_field": "nombre",
+                    }
+            if not nombre or len(nombre.split()) < 2:
+                return {
+                    "respuesta": (
+                        "No he podido identificar un nombre completo válido. "
+                        "Por favor, escríbelo con tu nombre y apellido."
+                    ),
+                    "session_id": sid,
+                    "pending_field": "nombre",
+                }
+            ctx["nombre"] = nombre
+            save_session(sid, ctx)
+            context_manager.update_context(sid, user_input, f"¡Gracias, {nombre}!")
+            context_manager.update_pending_field(sid, "rut")
+            return {
+                "respuesta": f"Perfecto, {nombre}. Ahora, por favor indícame tu RUT (ej. 12.345.678-5).",
+                "session_id": sid,
+            }
+
+        # RUT
+        if pending == "rut":
+            rut = user_input.strip()
+            rut_formateado = validar_y_formatear_rut(rut)
+            if not rut_formateado:
+                return {
+                    "respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).",
+                    "session_id": sid,
+                    "pending_field": "rut",
+                }
+            ctx["rut"] = rut_formateado
+            save_session(sid, ctx)
+            context_manager.update_context(sid, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado}).")
+            context_manager.update_pending_field(sid, "mensaje")
+            return {
+                "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
+                "session_id": sid,
+            }
+
+        # MENSAJE
+        if pending == "mensaje":
+            mensaje = user_input.strip()
+            if len(mensaje) < 10:
+                return {
+                    "respuesta": "Por favor, describe tu reclamo con al menos 10 caracteres.",
+                    "session_id": sid,
+                    "pending_field": "mensaje",
+                }
+            ctx["mensaje"] = mensaje
+            save_session(sid, ctx)
+            context_manager.update_context(sid, user_input, "Entiendo tu reclamo.")
+            context_manager.update_pending_field(sid, "departamento")
+            opciones = (
+                "¿A qué departamento crees que corresponde atender tu reclamo?\n"
+                "1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\n"
+                "Escribe el número al que corresponde el departamento seleccionado."
+            )
+            return {"respuesta": opciones, "session_id": sid}
+
+        # DEPARTAMENTO
+        if pending == "departamento":
+            try:
+                depto = int(user_input.strip())
+                if 1 <= depto <= 8:
+                    ctx["departamento"] = depto
+                    save_session(sid, ctx)
+                    context_manager.update_context(sid, user_input, f"Departamento seleccionado: {depto}")
+                    context_manager.update_pending_field(sid, "mail")
+                    return {
+                        "respuesta": "Perfecto, ahora indícame tu correo electrónico.",
+                        "session_id": sid,
+                    }
+                else:
+                    return {
+                        "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
+                        "session_id": sid,
+                        "pending_field": "departamento",
+                    }
+            except ValueError:
+                return {
+                    "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
+                    "session_id": sid,
+                    "pending_field": "departamento",
+                }
+
+        # MAIL (LLM extraction & validation)
+        if pending == "mail":
+            mail = extract_email_with_llm(user_input)
+            if not mail:
+                return {
+                    "respuesta": (
+                        "No logré extraer un correo válido de lo que escribiste. "
+                        "Por favor, indícalo en el formato usuario@dominio.com"
+                    ),
+                    "session_id": sid,
+                    "pending_field": "mail",
+                }
+            ctx["mail"] = mail
+            save_session(sid, ctx)
+            context_manager.update_context(sid, user_input, f"Correo registrado: {mail}")
+            context_manager.clear_pending_field(sid)
+            params = {
+                "rut": ctx["rut"],
+                "nombre": ctx["nombre"],
+                "mail": mail,
+                "mensaje": ctx["mensaje"],
+                "departamento": ctx["departamento"],
+                "categoria": 1,
+                "prioridad": 3,
+            }
+            logging.info(f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}")
+            response = call_tool_microservice("complaint-registrar_reclamo", params)
+            logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
+            context_manager.clear_complaint_state(sid)
+            if "error" in response:
+                err = response.get("error", "")
+                if "Connection error" in err or "Error 5" in err:
+                    msg_err = "No pude registrar tu reclamo por un problema técnico. Por favor intenta más tarde."
+                else:
+                    msg_err = "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente."
+                return {"respuesta": msg_err, "session_id": sid}
+            success_msg = (
+                "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
+                "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
+            )
+            success_msg += "\n¿Te fue útil mi respuesta? (Sí/No)"
+            context_manager.set_feedback_pending(sid, None)
+            context_manager.update_context(sid, user_input, success_msg)
+            return {"respuesta": success_msg, "session_id": sid}
+
+    except Exception:
+        logging.error("Error en slot_filling", exc_info=True)
+        return {
+            "respuesta": "Lo siento, hubo un error interno procesando tu dato. Intenta de nuevo.",
+            "session_id": sid,
+        }
+
+    return None
 
 # NOMBRE (LLM extraction)
     if pending == "nombre":
@@ -1251,6 +1403,13 @@ def orchestrate(
     sid = session_id or str(uuid.uuid4())
 
     ctx = context_manager.get_context(sid)
+
+    # — guard clause para slot-filling —
+    pending = ctx.get("pending_field")
+    if pending:
+        slot_resp = _handle_slot_filling(user_input, sid, ctx)
+        if slot_resp:
+            return slot_resp
 
     raw = user_input.strip()
     if not (
