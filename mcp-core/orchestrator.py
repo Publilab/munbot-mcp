@@ -1923,18 +1923,14 @@ def validar_y_formatear_rut(rut: str) -> str:
 
 
 def es_email_valido(email: str) -> bool:
-    """Valida el formato de un correo electrónico usando email-validator."""
+    """Valida el formato de un correo electrónico usando una expresión regular."""
     if not email:
         return False
-    try:
-        from email_validator import validate_email, EmailNotValidError
-        # Se deshabilita la comprobación de DNS (check_deliverability) para evitar
-        # problemas de red en entornos de contenedores. Solo se valida el formato.
-        validate_email(email, check_deliverability=False)
-        return True
-    except (EmailNotValidError, ImportError):
-        # Si el formato es inválido o la librería no está instalada, se considera inválido.
-        return False
+    # Expresión regular simple para validar el formato de email.
+    # Coincide con la validación usada en el microservicio de reclamos.
+    # Un poco más estricta para evitar falsos positivos.
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return re.match(pattern, email) is not None
 
 
 # --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---

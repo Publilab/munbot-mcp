@@ -117,7 +117,7 @@ def tools_call():
         if not (nombre and len(nombre) >= 3):
             app.logger.warning(f"[tools_call] Validación fallida: nombre='{nombre}'")
             return jsonify({"respuesta": "El nombre debe tener al menos 3 caracteres.", "pending_field": "nombre", "error": True}), 200
-        if not (mail and re.match(r"[^@]+@[^@]+\.[^@]+", mail)):
+        if not (mail and re.match(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", mail)):
             app.logger.warning(f"[tools_call] Validación fallida: mail='{mail}'")
             return jsonify({"respuesta": "Por favor, proporciona un correo electrónico válido.", "pending_field": "mail", "error": True}), 200
         if not (mensaje and len(mensaje) >= 10):
