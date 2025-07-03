@@ -1302,6 +1302,12 @@ def orchestrate(
 
     # Remover frases introductorias para clasificar correctamente
     user_input = preprocess_input(user_input)
+    # — Contexto persistente del trámite seleccionado —
+    doc_actual = context_manager.get_selected_document(sid)
+    if doc_actual and not any(alias in normalize_text(user_input) for alias in DOC_ALIAS_MAP):
+        contexto_doc = doc_actual
+    else:
+        contexto_doc = None
 
     # Consultas rápidas tras listar trámites
     if context_manager.get_consultas_tramites_pending(sid):
@@ -1642,7 +1648,12 @@ def orchestrate(
             return {"respuesta": msg, "session_id": sid}
 
     # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
-    respuesta_doc = responder_sobre_documento(user_input, sid)
+    respuesta_doc = responder_sobre_documento(
+        pregunta_usuario=user_input,
+        session_id=sid,
+        listar_todo=False,
+        context_document=contexto_doc
+    )
     if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
         context_manager.update_context(sid, user_input, respuesta_doc)
         context_manager.set_current_flow(sid, "documento")
@@ -1812,7 +1823,6 @@ def admin_create_documento(data: dict = Body(...)):
 
 
 @app.post("/admin/documento/{id_documento}/requisito")
-def admin_add_requisito(id_documento: str, data: dict = Body(...)):
 def admin_add_requisito(id_documento: str, data: dict = Body(...)):
     """Agregar un requisito a un documento."""
     conn = get_db()
@@ -2447,9 +2457,10 @@ def buscar_faq_por_pregunta(pregunta):
 
 
 def responder_sobre_documento(
-    pregunta_usuario,
+    pregunta_usuario: str,
     session_id: Optional[str] = None,
     listar_todo: bool = False,
+    context_document: Optional[str] = None,
     channel: Optional[str] = None,
 ):
     tipo = detectar_tipo_documento(pregunta_usuario)
@@ -2468,11 +2479,23 @@ def responder_sobre_documento(
             nombre = doc["Nombre_Documento"]
             break
 
+    # — Usar el documento en contexto si no detectamos uno nuevo —
+    if not nombre and context_document:
+        nombre = context_document
+
     # Revisar alias conocidos
     if not nombre:
         for alias_norm, real in DOC_ALIAS_MAP.items():
+            # coincidencia exacta de alias completo
             if alias_norm in pregunta_norm:
                 nombre = real
+                break
+            # coincidencia parcial o por prefijo de palabras del alias
+            for part in alias_norm.split():
+                if pregunta_norm.startswith(part):
+                    nombre = real
+                    break
+            if nombre:
                 break
 
     # si no hubo match directo, probar búsqueda difusa
@@ -2530,16 +2553,16 @@ def responder_sobre_documento(
                 if ctx.get("doc_actual") != nombre:
                     context_manager.update_context_data(session_id, {"doc_actual": nombre})
 
+            # Detectar *todos* los campos solicitados en la misma consulta
             campos_solicitados: List[str] = []
             for campo, kws in KEYWORD_FIELDS.items():
                 for kw in kws:
                     kw_norm = normalize_text(kw)
-                    if kw_norm in pregunta_norm:
+                    if kw_norm in pregunta_norm or fuzz.partial_ratio(pregunta_norm, kw_norm) >= 85:
                         campos_solicitados.append(campo)
-                        break
-                    if fuzz.partial_ratio(pregunta_norm, kw_norm) >= 85:
-                        campos_solicitados.append(campo)
-                        break
+                        # No hacemos break: recogemos múltiples campos en la misma entrada
+            # Eliminar duplicados manteniendo orden
+            campos_solicitados = list(dict.fromkeys(campos_solicitados))
 
             if not campos_solicitados:
                 if INCLUIR_FICHA_COMPLETA_POR_DEFECTO:
