@@ -1923,14 +1923,16 @@ def validar_y_formatear_rut(rut: str) -> str:
 
 
 def es_email_valido(email: str) -> bool:
-    """Valida el formato de un correo electrónico usando una expresión regular."""
+    """Valida el formato de un correo usando email.utils.parseaddr."""
     if not email:
         return False
-    # Expresión regular simple para validar el formato de email.
-    # Coincide con la validación usada en el microservicio de reclamos.
-    # Un poco más estricta para evitar falsos positivos.
-    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-    return re.match(pattern, email) is not None
+    # parseaddr devuelve ('', 'addr@example.com') si el email es válido
+    _, addr = parseaddr(email)
+    if not addr or '@' not in addr:
+        return False
+    # comprueba que la parte de dominio tenga al menos un punto
+    dominio = addr.split('@', 1)[1]
+    return '.' in dominio
 
 
 # --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---
