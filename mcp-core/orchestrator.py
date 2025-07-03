@@ -19,6 +19,7 @@ from llama_client import LlamaClient
 import numpy as np
 from rapidfuzz import fuzz
 from datetime import datetime
+from email.utils import parseaddr
 
 # === Configuración ===
 MICROSERVICES = {
