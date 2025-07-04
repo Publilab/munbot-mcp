@@ -97,6 +97,32 @@ _FAQ_CACHE = None
 llm = LlamaClient()
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
+    """
+    Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback.
+    """
+    cleaned_text = user_text.strip()
+
+    # 1. Heurística para extraer de frases comunes ("me llamo X Y", "mi nombre es X Y")
+    # Usamos re.IGNORECASE para ser flexibles con mayúsculas/minúsculas.
+    patterns = [
+        r"^(?:me llamo|mi nombre es|soy)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ\s'-]+)$",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, cleaned_text, re.IGNORECASE)
+        if match:
+            potential_name = match.group(1).strip()
+            # Validamos que el nombre extraído tenga entre 2 y 4 palabras
+            if 2 <= len(potential_name.split()) <= 4:
+                # Capitalizamos para un formato consistente
+                return ' '.join(word.capitalize() for word in potential_name.split())
+
+    # 2. Heurística para cuando el input es solo el nombre (ej: "Emilio Ibarra")
+    words = cleaned_text.split()
+    # Validamos que sean 2-4 palabras y que solo contengan caracteres de nombres.
+    if 2 <= len(words) <= 4 and re.fullmatch(r"[A-Za-zÁÉÍÓÚáéíóúñÑ\s'-]+", cleaned_text):
+        return ' '.join(word.capitalize() for word in words)
+
+    # 3. Si las heurísticas fallan, usamos el LLM como fallback para frases complejas.
     prompt = (
         "Eres un extractor de nombres propios. Recibirás la frase completa que "
         "escribió un usuario y debes devolver ÚNICAMENTE su nombre completo "
@@ -1103,161 +1129,9 @@ if os.getenv("DISABLE_PERIODIC_MIGRATION") != "1":
 def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Procesa el flujo de registro de reclamos cuando hay campos pendientes."""
 
-    try:
-        pending = ctx.get("pending_field")
-        if not pending:
-            return None
-
-        # NOMBRE
-        if pending == "nombre":
-            m = re.search(r"(?i)^(?:mi nombre es|me llamo|soy)\s+(.+)", user_input.strip())
-            nombre = m.group(1).strip().rstrip('.!?') if m else None
-            if not nombre:
-                try:
-                    nombre = extract_name_with_llm(user_input)
-                except Exception:
-                    logging.error("Error al extraer nombre con LLM", exc_info=True)
-                    return {
-                        "respuesta": "Lo siento, hubo un error procesando tu nombre. Intenta de nuevo.",
-                        "session_id": sid,
-                        "pending_field": "nombre",
-                    }
-            if not nombre or len(nombre.split()) < 2:
-                return {
-                    "respuesta": (
-                        "No he podido identificar un nombre completo válido. "
-                        "Por favor, escríbelo con tu nombre y apellido."
-                    ),
-                    "session_id": sid,
-                    "pending_field": "nombre",
-                }
-            ctx["nombre"] = nombre
-            save_session(sid, ctx)
-            context_manager.update_context(sid, user_input, f"¡Gracias, {nombre}!")
-            context_manager.update_pending_field(sid, "rut")
-            return {
-                "respuesta": f"Perfecto, {nombre}. Ahora, por favor indícame tu RUT (ej. 12.345.678-5).",
-                "session_id": sid,
-            }
-
-        # RUT
-        if pending == "rut":
-            rut = user_input.strip()
-            rut_formateado = validar_y_formatear_rut(rut)
-            if not rut_formateado:
-                return {
-                    "respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).",
-                    "session_id": sid,
-                    "pending_field": "rut",
-                }
-            ctx["rut"] = rut_formateado
-            save_session(sid, ctx)
-            context_manager.update_context(sid, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado}).")
-            context_manager.update_pending_field(sid, "mensaje")
-            return {
-                "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
-                "session_id": sid,
-            }
-
-        # MENSAJE
-        if pending == "mensaje":
-            mensaje = user_input.strip()
-            if len(mensaje) < 10:
-                return {
-                    "respuesta": "Por favor, describe tu reclamo con al menos 10 caracteres.",
-                    "session_id": sid,
-                    "pending_field": "mensaje",
-                }
-            ctx["mensaje"] = mensaje
-            save_session(sid, ctx)
-            context_manager.update_context(sid, user_input, "Entiendo tu reclamo.")
-            context_manager.update_pending_field(sid, "departamento")
-            opciones = (
-                "¿A qué departamento crees que corresponde atender tu reclamo?\n"
-                "1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\n"
-                "Escribe el número al que corresponde el departamento seleccionado."
-            )
-            return {"respuesta": opciones, "session_id": sid}
-
-        # DEPARTAMENTO
-        if pending == "departamento":
-            try:
-                depto = int(user_input.strip())
-                if 1 <= depto <= 8:
-                    ctx["departamento"] = depto
-                    save_session(sid, ctx)
-                    context_manager.update_context(sid, user_input, f"Departamento seleccionado: {depto}")
-                    context_manager.update_pending_field(sid, "mail")
-                    return {
-                        "respuesta": "Perfecto, ahora indícame tu correo electrónico.",
-                        "session_id": sid,
-                    }
-                else:
-                    return {
-                        "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
-                        "session_id": sid,
-                        "pending_field": "departamento",
-                    }
-            except ValueError:
-                return {
-                    "respuesta": "Por favor, selecciona un número de departamento válido (1-8).",
-                    "session_id": sid,
-                    "pending_field": "departamento",
-                }
-
-        # MAIL (LLM extraction & validation)
-        if pending == "mail":
-            mail = extract_email_with_llm(user_input)
-            if not mail:
-                return {
-                    "respuesta": (
-                        "No logré extraer un correo válido de lo que escribiste. "
-                        "Por favor, indícalo en el formato usuario@dominio.com"
-                    ),
-                    "session_id": sid,
-                    "pending_field": "mail",
-                }
-            ctx["mail"] = mail
-            save_session(sid, ctx)
-            context_manager.update_context(sid, user_input, f"Correo registrado: {mail}")
-            context_manager.clear_pending_field(sid)
-            params = {
-                "rut": ctx["rut"],
-                "nombre": ctx["nombre"],
-                "mail": mail,
-                "mensaje": ctx["mensaje"],
-                "departamento": ctx["departamento"],
-                "categoria": 1,
-                "prioridad": 3,
-            }
-            logging.info(f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}")
-            response = call_tool_microservice("complaint-registrar_reclamo", params)
-            logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
-            context_manager.clear_complaint_state(sid)
-            if "error" in response:
-                err = response.get("error", "")
-                if "Connection error" in err or "Error 5" in err:
-                    msg_err = "No pude registrar tu reclamo por un problema técnico. Por favor intenta más tarde."
-                else:
-                    msg_err = "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente."
-                return {"respuesta": msg_err, "session_id": sid}
-            success_msg = (
-                "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
-                "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
-            )
-            success_msg += "\n¿Te fue útil mi respuesta? (Sí/No)"
-            context_manager.set_feedback_pending(sid, None)
-            context_manager.update_context(sid, user_input, success_msg)
-            return {"respuesta": success_msg, "session_id": sid}
-
-    except Exception:
-        logging.error("Error en slot_filling", exc_info=True)
-        return {
-            "respuesta": "Lo siento, hubo un error interno procesando tu dato. Intenta de nuevo.",
-            "session_id": sid,
-        }
-
-    return None
+    pending = ctx.get("pending_field")
+    if not pending:
+        return None
 
 # NOMBRE (LLM extraction)
     if pending == "nombre":
@@ -1404,13 +1278,6 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
-    # — guard clause para slot-filling —
-    pending = ctx.get("pending_field")
-    if pending:
-        slot_resp = _handle_slot_filling(user_input, sid, ctx)
-        if slot_resp:
-            return slot_resp
-
     raw = user_input.strip()
     if not (
         context_manager.get_faq_clarification(sid)
@@ -1461,12 +1328,6 @@ def orchestrate(
 
     # Remover frases introductorias para clasificar correctamente
     user_input = preprocess_input(user_input)
-    # — Contexto persistente del trámite seleccionado —
-    doc_actual = context_manager.get_selected_document(sid)
-    if doc_actual and not any(alias in normalize_text(user_input) for alias in DOC_ALIAS_MAP):
-        contexto_doc = doc_actual
-    else:
-        contexto_doc = None
 
     # Consultas rápidas tras listar trámites
     if context_manager.get_consultas_tramites_pending(sid):
@@ -1807,12 +1668,7 @@ def orchestrate(
             return {"respuesta": msg, "session_id": sid}
 
     # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
-    respuesta_doc = responder_sobre_documento(
-        pregunta_usuario=user_input,
-        session_id=sid,
-        listar_todo=False,
-        context_document=contexto_doc
-    )
+    respuesta_doc = responder_sobre_documento(user_input, sid)
     if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
         context_manager.update_context(sid, user_input, respuesta_doc)
         context_manager.set_current_flow(sid, "documento")
@@ -1982,6 +1838,7 @@ def admin_create_documento(data: dict = Body(...)):
 
 
 @app.post("/admin/documento/{id_documento}/requisito")
+def admin_add_requisito(id_documento: str, data: dict = Body(...)):
 def admin_add_requisito(id_documento: str, data: dict = Body(...)):
     """Agregar un requisito a un documento."""
     conn = get_db()
@@ -2616,10 +2473,9 @@ def buscar_faq_por_pregunta(pregunta):
 
 
 def responder_sobre_documento(
-    pregunta_usuario: str,
+    pregunta_usuario,
     session_id: Optional[str] = None,
     listar_todo: bool = False,
-    context_document: Optional[str] = None,
     channel: Optional[str] = None,
 ):
     tipo = detectar_tipo_documento(pregunta_usuario)
@@ -2638,23 +2494,11 @@ def responder_sobre_documento(
             nombre = doc["Nombre_Documento"]
             break
 
-    # — Usar el documento en contexto si no detectamos uno nuevo —
-    if not nombre and context_document:
-        nombre = context_document
-
     # Revisar alias conocidos
     if not nombre:
         for alias_norm, real in DOC_ALIAS_MAP.items():
-            # coincidencia exacta de alias completo
             if alias_norm in pregunta_norm:
                 nombre = real
-                break
-            # coincidencia parcial o por prefijo de palabras del alias
-            for part in alias_norm.split():
-                if pregunta_norm.startswith(part):
-                    nombre = real
-                    break
-            if nombre:
                 break
 
     # si no hubo match directo, probar búsqueda difusa
@@ -2712,16 +2556,16 @@ def responder_sobre_documento(
                 if ctx.get("doc_actual") != nombre:
                     context_manager.update_context_data(session_id, {"doc_actual": nombre})
 
-            # Detectar *todos* los campos solicitados en la misma consulta
             campos_solicitados: List[str] = []
             for campo, kws in KEYWORD_FIELDS.items():
                 for kw in kws:
                     kw_norm = normalize_text(kw)
-                    if kw_norm in pregunta_norm or fuzz.partial_ratio(pregunta_norm, kw_norm) >= 85:
+                    if kw_norm in pregunta_norm:
                         campos_solicitados.append(campo)
-                        # No hacemos break: recogemos múltiples campos en la misma entrada
-            # Eliminar duplicados manteniendo orden
-            campos_solicitados = list(dict.fromkeys(campos_solicitados))
+                        break
+                    if fuzz.partial_ratio(pregunta_norm, kw_norm) >= 85:
+                        campos_solicitados.append(campo)
+                        break
 
             if not campos_solicitados:
                 if INCLUIR_FICHA_COMPLETA_POR_DEFECTO:
