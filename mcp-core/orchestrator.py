@@ -1464,8 +1464,9 @@ def orchestrate(
             return {"respuesta": respuesta_despedida, "session_id": sid}
 
     # --- Manejar feedback pendiente ---
-    pending_feedback = context_manager.get_feedback_pending(sid)
-    if pending_feedback is not None:
+    has_fb = context_manager.has_feedback_pending(sid)
+    pending_feedback = context_manager.get_feedback_pending(sid) if has_fb else None
+    if has_fb:
         registrar_feedback_usuario(pending_feedback, user_input)
         context_manager.clear_feedback_pending(sid)
         if re.fullmatch(r"(?i)(sí|si|yes|ok|okay|vale)", user_input.strip()):

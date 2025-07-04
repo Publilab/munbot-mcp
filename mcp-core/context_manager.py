@@ -371,6 +371,11 @@ class ConversationalContextManager:
         context = self.get_context(session_id)
         return context.get("feedback_question")
 
+    def has_feedback_pending(self, session_id: str) -> bool:
+        """Indica si hay feedback pendiente para la sesión."""
+        context = self.get_context(session_id)
+        return "feedback_question" in context
+
     def clear_feedback_pending(self, session_id: str):
         """Limpia el indicador de feedback pendiente."""
         context = self.get_context(session_id)
