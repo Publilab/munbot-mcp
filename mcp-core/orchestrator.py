@@ -1618,7 +1618,7 @@ def orchestrate(
         if kw_intent == "complaint-registrar_reclamo":
             context_manager.set_pending_confirmation(sid, True)
             context_manager.set_current_flow(sid, "reclamo")
-            # dividimos en dos burbujas
+            # dividimos en dos burbujas 
             privacy_msg = (
                 "Si quieres hacer un reclamo o una denuncia estoy a tu disposición para registrarlo. "
                 "Recuerda que tus datos serán tratados de acuerdo a la Ley de Protección de Datos "
