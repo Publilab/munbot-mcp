@@ -1623,8 +1623,8 @@ def orchestrate(
                 "Si quieres hacer un reclamo o una denuncia estoy a tu disposición para registrarlo. "
                 "Recuerda que tus datos serán tratados de acuerdo a la Ley de Protección de Datos "
                 "y las políticas internas para resguardar tu seguridad digital"
-            question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
             )
+            question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
             context_manager.update_context(sid, user_input, privacy_msg)
             context_manager.update_context(sid, "", question_msg)
             return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
