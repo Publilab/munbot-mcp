@@ -96,7 +96,10 @@ _FAQ_CACHE = None
 # --- Instancia tu LLM local ---
 llm = LlamaClient()
 
+NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
+
 def extract_name_with_llm(user_text: str) -> Optional[str]:
+<<<<<<< HEAD
     """
     Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback.
     """
@@ -123,17 +126,38 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
         return ' '.join(word.capitalize() for word in words)
 
     # 3. Si las heurísticas fallan, usamos el LLM como fallback para frases complejas.
+=======
+    """Extrae un nombre completo desde la frase del usuario.
+
+    Primero intenta con una validación sencilla sin LLM y, si no cumple,
+    recurre al modelo de lenguaje como respaldo.
+    """
+
+    simple_name = user_text.strip()
+    if re.fullmatch(NAME_REGEX, simple_name, flags=re.IGNORECASE):
+        return simple_name
+
+>>>>>>> 7c5d1fa17918d1bc26ba71744d9b0a4bfa7c32e5
     prompt = (
         "Eres un extractor de nombres propios. Recibirás la frase completa que "
         "escribió un usuario y debes devolver ÚNICAMENTE su nombre completo "
         "(nombre y apellido). Si no identificas un nombre válido, responde 'None'.\n\n"
         f"Usuario: \"{user_text}\""
     )
-    resp = llm.generate(prompt)
+
+    try:
+        resp = llm.generate(prompt)
+    except Exception as e:
+        logging.error(f"LLM error extrayendo nombre: {e}")
+        return None
+
     name = resp.strip().splitlines()[0]
     if name.lower() == "none" or len(name.split()) < 2:
         return None
-    return name
+
+    if re.fullmatch(NAME_REGEX, name.strip(), flags=re.IGNORECASE):
+        return name.strip()
+    return None
 
 def extract_email_with_llm(user_text: str) -> Optional[str]:
     prompt = (
@@ -1278,6 +1302,41 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+<<<<<<< HEAD
+=======
+    # Comando para cancelar flujo en curso (se revisa antes de slot-filling)
+    if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
+        is_cancellable_state = (
+            ctx.get("pending_field")
+            or ctx.get("complaint_state")
+            or ctx.get("selected_document")
+            or ctx.get("faq_pending")
+            or ctx.get("doc_clarify")
+            or ctx.get("doc_options")
+        )
+        if is_cancellable_state:
+            context_manager.clear_pending_field(sid)
+            context_manager.clear_complaint_state(sid)
+            context_manager.clear_selected_document(sid)
+            context_manager.clear_faq_clarification(sid)
+            context_manager.clear_doc_clarification(sid)
+            context_manager.clear_document_options(sid)
+            cancel_msg = "He cancelado el proceso en curso. ¿En qué más puedo ayudarte?"
+            context_manager.update_context(sid, user_input, cancel_msg)
+            return {"respuesta": cancel_msg, "session_id": sid}
+        else:
+            no_cancel_msg = "No hay ningún proceso activo para cancelar. ¿En qué puedo ayudarte?"
+            context_manager.update_context(sid, user_input, no_cancel_msg)
+            return {"respuesta": no_cancel_msg, "session_id": sid}
+
+    # — guard clause para slot-filling —
+    pending = ctx.get("pending_field")
+    if pending:
+        slot_resp = _handle_slot_filling(user_input, sid, ctx)
+        if slot_resp:
+            return slot_resp
+
+>>>>>>> 7c5d1fa17918d1bc26ba71744d9b0a4bfa7c32e5
     raw = user_input.strip()
     if not (
         context_manager.get_faq_clarification(sid)
@@ -1371,33 +1430,6 @@ def orchestrate(
         )
         context_manager.update_context(sid, user_input, msg)
         return {"respuesta": msg, "session_id": sid}
-
-    # Comando para cancelar flujo en curso
-    if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
-        # Comprobamos si hay algún flujo o aclaración pendiente que se pueda cancelar
-        is_cancellable_state = (
-            ctx.get("pending_field")
-            or ctx.get("complaint_state")
-            or ctx.get("selected_document")
-            or ctx.get("faq_pending")
-            or ctx.get("doc_clarify")
-            or ctx.get("doc_options")
-        )
-        if is_cancellable_state:
-            context_manager.clear_pending_field(sid)
-            context_manager.clear_complaint_state(sid)
-            context_manager.clear_selected_document(sid)
-            context_manager.clear_faq_clarification(sid)
-            context_manager.clear_doc_clarification(sid)
-            context_manager.clear_document_options(sid)
-            cancel_msg = "He cancelado el proceso en curso. ¿En qué más puedo ayudarte?"
-            context_manager.update_context(sid, user_input, cancel_msg)
-            return {"respuesta": cancel_msg, "session_id": sid}
-        else:
-            # Si no hay nada que cancelar, se responde amablemente.
-            no_cancel_msg = "No hay ningún proceso activo para cancelar. ¿En qué puedo ayudarte?"
-            context_manager.update_context(sid, user_input, no_cancel_msg)
-            return {"respuesta": no_cancel_msg, "session_id": sid}
 
     # Procesar formulario de reclamo si hay campos pendientes
     resp = _handle_slot_filling(user_input, sid, ctx)
