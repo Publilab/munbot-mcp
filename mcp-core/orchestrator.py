@@ -1839,23 +1839,23 @@ def admin_create_documento(data: dict = Body(...)):
 
 @app.post("/admin/documento/{id_documento}/requisito")
 def admin_add_requisito(id_documento: str, data: dict = Body(...)):
-def admin_add_requisito(id_documento: str, data: dict = Body(...)):
-    """Agregar un requisito a un documento."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-    doc = cur.fetchone()
-    if not doc:
+    def admin_add_requisito(id_documento: str, data: dict = Body(...)):
+        """Agregar un requisito a un documento."""
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
+        doc = cur.fetchone()
+        if not doc:
+            conn.close()
+            return {"error": "Documento no encontrado"}
+        cur.execute(
+            "INSERT INTO documento_requisitos (documento_id, requisito) VALUES (%s, %s) RETURNING *",
+            (doc["id"], data["requisito"]),
+        )
+        req = cur.fetchone()
+        conn.commit()
         conn.close()
-        return {"error": "Documento no encontrado"}
-    cur.execute(
-        "INSERT INTO documento_requisitos (documento_id, requisito) VALUES (%s, %s) RETURNING *",
-        (doc["id"], data["requisito"]),
-    )
-    req = cur.fetchone()
-    conn.commit()
-    conn.close()
-    return req
+        return req
 
     if not doc:
         conn.close()
