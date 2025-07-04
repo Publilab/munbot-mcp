@@ -101,14 +101,14 @@ NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáé
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
-<<<<<<< HEAD
-    """
-    Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback.
-    """
+    """Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback."""
     cleaned_text = user_text.strip()
 
+    # Validación directa si ya parece un nombre completo
+    if re.fullmatch(NAME_REGEX, cleaned_text, flags=re.IGNORECASE):
+        return cleaned_text
+
     # 1. Heurística para extraer de frases comunes ("me llamo X Y", "mi nombre es X Y")
-    # Usamos re.IGNORECASE para ser flexibles con mayúsculas/minúsculas.
     patterns = [
         r"^(?:me llamo|mi nombre es|soy)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ\s'-]+)$",
     ]
@@ -116,30 +116,15 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
         match = re.search(pattern, cleaned_text, re.IGNORECASE)
         if match:
             potential_name = match.group(1).strip()
-            # Validamos que el nombre extraído tenga entre 2 y 4 palabras
             if 2 <= len(potential_name.split()) <= 4:
-                # Capitalizamos para un formato consistente
                 return ' '.join(word.capitalize() for word in potential_name.split())
 
     # 2. Heurística para cuando el input es solo el nombre (ej: "Emilio Ibarra")
     words = cleaned_text.split()
-    # Validamos que sean 2-4 palabras y que solo contengan caracteres de nombres.
     if 2 <= len(words) <= 4 and re.fullmatch(r"[A-Za-zÁÉÍÓÚáéíóúñÑ\s'-]+", cleaned_text):
         return ' '.join(word.capitalize() for word in words)
 
-    # 3. Si las heurísticas fallan, usamos el LLM como fallback para frases complejas.
-=======
-    """Extrae un nombre completo desde la frase del usuario.
-
-    Primero intenta con una validación sencilla sin LLM y, si no cumple,
-    recurre al modelo de lenguaje como respaldo.
-    """
-
-    simple_name = user_text.strip()
-    if re.fullmatch(NAME_REGEX, simple_name, flags=re.IGNORECASE):
-        return simple_name
-
->>>>>>> 7c5d1fa17918d1bc26ba71744d9b0a4bfa7c32e5
+    # 3. LLM como respaldo
     prompt = (
         "Eres un extractor de nombres propios. Recibirás la frase completa que "
         "escribió un usuario y debes devolver ÚNICAMENTE su nombre completo "
@@ -1319,8 +1304,6 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
-<<<<<<< HEAD
-=======
     # Comando para cancelar flujo en curso (se revisa antes de slot-filling)
     if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
         is_cancellable_state = (
@@ -1349,11 +1332,13 @@ def orchestrate(
     # — guard clause para slot-filling —
     pending = ctx.get("pending_field")
     if pending:
-        slot_resp = _handle_slot_filling(user_input, sid, ctx)
+        try:
+            slot_resp = _handle_slot_filling(user_input, sid, ctx)
+        except Exception:
+            logging.exception("[ORQUESTADOR] Error en _handle_slot_filling")
+            return {"respuesta": "Lo siento, hubo un error interno.", "session_id": sid}
         if slot_resp:
             return slot_resp
-
->>>>>>> 7c5d1fa17918d1bc26ba71744d9b0a4bfa7c32e5
     raw = user_input.strip()
     if not (
         context_manager.get_faq_clarification(sid)
@@ -1449,7 +1434,11 @@ def orchestrate(
         return {"respuesta": msg, "session_id": sid}
 
     # Procesar formulario de reclamo si hay campos pendientes
-    resp = _handle_slot_filling(user_input, sid, ctx)
+    try:
+        resp = _handle_slot_filling(user_input, sid, ctx)
+    except Exception:
+        logging.exception("[ORQUESTADOR] Error en _handle_slot_filling")
+        return {"respuesta": "Lo siento, hubo un error interno.", "session_id": sid}
     if resp:
         return resp
 
