@@ -13,6 +13,7 @@ import redis
 import uuid
 import threading
 import time
+import concurrent.futures
 from context_manager import ConversationalContextManager
 import unicodedata
 from utils.text import normalize_text
@@ -93,10 +94,11 @@ logging.basicConfig(level=logging.INFO)
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
 
-# --- Instancia tu LLM local ---
+# --- Instancia tu LLM local (única instancia) ---
 llm = LlamaClient()
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
+EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
 <<<<<<< HEAD
@@ -159,7 +161,18 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
         return name.strip()
     return None
 
-def extract_email_with_llm(user_text: str) -> Optional[str]:
+def _extract_email_simple(text: str) -> Optional[str]:
+    match = re.search(EMAIL_REGEX, text)
+    if match:
+        email = match.group(0)
+        if es_email_valido(email):
+            return email
+    return None
+
+def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str]:
+    email = _extract_email_simple(user_text)
+    if email:
+        return email
     prompt = (
         "Eres un extractor y validador de correos electrónicos. Recibirás la frase "
         "completa de un usuario y debes devolver SOLO la dirección de email si está "
@@ -167,9 +180,15 @@ def extract_email_with_llm(user_text: str) -> Optional[str]:
         "encuentras un email válido.\n\n"
         f"Usuario: \"{user_text}\""
     )
-    resp = llm.generate(prompt)
+    try:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
+            future = ex.submit(llm.generate, prompt)
+            resp = future.result(timeout=timeout)
+    except Exception as e:
+        logging.error(f"LLM error extrayendo correo: {e}")
+        return None
     email = resp.strip().splitlines()[0]
-    return None if email.lower() == "none" else email
+    return email if es_email_valido(email) else None
 
 def load_faq_cache() -> list:
     global _FAQ_CACHE
@@ -476,13 +495,11 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         return {"error": f"Connection error: {e}"}
 
 
-# === Cliente Llama ===
-llama = LlamaClient()
-
+# === Utilidades de generación con el LLM ===
 
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
-    return llama.generate(prompt)
+    return llm.generate(prompt)
 
 
 def infer_intent_with_llm(prompt):
