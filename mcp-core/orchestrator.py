@@ -1618,12 +1618,16 @@ def orchestrate(
         if kw_intent == "complaint-registrar_reclamo":
             context_manager.set_pending_confirmation(sid, True)
             context_manager.set_current_flow(sid, "reclamo")
-            pregunta = (
+            # dividimos en dos burbujas
+            privacy_msg = (
                 "Si quieres hacer un reclamo o una denuncia estoy a tu disposición para registrarlo. "
-                "¿Te gustaría registrar el reclamo en estos momentos?"
+                "Recuerda que tus datos serán tratados de acuerdo a la Ley de Protección de Datos "
+                "y las políticas internas para resguardar tu seguridad digital"
+            question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
             )
-            context_manager.update_context(sid, user_input, pregunta)
-            return {"respuesta": pregunta, "session_id": sid}
+            context_manager.update_context(sid, user_input, privacy_msg)
+            context_manager.update_context(sid, "", question_msg)
+            return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
 
     # === 0) Consultar primero en la base de FAQs ===
     multi = lookup_multiple_faqs(user_input)
@@ -1821,7 +1825,12 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
         if ip:
             extra_context["ip"] = ip
         result = orchestrate(input.pregunta, extra_context, input.session_id)
-        if result.get("respuesta"):
+        if "respuestas" in result:
+            result["respuestas"] = [
+                adapt_markdown_for_channel(msg, input.channel) 
+                for msg in result["respuestas"]
+            ]
+        elif result.get("respuesta"):
             result["respuesta"] = adapt_markdown_for_channel(
                 result["respuesta"], input.channel
             )

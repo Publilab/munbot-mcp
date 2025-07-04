@@ -51,11 +51,22 @@ io.on('connection', (socket) => {
             if (response.data) {
                 socket.sessionId = response.data.session_id || socket.sessionId;
             }
-            if (response.data && response.data.respuesta) {
-                socket.emit('bot_message', response.data.respuesta);
-            } else if (response.data && response.data.message) {
-                socket.emit('bot_message', response.data.message);
-            } else {
+            const data = response.data || {};
+            if (Array.isArray(data.respuestas)) {
+                // enviamos la primera burbuja inmediatamente
+                socket.emit('bot_message', data.respuestas[0]);
+                // y la siguiente tras 1 segundo
+                setTimeout(() => {
+                    socket.emit('bot_message', data.respuestas[1]);
+                }, 1000);
+            }
+            else if (data.respuesta) {
+                socket.emit('bot_message', data.respuesta);
+            }
+            else if (data.message) {
+                socket.emit('bot_message', data.message);
+            }
+            else {
                 socket.emit('bot_message', 'No se recibió respuesta válida del MCP.');
             }
         } catch (error) {
