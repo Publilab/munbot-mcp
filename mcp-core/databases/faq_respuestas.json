@@ -5,6 +5,11 @@
     "categoria": "saludos"
   },
   {
+    "pregunta":["Alo"],
+    "respuesta": "¡Alo! ¿Si? ¿Puedo ayudarte?",
+    "categoria": "saludos"
+  },
+  {
     "pregunta": ["adiós", "hasta luego", "nos vemos", "chau", "chao", "bye", "hasta pronto", "hasta la próxima", "me despido",
         "no necesito más ayuda", "no necesito ayuda", "eso es todo", "terminé", "ya está", "ya terminé"],
     "respuesta": "¡Hasta luego! Tu sesión ha terminado. Si necesitas algo más, inicia una nueva conversación.",
@@ -169,5 +174,10 @@
     "pregunta": ["¿Cuál es el correo electrónico de contacto?"],
     "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
     "categoria": "contacto_humano"
+  },
+  {
+    "pregunta":["Quiero hacerte una pregunta", "Quiero hacerte una consulta", "Quiero hacerte otra pregunta", "¿Quiero hacerte otra consulta", "Tengo otra solicitud?", "Tengo otro requerimiento", "Tengo un requerimiento", "Tengo una solicitud", "Tengo una consulta", "Tengo una pregunta", "Tengo otra pregunta", "Tengo otra consulta", "Puedo hacerte otra pregunta", "Puedo hacerte otra consulta", "Puedo hacerte otra solicitud", "Puedo hacerte otro requerimiento", "Puedo hacerte una solicitud", "Puedo hacerte un requerimiento", "Puedo hacerte una consulta"],
+    "respuesta": "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?",
+    "categoria": "otras_consultas"
   }
 ]

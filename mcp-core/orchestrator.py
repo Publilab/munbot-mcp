@@ -104,10 +104,6 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
     """Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback."""
     cleaned_text = user_text.strip()
 
-    # Validación directa si ya parece un nombre completo
-    if re.fullmatch(NAME_REGEX, cleaned_text, flags=re.IGNORECASE):
-        return cleaned_text
-
     # 1. Heurística para extraer de frases comunes ("me llamo X Y", "mi nombre es X Y")
     patterns = [
         r"^(?:me llamo|mi nombre es|soy)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ\s'-]+)$",
@@ -117,11 +113,13 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
         if match:
             potential_name = match.group(1).strip()
             if 2 <= len(potential_name.split()) <= 4:
+                # Capitalizar cada palabra
                 return ' '.join(word.capitalize() for word in potential_name.split())
 
     # 2. Heurística para cuando el input es solo el nombre (ej: "Emilio Ibarra")
     words = cleaned_text.split()
-    if 2 <= len(words) <= 4 and re.fullmatch(r"[A-Za-zÁÉÍÓÚáéíóúñÑ\s'-]+", cleaned_text):
+    if 2 <= len(words) <= 4 and re.fullmatch(NAME_REGEX, cleaned_text, flags=re.IGNORECASE):
+        # Capitalizar cada palabra
         return ' '.join(word.capitalize() for word in words)
 
     # 3. LLM como respaldo
