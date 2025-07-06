@@ -7,8 +7,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # 1) Sistema
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git build-essential cmake gcc g++ \
-    libblas-dev liblapack-dev && \
-    && rm -rf /var/lib/apt/lists/*
+        libblas-dev liblapack-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /mcp-core
 
