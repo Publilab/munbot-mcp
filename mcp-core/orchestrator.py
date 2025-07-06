@@ -1339,6 +1339,48 @@ def orchestrate(
             return {"respuesta": "Lo siento, hubo un error interno.", "session_id": sid}
         if slot_resp:
             return slot_resp
+
+    # --- Handler RAG específico para flujo de reclamos ---
+    if (
+        context_manager.get_pending_confirmation(sid)
+        and context_manager.get_current_flow(sid) == "reclamo"
+    ):
+        etiqueta = classify_reclamo_response(user_input)
+        logging.debug(f"[ORQUESTADOR] etiqueta reclamo: {etiqueta}")
+        context_manager.clear_pending_confirmation(sid)
+
+        if etiqueta == "affirmative":
+            context_manager.clear_context_field(sid, "doc_actual")
+            context_manager.update_pending_field(sid, "nombre")
+            context_manager.update_complaint_state(sid, "iniciado")
+            pregunta = (
+                "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n"
+                "¿Cómo te llamas?"
+            )
+            return {"respuesta": pregunta, "session_id": sid}
+
+        if etiqueta == "negative":
+            context_manager.set_current_flow(sid, None)
+            msg = "Entendido. ¿En qué más puedo ayudarte?"
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
+
+        # etiqueta == "question" → RAG
+        chunks = retrieve_complaint_chunks(user_input, k=3)
+        if chunks:
+            logging.info(
+                f"[RAG] Pregunta: {user_input[:60]}…  Chunks[0]: {chunks[0][:60]}…"
+            )
+        rag_prompt = (
+            "Utiliza **solo** la información delimitada para responder la pregunta.\n\n"
+            + "\n\n".join(chunks)
+            + f"\n\nPregunta: \"{user_input}\"\nRespuesta:"
+        )
+        answer = llm.generate(rag_prompt)
+        question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
+        context_manager.set_pending_confirmation(sid, True)
+        return {"respuesta": f"{answer}\n\n{question_msg}", "session_id": sid}
+
     raw = user_input.strip()
     if not (
         context_manager.get_faq_clarification(sid)
@@ -1601,7 +1643,12 @@ def orchestrate(
     ctx = context_manager.get_context(sid)
     pending = ctx.get("pending_field")
     if not pending:
-        kw_intent = detect_intent_keywords(user_input)
+        kw_intent = None
+        if not (
+            context_manager.get_current_flow(sid) == "reclamo"
+            and context_manager.get_pending_confirmation(sid)
+        ):
+            kw_intent = detect_intent_keywords(user_input)
         if re.search(
             r"\b(?:c(?:o|ó)mo|d(?:o|ó)nde|qu(?:é|e))?\s*(?:puedo|necesito)?\s*(agendar|reservar|cita|hora|turno)\b",
             user_input,
@@ -1627,7 +1674,7 @@ def orchestrate(
             question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
             context_manager.update_context(sid, user_input, privacy_msg)
             context_manager.update_context(sid, "", question_msg)
-            return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
+            return {"respuesta": f"{privacy_msg}\n{question_msg}", "session_id": sid}
 
     # === 0) Consultar primero en la base de FAQs ===
     multi = lookup_multiple_faqs(user_input)
@@ -1688,37 +1735,6 @@ def orchestrate(
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": answer, "session_id": sid}
 
-    # --- Handler RAG específico para flujo de reclamos ---
-    if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid) == "reclamo":
-        etiqueta = classify_reclamo_response(user_input)
-        context_manager.clear_pending_confirmation(sid)
-
-        if etiqueta == "affirmative":
-            context_manager.clear_context_field(sid, "doc_actual")
-            context_manager.update_pending_field(sid, "nombre")
-            context_manager.update_complaint_state(sid, "iniciado")
-            pregunta = (
-                "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n"
-                "¿Cómo te llamas?"
-            )
-            return {"respuesta": pregunta, "session_id": sid}
-
-        if etiqueta == "negative":
-            msg = "Entendido. ¿En qué más puedo ayudarte?"
-            context_manager.update_context(sid, user_input, msg)
-            return {"respuesta": msg, "session_id": sid}
-
-        # etiqueta == "question" → RAG
-        chunks = retrieve_complaint_chunks(user_input, k=3)
-        rag_prompt = (
-            "Utiliza **solo** la información delimitada para responder la pregunta.\n\n"
-            + "\n\n".join(chunks)
-            + f"\n\nPregunta: \"{user_input}\"\nRespuesta:"
-        )
-        answer = llm.generate(rag_prompt)
-        question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
-        context_manager.set_pending_confirmation(sid, True)
-        return {"respuesta": f"{answer}\n\n{question_msg}", "session_id": sid}
 
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
