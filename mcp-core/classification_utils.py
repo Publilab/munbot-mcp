@@ -11,13 +11,16 @@ def classify_reclamo_response(text: str) -> str:
     Usa una heurística rápida y cae en LLM si es necesario.
     """
     low = text.lower()
-    # 1) Heurística rápida para 'sí'
-    if re.search(r"\b(s[ií]|claro|por supuesto)\b", low):
-        return "affirmative"
-    # 2) Heurística rápida para 'no'
-    if re.search(r"\b(no|nunca|todav[ií]a no)\b", low):
+    # 1) Pregunta si contiene signo de interrogación o palabras interrogativas
+    if "?" in text or re.search(r"^(?:¿\s*)?(c[oó]mo|qu[eé]|qui[eé]n|d[oó]nde|cu[aá]ndo|por\s+qué)\b", low):
+        return "question"
+    # 2) Negativo explícito
+    if re.search(r"\b(no|nunca|todav[ií]a\s+no|a[uú]n\s+no)\b", low):
         return "negative"
-    # 3) Fallback usando LLM
+    # 3) Afirmativo explícito
+    if re.search(r"\b(sí|claro|por supuesto)\b", low):
+        return "affirmative"
+    # 4) Fallback usando LLM
     try:
         prompt = (
             "Clasifica esta respuesta a “¿Te gustaría registrar el reclamo…?” "
