@@ -23,7 +23,7 @@ RUN pip install torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 3) Código de la aplicación
-COPY .env orchestrator.py context_manager.py llama_client.py ./
+COPY .env orchestrator.py context_manager.py llama_client.py classification_utils.py rag_utils.py ./
 COPY scripts/ ./scripts/
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
