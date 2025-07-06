@@ -22,6 +22,8 @@ from llama_client import LlamaClient
 import numpy as np
 from rapidfuzz import fuzz
 from datetime import datetime
+from rag_utils import retrieve_complaint_chunks
+from classification_utils import classify_reclamo_response
 
 
 # === Configuración ===
@@ -1685,6 +1687,35 @@ def orchestrate(
         context_manager.reset_fallback_count(sid)
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": answer, "session_id": sid}
+
+    # --- Handler RAG específico para flujo de reclamos ---
+if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid) == "reclamo":
+    etiqueta = classify_reclamo_response(user_input)
+    context_manager.clear_pending_confirmation(sid)
+
+    if etiqueta == "affirmative":
+        context_manager.clear_context_field(sid, "doc_actual")
+        context_manager.update_pending_field(sid, "nombre")
+        context_manager.update_complaint_state(sid, "iniciado")
+        pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
+        return {"respuesta": pregunta, "session_id": sid}
+
+    if etiqueta == "negative":
+        msg = "Entendido. ¿En qué más puedo ayudarte?"
+        context_manager.update_context(sid, user_input, msg)
+        return {"respuesta": msg, "session_id": sid}
+
+    # Ruta question → RAG
+    chunks = retrieve_complaint_chunks(user_input, k=3)
+    rag_prompt = (
+        "Utiliza **solo** la información delimitada para responder la pregunta.\n\n"
+        + "\n\n".join(chunks)
+        + f"\n\nPregunta: \"{user_input}\"\nRespuesta:"
+    )
+    answer = llm.generate(rag_prompt)
+    question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
+    context_manager.set_pending_confirmation(sid, True)
+    return {"respuesta": f"{answer}\n\n{question_msg}", "session_id": sid}
 
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):

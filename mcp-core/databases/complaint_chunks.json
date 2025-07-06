@@ -1,0 +1,87 @@
+[
+  {
+    "id": "MARCO_LEGAL_Y_NORMATIVO_1",
+    "section": "MARCO LEGAL Y NORMATIVO",
+    "text": "El presente manual se sustenta en las siguientes disposiciones legales:\n\n- Constitución Política de Coruscant, Artículo 35: Derecho de petición y acceso a la información pública\n- Ley N° 19.653 de Probidad Administrativa\n- Ley N° 20.285 sobre Acceso a la Información Pública\n- Ley N° 19.628 sobre Protección de Datos de Carácter Personal\n- Decreto Supremo N° 93 sobre Tramitación de Reclamos\n- Instructivo Presidencial N° 008 sobre Modernización del Estado\n\n---"
+  },
+  {
+    "id": "DEFINICIONES_2",
+    "section": "DEFINICIONES",
+    "text": "Para efectos del presente manual, se entenderá por:\nReclamo: Manifestación de desconformidad o disconformidad formulada por un ciudadano respecto de la actuación de un órgano de la Administración del Estado o de la calidad de los servicios prestados.\nDenuncia: Comunicación que pone en conocimiento de la autoridad competente la comisión de un hecho que puede constituir falta, infracción o delito.\nPetición: Solicitud concreta formulada ante la autoridad competente en ejercicio del derecho constitucional de petición.\nSolicitante: Persona natural o jurídica que presenta un reclamo, denuncia o petición.\nFuncionario Receptor: Servidor público autorizado para recibir y registrar reclamos en el sistema institucional.\nDías Hábiles: Días lunes a viernes, excluyendo feriados legales y días declarados inhábiles por la autoridad competente.\n\n---"
+  },
+  {
+    "id": "ÁMBITO_DE_APLICACIÓN_3",
+    "section": "ÁMBITO DE APLICACIÓN",
+    "text": "Este manual aplica a:\n\nTodos los reclamos, denuncias y peticiones dirigidas al Gobierno de Coruscant\nTodas las reparticiones, departamentos y unidades administrativas dependientes\nServicios públicos, municipalidades y organismos descentralizados bajo supervisión del Gobierno de Coruscant\nEmpresas públicas y entidades con participación estatal mayoritaria\nConcesionarios y prestadores de servicios públicos bajo regulación gubernamental\n\n---"
+  },
+  {
+    "id": "DERECHOS_Y_OBLIGACIONES_4",
+    "section": "DERECHOS Y OBLIGACIONES",
+    "text": "### Derechos del Solicitante\n\nLos ciudadanos tienen derecho a:\n\nPresentar reclamos, denuncias o peticiones sin discriminación alguna\nObtener un número único de seguimiento para cada gestión\nRecibir respuesta oportuna y fundada dentro de los plazos establecidos\nAcceder a información sobre el estado de tramitación de su solicitud\nPresentar recursos de apelación ante resoluciones desfavorables\nMantener la confidencialidad de sus datos personales\nSer tratado con respeto y cordialidad durante todo el proceso\n\n---"
+  },
+  {
+    "id": "Obligaciones_del_Solicitante_5",
+    "section": "Obligaciones del Solicitante",
+    "text": "Los ciudadanos deben:\n\nProporcionar información veraz y completa\nIdentificarse adecuadamente cuando corresponda\nMantener actualizada su información de contacto\nUtilizar un lenguaje respetuoso y apropiado\nAportar antecedentes o evidencias que sustenten su reclamo\nCumplir con los plazos establecidos para recursos y apelaciones\n\n---"
+  },
+  {
+    "id": "PROCEDIMIENTO_DE_RECLAMOS_6",
+    "section": "PROCEDIMIENTO DE RECLAMOS",
+    "text": "### Fase de Recepción\n\nPlazo: Hasta 2 días hábiles desde la presentación\nActividades:\n\n- Registro de información básica del solicitante\n- Asignación de ID único alfanumérico de seguimiento\n- Validación de datos de contacto\n- Emisión automática de comprobante de recepción\n- Notificación al solicitante vía correo electrónico o SMS\n\nDocumentación requerida:\n\n- Identificación del solicitante (cuando no sea anónimo)\n- Descripción clara y detallada del problema\n- Fechas, ubicaciones y circunstancias relevantes\n- Evidencias o documentos de respaldo (opcional)\n\n---\n### Fase de Validación\n\nPlazo: Incluido en los 2 días hábiles de recepción\nCriterios de validación:\n\n- Competencia del órgano para conocer el reclamo\n- Completitud de la información proporcionada\n- Pertinencia de los antecedentes aportados\n- Cumplimiento de requisitos formales mínimos\n\nAcciones en caso de información insuficiente:\n\n- Notificación automática al solicitante\n- Solicitud de información complementaria\n- Plazo de 10 días hábiles para subsanar observaciones\n- Archivo automático si no se subsana en el plazo establecido\n\n---\n### Fase de Asignación\n\nPlazo: Máximo 3 días hábiles desde la validación\nProceso:"
+  },
+  {
+    "id": "PROCEDIMIENTO_DE_RECLAMOS_7",
+    "section": "PROCEDIMIENTO DE RECLAMOS",
+    "text": "- Clasificación automática según tipo y materia\n- Derivación al área o funcionario competente\n- Notificación al responsable asignado\n- Actualización del estado en el sistema\n- Comunicación al solicitante sobre la asignación\n\n---\n### Fase de Instrucción\n\nPlazo: Hasta 15 días hábiles desde la asignación\nActividades:\n\n- Análisis técnico del reclamo\n- Recopilación de antecedentes adicionales\n- Coordinación con otras reparticiones (si aplica)\n- Elaboración de informe técnico\n- Propuesta de resolución\n\n---\n### Fase de Resolución\n\nPlazo: Incluido en los 15 días hábiles de instrucción\nContenido mínimo de la resolución:\n\n- Identificación del caso y solicitante\n- Resumen de los hechos expuestos\n- Análisis técnico y jurídico\n- Fundamentos de la decisión\n- Medidas adoptadas o por adoptar\n- Recursos disponibles para el solicitante\n- Plazo para ejercer recursos\n\n---"
+  },
+  {
+    "id": "CLASIFICACIÓN_DE_RECLAMOS_8",
+    "section": "CLASIFICACIÓN DE RECLAMOS",
+    "text": "### Por Tipo de Materia\n\n#### Servicios Públicos:\n\n- Agua potable y alcantarillado\n- Energía eléctrica\n- Transporte público\n- Telecomunicaciones\n- Salud pública\n\n#### Administración:\n\n- Atención al ciudadano\n- Trámites administrativos\n- Funcionamiento de oficinas\n- Tiempos de respuesta\n- Calidad del servicio\n\n#### Infraestructura:\n\n- Vías públicas\n- Alumbrado público\n- Espacios verdes\n- Edificios públicos\n- Señalización\n\n#### Funcionarios Públicos:\n\n- Conducta funcionaria\n- Cumplimiento de deberes\n- Probidad administrativa\n- Trato al ciudadano\n\n---\n### Por Nivel de Complejidad\n\nNivel 1 - Simples: Resolución directa por funcionario receptor (hasta 5 días hábiles)\nNivel 2 - Moderados: Requieren análisis técnico especializado (hasta 15 días hábiles)\nNivel 3 - Complejos: Involucran múltiples reparticiones o aspectos legales (hasta 30 días hábiles)\n\n---\n### Por Urgencia\n\nCríticos: Afectan servicios esenciales o derechos fundamentales (respuesta inmediata)\nUrgentes: Requieren atención prioritaria (hasta 5 días hábiles)\nNormales: Tramitación según plazos ordinarios\n\n---"
+  },
+  {
+    "id": "PROTECCIÓN_DE_DATOS_PERSONALES_9",
+    "section": "PROTECCIÓN DE DATOS PERSONALES",
+    "text": "### Principios Fundamentales\n\nLegalidad: Tratamiento conforme a la normativa vigente\nFinalidad: Uso exclusivo para tramitación de reclamos\nProporcionalidad: Datos estrictamente necesarios\nCalidad: Información exacta y actualizada\nSeguridad: Medidas técnicas y organizativas apropiadas\nConfidencialidad: Acceso restringido a personal autorizado\n\n---\n### Medidas de Seguridad\n\n#### Técnicas:\nCifrado de extremo a extremo en almacenamiento y transmisión\nAutenticación multifactor para acceso a sistemas\nRespaldos automáticos diarios con cifrado\nMonitoreo continuo de accesos y actividades\nFirewalls y sistemas de detección de intrusos\n\n##### Organizativas:\nPerfiles de acceso diferenciados por función\nCapacitación periódica al personal\nAuditorías internas trimestrales\nPolíticas de escritorio limpio\nAcuerdos de confidencialidad firmados\n\n---\n### Derechos del Titular\n\nLos titulares de datos personales pueden ejercer los siguientes derechos:\n\nAcceso: Consultar qué datos se procesan\nRectificación: Corregir información inexacta\nCancelación: Solicitar eliminación de datos\nOposición: Limitar el tratamiento de sus datos\nPortabilidad: Obtener copia de sus datos\n\n---"
+  },
+  {
+    "id": "ACCESO_Y_CONFIDENCIALIDAD_10",
+    "section": "ACCESO Y CONFIDENCIALIDAD",
+    "text": "### Niveles de Acceso\n\n#### Funcionario Receptor:\n\nInformación inicial para evaluación\nDatos de contacto del solicitante\nDescripción general del reclamo\nHistorial de comunicaciones\n\n#### Área Técnica Especializada:\n\nReclamos asignados a su competencia\nEvidencias y documentos asociados\nAntecedentes técnicos relevantes\nComunicaciones con el solicitante\n\n#### Supervisión y Control:\n\nEstadísticas agregadas sin identificación personal\nIndicadores de gestión y calidad\nInformes de cumplimiento de plazos\nDatos para mejora de procesos\n\n#### Auditoría Interna:\n\nAcceso completo para verificación de cumplimiento\nRevisión de logs de actividad\nValidación de procedimientos\nEvaluación de controles internos\n\n---\n### Registro de Actividades\n\nTodas las operaciones quedan registradas en un log de auditoría que incluye:\n\nFecha y hora de la operación\nUsuario que realizó la acción\nTipo de operación ejecutada\nDatos consultados o modificados\nDirección IP de origen\nResultado de la operación\n\n------------------------------------------------------------------------------------------------------------------"
+  },
+  {
+    "id": "PLAZOS_Y_TÉRMINOS_11",
+    "section": "PLAZOS Y TÉRMINOS",
+    "text": "### Plazos Ordinarios\n\n| Fase                   | Plazo Máximo    | Observaciones           |\n| ---------------------- | --------------- | ----------------------- |\n| Recepción y Validación | 2 días hábiles  | Desde presentación      |\n| Asignación             | 3 días hábiles  | Desde validación        |\n| Instrucción            | 15 días hábiles | Desde asignación        |\n| Resolución             |                 | Incluido en instrucción |\n| Notificación           |                 | Obligatoria             |\n| Total                  | 20 días hábiles | Plazo máximo ordinario  |\n\n---\n### Plazos Especiales\n\nCasos Críticos: Respuesta inmediata (máximo 24 horas)\nCasos Complejos: Hasta 30 días hábiles con notificación previa\nReclamos Anónimos: Mismos plazos, sin notificaciones personales\nCasos Interdisciplinarios: Hasta 45 días hábiles previa justificación\n\n---\n### Suspensión de Plazos\n\nLos plazos se suspenden en los siguientes casos:\n\nSolicitud de información complementaria al ciudadano\nRequerimiento de antecedentes a terceros\nTramitación de recursos judiciales conexos\nCaso fortuito o fuerza mayor debidamente acreditado\n\n---"
+  },
+  {
+    "id": "RECURSOS_Y_APELACIONES_12",
+    "section": "RECURSOS Y APELACIONES",
+    "text": "### Recurso de Reposición\n\nPlazo: 10 días hábiles desde la notificación de la resolución\n\n#### Requisitos:\n\nInterposición por escrito\nFundamentos específicos del desacuerdo\nAporte de nuevos antecedentes (si los hubiere)\nIdentificación clara del caso\n\n#### Tramitación:\n\nRevisión por autoridad superior\nPlazo de resolución: 15 días hábiles\nResolución fundada y definitiva\n\n---\n### Recurso Jerárquico\n\nProcedencia: Cuando el recurso de reposición es rechazado\nPlazo: 5 días hábiles desde la notificación del rechazo\nAutoridad Competente: Jefe de Servicio o su delegado\nPlazo de Resolución: 20 días hábiles\n10.3 Recurso ante Contraloría General\nProcedencia: Agotada la vía administrativa\nPlazo: 30 días hábiles desde la resolución final\nMateria: Legalidad del acto administrativo\nEfectos: Suspensivo del acto recurrido\n\n---"
+  },
+  {
+    "id": "11._PREGUNTAS_FRECUENTES_13",
+    "section": "11. PREGUNTAS FRECUENTES",
+    "text": "### Presentación de Reclamos\n\n¿Cómo puedo presentar un reclamo?\nLos reclamos pueden presentarse a través de: portal web institucional, oficinas de atención presencial, correo electrónico oficial, teléfono gratuito, aplicación móvil oficial, o correo postal.\n\n¿Qué información debo proporcionar?\nInformación básica del solicitante, descripción detallada del problema, fechas y ubicaciones específicas, documentos o evidencias de respaldo, y datos de contacto actualizados.\n\n¿Puedo presentar un reclamo anónimo?\nSí, el sistema permite reclamos anónimos. Se asigna un código alfanumérico único para seguimiento, garantizando confidencialidad absoluta.\n\n---\n### Seguimiento y Consultas\n\n¿Cómo consulto el estado de mi reclamo?\nIngrese su ID único en la sección \"Seguimiento\" del portal web o aplicación móvil para obtener actualizaciones en tiempo real.\n\n¿Con qué frecuencia se actualiza el estado?\nLas actualizaciones se realizan automáticamente tras cambios significativos. Para evitar saturación, se envían máximo una vez cada 24 horas.\n\n¿Puedo modificar mi reclamo después de enviarlo?\nDurante las primeras 48 horas puede editar o complementar la información. Todas las modificaciones quedan registradas en el historial.\n\n---\n### Adjuntos y Evidencias\n\n¿Qué tipos de archivos puedo adjuntar?\nSe aceptan: PDF, Word, Excel, imágenes (JPG, PNG), videos (MP4, AVI), y archivos de audio (MP3, WAV). Tamaño máximo: 10 MB por archivo."
+  },
+  {
+    "id": "11._PREGUNTAS_FRECUENTES_14",
+    "section": "11. PREGUNTAS FRECUENTES",
+    "text": "¿Cuántos archivos puedo adjuntar?\nMáximo 5 archivos por reclamo. Si necesita adjuntar más evidencias, puede hacerlo durante el proceso de instrucción.\n\n---\n### Resoluciones y Recursos\n\n¿Qué pasa si no estoy conforme con la resolución?\nPuede presentar un recurso de reposición dentro de 10 días hábiles, exponiendo los fundamentos de su desacuerdo.\n\n¿Cuánto tiempo toma resolver un recurso?\nLos recursos de reposición se resuelven en máximo 15 días hábiles. Los recursos jerárquicos en 20 días hábiles.\n\n---"
+  },
+  {
+    "id": "12._CANALES_DE_ATENCIÓN_15",
+    "section": "12. CANALES DE ATENCIÓN",
+    "text": "### Atención Presencial\n\nHorario: Lunes a viernes, 8:30 a 17:00 horas\nUbicación: Edificio Gubernamental, Avenida República 1234, Nivel Plaza\nServicios: Recepción de reclamos, orientación, consulta de estado, entrega de documentos\n\n---\n### Atención Virtual\nPortal Web: www.gobierno.coruscant.gob\nCorreo Electrónico: reclamos@gobierno.coruscant.gob\nAplicación Móvil: \"Gobierno Coruscant\" (disponible para iOS y Android)\nTeléfono: 600-800-0000 (gratuito desde teléfonos fijos)\n\n---\n### Atención Telefónica\n\nHorario: Lunes a viernes, 8:00 a 20:00 horas\nServicios: Orientación, consulta de estado, recepción de reclamos simples\nIdiomas: Español, inglés, y otros según disponibilidad\n\n---\n### Correspondencia\n\nDirección: Gobierno de Coruscant, Casilla 12345, Coruscant\nAtención: Oficina de Partes y Correspondencia\nHorario de Recepción: Lunes a viernes, 8:30 a 17:00 horas\n\n---"
+  },
+  {
+    "id": "SEGUIMIENTO_Y_MONITOREO_16",
+    "section": "SEGUIMIENTO Y MONITOREO",
+    "text": "### Indicadores de Gestión\n\n#### Oportunidad:\nPorcentaje de reclamos resueltos dentro del plazo\nTiempo promedio de resolución por tipo de reclamo\nCumplimiento de plazos por área responsable\n\n#### Calidad:\nÍndice de satisfacción del ciudadano\nPorcentaje de recursos presentados\nTasa de confirmación de resoluciones\n\n#### Eficiencia:\nNúmero de reclamos procesados por funcionario\nCosto promedio de tramitación\nTiempo de respuesta por canal de atención\n\n---\n### Reportes Institucionales\n\nMensual: Estadísticas operacionales para jefaturas\nTrimestral: Informe de gestión para autoridades superiores\nSemestral: Análisis de tendencias y mejoras\nAnual: Memoria institucional y cuenta pública\n\n---\n### Mejora Continua\nReuniones de Evaluación: Mensuales con equipos técnicos\nCapacitación: Programa anual de desarrollo de competencias\nActualización Tecnológica: Revisión semestral de plataformas\nParticipación Ciudadana: Encuestas de satisfacción trimestrales\n\n---"
+  },
+  {
+    "id": "DISPOSICIONES_FINALES_17",
+    "section": "DISPOSICIONES FINALES",
+    "text": "### Vigencia\n\nEste manual entra en vigencia a partir del 05 de julio de 2025 y deroga todas las disposiciones anteriores sobre la materia.\n\n---\n### Actualizaciones\n\nEl presente manual será revisado anualmente o cuando cambios normativos lo requieran. Las actualizaciones serán aprobadas por el Consejo de Administración Pública.\n\n---\n### Interpretación\n\nLas dudas sobre la aplicación de este manual serán resueltas por la Secretaría General del Gobierno de Coruscant.\n\n---\n### Casos No Previstos\n\nLas situaciones no contempladas en este manual se resolverán aplicando los principios del derecho administrativo y la normativa legal vigente.\n\n---\nDOCUMENTO APROBADO POR:\n[Firma Digital]\nSecretario General de Gobierno\nGobierno de Coruscant\n[Firma Digital]\nDirector de Modernización del Estado\nGobierno de Coruscant\n[Sello Oficial]\nGobierno de Coruscant\n\nEste documento es de carácter público y está disponible en el portal web institucional www.gobierno.coruscant.gob\nFecha de Publicación: 05 de julio de 2025\nRegistro: MAN-GC-2025-001"
+  }
+]

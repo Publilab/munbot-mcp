@@ -7,6 +7,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # 1) Sistema
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git build-essential cmake gcc g++ \
+    libblas-dev liblapack-dev && \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /mcp-core
@@ -23,6 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # 3) Código de la aplicación
 COPY .env orchestrator.py context_manager.py llama_client.py ./
+COPY scripts/ ./scripts/
 COPY tool_schemas/ ./tool_schemas/
 COPY prompts/ ./prompts/
 COPY models/ ./models/
@@ -30,6 +32,9 @@ COPY ./utils ./utils
 COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json
 COPY ./databases/documento_requisito.json ./databases/documento_requisito.json
 COPY ./databases/oficina_info.json ./databases/oficina_info.json 
+
+# 4) Ejecutar scripts de build (e.g., pre-cálculo de índices)
+RUN python ./scripts/build_complaint_index.py
 
 ENV NO_PROXY=localhost,127.0.0.1
 ENV no_proxy=localhost,127.0.0.1
