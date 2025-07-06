@@ -33,9 +33,6 @@ COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json
 COPY ./databases/documento_requisito.json ./databases/documento_requisito.json
 COPY ./databases/oficina_info.json ./databases/oficina_info.json 
 
-# 4) Ejecutar scripts de build (e.g., pre-cálculo de índices)
-RUN python ./scripts/build_complaint_index.py
-
 ENV NO_PROXY=localhost,127.0.0.1
 ENV no_proxy=localhost,127.0.0.1
 
