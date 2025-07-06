@@ -1689,33 +1689,36 @@ def orchestrate(
         return {"respuesta": answer, "session_id": sid}
 
     # --- Handler RAG específico para flujo de reclamos ---
-if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid) == "reclamo":
-    etiqueta = classify_reclamo_response(user_input)
-    context_manager.clear_pending_confirmation(sid)
+    if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid) == "reclamo":
+        etiqueta = classify_reclamo_response(user_input)
+        context_manager.clear_pending_confirmation(sid)
 
-    if etiqueta == "affirmative":
-        context_manager.clear_context_field(sid, "doc_actual")
-        context_manager.update_pending_field(sid, "nombre")
-        context_manager.update_complaint_state(sid, "iniciado")
-        pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
-        return {"respuesta": pregunta, "session_id": sid}
+        if etiqueta == "affirmative":
+            context_manager.clear_context_field(sid, "doc_actual")
+            context_manager.update_pending_field(sid, "nombre")
+            context_manager.update_complaint_state(sid, "iniciado")
+            pregunta = (
+                "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n"
+                "¿Cómo te llamas?"
+            )
+            return {"respuesta": pregunta, "session_id": sid}
 
-    if etiqueta == "negative":
-        msg = "Entendido. ¿En qué más puedo ayudarte?"
-        context_manager.update_context(sid, user_input, msg)
-        return {"respuesta": msg, "session_id": sid}
+        if etiqueta == "negative":
+            msg = "Entendido. ¿En qué más puedo ayudarte?"
+            context_manager.update_context(sid, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
 
-    # Ruta question → RAG
-    chunks = retrieve_complaint_chunks(user_input, k=3)
-    rag_prompt = (
-        "Utiliza **solo** la información delimitada para responder la pregunta.\n\n"
-        + "\n\n".join(chunks)
-        + f"\n\nPregunta: \"{user_input}\"\nRespuesta:"
-    )
-    answer = llm.generate(rag_prompt)
-    question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
-    context_manager.set_pending_confirmation(sid, True)
-    return {"respuesta": f"{answer}\n\n{question_msg}", "session_id": sid}
+        # etiqueta == "question" → RAG
+        chunks = retrieve_complaint_chunks(user_input, k=3)
+        rag_prompt = (
+            "Utiliza **solo** la información delimitada para responder la pregunta.\n\n"
+            + "\n\n".join(chunks)
+            + f"\n\nPregunta: \"{user_input}\"\nRespuesta:"
+        )
+        answer = llm.generate(rag_prompt)
+        question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
+        context_manager.set_pending_confirmation(sid, True)
+        return {"respuesta": f"{answer}\n\n{question_msg}", "session_id": sid}
 
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
@@ -1725,14 +1728,13 @@ if context_manager.get_pending_confirmation(sid) and context_manager.get_current
         context_manager.clear_pending_confirmation(sid)
 
         if ok:
-            if flow == "reclamo":
-                context_manager.clear_context_field(sid, "doc_actual")
-                context_manager.update_pending_field(sid, "nombre")
-                context_manager.update_complaint_state(sid, "iniciado")
-                pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
-            else:  # flow == "cita"
+            if flow == "cita":
                 context_manager.update_pending_field(sid, "datos_cita")
-                pregunta = "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
+                pregunta = (
+                    "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
+                )
+            else:
+                pregunta = "Perfecto, continuemos."
             return {"respuesta": pregunta, "session_id": sid}
         else:
             msg = "Entendido. ¿En qué más puedo ayudarte?"
