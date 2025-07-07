@@ -215,7 +215,14 @@ def confirm_appointment(body: AppointmentConfirm):
     conn.commit()
     conn.close()
     # Notificación al usuario y funcionario
-    send_email(cita["usu_mail"], "Cita confirmada", f"Su cita con {cita['func']} ha sido confirmada para el {cita['fecha']} a las {cita['hora']}.")
+    send_email(
+        cita["usu_mail"],
+        "Cita confirmada",
+        "email/confirm.html",
+        usuario=cita["usu_name"],
+        fecha_legible=str(cita["fecha"]),
+        hora=cita["hora"],
+    )
     send_whatsapp(cita["usu_whatsapp"], f"Su cita con {cita['func']} ha sido confirmada para el {cita['fecha']} a las {cita['hora']}.")
     return {"id": body.id, "respuesta": "Cita confirmada y notificada."}
 
@@ -239,7 +246,14 @@ def cancel_appointment(body: AppointmentCancel):
     conn.close()
     # Notificar usuario
     if cita["usu_mail"]:
-        send_email(cita["usu_mail"], "Cita cancelada", f"Su cita ha sido cancelada. Motivo: {body.motivo}")
+        send_email(
+            cita["usu_mail"],
+            "Cita cancelada",
+            "email/reminder.html",
+            usuario=cita["usu_name"],
+            fecha_legible=str(cita["fecha"]),
+            hora=cita["hora"],
+        )
     if cita["usu_whatsapp"]:
         send_whatsapp(cita["usu_whatsapp"], f"Su cita ha sido cancelada. Motivo: {body.motivo}")
     return {"id": body.id, "respuesta": "Cita cancelada."}
