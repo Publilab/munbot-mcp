@@ -1,0 +1,9 @@
+version: "3.1"
+stories:
+- story: Consultar disponibilidad próxima semana
+  steps:
+  - user: |
+      ¿Hay horas disponibles la próxima semana?
+  - action: action_listar_horas_disponibles
+  - bot: |
+      Estas son las horas disponibles para la próxima semana.
