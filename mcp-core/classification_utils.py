@@ -40,7 +40,7 @@ def classify_reclamo_response(text: str) -> str:
             "Clasifica la siguiente frase como affirmative, negative o question.\n"
             f"Frase: '{text}'\nEtiqueta:"
         )
-        lab = llm.generate(prompt, temperature=0, max_tokens=4, timeout=3).strip().lower()
+        lab = llm.generate(prompt, temperature=0, max_tokens=4).strip().lower()
         if lab.startswith("affirm"):
             logging.debug("classify_reclamo_response: affirmative via LLM")
             return "affirmative"

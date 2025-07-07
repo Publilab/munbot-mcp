@@ -133,7 +133,7 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
     )
 
     try:
-        resp = llm.generate(prompt)
+        resp = llm.generate(rag_prompt)
     except Exception as e:
         logging.error(f"LLM error extrayendo nombre: {e}")
         return None
@@ -158,7 +158,7 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
     email = _extract_email_simple(user_text)
     if email:
         return email
-    prompt = (
+    validator_mail_prompt = (
         "Eres un extractor y validador de correos electrónicos. Recibirás la frase "
         "completa de un usuario y debes devolver SOLO la dirección de email si está "
         "en un formato correcto (usuario@dominio.ext). Responde 'None' si no "
@@ -167,7 +167,7 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
     )
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
-            future = ex.submit(llm.generate, prompt)
+            future = ex.submit(llm.generate, validator_mail_prompt)
             resp = future.result(timeout=timeout)
     except Exception as e:
         logging.error(f"LLM error extrayendo correo: {e}")
@@ -1674,7 +1674,7 @@ def orchestrate(
             question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
             context_manager.update_context(sid, user_input, privacy_msg)
             context_manager.update_context(sid, "", question_msg)
-            return {"respuesta": f"{privacy_msg}\n{question_msg}", "session_id": sid}
+            return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
 
     # === 0) Consultar primero en la base de FAQs ===
     multi = lookup_multiple_faqs(user_input)
