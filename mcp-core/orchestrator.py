@@ -17,11 +17,13 @@ import concurrent.futures
 from context_manager import ConversationalContextManager
 import unicodedata
 from utils.text import normalize_text
-from typing import Optional
 from llama_client import LlamaClient
-import numpy as np
+from zoneinfo import ZoneInfo
+from utils.datetime_utils import parse_nl_datetime
 from rapidfuzz import fuzz
 from datetime import datetime
+
+SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
 
 # === Configuración ===
@@ -479,6 +481,11 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
 
 
 # === Utilidades de generación con el LLM ===
+
+def find_next_available_slot():
+    """Return next available appointment slot (placeholder)."""
+    # TODO: implement search in scheduler service
+    pass
 
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
@@ -1041,7 +1048,7 @@ def extract_entities_complaint(text: str) -> dict:
     }
 
 
-def extract_entities_scheduler(text: str) -> dict:
+def extract_entities_scheduler(text: str, base_dt: datetime) -> dict:
     # Heurística simple para agendamiento
     nombre = None
     nombre_match = re.search(
@@ -1058,19 +1065,26 @@ def extract_entities_scheduler(text: str) -> dict:
     if whatsapp_match:
         whatsapp = whatsapp_match.group(1).strip()
     fecha = None
-    fecha_match = re.search(r"(\d{4}-\d{2}-\d{2})", text)
-    if fecha_match:
-        fecha = fecha_match.group(1)
     hora = None
-    hora_match = re.search(r"(\d{2}:\d{2})", text)
-    if hora_match:
-        hora = hora_match.group(1)
+    dt, _ = parse_nl_datetime(text, base_dt)
+    if dt:
+        fecha = dt.strftime("%Y-%m-%d")
+        hora = dt.strftime("%H:%M")
+    else:
+        fecha_match = re.search(r"(\d{4}-\d{2}-\d{2})", text)
+        if fecha_match:
+            fecha = fecha_match.group(1)
+        hora_match = re.search(r"(\d{2}:\d{2})", text)
+        if hora_match:
+            hora = hora_match.group(1)
     motiv = None
     motiv_match = re.search(
         r"motivo (de la cita|de la reunión|):? ([^\.]+)", text, re.IGNORECASE
     )
     if motiv_match:
         motiv = motiv_match.group(2).strip()
+    if not fecha:
+        return {"solo_consulta": True}
     return {
         "usu_name": nombre,
         "usu_mail": mail,
@@ -1701,6 +1715,11 @@ def orchestrate(
                 pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
             else:  # flow == "cita"
                 context_manager.update_pending_field(sid, "datos_cita")
+                context_manager.inc_attempts(sid, flow)
+                attempts = context_manager.get_attempts(sid, flow)
+                availability_found = ctx.get("availability_found")
+                if availability_found is False and attempts >= 2:
+                    find_next_available_slot()
                 pregunta = "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
             return {"respuesta": pregunta, "session_id": sid}
         else:
@@ -1885,45 +1904,22 @@ def admin_create_documento(data: dict = Body(...)):
 
 @app.post("/admin/documento/{id_documento}/requisito")
 def admin_add_requisito(id_documento: str, data: dict = Body(...)):
-    def admin_add_requisito(id_documento: str, data: dict = Body(...)):
-        """Agregar un requisito a un documento."""
-        conn = get_db()
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-        doc = cur.fetchone()
-        if not doc:
-            conn.close()
-            return {"error": "Documento no encontrado"}
-        cur.execute(
-            "INSERT INTO documento_requisitos (documento_id, requisito) VALUES (%s, %s) RETURNING *",
-            (doc["id"], data["requisito"]),
-        )
-        req = cur.fetchone()
-        conn.commit()
-        conn.close()
-        return req
-
+    """Agregar un requisito a un documento."""
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
+    doc = cur.fetchone()
     if not doc:
         conn.close()
         return {"error": "Documento no encontrado"}
     cur.execute(
-        """
-        INSERT INTO documento_oficinas (documento_id, nombre, direccion, horario, correo, holocom)
-        VALUES (%s, %s, %s, %s, %s, %s) RETURNING *
-        """,
-        (
-            doc["id"],
-            data["nombre"],
-            data.get("direccion"),
-            data.get("horario"),
-            data.get("correo"),
-            data.get("holocom"),
-        ),
+        "INSERT INTO documento_requisitos (documento_id, requisito) VALUES (%s, %s) RETURNING *",
+        (doc["id"], data["requisito"]),
     )
-    oficina = cur.fetchone()
+    req = cur.fetchone()
     conn.commit()
     conn.close()
-    return oficina
+    return req
 
 
 @app.post("/admin/documento/{id_documento}/duracion")
