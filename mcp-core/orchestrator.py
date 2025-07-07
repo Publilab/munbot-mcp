@@ -22,8 +22,6 @@ from llama_client import LlamaClient
 import numpy as np
 from rapidfuzz import fuzz
 from datetime import datetime
-from rag_utils import retrieve_complaint_chunks
-from classification_utils import classify_reclamo_response
 
 
 # === Configuración ===
@@ -133,7 +131,7 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
     )
 
     try:
-        resp = llm.generate(rag_prompt)
+        resp = llm.generate(prompt)
     except Exception as e:
         logging.error(f"LLM error extrayendo nombre: {e}")
         return None
@@ -158,7 +156,7 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
     email = _extract_email_simple(user_text)
     if email:
         return email
-    validator_mail_prompt = (
+    prompt = (
         "Eres un extractor y validador de correos electrónicos. Recibirás la frase "
         "completa de un usuario y debes devolver SOLO la dirección de email si está "
         "en un formato correcto (usuario@dominio.ext). Responde 'None' si no "
@@ -167,7 +165,7 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
     )
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
-            future = ex.submit(llm.generate, validator_mail_prompt)
+            future = ex.submit(llm.generate, prompt)
             resp = future.result(timeout=timeout)
     except Exception as e:
         logging.error(f"LLM error extrayendo correo: {e}")
@@ -1339,48 +1337,6 @@ def orchestrate(
             return {"respuesta": "Lo siento, hubo un error interno.", "session_id": sid}
         if slot_resp:
             return slot_resp
-
-    # --- Handler RAG específico para flujo de reclamos ---
-    if (
-        context_manager.get_pending_confirmation(sid)
-        and context_manager.get_current_flow(sid) == "reclamo"
-    ):
-        etiqueta = classify_reclamo_response(user_input)
-        logging.debug(f"[ORQUESTADOR] etiqueta reclamo: {etiqueta}")
-        context_manager.clear_pending_confirmation(sid)
-
-        if etiqueta == "affirmative":
-            context_manager.clear_context_field(sid, "doc_actual")
-            context_manager.update_pending_field(sid, "nombre")
-            context_manager.update_complaint_state(sid, "iniciado")
-            pregunta = (
-                "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n"
-                "¿Cómo te llamas?"
-            )
-            return {"respuesta": pregunta, "session_id": sid}
-
-        if etiqueta == "negative":
-            context_manager.set_current_flow(sid, None)
-            msg = "Entendido. ¿En qué más puedo ayudarte?"
-            context_manager.update_context(sid, user_input, msg)
-            return {"respuesta": msg, "session_id": sid}
-
-        # etiqueta == "question" → RAG
-        chunks = retrieve_complaint_chunks(user_input, k=3)
-        if chunks:
-            logging.info(
-                f"[RAG] Pregunta: {user_input[:60]}…  Chunks[0]: {chunks[0][:60]}…"
-            )
-        rag_prompt = (
-            "Utiliza **solo** la información delimitada para responder la pregunta.\n\n"
-            + "\n\n".join(chunks)
-            + f"\n\nPregunta: \"{user_input}\"\nRespuesta:"
-        )
-        answer = llm.generate(rag_prompt)
-        question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
-        context_manager.set_pending_confirmation(sid, True)
-        return {"respuesta": f"{answer}\n\n{question_msg}", "session_id": sid}
-
     raw = user_input.strip()
     if not (
         context_manager.get_faq_clarification(sid)
@@ -1643,12 +1599,7 @@ def orchestrate(
     ctx = context_manager.get_context(sid)
     pending = ctx.get("pending_field")
     if not pending:
-        kw_intent = None
-        if not (
-            context_manager.get_current_flow(sid) == "reclamo"
-            and context_manager.get_pending_confirmation(sid)
-        ):
-            kw_intent = detect_intent_keywords(user_input)
+        kw_intent = detect_intent_keywords(user_input)
         if re.search(
             r"\b(?:c(?:o|ó)mo|d(?:o|ó)nde|qu(?:é|e))?\s*(?:puedo|necesito)?\s*(agendar|reservar|cita|hora|turno)\b",
             user_input,
@@ -1735,7 +1686,6 @@ def orchestrate(
         context_manager.set_last_sentiment(sid, "neutral")
         return {"respuesta": answer, "session_id": sid}
 
-
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
         answer = user_input.strip().lower()
@@ -1744,13 +1694,14 @@ def orchestrate(
         context_manager.clear_pending_confirmation(sid)
 
         if ok:
-            if flow == "cita":
+            if flow == "reclamo":
+                context_manager.clear_context_field(sid, "doc_actual")
+                context_manager.update_pending_field(sid, "nombre")
+                context_manager.update_complaint_state(sid, "iniciado")
+                pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
+            else:  # flow == "cita"
                 context_manager.update_pending_field(sid, "datos_cita")
-                pregunta = (
-                    "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
-                )
-            else:
-                pregunta = "Perfecto, continuemos."
+                pregunta = "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
             return {"respuesta": pregunta, "session_id": sid}
         else:
             msg = "Entendido. ¿En qué más puedo ayudarte?"
