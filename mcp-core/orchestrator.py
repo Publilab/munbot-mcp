@@ -1373,25 +1373,43 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             flow_start_dt = datetime.fromisoformat(flow_start)
         texto = user_text
 
+        # 1) Extraer hora
         m = re.search(r"(\d{1,2})(?::| h| horas)?", texto)
         if not m:
             return {"answer": "¿A qué hora exactamente? (por ejemplo, 10:00)", "pending": True}
         hora_str = m.group(1).zfill(2) + ":00"
 
+        # 2) Calcular fecha relativa
         fecha_obj = compute_relative_date(flow_start_dt.date(), texto)
         if not fecha_obj:
             return {"answer": "No entendí la fecha. ¿Podrías decirlo diferente?", "pending": True}
         fecha_str = fecha_obj.isoformat()
 
-        payload = {"fecha": fecha_str, "hora_rango": f"{hora_str}-"}
-        estado = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
-        if not estado or not estado[0].get("disponible", False):
+        # 3) Definir payload ANTES de llamar al microservicio
+        payload = {
+            "fecha": fecha_str,
+            "hora_rango": f"{hora_str}-%"
+        }
+
+        # 4) Llamar y normalizar respuesta
+        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        if isinstance(raw, dict) and "data" in raw:
+            bloques = raw["data"]
+        elif isinstance(raw, list):
+            bloques = raw
+        else:
+            bloques = []
+
+        # 5) Verificar disponibilidad
+        if not bloques or not bloques[0].get("disponible", False):
             return {
                 "answer": f"No hay bloques libres el {fecha_str} a las {hora_str}. Elige otro horario.",
                 "pending": True,
             }
 
-        ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": estado[0]["hora_rango"]}
+        # 6) Guardar bloque y avanzar al siguiente slot
+        bloque = bloques[0]
+        ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": bloque["hora_rango"]}
         save_session(sid, ctx)
         context_manager.update_pending_field(sid, "mail_cita")
         return {
