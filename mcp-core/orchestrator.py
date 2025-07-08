@@ -200,6 +200,20 @@ def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     return text
 
 
+def format_response(data: Dict[str, Any], sid: str) -> Dict[str, Any]:
+    """Normaliza la salida de los handlers a la estructura esperada."""
+    resp = {"session_id": sid}
+    if "answer" in data:
+        resp["respuesta"] = data["answer"]
+    if "respuestas" in data:
+        resp["respuestas"] = data["respuestas"]
+    if "pending" in data:
+        resp["pending"] = data["pending"]
+    if "finish" in data:
+        resp["finish"] = data["finish"]
+    return resp
+
+
 # Frases introductorias a ignorar al inicio de la consulta del usuario
 INTRO_PHRASES = [
     "quiero saber", "me gustaría saber", "quisiera saber", "deseo saber",
@@ -1382,7 +1396,11 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         tool_result = call_tool_microservice("scheduler-appointment_create", payload)
         message = tool_result.get("mensaje", "No se pudo agendar la cita.")
         context_manager.update_context(sid, user_text, message)
-        return {"answer": message, "pending": False}
+        # ----------- Limpieza de modo cita -----------
+        context_manager.set_current_flow(sid, None)
+        context_manager.clear_pending_field(sid)
+        # ----------------------------------------------
+        return {"answer": message, "finish": True}
 
     # Preguntar por campos faltantes si no hay pendiente definido
     for field in REQUIRED_FIELDS.get("scheduler-appointment_create", []):
@@ -1433,6 +1451,13 @@ def orchestrate(
             no_cancel_msg = "No hay ningún proceso activo para cancelar. ¿En qué puedo ayudarte?"
             context_manager.update_context(sid, user_input, no_cancel_msg)
             return {"respuesta": no_cancel_msg, "session_id": sid}
+
+    # ----------- Inicio prioridad modo cita -----------
+    if context_manager.get_current_flow(sid) == "scheduler":
+        result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
+        if result.get("pending") or result.get("finish"):
+            return format_response(result, sid)
+    # ----------- Fin prioridad modo cita -----------
 
     # — guard clause para slot-filling —
     pending = ctx.get("pending_field")
@@ -1807,7 +1832,10 @@ def orchestrate(
                 context_manager.update_complaint_state(sid, "iniciado")
                 pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
             else:  # flow == "cita"
-                context_manager.update_pending_field(sid, "datos_cita")
+                # ----------- Inicio parche modo cita -----------
+                context_manager.set_current_flow(sid, "scheduler")
+                context_manager.update_pending_field(sid, "bloque_cita")
+                # ----------- Fin parche modo cita -----------
                 context_manager.inc_attempts(sid, flow)
                 attempts = context_manager.get_attempts(sid, flow)
                 availability_found = ctx.get("availability_found")
@@ -1866,7 +1894,8 @@ def orchestrate(
         context_manager.reset_fallback_count(session_id)
 
     if tool == "scheduler-appointment_create":
-        return _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
+        result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
+        return format_response(result, sid)
 
     if tool in ("unknown", "doc-generar_respuesta_llm"):
         faq_hit = lookup_faq_respuesta(user_input)
