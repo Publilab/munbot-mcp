@@ -49,3 +49,14 @@ def compute_relative_date(base: date, texto: str) -> Optional[date]:
                 pass
             return base + timedelta(days=diff)
     return None
+
+
+def compute_last_business_day(ref: datetime) -> date:
+    """Return the last business day of the month for the given date."""
+    # Start at the last calendar day of the month
+    next_month = ref.replace(day=28) + timedelta(days=4)
+    last_day = next_month - timedelta(days=next_month.day)
+    # Move backwards until it's not Saturday/Sunday
+    while last_day.weekday() >= 5:
+        last_day -= timedelta(days=1)
+    return last_day

@@ -19,7 +19,11 @@ import unicodedata
 from utils.text import normalize_text
 from llama_client import LlamaClient
 from zoneinfo import ZoneInfo
-from utils.datetime_utils import parse_nl_datetime, compute_relative_date
+from utils.datetime_utils import (
+    parse_nl_datetime,
+    compute_relative_date,
+    compute_last_business_day,
+)
 from rapidfuzz import fuzz
 from datetime import datetime
 
@@ -1371,6 +1375,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             flow_start_dt = datetime.now(tz=SANTIAGO_TZ)
         else:
             flow_start_dt = datetime.fromisoformat(flow_start)
+        flow_start_month = ctx.get("flow_start_month", flow_start_dt.month)
         texto = user_text
 
         # 1) Extraer hora
@@ -1383,6 +1388,15 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         fecha_obj = compute_relative_date(flow_start_dt.date(), texto)
         if not fecha_obj:
             return {"answer": "No entendí la fecha. ¿Podrías decirlo diferente?", "pending": True}
+        if fecha_obj.month != flow_start_month:
+            ultimo_habil = compute_last_business_day(flow_start_dt)
+            return {
+                "answer": (
+                    f"Solo puedo agendar durante {flow_start_dt.strftime('%B')} de {flow_start_dt.year}. "
+                    f"¿Te parece el último día hábil del mes, {ultimo_habil.isoformat()}?"
+                ),
+                "pending": True,
+            }
         fecha_str = fecha_obj.isoformat()
 
         # 3) Definir payload ANTES de llamar al microservicio
@@ -1877,8 +1891,13 @@ def orchestrate(
                 context_manager.set_current_flow(sid, "scheduler")
                 context_manager.update_pending_field(sid, "bloque_cita")
                 # --- Nuevo: registrar inicio de flujo de agenda ---
+                now_dt = datetime.now(tz=SANTIAGO_TZ)
                 context_manager.update_context_data(
-                    sid, {"flow_start_datetime": datetime.now(tz=SANTIAGO_TZ).isoformat()}
+                    sid,
+                    {
+                        "flow_start_datetime": now_dt.isoformat(),
+                        "flow_start_month": now_dt.month,
+                    },
                 )
                 # ----------- Fin parche modo cita -----------
                 context_manager.inc_attempts(sid, flow)
