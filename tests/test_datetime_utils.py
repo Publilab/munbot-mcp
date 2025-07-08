@@ -25,3 +25,9 @@ def test_fecha_dia_mes():
     base = datetime(2025, 7, 7)
     dt, _ = datetime_utils.parse_nl_datetime('24/08', base)
     assert dt == datetime(2025, 8, 24, 0, 0, tzinfo=dt.tzinfo)
+
+
+def test_last_business_day():
+    base = datetime(2025, 8, 15)
+    last = datetime_utils.compute_last_business_day(base)
+    assert last == datetime(2025, 8, 29).date()
