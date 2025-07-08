@@ -17,11 +17,13 @@ import concurrent.futures
 from context_manager import ConversationalContextManager
 import unicodedata
 from utils.text import normalize_text
-from typing import Optional
 from llama_client import LlamaClient
-import numpy as np
+from zoneinfo import ZoneInfo
+from utils.datetime_utils import parse_nl_datetime
 from rapidfuzz import fuzz
 from datetime import datetime
+
+SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
 
 # === Configuración ===
@@ -90,6 +92,7 @@ HISTORIAL_TABLE = "conversaciones_historial"
 # Inicializa el FastAPI
 app = FastAPI()
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
@@ -479,6 +482,11 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
 
 
 # === Utilidades de generación con el LLM ===
+
+def find_next_available_slot():
+    """Return next available appointment slot (placeholder)."""
+    # TODO: implement search in scheduler service
+    pass
 
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
@@ -1041,7 +1049,7 @@ def extract_entities_complaint(text: str) -> dict:
     }
 
 
-def extract_entities_scheduler(text: str) -> dict:
+def extract_entities_scheduler(text: str, base_dt: datetime) -> dict:
     # Heurística simple para agendamiento
     nombre = None
     nombre_match = re.search(
@@ -1058,19 +1066,26 @@ def extract_entities_scheduler(text: str) -> dict:
     if whatsapp_match:
         whatsapp = whatsapp_match.group(1).strip()
     fecha = None
-    fecha_match = re.search(r"(\d{4}-\d{2}-\d{2})", text)
-    if fecha_match:
-        fecha = fecha_match.group(1)
     hora = None
-    hora_match = re.search(r"(\d{2}:\d{2})", text)
-    if hora_match:
-        hora = hora_match.group(1)
+    dt, _ = parse_nl_datetime(text, base_dt)
+    if dt:
+        fecha = dt.strftime("%Y-%m-%d")
+        hora = dt.strftime("%H:%M")
+    else:
+        fecha_match = re.search(r"(\d{4}-\d{2}-\d{2})", text)
+        if fecha_match:
+            fecha = fecha_match.group(1)
+        hora_match = re.search(r"(\d{2}:\d{2})", text)
+        if hora_match:
+            hora = hora_match.group(1)
     motiv = None
     motiv_match = re.search(
         r"motivo (de la cita|de la reunión|):? ([^\.]+)", text, re.IGNORECASE
     )
     if motiv_match:
         motiv = motiv_match.group(2).strip()
+    if not fecha:
+        return {"solo_consulta": True}
     return {
         "usu_name": nombre,
         "usu_mail": mail,
@@ -1291,6 +1306,98 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
         return {"respuesta": success_msg, "session_id": sid}
 
     return None
+
+
+def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
+    """Guía el flujo de agendamiento de citas mediante slot filling."""
+
+    ctx = context_manager.get_context(sid)
+    pending = ctx.get("pending_field")
+
+    entities = extract_entities_scheduler(user_text, base_dt)
+
+    if pending == "datos_cita":
+        nombre = entities.get("usu_name")
+        whatsapp = entities.get("usu_whatsapp")
+        if not nombre:
+            question = FIELD_QUESTIONS.get("datos_cita")
+            return {"answer": question, "pending": True}
+        ctx["datos_cita"] = {"usu_name": nombre, "usu_whatsapp": whatsapp}
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, f"Datos recibidos para {nombre}")
+        context_manager.update_pending_field(sid, "depto_cita")
+        return {"answer": FIELD_QUESTIONS.get("depto_cita"), "pending": True}
+
+    if pending == "depto_cita":
+        try:
+            depto = int(user_text.strip())
+            if 1 <= depto <= 8:
+                ctx["depto_cita"] = depto
+                save_session(sid, ctx)
+                context_manager.update_context(sid, user_text, f"Departamento seleccionado: {depto}")
+                context_manager.update_pending_field(sid, "motiv_cita")
+                return {"answer": FIELD_QUESTIONS.get("motiv_cita"), "pending": True}
+        except ValueError:
+            pass
+        return {"answer": FIELD_QUESTIONS.get("depto_cita"), "pending": True}
+
+    if pending == "motiv_cita":
+        motivo = entities.get("motiv") or user_text.strip()
+        if len(motivo) < 3:
+            return {"answer": FIELD_QUESTIONS.get("motiv_cita"), "pending": True}
+        ctx["motiv_cita"] = motivo
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, "Motivo registrado")
+        context_manager.update_pending_field(sid, "bloque_cita")
+        return {"answer": "¿En qué fecha y hora deseas la cita?", "pending": True}
+
+    if pending == "bloque_cita":
+        fecha = entities.get("fecha")
+        hora = entities.get("hora")
+        if not (fecha and hora):
+            return {"answer": "Indica la fecha y hora en formato YYYY-MM-DD HH:MM", "pending": True}
+        ctx["bloque_cita"] = {"fecha": fecha, "hora": hora}
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, f"Cita solicitada para {fecha} {hora}")
+        context_manager.update_pending_field(sid, "mail_cita")
+        return {"answer": FIELD_QUESTIONS.get("mail_cita"), "pending": True}
+
+    if pending == "mail_cita":
+        mail = entities.get("usu_mail") or extract_email_with_llm(user_text)
+        if not mail:
+            return {"answer": FIELD_QUESTIONS.get("mail_cita"), "pending": True}
+        ctx["mail_cita"] = mail
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, f"Correo registrado: {mail}")
+        context_manager.clear_pending_field(sid)
+
+        payload = {
+            "motiv": ctx.get("motiv_cita"),
+            "usu_name": ctx.get("datos_cita", {}).get("usu_name"),
+            "usu_mail": ctx.get("mail_cita"),
+            "usu_whatsapp": ctx.get("datos_cita", {}).get("usu_whatsapp"),
+            "fecha": ctx.get("bloque_cita", {}).get("fecha"),
+            "hora": ctx.get("bloque_cita", {}).get("hora"),
+        }
+        tool_result = call_tool_microservice("scheduler-appointment_create", payload)
+        message = tool_result.get("mensaje", "No se pudo agendar la cita.")
+        context_manager.update_context(sid, user_text, message)
+        return {"answer": message, "pending": False}
+
+    # Preguntar por campos faltantes si no hay pendiente definido
+    for field in REQUIRED_FIELDS.get("scheduler-appointment_create", []):
+        if not ctx.get(field):
+            context_manager.update_pending_field(sid, field)
+            question = FIELD_QUESTIONS.get(field)
+            return {"answer": question, "pending": True}
+
+    return {"answer": "Lo siento, hubo un error interno.", "pending": False}
+
+
+# Mapeo de herramientas a sus manejadores especializados
+TOOL_HANDLERS = {
+    "scheduler-appointment_create": _handle_scheduler_flow,
+}
 
 
 def orchestrate(
@@ -1701,6 +1808,11 @@ def orchestrate(
                 pregunta = "¡Genial! Para procesar tu reclamo necesito algunos datos personales.\n¿Cómo te llamas?"
             else:  # flow == "cita"
                 context_manager.update_pending_field(sid, "datos_cita")
+                context_manager.inc_attempts(sid, flow)
+                attempts = context_manager.get_attempts(sid, flow)
+                availability_found = ctx.get("availability_found")
+                if availability_found is False and attempts >= 2:
+                    find_next_available_slot()
                 pregunta = "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
             return {"respuesta": pregunta, "session_id": sid}
         else:
@@ -1752,6 +1864,9 @@ def orchestrate(
         return {"respuesta": fallback_resp, "session_id": session_id}
     else:
         context_manager.reset_fallback_count(session_id)
+
+    if tool == "scheduler-appointment_create":
+        return _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
 
     if tool in ("unknown", "doc-generar_respuesta_llm"):
         faq_hit = lookup_faq_respuesta(user_input)
@@ -1823,9 +1938,12 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
         if ip:
             extra_context["ip"] = ip
         result = orchestrate(input.pregunta, extra_context, input.session_id)
+        if result is None:
+            logger.error("Tool handler returned None")
+            return {"answer": "Lo siento, hubo un error interno."}
         if "respuestas" in result:
             result["respuestas"] = [
-                adapt_markdown_for_channel(msg, input.channel) 
+                adapt_markdown_for_channel(msg, input.channel)
                 for msg in result["respuestas"]
             ]
         elif result.get("respuesta"):
@@ -1885,45 +2003,22 @@ def admin_create_documento(data: dict = Body(...)):
 
 @app.post("/admin/documento/{id_documento}/requisito")
 def admin_add_requisito(id_documento: str, data: dict = Body(...)):
-    def admin_add_requisito(id_documento: str, data: dict = Body(...)):
-        """Agregar un requisito a un documento."""
-        conn = get_db()
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-        doc = cur.fetchone()
-        if not doc:
-            conn.close()
-            return {"error": "Documento no encontrado"}
-        cur.execute(
-            "INSERT INTO documento_requisitos (documento_id, requisito) VALUES (%s, %s) RETURNING *",
-            (doc["id"], data["requisito"]),
-        )
-        req = cur.fetchone()
-        conn.commit()
-        conn.close()
-        return req
-
+    """Agregar un requisito a un documento."""
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
+    doc = cur.fetchone()
     if not doc:
         conn.close()
         return {"error": "Documento no encontrado"}
     cur.execute(
-        """
-        INSERT INTO documento_oficinas (documento_id, nombre, direccion, horario, correo, holocom)
-        VALUES (%s, %s, %s, %s, %s, %s) RETURNING *
-        """,
-        (
-            doc["id"],
-            data["nombre"],
-            data.get("direccion"),
-            data.get("horario"),
-            data.get("correo"),
-            data.get("holocom"),
-        ),
+        "INSERT INTO documento_requisitos (documento_id, requisito) VALUES (%s, %s) RETURNING *",
+        (doc["id"], data["requisito"]),
     )
-    oficina = cur.fetchone()
+    req = cur.fetchone()
     conn.commit()
     conn.close()
-    return oficina
+    return req
 
 
 @app.post("/admin/documento/{id_documento}/duracion")

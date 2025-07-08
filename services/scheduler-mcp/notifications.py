@@ -1,8 +1,15 @@
 import os
 import smtplib
 from email.message import EmailMessage
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-def send_email(to, subject, body):
+TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), "templates")
+env = Environment(
+    loader=FileSystemLoader(TEMPLATES_DIR),
+    autoescape=select_autoescape(["html", "xml"]),
+)
+
+def send_email(to: str, subject: str, template: str, **ctx):
     SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.sendgrid.net')
     SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
     SMTP_USER = os.getenv('SMTP_USER', 'apikey')
@@ -14,7 +21,9 @@ def send_email(to, subject, body):
     msg['Subject'] = subject
     msg['From'] = FROM
     msg['To'] = to
-    msg.set_content(body)
+    tmpl = env.get_template(template)
+    body = tmpl.render(**ctx)
+    msg.set_content(body, subtype='html')
     try:
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as smtp:
             smtp.starttls()

@@ -1,13 +1,17 @@
 import os
+import re
+from datetime import date, datetime
+from typing import Optional
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from pydantic import BaseModel, EmailStr
-from datetime import date, datetime
+from pydantic import BaseModel, EmailStr, field_validator
 from notifications import send_email, send_whatsapp
+from rut_utils import validar_y_formatear_rut
 
 # =====================
 # Configuración de entorno y DB
@@ -98,8 +102,24 @@ class AppointmentCreate(BaseModel):
     usu_name: str
     usu_mail: EmailStr
     usu_whatsapp: str
+    rut: Optional[str] = None
     fecha: date
     hora: str
+
+    @field_validator("rut")
+    def _validar_rut(cls, v):
+        if v is None:
+            return v
+        nuevo = validar_y_formatear_rut(v)
+        if not nuevo:
+            raise ValueError("RUT invalido")
+        return nuevo
+
+    @field_validator("usu_whatsapp")
+    def _validar_whatsapp(cls, v):
+        if not re.match(r"^\+[1-9]\d{1,14}$", v):
+            raise ValueError("WhatsApp invalido")
+        return v
 
 class AppointmentOut(AppointmentCreate):
     id: str
@@ -134,16 +154,23 @@ def root():
     }
 
 @app.get("/appointments/available")
-def list_available(fecha: date = None):
-    """Listar slots disponibles para una fecha"""
+def list_available(
+    from_date: date = Query(None, alias="from"),
+    to_date: date = Query(None, alias="to"),
+):
+    """Listar slots disponibles opcionalmente en un rango de fechas."""
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
     query = "SELECT * FROM appointments WHERE avlb=1 AND usu_conf=0"
-    if fecha:
-        query += " AND fecha = %s"
-        cur.execute(query, (fecha,))
-    else:
-        cur.execute(query)
+    params = []
+    if from_date and to_date:
+        query += " AND fecha BETWEEN %s AND %s"
+        params.extend([from_date, to_date])
+    elif from_date:
+        query += " AND fecha >= %s"
+        params.append(from_date)
+    query += " ORDER BY fecha, hora"
+    cur.execute(query, tuple(params))
     citas = cur.fetchall()
     conn.close()
     return {"disponibles": citas}
@@ -188,7 +215,14 @@ def confirm_appointment(body: AppointmentConfirm):
     conn.commit()
     conn.close()
     # Notificación al usuario y funcionario
-    send_email(cita["usu_mail"], "Cita confirmada", f"Su cita con {cita['func']} ha sido confirmada para el {cita['fecha']} a las {cita['hora']}.")
+    send_email(
+        cita["usu_mail"],
+        "Cita confirmada",
+        "email/confirm.html",
+        usuario=cita["usu_name"],
+        fecha_legible=str(cita["fecha"]),
+        hora=cita["hora"],
+    )
     send_whatsapp(cita["usu_whatsapp"], f"Su cita con {cita['func']} ha sido confirmada para el {cita['fecha']} a las {cita['hora']}.")
     return {"id": body.id, "respuesta": "Cita confirmada y notificada."}
 
@@ -212,7 +246,14 @@ def cancel_appointment(body: AppointmentCancel):
     conn.close()
     # Notificar usuario
     if cita["usu_mail"]:
-        send_email(cita["usu_mail"], "Cita cancelada", f"Su cita ha sido cancelada. Motivo: {body.motivo}")
+        send_email(
+            cita["usu_mail"],
+            "Cita cancelada",
+            "email/reminder.html",
+            usuario=cita["usu_name"],
+            fecha_legible=str(cita["fecha"]),
+            hora=cita["hora"],
+        )
     if cita["usu_whatsapp"]:
         send_whatsapp(cita["usu_whatsapp"], f"Su cita ha sido cancelada. Motivo: {body.motivo}")
     return {"id": body.id, "respuesta": "Cita cancelada."}

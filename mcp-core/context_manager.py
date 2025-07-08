@@ -453,3 +453,19 @@ class ConversationalContextManager:
         """Obtiene un campo arbitrario del contexto."""
         context = self.get_context(session_id)
         return context.get(field)
+
+    def get_attempts(self, session_id: str, flow: str) -> int:
+        context = self.get_context(session_id)
+        attempts = context.get("attempts", {})
+        return attempts.get(flow, 0)
+
+    def inc_attempts(self, session_id: str, flow: str):
+        context = self.get_context(session_id)
+        attempts = context.get("attempts", {})
+        attempts[flow] = attempts.get(flow, 0) + 1
+        context["attempts"] = attempts
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
