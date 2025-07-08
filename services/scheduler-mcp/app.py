@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, EmailStr, field_validator
 from notifications import send_email, send_whatsapp
-from rut_utils import validar_y_formatear_rut
+from utils.rut_utils import validar_y_formatear_rut
 
 # =====================
 # Configuración de entorno y DB
