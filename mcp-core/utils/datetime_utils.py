@@ -59,4 +59,5 @@ def compute_last_business_day(ref: datetime) -> date:
     # Move backwards until it's not Saturday/Sunday
     while last_day.weekday() >= 5:
         last_day -= timedelta(days=1)
-    return last_day
+    # Return only the date component
+    return last_day.date()
