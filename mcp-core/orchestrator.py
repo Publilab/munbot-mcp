@@ -1860,7 +1860,7 @@ def orchestrate(
                 context_manager.update_pending_field(sid, "bloque_cita")
                 # --- Nuevo: registrar inicio de flujo de agenda ---
                 context_manager.update_context_data(
-                    sid, {"flow_start_datetime": datetime.now(tz=SANTIAGO_TZ)}
+                    sid, {"flow_start_datetime": datetime.now(tz=SANTIAGO_TZ).isoformat()}
                 )
                 # ----------- Fin parche modo cita -----------
                 context_manager.inc_attempts(sid, flow)
