@@ -92,6 +92,7 @@ HISTORIAL_TABLE = "conversaciones_historial"
 # Inicializa el FastAPI
 app = FastAPI()
 logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
@@ -1307,6 +1308,98 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
     return None
 
 
+def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
+    """Guía el flujo de agendamiento de citas mediante slot filling."""
+
+    ctx = context_manager.get_context(sid)
+    pending = ctx.get("pending_field")
+
+    entities = extract_entities_scheduler(user_text, base_dt)
+
+    if pending == "datos_cita":
+        nombre = entities.get("usu_name")
+        whatsapp = entities.get("usu_whatsapp")
+        if not nombre:
+            question = FIELD_QUESTIONS.get("datos_cita")
+            return {"answer": question, "pending": True}
+        ctx["datos_cita"] = {"usu_name": nombre, "usu_whatsapp": whatsapp}
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, f"Datos recibidos para {nombre}")
+        context_manager.update_pending_field(sid, "depto_cita")
+        return {"answer": FIELD_QUESTIONS.get("depto_cita"), "pending": True}
+
+    if pending == "depto_cita":
+        try:
+            depto = int(user_text.strip())
+            if 1 <= depto <= 8:
+                ctx["depto_cita"] = depto
+                save_session(sid, ctx)
+                context_manager.update_context(sid, user_text, f"Departamento seleccionado: {depto}")
+                context_manager.update_pending_field(sid, "motiv_cita")
+                return {"answer": FIELD_QUESTIONS.get("motiv_cita"), "pending": True}
+        except ValueError:
+            pass
+        return {"answer": FIELD_QUESTIONS.get("depto_cita"), "pending": True}
+
+    if pending == "motiv_cita":
+        motivo = entities.get("motiv") or user_text.strip()
+        if len(motivo) < 3:
+            return {"answer": FIELD_QUESTIONS.get("motiv_cita"), "pending": True}
+        ctx["motiv_cita"] = motivo
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, "Motivo registrado")
+        context_manager.update_pending_field(sid, "bloque_cita")
+        return {"answer": "¿En qué fecha y hora deseas la cita?", "pending": True}
+
+    if pending == "bloque_cita":
+        fecha = entities.get("fecha")
+        hora = entities.get("hora")
+        if not (fecha and hora):
+            return {"answer": "Indica la fecha y hora en formato YYYY-MM-DD HH:MM", "pending": True}
+        ctx["bloque_cita"] = {"fecha": fecha, "hora": hora}
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, f"Cita solicitada para {fecha} {hora}")
+        context_manager.update_pending_field(sid, "mail_cita")
+        return {"answer": FIELD_QUESTIONS.get("mail_cita"), "pending": True}
+
+    if pending == "mail_cita":
+        mail = entities.get("usu_mail") or extract_email_with_llm(user_text)
+        if not mail:
+            return {"answer": FIELD_QUESTIONS.get("mail_cita"), "pending": True}
+        ctx["mail_cita"] = mail
+        save_session(sid, ctx)
+        context_manager.update_context(sid, user_text, f"Correo registrado: {mail}")
+        context_manager.clear_pending_field(sid)
+
+        payload = {
+            "motiv": ctx.get("motiv_cita"),
+            "usu_name": ctx.get("datos_cita", {}).get("usu_name"),
+            "usu_mail": ctx.get("mail_cita"),
+            "usu_whatsapp": ctx.get("datos_cita", {}).get("usu_whatsapp"),
+            "fecha": ctx.get("bloque_cita", {}).get("fecha"),
+            "hora": ctx.get("bloque_cita", {}).get("hora"),
+        }
+        tool_result = call_tool_microservice("scheduler-appointment_create", payload)
+        message = tool_result.get("mensaje", "No se pudo agendar la cita.")
+        context_manager.update_context(sid, user_text, message)
+        return {"answer": message, "pending": False}
+
+    # Preguntar por campos faltantes si no hay pendiente definido
+    for field in REQUIRED_FIELDS.get("scheduler-appointment_create", []):
+        if not ctx.get(field):
+            context_manager.update_pending_field(sid, field)
+            question = FIELD_QUESTIONS.get(field)
+            return {"answer": question, "pending": True}
+
+    return {"answer": "Lo siento, hubo un error interno.", "pending": False}
+
+
+# Mapeo de herramientas a sus manejadores especializados
+TOOL_HANDLERS = {
+    "scheduler-appointment_create": _handle_scheduler_flow,
+}
+
+
 def orchestrate(
     user_input: str,
     extra_context: Optional[Dict[str, Any]] = None,
@@ -1772,6 +1865,9 @@ def orchestrate(
     else:
         context_manager.reset_fallback_count(session_id)
 
+    if tool == "scheduler-appointment_create":
+        return _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
+
     if tool in ("unknown", "doc-generar_respuesta_llm"):
         faq_hit = lookup_faq_respuesta(user_input)
         if faq_hit:
@@ -1842,9 +1938,12 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
         if ip:
             extra_context["ip"] = ip
         result = orchestrate(input.pregunta, extra_context, input.session_id)
+        if result is None:
+            logger.error("Tool handler returned None")
+            return {"answer": "Lo siento, hubo un error interno."}
         if "respuestas" in result:
             result["respuestas"] = [
-                adapt_markdown_for_channel(msg, input.channel) 
+                adapt_markdown_for_channel(msg, input.channel)
                 for msg in result["respuestas"]
             ]
         elif result.get("respuesta"):
