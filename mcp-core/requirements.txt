@@ -3,3 +3,7 @@ uvicorn[standard]
 redis
 llama-cpp-python
 dateparser
+requests
+psycopg2-binary
+rapidfuzz
+fakeredis

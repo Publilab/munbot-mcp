@@ -14,6 +14,7 @@ COPY .env ./
 COPY app.py ./
 COPY tasks.py ./
 COPY notifications.py ./
+COPY utils/rut_utils.py ./utils/
 COPY ./databases/init-appointments.sql ./databases/init-appointments.sql
 
 # Instalar dependencias del sistema necesarias para compilar paquetes Python
