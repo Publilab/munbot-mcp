@@ -25,7 +25,7 @@ from utils.datetime_utils import (
     compute_last_business_day,
 )
 from rapidfuzz import fuzz
-from datetime import datetime
+from datetime import datetime, date
 
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
@@ -1384,10 +1384,56 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             return {"answer": "¿A qué hora exactamente? (por ejemplo, 10:00)", "pending": True}
         hora_str = m.group(1).zfill(2) + ":00"
 
-        # 2) Calcular fecha relativa
-        fecha_obj = compute_relative_date(flow_start_dt.date(), texto)
+        # —— Paso 2: Interpretar fecha directa antes de relativa ——
+        fecha_obj = None
+
+        # A) Formato ISO YYYY-MM-DD
+        m_iso = re.search(r"\b(\d{4}-\d{2}-\d{2})\b", texto)
+        if m_iso:
+            try:
+                fecha_obj = datetime.fromisoformat(m_iso.group(1)).date()
+            except ValueError:
+                fecha_obj = None
+
+        # B) Formato Español “14 de Julio”
         if not fecha_obj:
-            return {"answer": "No entendí la fecha. ¿Podrías decirlo diferente?", "pending": True}
+            m_sp = re.search(
+                r"\b(\d{1,2})\s+de\s+([A-Za-z]+)\b", texto, flags=re.IGNORECASE
+            )
+            if m_sp:
+                dia, mes_txt = int(m_sp.group(1)), m_sp.group(2).lower()
+                meses = {
+                    "enero":1, "febrero":2, "marzo":3, "abril":4,
+                    "mayo":5, "junio":6, "julio":7, "agosto":8,
+                    "septiembre":9, "octubre":10, "noviembre":11, "diciembre":12
+                }
+                mes = meses.get(mes_txt)
+                if mes:
+                    year = flow_start_dt.year
+                    fecha_obj = date(year, mes, dia)
+
+        # C) Formato numérico “14/07”
+        if not fecha_obj:
+            m_num = re.search(r"\b(\d{1,2})/(\d{1,2})\b", texto)
+            if m_num:
+                dia, mes = int(m_num.group(1)), int(m_num.group(2))
+                year = flow_start_dt.year
+                try:
+                    fecha_obj = date(year, mes, dia)
+                except ValueError:
+                    fecha_obj = None
+
+        # D) Si aún no tenemos fecha, usamos relativo
+        if not fecha_obj:
+            fecha_obj = compute_relative_date(flow_start_dt.date(), texto)
+
+        # Validar finalmente
+        if not fecha_obj:
+            return {
+                "answer": "No entendí la fecha. ¿Podrías expresarla de otra forma?",
+                "pending": True,
+            }
+
         if fecha_obj.month != flow_start_month:
             ultimo_habil = compute_last_business_day(flow_start_dt)
             return {
