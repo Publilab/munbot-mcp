@@ -19,7 +19,7 @@ import unicodedata
 from utils.text import normalize_text
 from llama_client import LlamaClient
 from zoneinfo import ZoneInfo
-from utils.datetime_utils import parse_nl_datetime
+from utils.datetime_utils import parse_nl_datetime, compute_relative_date
 from rapidfuzz import fuzz
 from datetime import datetime
 
@@ -1366,15 +1366,38 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         return {"answer": "¿En qué fecha y hora deseas la cita?", "pending": True}
 
     if pending == "bloque_cita":
-        fecha = entities.get("fecha")
-        hora = entities.get("hora")
-        if not (fecha and hora):
-            return {"answer": "Indica la fecha y hora en formato YYYY-MM-DD HH:MM", "pending": True}
-        ctx["bloque_cita"] = {"fecha": fecha, "hora": hora}
+        flow_start = ctx.get("flow_start_datetime")
+        if not flow_start:
+            flow_start_dt = datetime.now(tz=SANTIAGO_TZ)
+        else:
+            flow_start_dt = datetime.fromisoformat(flow_start)
+        texto = user_text
+
+        m = re.search(r"(\d{1,2})(?::| h| horas)?", texto)
+        if not m:
+            return {"answer": "¿A qué hora exactamente? (por ejemplo, 10:00)", "pending": True}
+        hora_str = m.group(1).zfill(2) + ":00"
+
+        fecha_obj = compute_relative_date(flow_start_dt.date(), texto)
+        if not fecha_obj:
+            return {"answer": "No entendí la fecha. ¿Podrías decirlo diferente?", "pending": True}
+        fecha_str = fecha_obj.isoformat()
+
+        payload = {"fecha": fecha_str, "hora_rango": f"{hora_str}-"}
+        estado = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        if not estado or not estado[0].get("disponible", False):
+            return {
+                "answer": f"No hay bloques libres el {fecha_str} a las {hora_str}. Elige otro horario.",
+                "pending": True,
+            }
+
+        ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": estado[0]["hora_rango"]}
         save_session(sid, ctx)
-        context_manager.update_context(sid, user_text, f"Cita solicitada para {fecha} {hora}")
         context_manager.update_pending_field(sid, "mail_cita")
-        return {"answer": FIELD_QUESTIONS.get("mail_cita"), "pending": True}
+        return {
+            "answer": "Perfecto, he encontrado un bloque libre para esa fecha y hora. ¿Cuál es tu correo?",
+            "pending": True,
+        }
 
     if pending == "mail_cita":
         mail = entities.get("usu_mail") or extract_email_with_llm(user_text)
@@ -1835,6 +1858,10 @@ def orchestrate(
                 # ----------- Inicio parche modo cita -----------
                 context_manager.set_current_flow(sid, "scheduler")
                 context_manager.update_pending_field(sid, "bloque_cita")
+                # --- Nuevo: registrar inicio de flujo de agenda ---
+                context_manager.update_context_data(
+                    sid, {"flow_start_datetime": datetime.now(tz=SANTIAGO_TZ)}
+                )
                 # ----------- Fin parche modo cita -----------
                 context_manager.inc_attempts(sid, flow)
                 attempts = context_manager.get_attempts(sid, flow)
