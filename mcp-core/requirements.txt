@@ -1,13 +1,5 @@
 fastapi
-uvicorn
-psycopg2-binary
-requests
-pydantic
-gunicorn
+uvicorn[standard]
 redis
-numpy
-llama-cpp-python>=0.3.9
-rapidfuzz
-email-validator
-sentence-transformers>=2.2
-faiss-cpu>=1.7
+llama-cpp-python
+dateparser
