@@ -1844,7 +1844,7 @@ def orchestrate(
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
         answer = user_input.strip().lower()
-        ok = bool(re.search(r"\b(s[ií]|si|claro|ok|vale|por supuesto)\b", answer, re.IGNORECASE))
+        ok = bool(re.search(r"\b(s[ií]|si|claro|ok|vale|por supuesto|bueno|me parece)\b", answer, re.IGNORECASE))
         flow = context_manager.get_current_flow(sid)
         context_manager.clear_pending_confirmation(sid)
 
