@@ -1530,11 +1530,13 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             }
 
         if fecha_obj.month != flow_start_month:
-            ultimo_habil = compute_last_business_day(flow_start_dt)
+            # Mensaje genérico si la fecha está fuera del mes en curso
             return {
                 "answer": (
-                    f"Solo puedo agendar durante {flow_start_dt.strftime('%B')} de {flow_start_dt.year}. "
-                    f"¿Te parece el último día hábil del mes, {ultimo_habil.isoformat()}?"
+                    "Solo puedo agendar citas durante el mes en curso. "
+                    "Si quieres agendar una hora para un mes próximo, puedes hacerlo "
+                    "el último día hábil antes de que comience ese mes y hasta que termine. "
+                    "Gracias por tu comprensión."
                 ),
                 "pending": True,
             }
