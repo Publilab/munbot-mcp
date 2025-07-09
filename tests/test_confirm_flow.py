@@ -58,14 +58,14 @@ def test_reserve_and_confirm(monkeypatch):
 
     appt = {
         "id": "abc123",
-        "avlb": 0,
-        "usu_conf": 0,
-        "usu_mail": "juan@example.com",
-        "usu_whatsapp": "+123456789",
-        "func": "funcionario",
-        "usu_name": "Juan",
+        "disponible": True,
+        "confirmada": False,
+        "usuario_email": "juan@example.com",
+        "usuario_whatsapp": "+123456789",
+        "funcionario_nombre": "funcionario",
+        "usuario_nombre": "Juan",
         "fecha": date.today(),
-        "hora": "10:00"
+        "hora_rango": "10:00"
     }
     monkeypatch.setattr(scheduler_mcp, "get_db", lambda: DummyConn([appt.copy()]))
     with patch('scheduler_mcp.notifications.send_email') as mock_mail:

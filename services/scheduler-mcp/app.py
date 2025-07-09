@@ -123,8 +123,9 @@ class AppointmentCreate(BaseModel):
 
 class AppointmentOut(AppointmentCreate):
     id: str
-    avlb: int
-    usu_conf: int
+    # disponible=True significa que el bloque ya está tomado.
+    disponible: bool
+    confirmada: bool
 
 class AppointmentConfirm(BaseModel):
     id: str
@@ -161,7 +162,8 @@ def list_available(
     """Listar slots disponibles opcionalmente en un rango de fechas."""
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    query = "SELECT * FROM appointments WHERE avlb=1 AND usu_conf=0"
+    # ahora “disponible = FALSE” significa libre, y “confirmada = FALSE” no confirmada
+    query = "SELECT * FROM appointments WHERE disponible = FALSE AND confirmada = FALSE"
     params = []
     if from_date and to_date:
         query += " AND fecha BETWEEN %s AND %s"
@@ -181,20 +183,26 @@ def reserve_appointment(appt: AppointmentCreate):
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
     # Busca slot disponible
-    cur.execute("""
-        SELECT * FROM appointments
-        WHERE func=%s AND cod_func=%s AND fecha=%s AND hora=%s AND avlb=1 AND usu_conf=0
-        """, (appt.func, appt.cod_func, appt.fecha, appt.hora))
+    cur.execute(
+        # buscamos bloques libres (disponible=FALSE) y no confirmados
+        "SELECT * FROM appointments "
+        "WHERE funcionario_codigo=%s AND fecha=%s AND hora_rango=%s "
+        "AND disponible = FALSE AND confirmada = FALSE",
+        (appt.cod_func, appt.fecha, appt.hora)
+    )
     slot = cur.fetchone()
     if not slot:
         conn.close()
         raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
     # Reserva (marca como no disponible, confirma usuario)
-    cur.execute("""
-        UPDATE appointments
-        SET avlb=0, usu_conf=0, motiv=%s, usu_name=%s, usu_mail=%s, usu_whatsapp=%s
-        WHERE id=%s
-    """, (appt.motiv, appt.usu_name, appt.usu_mail, appt.usu_whatsapp, slot["id"]))
+    cur.execute(
+        # disponible=TRUE marca bloque ocupado; confirmada sigue FALSE hasta confirm
+        "UPDATE appointments "
+        "SET disponible = TRUE, confirmada = FALSE, "
+        "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s "
+        "WHERE id = %s",
+        (appt.usu_name, appt.usu_mail, appt.usu_whatsapp, appt.motiv, slot["id"])
+    )
     conn.commit()
     conn.close()
     # Notificación opcional aquí
@@ -207,23 +215,23 @@ def confirm_appointment(body: AppointmentConfirm):
     cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("SELECT * FROM appointments WHERE id=%s", (body.id,))
     cita = cur.fetchone()
-    if not cita or cita["avlb"] == 1 or cita["usu_conf"] == 1:
+    if not cita or cita.get("disponible") is False or cita.get("confirmada") is True:
         conn.close()
         raise HTTPException(status_code=404, detail="Cita no reservada o ya confirmada")
     # Confirmar
-    cur.execute("UPDATE appointments SET usu_conf=1 WHERE id=%s", (body.id,))
+    cur.execute("UPDATE appointments SET confirmada=TRUE WHERE id=%s", (body.id,))
     conn.commit()
     conn.close()
     # Notificación al usuario y funcionario
     send_email(
-        cita["usu_mail"],
+        cita["usuario_email"],
         "Cita confirmada",
         "email/confirm.html",
-        usuario=cita["usu_name"],
+        usuario=cita["usuario_nombre"],
         fecha_legible=str(cita["fecha"]),
-        hora=cita["hora"],
+        hora=cita["hora_rango"],
     )
-    send_whatsapp(cita["usu_whatsapp"], f"Su cita con {cita['func']} ha sido confirmada para el {cita['fecha']} a las {cita['hora']}.")
+    send_whatsapp(cita["usuario_whatsapp"], f"Su cita con {cita['funcionario_nombre']} ha sido confirmada para el {cita['fecha']} a las {cita['hora_rango']}.")
     return {"id": body.id, "respuesta": "Cita confirmada y notificada."}
 
 @app.post("/appointments/cancel")
@@ -237,25 +245,26 @@ def cancel_appointment(body: AppointmentCancel):
         conn.close()
         raise HTTPException(status_code=404, detail="Cita no encontrada")
     # Cancelar: vuelve a disponible y limpia usuario
-    cur.execute("""
-        UPDATE appointments SET avlb=1, usu_conf=0,
-        motiv='', usu_name='', usu_mail='', usu_whatsapp=''
-        WHERE id=%s
-    """, (body.id,))
+    cur.execute(
+        """UPDATE appointments SET disponible=FALSE, confirmada=FALSE,
+        motivo='', usuario_nombre='', usuario_email='', usuario_whatsapp=''
+        WHERE id=%s""",
+        (body.id,)
+    )
     conn.commit()
     conn.close()
     # Notificar usuario
-    if cita["usu_mail"]:
+    if cita["usuario_email"]:
         send_email(
-            cita["usu_mail"],
+            cita["usuario_email"],
             "Cita cancelada",
             "email/reminder.html",
-            usuario=cita["usu_name"],
+            usuario=cita["usuario_nombre"],
             fecha_legible=str(cita["fecha"]),
-            hora=cita["hora"],
+            hora=cita["hora_rango"],
         )
-    if cita["usu_whatsapp"]:
-        send_whatsapp(cita["usu_whatsapp"], f"Su cita ha sido cancelada. Motivo: {body.motivo}")
+    if cita["usuario_whatsapp"]:
+        send_whatsapp(cita["usuario_whatsapp"], f"Su cita ha sido cancelada. Motivo: {body.motivo}")
     return {"id": body.id, "respuesta": "Cita cancelada."}
 
 @app.get("/appointments/{id}")
