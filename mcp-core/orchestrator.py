@@ -1418,10 +1418,14 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
 
     if pending == "hora_cita":
         texto = user_text
-        m = re.search(r"(\d{1,2})(?::| h| horas)?", texto)
+        m = re.search(r"a las\s*(\d{1,2})(?::(\d{2}))?", texto, flags=re.IGNORECASE)
+        if not m:
+            m = re.search(r"\b(\d{1,2})(?::(\d{2}))?\b", texto)
         if not m:
             return {"answer": "Por favor indica la hora exacta (por ejemplo, 10:00)", "pending": True}
-        hora_str = m.group(1).zfill(2) + ":00"
+        hora = int(m.group(1))
+        minuto = int(m.group(2) or 0)
+        hora_str = f"{hora:02d}:{minuto:02d}"
         fecha_str = ctx.get("bloque_cita", {}).get("fecha")
         if not fecha_str:
             context_manager.update_pending_field(sid, "bloque_cita")
@@ -1536,8 +1540,20 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             }
         fecha_str = fecha_obj.isoformat()
 
-        # ——— Fase 1: si sólo hay fecha y no hora ———
-        if fecha_obj and not re.search(r"\d{1,2}", user_text):
+        # Quitar menciones de la fecha antes de buscar la hora
+        texto_sin_fecha = re.sub(
+            r"\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}/\d{1,2}\b|\b\d{1,2}\s+de\s+[A-Za-z]+\b",
+            "",
+            texto,
+            flags=re.IGNORECASE,
+        )
+
+        # 2) Extraer hora después de limpiar la fecha
+        m = re.search(r"a las\s*(\d{1,2})(?::(\d{2}))?", texto_sin_fecha, flags=re.IGNORECASE)
+        if not m:
+            m = re.search(r"\b(\d{1,2})(?::(\d{2}))?\b", texto_sin_fecha)
+
+        if not m:
             ctx["bloque_cita"] = {"fecha": fecha_str}
             save_session(sid, ctx)
             context_manager.update_pending_field(sid, "hora_cita")
@@ -1549,13 +1565,10 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                 ),
                 "pending": True,
             }
-        # ——————————————————————————————
 
-        # 2) Extraer hora
-        m = re.search(r"(\d{1,2})(?::| h| horas)?", texto)
-        if not m:
-            return {"answer": "¿A qué hora exactamente? (por ejemplo, 10:00)", "pending": True}
-        hora_str = m.group(1).zfill(2) + ":00"
+        hora = int(m.group(1))
+        minuto = int(m.group(2) or 0)
+        hora_str = f"{hora:02d}:{minuto:02d}"
 
         ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": f"{hora_str}-%"}
         save_session(sid, ctx)
