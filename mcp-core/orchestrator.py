@@ -1540,6 +1540,53 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             }
         fecha_str = fecha_obj.isoformat()
 
+        # ——— Paso X: detectar bloque ordinal antes de extraer hora ———
+        # Mapa de ordinales a índice en la lista de bloques del día
+        ordinales = {
+            "primera": 0, "segunda": 1, "tercera": 2,
+            "cuarta": 3, "quinta": 4, "última": -1
+        }
+        elegido_indice = None
+        for clave, idx in ordinales.items():
+            if re.search(rf"\b{clave}\s+hora\b", texto, flags=re.IGNORECASE):
+                elegido_indice = idx
+                break
+
+        if elegido_indice is not None:
+            # Listar todos los bloques libres de ese día
+            todos = call_tool_microservice(
+                "scheduler-listar_horas_disponibles",
+                {"fecha": fecha_str, "hora_rango": "%"}  # sin filtrar por hora
+            )
+            bloques_dia = todos if isinstance(todos, list) else todos.get("data", [])
+            libres = [b for b in bloques_dia if b.get("disponible", False)]
+            if not libres:
+                return {
+                    "answer": f"No hay bloques libres el {fecha_str}. Elige otro día.",
+                    "pending": True
+                }
+            try:
+                bloque = libres[elegido_indice]
+            except IndexError:
+                return {
+                    "answer": (
+                        f"En el {fecha_str} no hay {clave} bloque disponible. "
+                        "Por favor elige otra opción o proporciona hora exacta."
+                    ),
+                    "pending": True
+                }
+            ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": bloque["hora_rango"]}
+            save_session(sid, ctx)
+            context_manager.update_pending_field(sid, "mail_cita")
+            return {
+                "answer": (
+                    f"He seleccionado la {clave} hora del {fecha_str}, "
+                    f"que es {bloque['hora_rango']}. ¿Cuál es tu correo?"
+                ),
+                "pending": True
+            }
+        # ——————————————————————————————————————————————
+
         # Quitar menciones de la fecha antes de buscar la hora
         texto_sin_fecha = re.sub(
             r"\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}/\d{1,2}\b|\b\d{1,2}\s+de\s+[A-Za-z]+\b",
