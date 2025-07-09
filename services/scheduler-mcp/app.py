@@ -123,7 +123,7 @@ class AppointmentCreate(BaseModel):
 
 class AppointmentOut(AppointmentCreate):
     id: str
-    # disponible=True significa que el bloque ya está tomado.
+    # disponible=True indica que el bloque está libre.
     disponible: bool
     confirmada: bool
 
@@ -162,8 +162,8 @@ def list_available(
     """Listar slots disponibles opcionalmente en un rango de fechas."""
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    # ahora “disponible = FALSE” significa libre, y “confirmada = FALSE” no confirmada
-    query = "SELECT * FROM appointments WHERE disponible = FALSE AND confirmada = FALSE"
+    # ahora TRUE = libre, FALSE = no confirmada
+    query = "SELECT * FROM appointments WHERE disponible = TRUE AND confirmada = FALSE"
     params = []
     if from_date and to_date:
         query += " AND fecha BETWEEN %s AND %s"
@@ -184,10 +184,10 @@ def reserve_appointment(appt: AppointmentCreate):
     cur = conn.cursor(cursor_factory=RealDictCursor)
     # Busca slot disponible
     cur.execute(
-        # buscamos bloques libres (disponible=FALSE) y no confirmados
+        # buscamos bloques libres (disponible=TRUE) y no confirmados
         "SELECT * FROM appointments "
         "WHERE funcionario_codigo=%s AND fecha=%s AND hora_rango=%s "
-        "AND disponible = FALSE AND confirmada = FALSE",
+        "AND disponible = TRUE AND confirmada = FALSE",
         (appt.cod_func, appt.fecha, appt.hora)
     )
     slot = cur.fetchone()
@@ -196,9 +196,9 @@ def reserve_appointment(appt: AppointmentCreate):
         raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
     # Reserva (marca como no disponible, confirma usuario)
     cur.execute(
-        # disponible=TRUE marca bloque ocupado; confirmada sigue FALSE hasta confirm
+        # al reservar, marcamos disponible=FALSE y confirmada sigue FALSE
         "UPDATE appointments "
-        "SET disponible = TRUE, confirmada = FALSE, "
+        "SET disponible = FALSE, confirmada = FALSE, "
         "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s "
         "WHERE id = %s",
         (appt.usu_name, appt.usu_mail, appt.usu_whatsapp, appt.motiv, slot["id"])
@@ -215,7 +215,7 @@ def confirm_appointment(body: AppointmentConfirm):
     cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("SELECT * FROM appointments WHERE id=%s", (body.id,))
     cita = cur.fetchone()
-    if not cita or cita.get("disponible") is False or cita.get("confirmada") is True:
+    if not cita or cita.get("disponible") is True or cita.get("confirmada") is True:
         conn.close()
         raise HTTPException(status_code=404, detail="Cita no reservada o ya confirmada")
     # Confirmar
@@ -244,11 +244,12 @@ def cancel_appointment(body: AppointmentCancel):
     if not cita:
         conn.close()
         raise HTTPException(status_code=404, detail="Cita no encontrada")
-    # Cancelar: vuelve a disponible y limpia usuario
+    # al cancelar, dejamos disponible=TRUE y confirmada=FALSE
     cur.execute(
-        """UPDATE appointments SET disponible=FALSE, confirmada=FALSE,
-        motivo='', usuario_nombre='', usuario_email='', usuario_whatsapp=''
-        WHERE id=%s""",
+        "UPDATE appointments "
+        "SET disponible = TRUE, confirmada = FALSE, "
+        "    motivo = '', usuario_nombre = '', usuario_email = '', usuario_whatsapp = '' "
+        "WHERE id = %s",
         (body.id,)
     )
     conn.commit()
