@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS appointments (
 
 -- Inserción de todos los datos de citas desde el archivo JSON.
 -- Los valores de AVLB y USU_CONF se han convertido a booleanos (TRUE/FALSE).
-INSERT INTO appointments (id, funcionario_nombre, funcionario_codigo, motivo, usuario_nombre, usuario_email, usuario_whatsapp, disponible, confirmada, fecha, hora_rango) VALUES
+INSERT INTO appointments (id, funcionario_nombre, funcionario_codigo, motivo, usuario_nombre, usuario_rut, usuario_email, usuario_whatsapp, disponible, confirmada, fecha, hora_rango) VALUES
 ('C0001', 'Nien Nunb', 'FN001', '', '', '', '', '', TRUE, FALSE, '2025-07-14', '08:30-09:00'),
 ('C0002', 'Greedo', 'FN002', '', '', '', '', '', TRUE, FALSE, '2025-07-15', '09:00-09:30'),
 ('C0003', 'Lobot', 'FN003', '', '', '', '', '', TRUE, FALSE, '2025-07-16', '09:30-10:00'),
