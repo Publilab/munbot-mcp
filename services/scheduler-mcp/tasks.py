@@ -15,7 +15,7 @@ def fetch_tomorrow_confirmed(conn) -> Iterable[dict]:
     cur.execute(
         """SELECT * FROM appointments
            WHERE fecha = CURRENT_DATE + INTERVAL '1 day'
-             AND avlb=0 AND usu_conf=1"""
+             AND disponible=TRUE AND confirmada=TRUE"""
     )
     return cur.fetchall()
 
@@ -24,13 +24,13 @@ def send_whatsapp(cita):
     if not META_PHONE_ID or not META_TOKEN:
         return
     try:
-        phone_number = cita['usu_whatsapp'].replace('+', '')
+        phone_number = cita['usuario_whatsapp'].replace('+', '')
         url = f"https://graph.facebook.com/v19.0/{META_PHONE_ID}/messages"
         payload = {
             "messaging_product": "whatsapp",
             "to": phone_number,
             "type": "text",
-            "text": {"body": f"Recordatorio: Su cita es mañana {cita['fecha']} a las {cita['hora']} con {cita['func']}."}
+            "text": {"body": f"Recordatorio: Su cita es mañana {cita['fecha']} a las {cita['hora_rango']} con {cita['funcionario_nombre']}."}
         }
         headers = {
             "Authorization": f"Bearer {META_TOKEN}",
@@ -38,7 +38,7 @@ def send_whatsapp(cita):
         }
         requests.post(url, json=payload, headers=headers)
     except Exception as e:
-        print(f"Error al enviar WhatsApp a {cita['usu_whatsapp']}: {e}")
+        print(f"Error al enviar WhatsApp a {cita['usuario_whatsapp']}: {e}")
 
 
 def send_reminder(dry: bool = False):
@@ -49,14 +49,14 @@ def send_reminder(dry: bool = False):
     for cita in citas:
         if not dry:
             send_email(
-                cita['usu_mail'],
+                cita['usuario_email'],
                 'Recordatorio de cita municipal',
                 'email/reminder.html',
-                usuario=cita['usu_name'],
+                usuario=cita['usuario_nombre'],
                 fecha_legible=str(cita['fecha']),
-                hora=cita['hora'],
+                hora=cita['hora_rango'],
             )
-            if cita.get('usu_whatsapp'):
+            if cita.get('usuario_whatsapp'):
                 send_whatsapp(cita)
         count += 1
     if dry:
