@@ -2028,8 +2028,8 @@ def orchestrate(
             context_manager.set_pending_confirmation(sid, True)
             context_manager.set_current_flow(sid, "cita")
             msg = (
-                "Si quieres agendar una cita, puedo ayudarte a coordinarla. "
-                "¿Quieres hacerlo ahora?"
+                "Entiendo. Si quieres agendar una cita con un funcionario, puedo ayudarte a agendarla por este mismo medio. "
+                "¿Quieres hacerla ahora mismo?"
             )
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
