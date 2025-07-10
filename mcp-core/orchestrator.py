@@ -1453,7 +1453,6 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
 
         # Buscar el bloque cuyo rango contenga la hora solicitada
-        from datetime import datetime
         hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
         bloque_match = None
         for b in bloques:
@@ -1656,7 +1655,6 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
 
         # 5) Filtrar bloques cuyo rango contenga hora_user (rango semi-abierto)
-        from datetime import datetime
         hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
         bloque_match = None
         for b in bloques:
