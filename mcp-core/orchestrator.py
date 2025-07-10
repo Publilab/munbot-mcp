@@ -1629,7 +1629,9 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         }
 
         # 4) Llamar y normalizar respuesta
+        print(f"[AUDIT] payload listar_horas: {payload}", flush=True)
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        print(f"[AUDIT] raw response listar_horas: {raw}", flush=True)
         if isinstance(raw, dict) and "data" in raw:
             bloques = raw["data"]
         elif isinstance(raw, list):
