@@ -109,21 +109,38 @@ async def tools_call(payload: dict):
     if tool == "scheduler-listar_horas_disponibles":
         fecha = params.get("fecha")
         hora = params.get("hora")
-        if not fecha or not hora:
-            raise HTTPException(status_code=400, detail="Se requiere 'fecha' y 'hora'")
-        hora_rango = f"{hora}-%"
+        desde = params.get("from") or params.get("from_date")
+        hasta = params.get("to") or params.get("to_date")
         cod_func = params.get("cod_func")
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
-        query = (
-            "SELECT * FROM appointments "
-            "WHERE fecha = %s AND hora_rango LIKE %s "
-            "AND disponible = TRUE AND confirmada = FALSE"
-        )
-        qparams = [fecha, hora_rango]
+
+        if desde or hasta:
+            if not (desde and hasta):
+                raise HTTPException(status_code=400, detail="Se requiere 'from' y 'to'")
+            query = (
+                "SELECT * FROM appointments "
+                "WHERE fecha BETWEEN %s AND %s "
+                "AND disponible = TRUE AND confirmada = FALSE"
+            )
+            qparams = [desde, hasta]
+        else:
+            if not fecha:
+                raise HTTPException(status_code=400, detail="Se requiere 'fecha'")
+            query = (
+                "SELECT * FROM appointments "
+                "WHERE fecha = %s "
+                "AND disponible = TRUE AND confirmada = FALSE"
+            )
+            qparams = [fecha]
+            if hora:
+                query += " AND hora_rango LIKE %s"
+                qparams.append(f"{hora}-%")
+
         if cod_func:
             query += " AND funcionario_codigo = %s"
             qparams.append(cod_func)
+
         cur.execute(query, tuple(qparams))
         rows = cur.fetchall()
         conn.close()
@@ -195,17 +212,32 @@ def root():
 
 @app.get("/appointments/available")
 def list_available(request: Request):
-    """Listar slots disponibles para fecha y hora exacta."""
+    """Listar slots disponibles según filtros de fecha y hora."""
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
 
-    # —— Filtro exacto por fecha y hora
+    desde = request.query_params.get("from") or request.query_params.get("from_date")
+    hasta = request.query_params.get("to") or request.query_params.get("to_date")
+    if desde and hasta:
+        query = """
+            SELECT * FROM appointments
+            WHERE disponible = TRUE
+              AND confirmada = FALSE
+              AND fecha BETWEEN %s AND %s
+            ORDER BY fecha, hora_rango
+        """
+        cur.execute(query, (desde, hasta))
+        rows = cur.fetchall()
+        conn.close()
+        return {"disponibles": rows}
+
     fecha = request.query_params.get("fecha")
     hora = request.query_params.get("hora")
-    if not fecha or not hora:
-        raise HTTPException(status_code=400, detail="Debe indicar 'fecha' y 'hora' en query params")
+    if not fecha:
+        conn.close()
+        return {"disponibles": []}
 
-    like_pattern = f"{hora}-%"
+    like_pattern = f"{hora}-%" if hora else "%"
     logger.debug(f"[AUDIT] list_available filtros: fecha={fecha}, hora_rango LIKE {like_pattern}")
 
     query = """
