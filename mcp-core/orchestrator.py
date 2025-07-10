@@ -1647,30 +1647,22 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": f"{hora_str}-%"}
         save_session(sid, ctx)
 
-        audit_payload = {"from_date": fecha_str, "to_date": fecha_str}
-        print(
-            f"[AUDIT] llamando a appointments/available con: {audit_payload}",
-            flush=True,
-        )
-        raw = call_scheduler_endpoint("appointments/available", audit_payload)
-        if isinstance(raw, dict) and "disponibles" in raw:
-            bloques = [
-                b for b in raw["disponibles"] if b.get("hora_rango", "").startswith(hora_str)
-            ]
-        elif isinstance(raw, list):
-            bloques = raw
-        else:
-            bloques = []
+        # 4) Llamar al scheduler con fecha y hora separada
+        payload = {"fecha": fecha_str, "hora": hora_str}
+        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
 
-        # ——— Fase 2: listar bloques exactos ———
-        opciones = [b for b in bloques if b.get("disponible")]
-        if opciones:
-            ctx["last_suggestions"] = opciones
-            lines = ["He encontrado estos bloques disponibles:"]
-            for i, b in enumerate(opciones, start=1):
-                lines.append(f"  {i}. {b['fecha']} {b['hora_rango']}")
-            lines.append(f"  {len(opciones)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
-            return {"answer": "\n".join(lines), "pending": True}
+        # 5) Si encontramos >=1 bloque exacto, presentamos la lista de dos opciones
+        if bloques:
+            b = bloques[0]
+            ctx["last_suggestions"] = bloques
+            answer = (
+                "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:\n\n"
+                f"  1. Cita con funcionario el {b['fecha']} a las {b['hora_rango'].split('-')[0]} hrs\n"
+                "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO\n\n"
+                "Para confirmar tu opción escribe el número de la lista."
+            )
+            return {"answer": answer, "pending": True}
         # ——— Fase 3: sugerir hasta 5 bloques cercanos ———
         alternativas = call_tool_microservice(
             "scheduler-listar_horas_cercanas",
