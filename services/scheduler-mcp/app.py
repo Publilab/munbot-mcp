@@ -108,9 +108,10 @@ async def tools_call(payload: dict):
 
     if tool == "scheduler-listar_horas_disponibles":
         fecha = params.get("fecha")
-        if not fecha:
-            raise HTTPException(status_code=400, detail="Se requiere 'fecha'")
-        hora_rango = params.get("hora_rango", "%")
+        hora = params.get("hora")
+        if not fecha or not hora:
+            raise HTTPException(status_code=400, detail="Se requiere 'fecha' y 'hora'")
+        hora_rango = f"{hora}-%"
         cod_func = params.get("cod_func")
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -193,33 +194,32 @@ def root():
     }
 
 @app.get("/appointments/available")
-def list_available(
-    from_date: date = Query(None, alias="from"),
-    to_date: date = Query(None, alias="to"),
-):
-    """Listar slots disponibles opcionalmente en un rango de fechas."""
+def list_available(request: Request):
+    """Listar slots disponibles para fecha y hora exacta."""
     conn = get_db()
     cur = conn.cursor(cursor_factory=RealDictCursor)
-    # ahora TRUE = libre, FALSE = no confirmada
-    query = "SELECT * FROM appointments WHERE disponible = TRUE AND confirmada = FALSE"
-    params = []
-    logger.debug(
-        f"[AUDIT] listar_horas recibidas: from={from_date}, to={to_date}"
-    )
-    if from_date and to_date:
-        query += " AND fecha BETWEEN %s AND %s"
-        params.extend([from_date, to_date])
-    elif from_date:
-        query += " AND fecha >= %s"
-        params.append(from_date)
-    # ordenar cronológicamente por fecha y hora_rango para evitar errores
-    # con la antigua columna "hora"
-    query += " ORDER BY fecha, hora_rango"
-    cur.execute(query, tuple(params))
-    citas = cur.fetchall()
-    logger.debug(f"[AUDIT] filas devueltas: {citas}")
+
+    # —— Filtro exacto por fecha y hora
+    fecha = request.query_params.get("fecha")
+    hora = request.query_params.get("hora")
+    if not fecha or not hora:
+        raise HTTPException(status_code=400, detail="Debe indicar 'fecha' y 'hora' en query params")
+
+    like_pattern = f"{hora}-%"
+    logger.debug(f"[AUDIT] list_available filtros: fecha={fecha}, hora_rango LIKE {like_pattern}")
+
+    query = """
+        SELECT * FROM appointments
+        WHERE disponible = TRUE
+          AND confirmada = FALSE
+          AND fecha = %s
+          AND hora_rango LIKE %s
+        ORDER BY fecha, hora_rango
+    """
+    cur.execute(query, (fecha, like_pattern))
+    rows = cur.fetchall()
     conn.close()
-    return {"disponibles": citas}
+    return {"disponibles": rows}
 
 @app.post("/appointments/reserve")
 def reserve_appointment(appt: AppointmentCreate):
