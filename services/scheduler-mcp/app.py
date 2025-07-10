@@ -66,6 +66,7 @@ class RequestValidationMiddleware(BaseHTTPMiddleware):
             "/appointments/confirm": ["POST"],
             "/appointments/cancel": ["POST"],
             "/appointments/{id}": ["GET"],
+            "/tools/call": ["POST"],
             "/health": ["GET"],
             "/": ["GET"]
         }
@@ -94,6 +95,40 @@ class RequestValidationMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 app.add_middleware(RequestValidationMiddleware)
+
+# =====================
+# Endpoint /tools/call para compatibilidad con el orquestador
+# =====================
+
+@app.post("/tools/call")
+async def tools_call(payload: dict):
+    """Despacha herramientas usadas por el orquestador."""
+    tool = payload.get("tool")
+    params = payload.get("params", {})
+
+    if tool == "scheduler-listar_horas_disponibles":
+        fecha = params.get("fecha")
+        if not fecha:
+            raise HTTPException(status_code=400, detail="Se requiere 'fecha'")
+        hora_rango = params.get("hora_rango", "%")
+        cod_func = params.get("cod_func")
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        query = (
+            "SELECT * FROM appointments "
+            "WHERE fecha = %s AND hora_rango LIKE %s "
+            "AND disponible = TRUE AND confirmada = FALSE"
+        )
+        qparams = [fecha, hora_rango]
+        if cod_func:
+            query += " AND funcionario_codigo = %s"
+            qparams.append(cod_func)
+        cur.execute(query, tuple(qparams))
+        rows = cur.fetchall()
+        conn.close()
+        return {"data": rows}
+
+    return JSONResponse(status_code=400, content={"detail": "Tool desconocida"})
 
 # =====================
 # Esquemas de Pydantic (para validación y autocompletado)
