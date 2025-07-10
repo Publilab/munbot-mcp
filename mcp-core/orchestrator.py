@@ -1447,32 +1447,35 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             return {"answer": "¿En qué fecha y hora deseas la cita?", "pending": True}
         ctx["bloque_cita"]["hora_rango"] = f"{hora_str}-%"
         save_session(sid, ctx)
-        audit_payload = {"from_date": fecha_str, "to_date": fecha_str}
-        print(
-            f"[AUDIT] llamando a appointments/available con: {audit_payload}",
-            flush=True,
-        )
-        raw_resp = call_scheduler_endpoint("appointments/available", audit_payload)
-        if isinstance(raw_resp, dict) and "disponibles" in raw_resp:
-            bloques = [
-                b
-                for b in raw_resp["disponibles"]
-                if b.get("hora_rango", "").startswith(hora_str)
-            ]
-        elif isinstance(raw_resp, list):
-            bloques = raw_resp
-        else:
-            bloques = []
+        # Obtener todos los bloques disponibles del día
+        payload = {"fecha": fecha_str}
+        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
 
-        # ——— Fase 2: listar bloques exactos ———
-        opciones = [b for b in bloques if b.get("disponible")]
-        if opciones:
-            ctx["last_suggestions"] = opciones
-            lines = ["He encontrado estos bloques disponibles:"]
-            for i, b in enumerate(opciones, start=1):
-                lines.append(f"  {i}. {b['fecha']} {b['hora_rango']}")
-            lines.append(f"  {len(opciones)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
-            return {"answer": "\n".join(lines), "pending": True}
+        # Buscar el bloque cuyo rango contenga la hora solicitada
+        from datetime import datetime
+        hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
+        bloque_match = None
+        for b in bloques:
+            if not b.get("disponible"):
+                continue
+            start_str, end_str = b["hora_rango"].split("-")
+            start_dt = datetime.strptime(start_str, "%H:%M").time()
+            end_dt = datetime.strptime(end_str, "%H:%M").time()
+            if start_dt <= hora_user_dt < end_dt:
+                bloque_match = b
+                break
+
+        # ——— Si existe un bloque exacto, ofrecer confirmación ———
+        if bloque_match:
+            ctx["last_suggestions"] = [bloque_match]
+            answer = (
+                "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:\n\n"
+                f"  1. Cita con funcionario el {fecha_str} a las {hora_str} hrs\n"
+                "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO\n\n"
+                "Para confirmar tu opción escribe el número de la lista."
+            )
+            return {"answer": answer, "pending": True}
         # ——— Fase 3: sugerir hasta 5 bloques cercanos ———
         alternativas = call_tool_microservice(
             "scheduler-listar_horas_cercanas",
@@ -1647,23 +1650,34 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": f"{hora_str}-%"}
         save_session(sid, ctx)
 
-        # 4) Llamar al scheduler con fecha y hora separada
-        payload = {"fecha": fecha_str, "hora": hora_str}
+        # 4) Llamar al scheduler pidiendo todos los bloques del día
+        payload = {"fecha": fecha_str}
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
         bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
 
-        # 5) Si encontramos >=1 bloque exacto, presentamos la lista de dos opciones
-        if bloques:
-            b = bloques[0]
-            ctx["last_suggestions"] = bloques
+        # 5) Filtrar bloques cuyo rango contenga hora_user (rango semi-abierto)
+        from datetime import datetime
+        hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
+        bloque_match = None
+        for b in bloques:
+            start_str, end_str = b["hora_rango"].split("-")
+            start_dt = datetime.strptime(start_str, "%H:%M").time()
+            end_dt = datetime.strptime(end_str, "%H:%M").time()
+            if start_dt <= hora_user_dt < end_dt:
+                bloque_match = b
+                break
+
+        if bloque_match:
+            # 6) Presentar la única opción de confirmación
+            ctx["last_suggestions"] = [bloque_match]
             answer = (
                 "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:\n\n"
-                f"  1. Cita con funcionario el {b['fecha']} a las {b['hora_rango'].split('-')[0]} hrs\n"
+                f"  1. Cita con funcionario el {fecha_str} a las {hora_str} hrs\n"
                 "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO\n\n"
                 "Para confirmar tu opción escribe el número de la lista."
             )
             return {"answer": answer, "pending": True}
-        # ——— Fase 3: sugerir hasta 5 bloques cercanos ———
+        # 7) Si no hubo coincidencia exacta, seguir con sugerencias alternativas
         alternativas = call_tool_microservice(
             "scheduler-listar_horas_cercanas",
             {"fecha": fecha_str, "hora_rango": f"{hora_str}-%", "limit": 5},
