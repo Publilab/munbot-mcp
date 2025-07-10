@@ -333,10 +333,6 @@ INSERT INTO appointments (id, funcionario_nombre, funcionario_codigo, motivo, us
 ('C0310', 'EV-9D9', 'FN010', '', '', '', '', '', TRUE, FALSE, '2025-09-05', '11:00-11:30'),
 ('C0311', 'Nien Nunb', 'FN001', '', '', '', '', '', TRUE, FALSE, '2025-09-05', '11:30-12:00'),
 ('C0312', 'Greedo', 'FN002', '', '', '', '', '', TRUE, FALSE, '2025-09-05', '12:00-12:30'),
-
-
-
-
 ('C0313', 'Lobot', 'FN003', '', '', '', '', '', TRUE, FALSE, '2025-09-08', '08:30-09:00'),
 ('C0314', 'Bib Fortuna', 'FN004', '', '', '', '', '', TRUE, FALSE, '2025-09-08', '09:00-09:30'),
 ('C0315', 'Salacious B. Crumb', 'FN005', '', '', '', '', '', TRUE, FALSE, '2025-09-08', '09:30-10:00'),
