@@ -2,6 +2,7 @@ import os
 import re
 from datetime import date, datetime
 from typing import Optional
+import logging
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -43,6 +44,8 @@ def get_db():
     return conn
 
 app = FastAPI()
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Configurar CORS
 app.add_middleware(
@@ -165,6 +168,9 @@ def list_available(
     # ahora TRUE = libre, FALSE = no confirmada
     query = "SELECT * FROM appointments WHERE disponible = TRUE AND confirmada = FALSE"
     params = []
+    logger.debug(
+        f"[AUDIT] listar_horas recibidas: from={from_date}, to={to_date}"
+    )
     if from_date and to_date:
         query += " AND fecha BETWEEN %s AND %s"
         params.extend([from_date, to_date])
@@ -174,6 +180,7 @@ def list_available(
     query += " ORDER BY fecha, hora"
     cur.execute(query, tuple(params))
     citas = cur.fetchall()
+    logger.debug(f"[AUDIT] filas devueltas: {citas}")
     conn.close()
     return {"disponibles": citas}
 
