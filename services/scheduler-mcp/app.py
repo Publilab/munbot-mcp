@@ -212,7 +212,8 @@ def list_available(
     elif from_date:
         query += " AND fecha >= %s"
         params.append(from_date)
-    query += " ORDER BY fecha, hora"
+    # ordenar cronológicamente por fecha y hora_rango
+    query += " ORDER BY fecha, hora_rango"
     cur.execute(query, tuple(params))
     citas = cur.fetchall()
     logger.debug(f"[AUDIT] filas devueltas: {citas}")
