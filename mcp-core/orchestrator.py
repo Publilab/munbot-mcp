@@ -1799,7 +1799,7 @@ def orchestrate(
 
     # --- Manejar seguimiento de consultas sobre trámites ---
     if context_manager.get_context_field(sid, "consultas_tramites_pending"):
-        if re.fullmatch(r"(?i)(sí|si|ok|okay|vale|claro|si quiero saber)", user_input.strip()):
+        if re.fullmatch(r"\b(s[ií]|si|claro|ok|vale|por supuesto|bueno|me parece|obvio que si|demosle|me parece|si quiero saber)", user_input.strip()):
             tipo = context_manager.get_context_field(sid, "consultas_tramites_tipo")
             opciones = listar_documentos_por_tipo(tipo) if tipo else []
             listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones)) if opciones else ""
@@ -1855,7 +1855,7 @@ def orchestrate(
                 return {"respuesta": resp, "session_id": sid}
 
     if context_manager.get_pending_confirmation(sid) and context_manager.get_current_flow(sid) == "documento":
-        if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
+        if re.fullmatch(r"\b(s[ií]|si|claro|ok|vale|por supuesto|bueno|me parece|obvio que si|demosle|me parece|dale)", user_input.strip()):
             resp = handle_confirmation(sid)
             context_manager.update_context(sid, user_input, resp)
             return {"respuesta": resp, "session_id": sid}
@@ -1917,7 +1917,7 @@ def orchestrate(
     pending_faq = context_manager.get_faq_clarification(sid)
     if pending_faq:
         if pending_faq.get("type") == "confirm":
-            if re.fullmatch(r"(?i)(sí|si|yes|ok|okay|vale|claro)", user_input.strip()):
+            if re.fullmatch(r"(?i)(si|claro|ok|vale|por supuesto|bueno|me parece|obvio que si|demosle|me parece|dale)", user_input.strip()):
                 answer = pending_faq["entry"]["respuesta"]
                 context_manager.update_context(sid, user_input, answer)
                 context_manager.clear_faq_clarification(sid)
@@ -1959,7 +1959,7 @@ def orchestrate(
     # --- Manejar aclaraciones pendientes de documento ---
     pending_doc = context_manager.get_doc_clarification(sid)
     if pending_doc:
-        if re.fullmatch(r"(?i)(s[ií]?|si|yes|ok|okay|vale|claro|dale)", user_input.strip()):
+        if re.fullmatch(r"(?i)(s[ií]?|si|claro|ok|vale|por supuesto|bueno|me parece|obvio que si|demosle|me parece|dale)", user_input.strip()):
             orig_q = pending_doc.get("question", "")
             doc_name = pending_doc.get("doc")
             context_manager.clear_doc_clarification(sid)
@@ -2126,7 +2126,7 @@ def orchestrate(
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
         answer = user_input.strip().lower()
-        ok = bool(re.search(r"\b(s[ií]|si|claro|ok|vale|por supuesto|bueno|me parece)\b", answer, re.IGNORECASE))
+        ok = bool(re.search(r"\b(s[ií]|si|claro|ok|vale|por supuesto|bueno|me parece|obvio que si|demosle|me parece|dale)\b", answer, re.IGNORECASE))
         flow = context_manager.get_current_flow(sid)
         context_manager.clear_pending_confirmation(sid)
 
