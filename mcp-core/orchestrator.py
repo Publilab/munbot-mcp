@@ -499,6 +499,21 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         return {"error": f"Connection error: {e}"}
 
 
+def call_scheduler_endpoint(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
+    """Call a direct REST endpoint on the scheduler microservice."""
+    base = MICROSERVICES["scheduler-mcp"]
+    if base.endswith("/tools/call"):
+        base = base[: -len("/tools/call")]
+    url = f"{base.rstrip('/')}/{endpoint.lstrip('/')}"
+    try:
+        resp = requests.get(url, params=params, timeout=30)
+        if 200 <= resp.status_code < 300:
+            return resp.json()
+        return {"error": f"Error {resp.status_code}: {resp.text}"}
+    except requests.RequestException as e:
+        return {"error": f"Connection error: {e}"}
+
+
 # === Utilidades de generación con el LLM ===
 
 def find_next_available_slot():
@@ -1432,14 +1447,20 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             return {"answer": "¿En qué fecha y hora deseas la cita?", "pending": True}
         ctx["bloque_cita"]["hora_rango"] = f"{hora_str}-%"
         save_session(sid, ctx)
-        bloques_raw = call_tool_microservice(
-            "scheduler-listar_horas_disponibles",
-            {"fecha": fecha_str, "hora_rango": f"{hora_str}-%"},
+        audit_payload = {"from_date": fecha_str, "to_date": fecha_str}
+        print(
+            f"[AUDIT] llamando a appointments/available con: {audit_payload}",
+            flush=True,
         )
-        if isinstance(bloques_raw, dict) and "data" in bloques_raw:
-            bloques = bloques_raw["data"]
-        elif isinstance(bloques_raw, list):
-            bloques = bloques_raw
+        raw_resp = call_scheduler_endpoint("appointments/available", audit_payload)
+        if isinstance(raw_resp, dict) and "disponibles" in raw_resp:
+            bloques = [
+                b
+                for b in raw_resp["disponibles"]
+                if b.get("hora_rango", "").startswith(hora_str)
+            ]
+        elif isinstance(raw_resp, list):
+            bloques = raw_resp
         else:
             bloques = []
 
@@ -1556,11 +1577,15 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
 
         if elegido_indice is not None:
             # Listar todos los bloques libres de ese día
-            todos = call_tool_microservice(
-                "scheduler-listar_horas_disponibles",
-                {"fecha": fecha_str, "hora_rango": "%"}  # sin filtrar por hora
+            audit_payload = {"from_date": fecha_str, "to_date": fecha_str}
+            print(
+                f"[AUDIT] llamando a appointments/available con: {audit_payload}",
+                flush=True,
             )
-            bloques_dia = todos if isinstance(todos, list) else todos.get("data", [])
+            todos = call_scheduler_endpoint("appointments/available", audit_payload)
+            bloques_dia = (
+                todos["disponibles"] if isinstance(todos, dict) and "disponibles" in todos else todos
+            )
             libres = [b for b in bloques_dia if b.get("disponible", False)]
             if not libres:
                 return {
@@ -1622,18 +1647,16 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": f"{hora_str}-%"}
         save_session(sid, ctx)
 
-        # 3) Definir payload ANTES de llamar al microservicio
-        payload = {
-            "fecha": fecha_str,
-            "hora_rango": f"{hora_str}-%",
-        }
-
-        # 4) Llamar y normalizar respuesta
-        print(f"[AUDIT] payload listar_horas: {payload}", flush=True)
-        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
-        print(f"[AUDIT] raw response listar_horas: {raw}", flush=True)
-        if isinstance(raw, dict) and "data" in raw:
-            bloques = raw["data"]
+        audit_payload = {"from_date": fecha_str, "to_date": fecha_str}
+        print(
+            f"[AUDIT] llamando a appointments/available con: {audit_payload}",
+            flush=True,
+        )
+        raw = call_scheduler_endpoint("appointments/available", audit_payload)
+        if isinstance(raw, dict) and "disponibles" in raw:
+            bloques = [
+                b for b in raw["disponibles"] if b.get("hora_rango", "").startswith(hora_str)
+            ]
         elif isinstance(raw, list):
             bloques = raw
         else:
