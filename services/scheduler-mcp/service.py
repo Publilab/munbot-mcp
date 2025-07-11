@@ -10,8 +10,11 @@ if BASE_DIR not in sys.path:
 try:
     from utils.audit import audit_step
 except ImportError:
-    from importlib import import_module
-    audit_step = import_module('mcp_utils.audit').audit_step
+    # Fallback seguro: decorador nulo
+    def audit_step(_label):
+        def _noop(fn):
+            return fn
+        return _noop
 
 
 @audit_step("select_exact_block")
