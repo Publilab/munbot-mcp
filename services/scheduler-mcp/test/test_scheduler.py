@@ -90,6 +90,6 @@ def test_exact_match(monkeypatch):
     assert bloque["id"] == "C0028"
     assert bloque["hora_inicio"] == "10:00:00"
     assert bloque["hora_fin"] == "10:30:00"
-    # Verifica string horario
+    # Verifica string horario reconstruido
     out = scheduler_app.AppointmentOut(**bloque).as_dict()
-    assert out["hora"] == "10:00-10:30"
+    assert out["hora"] == f"{bloque['hora_inicio'][:5]}-{bloque['hora_fin'][:5]}"

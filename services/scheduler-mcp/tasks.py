@@ -30,7 +30,7 @@ def send_whatsapp(cita):
             "messaging_product": "whatsapp",
             "to": phone_number,
             "type": "text",
-            "text": {"body": f"Recordatorio: Su cita es mañana {cita['fecha']} a las {cita['hora_rango']} con {cita['funcionario_nombre']}."}
+            "text": {"body": f"Recordatorio: Su cita es mañana {cita['fecha']} a las {f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"} con {cita['funcionario_nombre']}."}
         }
         headers = {
             "Authorization": f"Bearer {META_TOKEN}",
@@ -54,7 +54,7 @@ def send_reminder(dry: bool = False):
                 'email/reminder.html',
                 usuario=cita['usuario_nombre'],
                 fecha_legible=str(cita['fecha']),
-                hora=cita['hora_rango'],
+                hora=f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}",
             )
             if cita.get('usuario_whatsapp'):
                 send_whatsapp(cita)

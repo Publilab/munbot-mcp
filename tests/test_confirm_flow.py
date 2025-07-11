@@ -65,7 +65,7 @@ def test_reserve_and_confirm(monkeypatch):
         "funcionario_nombre": "funcionario",
         "usuario_nombre": "Juan",
         "fecha": date.today(),
-        "hora_rango": "10:00"
+        "hora_inicio": "10:00:00", "hora_fin": "10:30:00"
     }
     monkeypatch.setattr(scheduler_mcp, "get_db", lambda: DummyConn([appt.copy()]))
     with patch('scheduler_mcp.notifications.send_email') as mock_mail:

@@ -1369,7 +1369,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         choice = int(user_text)
         if opciones and 1 <= choice <= len(opciones):
             b = opciones[choice - 1]
-            ctx["bloque_cita"] = {"fecha": b["fecha"], "hora_rango": b["hora_rango"]}
+            ctx["bloque_cita"] = {"fecha": b["fecha"], "hora_rango": f"{b['hora_inicio'][:5]}-{b['hora_fin'][:5]}"}
             save_session(sid, ctx)
             context_manager.update_pending_field(sid, "mail_cita")
             return {
@@ -1473,7 +1473,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         for b in bloques:
             if not b.get("disponible"):
                 continue
-            start_str, end_str = b["hora_rango"].split("-")
+            start_str, end_str = f"{b['hora_inicio'][:5]}-{b['hora_fin'][:5]}".split("-")
             start_dt = datetime.strptime(start_str, "%H:%M").time()
             end_dt = datetime.strptime(end_str, "%H:%M").time()
             if start_dt <= hora_user_dt < end_dt:
@@ -1619,7 +1619,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                     ),
                     "pending": True
                 }
-            ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": bloque["hora_rango"]}
+            ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": f"{bloque['hora_inicio'][:5]}-{bloque['hora_fin'][:5]}"}
             save_session(sid, ctx)
             context_manager.update_pending_field(sid, "mail_cita")
             return {

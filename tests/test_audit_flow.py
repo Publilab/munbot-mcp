@@ -48,7 +48,7 @@ def get_db():
                     pass
                 def fetchall(self_inner):
                     return [
-                        {"id": "C0028", "fecha": os.environ.get("TEST_FECHA"), "hora_rango": "10:00-10:30", "disponible": True, "confirmada": False}
+                        {"id": "C0028", "fecha": os.environ.get("TEST_FECHA"), "hora_inicio": "10:00:00", "hora_fin": "10:30:00", "disponible": True, "confirmada": False}
                     ]
             return C()
         def close(self):
