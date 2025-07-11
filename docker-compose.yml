@@ -88,8 +88,8 @@ services:
       
   mcp-core:
     build:
-      context: .
-      dockerfile: mcp-core/Dockerfile
+      context: ./mcp-core
+      dockerfile: Dockerfile
     container_name: mcp-core
     env_file:
       - ./mcp-core/.env
