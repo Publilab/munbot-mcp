@@ -43,6 +43,24 @@ def get_db():
     )
     return conn
 
+
+def get_available_block(fecha: date, hora: datetime.time):
+    """Devuelve el bloque disponible que coincide con la fecha y hora."""
+    hora_fmt = hora.strftime("%H:%M")
+    pattern = f"{hora_fmt}-%"
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    query = (
+        "SELECT * FROM appointments "
+        "WHERE fecha = %s AND hora_rango LIKE %s "
+        "AND disponible = TRUE AND confirmada = FALSE "
+        "ORDER BY hora_rango"
+    )
+    cur.execute(query, (fecha.isoformat(), pattern))
+    row = cur.fetchone()
+    conn.close()
+    return row
+
 app = FastAPI()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -111,7 +129,8 @@ async def tools_call(payload: dict):
         hora = params.get("hora")
         if not fecha or not hora:
             raise HTTPException(status_code=400, detail="Se requiere 'fecha' y 'hora'")
-        hora_rango = f"{hora}-%"
+        hora_fmt = hora[:5]
+        hora_rango = f"{hora_fmt}-%"
         cod_func = params.get("cod_func")
         conn = get_db()
         cur = conn.cursor(cursor_factory=RealDictCursor)
@@ -205,7 +224,8 @@ def list_available(request: Request):
     if not fecha or not hora:
         raise HTTPException(status_code=400, detail="Debe indicar 'fecha' y 'hora' en query params")
 
-    like_pattern = f"{hora}-%"
+    hora_fmt = hora[:5]
+    like_pattern = f"{hora_fmt}-%"
     logger.debug(f"[AUDIT] list_available filtros: fecha={fecha}, hora_rango LIKE {like_pattern}")
 
     query = """
