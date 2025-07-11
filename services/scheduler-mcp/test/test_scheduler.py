@@ -1,7 +1,7 @@
 import os
 import sys
 import importlib.util
-from datetime import date
+from datetime import date, time
 import pytest
 os.environ["POSTGRES_PORT"] = "5432"
 os.environ["TESTING"] = "1"
@@ -22,7 +22,10 @@ def test_health():
     assert response.status_code == 200
 
 def test_list_available():
-    response = client.get("/appointments/available")
+    response = client.get(
+        "/appointments/available",
+        params={"fecha": date.today().isoformat(), "hora": "10:00"},
+    )
     assert response.status_code == 200
     assert "disponibles" in response.json()
 
@@ -48,7 +51,39 @@ def test_tools_call_listar(monkeypatch):
 
     monkeypatch.setattr(scheduler_app, "get_db", lambda: Dummy())
 
-    payload = {"tool": "scheduler-listar_horas_disponibles", "params": {"fecha": date.today().isoformat()}}
+    payload = {
+        "tool": "scheduler-listar_horas_disponibles",
+        "params": {"fecha": date.today().isoformat(), "hora": "10:00"},
+    }
     resp = client.post("/tools/call", json=payload)
     assert resp.status_code == 200
     assert resp.json()["data"][0]["id"] == "A1"
+
+
+def test_exact_match(monkeypatch):
+    row = {
+        "id": "C0028",
+        "fecha": date(2025, 7, 17),
+        "hora_rango": "10:00-10:30",
+        "disponible": True,
+        "confirmada": False,
+    }
+
+    class Dummy:
+        def cursor(self, *a, **k):
+            class C:
+                def execute(self, *a, **k):
+                    pass
+
+                def fetchone(self_inner):
+                    return row
+
+            return C()
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(scheduler_app, "get_db", lambda: Dummy())
+
+    bloque = scheduler_app.get_available_block(date(2025, 7, 17), time.fromisoformat("10:00"))
+    assert bloque["id"] == "C0028"
