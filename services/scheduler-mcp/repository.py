@@ -1,6 +1,6 @@
 from datetime import time, date
 from psycopg2.extras import RealDictCursor
-from .app import get_db
+from app import get_db
 import os
 import sys
 
