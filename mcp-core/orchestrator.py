@@ -22,7 +22,9 @@ from utils.parser import parse_date_time
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import importlib.util
-service_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'services', 'scheduler-mcp', 'service.py'))
+service_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..', 'services', 'scheduler-mcp', 'service.py')
+)
 _spec = importlib.util.spec_from_file_location('scheduler_service', service_path)
 _svc = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_svc)
@@ -1463,7 +1465,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         ctx["bloque_cita"]["hora_rango"] = f"{hora_str}-%"
         save_session(sid, ctx)
         # Obtener todos los bloques disponibles del día
-        payload = {"fecha": fecha_str}
+        payload = {"fecha": fecha_str, "hora": hora_str}
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
         bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
 
@@ -1665,7 +1667,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         save_session(sid, ctx)
 
         # 4) Llamar al scheduler pidiendo todos los bloques del día
-        payload = {"fecha": fecha_str}
+        payload = {"fecha": fecha_str, "hora": hora_str}
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
         bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
 
