@@ -28,9 +28,9 @@ RUN pip install --upgrade pip setuptools wheel \
 # 3) Código de la aplicación
 # ───────────────────────────────
 #   Copiamos de una sola vez los directorios que necesitamos
-COPY mcp-core/      ./               # orquestator, utils, prompts, etc.
-COPY services/      ./services/      # incluye scheduler-mcp y los demás
-COPY databases/     ./databases/
+COPY mcp-core/ ./
+COPY services/ ./services/
+COPY databases/ ./databases/
 
 # ───────────────────────────────
 # 4) Variables de entorno y puertos
