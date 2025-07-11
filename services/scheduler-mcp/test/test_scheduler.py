@@ -31,7 +31,7 @@ def test_list_available():
 
 
 def test_tools_call_listar(monkeypatch):
-    rows = [{"id": "A1", "fecha": date.today(), "hora_rango": "10:00-10:30", "disponible": True, "confirmada": False}]
+    rows = [{"id": "A1", "fecha": date.today(), "hora_inicio": "10:00:00", "hora_fin": "10:30:00", "disponible": True, "confirmada": False}]
 
     class Dummy:
         def cursor(self, *a, **k):
@@ -64,7 +64,8 @@ def test_exact_match(monkeypatch):
     row = {
         "id": "C0028",
         "fecha": date(2025, 7, 17),
-        "hora_rango": "10:00-10:30",
+        "hora_inicio": "10:00:00",
+        "hora_fin": "10:30:00",
         "disponible": True,
         "confirmada": False,
     }
@@ -87,3 +88,8 @@ def test_exact_match(monkeypatch):
 
     bloque = scheduler_app.get_available_block(date(2025, 7, 17), time.fromisoformat("10:00"))
     assert bloque["id"] == "C0028"
+    assert bloque["hora_inicio"] == "10:00:00"
+    assert bloque["hora_fin"] == "10:30:00"
+    # Verifica string horario
+    out = scheduler_app.AppointmentOut(**bloque).as_dict()
+    assert out["hora"] == "10:00-10:30"

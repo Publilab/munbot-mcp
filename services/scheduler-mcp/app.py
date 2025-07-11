@@ -13,8 +13,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, EmailStr, field_validator
 from notifications import send_email, send_whatsapp
 from utils.rut_utils import validar_y_formatear_rut
-from .repository import build_sql_pattern, get_available_blocks
-from .service import select_exact_block
+from repository import get_available_blocks
+from service import select_exact_block
 
 # =====================
 # Configuración de entorno y DB
@@ -48,8 +48,7 @@ def get_db():
 
 def get_available_block(fecha: date, hora: dtime):
     """Devuelve el bloque disponible que coincide con la fecha y hora."""
-    pattern = build_sql_pattern(hora)
-    bloques = get_available_blocks(fecha, pattern)
+    bloques = get_available_blocks(fecha, hora)
     return select_exact_block(bloques, hora)
 
 app = FastAPI()
@@ -124,12 +123,11 @@ async def tools_call(payload: dict):
         if not fecha or not hora:
             raise HTTPException(status_code=400, detail="Se requiere 'fecha' y 'hora'")
         hora_time = dtime.fromisoformat(hora[:5])
-        pattern = build_sql_pattern(hora_time)
-        rows = get_available_blocks(date.fromisoformat(fecha), pattern)
+        rows = get_available_blocks(date.fromisoformat(fecha), hora_time)
         cod_func = params.get("cod_func")
         if cod_func:
             rows = [r for r in rows if r.get("funcionario_codigo") == cod_func]
-        return {"data": rows}
+        return {"data": [AppointmentOut(**r).as_dict() for r in rows]}
 
     return JSONResponse(status_code=400, content={"detail": "Tool desconocida"})
 
@@ -145,7 +143,8 @@ class AppointmentCreate(BaseModel):
     usu_whatsapp: str
     rut: Optional[str] = None
     fecha: date
-    hora: str
+    hora_inicio: dtime
+    hora_fin: dtime
 
     @field_validator("rut")
     def _validar_rut(cls, v):
@@ -164,9 +163,15 @@ class AppointmentCreate(BaseModel):
 
 class AppointmentOut(AppointmentCreate):
     id: str
-    # disponible=True indica que el bloque está libre.
     disponible: bool
     confirmada: bool
+
+    # Serialización especial para compatibilidad con el front-end
+    def as_dict(self):
+        data = super().model_dump()
+        # reconstruye el string horario
+        data['hora'] = f"{self.hora_inicio.strftime('%H:%M')}-{self.hora_fin.strftime('%H:%M')}"
+        return data
 
 class AppointmentConfirm(BaseModel):
     id: str
@@ -198,18 +203,15 @@ def root():
 @app.get("/appointments/available")
 def list_available(request: Request):
     """Listar slots disponibles para fecha y hora exacta."""
-    # —— Filtro exacto por fecha y hora
     fecha = request.query_params.get("fecha")
     hora = request.query_params.get("hora")
     if not fecha or not hora:
         raise HTTPException(status_code=400, detail="Debe indicar 'fecha' y 'hora' en query params")
 
     hora_time = dtime.fromisoformat(hora[:5])
-    like_pattern = build_sql_pattern(hora_time)
-    logger.debug(f"[AUDIT] list_available filtros: fecha={fecha}, hora_rango LIKE {like_pattern}")
-
-    rows = get_available_blocks(date.fromisoformat(fecha), like_pattern)
-    return {"disponibles": rows}
+    rows = get_available_blocks(date.fromisoformat(fecha), hora_time)
+    # Serializa con string horario para compatibilidad
+    return {"disponibles": [AppointmentOut(**r).as_dict() for r in rows]}
 
 @app.post("/appointments/reserve")
 def reserve_appointment(appt: AppointmentCreate):
@@ -218,11 +220,10 @@ def reserve_appointment(appt: AppointmentCreate):
     cur = conn.cursor(cursor_factory=RealDictCursor)
     # Busca slot disponible
     cur.execute(
-        # buscamos bloques libres (disponible=TRUE) y no confirmados
         "SELECT * FROM appointments "
-        "WHERE funcionario_codigo=%s AND fecha=%s AND hora_rango=%s "
+        "WHERE funcionario_codigo=%s AND fecha=%s AND hora_inicio=%s AND hora_fin=%s "
         "AND disponible = TRUE AND confirmada = FALSE",
-        (appt.cod_func, appt.fecha, appt.hora)
+        (appt.cod_func, appt.fecha, appt.hora_inicio.strftime('%H:%M'), appt.hora_fin.strftime('%H:%M'))
     )
     slot = cur.fetchone()
     if not slot:
@@ -230,7 +231,6 @@ def reserve_appointment(appt: AppointmentCreate):
         raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
     # Reserva (marca como no disponible, confirma usuario)
     cur.execute(
-        # al reservar, marcamos disponible=FALSE y confirmada sigue FALSE
         "UPDATE appointments "
         "SET disponible = FALSE, confirmada = FALSE, "
         "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s "
@@ -257,15 +257,16 @@ def confirm_appointment(body: AppointmentConfirm):
     conn.commit()
     conn.close()
     # Notificación al usuario y funcionario
+    hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
     send_email(
         cita["usuario_email"],
         "Cita confirmada",
         "email/confirm.html",
         usuario=cita["usuario_nombre"],
         fecha_legible=str(cita["fecha"]),
-        hora=cita["hora_rango"],
+        hora=hora_str,
     )
-    send_whatsapp(cita["usuario_whatsapp"], f"Su cita con {cita['funcionario_nombre']} ha sido confirmada para el {cita['fecha']} a las {cita['hora_rango']}.")
+    send_whatsapp(cita["usuario_whatsapp"], f"Su cita con {cita['funcionario_nombre']} ha sido confirmada para el {cita['fecha']} a las {hora_str}.")
     return {"id": body.id, "respuesta": "Cita confirmada y notificada."}
 
 @app.post("/appointments/cancel")
@@ -289,6 +290,7 @@ def cancel_appointment(body: AppointmentCancel):
     conn.commit()
     conn.close()
     # Notificar usuario
+    hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
     if cita["usuario_email"]:
         send_email(
             cita["usuario_email"],
@@ -296,7 +298,7 @@ def cancel_appointment(body: AppointmentCancel):
             "email/reminder.html",
             usuario=cita["usuario_nombre"],
             fecha_legible=str(cita["fecha"]),
-            hora=cita["hora_rango"],
+            hora=hora_str,
         )
     if cita["usuario_whatsapp"]:
         send_whatsapp(cita["usuario_whatsapp"], f"Su cita ha sido cancelada. Motivo: {body.motivo}")
@@ -312,7 +314,7 @@ def get_appointment(id: str):
     conn.close()
     if not cita:
         raise HTTPException(status_code=404, detail="Cita no encontrada")
-    return cita
+    return AppointmentOut(**cita).as_dict()
 
 @app.get("/health")
 def health():

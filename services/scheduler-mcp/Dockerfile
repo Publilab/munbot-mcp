@@ -14,6 +14,8 @@ COPY .env ./
 COPY app.py ./
 COPY tasks.py ./
 COPY notifications.py ./
+COPY service.py ./
+COPY repository.py ./
 COPY utils/rut_utils.py ./utils/rut_utils.py
 COPY ./databases/init-appointments.sql ./databases/init-appointments.sql
 
