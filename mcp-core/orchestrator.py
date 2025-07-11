@@ -22,7 +22,7 @@ from utils.parser import parse_date_time
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import importlib.util
-service_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'services', 'scheduler-mcp', 'service.py'))
+service_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'services', 'scheduler-mcp', 'service.py'))
 _spec = importlib.util.spec_from_file_location('scheduler_service', service_path)
 _svc = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_svc)

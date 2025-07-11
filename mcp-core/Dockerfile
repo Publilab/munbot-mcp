@@ -31,7 +31,7 @@ COPY ./utils ./utils
 COPY ./databases/faq_respuestas.json ./databases/faq_respuestas.json
 COPY ./databases/documento_requisito.json ./databases/documento_requisito.json
 COPY ./databases/oficina_info.json ./databases/oficina_info.json 
-
+COPY ./services/scheduler-mcp/ /services/scheduler-mcp
 
 ENV NO_PROXY=localhost,127.0.0.1
 ENV no_proxy=localhost,127.0.0.1
