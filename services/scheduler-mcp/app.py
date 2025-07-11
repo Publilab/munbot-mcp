@@ -1,6 +1,6 @@
 import os
 import re
-from datetime import date, datetime
+from datetime import date, datetime, time as dtime
 from typing import Optional
 import logging
 
@@ -13,6 +13,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from pydantic import BaseModel, EmailStr, field_validator
 from notifications import send_email, send_whatsapp
 from utils.rut_utils import validar_y_formatear_rut
+from .repository import build_sql_pattern, get_available_blocks
+from .service import select_exact_block
 
 # =====================
 # Configuración de entorno y DB
@@ -44,26 +46,18 @@ def get_db():
     return conn
 
 
-def get_available_block(fecha: date, hora: datetime.time):
+def get_available_block(fecha: date, hora: dtime):
     """Devuelve el bloque disponible que coincide con la fecha y hora."""
-    hora_fmt = hora.strftime("%H:%M")
-    pattern = f"{hora_fmt}-%"
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    query = (
-        "SELECT * FROM appointments "
-        "WHERE fecha = %s AND hora_rango LIKE %s "
-        "AND disponible = TRUE AND confirmada = FALSE "
-        "ORDER BY hora_rango"
-    )
-    cur.execute(query, (fecha.isoformat(), pattern))
-    row = cur.fetchone()
-    conn.close()
-    return row
+    pattern = build_sql_pattern(hora)
+    bloques = get_available_blocks(fecha, pattern)
+    return select_exact_block(bloques, hora)
 
 app = FastAPI()
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 logger = logging.getLogger(__name__)
+audit_logger = logging.getLogger("audit")
+if not audit_logger.handlers:
+    audit_logger.addHandler(logging.StreamHandler())
 
 # Configurar CORS
 app.add_middleware(
@@ -129,23 +123,12 @@ async def tools_call(payload: dict):
         hora = params.get("hora")
         if not fecha or not hora:
             raise HTTPException(status_code=400, detail="Se requiere 'fecha' y 'hora'")
-        hora_fmt = hora[:5]
-        hora_rango = f"{hora_fmt}-%"
+        hora_time = dtime.fromisoformat(hora[:5])
+        pattern = build_sql_pattern(hora_time)
+        rows = get_available_blocks(date.fromisoformat(fecha), pattern)
         cod_func = params.get("cod_func")
-        conn = get_db()
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        query = (
-            "SELECT * FROM appointments "
-            "WHERE fecha = %s AND hora_rango LIKE %s "
-            "AND disponible = TRUE AND confirmada = FALSE"
-        )
-        qparams = [fecha, hora_rango]
         if cod_func:
-            query += " AND funcionario_codigo = %s"
-            qparams.append(cod_func)
-        cur.execute(query, tuple(qparams))
-        rows = cur.fetchall()
-        conn.close()
+            rows = [r for r in rows if r.get("funcionario_codigo") == cod_func]
         return {"data": rows}
 
     return JSONResponse(status_code=400, content={"detail": "Tool desconocida"})
@@ -215,30 +198,17 @@ def root():
 @app.get("/appointments/available")
 def list_available(request: Request):
     """Listar slots disponibles para fecha y hora exacta."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-
     # —— Filtro exacto por fecha y hora
     fecha = request.query_params.get("fecha")
     hora = request.query_params.get("hora")
     if not fecha or not hora:
         raise HTTPException(status_code=400, detail="Debe indicar 'fecha' y 'hora' en query params")
 
-    hora_fmt = hora[:5]
-    like_pattern = f"{hora_fmt}-%"
+    hora_time = dtime.fromisoformat(hora[:5])
+    like_pattern = build_sql_pattern(hora_time)
     logger.debug(f"[AUDIT] list_available filtros: fecha={fecha}, hora_rango LIKE {like_pattern}")
 
-    query = """
-        SELECT * FROM appointments
-        WHERE disponible = TRUE
-          AND confirmada = FALSE
-          AND fecha = %s
-          AND hora_rango LIKE %s
-        ORDER BY fecha, hora_rango
-    """
-    cur.execute(query, (fecha, like_pattern))
-    rows = cur.fetchall()
-    conn.close()
+    rows = get_available_blocks(date.fromisoformat(fecha), like_pattern)
     return {"disponibles": rows}
 
 @app.post("/appointments/reserve")
