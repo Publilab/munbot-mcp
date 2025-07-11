@@ -12,11 +12,13 @@ WORKDIR /app
 COPY requirements.txt ./
 COPY .env ./
 COPY app.py ./
+COPY db.py ./
+COPY gen_schema.py ./
 COPY tasks.py ./
 COPY notifications.py ./
 COPY service.py ./
 COPY repository.py ./
-COPY utils/rut_utils.py ./utils/rut_utils.py
+COPY utils/ ./utils/
 COPY ./databases/init-appointments.sql ./databases/init-appointments.sql
 
 # Instalar dependencias del sistema necesarias para compilar paquetes Python
