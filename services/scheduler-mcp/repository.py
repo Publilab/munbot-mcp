@@ -10,7 +10,7 @@ from psycopg2.extras import RealDictCursor
 # ────────────────────────────────
 # 1) Dependencias internas
 # ────────────────────────────────
-from app import get_db                          # conexión a PostgreSQL
+from db import get_db  # conexión a PostgreSQL
 
 # Garantizar acceso a utils.audit cuando se ejecuta dentro del contenedor
 BASE_DIR = os.path.abspath(
