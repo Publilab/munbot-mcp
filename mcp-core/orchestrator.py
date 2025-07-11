@@ -18,6 +18,16 @@ from context_manager import ConversationalContextManager
 import unicodedata
 from utils.text import normalize_text
 from llama_client import LlamaClient
+from utils.parser import parse_date_time
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import importlib.util
+service_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'services', 'scheduler-mcp', 'service.py'))
+_spec = importlib.util.spec_from_file_location('scheduler_service', service_path)
+_svc = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_svc)
+select_exact_block = _svc.select_exact_block
+from utils.audit import audit_step
 from zoneinfo import ZoneInfo
 from utils.datetime_utils import (
     parse_nl_datetime,
@@ -95,8 +105,11 @@ HISTORIAL_TABLE = "conversaciones_historial"
 
 # Inicializa el FastAPI
 app = FastAPI()
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 logger = logging.getLogger(__name__)
+audit_logger = logging.getLogger("audit")
+if not audit_logger.handlers:
+    audit_logger.addHandler(logging.StreamHandler())
 
 # --- CACHE FAQ EN MEMORIA ---
 _FAQ_CACHE = None
@@ -204,7 +217,8 @@ def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     return text
 
 
-def format_response(data: Dict[str, Any], sid: str) -> Dict[str, Any]:
+@audit_step("render_response")
+def format_response(data: Dict[str, Any], sid: str, trace_id=None) -> Dict[str, Any]:
     """Normaliza la salida de los handlers a la estructura esperada."""
     resp = {"session_id": sid}
     if "answer" in data:
@@ -1433,6 +1447,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
 
     if pending == "hora_cita":
         texto = user_text
+        parse_date_time(texto, base_dt=flow_start_dt, trace_id=sid)
         m = re.search(r"a las\s*(\d{1,2})(?::(\d{2}))?", texto, flags=re.IGNORECASE)
         if not m:
             m = re.search(r"\b(\d{1,2})(?::(\d{2}))?\b", texto)
@@ -1656,14 +1671,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
 
         # 5) Filtrar bloques cuyo rango contenga hora_user (rango semi-abierto)
         hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
-        bloque_match = None
-        for b in bloques:
-            start_str, end_str = b["hora_rango"].split("-")
-            start_dt = datetime.strptime(start_str, "%H:%M").time()
-            end_dt = datetime.strptime(end_str, "%H:%M").time()
-            if start_dt <= hora_user_dt < end_dt:
-                bloque_match = b
-                break
+        bloque_match = select_exact_block(bloques, hora_user_dt, trace_id=sid)
 
         if bloque_match:
             # 6) Presentar la única opción de confirmación
@@ -1773,7 +1781,7 @@ def orchestrate(
     if context_manager.get_current_flow(sid) == "scheduler":
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
         if result.get("pending") or result.get("finish"):
-            return format_response(result, sid)
+            return format_response(result, sid, trace_id=sid)
     # ----------- Fin prioridad modo cita -----------
 
     # — guard clause para slot-filling —
@@ -2221,7 +2229,7 @@ def orchestrate(
 
     if tool == "scheduler-appointment_create":
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
-        return format_response(result, sid)
+        return format_response(result, sid, trace_id=sid)
 
     if tool in ("unknown", "doc-generar_respuesta_llm"):
         faq_hit = lookup_faq_respuesta(user_input)
