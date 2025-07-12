@@ -1355,6 +1355,42 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
     return None
 
 
+@audit_step("handle_agenda")
+def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
+    fecha, hora = parse_date_time(texto_usuario, trace_id=sid)
+    ctx = context_manager.get_context(sid)
+    agenda = ctx.get("agenda", {"fecha": None, "hora": None})
+    if fecha:
+        agenda["fecha"] = fecha
+    if hora:
+        agenda["hora"] = hora
+    context_manager.update_context_data(sid, {"agenda": agenda})
+
+    if not agenda.get("fecha"):
+        msg = "¿Para qué fecha deseas la cita?"
+        context_manager.update_context(sid, texto_usuario, msg)
+        return {"answer": msg, "pending": True}
+
+    if not agenda.get("hora"):
+        msg = "¿A qué hora deseas la cita?"
+        context_manager.update_context(sid, texto_usuario, msg)
+        return {"answer": msg, "pending": True}
+
+    payload = {"fecha": agenda["fecha"], "hora": agenda["hora"]}
+    resultado = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+    horas = resultado.get("data") or resultado.get("disponibles", [])
+    if horas:
+        lines = ["Horarios disponibles:"]
+        for b in horas:
+            rango = b.get("hora") or f"{b['hora_inicio'][:5]}-{b['hora_fin'][:5]}"
+            lines.append(f"- {b['fecha']} {rango}")
+        msg = "\n".join(lines)
+    else:
+        msg = "No hay horas disponibles para esa fecha y hora."
+    context_manager.update_context(sid, texto_usuario, msg)
+    return {"answer": msg, "finish": True}
+
+
 def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
     """Guía el flujo de agendamiento de citas mediante slot filling."""
 
@@ -2057,6 +2093,14 @@ def orchestrate(
     pending = ctx.get("pending_field")
     if not pending:
         kw_intent = detect_intent_keywords(user_input)
+        agenda = ctx.get("agenda", {})
+        if (
+            kw_intent == "scheduler-appointment_create"
+            or agenda.get("fecha")
+            or agenda.get("hora")
+        ) and context_manager.get_current_flow(sid) != "scheduler":
+            result = handle_agenda(user_input, sid)
+            return format_response(result, sid, trace_id=sid)
         if re.search(
             r"\b(?:c(?:o|ó)mo|d(?:o|ó)nde|qu(?:é|e))?\s*(?:puedo|necesito)?\s*(agendar|reservar|cita|hora|turno)\b",
             user_input,

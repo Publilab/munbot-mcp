@@ -1,7 +1,14 @@
 import redis
 import json
 from typing import Dict, Optional, Any, List
-from datetime import datetime
+from datetime import datetime, date, time
+from dataclasses import dataclass
+
+
+@dataclass
+class AgendaState:
+    fecha: date | None = None
+    hora: time | None = None
 
 class ConversationalContextManager:
     def __init__(self, host: str = 'localhost', port: int = 6379, db: int = 0):
@@ -16,7 +23,10 @@ class ConversationalContextManager:
     def get_context(self, session_id: str) -> Dict[str, Any]:
         """Obtiene el contexto completo de la sesión."""
         context_str = self.redis_client.get(f"session:{session_id}")
-        return json.loads(context_str) if context_str else {}
+        context = json.loads(context_str) if context_str else {}
+        if "agenda" not in context:
+            context["agenda"] = {"fecha": None, "hora": None}
+        return context
 
     def update_context(self, session_id: str, user_input: str, bot_response: str):
         """Actualiza el contexto de la conversación."""
