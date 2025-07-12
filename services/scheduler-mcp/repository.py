@@ -4,6 +4,8 @@ from datetime import date, time
 import os
 import sys
 from typing import List
+import logging
+import json
 
 from psycopg2.extras import RealDictCursor
 from importlib import import_module
@@ -34,6 +36,10 @@ except ImportError:
 # ────────────────────────────────
 # 2) Funciones
 # ────────────────────────────────
+
+audit_logger = logging.getLogger("audit")
+if not audit_logger.handlers:
+    audit_logger.addHandler(logging.StreamHandler())
 
 
 @audit_step("build_sql_pattern")
@@ -77,11 +83,42 @@ def get_available_blocks(
             # HH:MM:SS satisface TIME en PostgreSQL
             hora_str = hora_pattern.strftime("%H:%M:%S")
 
+            audit_logger.debug(
+                json.dumps(
+                    {
+                        "step": "execute_sql",
+                        "trace_id": trace_id,
+                        "sql": sql,
+                        "params": [str(fecha), hora_str, hora_str],
+                    }
+                )
+            )
             cur.execute(sql, (fecha, hora_str, hora_str))
             if hasattr(cur, "fetchall"):
-                return cur.fetchall()
+                rows = cur.fetchall()
+                audit_logger.debug(
+                    json.dumps(
+                        {
+                            "step": "rows_fetched",
+                            "trace_id": trace_id,
+                            "rows": rows,
+                        },
+                        default=str,
+                    )
+                )
+                return rows
             elif hasattr(cur, "fetchone"):
                 row = cur.fetchone()
+                audit_logger.debug(
+                    json.dumps(
+                        {
+                            "step": "rows_fetched",
+                            "trace_id": trace_id,
+                            "rows": [row] if row else [],
+                        },
+                        default=str,
+                    )
+                )
                 return [row] if row else []
             return []
         finally:
