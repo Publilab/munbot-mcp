@@ -26,7 +26,7 @@ COPY ./databases/init-appointments.sql ./databases/init-appointments.sql
 # COPY ../mcp-utils ./mcp-utils
 
 # Instala dependencias del sistema necesarias para compilar paquetes Python
-RUN apt-get update && apt-get install -y gcc libssl-dev build-essential libffi-dev curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y gcc libssl-dev build-essential libffi-dev curl netcat-openbsd && rm -rf /var/lib/apt/lists/*
 
 # Instala dependencias de Python
 RUN pip install --upgrade pip
