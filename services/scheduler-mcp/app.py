@@ -28,11 +28,11 @@ DB_PASS = os.getenv("POSTGRES_PASSWORD")
 from db import get_db
 
 
-def get_available_block(fecha: date, hora: dtime):
+def get_available_block(fecha: date, hora: dtime, trace_id: str | None = None):
     """Devuelve el bloque disponible que coincide con la fecha y hora."""
-    pattern = build_sql_pattern(hora)
-    bloques = get_available_blocks(fecha, pattern)
-    return select_exact_block(bloques, hora)
+    pattern = build_sql_pattern(hora, trace_id=trace_id)
+    bloques = get_available_blocks(fecha, pattern, trace_id=trace_id)
+    return select_exact_block(bloques, hora, trace_id=trace_id)
 
 app = FastAPI()
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
@@ -99,6 +99,7 @@ async def tools_call(payload: dict):
     """Despacha herramientas usadas por el orquestador."""
     tool = payload.get("tool")
     params = payload.get("params", {})
+    trace_id = payload.get("trace_id")
 
     if tool == "scheduler-listar_horas_disponibles":
         fecha = params.get("fecha")
@@ -106,8 +107,10 @@ async def tools_call(payload: dict):
         if not fecha or not hora:
             raise HTTPException(status_code=400, detail="Se requiere 'fecha' y 'hora'")
         hora_time = dtime.fromisoformat(hora[:5])
-        pattern = build_sql_pattern(hora_time)
-        rows = get_available_blocks(date.fromisoformat(fecha), pattern)
+        pattern = build_sql_pattern(hora_time, trace_id=trace_id)
+        rows = get_available_blocks(
+            date.fromisoformat(fecha), pattern, trace_id=trace_id
+        )
         cod_func = params.get("cod_func")
         if cod_func:
             rows = [r for r in rows if r.get("funcionario_codigo") == cod_func]

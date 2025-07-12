@@ -86,4 +86,12 @@ def test_audit_tracing(caplog):
     bloque = service.select_exact_block(bloques, datetime.strptime(hora, "%H:%M").time(), trace_id=sid)
     orchestrator.format_response({"answer": "ok"}, sid, trace_id=sid)
     steps = [json.loads(record.message)["step"] for record in caplog.records if sid in record.message]
-    assert set(steps) == {"parse_date_time", "build_sql_pattern", "get_available_blocks", "select_exact_block", "render_response"}
+    assert set(steps) == {
+        "parse_date_time",
+        "build_sql_pattern",
+        "get_available_blocks",
+        "execute_sql",
+        "rows_fetched",
+        "select_exact_block",
+        "render_response",
+    }
