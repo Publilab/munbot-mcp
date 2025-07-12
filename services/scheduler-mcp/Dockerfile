@@ -18,6 +18,7 @@ COPY tasks.py ./
 COPY notifications.py ./
 COPY service.py ./
 COPY repository.py ./
+COPY wait-for-it.sh ./
 COPY utils/ ./utils/
 COPY ./databases/init-appointments.sql ./databases/init-appointments.sql
 
@@ -44,5 +45,8 @@ ENV PROMETHEUS_MULTIPROC_DIR=/tmp/prometheus_multiproc_dir
 # Expón el puerto de la app
 EXPOSE 6001
 
-# Comando de arranque: Gunicorn + Uvicorn Worker + FastAPI
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-w", "2", "-b", "0.0.0.0:6001", "app:app"]
+# Da permisos de ejecución al script de espera
+RUN chmod +x ./wait-for-it.sh
+
+# Comando de arranque: espera a postgres y luego lanza Gunicorn + Uvicorn Worker + FastAPI
+CMD ["./wait-for-it.sh", "postgres:5432", "--", "gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-w", "2", "-b", "0.0.0.0:6001", "app:app"]
