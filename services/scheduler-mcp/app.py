@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, Field, ConfigDict, field_validator
 from notifications import send_email, send_whatsapp
 from utils.rut_utils import validar_y_formatear_rut
 from repository import get_available_blocks
@@ -117,16 +117,18 @@ async def tools_call(payload: dict):
 # Esquemas de Pydantic (para validación y autocompletado)
 # =====================
 class AppointmentCreate(BaseModel):
-    func: str
-    cod_func: str
-    motiv: str = ""
-    usu_name: str
-    usu_mail: EmailStr
-    usu_whatsapp: str
-    rut: Optional[str] = None
+    func: str = Field(alias="funcionario_nombre")
+    cod_func: str = Field(alias="funcionario_codigo")
+    motiv: str = Field(default="", alias="motivo")
+    usu_name: str = Field(alias="usuario_nombre")
+    usu_mail: EmailStr = Field(alias="usuario_email")
+    usu_whatsapp: str = Field(alias="usuario_whatsapp")
+    rut: Optional[str] = Field(default=None, alias="usuario_rut")
     fecha: date
     hora_inicio: dtime
     hora_fin: dtime
+
+    model_config = ConfigDict(populate_by_name=True)
 
     @field_validator("rut")
     def _validar_rut(cls, v):
@@ -150,7 +152,7 @@ class AppointmentOut(AppointmentCreate):
 
     # Serialización especial para compatibilidad con el front-end
     def as_dict(self):
-        data = super().model_dump()
+        data = super().model_dump(by_alias=False)
         # reconstruye el string horario
         data['hora'] = f"{self.hora_inicio.strftime('%H:%M')}-{self.hora_fin.strftime('%H:%M')}"
         return data
