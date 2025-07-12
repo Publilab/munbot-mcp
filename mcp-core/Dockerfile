@@ -29,10 +29,10 @@ RUN pip install --upgrade pip setuptools wheel \
 # ───────────────────────────────
 #   Copiamos de una sola vez los directorios que necesitamos
 COPY mcp-core/ ./
-COPY mcp-core/services/ ./services/
-COPY mcp-core/databases/ ./databases/
+COPY services/ ./services/
+COPY databases/ ./databases/
 COPY mcp-core/utils/ ./utils/
-COPY mcp-core/tests/ ./tests/
+COPY tests/ ./tests/
 
 # ───────────────────────────────
 # 4) Variables de entorno y puertos
