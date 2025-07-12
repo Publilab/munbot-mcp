@@ -8,29 +8,8 @@ import logging
 import json
 
 from psycopg2.extras import RealDictCursor
-from importlib import import_module
-
-# ────────────────────────────────
-# 1) Dependencias internas
-# ────────────────────────────────
-
-# Garantizar acceso a utils.audit cuando se ejecuta dentro del contenedor
-BASE_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "mcp-core")
-)
-if BASE_DIR not in sys.path:
-    sys.path.append(BASE_DIR)
-
-try:
-    from utils.audit import audit_step  # modo normal
-except ImportError:
-    try:
-        from mcp_utils.audit import audit_step  # tests
-    except Exception:  # pragma: no cover - fallback seguro
-        def audit_step(_label):
-            def _noop(fn):
-                return fn
-            return _noop
+from db import get_db
+from audit import audit_step
 
 
 # ────────────────────────────────
@@ -62,11 +41,7 @@ def get_available_blocks(
     • Usa comparación con columnas TIME (`hora_inicio`, `hora_fin`).
     • Ordena por `hora_inicio` ascendente.
     """
-    if "scheduler_app" in sys.modules:
-        mod = sys.modules["scheduler_app"]
-    else:
-        mod = import_module("scheduler_mcp.app")
-    conn = mod.get_db()
+    conn = get_db()
     try:
         cur = conn.cursor(cursor_factory=RealDictCursor)
         try:
