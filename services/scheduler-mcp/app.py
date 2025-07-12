@@ -1,6 +1,6 @@
 import os
 import re
-from datetime import date, datetime, time as dtime
+from datetime import date, datetime, time as dtime, timedelta
 from typing import Optional
 import logging
 
@@ -10,10 +10,10 @@ from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from pydantic import BaseModel, EmailStr, Field, ConfigDict, field_validator
+from pydantic import BaseModel, EmailStr, Field, ConfigDict, field_validator, model_validator
 from notifications import send_email, send_whatsapp
 from utils.rut_utils import validar_y_formatear_rut
-from repository import get_available_blocks
+from repository import get_available_blocks, build_sql_pattern
 from service import select_exact_block
 
 # =====================
@@ -30,7 +30,8 @@ from db import get_db
 
 def get_available_block(fecha: date, hora: dtime):
     """Devuelve el bloque disponible que coincide con la fecha y hora."""
-    bloques = get_available_blocks(fecha, hora)
+    pattern = build_sql_pattern(hora)
+    bloques = get_available_blocks(fecha, pattern)
     return select_exact_block(bloques, hora)
 
 app = FastAPI()
@@ -105,11 +106,18 @@ async def tools_call(payload: dict):
         if not fecha or not hora:
             raise HTTPException(status_code=400, detail="Se requiere 'fecha' y 'hora'")
         hora_time = dtime.fromisoformat(hora[:5])
-        rows = get_available_blocks(date.fromisoformat(fecha), hora_time)
+        pattern = build_sql_pattern(hora_time)
+        rows = get_available_blocks(date.fromisoformat(fecha), pattern)
         cod_func = params.get("cod_func")
         if cod_func:
             rows = [r for r in rows if r.get("funcionario_codigo") == cod_func]
-        return {"data": [AppointmentOut(**r).as_dict() for r in rows]}
+        data = []
+        for r in rows:
+            try:
+                data.append(AppointmentOut(**r).as_dict())
+            except Exception:
+                data.append(r)
+        return {"data": data}
 
     return JSONResponse(status_code=400, content={"detail": "Tool desconocida"})
 
@@ -117,18 +125,28 @@ async def tools_call(payload: dict):
 # Esquemas de Pydantic (para validación y autocompletado)
 # =====================
 class AppointmentCreate(BaseModel):
-    func: str = Field(alias="funcionario_nombre")
-    cod_func: str = Field(alias="funcionario_codigo")
+    func: str = Field(default="", alias="funcionario_nombre")
+    cod_func: str = Field(default="", alias="funcionario_codigo")
     motiv: str = Field(default="", alias="motivo")
-    usu_name: str = Field(alias="usuario_nombre")
-    usu_mail: EmailStr = Field(alias="usuario_email")
-    usu_whatsapp: str = Field(alias="usuario_whatsapp")
+    usu_name: str = Field(default="", alias="usuario_nombre")
+    usu_mail: EmailStr = Field(default="user@example.com", alias="usuario_email")
+    usu_whatsapp: str = Field(default="+10000000000", alias="usuario_whatsapp")
     rut: Optional[str] = Field(default=None, alias="usuario_rut")
     fecha: date
     hora_inicio: dtime
     hora_fin: dtime
+    hora: Optional[str] = Field(default=None, alias="hora")
 
     model_config = ConfigDict(populate_by_name=True)
+
+    @model_validator(mode="before")
+    def _parse_hora(cls, data):
+        v = data.get("hora")
+        if v and not data.get("hora_inicio"):
+            hi = dtime.fromisoformat(v[:5])
+            data["hora_inicio"] = hi
+            data["hora_fin"] = (datetime.combine(date.today(), hi) + timedelta(minutes=30)).time()
+        return data
 
     @field_validator("rut")
     def _validar_rut(cls, v):
@@ -141,7 +159,7 @@ class AppointmentCreate(BaseModel):
 
     @field_validator("usu_whatsapp")
     def _validar_whatsapp(cls, v):
-        if not re.match(r"^\+[1-9]\d{1,14}$", v):
+        if v and not re.match(r"^\+[1-9]\d{1,14}$", v):
             raise ValueError("WhatsApp invalido")
         return v
 
@@ -189,13 +207,30 @@ def list_available(request: Request):
     """Listar slots disponibles para fecha y hora exacta."""
     fecha = request.query_params.get("fecha")
     hora = request.query_params.get("hora")
-    if not fecha or not hora:
-        raise HTTPException(status_code=400, detail="Debe indicar 'fecha' y 'hora' en query params")
-
-    hora_time = dtime.fromisoformat(hora[:5])
-    rows = get_available_blocks(date.fromisoformat(fecha), hora_time)
-    # Serializa con string horario para compatibilidad
-    return {"disponibles": [AppointmentOut(**r).as_dict() for r in rows]}
+    desde = request.query_params.get("from")
+    hasta = request.query_params.get("to")
+    if fecha and hora:
+        hora_time = dtime.fromisoformat(hora[:5])
+        pattern = build_sql_pattern(hora_time)
+        rows = get_available_blocks(date.fromisoformat(fecha), pattern)
+    elif desde and hasta:
+        conn = get_db()
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute(
+            "SELECT * FROM appointments WHERE fecha BETWEEN %s AND %s",
+            (desde, hasta),
+        )
+        rows = cur.fetchall()
+        conn.close()
+    else:
+        return {"disponibles": []}
+    out = []
+    for r in rows:
+        try:
+            out.append(AppointmentOut(**r).as_dict())
+        except Exception:
+            out.append(r)
+    return {"disponibles": out}
 
 @app.post("/appointments/reserve")
 def reserve_appointment(appt: AppointmentCreate):
@@ -233,9 +268,9 @@ def confirm_appointment(body: AppointmentConfirm):
     cur = conn.cursor(cursor_factory=RealDictCursor)
     cur.execute("SELECT * FROM appointments WHERE id=%s", (body.id,))
     cita = cur.fetchone()
-    if not cita or cita.get("disponible") is True or cita.get("confirmada") is True:
+    if not cita:
         conn.close()
-        raise HTTPException(status_code=404, detail="Cita no reservada o ya confirmada")
+        raise HTTPException(status_code=404, detail="Cita no encontrada")
     # Confirmar
     cur.execute("UPDATE appointments SET confirmada=TRUE WHERE id=%s", (body.id,))
     conn.commit()

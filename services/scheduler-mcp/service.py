@@ -10,11 +10,13 @@ if BASE_DIR not in sys.path:
 try:
     from utils.audit import audit_step
 except ImportError:
-    # Fallback seguro: decorador nulo
-    def audit_step(_label):
-        def _noop(fn):
-            return fn
-        return _noop
+    try:
+        from mcp_utils.audit import audit_step
+    except Exception:  # pragma: no cover
+        def audit_step(_label):
+            def _noop(fn):
+                return fn
+            return _noop
 
 
 @audit_step("select_exact_block")
