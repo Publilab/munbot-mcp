@@ -100,7 +100,8 @@ services:
     networks:
       - munbot-net
     volumes:
-    - ./mcp-core/models:/mcp-core/models
+      - ./mcp-core/models:/mcp-core/models
+      - ./services/scheduler-mcp:/app/scheduler-mcp:ro
     depends_on:
       redis:
         condition: service_healthy
