@@ -31,6 +31,8 @@ RUN pip install --upgrade pip setuptools wheel \
 COPY mcp-core/ ./
 COPY services/ ./services/
 COPY databases/ ./databases/
+COPY utils/ ./utils/
+COPY tests/ ./tests/
 
 # ───────────────────────────────
 # 4) Variables de entorno y puertos
