@@ -2094,14 +2094,16 @@ def orchestrate(
     if not pending:
         kw_intent = detect_intent_keywords(user_input)
         agenda = ctx.get("agenda", {})
+
         if (
-            kw_intent == "scheduler-appointment_create"
+            context_manager.get_current_flow(sid) == "scheduler"
             or agenda.get("fecha")
             or agenda.get("hora")
-        ) and context_manager.get_current_flow(sid) != "scheduler":
+        ):
             result = handle_agenda(user_input, sid)
             return format_response(result, sid, trace_id=sid)
-        if re.search(
+
+        if kw_intent == "scheduler-appointment_create" or re.search(
             r"\b(?:c(?:o|ó)mo|d(?:o|ó)nde|qu(?:é|e))?\s*(?:puedo|necesito)?\s*(agendar|reservar|cita|hora|turno)\b",
             user_input,
             re.IGNORECASE,
