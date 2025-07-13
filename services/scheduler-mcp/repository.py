@@ -9,7 +9,7 @@ import json
 
 from psycopg2.extras import RealDictCursor
 from db import get_db
-from audit import audit_step
+from utils.audit import audit_step
 
 
 # ────────────────────────────────
