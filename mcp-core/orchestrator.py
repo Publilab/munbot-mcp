@@ -1511,7 +1511,11 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         # Obtener todos los bloques disponibles del día
         payload = {"fecha": fecha_str, "hora": hora_str}
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
-        bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
+        bloques = []
+        if isinstance(raw, dict):
+            bloques = raw.get("data")
+            if bloques is None:
+                bloques = raw.get("disponibles", [])
 
         # Buscar el bloque cuyo rango contenga la hora solicitada
         hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
@@ -1713,7 +1717,11 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         # 4) Llamar al scheduler pidiendo todos los bloques del día
         payload = {"fecha": fecha_str, "hora": hora_str}
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
-        bloques = raw.get("disponibles", []) if isinstance(raw, dict) else []
+        bloques = []
+        if isinstance(raw, dict):
+            bloques = raw.get("data")
+            if bloques is None:
+                bloques = raw.get("disponibles", [])
 
         # 5) Filtrar bloques cuyo rango contenga hora_user (rango semi-abierto)
         hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
