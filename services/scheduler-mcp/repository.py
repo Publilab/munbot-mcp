@@ -8,7 +8,7 @@ import logging
 import json
 
 from psycopg2.extras import RealDictCursor
-from db import get_db
+from db import get_db, put_db
 from utils.audit import audit_step
 
 
@@ -101,5 +101,4 @@ def get_available_blocks(
                 cur.close()
 
     finally:
-        if hasattr(conn, "close"):
-            conn.close()
+        put_db(conn)
