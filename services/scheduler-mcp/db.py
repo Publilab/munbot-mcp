@@ -1,6 +1,7 @@
 import os
 import psycopg2
 from psycopg2.pool import SimpleConnectionPool
+from contextlib import contextmanager
 
 DB_DSN = os.getenv(
     "DATABASE_URL",
@@ -18,6 +19,14 @@ if not TESTING:
 
     def put_db(conn):
         _pool.putconn(conn)
+
+    @contextmanager
+    def db_connection():
+        conn = get_db()
+        try:
+            yield conn
+        finally:
+            put_db(conn)
 else:
     class _Dummy:
         def cursor(self, *a, **k):
@@ -41,3 +50,11 @@ else:
 
     def put_db(conn):
         pass
+
+    @contextmanager
+    def db_connection():
+        conn = get_db()
+        try:
+            yield conn
+        finally:
+            put_db(conn)

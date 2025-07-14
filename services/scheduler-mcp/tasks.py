@@ -3,7 +3,7 @@ from typing import Iterable
 import requests
 from psycopg2.extras import RealDictCursor
 
-from db import get_db
+from db import get_db, put_db
 from notifications import send_email
 
 META_PHONE_ID = os.getenv('META_PHONE_ID')
@@ -43,8 +43,10 @@ def send_whatsapp(cita):
 
 def send_reminder(dry: bool = False):
     conn = get_db()
-    citas = fetch_tomorrow_confirmed(conn)
-    conn.close()
+    try:
+        citas = fetch_tomorrow_confirmed(conn)
+    finally:
+        put_db(conn)
     count = 0
     for cita in citas:
         if not dry:
