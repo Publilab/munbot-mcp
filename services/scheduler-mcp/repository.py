@@ -101,5 +101,5 @@ def get_available_blocks(
                 cur.close()
 
     finally:
-        if hasattr(conn, "close"):
-            conn.close()
+        from db import put_db
+        put_db(conn)
