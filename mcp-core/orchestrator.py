@@ -41,37 +41,42 @@ SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
 
 # === Configuración ===
-MICROSERVICES = {
-    "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL"),
-    "llm_docs-mcp": os.getenv("LLM_DOCS_MCP_URL"),
-    "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL"),
-}
 
+MICROSERVICES = {
+# == Rutas de los microservicios ==
+    "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL"),
+    "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL"),
+    "llm_docs-mcp": os.getenv("LLM_DOCS_MCP_URL"),
+}
+# == Rutas de los archivos ==
 PROMPTS_PATH = os.getenv("PROMPTS_PATH")
 TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
-
 FAQ_DB_PATH = os.getenv("FAQ_DB_PATH")
 
+# == Parámetros de fuzzy [Ubrales de Coincidencias] ==
 FUZZY_STRICT_THRESHOLD = 90
 FUZZY_CLARIFY_THRESHOLD = 85
 BEST_ALT_THRESHOLD = 80
+
+# == Ruta del archivo de log de preguntas perdidas ==
 MISSED_LOG_PATH = os.path.join(
     os.path.dirname(__file__), "databases", "missed_questions.csv"
 )
 
+# == Configuración de la base de datos ==
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
 DB_PORT = int(os.getenv("POSTGRES_PORT", "5432"))
 DB_NAME = os.getenv("POSTGRES_DB", "munbot")
 DB_USER = os.getenv("POSTGRES_USER", "munbot")
 DB_PASS = os.getenv("POSTGRES_PASSWORD", "1234")
 
-# Configuración de Redis
+# == Configuración de Redis ==
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 
-# Campos requeridos por tool
+# == Campos requeridos por tool ==
 REQUIRED_FIELDS = {
     "complaint-registrar_reclamo": [
         "datos_reclamo",
@@ -590,7 +595,9 @@ def detect_intent_llm(
     )
     logging.info("Prompt enviado a Llama: %s", prompt)
     try:
-        predicted = infer_intent_with_llm(prompt).strip()
+        # Usa el modelo local de Llama vía LlamaClient
+        llama = LlamaClient()
+        predicted = llama.generate(prompt, max_tokens=256)
         logging.info(f"LLM raw response: {predicted}")
         match = re.search(r"{.*}", predicted)
         if match:
@@ -605,7 +612,7 @@ def detect_intent_llm(
                 logging.info(f"Intento forzado por matcher: {intent}")
             return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
     except Exception as e:
-        logging.error("Error durante la inferencia con Llama: %s", e)
+        logging.error("Error durante la inferencia con Llama local: %s", e)
 
     # Fallback total si todo falla
     intent = detect_intent_keywords(user_input)
@@ -1378,7 +1385,10 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
 
     payload = {"fecha": agenda["fecha"], "hora": agenda["hora"]}
     resultado = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
-    horas = resultado.get("data") or resultado.get("disponibles", [])
+    # Compatibilidad: acepta tanto 'data' como 'disponibles' como clave de bloques
+    horas = resultado.get("data")
+    if horas is None:
+        horas = resultado.get("disponibles", [])
     if horas:
         lines = ["Horarios disponibles:"]
         for b in horas:
@@ -2111,7 +2121,7 @@ def orchestrate(
             context_manager.set_pending_confirmation(sid, True)
             context_manager.set_current_flow(sid, "cita")
             msg = (
-                "Entiendo. Si quieres agendar una cita con un funcionario, puedo ayudarte a agendarla por este mismo medio. "
+                "Entiendo. Si quieres reservar una cita con un funcionario, puedo ayudarte a agendarla por este mismo medio. "
                 "¿Quieres hacerla ahora mismo?"
             )
             context_manager.update_context(sid, user_input, msg)
