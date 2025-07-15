@@ -86,10 +86,12 @@ REQUIRED_FIELDS = {
     ],
     "complaint-register_user": ["nombre", "rut"],
     "scheduler-appointment_create": [
-        "datos_cita",
+        "bloque_cita",
+        "nombre_cita",
+        "rut_cita",
         "depto_cita",
         "motiv_cita",
-        "bloque_cita",
+        "whatsapp_cita",
         "mail_cita",
     ],
 }
@@ -99,10 +101,13 @@ FIELD_QUESTIONS = {
     "mensaje_reclamo": "¿Cuál es tu reclamo o denuncia?",
     "depto_reclamo": "¿A qué departamento crees que corresponde atender tu reclamo?\n 1. Alcaldía \n2. Social \n3. Vivienda \n4. Tesorería \n5. Obras \n6. Medio Ambiente \n7. Finanzas \n8. Otros. \nEscribe el número al que corresponde el departamento seleccionado",
     "mail_reclamo": "¿Puedes proporcionarme una dirección de EMAIL para enviarte el comprobante del RECLAMO?",
-    "datos_cita": "Antes de procesar tu cita, necesito algunos datos de contacto. Proporcióname tu nombre completo y rut",
-    "depto_cita": "Con qué departamento quieres solicitar una cita. Escribe el número del DEPARTAMENTO.\n1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros",
-    "motiv_cita": "¿Cuál es el motivo de la cita?",
-    "mail_cita": "Proporcióname un MAIL para enviarte el comprobante de la CITA",
+    "bloque_cita": "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?",
+    "nombre_cita": "Para poder asignar una cita con un funcionario, necesito que me proporciones tu nombre completo",
+    "rut_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de RUT",
+    "depto_cita": "Muchas gracias. Según el motivo de tu consulta me puedes indicar el departamento al que corresponde tu consulta:\n1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\nIndícame el número de departamento al que corresponde tu consulta",
+    "motiv_cita": "Muchas gracias. Me puedes describir brevemente la razón de tu cita",
+    "whatsapp_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de telefónico móvil",
+    "mail_cita": "Por último puedes proporcionarme tu dirección de email",
 }
 
 # PostgreSQL para historial de conversaciones
@@ -1402,36 +1407,32 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
 
 
 def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
-    """Guía el flujo de agendamiento de citas mediante slot filling."""
+    """Flujo paso a paso para agendar citas."""
 
     ctx = context_manager.get_context(sid)
     pending = ctx.get("pending_field")
-
     entities = extract_entities_scheduler(user_text, base_dt)
 
-    # ——— Fase 4: elección de sugerencias ———
-    if pending in ("hora_cita", "bloque_cita") and re.fullmatch(r"\d+", user_text.strip()):
+    # ---- Selección de bloque ofrecido ----
+    if pending == "opcion_bloque" and re.fullmatch(r"\d+", user_text.strip()):
         opciones = ctx.get("last_suggestions", [])
-        choice = int(user_text)
+        choice = int(user_text.strip())
         if opciones and 1 <= choice <= len(opciones):
             b = opciones[choice - 1]
-            ctx["bloque_cita"] = {"fecha": b["fecha"], "hora_rango": f"{b['hora_inicio'][:5]}-{b['hora_fin'][:5]}"}
-            save_session(sid, ctx)
-            context_manager.update_pending_field(sid, "mail_cita")
-            return {
-                "answer": (
-                    f"Has seleccionado {b['fecha']} {b['hora_rango']}. "
-                    "¿Cuál es tu correo?"
-                ),
-                "pending": True,
+            ctx["bloque_cita"] = {
+                "fecha": b["fecha"],
+                "hora": b["hora_inicio"][:5],
             }
+            save_session(sid, ctx)
+            context_manager.update_pending_field(sid, "nombre_cita")
+            return {"answer": FIELD_QUESTIONS["nombre_cita"], "pending": True}
         elif opciones and choice == len(opciones) + 1:
             excluidos = [b["bloque_id"] for b in opciones]
             nuevas = call_tool_microservice(
                 "scheduler-listar_horas_cercanas",
                 {
-                    "fecha": ctx["bloque_cita"]["fecha"],
-                    "hora_rango": ctx["bloque_cita"]["hora_rango"].split("-")[0] + "-%",
+                    "fecha": ctx.get("last_search_fecha"),
+                    "hora_rango": ctx.get("last_search_hora"),
                     "exclude": excluidos,
                     "limit": 5,
                 },
@@ -1439,34 +1440,134 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             nuevas = nuevas if isinstance(nuevas, list) else nuevas.get("data", [])
             if nuevas:
                 ctx["last_suggestions"] = nuevas
-                lines = ["No tengo más cercanas, pero prueba con estas:"]
+                save_session(sid, ctx)
+                lines = [
+                    "No he encontrado disponibilidad en el día y hora proporcionada, no obtante, he encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
+                ]
                 for i, nb in enumerate(nuevas, start=1):
                     lines.append(f"  {i}. {nb['fecha']} {nb['hora_rango']}")
                 lines.append(f"  {len(nuevas)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
                 return {"answer": "\n".join(lines), "pending": True}
             else:
+                context_manager.set_current_flow(sid, None)
+                context_manager.clear_pending_field(sid)
                 return {
-                    "answer": (
-                        "No tenemos más opciones disponibles. "
-                        "Cuando tengas claro día y hora, vuelve a contactarnos."
-                    ),
+                    "answer": "No tenemos más opciones disponibles, por lo que cuando tengas más claridad sobre el DIA y HORA bien definido vuelve a contactarte con nosotros.",
                     "finish": True,
                 }
         else:
             return {"answer": "Por favor selecciona un número válido.", "pending": True}
-    # ——————————————————————————————
 
-    if pending == "datos_cita":
-        nombre = entities.get("usu_name")
-        whatsapp = entities.get("usu_whatsapp")
-        if not nombre:
-            question = FIELD_QUESTIONS.get("datos_cita")
-            return {"answer": question, "pending": True}
-        ctx["datos_cita"] = {"usu_name": nombre, "usu_whatsapp": whatsapp}
+    # ---- Solicitud de fecha y hora ----
+    if pending == "bloque_cita":
+        fecha, hora = parse_date_time(user_text, base_dt, trace_id=sid)
+        if fecha and hora:
+            ctx["bloque_cita"] = {"fecha": fecha, "hora": hora}
+        elif fecha and not hora:
+            ctx["bloque_cita"] = {"fecha": fecha}
+            save_session(sid, ctx)
+            context_manager.update_pending_field(sid, "hora_cita")
+            return {
+                "answer": f"He identificado que quieres que tu cita sea el {fecha}. ¿Podrías indicarme la hora en la que te gustaría ser atendido por un funcionario?",
+                "pending": True,
+            }
+        elif hora and not fecha:
+            ctx["bloque_cita"] = {"hora": hora}
+            save_session(sid, ctx)
+            context_manager.update_pending_field(sid, "fecha_cita")
+            return {
+                "answer": f"He identificado que quieres que tu cita sea a las {hora}. ¿Podrías indicarme la fecha en la que te gustaría ser atendido por un funcionario?",
+                "pending": True,
+            }
+        else:
+            return {"answer": "¿Podrías indicarme con exactitud la fecha y la hora en la que te gustaría ser atendido por un funcionario?", "pending": True}
+
+        # Buscar bloques disponibles
+        payload = {"fecha": ctx["bloque_cita"]["fecha"], "hora": ctx["bloque_cita"]["hora"]}
+        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        bloques = raw.get("data") or raw.get("disponibles", [])
+        hora_user_dt = datetime.strptime(ctx["bloque_cita"]["hora"], "%H:%M").time()
+        bloque_match = select_exact_block(bloques, hora_user_dt, trace_id=sid)
+
+        ctx["last_search_fecha"] = ctx["bloque_cita"]["fecha"]
+        ctx["last_search_hora"] = f"{ctx['bloque_cita']['hora']}-%"
+
+        if bloque_match:
+            ctx["last_suggestions"] = [bloque_match]
+            save_session(sid, ctx)
+            context_manager.update_pending_field(sid, "opcion_bloque")
+            lines = [
+                "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
+                f"  1. {bloque_match['fecha']} {bloque_match['hora_rango']}",
+                "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO",
+                "Para confirmar tu opción escribe el número de la lista.",
+            ]
+            return {"answer": "\n".join(lines), "pending": True}
+
+        alternativas = call_tool_microservice(
+            "scheduler-listar_horas_cercanas",
+            {"fecha": ctx["bloque_cita"]["fecha"], "hora_rango": f"{ctx['bloque_cita']['hora']}-%", "limit": 5},
+        )
+        opciones = alternativas if isinstance(alternativas, list) else alternativas.get("data", [])
+        if not opciones:
+            context_manager.set_current_flow(sid, None)
+            context_manager.clear_pending_field(sid)
+            msg = (
+                "NO hay bloques de atención disponibles para lo que queda del mes. Por favor vuelva a contactarnos el último día hábil del mes para agendar su hora por este mismo medio. Lamentamos no poder ayudarle, de igual manera, el intento fallido alimentará nuestra base de datos para el análisis de posibles mejoras en la atención de nuestros vecinos."
+            )
+            return {"answer": msg, "finish": True}
+        ctx["last_suggestions"] = opciones
         save_session(sid, ctx)
-        context_manager.update_context(sid, user_text, f"Datos recibidos para {nombre}")
+        lines = [
+            "No he encontrado disponibilidad en el día y hora proporcionada, no obtante, he encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
+        ]
+        for i, b in enumerate(opciones, start=1):
+            lines.append(f"  {i}. {b['fecha']} {b['hora_rango']}")
+        lines.append(f"  {len(opciones)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
+        context_manager.update_pending_field(sid, "opcion_bloque")
+        return {"answer": "\n".join(lines), "pending": True}
+
+    if pending == "fecha_cita":
+        fecha = entities.get("fecha")
+        if not fecha:
+            return {"answer": "¿Podrías indicarme la fecha exacta para la cita?", "pending": True}
+        ctx.setdefault("bloque_cita", {})["fecha"] = fecha
+        save_session(sid, ctx)
+        if "hora" not in ctx.get("bloque_cita", {}):
+            context_manager.update_pending_field(sid, "hora_cita")
+            return {"answer": "¿A qué hora te gustaría reservar la cita?", "pending": True}
+        context_manager.update_pending_field(sid, "bloque_cita")
+        return _handle_scheduler_flow(sid, "", base_dt)
+
+    if pending == "hora_cita":
+        hora = entities.get("hora")
+        if not hora:
+            return {"answer": "Por favor indica la hora exacta (por ejemplo, 10:00)", "pending": True}
+        ctx.setdefault("bloque_cita", {})["hora"] = hora
+        save_session(sid, ctx)
+        if "fecha" not in ctx.get("bloque_cita", {}):
+            context_manager.update_pending_field(sid, "fecha_cita")
+            return {"answer": "¿En qué fecha deseas la cita?", "pending": True}
+        context_manager.update_pending_field(sid, "bloque_cita")
+        return _handle_scheduler_flow(sid, "", base_dt)
+
+    if pending == "nombre_cita":
+        nombre = extract_name_with_llm(user_text)
+        if not nombre:
+            return {"answer": FIELD_QUESTIONS["nombre_cita"], "pending": True}
+        ctx["nombre_cita"] = nombre
+        save_session(sid, ctx)
+        context_manager.update_pending_field(sid, "rut_cita")
+        return {"answer": FIELD_QUESTIONS["rut_cita"], "pending": True}
+
+    if pending == "rut_cita":
+        rut = validar_y_formatear_rut(user_text)
+        if not rut:
+            return {"answer": FIELD_QUESTIONS["rut_cita"], "pending": True}
+        ctx["rut_cita"] = rut
+        save_session(sid, ctx)
         context_manager.update_pending_field(sid, "depto_cita")
-        return {"answer": FIELD_QUESTIONS.get("depto_cita"), "pending": True}
+        return {"answer": FIELD_QUESTIONS["depto_cita"], "pending": True}
 
     if pending == "depto_cita":
         try:
@@ -1474,319 +1575,55 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             if 1 <= depto <= 8:
                 ctx["depto_cita"] = depto
                 save_session(sid, ctx)
-                context_manager.update_context(sid, user_text, f"Departamento seleccionado: {depto}")
                 context_manager.update_pending_field(sid, "motiv_cita")
-                return {"answer": FIELD_QUESTIONS.get("motiv_cita"), "pending": True}
+                return {"answer": FIELD_QUESTIONS["motiv_cita"], "pending": True}
         except ValueError:
             pass
-        return {"answer": FIELD_QUESTIONS.get("depto_cita"), "pending": True}
+        return {"answer": FIELD_QUESTIONS["depto_cita"], "pending": True}
 
     if pending == "motiv_cita":
-        motivo = entities.get("motiv") or user_text.strip()
+        motivo = user_text.strip()
         if len(motivo) < 3:
-            return {"answer": FIELD_QUESTIONS.get("motiv_cita"), "pending": True}
+            return {"answer": FIELD_QUESTIONS["motiv_cita"], "pending": True}
         ctx["motiv_cita"] = motivo
         save_session(sid, ctx)
-        context_manager.update_context(sid, user_text, "Motivo registrado")
-        context_manager.update_pending_field(sid, "bloque_cita")
-        return {"answer": "¿En qué fecha y hora deseas la cita?", "pending": True}
+        context_manager.update_pending_field(sid, "whatsapp_cita")
+        return {"answer": FIELD_QUESTIONS["whatsapp_cita"], "pending": True}
 
-    if pending == "hora_cita":
-        texto = user_text
-        parse_date_time(texto, base_dt=flow_start_dt, trace_id=sid)
-        m = re.search(r"a las\s*(\d{1,2})(?::(\d{2}))?", texto, flags=re.IGNORECASE)
-        if not m:
-            m = re.search(r"\b(\d{1,2})(?::(\d{2}))?\b", texto)
-        if not m:
-            return {"answer": "Por favor indica la hora exacta (por ejemplo, 10:00)", "pending": True}
-        hora = int(m.group(1))
-        minuto = int(m.group(2) or 0)
-        hora_str = f"{hora:02d}:{minuto:02d}"
-        fecha_str = ctx.get("bloque_cita", {}).get("fecha")
-        if not fecha_str:
-            context_manager.update_pending_field(sid, "bloque_cita")
-            return {"answer": "¿En qué fecha y hora deseas la cita?", "pending": True}
-        ctx["bloque_cita"]["hora_rango"] = f"{hora_str}-%"
+    if pending == "whatsapp_cita":
+        telefono = validar_telefono_movil(user_text)
+        if not telefono:
+            return {"answer": FIELD_QUESTIONS["whatsapp_cita"], "pending": True}
+        ctx["whatsapp_cita"] = telefono
         save_session(sid, ctx)
-        # Obtener todos los bloques disponibles del día
-        payload = {"fecha": fecha_str, "hora": hora_str}
-        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
-        bloques = []
-        if isinstance(raw, dict):
-            bloques = raw.get("data")
-            if bloques is None:
-                bloques = raw.get("disponibles", [])
-
-        # Buscar el bloque cuyo rango contenga la hora solicitada
-        hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
-        bloque_match = None
-        for b in bloques:
-            if not b.get("disponible"):
-                continue
-            start_str, end_str = f"{b['hora_inicio'][:5]}-{b['hora_fin'][:5]}".split("-")
-            start_dt = datetime.strptime(start_str, "%H:%M").time()
-            end_dt = datetime.strptime(end_str, "%H:%M").time()
-            if start_dt <= hora_user_dt < end_dt:
-                bloque_match = b
-                break
-
-        # ——— Si existe un bloque exacto, ofrecer confirmación ———
-        if bloque_match:
-            ctx["last_suggestions"] = [bloque_match]
-            answer = (
-                "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:\n\n"
-                f"  1. Cita con funcionario el {fecha_str} a las {hora_str} hrs\n"
-                "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO\n\n"
-                "Para confirmar tu opción escribe el número de la lista."
-            )
-            return {"answer": answer, "pending": True}
-        # ——— Fase 3: sugerir hasta 5 bloques cercanos ———
-        alternativas = call_tool_microservice(
-            "scheduler-listar_horas_cercanas",
-            {"fecha": fecha_str, "hora_rango": f"{hora_str}-%", "limit": 5},
-        )
-        opciones = alternativas if isinstance(alternativas, list) else alternativas.get("data", [])
-        if opciones:
-            ctx["last_suggestions"] = opciones
-            lines = ["No encontré disponibilidad exacta, pero hay estos bloques:"]
-            for i, b in enumerate(opciones, start=1):
-                lines.append(f"  {i}. {b['fecha']} {b['hora_rango']}")
-            lines.append(f"  {len(opciones)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
-            return {"answer": "\n".join(lines), "pending": True}
-        return {
-            "answer": f"No hay bloques libres el {fecha_str} a las {hora_str}. Elige otro horario.",
-            "pending": True,
-        }
-
-    if pending == "bloque_cita":
-        flow_start = ctx.get("flow_start_datetime")
-        if not flow_start:
-            flow_start_dt = datetime.now(tz=SANTIAGO_TZ)
-        else:
-            flow_start_dt = datetime.fromisoformat(flow_start)
-        flow_start_month = ctx.get("flow_start_month", flow_start_dt.month)
-        texto = user_text
-
-        # —— Paso 1: Interpretar fecha directa antes de relativa ——
-        fecha_obj = None
-
-        # A) Formato ISO YYYY-MM-DD
-        m_iso = re.search(r"\b(\d{4}-\d{2}-\d{2})\b", texto)
-        if m_iso:
-            try:
-                fecha_obj = datetime.fromisoformat(m_iso.group(1)).date()
-            except ValueError:
-                fecha_obj = None
-
-        # B) Formato Español “14 de Julio”
-        if not fecha_obj:
-            m_sp = re.search(
-                r"\b(\d{1,2})\s+de\s+([A-Za-z]+)\b", texto, flags=re.IGNORECASE
-            )
-            if m_sp:
-                dia, mes_txt = int(m_sp.group(1)), m_sp.group(2).lower()
-                meses = {
-                    "enero":1, "febrero":2, "marzo":3, "abril":4,
-                    "mayo":5, "junio":6, "julio":7, "agosto":8,
-                    "septiembre":9, "octubre":10, "noviembre":11, "diciembre":12
-                }
-                mes = meses.get(mes_txt)
-                if mes:
-                    year = flow_start_dt.year
-                    fecha_obj = date(year, mes, dia)
-
-        # C) Formato numérico “14/07”
-        if not fecha_obj:
-            m_num = re.search(r"\b(\d{1,2})/(\d{1,2})\b", texto)
-            if m_num:
-                dia, mes = int(m_num.group(1)), int(m_num.group(2))
-                year = flow_start_dt.year
-                try:
-                    fecha_obj = date(year, mes, dia)
-                except ValueError:
-                    fecha_obj = None
-
-        # D) Si aún no tenemos fecha, usamos relativo
-        if not fecha_obj:
-            fecha_obj = compute_relative_date(flow_start_dt.date(), texto)
-
-        # Validar finalmente
-        if not fecha_obj:
-            return {
-                "answer": "No entendí la fecha. ¿Podrías expresarla de otra forma?",
-                "pending": True,
-            }
-
-        if fecha_obj.month != flow_start_month:
-            # Mensaje genérico si la fecha está fuera del mes en curso
-            return {
-                "answer": (
-                    "Solo puedo agendar citas durante el mes en curso. "
-                    "Si quieres agendar una hora para un mes próximo, puedes hacerlo "
-                    "el último día hábil antes de que comience ese mes y hasta que termine. "
-                    "Gracias por tu comprensión."
-                ),
-                "pending": True,
-            }
-        fecha_str = fecha_obj.isoformat()
-
-        # ——— Paso X: detectar bloque ordinal antes de extraer hora ———
-        # Mapa de ordinales a índice en la lista de bloques del día
-        ordinales = {
-            "primera": 0, "segunda": 1, "tercera": 2,
-            "cuarta": 3, "quinta": 4, "última": -1
-        }
-        elegido_indice = None
-        for clave, idx in ordinales.items():
-            if re.search(rf"\b{clave}\s+hora\b", texto, flags=re.IGNORECASE):
-                elegido_indice = idx
-                break
-
-        if elegido_indice is not None:
-            # Listar todos los bloques libres de ese día
-            audit_payload = {"from_date": fecha_str, "to_date": fecha_str}
-            print(
-                f"[AUDIT] llamando a appointments/available con: {audit_payload}",
-                flush=True,
-            )
-            todos = call_scheduler_endpoint("appointments/available", audit_payload)
-            bloques_dia = (
-                todos["disponibles"] if isinstance(todos, dict) and "disponibles" in todos else todos
-            )
-            libres = [b for b in bloques_dia if b.get("disponible", False)]
-            if not libres:
-                return {
-                    "answer": f"No hay bloques libres el {fecha_str}. Elige otro día.",
-                    "pending": True
-                }
-            try:
-                bloque = libres[elegido_indice]
-            except IndexError:
-                return {
-                    "answer": (
-                        f"En el {fecha_str} no hay {clave} bloque disponible. "
-                        "Por favor elige otra opción o proporciona hora exacta."
-                    ),
-                    "pending": True
-                }
-            ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": f"{bloque['hora_inicio'][:5]}-{bloque['hora_fin'][:5]}"}
-            save_session(sid, ctx)
-            context_manager.update_pending_field(sid, "mail_cita")
-            return {
-                "answer": (
-                    f"He seleccionado la {clave} hora del {fecha_str}, "
-                    f"que es {bloque['hora_rango']}. ¿Cuál es tu correo?"
-                ),
-                "pending": True
-            }
-        # ——————————————————————————————————————————————
-
-        # Quitar menciones de la fecha antes de buscar la hora
-        texto_sin_fecha = re.sub(
-            r"\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}/\d{1,2}\b|\b\d{1,2}\s+de\s+[A-Za-z]+\b",
-            "",
-            texto,
-            flags=re.IGNORECASE,
-        )
-
-        # 2) Extraer hora después de limpiar la fecha
-        m = re.search(r"a las\s*(\d{1,2})(?::(\d{2}))?", texto_sin_fecha, flags=re.IGNORECASE)
-        if not m:
-            m = re.search(r"\b(\d{1,2})(?::(\d{2}))?\b", texto_sin_fecha)
-
-        if not m:
-            ctx["bloque_cita"] = {"fecha": fecha_str}
-            save_session(sid, ctx)
-            context_manager.update_pending_field(sid, "hora_cita")
-            return {
-                "answer": (
-                    "Has indicado el día "
-                    f"{fecha_obj.strftime('%A %Y-%m-%d')}, pero no la hora. "
-                    "¿A qué hora te gustaría reservar la cita? (por ejemplo, 10:00)"
-                ),
-                "pending": True,
-            }
-
-        hora = int(m.group(1))
-        minuto = int(m.group(2) or 0)
-        hora_str = f"{hora:02d}:{minuto:02d}"
-
-        ctx["bloque_cita"] = {"fecha": fecha_str, "hora_rango": f"{hora_str}-%"}
-        save_session(sid, ctx)
-
-        # 4) Llamar al scheduler pidiendo todos los bloques del día
-        payload = {"fecha": fecha_str, "hora": hora_str}
-        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
-        bloques = []
-        if isinstance(raw, dict):
-            bloques = raw.get("data")
-            if bloques is None:
-                bloques = raw.get("disponibles", [])
-
-        # 5) Filtrar bloques cuyo rango contenga hora_user (rango semi-abierto)
-        hora_user_dt = datetime.strptime(hora_str, "%H:%M").time()
-        bloque_match = select_exact_block(bloques, hora_user_dt, trace_id=sid)
-
-        if bloque_match:
-            # 6) Presentar la única opción de confirmación
-            ctx["last_suggestions"] = [bloque_match]
-            answer = (
-                "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:\n\n"
-                f"  1. Cita con funcionario el {fecha_str} a las {hora_str} hrs\n"
-                "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO\n\n"
-                "Para confirmar tu opción escribe el número de la lista."
-            )
-            return {"answer": answer, "pending": True}
-        # 7) Si no hubo coincidencia exacta, seguir con sugerencias alternativas
-        alternativas = call_tool_microservice(
-            "scheduler-listar_horas_cercanas",
-            {"fecha": fecha_str, "hora_rango": f"{hora_str}-%", "limit": 5},
-        )
-        opciones = alternativas if isinstance(alternativas, list) else alternativas.get("data", [])
-        if opciones:
-            ctx["last_suggestions"] = opciones
-            lines = ["No encontré disponibilidad exacta, pero hay estos bloques:"]
-            for i, b in enumerate(opciones, start=1):
-                lines.append(f"  {i}. {b['fecha']} {b['hora_rango']}")
-            lines.append(f"  {len(opciones)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
-            return {"answer": "\n".join(lines), "pending": True}
-        return {
-            "answer": f"No hay bloques libres el {fecha_str} a las {hora_str}. Elige otro horario.",
-            "pending": True,
-        }
+        context_manager.update_pending_field(sid, "mail_cita")
+        return {"answer": FIELD_QUESTIONS["mail_cita"], "pending": True}
 
     if pending == "mail_cita":
-        mail = entities.get("usu_mail") or extract_email_with_llm(user_text)
+        mail = extract_email_with_llm(user_text)
         if not mail:
-            return {"answer": FIELD_QUESTIONS.get("mail_cita"), "pending": True}
+            return {"answer": FIELD_QUESTIONS["mail_cita"], "pending": True}
         ctx["mail_cita"] = mail
         save_session(sid, ctx)
-        context_manager.update_context(sid, user_text, f"Correo registrado: {mail}")
         context_manager.clear_pending_field(sid)
 
         payload = {
             "motiv": ctx.get("motiv_cita"),
-            "usu_name": ctx.get("datos_cita", {}).get("usu_name"),
+            "usu_name": ctx.get("nombre_cita"),
             "usu_mail": ctx.get("mail_cita"),
-            "usu_whatsapp": ctx.get("datos_cita", {}).get("usu_whatsapp"),
+            "usu_whatsapp": ctx.get("whatsapp_cita"),
             "fecha": ctx.get("bloque_cita", {}).get("fecha"),
             "hora": ctx.get("bloque_cita", {}).get("hora"),
         }
         tool_result = call_tool_microservice("scheduler-appointment_create", payload)
         message = tool_result.get("mensaje", "No se pudo agendar la cita.")
-        context_manager.update_context(sid, user_text, message)
-        # ----------- Limpieza de modo cita -----------
         context_manager.set_current_flow(sid, None)
-        context_manager.clear_pending_field(sid)
-        # ----------------------------------------------
         return {"answer": message, "finish": True}
 
-    # Preguntar por campos faltantes si no hay pendiente definido
     for field in REQUIRED_FIELDS.get("scheduler-appointment_create", []):
         if not ctx.get(field):
             context_manager.update_pending_field(sid, field)
-            question = FIELD_QUESTIONS.get(field)
-            return {"answer": question, "pending": True}
+            return {"answer": FIELD_QUESTIONS.get(field), "pending": True}
 
     return {"answer": "Lo siento, hubo un error interno.", "pending": False}
 
@@ -2563,6 +2400,18 @@ def es_email_valido(email: str) -> bool:
     # comprueba que la parte de dominio tenga al menos un punto
     dominio = addr.split('@', 1)[1]
     return '.' in dominio
+
+
+def validar_telefono_movil(numero: str) -> Optional[str]:
+    """Valida un número de teléfono chileno. Acepta 9 dígitos o formato +56XXXXXXXX."""
+    if not numero:
+        return None
+    n = numero.strip()
+    if re.fullmatch(r"\+56\d{8}", n):
+        return n
+    if re.fullmatch(r"9\d{8}", n):
+        return "+56" + n
+    return None
 
 
 # --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---
