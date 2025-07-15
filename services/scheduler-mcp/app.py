@@ -285,6 +285,7 @@ def confirm_appointment(body: AppointmentConfirm):
         "Cita confirmada",
         "email/confirm.html",
         usuario=cita["usuario_nombre"],
+        funcionario=cita["funcionario_nombre"],
         fecha_legible=str(cita["fecha"]),
         hora=hora_str,
     )
