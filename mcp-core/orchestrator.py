@@ -1510,7 +1510,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             context_manager.update_pending_field(sid, "opcion_bloque")
             lines = [
                 "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
-                f"  1. {bloque_match['fecha']} {rango}",
+                f"  1.- {bloque_match['fecha']} {rango}",
                 "Para confirmar tu opción escribe el número de la lista.",
             ]
             return {"answer": "\n".join(lines), "pending": True}
@@ -2385,7 +2385,7 @@ if __name__ == "__main__":
 def validar_y_formatear_rut(rut: str) -> str:
     if not rut:
         return None
-    if len(rut) != 10 or rut[7] != "-":
+    if len(rut) != 9 or rut[7] != "-":
         return None
     numero = rut[:-2]
     dv = rut[-1]
