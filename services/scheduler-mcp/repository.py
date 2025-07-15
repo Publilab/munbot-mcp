@@ -8,7 +8,7 @@ import logging
 import json
 
 from psycopg2.extras import RealDictCursor
-from db import get_db
+from db import get_conn
 from utils.audit import audit_step
 
 
@@ -41,10 +41,8 @@ def get_available_blocks(
     • Usa comparación con columnas TIME (`hora_inicio`, `hora_fin`).
     • Ordena por `hora_inicio` ascendente.
     """
-    conn = get_db()
-    try:
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        try:
+    with get_conn() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
             sql = """
                 SELECT *
                 FROM   appointments
@@ -96,10 +94,3 @@ def get_available_blocks(
                 )
                 return [row] if row else []
             return []
-        finally:
-            if hasattr(cur, "close"):
-                cur.close()
-
-    finally:
-        from db import put_db
-        put_db(conn)

@@ -44,12 +44,26 @@ def test_tools_call_listar(monkeypatch):
                 def fetchall(self_inner):
                     return rows
 
+                def __enter__(self_inner):
+                    return self_inner
+
+                def __exit__(self_inner, exc_type, exc, tb):
+                    pass
+
             return C()
 
         def close(self):
             pass
 
-    monkeypatch.setattr(scheduler_app, "get_db", lambda: Dummy())
+    from contextlib import contextmanager
+
+    @contextmanager
+    def dummy_conn():
+        yield Dummy()
+
+    monkeypatch.setattr(scheduler_app, "get_conn", dummy_conn)
+    import sys
+    monkeypatch.setattr(sys.modules["repository"], "get_conn", dummy_conn)
 
     payload = {
         "tool": "scheduler-listar_horas_disponibles",
@@ -79,12 +93,26 @@ def test_exact_match(monkeypatch):
                 def fetchone(self_inner):
                     return row
 
+                def __enter__(self_inner):
+                    return self_inner
+
+                def __exit__(self_inner, exc_type, exc, tb):
+                    pass
+
             return C()
 
         def close(self):
             pass
 
-    monkeypatch.setattr(scheduler_app, "get_db", lambda: Dummy())
+    from contextlib import contextmanager
+
+    @contextmanager
+    def dummy_conn():
+        yield Dummy()
+
+    monkeypatch.setattr(scheduler_app, "get_conn", dummy_conn)
+    import sys
+    monkeypatch.setattr(sys.modules["repository"], "get_conn", dummy_conn)
 
     bloque = scheduler_app.get_available_block(date(2025, 7, 17), time.fromisoformat("10:00"))
     assert bloque["id"] == "C0028"
