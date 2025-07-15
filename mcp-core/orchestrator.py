@@ -103,11 +103,11 @@ FIELD_QUESTIONS = {
     "mail_reclamo": "¿Puedes proporcionarme una dirección de EMAIL para enviarte el comprobante del RECLAMO?",
     "bloque_cita": "Perfecto. Antes de agendar una cita en nuestras oficinas, recuerda que nuestros horarios de atención son de lunes a viernes de 8:30 a 12:30. ¿En qué fecha y hora te gustaría reservar?",
     "nombre_cita": "Para poder asignar una cita con un funcionario, necesito que me proporciones algunos datos para poder registrarlos. Recuerda que tus datos son confidenciales y solo serán usados con el propósito de agendar la cita. Por favor, proporciona tu nombre completo",
-    "rut_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de RUT",
+    "rut_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de RUT (el formato aceptado es 12345678-9)",
     "depto_cita": "Muchas gracias. Según el motivo de tu consulta me puedes indicar el departamento al que corresponde tu consulta:\n1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\nIndícame el número de departamento al que corresponde tu consulta",
     "motiv_cita": "Muchas gracias. Me puedes describir brevemente la razón de tu cita",
-    "whatsapp_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de telefónico móvil",
-    "mail_cita": "Por último puedes proporcionarme tu dirección de email",
+    "whatsapp_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de telefónico móvil (el formato aceptado es +56912345678)",
+    "mail_cita": "Por último puedes proporcionarme tu dirección de email (el formato aceptado es usuario@dominio.com)",
 }
 
 # PostgreSQL para historial de conversaciones
@@ -1511,7 +1511,6 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             lines = [
                 "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
                 f"  1. {bloque_match['fecha']} {rango}",
-                "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO",
                 "Para confirmar tu opción escribe el número de la lista.",
             ]
             return {"answer": "\n".join(lines), "pending": True}
@@ -1621,15 +1620,24 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         context_manager.clear_pending_field(sid)
 
         payload = {
-            "motiv": ctx.get("motiv_cita"),
-            "usu_name": ctx.get("nombre_cita"),
-            "usu_mail": ctx.get("mail_cita"),
-            "usu_whatsapp": ctx.get("whatsapp_cita"),
-            "fecha": ctx.get("bloque_cita", {}).get("fecha"),
-            "hora": ctx.get("bloque_cita", {}).get("hora"),
+            "slot_id": ctx.get("bloque_cita", {}).get("slot_id"),
+            "usuario_nombre": ctx.get("nombre_cita"),
+            "usuario_mail": ctx.get("mail_cita"),
         }
-        tool_result = call_tool_microservice("scheduler-appointment_create", payload)
-        message = tool_result.get("mensaje", "No se pudo agendar la cita.")
+        # Opcionales
+        if ctx.get("whatsapp_cita"):
+            payload["usuario_whatsapp"] = ctx["whatsapp_cita"]
+        if ctx.get("motiv_cita"):
+            payload["motivo"] = ctx["motiv_cita"]
+        import logging
+        logging.info(f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}")
+        tool_result = call_tool_microservice("scheduler-reservar_hora", payload)
+        logging.info(f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}")
+        # Mostrar mensaje de error específico si está presente
+        if tool_result.get("error"):
+            message = f"No se pudo agendar la cita. Detalle: {tool_result['error']}"
+        else:
+            message = tool_result.get("mensaje", "No se pudo agendar la cita.")
         context_manager.set_current_flow(sid, None)
         return {"answer": message, "finish": True}
 
@@ -2089,7 +2097,7 @@ def orchestrate(
                 availability_found = ctx.get("availability_found")
                 if availability_found is False and attempts >= 2:
                     find_next_available_slot()
-                pregunta = "Perfecto. Para agendar la cita, ¿en qué fecha y hora te gustaría reservar?"
+                pregunta = "Perfecto. Antes de agendar la cita recuerda que nuestros horarios de atención son de lunes a viernes de 8:30 a 12:30. ¿En qué fecha y hora te gustaría reservar?"
             return {"respuesta": pregunta, "session_id": sid}
         else:
             msg = "Entendido. ¿En qué más puedo ayudarte?"
@@ -2377,10 +2385,9 @@ if __name__ == "__main__":
 def validar_y_formatear_rut(rut: str) -> str:
     if not rut:
         return None
-    rut = rut.replace(".", "").replace("-", "").upper().strip()
-    if len(rut) < 8:
+    if len(rut) != 10 or rut[7] != "-":
         return None
-    numero = rut[:-1]
+    numero = rut[:-2]
     dv = rut[-1]
     if not numero.isdigit():
         return None
@@ -2398,8 +2405,7 @@ def validar_y_formatear_rut(rut: str) -> str:
         dvr = str(dvr)
     if dv != dvr:
         return None
-    rut_formateado = f"{int(numero):,}".replace(",", ".") + "-" + dv
-    return rut_formateado
+    return rut
 
 
 def es_email_valido(email: str) -> bool:
@@ -2416,18 +2422,17 @@ def es_email_valido(email: str) -> bool:
 
 
 def validar_telefono_movil(numero: str) -> Optional[str]:
-    """Valida un número de teléfono chileno. Acepta 9 dígitos o formato +56XXXXXXXX."""
+    """Valida un número de teléfono chileno. Acepta solo formato internacional +569XXXXXXXX."""
     if not numero:
         return None
     n = numero.strip()
-    if re.fullmatch(r"\+56\d{8}", n):
+    if re.fullmatch(r"\+569\d{8}", n):
         return n
-    if re.fullmatch(r"9\d{8}", n):
-        return "+56" + n
     return None
 
 
 # --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---
+{{ ... }}
 import json
 
 # Cargar los JSON locales una sola vez (puedes mover esto a un lugar más apropiado si lo deseas)
