@@ -2432,7 +2432,6 @@ def validar_telefono_movil(numero: str) -> Optional[str]:
 
 
 # --- INTEGRACIÓN DE RESPUESTAS COMBINADAS Y DESAMBIGUACIÓN ---
-{{ ... }}
 import json
 
 # Cargar los JSON locales una sola vez (puedes mover esto a un lugar más apropiado si lo deseas)
