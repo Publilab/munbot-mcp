@@ -25,7 +25,7 @@ DB_NAME = os.getenv("POSTGRES_DB")
 DB_USER = os.getenv("POSTGRES_USER")
 DB_PASS = os.getenv("POSTGRES_PASSWORD")
 
-from db import get_db
+from db import get_conn
 
 
 def get_available_block(fecha: date, hora: dtime, trace_id: str | None = None):
@@ -217,14 +217,13 @@ def list_available(request: Request):
         pattern = build_sql_pattern(hora_time)
         rows = get_available_blocks(date.fromisoformat(fecha), pattern)
     elif desde and hasta:
-        conn = get_db()
-        cur = conn.cursor(cursor_factory=RealDictCursor)
-        cur.execute(
-            "SELECT * FROM appointments WHERE fecha BETWEEN %s AND %s",
-            (desde, hasta),
-        )
-        rows = cur.fetchall()
-        conn.close()
+        with get_conn() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(
+                    "SELECT * FROM appointments WHERE fecha BETWEEN %s AND %s",
+                    (desde, hasta),
+                )
+                rows = cur.fetchall()
     else:
         return {"disponibles": []}
     out = []
@@ -238,46 +237,47 @@ def list_available(request: Request):
 @app.post("/appointments/reserve")
 def reserve_appointment(appt: AppointmentCreate):
     """Reservar una cita"""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    # Busca slot disponible
-    cur.execute(
-        "SELECT * FROM appointments "
-        "WHERE funcionario_codigo=%s AND fecha=%s AND hora_inicio=%s AND hora_fin=%s "
-        "AND disponible = TRUE AND confirmada = FALSE",
-        (appt.cod_func, appt.fecha, appt.hora_inicio.strftime('%H:%M'), appt.hora_fin.strftime('%H:%M'))
-    )
-    slot = cur.fetchone()
-    if not slot:
-        conn.close()
-        raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
-    # Reserva (marca como no disponible, confirma usuario)
-    cur.execute(
-        "UPDATE appointments "
-        "SET disponible = FALSE, confirmada = FALSE, "
-        "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s "
-        "WHERE id = %s",
-        (appt.usu_name, appt.usu_mail, appt.usu_whatsapp, appt.motiv, slot["id"])
-    )
-    conn.commit()
-    conn.close()
+    with get_conn() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            # Busca slot disponible
+            cur.execute(
+                "SELECT * FROM appointments "
+                "WHERE funcionario_codigo=%s AND fecha=%s AND hora_inicio=%s AND hora_fin=%s "
+                "AND disponible = TRUE AND confirmada = FALSE",
+                (
+                    appt.cod_func,
+                    appt.fecha,
+                    appt.hora_inicio.strftime('%H:%M'),
+                    appt.hora_fin.strftime('%H:%M'),
+                ),
+            )
+            slot = cur.fetchone()
+            if not slot:
+                raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
+            # Reserva (marca como no disponible, confirma usuario)
+            cur.execute(
+                "UPDATE appointments "
+                "SET disponible = FALSE, confirmada = FALSE, "
+                "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s "
+                "WHERE id = %s",
+                (appt.usu_name, appt.usu_mail, appt.usu_whatsapp, appt.motiv, slot["id"]),
+            )
+            conn.commit()
     # Notificación opcional aquí
     return {"id": slot["id"], "respuesta": "Cita reservada. Confirme para activar la reserva."}
 
 @app.post("/appointments/confirm")
 def confirm_appointment(body: AppointmentConfirm):
     """Confirmar una cita reservada"""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT * FROM appointments WHERE id=%s", (body.id,))
-    cita = cur.fetchone()
-    if not cita:
-        conn.close()
-        raise HTTPException(status_code=404, detail="Cita no encontrada")
-    # Confirmar
-    cur.execute("UPDATE appointments SET confirmada=TRUE WHERE id=%s", (body.id,))
-    conn.commit()
-    conn.close()
+    with get_conn() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("SELECT * FROM appointments WHERE id=%s", (body.id,))
+            cita = cur.fetchone()
+            if not cita:
+                raise HTTPException(status_code=404, detail="Cita no encontrada")
+            # Confirmar
+            cur.execute("UPDATE appointments SET confirmada=TRUE WHERE id=%s", (body.id,))
+            conn.commit()
     # Notificación al usuario y funcionario
     hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
     send_email(
@@ -295,23 +295,21 @@ def confirm_appointment(body: AppointmentConfirm):
 @app.post("/appointments/cancel")
 def cancel_appointment(body: AppointmentCancel):
     """Cancelar una cita reservada o confirmada"""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT * FROM appointments WHERE id=%s", (body.id,))
-    cita = cur.fetchone()
-    if not cita:
-        conn.close()
-        raise HTTPException(status_code=404, detail="Cita no encontrada")
-    # al cancelar, dejamos disponible=TRUE y confirmada=FALSE
-    cur.execute(
-        "UPDATE appointments "
-        "SET disponible = TRUE, confirmada = FALSE, "
-        "    motivo = '', usuario_nombre = '', usuario_email = '', usuario_whatsapp = '' "
-        "WHERE id = %s",
-        (body.id,)
-    )
-    conn.commit()
-    conn.close()
+    with get_conn() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("SELECT * FROM appointments WHERE id=%s", (body.id,))
+            cita = cur.fetchone()
+            if not cita:
+                raise HTTPException(status_code=404, detail="Cita no encontrada")
+            # al cancelar, dejamos disponible=TRUE y confirmada=FALSE
+            cur.execute(
+                "UPDATE appointments "
+                "SET disponible = TRUE, confirmada = FALSE, "
+                "    motivo = '', usuario_nombre = '', usuario_email = '', usuario_whatsapp = '' "
+                "WHERE id = %s",
+                (body.id,),
+            )
+            conn.commit()
     # Notificar usuario
     hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
     if cita["usuario_email"]:
@@ -330,24 +328,22 @@ def cancel_appointment(body: AppointmentCancel):
 @app.get("/appointments/{id}")
 def get_appointment(id: str):
     """Consultar detalles de una cita"""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT * FROM appointments WHERE id=%s", (id,))
-    cita = cur.fetchone()
-    conn.close()
-    if not cita:
-        raise HTTPException(status_code=404, detail="Cita no encontrada")
-    return AppointmentOut(**cita).as_dict()
+    with get_conn() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("SELECT * FROM appointments WHERE id=%s", (id,))
+            cita = cur.fetchone()
+        if not cita:
+            raise HTTPException(status_code=404, detail="Cita no encontrada")
+        return AppointmentOut(**cita).as_dict()
 
 @app.get("/health")
 def health():
     """Endpoint de salud para healthcheck"""
     try:
-        conn = get_db()
-        cur = conn.cursor()
-        cur.execute("SELECT 1")
-        cur.fetchone()
-        conn.close()
+        with get_conn() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT 1")
+                cur.fetchone()
         return {"status": "ok", "database": "connected"}
     except Exception as e:
         return {"status": "error", "database": "disconnected", "error": str(e)}
