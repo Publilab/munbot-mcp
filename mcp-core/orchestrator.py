@@ -37,6 +37,8 @@ from utils.datetime_utils import (
 from rapidfuzz import fuzz
 from datetime import datetime, date
 from chilean_rut import is_valid, format_rut
+from utils.phone_utils import validar_telefono_movil
+
 
 
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
@@ -1608,7 +1610,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         telefono = validar_telefono_movil(user_text)
         if not telefono:
             return {"answer": FIELD_QUESTIONS["whatsapp_cita"], "pending": True}
-        ctx["whatsapp_cita"] = telefono
+        ctx["usuario_whatsapp"] = telefono
         save_session(sid, ctx)
         context_manager.update_pending_field(sid, "mail_cita")
         return {"answer": FIELD_QUESTIONS["mail_cita"], "pending": True}
