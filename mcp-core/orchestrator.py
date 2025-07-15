@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import json
 import requests
 from typing import Dict, Any, List, Optional
@@ -19,8 +21,6 @@ import unicodedata
 from utils.text import normalize_text
 from llama_client import LlamaClient
 from utils.parser import parse_date_time
-import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import importlib.util
 service_path = '/app/scheduler-mcp/service.py'
 _spec = importlib.util.spec_from_file_location('scheduler_service', service_path)
