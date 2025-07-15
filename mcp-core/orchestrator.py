@@ -36,6 +36,8 @@ from utils.datetime_utils import (
 )
 from rapidfuzz import fuzz
 from datetime import datetime, date
+from chilean_rut import is_valid, format_rut
+
 
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
@@ -103,7 +105,7 @@ FIELD_QUESTIONS = {
     "mail_reclamo": "¿Puedes proporcionarme una dirección de EMAIL para enviarte el comprobante del RECLAMO?",
     "bloque_cita": "Perfecto. Antes de agendar una cita en nuestras oficinas, recuerda que nuestros horarios de atención son de lunes a viernes de 8:30 a 12:30. ¿En qué fecha y hora te gustaría reservar?",
     "nombre_cita": "Para poder asignar una cita con un funcionario, necesito que me proporciones algunos datos para poder registrarlos. Recuerda que tus datos son confidenciales y solo serán usados con el propósito de agendar la cita. Por favor, proporciona tu nombre completo",
-    "rut_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de RUT (el formato aceptado es 12345678-9)",
+    "rut_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de RUT (el formato aceptado es 12.345.678-9)",
     "depto_cita": "Muchas gracias. Según el motivo de tu consulta me puedes indicar el departamento al que corresponde tu consulta:\n1. Alcaldía\n2. Social\n3. Vivienda\n4. Tesorería\n5. Obras\n6. Medio Ambiente\n7. Finanzas\n8. Otros\nIndícame el número de departamento al que corresponde tu consulta",
     "motiv_cita": "Muchas gracias. Me puedes describir brevemente la razón de tu cita",
     "whatsapp_cita": "Muchas gracias. Ahora puedes proporcionarme tu número de telefónico móvil (el formato aceptado es +56912345678)",
@@ -2382,15 +2384,23 @@ if __name__ == "__main__":
 
 
 # --- Validación y formateo de RUT chileno ---
+
+
+import re
+
+
 def validar_y_formatear_rut(rut: str) -> str:
     if not rut:
         return None
-    if len(rut) != 9 or rut[7] != "-":
+    # Elimina puntos y espacios
+    rut = rut.replace(".", "").replace(" ", "")
+    # Verifica el formato XXXXXXXX-X o XXXXXXX-X
+    if not re.fullmatch(r"\d{7,8}-[\dKk]", rut):
         return None
+    # Extrae el número y el dígito verificador
     numero = rut[:-2]
     dv = rut[-1]
-    if not numero.isdigit():
-        return None
+    # Calcula el dígito verificador
     suma = 0
     multiplicador = 2
     for r in reversed(numero):
@@ -2403,6 +2413,7 @@ def validar_y_formatear_rut(rut: str) -> str:
         dvr = "K"
     else:
         dvr = str(dvr)
+    # Verifica el dígito verificador
     if dv != dvr:
         return None
     return rut
