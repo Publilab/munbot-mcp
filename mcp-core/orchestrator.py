@@ -1445,7 +1445,8 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                     "No he encontrado disponibilidad en el día y hora proporcionada, no obtante, he encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
                 ]
                 for i, nb in enumerate(nuevas, start=1):
-                    lines.append(f"  {i}. {nb['fecha']} {nb['hora_rango']}")
+                    rango = nb.get("hora") or f"{nb['hora_inicio'][:5]}-{nb['hora_fin'][:5]}"
+                    lines.append(f"  {i}. {nb['fecha']} {rango}")
                 lines.append(f"  {len(nuevas)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
                 return {"answer": "\n".join(lines), "pending": True}
             else:
@@ -1486,19 +1487,30 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         payload = {"fecha": ctx["bloque_cita"]["fecha"], "hora": ctx["bloque_cita"]["hora"]}
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
         bloques = raw.get("data") or raw.get("disponibles", [])
-        hora_user_dt = datetime.strptime(ctx["bloque_cita"]["hora"], "%H:%M").time()
-        bloque_match = select_exact_block(bloques, hora_user_dt, trace_id=sid)
+        hora_user_dt = datetime.strptime(
+            ctx["bloque_cita"]["hora"], "%H:%M"
+        ).time()
+
+        bloque_match = None
+        for b in bloques:
+            hi = datetime.strptime(b["hora_inicio"][:5], "%H:%M").time()
+            hf = datetime.strptime(b["hora_fin"][:5], "%H:%M").time()
+            if hi <= hora_user_dt < hf:
+                bloque_match = b
+                break
 
         ctx["last_search_fecha"] = ctx["bloque_cita"]["fecha"]
         ctx["last_search_hora"] = f"{ctx['bloque_cita']['hora']}-%"
 
         if bloque_match:
+            rango = bloque_match.get("hora") or f"{bloque_match['hora_inicio'][:5]}-{bloque_match['hora_fin'][:5]}"
+            bloque_match["hora_rango"] = rango
             ctx["last_suggestions"] = [bloque_match]
             save_session(sid, ctx)
             context_manager.update_pending_field(sid, "opcion_bloque")
             lines = [
                 "He encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
-                f"  1. {bloque_match['fecha']} {bloque_match['hora_rango']}",
+                f"  1. {bloque_match['fecha']} {rango}",
                 "  2. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO",
                 "Para confirmar tu opción escribe el número de la lista.",
             ]
@@ -1522,7 +1534,8 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             "No he encontrado disponibilidad en el día y hora proporcionada, no obtante, he encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
         ]
         for i, b in enumerate(opciones, start=1):
-            lines.append(f"  {i}. {b['fecha']} {b['hora_rango']}")
+            rango = b.get("hora") or f"{b['hora_inicio'][:5]}-{b['hora_fin'][:5]}"
+            lines.append(f"  {i}. {b['fecha']} {rango}")
         lines.append(f"  {len(opciones)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
         context_manager.update_pending_field(sid, "opcion_bloque")
         return {"answer": "\n".join(lines), "pending": True}
