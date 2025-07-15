@@ -122,6 +122,91 @@ async def tools_call(payload: dict):
                 data.append(r)
         return {"data": data}
 
+    if tool == "scheduler-reservar_hora":
+        slot_id = params.get("slot_id")
+        usuario_nombre = params.get("usuario_nombre")
+        usuario_mail = params.get("usuario_mail") or params.get("usuario_email")
+        usuario_whatsapp = params.get("usuario_whatsapp")
+        motivo = params.get("motivo", "")
+        if not (slot_id and usuario_nombre and usuario_mail):
+            raise HTTPException(status_code=400, detail="Faltan campos requeridos")
+        with get_conn() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute(
+                    "SELECT * FROM appointments WHERE id=%s AND disponible=TRUE AND confirmada=FALSE",
+                    (slot_id,),
+                )
+                slot = cur.fetchone()
+                if not slot:
+                    raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
+                cur.execute(
+                    "UPDATE appointments SET disponible=FALSE, confirmada=FALSE, usuario_nombre=%s, usuario_email=%s, usuario_whatsapp=%s, motivo=%s WHERE id=%s",
+                    (usuario_nombre, usuario_mail, usuario_whatsapp, motivo, slot_id),
+                )
+                conn.commit()
+        return {"id_reserva": slot_id, "estado": "pendiente", "mensaje": "Cita reservada. Confirme para activar la reserva."}
+
+    if tool == "scheduler-confirmar_hora":
+        reserva_id = params.get("id_reserva")
+        if not reserva_id:
+            raise HTTPException(status_code=400, detail="Se requiere id_reserva")
+        with get_conn() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("SELECT * FROM appointments WHERE id=%s", (reserva_id,))
+                cita = cur.fetchone()
+                if not cita:
+                    raise HTTPException(status_code=404, detail="Cita no encontrada")
+                cur.execute("UPDATE appointments SET confirmada=TRUE WHERE id=%s", (reserva_id,))
+                conn.commit()
+        hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
+        send_email(
+            cita["usuario_email"],
+            "Cita confirmada",
+            "email/confirm.html",
+            usuario=cita["usuario_nombre"],
+            funcionario=cita["funcionario_nombre"],
+            fecha_legible=str(cita["fecha"]),
+            hora=hora_str,
+        )
+        send_whatsapp(
+            cita["usuario_whatsapp"],
+            f"Su cita con {cita['funcionario_nombre']} ha sido confirmada para el {cita['fecha']} a las {hora_str}.",
+        )
+        return {"id_reserva": reserva_id, "estado": "confirmada"}
+
+    if tool == "scheduler-cancelar_hora":
+        reserva_id = params.get("id_reserva")
+        motivo_cancelacion = params.get("motivo_cancelacion", "")
+        if not reserva_id:
+            raise HTTPException(status_code=400, detail="Se requiere id_reserva")
+        with get_conn() as conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                cur.execute("SELECT * FROM appointments WHERE id=%s", (reserva_id,))
+                cita = cur.fetchone()
+                if not cita:
+                    raise HTTPException(status_code=404, detail="Cita no encontrada")
+                cur.execute(
+                    "UPDATE appointments SET disponible=TRUE, confirmada=FALSE, motivo='', usuario_nombre='', usuario_email='', usuario_whatsapp='' WHERE id=%s",
+                    (reserva_id,),
+                )
+                conn.commit()
+        hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
+        if cita["usuario_email"]:
+            send_email(
+                cita["usuario_email"],
+                "Cita cancelada",
+                "email/reminder.html",
+                usuario=cita["usuario_nombre"],
+                fecha_legible=str(cita["fecha"]),
+                hora=hora_str,
+            )
+        if cita["usuario_whatsapp"]:
+            send_whatsapp(
+                cita["usuario_whatsapp"],
+                f"Su cita ha sido cancelada. Motivo: {motivo_cancelacion}",
+            )
+        return {"id_reserva": reserva_id, "estado": "cancelada"}
+
     return JSONResponse(status_code=400, content={"detail": "Tool desconocida"})
 
 # =====================
