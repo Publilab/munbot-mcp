@@ -120,4 +120,6 @@ def test_exact_match(monkeypatch):
     assert bloque["hora_fin"] == "10:30:00"
     # Verifica string horario reconstruido
     out = scheduler_app.AppointmentOut(**bloque).as_dict()
-    assert out["hora"] == f"{bloque['hora_inicio'][:5]}-{bloque['hora_fin'][:5]}"
+    hi_str = str(bloque['hora_inicio'])[:5]
+    hf_str = str(bloque['hora_fin'])[:5]
+    assert out["hora"] == f"{hi_str}-{hf_str}"
