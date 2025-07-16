@@ -155,7 +155,11 @@ async def tools_call(payload: dict):
                 )
                 conn.commit()
 
-                hora_str = f"{slot['hora_inicio'][:5]}-{slot['hora_fin'][:5]}"
+                hi = slot["hora_inicio"]
+                hf = slot["hora_fin"]
+                hi_str = hi.strftime("%H:%M") if isinstance(hi, dtime) else str(hi)[:5]
+                hf_str = hf.strftime("%H:%M") if isinstance(hf, dtime) else str(hf)[:5]
+                hora_str = f"{hi_str}-{hf_str}"
                 send_email(
                     usuario_mail,
                     "Cita confirmada",
@@ -182,7 +186,11 @@ async def tools_call(payload: dict):
                     raise HTTPException(status_code=404, detail="Cita no encontrada")
                 cur.execute("UPDATE appointments SET confirmada=TRUE WHERE id=%s", (reserva_id,))
                 conn.commit()
-        hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
+        hi = cita["hora_inicio"]
+        hf = cita["hora_fin"]
+        hi_str = hi.strftime("%H:%M") if isinstance(hi, dtime) else str(hi)[:5]
+        hf_str = hf.strftime("%H:%M") if isinstance(hf, dtime) else str(hf)[:5]
+        hora_str = f"{hi_str}-{hf_str}"
         send_email(
             cita["usuario_email"],
             "Cita confirmada",
@@ -214,7 +222,11 @@ async def tools_call(payload: dict):
                     (reserva_id,),
                 )
                 conn.commit()
-        hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
+        hi = cita["hora_inicio"]
+        hf = cita["hora_fin"]
+        hi_str = hi.strftime("%H:%M") if isinstance(hi, dtime) else str(hi)[:5]
+        hf_str = hf.strftime("%H:%M") if isinstance(hf, dtime) else str(hf)[:5]
+        hora_str = f"{hi_str}-{hf_str}"
         if cita["usuario_email"]:
             send_email(
                 cita["usuario_email"],
@@ -381,7 +393,11 @@ def reserve_appointment(appt: AppointmentCreate):
                 ),
             )
             conn.commit()
-            hora_str = f"{slot['hora_inicio'][:5]}-{slot['hora_fin'][:5]}"
+            hi = slot["hora_inicio"]
+            hf = slot["hora_fin"]
+            hi_str = hi.strftime("%H:%M") if isinstance(hi, dtime) else str(hi)[:5]
+            hf_str = hf.strftime("%H:%M") if isinstance(hf, dtime) else str(hf)[:5]
+            hora_str = f"{hi_str}-{hf_str}"
             send_email(
                 appt.usu_mail,
                 "Cita confirmada",
@@ -406,7 +422,11 @@ def confirm_appointment(body: AppointmentConfirm):
             cur.execute("UPDATE appointments SET confirmada=TRUE WHERE id=%s", (body.id,))
             conn.commit()
     # Notificación al usuario y funcionario
-    hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
+    hi = cita["hora_inicio"]
+    hf = cita["hora_fin"]
+    hi_str = hi.strftime("%H:%M") if isinstance(hi, dtime) else str(hi)[:5]
+    hf_str = hf.strftime("%H:%M") if isinstance(hf, dtime) else str(hf)[:5]
+    hora_str = f"{hi_str}-{hf_str}"
     send_email(
         cita["usuario_email"],
         "Cita confirmada",
@@ -438,7 +458,11 @@ def cancel_appointment(body: AppointmentCancel):
             )
             conn.commit()
     # Notificar usuario
-    hora_str = f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"
+    hi = cita["hora_inicio"]
+    hf = cita["hora_fin"]
+    hi_str = hi.strftime("%H:%M") if isinstance(hi, dtime) else str(hi)[:5]
+    hf_str = hf.strftime("%H:%M") if isinstance(hf, dtime) else str(hf)[:5]
+    hora_str = f"{hi_str}-{hf_str}"
     if cita["usuario_email"]:
         send_email(
             cita["usuario_email"],

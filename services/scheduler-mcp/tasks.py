@@ -26,11 +26,15 @@ def send_whatsapp(cita):
     try:
         phone_number = cita['usuario_whatsapp'].replace('+', '')
         url = f"https://graph.facebook.com/v19.0/{META_PHONE_ID}/messages"
+        hi = cita["hora_inicio"]
+        hf = cita["hora_fin"]
+        hi_str = hi.strftime("%H:%M") if isinstance(hi, time) else str(hi)[:5]
+        hf_str = hf.strftime("%H:%M") if isinstance(hf, time) else str(hf)[:5]
         payload = {
             "messaging_product": "whatsapp",
             "to": phone_number,
             "type": "text",
-            "text": {"body": f"Recordatorio: Su cita es mañana {cita['fecha']} a las {f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}"} con {cita['funcionario_nombre']}."}
+            "text": {"body": f"Recordatorio: Su cita es mañana {cita['fecha']} a las {hi_str}-{hf_str} con {cita['funcionario_nombre']}."}
         }
         headers = {
             "Authorization": f"Bearer {META_TOKEN}",
@@ -47,13 +51,17 @@ def send_reminder(dry: bool = False):
     count = 0
     for cita in citas:
         if not dry:
+            hi = cita["hora_inicio"]
+            hf = cita["hora_fin"]
+            hi_str = hi.strftime("%H:%M") if isinstance(hi, time) else str(hi)[:5]
+            hf_str = hf.strftime("%H:%M") if isinstance(hf, time) else str(hf)[:5]
             send_email(
                 cita['usuario_email'],
                 'Recordatorio de cita municipal',
                 'email/reminder.html',
                 usuario=cita['usuario_nombre'],
                 fecha_legible=str(cita['fecha']),
-                hora=f"{cita['hora_inicio'][:5]}-{cita['hora_fin'][:5]}",
+                hora=f"{hi_str}-{hf_str}",
             )
             if cita.get('usuario_whatsapp'):
                 send_whatsapp(cita)
