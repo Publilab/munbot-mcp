@@ -1423,11 +1423,11 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         choice = int(user_text.strip())
         if opciones and 1 <= choice <= len(opciones):
             b = opciones[choice - 1]
-            ctx["bloque_cita"] = {
-                "slot_id": b.get("slot_id") or b.get("id"),
-                "fecha": b["fecha"],
-                "hora": b["hora_inicio"][:5],
-            }
+            # Registrar en contexto únicamente el identificador del bloque
+            ctx["slot_id"] = b.get("id")
+            # Actualizar fecha y hora elegida para coherencia del flujo
+            ctx.setdefault("bloque_cita", {})["fecha"] = b["fecha"]
+            ctx["bloque_cita"]["hora"] = b["hora_inicio"][:5]
             save_session(sid, ctx)
             context_manager.update_pending_field(sid, "nombre_cita")
             return {"answer": FIELD_QUESTIONS["nombre_cita"], "pending": True}
@@ -1625,7 +1625,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         context_manager.clear_pending_field(sid)
 
         payload = {
-            "slot_id": ctx.get("bloque_cita", {}).get("slot_id"),
+            "slot_id": ctx.get("slot_id"),
             "usuario_nombre": ctx.get("nombre_cita"),
             "usuario_mail": ctx.get("mail_cita"),
         }
