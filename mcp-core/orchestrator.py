@@ -1634,6 +1634,10 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             payload["usuario_whatsapp"] = ctx["whatsapp_cita"]
         if ctx.get("motiv_cita"):
             payload["motivo"] = ctx["motiv_cita"]
+        if ctx.get("rut_cita"):
+            payload["usuario_rut"] = ctx["rut_cita"]
+        if ctx.get("depto_cita"):
+            payload["departamento_codigo"] = ctx["depto_cita"]
         import logging
         logging.info(f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}")
         tool_result = call_tool_microservice("scheduler-reservar_hora", payload)
