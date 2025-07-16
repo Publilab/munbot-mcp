@@ -261,6 +261,8 @@ class AppointmentOut(AppointmentCreate):
         data = super().model_dump(by_alias=False)
         # reconstruye el string horario
         data['hora'] = f"{self.hora_inicio.strftime('%H:%M')}-{self.hora_fin.strftime('%H:%M')}"
+        # Compatibilidad: exponer slot_id además de id
+        data['slot_id'] = self.id
         return data
 
 class AppointmentConfirm(BaseModel):

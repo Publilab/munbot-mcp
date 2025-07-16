@@ -1424,7 +1424,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         if opciones and 1 <= choice <= len(opciones):
             b = opciones[choice - 1]
             ctx["bloque_cita"] = {
-                "slot_id": b.get("slot_id"),
+                "slot_id": b.get("slot_id") or b.get("id"),
                 "fecha": b["fecha"],
                 "hora": b["hora_inicio"][:5],
             }
