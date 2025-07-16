@@ -34,6 +34,7 @@ COPY databases/ ./databases/
 COPY mcp-core/utils/ ./utils/
 COPY tests/ ./tests/
 
+
 # ───────────────────────────────
 # 4) Variables de entorno y puertos
 # ───────────────────────────────
