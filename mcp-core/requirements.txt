@@ -8,3 +8,4 @@ psycopg2-binary
 rapidfuzz
 fakeredis
 chilean-rut
+phonenumbers
