@@ -128,6 +128,8 @@ async def tools_call(payload: dict):
         usuario_mail = params.get("usuario_mail") or params.get("usuario_email")
         usuario_whatsapp = params.get("usuario_whatsapp")
         motivo = params.get("motivo", "")
+        usuario_rut = params.get("usuario_rut")
+        depto_codigo = params.get("departamento_codigo")
         if not (slot_id and usuario_nombre and usuario_mail):
             raise HTTPException(status_code=400, detail="Faltan campos requeridos")
         with get_conn() as conn:
@@ -140,11 +142,31 @@ async def tools_call(payload: dict):
                 if not slot:
                     raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
                 cur.execute(
-                    "UPDATE appointments SET disponible=FALSE, confirmada=FALSE, usuario_nombre=%s, usuario_email=%s, usuario_whatsapp=%s, motivo=%s WHERE id=%s",
-                    (usuario_nombre, usuario_mail, usuario_whatsapp, motivo, slot_id),
+                    "UPDATE appointments SET disponible=FALSE, confirmada=FALSE, usuario_nombre=%s, usuario_email=%s, usuario_whatsapp=%s, motivo=%s, usuario_rut=%s, departamento_codigo=%s WHERE id=%s",
+                    (
+                        usuario_nombre,
+                        usuario_mail,
+                        usuario_whatsapp,
+                        motivo,
+                        usuario_rut,
+                        depto_codigo,
+                        slot_id,
+                    ),
                 )
                 conn.commit()
-        return {"id_reserva": slot_id, "estado": "pendiente", "mensaje": "Cita reservada. Confirme para activar la reserva."}
+
+                hora_str = f"{slot['hora_inicio'][:5]}-{slot['hora_fin'][:5]}"
+                send_email(
+                    usuario_mail,
+                    "Cita confirmada",
+                    "email/confirm.html",
+                    usuario=usuario_nombre,
+                    funcionario=slot["funcionario_nombre"],
+                    fecha_legible=str(slot["fecha"]),
+                    hora=hora_str,
+                )
+
+        return {"id_reserva": slot_id, "estado": "pendiente", "mensaje": "Ya reservé tu cita. Recuerda que debes ser puntual y llegar antes de la hora estipulada. Debes llevar tu documentación actualizada y tus dudas bien estructuradas para que podamos ayudarte. Te esperamos."}
 
     if tool == "scheduler-confirmar_hora":
         reserva_id = params.get("id_reserva")
@@ -345,13 +367,29 @@ def reserve_appointment(appt: AppointmentCreate):
             cur.execute(
                 "UPDATE appointments "
                 "SET disponible = FALSE, confirmada = FALSE, "
-                "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s "
+                "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s, usuario_rut = %s "
                 "WHERE id = %s",
-                (appt.usu_name, appt.usu_mail, appt.usu_whatsapp, appt.motiv, slot["id"]),
+                (
+                    appt.usu_name,
+                    appt.usu_mail,
+                    appt.usu_whatsapp,
+                    appt.motiv,
+                    appt.rut,
+                    slot["id"],
+                ),
             )
             conn.commit()
-    # Notificación opcional aquí
-    return {"id": slot["id"], "respuesta": "Cita reservada. Confirme para activar la reserva."}
+            hora_str = f"{slot['hora_inicio'][:5]}-{slot['hora_fin'][:5]}"
+            send_email(
+                appt.usu_mail,
+                "Cita confirmada",
+                "email/confirm.html",
+                usuario=appt.usu_name,
+                funcionario=slot["funcionario_nombre"],
+                fecha_legible=str(slot["fecha"]),
+                hora=hora_str,
+            )
+    return {"id": slot["id"], "respuesta": "Ya reservé tu cita. Recuerda que debes ser puntual y llegar antes de la hora estipulada. Debes llevar tu documentación actualizada y tus dudas bien estructuradas para que podamos ayudarte. Te esperamos."}
 
 @app.post("/appointments/confirm")
 def confirm_appointment(body: AppointmentConfirm):

@@ -33,6 +33,10 @@ class DummyConn:
                 return outer.rows.pop(0) if outer.rows else None
             def fetchall(self_inner):
                 return outer.rows
+            def __enter__(self_inner):
+                return self_inner
+            def __exit__(self_inner, exc_type, exc, tb):
+                pass
         return C()
     def commit(self):
         pass
@@ -40,8 +44,20 @@ class DummyConn:
         pass
 
 def test_reserve_and_confirm(monkeypatch):
-    slot = {"id": "abc123"}
-    monkeypatch.setattr(scheduler_mcp, "get_db", lambda: DummyConn([slot.copy()]))
+    slot = {
+        "id": "abc123",
+        "hora_inicio": "10:00",
+        "hora_fin": "10:30",
+        "funcionario_nombre": "funcionario",
+        "fecha": date.today(),
+    }
+    from contextlib import contextmanager
+
+    @contextmanager
+    def dummy_conn():
+        yield DummyConn([slot.copy()])
+
+    monkeypatch.setattr(scheduler_mcp, "get_conn", dummy_conn)
 
     payload = {
         "func": "funcionario",
@@ -53,8 +69,10 @@ def test_reserve_and_confirm(monkeypatch):
         "fecha": date.today().isoformat(),
         "hora": "10:00"
     }
-    r = client.post("/appointments/reserve", json=payload)
-    assert r.status_code == 200
+    with patch.object(scheduler_mcp, 'send_email') as mock_mail:
+        r = client.post("/appointments/reserve", json=payload)
+        assert r.status_code == 200
+        mock_mail.assert_called_once()
 
     appt = {
         "id": "abc123",
@@ -67,9 +85,12 @@ def test_reserve_and_confirm(monkeypatch):
         "fecha": date.today(),
         "hora_inicio": "10:00:00", "hora_fin": "10:30:00"
     }
-    monkeypatch.setattr(scheduler_mcp, "get_db", lambda: DummyConn([appt.copy()]))
-    with patch('scheduler_mcp.notifications.send_email') as mock_mail:
-        scheduler_mcp.send_email = scheduler_mcp.notifications.send_email
+    @contextmanager
+    def dummy_conn2():
+        yield DummyConn([appt.copy()])
+
+    monkeypatch.setattr(scheduler_mcp, "get_conn", dummy_conn2)
+    with patch.object(scheduler_mcp, 'send_email') as mock_mail2:
         r = client.post("/appointments/confirm", json={"id": "abc123"})
         assert r.status_code == 200
-        mock_mail.assert_called_once()
+        mock_mail2.assert_called_once()
