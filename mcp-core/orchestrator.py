@@ -1424,6 +1424,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         if opciones and 1 <= choice <= len(opciones):
             b = opciones[choice - 1]
             ctx["bloque_cita"] = {
+                "slot_id": b.get("id"),
                 "fecha": b["fecha"],
                 "hora": b["hora_inicio"][:5],
             }
@@ -1431,7 +1432,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             context_manager.update_pending_field(sid, "nombre_cita")
             return {"answer": FIELD_QUESTIONS["nombre_cita"], "pending": True}
         elif opciones and choice == len(opciones) + 1:
-            excluidos = [b["bloque_id"] for b in opciones]
+            excluidos = [b.get("id") for b in opciones]
             nuevas = call_tool_microservice(
                 "scheduler-listar_horas_cercanas",
                 {
@@ -1610,7 +1611,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         telefono = validar_telefono_movil(user_text)
         if not telefono:
             return {"answer": FIELD_QUESTIONS["whatsapp_cita"], "pending": True}
-        ctx["usuario_whatsapp"] = telefono
+        ctx["whatsapp_cita"] = telefono
         save_session(sid, ctx)
         context_manager.update_pending_field(sid, "mail_cita")
         return {"answer": FIELD_QUESTIONS["mail_cita"], "pending": True}
