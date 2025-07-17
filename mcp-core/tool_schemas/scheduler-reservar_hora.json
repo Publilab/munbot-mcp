@@ -46,9 +46,13 @@
           "type": "string",
           "enum": ["pendiente"],
           "description": "Estado inicial de la reserva."
+        },
+        "mensaje": {
+          "type": "string",
+          "description": "Mensaje de confirmación"
         }
       },
-      "required": ["id_reserva", "estado"],
+      "required": ["id_reserva", "estado", "mensaje"],
       "additionalProperties": false
     }
   }
