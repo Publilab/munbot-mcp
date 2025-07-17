@@ -33,6 +33,7 @@ COPY services/ ./services/
 COPY databases/ ./databases/
 COPY mcp-core/utils/ ./utils/
 COPY tests/ ./tests/
+COPY templates/ ./templates/
 
 
 # ───────────────────────────────
