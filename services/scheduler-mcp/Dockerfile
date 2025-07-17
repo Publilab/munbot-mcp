@@ -20,6 +20,7 @@ COPY service.py ./
 COPY repository.py ./
 COPY wait-for-it.sh ./
 COPY utils/ ./utils/
+COPY templates/ ./templates/
 COPY ./databases/init-appointments.sql ./databases/init-appointments.sql
 
 # Si tienes mcp-utils, añádelo aquí (opcional, si usas tracing distribuido)
