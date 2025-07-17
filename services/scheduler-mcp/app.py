@@ -142,7 +142,7 @@ async def tools_call(payload: dict):
                 if not slot:
                     raise HTTPException(status_code=404, detail="Slot no disponible o ya reservado")
                 cur.execute(
-                    "UPDATE appointments SET disponible=FALSE, confirmada=FALSE, usuario_nombre=%s, usuario_email=%s, usuario_whatsapp=%s, motivo=%s, usuario_rut=%s, departamento_codigo=%s WHERE id=%s",
+                    "UPDATE appointments SET disponible=FALSE, confirmada=TRUE, usuario_nombre=%s, usuario_email=%s, usuario_whatsapp=%s, motivo=%s, usuario_rut=%s, departamento_codigo=%s WHERE id=%s",
                     (
                         usuario_nombre,
                         usuario_mail,
@@ -201,7 +201,11 @@ async def tools_call(payload: dict):
             cita["usuario_whatsapp"],
             f"Su cita con {cita['funcionario_nombre']} ha sido confirmada para el {cita['fecha']} a las {hora_str}.",
         )
-        return {"id_reserva": reserva_id, "estado": "confirmada"}
+        return {
+            "id_reserva": reserva_id,
+            "estado": "confirmada",
+            "mensaje": "Cita confirmada y notificada."
+        }
 
     if tool == "scheduler-cancelar_hora":
         reserva_id = params.get("id_reserva")
@@ -238,7 +242,11 @@ async def tools_call(payload: dict):
                 cita["usuario_whatsapp"],
                 f"Su cita ha sido cancelada. Motivo: {motivo_cancelacion}",
             )
-        return {"id_reserva": reserva_id, "estado": "cancelada"}
+        return {
+            "id_reserva": reserva_id,
+            "estado": "cancelada",
+            "mensaje": "Cita cancelada."
+        }
 
     return JSONResponse(status_code=400, content={"detail": "Tool desconocida"})
 
@@ -377,7 +385,7 @@ def reserve_appointment(appt: AppointmentCreate):
             # Reserva (marca como no disponible, confirma usuario)
             cur.execute(
                 "UPDATE appointments "
-                "SET disponible = FALSE, confirmada = FALSE, "
+                "SET disponible = FALSE, confirmada = TRUE, "
                 "    usuario_nombre = %s, usuario_email = %s, usuario_whatsapp = %s, motivo = %s, usuario_rut = %s "
                 "WHERE id = %s",
                 (
@@ -404,7 +412,11 @@ def reserve_appointment(appt: AppointmentCreate):
                 fecha_legible=str(slot["fecha"]),
                 hora=hora_str,
             )
-    return {"id": slot["id"], "respuesta": "Ya reservé tu cita. Recuerda que debes ser puntual y llegar antes de la hora estipulada. Debes llevar tu documentación actualizada y tus dudas bien estructuradas para que podamos ayudarte. Te esperamos."}
+    return {
+        "id_reserva": slot["id"],
+        "estado": "pendiente",
+        "mensaje": "Ya reservé tu cita. Recuerda que debes ser puntual y llegar antes de la hora estipulada. Debes llevar tu documentación actualizada y tus dudas bien estructuradas para que podamos ayudarte. Te esperamos."
+    }
 
 @app.post("/appointments/confirm")
 def confirm_appointment(body: AppointmentConfirm):
@@ -434,7 +446,11 @@ def confirm_appointment(body: AppointmentConfirm):
         hora=hora_str,
     )
     send_whatsapp(cita["usuario_whatsapp"], f"Su cita con {cita['funcionario_nombre']} ha sido confirmada para el {cita['fecha']} a las {hora_str}.")
-    return {"id": body.id, "respuesta": "Cita confirmada y notificada."}
+    return {
+        "id_reserva": body.id,
+        "estado": "confirmada",
+        "mensaje": "Cita confirmada y notificada."
+    }
 
 @app.post("/appointments/cancel")
 def cancel_appointment(body: AppointmentCancel):
@@ -471,7 +487,11 @@ def cancel_appointment(body: AppointmentCancel):
         )
     if cita["usuario_whatsapp"]:
         send_whatsapp(cita["usuario_whatsapp"], f"Su cita ha sido cancelada. Motivo: {body.motivo}")
-    return {"id": body.id, "respuesta": "Cita cancelada."}
+    return {
+        "id_reserva": body.id,
+        "estado": "cancelada",
+        "mensaje": "Cita cancelada."
+    }
 
 @app.get("/appointments/{id}")
 def get_appointment(id: str):
