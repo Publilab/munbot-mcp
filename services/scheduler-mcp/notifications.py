@@ -11,7 +11,11 @@ env = Environment(
 
 def send_email(to: str, subject: str, template: str, **ctx):
     SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.sendgrid.net')
-    SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
+    # If the environment variable is empty or invalid fallback to default 587
+    try:
+        SMTP_PORT = int(os.getenv('SMTP_PORT') or 587)
+    except ValueError:
+        SMTP_PORT = 587
     SMTP_USER = os.getenv('SMTP_USER', 'apikey')
     SMTP_PASS = os.getenv('SMTP_PASS', '')
     FROM = os.getenv('SENDER_EMAIL', SMTP_USER)
