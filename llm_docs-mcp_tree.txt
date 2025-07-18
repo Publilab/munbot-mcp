@@ -1,0 +1,25 @@
+/Volumes/PubliLab-EXHD/Publilab/Projects/PubliLab/GitHub/munbot-mcp/services/llm_docs-mcp
+├── Dockerfile
+├── Makefile
+├── README.md
+├── __init__.py
+├── automatizar_actualizacion.sh
+├── config.env.example
+├── documents
+│   ├── MAN-Ayudas Sociales.txt
+│   ├── ORD-Funcionamiento del Comercio.txt
+│   ├── ORD-Medio Ambiente.txt
+│   ├── ORD-Patente de Alcoholes.txt
+│   ├── ORD-Transporte Basura Desecho.txt
+│   └── metadata.json
+├── gateway.py
+├── gateway_alias.py
+├── llama_client.py
+├── llama_cpp -> ../../llama_cpp\012
+├── models
+│   └── Llama-3.2-3B-Instruct-Q6_K.gguf
+├── process_documents.py
+├── requirements.txt
+└── test_tools.py
+
+3 directories, 20 files

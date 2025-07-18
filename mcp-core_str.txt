@@ -1,0 +1,60 @@
+/Volumes/PubliLab-EXHD/Publilab/Projects/PubliLab/GitHub/munbot-mcp/mcp-core
+├── Dockerfile
+├── README.md
+├── classification_utils.py
+├── context_manager.py
+├── databases
+│   ├── documento_requisito.json
+│   ├── faq_respuestas.json
+│   ├── missed_questions.csv
+│   └── oficina_info.json
+├── llama_client.py
+├── models
+│   └── Llama-3.2-3B-Instruct-Q6_K.gguf
+├── orchestrator.py
+├── prompts
+│   ├── Icon\015
+│   ├── README.md
+│   ├── complaint-registrar_reclamo.txt
+│   ├── doc-buscar_fragmento_documento.txt
+│   ├── doc-generar_respuesta_llm.txt
+│   ├── doc-info_documento.txt
+│   ├── doc-listar_documentos_oficiales.txt
+│   ├── info-documento_por_accion.txt
+│   ├── info-listar_documentos.txt
+│   ├── info-oficina_documento.txt
+│   ├── info-preguntar_documento.txt
+│   ├── info-respuesta_faq.txt
+│   ├── scheduler-appointment_create.txt
+│   ├── scheduler-cancelar_hora.txt
+│   ├── scheduler-confirmar_hora.txt
+│   ├── scheduler-listar_horas_disponibles.txt
+│   └── scheduler-reservar_hora.txt
+├── requirements.txt
+├── tool_schemas
+│   ├── Icon\015
+│   ├── README.md
+│   ├── complaint-registrar_reclamo.json
+│   ├── doc-buscar_fragmento_documento.json
+│   ├── doc-generar_respuesta_llm.json
+│   ├── doc-info_documento.json
+│   ├── doc-listar_documentos_oficiales.json
+│   ├── info-documento_por_accion.json
+│   ├── info-listar_documentos.json
+│   ├── info-oficina_documento.json
+│   ├── info-preguntar_documento.json
+│   ├── info-respuesta_faq.json
+│   ├── scheduler-appointment_create.json
+│   ├── scheduler-cancelar_hora.json
+│   ├── scheduler-confirmar_hora.json
+│   ├── scheduler-listar_horas_disponibles.json
+│   └── scheduler-reservar_hora.json
+└── utils
+    ├── __init__.py
+    ├── audit.py
+    ├── datetime_utils.py
+    ├── parser.py
+    ├── phone_utils.py
+    └── text.py
+
+6 directories, 52 files
