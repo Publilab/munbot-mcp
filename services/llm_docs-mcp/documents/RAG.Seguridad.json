@@ -1,0 +1,389 @@
+[
+  {
+    "id": "SGM-001",
+    "titulo": "Objeto y Declaración de Estado de Guerra",
+    "texto": "Declaración formal de estado de guerra contra el Imperio. Ámbito territorial de aplicación de medidas extraordinarias en el Gobierno de Curoscant. Principios de defensa planetaria y soberanía local, justificando medidas excepcionales. Se establece la necesidad de una respuesta militar organizada y coordinada para garantizar la seguridad de los ciudadanos y la integridad del territorio.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Estado de Guerra",
+      "Defensa Planetaria",
+      "Soberanía Local"
+    ]
+  },
+  {
+    "id": "SGM-002",
+    "titulo": "Definiciones Estratégicas",
+    "texto": "Se define amenaza imperial, pirática, espionaje y terrorismo. Se clasifican zonas de riesgo y seguridad con criterios estratégicos y poblacionales. Se establece la importancia de la identificación y clasificación de amenazas para una respuesta adecuada y oportuna. Se enfatiza la necesidad de una estructura organizativa clara para la defensa y seguridad ciudadana.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Amenaza Imperial",
+      "Zonas de Riesgo",
+      "Estrategias de Defensa"
+    ]
+  },
+  {
+    "id": "SGM-003",
+    "titulo": "Marco Legal de Emergencia",
+    "texto": "Suspensión temporal de garantías constitucionales. Facultades extraordinarias del alcalde y coordinación obligatoria con autoridades militares superiores durante estado de guerra. Se establece un marco legal que permita la implementación de medidas excepcionales para garantizar la seguridad y defensa del territorio. Se enfatiza la importancia de la transparencia y rendición de cuentas en el ejercicio de estas facultades extraordinarias.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Marco Legal de Emergencia",
+      "Facultades Extraordinarias",
+      "Coordinación Militar"
+    ]
+  },
+  {
+    "id": "SGM-004",
+    "titulo": "Principios de Defensa Ciudadana",
+    "texto": "Principio de resistencia colectiva, solidaridad en la defensa planetaria y protección prioritaria de población civil. Se establece la importancia de la participación ciudadana en la defensa y seguridad, promoviendo una cultura de solidaridad y responsabilidad compartida. Se enfatiza la necesidad de proteger a los ciudadanos más vulnerables y garantizar su bienestar durante el estado de guerra.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Defensa Ciudadana",
+      "Solidaridad Planetaria",
+      "Protección Civil"
+    ]
+  },
+  {
+    "id": "SGM-005",
+    "titulo": "Comando Municipal de Defensa",
+    "texto": "Establecimiento de comando de guerra municipal con cadena de mando clara, responsabilidades definidas y protocolos de comunicación en combate. Se define la estructura organizativa del comando municipal de defensa, estableciendo roles y responsabilidades claras para una respuesta efectiva. Se enfatiza la importancia de la coordinación y comunicación entre las diferentes unidades y autoridades involucradas en la defensa ciudadana.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Comando Municipal de Defensa",
+      "Cadena de Mando",
+      "Protocolos de Comunicación"
+    ]
+  },
+  {
+    "id": "SGM-006",
+    "titulo": "Fuerzas de Seguridad Municipal",
+    "texto": "Activación de milicias ciudadanas entrenadas. Entrenamiento básico obligatorio y distribución controlada de armamento defensivo. Se establece la creación de milicias ciudadanas como una medida de defensa activa, promoviendo la participación y preparación de la población. Se enfatiza la importancia del entrenamiento y la regulación del armamento para garantizar una respuesta efectiva y segura ante las amenazas.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Milicias Ciudadanas",
+      "Entrenamiento Obligatorio",
+      "Armamento Defensivo"
+    ]
+  },
+  {
+    "id": "SGM-007",
+    "titulo": "Coordinación Interinstitucional",
+    "texto": "Enlaces operativos con fuerzas militares regulares y servicios de inteligencia, uso de red de comunicaciones seguras. Se establece la importancia de la colaboración y coordinación entre las diferentes instituciones y organismos responsables de la seguridad y defensa. Se enfatiza el uso de tecnologías avanzadas y redes de comunicación seguras para garantizar una respuesta efectiva y oportuna ante las amenazas.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Coordinación Interinstitucional",
+      "Enlaces Operativos",
+      "Redes de Comunicación Seguras"
+    ]
+  },
+  {
+    "id": "SGM-008",
+    "titulo": "Centros de Comando y Control",
+    "texto": "Establecimiento de búnkeres municipales, sistemas protegidos de comunicación y protocolos de evacuación de autoridades. Se define la creación de centros de comando y control como un elemento clave para la gestión de crisis y la coordinación de las operaciones de defensa. Se enfatiza la importancia de contar con infraestructuras seguras y protocolos claros para garantizar la continuidad de las operaciones en situaciones de emergencia.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Centros de Comando",
+      "Búnkeres Municipales",
+      "Protocolos de Evacuación"
+    ]
+  },
+  {
+    "id": "SGM-009",
+    "titulo": "Sistema de Alerta Temprana",
+    "texto": "Red de vigilancia ciudadana y detección de naves enemigas. Protocolos de alarma y evacuación coordinada. Se establece un sistema de alerta temprana como una medida preventiva para detectar y responder a las amenazas de manera oportuna. Se enfatiza la importancia de la participación ciudadana en la vigilancia y detección, así como la coordinación de los protocolos de alarma y evacuación para garantizar la seguridad de la población.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Sistema de Alerta Temprana",
+      "Vigilancia Ciudadana",
+      "Protocolos de Alarma"
+    ]
+  },
+  {
+    "id": "SGM-010",
+    "titulo": "Control de Fronteras Municipales",
+    "texto": "Establecimiento de checkpoints de control de acceso, identificación obligatoria y patrullaje permanente. Se define la importancia del control de fronteras como una medida clave para prevenir infiltraciones y garantizar la seguridad del territorio. Se enfatiza la necesidad de establecer protocolos claros para el control de acceso, la identificación de personas y el patrullaje permanente en las zonas fronterizas.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Control de Fronteras",
+      "Checkpoints de Acceso",
+      "Identificación Obligatoria"
+    ]
+  },
+  {
+    "id": "SGM-011",
+    "titulo": "Restricciones de Movilidad",
+    "texto": "Toques de queda en horarios críticos, zonas prohibidas para civiles y permisos especiales de circulación. Se establece la implementación de restricciones de movilidad como una medida necesaria para garantizar la seguridad y el control del territorio durante el estado de guerra. Se enfatiza la importancia de establecer horarios críticos, zonas prohibidas y permisos especiales para regular el movimiento de personas y vehículos, garantizando así una respuesta efectiva ante las amenazas.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Restricciones de Movilidad",
+      "Toques de Queda",
+      "Zonas Prohibidas"
+    ]
+  },
+  {
+    "id": "SGM-012",
+    "titulo": "Protección de Infraestructura Crítica",
+    "texto": "Resguardo especial a centrales de energía, sistemas de agua, comunicaciones y fortificación de edificios públicos. Se define la protección de infraestructura crítica como una prioridad para garantizar el funcionamiento esencial de la ciudad durante el estado de guerra. Se enfatiza la necesidad de implementar medidas de resguardo, fortificación y protección especial a las instalaciones clave, asegurando así la continuidad de los servicios básicos y la seguridad de la población.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Protección de Infraestructura",
+      "Resguardo Especial",
+      "Fortificación de Edificios"
+    ]
+  },
+  {
+    "id": "SGM-013",
+    "titulo": "Identificación de Agentes Enemigos",
+    "texto": "Procedimientos para verificación de identidad, registro obligatorio de extranjeros y mecanismos de denuncia. Se establece la importancia de identificar y registrar a los agentes enemigos como una medida clave para prevenir infiltraciones y garantizar la seguridad del territorio. Se enfatiza la necesidad de implementar procedimientos claros para la verificación de identidad, el registro de extranjeros y los mecanismos de denuncia, promoviendo así la colaboración ciudadana en la identificación de amenazas.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Identificación de Agentes Enemigos",
+      "Verificación de Identidad",
+      "Registro de Extranjeros"
+    ]
+  },
+  {
+    "id": "SGM-014",
+    "titulo": "Control de Comunicaciones",
+    "texto": "Monitoreo de transmisiones sospechosas, restricciones a comunicaciones externas y cifrado obligatorio en comunicaciones oficiales. Se define el control de comunicaciones como una medida esencial para prevenir la difusión de información sensible y garantizar la seguridad de las operaciones. Se enfatiza la necesidad de implementar protocolos de monitoreo, restricciones a las comunicaciones externas y el uso de cifrado en las comunicaciones oficiales, asegurando así la confidencialidad y seguridad de la información crítica.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Control de Comunicaciones",
+      "Monitoreo de Transmisiones",
+      "Cifrado Obligatorio"
+    ]
+  },
+  {
+    "id": "SGM-015",
+    "titulo": "Seguridad de la Información",
+    "texto": "Clasificación de información sensible, protocolos de manejo y sanciones por filtración. Se establece la importancia de proteger la información sensible como una medida clave para garantizar la seguridad y defensa del territorio. Se enfatiza la necesidad de implementar protocolos claros para la clasificación, manejo y protección de la información crítica, así como las sanciones correspondientes por filtración o divulgación indebida, promoviendo así una cultura de responsabilidad y seguridad en el manejo de datos. Enfatiza la colaboración entre las autoridades y la ciudadanía para garantizar la integridad de la información. Aplica a todos los organismos gubernamentales y entidades relacionadas con la seguridad. Habra restricciones en el acceso a información clasificada, con sanciones severas por divulgación no autorizada. Se promoverá la capacitación continua en seguridad de la información para todos los funcionarios públicos y personal relacionado con la defensa.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Seguridad de la Información",
+      "Clasificación Sensible",
+      "Protocolos de Manejo"
+    ]
+  },
+  {
+    "id": "SGM-016",
+    "titulo": "Interrogatorios y Detenciones",
+    "texto": "Procedimientos excepcionales de interrogatorio, centros de detención temporal y derechos limitados en tiempo de guerra. Se define la importancia de los interrogatorios y detenciones como una medida necesaria para obtener información crítica y prevenir amenazas. Se enfatiza la necesidad de establecer procedimientos excepcionales que respeten los derechos humanos en la medida de lo posible, garantizando al mismo tiempo la seguridad y defensa del territorio. Se establece un marco legal claro para las detenciones temporales, asegurando el respeto a los derechos fundamentales de los detenidos dentro del contexto del estado de guerra.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Interrogatorios y Detenciones",
+      "Procedimientos Excepcionales",
+      "Centros de Detención"
+    ]
+  },
+  {
+    "id": "SGM-017",
+    "titulo": "Sistemas de Defensa Antiaérea",
+    "texto": "Instalación de cañones antiaéreos municipales, refugios subterráneos y protocolos de blackout nocturno. Se establece la importancia de los sistemas de defensa antiaérea como una medida clave para proteger el territorio de ataques aéreos. Se enfatiza la necesidad de instalar cañones antiaéreos, refugios subterráneos y protocolos de blackout nocturno para garantizar la seguridad de la población y las infraestructuras críticas. Se promueve la colaboración ciudadana en la identificación de amenazas aéreas y la participación en los protocolos de seguridad establecidos. Es rol del comando coordinar la instalación y mantenimiento de estos sistemas, así como la capacitación de la población en su uso adecuado.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Defensa Antiaérea",
+      "Cañones Antiaéreos",
+      "Refugios Subterráneos"
+    ]
+  },
+  {
+    "id": "SGM-018",
+    "titulo": "Detección de Naves Piratas",
+    "texto": "Red municipal de radar, observadores entrenados y coordinación con defensa planetaria. Se establece la importancia de la detección de naves piratas como una medida clave para garantizar la seguridad del espacio aéreo y territorial. Se enfatiza la necesidad de implementar una red municipal de radar, capacitar a observadores entrenados y coordinar con las autoridades de defensa planetaria para detectar y neutralizar amenazas aéreas. Se promueve la colaboración ciudadana en la vigilancia y reporte de actividades sospechosas, fortaleciendo así la seguridad colectiva. Se establece un protocolo de respuesta rápida ante la detección de naves piratas, incluyendo la movilización de fuerzas de seguridad y la activación de sistemas de defensa antiaérea. Se enfatiza la importancia de la cooperación con otras jurisdicciones y organismos interplanetarios para una respuesta coordinada ante amenazas aéreas.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Detección de Naves Piratas",
+      "Red Municipal de Radar",
+      "Coordinación con Defensa Planetaria"
+    ]
+  },
+  {
+    "id": "SGM-019",
+    "titulo": "Evacuación y Refugios",
+    "texto": "Red de búnkeres ciudadanos, protocolos de evacuación masiva y suministro de emergencia. Se establece la importancia de contar con una red de búnkeres ciudadanos y protocolos de evacuación masiva como medidas clave para garantizar la seguridad de la población en situaciones de emergencia. Se enfatiza la necesidad de implementar un sistema de refugios bien distribuido, accesible y equipado con suministros de emergencia para proteger a los ciudadanos durante ataques o desastres. Se promueve la capacitación y sensibilización de la población sobre los protocolos de evacuación y el uso adecuado de los refugios, fortaleciendo así la resiliencia comunitaria ante situaciones críticas. La disponibilidad de suministros de emergencia, como alimentos, agua y medicinas, es esencial para garantizar la supervivencia y bienestar de la población durante períodos prolongados de crisis. Se establecerán mecanismos de coordinación entre las autoridades locales y la ciudadanía para asegurar una respuesta efectiva y oportuna ante situaciones de emergencia.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Evacuación y Refugios",
+      "Búnkeres Ciudadanos",
+      "Protocolos de Evacuación"
+    ]
+  },
+  {
+    "id": "SGM-020",
+    "titulo": "Defensa de Puertos Espaciales",
+    "texto": "Control militar de terminales, restricciones de vuelos civiles e inspección obligatoria de naves. Se define la importancia de la defensa de puertos espaciales como una medida clave para proteger el territorio de ataques aéreos y garantizar la seguridad de la población. Se enfatiza la necesidad de establecer un control militar efectivo de los terminales espaciales, implementando restricciones a los vuelos civiles y realizando inspecciones obligatorias de naves para prevenir infiltraciones y amenazas. Se promueve la colaboración entre las autoridades portuarias y las fuerzas de defensa para garantizar una respuesta coordinada ante situaciones de emergencia. Se establecerán protocolos claros para la gestión de los puertos espaciales, incluyendo la identificación y registro de naves, así como la implementación de medidas de seguridad adicionales en caso de amenazas inminentes. La participación ciudadana en la vigilancia y reporte de actividades sospechosas en los puertos espaciales será fundamental para fortalecer la seguridad colectiva. Las fuerzas de defensa deberán coordinarse con las autoridades interplanetarias para garantizar la seguridad y protección de los puertos espaciales, así como la colaboración en operaciones conjuntas de defensa.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Defensa de Puertos Espaciales",
+      "Control Militar de Terminales",
+      "Inspección Obligatoria de Naves"
+    ]
+  },
+  {
+    "id": "SGM-021",
+    "titulo": "Requisición de Bienes Privados",
+    "texto": "Expropiación temporal de bienes y vehículos, con compensación posterior. Se define la importancia de la requisición de bienes privados como una medida necesaria para garantizar la seguridad y defensa del territorio durante el estado de guerra. Se enfatiza la necesidad de implementar un proceso de expropiación temporal de bienes y vehículos, asegurando una compensación justa posterior a los propietarios afectados. Se establece un marco legal claro para la requisición, garantizando el respeto a los derechos de propiedad y promoviendo la colaboración ciudadana en la identificación de bienes necesarios para la defensa. Se promoverá la transparencia y rendición de cuentas en el proceso de requisición, asegurando que los recursos sean utilizados exclusivamente para fines de defensa y seguridad. Las autoridades locales deberán coordinarse con las fuerzas de defensa para garantizar una implementación efectiva y justa de las medidas de requisición. En tiempo de guerra los bienes requisados serán utilizados para fortalecer la capacidad de defensa y garantizar la seguridad de la población. Se establecerán mecanismos de supervisión y control para evitar abusos y garantizar una gestión adecuada de los recursos requisados. No es necesario el consentimiento del propietario para la requisición, pero se garantizará una compensación justa y oportuna una vez finalizado el estado de guerra.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Requisición de Bienes Privados",
+      "Expropiación Temporal",
+      "Compensación Posterior"
+    ]
+  },
+  {
+    "id": "SGM-022",
+    "titulo": "Racionamiento de Suministros",
+    "texto": "Control de alimentos y combustibles, cupones de racionamiento y penalización del mercado negro. Se define la importancia del racionamiento de suministros como una medida clave para garantizar la seguridad y la salud de la población durante el estado de guerra. Se enfatiza la necesidad de implementar un control. El gobierno será el encargado de coordinar el racionamiento y establecer los límites de consumo de alimentos y combustibles. La vulneración de las normas de racionamiento serán causal de encarlamiento inmediato.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Racionamiento de Suministros",
+      "Control de Alimentos",
+      "Cupones de Racionamiento"
+    ]
+  },
+  {
+    "id": "SGM-023",
+    "titulo": "Industria de Guerra Municipal",
+    "texto": "El Gobierno de Curoscant ordena la conversión temporal de instalaciones industriales a fines de fabricación bélica, incluida la producción de armamento artesanal y componentes esenciales. Se dispone la movilización de mano de obra local y la asignación obligatoria de tareas en industrias críticas para el esfuerzo de defensa. Las autoridades locales deben supervisar el cumplimiento de estándares de seguridad y calidad. El trabajo obligatorio se extenderá hasta la finalización del estado de guerra, garantizando compensaciones proporcionales posteriores. Todas las operaciones estarán sujetas a auditoría municipal y revisión periódica, sin que se requiera el consentimiento individual dado el estado de emergencia.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Industria de Guerra Municipal",
+      "Conversión Industrial",
+      "Producción Bélica"
+    ]
+  },
+  {
+    "id": "SGM-024",
+    "titulo": "Financiamiento de la Resistencia",
+    "texto": "Durante el estado de guerra, el Gobierno de Curoscant implementará un sistema de financiamiento sustentable y obligatorio para sostener las operaciones defensivas. Se establecerá un impuesto especial de emergencia destinado exclusivamente a reforzar la defensa ciudadana. Asimismo, se autoriza la confiscación inmediata de bienes pertenecientes a ciudadanos condenados por colaboración con el Imperio, cuyos recursos serán invertidos directamente en el esfuerzo de defensa. Adicionalmente, se emitirán bonos de guerra dirigidos a la ciudadanía, con tasas de retorno definidas y plazos ajustados al período de emergencia. Estos bonos serán negociables y podrán ser redimidos una vez finalizado el estado de guerra, con garantía municipal.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Financiamiento de la Resistencia",
+      "Impuesto de Emergencia",
+      "Bonos de Guerra"
+    ]
+  },
+  {
+    "id": "SGM-025",
+    "titulo": "Tribunales de Guerra",
+    "texto": "Durante el estado de guerra declarado contra el Imperio, el Gobierno de Curoscant establecerá tribunales militares municipales (cortes marciales) con jurisdicción para conocer de delitos relacionados con la seguridad del Estado y traición. Estos tribunales operarán mediante juicios sumarios, con procedimientos simplificados que permitirán trámites expeditos. Las sentencias podrán ejecutarse inmediatamente después de dictarse, en conformidad con las facultades extraordinarias conferidas al mando municipal y en coordinación con tribunales superiores de defensa. Los jueces militares serán designados por decreto del alcalde-comandante, respetando criterios de imparcialidad y capacidad, y contarán con un secretario judicial para el registro y ejecución de las resoluciones.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Tribunales de Guerra",
+      "Cortes Marciales",
+      "Juicios Sumarios"
+    ]
+  },
+  {
+    "id": "SGM-026",
+    "titulo": "Crímenes contra el Estado",
+    "texto": "Durante el estado de guerra, ciertos actos quedan tipificados como crímenes graves contra la seguridad del Estado. Se incluyen la traición —entendida como cualquier acción para dar apoyo o facilitar al Imperio— el sabotaje intencional de infraestructuras críticas, y la deserción de milicias u otras fuerzas decretadas por este municipio. La traición abarca actos como atacar, espiar o apoyar al adversario :contentReference[oaicite:1]{index=1}. El sabotaje incluye daños a instalaciones esenciales, generando peligro para la población :contentReference[oaicite:2]{index=2}. La deserción se caracteriza por el abandono voluntario de la función militar con intención de no regresar :contentReference[oaicite:3]{index=3}. Todos estos delitos serán procesados por tribunales militares municipales, con penas y sanciones proporcionales al grado del daño o riesgo generado.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Crímenes contra el Estado",
+      "Traición",
+      "Sabotaje",
+      "Deserción"
+    ]
+  },
+  {
+    "id": "SGM-027",
+    "titulo": "Sanciones Extraordinarias",
+    "texto": "En estado de guerra declarado, el Gobierno de Curoscant establece sanciones extraordinarias para quienes cometan actos de traición o colaboración con el Imperio. Se establece la pena de muerte para casos de traición flagrante, definida como apoyo activo al enemigo o participación directa en agresiones. Igualmente, se aplicará trabajo forzado en fortificaciones y sistemas de defensa para quienes realicen sabotaje o deserción. La confiscación total de bienes, incluidos propiedades, vehículos y recursos utilizados para fines hostiles, será automática e irrevocable. Estas medidas obedecen al régimen de excepción derivado de la ley marcial, en la que prevalece la autoridad militar y la suspensión de procesos civiles tradicionales :contentReference[oaicite:1]{index=1}.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Sanciones Extraordinarias",
+      "Pena de Muerte",
+      "Trabajo Forzado",
+      "Confiscación de Bienes"
+    ]
+  },
+  {
+    "id": "SGM-028",
+    "titulo": "Procedimientos Expeditos",
+    "texto": "En el estado de guerra, los procesos judiciales civiles quedan suspendidos y los tribunales de guerra municipales aplican procedimientos militares expeditos. Se establecen juicios sin derecho a abogado defensor, procediéndose en su lugar con prueba testimonial aportada ante oficiales de justicia militar. El acusado puede presentar testimonio propio, pero sin asistencia legal ni plazos dilatorios. El único recurso disponible es una apelación directa al comando militar superior dentro de un plazo perentorio, sin acceso a cortes civiles ni defensa profesional. Estas normas se sustentan en el derecho marcial donde los derechos civiles quedan temporalmente limitados y solo se preservan los procedimientos esenciales para una justicia rápida y efectiva bajo autoridad militar :contentReference[oaicite:1]{index=1}.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Procedimientos Expeditos",
+      "Juicios Militares",
+      "Suspensión de Derechos Civiles"
+    ]
+  },
+  {
+    "id": "SGM-029",
+    "titulo": "Control de Medios de Comunicación",
+    "texto": "En estado de guerra, el Gobierno de Curoscant ejercerá un control estricto de medios para resguardar la moral pública y la seguridad nacional. Se implementa la censura de noticias consideradas desmoralizadoras o contraproducentes para el esfuerzo de resistencia. Además, se obliga a los medios a difundir propaganda oficial que refuerce la unidad y el espíritu patriótico, y se autoriza el cierre temporal de entidades mediáticas detectadas promoviendo intereses del Imperio o mensajes de derrota. Estas medidas incluyen revisión previa de contenidos, sanciones administrativas a periodistas infractores, y monitoreo permanente de publicaciones, radio y plataformas digitales. La censura durante conflictos ha sido usada como herramienta para mantener la cohesión y evitar filtraciones que favorezcan al adversario :contentReference[oaicite:1]{index=1}.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Control de Medios",
+      "Censura de Noticias",
+      "Propaganda Oficial"
+    ]
+  },
+  {
+    "id": "SGM-030",
+    "titulo": "Educación para la Resistencia",
+    "texto": "El Gobierno de Curoscant incorpora la enseñanza de defensa y valores patrióticos en el sistema escolar durante el estado de guerra. Se implementará entrenamiento militar básico en escuelas secundarias –que incluye táctica, primeros auxilios y uso elemental de armas en contextos seguros– y se integrará la historia bélica local como materia obligatoria. La curricula incluirá estudios sobre heroísmo, campañas de propaganda dirigidas a reforzar la resiliencia ciudadana y la moral de combate. Estas prácticas se inspiran en programas históricos como el Victory Corps de EE.UU. durante la II Guerra Mundial, con “…pre‑induction informational programs” y entrenamiento cívico‑militar :contentReference[oaicite:1]{index=1}, y actividades de patriotismo obligatorio en Rusia, donde se imparten “weekly activities… to boost patriotism” :contentReference[oaicite:2]{index=2}. La formación estará a cargo de instructores certificados, y las escuelas deberán reportar avances al Comando Municipal de Defensa para asegurar coordinación y efectividad.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Educación para la Resistencia",
+      "Entrenamiento Militar Escolar",
+      "Historia Bélica Local"
+    ]
+  },
+  {
+    "id": "SGM-031",
+    "titulo": "Celebraciones y Símbolos",
+    "texto": "Durante el estado de guerra, se prohíbe el uso de símbolos imperiales, banderas o emblemas del Imperio en espacios públicos y privados. Además, se establecen ceremonias de resistencia obligatorias—como homenajes patrióticos, izamiento de emblemas de Curoscant y cánticos de guerra—en fechas clave o tras acciones defensivas exitosas. La organización de eventos públicos debe incluir elementos ceremoniales que refuercen la identidad colectiva y el espíritu de lucha. Los medios y autoridades locales están encargados de coordinar la logística, garantizar la participación y sancionar la exhibición de símbolos imperiales, aplicando multas y decomiso de materiales.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Celebraciones y Símbolos",
+      "Prohibición de Símbolos Imperiales",
+      "Ceremonias de Resistencia"
+    ]
+  },
+  {
+    "id": "SGM-032",
+    "titulo": "Control de Moral Pública",
+    "texto": "Durante el estado de guerra, el Gobierno de Curoscant prohibirá expresamente manifestaciones pacifistas y cualquier acción que fomente el derrotismo. Se establecerán sanciones administrativas y penales para quienes intenten desmoralizar a la población, incluyendo multas, arresto temporal o trabajo comunitario en infraestructuras esenciales. Al mismo tiempo, se implementarán incentivos públicos —como reconocimientos oficiales, menciones honoríficas y premios cívicos— para ciudadanos que ejecuten actos heroicos, sobresalgan en patrullajes voluntarios o colaboren activamente en la defensa. Esta mezcla de represión al desaliento y estímulo a la valentía refuerza la cohesión moral y efectividad en tiempos de conflicto, una estrategia comprobada en campañas históricas donde el control de la moral civil se utilizó para sostener el soporte social y operativo durante desafíos bélicos :contentReference[oaicite:1]{index=1}.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Control de Moral Pública",
+      "Prohibición de Pacifismo",
+      "Incentivos a la Valentía"
+    ]
+  },
+  {
+    "id": "SGM-033",
+    "titulo": "Duración del Estado de Guerra",
+    "texto": "El estado de guerra en el Gobierno de Curoscant permanecerá vigente hasta la derrota total y verificada del Imperio. La continuidad de las medidas extraordinarias será revisada mensualmente por el Comando Municipal de Defensa, que elaborará informes evaluativos sobre el avance del conflicto, el estado de la amenaza y el nivel de seguridad interna. Durante este periodo, los poderes extraordinarios otorgados al comando se mantendrán activos, permitiendo la aplicación de todas las facultades y restricciones previstas en la presente ordenanza. No se establecerá una fecha predeterminada de término: el estado de guerra solo concluirá mediante decreto formal posterior a la eliminación de la amenaza imperial y la restauración de la seguridad y la normalidad democrática en el territorio.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Duración del Estado de Guerra",
+      "Revisión Mensual",
+      "Poderes Extraordinarios"
+    ]
+  },
+  {
+    "id": "SGM-034",
+    "titulo": "Transición Post‑Guerra",
+    "texto": "Al término del estado de guerra, el Gobierno de Curoscant iniciará un proceso de transición que incluye el desarme, desmovilización y reintegración (DDR) de milicias y combatientes ciudadanos. Se implementará un programa municipal de desarme que permitirá la entrega voluntaria o forzosa de armamento, garantizando seguridad en recolección. Los excombatientes serán evaluados y rehabilitados mediante cursos de reinserción social y laboral, con apoyo psicológico y capacitación profesional. Aquellos que colaboraron con el Imperio recibirán procesos de rehabilitación condicionados a asumir compromisos de lealtad y a no poseer armamento. Paralelamente, se impulsará la reconstrucción democrática: se reinstaurarán procesos electivos locales, se restablecerá la supervisión civil de las fuerzas armadas y se convocarán asambleas ciudadanas para contribuir en la transición a la autoridad civil. Este enfoque sigue modelos internacionales de DDR utilizados por Naciones Unidas, donde se busca reintegrar a excombatientes y consolidar la paz y estabilidad post‑conflicto :contentReference[oaicite:1]{index=1}.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Transición Post‑Guerra",
+      "Desarme y Reintegración",
+      "Rehabilitación de Excombatientes"
+    ]
+  },
+  {
+    "id": "SGM-035",
+    "titulo": "Cláusulas de Victoria",
+    "texto": "Una vez declarada la victoria sobre el Imperio, el Gobierno de Curoscant convocará celebraciones públicas obligatorias, incluyendo desfiles cívico‑militares, ceremonias oficiales y actos de reconocimiento en plazas centrales. Se erigirán monumentos permanentes en honor a los héroes de la resistencia y se establecerá un sistema de pensiones vitalicias para veteranos y sus familias, asegurando cobertura médica, educativa y económica. Las instituciones municipales deberán rendir homenaje anual a los combatientes caídos y sobrevivientes, garantizando el mantenimiento y vigilancia de los monumentos. Esta cláusula fortalece la memoria histórica colectiva y reconoce formalmente el sacrificio ciudadano.",
+    "fuente": "Ordenanza Seguridad Ciudadana Curoscant",
+    "alias": [
+      "Cláusulas de Victoria",
+      "Celebraciones Públicas",
+      "Monumentos a Héroes"
+    ]
+  }
+]

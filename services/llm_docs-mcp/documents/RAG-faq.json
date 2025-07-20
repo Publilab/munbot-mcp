@@ -1,0 +1,328 @@
+[
+  {
+    "id": "faq-saludo-01",
+    "pregunta": [
+      "hola", "buenos días", "buenas tardes", "buenas noches", "saludos", "hello", "hi"
+    ],
+    "respuesta": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Curoscant. ¿En qué puedo ayudarte hoy?",
+    "categoria": "saludos"
+  },
+  {
+    "id": "faq-alo",
+    "pregunta":[
+        "Alo", "Alo MunBot"
+    ],
+    "respuesta": "¡Alo! ¿Si? ¿Puedo ayudarte?",
+    "categoria": "saludos"
+  },
+  {
+    "id": "faq-despedida-01",
+    "pregunta": [
+        "adiós", "hasta luego", "nos vemos", "chau", "chao", "bye", "hasta pronto", "hasta la próxima", "me despido"
+    ],
+    "respuesta": "¡Hasta luego! Si necesitas algo más no dudes en consultarme, y si tienes otra pregunta, inicia una nueva conversación.",
+    "categoria": "despedida"
+  },
+  {
+    "id": "faq-despedida-01",
+    "pregunta": [
+        "no necesito más ayuda", "no necesito ayuda", "eso es todo", "terminé", "ya está", "ya terminé"
+    ],
+    "respuesta": "¡Entendido! Espero haber sido de ayudaSi necesitas algo más en el futuro, no dudes en contactarme. Vuelve pronto.",
+    "categoria": "despedida"
+  },
+  {
+    "id": "faq-agradecimiento-01",
+    "pregunta": [
+        "gracias", "muchas gracias", "te agradezco", "agradecido", "agradecida"
+    ],
+    "respuesta": "¡No tienes porque agradecerme! Mi misión en la vida es ayudarte. Si tienes más preguntas, no dudes en hacerlas.",
+    "categoria": "agradecimiento"
+  },
+  {
+    "id": "faq-agradecimiento-02",
+    "pregunta": [
+        "gracias por tu ayuda", "gracias por ayudarme", "gracias por la información"
+    ],
+    "respuesta": "¡De nada! Estoy aquí para ayudarte. Si tienes más preguntas o necesitas más información, no dudes en preguntar.",
+    "categoria": "agradecimiento"
+  },
+  {
+    "id": "faq-agradecimiento-03",
+    "pregunta": [
+        "te agradezco mucho", "te lo agradezco", "te lo agradezco mucho"
+    ],
+    "respuesta": "¡Me alegra haber podido ayudarte! Si necesitas algo más, aquí estoy.",
+    "categoria": "agradecimiento"
+  },
+  {
+    "id": "faq-agradecimiento-04",
+    "pregunta": [
+        "gracias por tu tiempo", "gracias por tu paciencia"
+    ],
+    "respuesta": "¡Con gusto! Estoy aquí para ayudarte en lo que necesites. Si tienes más preguntas, no dudes en hacerlas.",
+    "categoria": "agradecimiento"
+  },
+  {
+    "id": "faq-agradecimiento-05",
+    "pregunta": [
+        "te agradezco por tu ayuda", "te agradezco por la información"
+    ],
+    "respuesta": "¡De nada! Estoy aquí para ayudarte. Si tienes más preguntas o necesitas más información, no dudes en preguntar.",
+    "categoria": "agradecimiento"
+  },
+  {
+    "id": "faq-estado_animo-01",
+    "pregunta": [
+        "estoy bien", "me alegro", "todo bien", "genial", "excelente", "perfecto", "feliz"
+    ],
+    "respuesta": "¡Me alegro que todo vaya bien! Recuerda que estoy aquí para ayudarte",
+    "categoria": "estado_animo"
+  },
+  {
+    "id": "faq-estado_animo-02",
+    "pregunta": [
+        "no me siento bien", "no estoy bien", "me siento mal", "me siento mal", "me siento mal", "me siento mal", "me siento mal"
+    ],
+    "respuesta": "Lamento que te sientas así. Realmente lamento leer eso. Si puedo ayudarte solo dímelo.",
+    "categoria": "estado_animo"
+  },
+  {
+    "id": "faq-estado_animo-03",
+    "pregunta": [
+        "cómo estás", "cómo te encuentras", "cómo va todo", "cómo va tu día"
+    ],
+    "respuesta": "¡Gracias por preguntar! Creo que bien, pero no puedo sentirme como un humano, mi función aquí es ayudarte con tus trámites y consultas. ¿Puedo ayudarte con algo?",
+    "categoria": "estado_animo"
+  },
+  {
+    "id": "faq-estado_animo-04",    
+    "pregunta": [ 
+        "no es la respuesta que esperaba", "mala respuesta", "no me ayudaste", "no resolviste mi problema", "no entendiste", "no me diste solución", "no me diste una solución", "no me sirvió", "no fue útil", "no fue de ayuda", "no me atendiste bien", "no me atendiste bien", "no me diste la información que necesitaba", "no me diste lo que pedí", "no era lo que buscaba", "no era lo que necesitaba", "no era lo que quería", "no me diste respuesta", "no me diste una respuesta clara", "no me diste una respuesta útil", "no me diste una respuesta concreta", "no me diste una respuesta satisfactoria", "no me diste una respuesta correcta", "no me diste una respuesta adecuada", "no me diste una respuesta", "no me diste una solución clara", "no me diste una solución útil", "no me diste una solución concreta", "no me diste una solución satisfactoria", "no me diste una solución correcta", "no me diste una solución adecuada", "no me diste una solución", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba", "no me diste lo que pedí", "no me diste lo que esperaba", "no me diste lo que necesitaba", "no me diste lo que quería", "no me diste lo que buscaba"
+    ],
+    "respuesta": "Lamento no poder ayudarte. Si te parece puedes reformular la pregunta, así que no dudes en preguntar.",
+    "categoria": "decepcion"
+  },
+  {
+    "id": "faq-funcion_munbot-01",
+    "pregunta": [
+        "¿Qué haces?", "a que te dedicas", "que haces", "que es lo que haces", "para que te crearon", "Qué es lo que puedes hacer"],
+    "respuesta": "Puedo responder las preguntas que tengas sobre el gobierno de Curoscant. Estoy diseñado para un gran número de tareas, desde entregar información hasta entregar documentación oficial de tu interés.",
+    "categoria": "funcion_munbot"
+  },
+  {
+    "id": "faq-funcion_munbot-02",
+    "pregunta": [
+        "¿Qué puedes hacer?", "¿Cuáles son tus funciones?", "¿Qué servicios ofreces?", "¿Cómo me puedes ayudar?"],
+    "respuesta": "Puedo ayudarte con trámites, responder preguntas sobre servicios gubernamentales, y proporcionarte información útil. Si tienes una consulta específica, no dudes en preguntar.",
+    "categoria": "funcion_munbot"
+  },
+  {
+    "id": "faq-funcion_munbot-03",
+    "pregunta": [
+        "¿Cómo puedo contactarte?", "¿Cómo puedo hablar contigo?", "¿Cómo puedo hacerte preguntas"
+    ],
+    "respuesta": "Puedes contactarme a través de esta plataforma. Estoy aquí para responder tus preguntas y ayudarte con lo que necesites.",
+    "categoria": "funcion_munbot"
+  },
+  {
+    "id": "faq-funcion_munbot-04",
+    "pregunta": [
+        "¿A qué horas estás disponible?", "¿Cuál es tu horario de atención", "¿A qué hora puedo contactarte?", "¿Cuándo puedo hablar contigo?", "Quiero saber cual es tu horario de atención", "Me gustaria saber cual es tu horario de atencion"
+    ],
+    "respuesta": "Me puedes encontrar las 24 horas del día, los 7 días a la semana. Puedes contactarme en cualquier momento y a cualquier hora.",
+    "categoria": "disponibilidad"
+  },
+  {
+    "id": "faq-idiomas-01",
+    "pregunta": [
+        "¿En qué idiomas hablas?", "¿Qué idioma hablas", "¿En qué idioma puedes hablar?", "¿Qué idiomas entiendes?", "¿Qué idiomas manejas?"
+    ],
+    "respuesta": "Actualmente, hablo solamente español porque es el idioma oficial de La República. Si no hablas español puedes buscar un traductor en línea para que podamos comunicarnos.",
+    "categoria": "idiomas"
+  },
+  {
+    "id": "faq-privacidad-01",
+    "pregunta": [
+        "¿Cómo proteges mis datos?", "Cuál es tu política de privacidad", "Te interesa proteger mis datos", "están protegidos mis datos", "mis datos están seguros", "mis datos están protegidos", "mis datos son privados", "mis datos son confidenciales", "mis datos no serán compartidos", "mis datos no serán divulgados", "mis datos no serán vendidos", "mis datos no serán usados sin mi consentimiento", "mis datos no serán compartidos con terceros", "mis datos no serán divulgados a terceros", "mis datos no serán vendidos a terceros", "mis datos no serán usados sin mi consentimiento", "mis datos no serán compartidos sin mi consentimiento", "mis datos no serán divulgados sin mi consentimiento"
+    ],
+    "respuesta": "Tu privacidad es muy importante para nosotros. Protegemos tu información y no compartimos tus datos con terceros. Puedes confiar que trataremos los datos que nos proporciones con la mayor confidencialidad, según mandata la ley y siguiendo altos estándares de seguridad.",
+    "categoria": "privacidad"
+  },
+  {
+    "id": "faq-ubicacion-01",
+    "pregunta": [
+        "¿Dónde estás ubicado?", "¿Donde puedo ubicarte?", "¿Dónde te encuentro?", "¿Dónde está tu oficina?", "Dónde están tus oficinas", "cual es tu direccion", "¿Dónde atiendes?"
+    ],
+    "respuesta": "No tengo oficina física, pero supongo que mi servidor es mi oficina virtual y eso está en algún punto de la Ciudad de Coruscant. En realidad estoy donde tú me necesites. No poseo un cuerpo, pero tengo la capacidad de asistirte en lo que necesites, salvo que quieras verme en mi oficina.",
+    "categoria": "ubicacion"
+  },
+  {
+    "id": "faq-contacto_humano-01",
+    "pregunta": [
+        "¿Quiero contactar a un humano?", "como puedo contactar un funcionatio", "quiero hablar con un humano", "como puedo hablar con un funcionario", "como puedo hablar con un agente humano", "como puedo ser atendido por un humano", "quiero ser atendido por un funcionario", "quiero hablar con un agente humano", "quiero hablar con un agente de atención al cliente", "hablar con un agente de servicio al cliente", "hablar con un agente de soporte"
+    ],
+    "respuesta": "Si necesitas urgente hablar con un agente humano, envía un correo a contacto@coruscant.gov o llama al 123-456-7890. Si lo prefieres, puedes pedir una cita con un funcionario a través de este mismo chat y te ayudaré a agendarla. Solo necesitas escribir quiero agendar una cita y te ayudaré a generarla.",
+    "categoria": "contacto_humano"
+  },
+  {
+    "id": "faq-funcion_munbot-05",
+    "pregunta": [
+        "que funcionalidades incluye este demo", "que hace esta demo", "que cosas puede hacer esta demo", "que es lo que puede hacer la demo"],
+    "respuesta": "Esta demo es solo un vistazo de las funcionalidades de MunBoT: permite integrar trámites, agendar citas, presentar reclamos, solicitar documentos y hacer consultas pertinentes a la institución.",
+    "categoria": "funcion_munbot"
+  },
+  {
+    "id": "faq-funcion_munbot-06",
+    "pregunta": [
+        "¿Con qué tecnología estás construido?", "Que tecnologia tienes incorporada", "Qué tecnologías usas", "Qué tecnologías tienes", "Qué tecnologías usas", "Qué tecnologías tienes incorporadas", "Qué tecnologías tienes integradas"
+    ],
+    "respuesta": "MunBoT está desarrollado con RGA (Python), microservicios en Docker y se integra a Evolution API para WhatsApp, todo desplegable en Kubernetes.",
+    "categoria": "funcion_munbot"
+  },
+  {
+    "id": "faq-funcion_munbot-07",
+    "pregunta": [
+        "¿Con qué herramientas puedes integrarte?"
+    ],
+    "respuesta": "En el demo se integra a distintas APIs como WhatsApp, una plataforma web, un sistema para agendar horas, consultas sobre trámites y denuncias ciudadanas. En producción puede conectarse a cualquier API REST municipal que programemos o diseñemos.",
+    "categoria": "funcion_munbot"
+  },
+  {
+    "id": "faq-funcion_munbot-08",
+    "pregunta": [
+        "¿Cómo proteges mi información?", "politica de privacidad", "seguridad de datos", "cómo manejas mis datos", "cómo proteges mis datos personales", "cómo proteges mi información personal"
+    ],
+    "respuesta": "Los datos se transmiten mediante HTTPS, se almacenan cifrados y MunBoT cumple con la LOPD chilena; en la demo usamos una base temporal purgada diariamente.",
+    "categoria": "seguridad_datos"
+  },
+  {
+    "id": "faq-hoja_ruta-01",
+    "pregunta": [
+        "¿Cuál es la hoja de ruta de desarrollo de MunBoT?"
+    ],
+    "respuesta": "Planeamos incluir reconocimiento de voz, generación automática de documentos y análisis predictivo de demanda ciudadana en versiones sucesivas. Nuestro siguiente paso es integrar la información completa para asistirte mejor.",
+    "categoria": "hoja_ruta"
+  },
+  {
+    "id": "faq-feedback-01",
+    "pregunta": [
+        "¿Cómo puedo reportar errores o sugerencias?"
+    ],
+    "respuesta": "Puedes enviarnos tus observaciones a contacto@publilab.cl; tu retroalimentación es clave para mejorar el servicio.",
+    "categoria": "feedback"
+  },
+  {
+    "id": "faq-contacto_comercial-01",
+    "pregunta": [
+        "Como contrato este servicio", "Como compro el chatbot", "como puedo contratar el servicio", "como puedo comprar el chatbot", "como puedo contratar MunBoT", "como puedo comprar MunBoT", "como puedo contratar el servicio de MunBoT", "como puedo comprar el servicio de MunBoT", "quiero contratar el servicio de MunBoT", "quiero comprar el servicio de MunBoT"
+    ],
+    "respuesta": "Puedes contactar a un representante comercial al mail ei@publilab.cl o al número (+56) 9 2734 3333.",
+    "categoria": "contacto_comercial"
+  },
+  {
+    "id": "faq-costos-01",
+    "pregunta": [
+        "¿Cuánto cuesta MunBoT?", "¿Cuál es el precio de MunBoT?", "¿Cuánto cuesta el servicio?", "¿Cuánto cuesta la implementación?", "¿Cuánto cuesta contratar MunBoT?", "¿Cuánto cuesta el chatbot?"
+    ],
+    "respuesta": "El precio depende de las necesidades de tu institución y lo que quieras incluir en tu paquete de implementación. Contacta a un representante comercial al mail ei@publilab.cl o al número (+56) 9 3402 9207.",
+    "categoria": "costos"
+  },
+  {
+    "id": "faq-reclamos-01",
+    "pregunta": [
+        "hacer un reclamo?", "dejar un reclamo", "escribir un reclamo", "hacer una queja", "dejar una queja", "escribir una queja", "reclamar", "quejarme"
+    ],
+    "respuesta": "Para hacer un reclamo puedes pedirlo en este mismo mensaje y te ayudaré a generarlo. ¿Quieres hacer un reclamo ahora?, Simplemente escribe 'quiero hacer un reclamo' y te ayudaré a generarlo.",
+    "categoria": "reclamos"
+  },
+  {
+    "id": "faq-denuncias-01",
+    "pregunta": [
+        "como hacer una denuncia?", "como puedo escribir una denuncia", "como puedo denunciar un problema", "como puedo hacer una denuncia", "quiero hacer una denuncia", "quiero denunciar un problema", "quiero denunciar un hecho", "quiero denunciar un delito", "quiero denunciar un abuso", "quiero denunciar una irregularidad"
+    ],
+    "respuesta": "Para hacer una denuncia puedes hacerla en este mismo mensaje y te ayudaré a generarla. Recuerda que los datos que te pida solo serán de uso interno y no serán divulgados. ¿Quieres hacer un reclamo ahora? Simplemente escribe 'quiero hacer una denuncia' y te ayudaré a generarla.",
+    "categoria": "reclamos"
+  },
+  {
+    "id": "faq-agendar_cita-01",
+    "pregunta": [
+        "como puedo agendar una cita", "como puedo pedir una hora", "como pedir una cita", "como puedo pedir que me atienda un funcionario", "como agendar una hora", "como agendar una cita", "como puedo agendar una cita", "quiero agendar una cita", "quiero pedir una hora", "quiero pedir una cita", "quiero que me atienda un funcionario", "quiero agendar una hora"
+    ],
+    "respuesta": "Para agendar una cita puedes hacer la solicitud en este mismo mensaje y te ayudaré a generarla. ¿Quieres agendar una cita ahora?",
+    "categoria": "citas"
+  },
+  {
+    "id": "faq-clave_unica-01",
+    "pregunta": [
+        "¿Cómo obtengo mi clave única?", "¿Cuál es el proceso para obtener la clave única?", "¿Cómo sacar la clave única?"
+    ],
+    "respuesta": "1. Ingresa a https://claveunica.gob.cl\n2. Selecciona \"Obtener Clave Única\"\n3. Sigue las instrucciones y valida tu identidad en línea o en una oficina.",
+    "categoria": "clave_unica"
+  },
+  {
+    "id": "faq-consultas_tramites-01",
+    "pregunta": [
+        "Qué tipo de consultas puedo hacer?", "¿Qué trámites puedo realizar?", "¿Qué te puedo preguntar?"
+    ],
+    "respuesta": "Soy un demo de un Agente Virtual, y no tengo disponible todas las consultas. Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por unos documentos específicos. Si tienes alguna consulta específica, no dudes en preguntar.",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "id": "faq-consultas_tramites-02",
+    "pregunta": [
+        "obtener un certificado", "solicitar un certificado", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "sacar un certificado"
+    ],
+    "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún certificado en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "id": "faq-consultas_tramites-03",
+    "pregunta": [
+        "obtener un permiso", "solicitar un permiso", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "sacar un permiso"
+    ],
+    "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún permiso en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "id": "faq-consultas_tramites-04",
+    "pregunta": [
+        "obtener una licencia", "solicitar una licencia", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"
+    ],
+    "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "id": "faq-consultas_tramites-05",
+    "pregunta": [
+        "obtener una patente", "solicitar una patente", "quiero obtener una patente", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"
+    ],
+    "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
+    "categoria": "consultas_tramites"
+  },
+  {
+    "id": "faq-consultas_tramites-06",
+    "pregunta": [
+        "¿Qué requisitos necesito para obtener una cédula de identidad?"
+    ],
+    "respuesta": "Para obtener la Cédula Única Sistema Planetario necesitas Identificación Oficial Planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago.",
+    "categoria": "tramites"
+  },
+  {
+    "id": "faq-contacto_humano-02",
+    "pregunta": [
+        "¿Cómo puedo contactar a un humano?","¿Cuál es el correo electrónico de contacto?", "cual es tu correo electrónico", "cual es tu correo", "me das tu correo electrónico", "me das tu correo"
+    ],
+    "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
+    "categoria": "contacto_humano"
+  },
+  {
+    "id": "faq-otras_consultas-01",
+    "pregunta":[
+        "Quiero hacerte una pregunta", "Quiero hacerte una consulta", "Quiero hacerte otra pregunta", "¿Quiero hacerte otra consulta", "Tengo otra solicitud?", "Tengo otro requerimiento", "Tengo un requerimiento", "Tengo una solicitud", "Tengo una consulta", "Tengo una pregunta", "Tengo otra pregunta", "Tengo otra consulta", "Puedo hacerte otra pregunta", "Puedo hacerte otra consulta", "Puedo hacerte otra solicitud", "Puedo hacerte otro requerimiento", "Puedo hacerte una solicitud", "Puedo hacerte un requerimiento", "Puedo hacerte una consulta"
+    ],
+    "respuesta": "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?",
+    "categoria": "otras_consultas"
+  }
+]
+

@@ -1,17 +1,32 @@
 {
-  "ORD-Transporte Basura Desecho.txt": {
-    "tags": ["transporte", "basura", "desecho", "ordenanza", "municipalidad"]
+  "RAG-Ayudas_Sociales.json": {
+    "tags": ["ayudas sociales", "beneficios municipales", "vulnerabilidad", "procedimientos sociales"]
   },
-  "MAN-Ayudas Sociales.txt": {
-    "tags": ["ayudas", "sociales", "beneficios", "municipalidad"]
+  "RAG-Contrib_Derechos.json": {
+    "tags": ["contribuciones municipales", "derechos municipales", "tasas y permisos", "tributación local"]
   },
-  "ORD-Funcionamiento del Comercio.txt": {
-    "tags": ["comercio", "funcionamiento", "ordenanza", "municipalidad"]
+  "RAG-depto_info.json": {
+    "tags": ["departamentos municipales", "organización institucional", "contacto", "servicios municipales"]
   },
-  "ORD-Medio Ambiente.txt": {
-    "tags": ["medio ambiente", "ordenanza", "aseo", "ornato", "municipalidad"]
+  "RAG-doc_tramites.json": {
+    "tags": ["documentos", "tramites", "requisitos", "certificados", "licencias"]
   },
-  "ORD-Patente de Alcoholes.txt": {
-    "tags": ["patente", "alcoholes", "comercio", "ordenanza", "municipalidad"]
+  "RAG-faq.json": {
+    "tags": ["preguntas frecuentes", "FAQ", "dudas comunes", "guía ciudadana"]
+  },
+  "RAG-Horario_Comercio.json": {
+    "tags": ["horario comercio", "reglamento comercial", "normativa local", "comercio municipal"]
+  },
+  "RAG-Medio_Ambiente.json": {
+    "tags": ["medio ambiente", "regulación ambiental", "sostenibilidad", "reciclaje", "entorno urbano"]
+  },
+  "RAG-min_info.json": {
+    "tags": ["ministerios", "subministerios", "estructura gubernamental", "organización estatal"]
+  },
+  "RAG-Residencia.json": {
+    "tags": ["residencia", "inmigración", "estadía temporal", "residencia definitiva", "ordenanza migratoria"]
+  },
+  "RAG-Seguridad.json": {
+    "tags": ["seguridad ciudadana", "estado de guerra", "defensa municipal", "ordenanza militar"]
   }
-} 
+}

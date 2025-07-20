@@ -1,0 +1,222 @@
+[
+    {
+        "Id": "MAI-001",
+        "Nombre_Ministerio": "Ministerio de Asuntos Internos",
+        "Descripcion_Ministerio": "El Ministerio de Asuntos Internos es responsable de la administración interna de la República Galáctica, asegurando la cohesión y cooperación entre los sistemas estelares miembros.",
+        "Funcion": ["Las principales funciones del ministerio de Asuntos Internos son",
+            "Supervisar la implementación de políticas internas.",
+            "Coordinar con los gobiernos planetarios y regionales.",
+            "Gestionar el registro y documentación de ciudadanos.",
+            "Mantener la seguridad interna y el orden público.",
+            "Proporcionar servicios administrativos esenciales."
+        ],
+        "Contacto": {
+            "Telefono": "COM-123-4567",
+            "Correo_Electronico": "min.asuntosinternos@coruscant.sw"
+        },
+        "Direccion": "Edificio Consistorial Coruscant. Nivel 1313",
+        "deptos_subordinados": [
+            "Departamento de Coordinación Regional",
+            "Departamento de Registro Ciudadanos"
+        ]
+    },
+    {
+        "Id": "MAI-002",
+        "Nombre_Ministerio": "Ministerio de Comercio y Economía Galáctica",
+        "Descripcion_Ministerio": "El Ministerio de Comercio y Economía Galáctica regula las actividades comerciales y económicas entre los sistemas estelares, promoviendo el desarrollo económico sostenible.",
+        "Funcion": ["Las principales funciones del Ministerio de Comercio y Economía Galáctica son",
+            "Regular el comercio interplanetario.",
+            "Fomentar la inversión y el desarrollo económico.",
+            "Supervisar las políticas fiscales y monetarias.",
+            "Promover acuerdos comerciales entre sistemas.",
+            "Proporcionar asesoramiento económico a los gobiernos planetarios."
+        ],
+        "Nombre_Encargado": "Admiral Ackbar",
+        "Contacto": {
+            "Telefono": "COM-987-6543",
+            "Correo_Electronico": "min.comercioeconomia@coruscant.sw"
+            },
+        "Direccion": "Edificio del Comercio Galáctico, Distrito Financiero Coruscant",
+        "deptos_subordinados": [
+            "Departamento de Regulación Comercial",
+            "Departamento de Desarrollo Económico"
+        ]
+    },
+    {
+        "Id": "MDG-003",
+        "Nombre_Ministerio": "Ministerio de Defensa Galáctica",
+        "Descripcion_Ministerio": "El Ministerio de Defensa Galáctica es responsable de la protección y defensa de la República Galáctica contra amenazas internas y externas. Colabora estrechamente con las Fuerzas Armadas y la Orden Jedi para garantizar la seguridad de los sistemas estelares.",
+        "Funcion": [ "Las principales tareas del Ministerio de Defensa Galáctica son:",
+            "Supervisar las Fuerzas Armadas de la República.",
+            "Coordinar con la Orden Jedi para misiones de seguridad.",
+            "Implementar estrategias de defensa y seguridad.",
+            "Mantener instalaciones militares y bases estelares."
+        ],
+        "Nombre_Encargado": "Bail Organa",
+        "Contacto": {
+            "Telefono": "COM-555-1234",
+            "Correo_Electronico": "min.defensa@coruscant.sw"
+        },
+        "Direccion": "Direccion": "Cuartel General de Defensa Galáctica, Sector Militar Coruscant",
+        "deptos_subordinados": [
+            "Departamento de Estrategia Militar",
+            "Departamento de Logística y Abastecimiento"
+            ]
+    },
+    {
+        "Id": "MEI-004",
+        "Nombre_Ministerio": "Ministerio de Educación e Instrucción",
+        "Descripcion_Ministerio": "El Ministerio de Educación e Instrucción se encarga de la formación y educación de los ciudadanos galácticos, promoviendo el conocimiento y la cultura en todos los sistemas estelares.",
+        "Funcion": ["Las principales funciones del Ministerio de Educación e Instrucción son",
+            "Desarrollar políticas educativas galácticas.",
+            "Supervisar instituciones educativas en todos los sistemas.",
+            "Promover la investigación y el desarrollo cultural.",
+            "Proveer formación y capacitación para ciudadanos.",
+            "Coordinar con instituciones educativas y culturales."
+        ],
+        "Nombre_Encargado": "Jocasta Nu",
+        "Contacto": {
+            "Telefono": "COM-789-0123",
+            "Correo_Electronico": "min.educacion@coruscant.sw"
+        },
+        "Direccion": "Edificio Skywalker, Sector Cultural Coruscant",
+        "deptos_subordinados": [
+            "Educación Primaria y Secundaria",
+            "Preservación Cultural"
+        ]
+    },
+    {
+        "Id": "MEC-005",
+        "Nombre_Ministerio": "Ministerio de Exploración y Colonización",
+        "Descripcion_Ministerio": "El Ministerio de Exploración y Colonización se encarga de la exploración de nuevos sistemas estelares y la colonización de planetas, promoviendo la expansión pacífica de la República Galáctica.",
+        "Funcion": ["Las principales funciones del Ministerio de Exploración y Colonización son",
+            "Coordinar expediciones de exploración espacial.",
+            "Planificar y ejecutar misiones de exploración.",
+            "Facilitar la colonización de nuevos planetas.",
+            "Coordinar con entidades científicas y de investigación.",
+            "Asegurar la sostenibilidad de los nuevos asentamientos."
+        ],
+        "Nombre_Encargado": "Hera Syndulla",
+        "Contacto": {
+            "Telefono": "COM-321-4567",
+            "Correo_Electronico": "min.exploracion@coruscant.sw"
+        },
+        "Direccion": "Centro de Exploración Galáctica, Sector de Nuevas Fronteras Coruscant",
+        "deptos_subordinados": [
+            "Departamento de Misiones de Exploración",
+            "Asentamientos Coloniales y Desarrollo Inmobiliario"
+        ]
+    },
+    {
+        "Id": "MJO-006",
+        "Nombre_Ministerio": "Ministerio de Justicia y Orden Público",
+        "Descripcion_Ministerio": "El Ministerio de Justicia y Orden Público es responsable de mantener la ley y el orden en la República Galáctica, asegurando que se respeten los derechos de los ciudadanos y se aplique la justicia de manera equitativa.",
+        "Funcion": ["Las principales funciones del Ministerio de Justicia y Orden Público son",
+            "Administrar el sistema judicial galáctico.",
+            "Supervisar las fuerzas de seguridad y policía galáctica.",
+            "Coordinar con los tribunales y fiscales galácticos.",
+            "Promover la justicia y el respeto a los derechos humanos.",
+            "Implementar políticas de seguridad pública."
+        ],
+        "Nombre_Encargado": "Mon Mothma",
+        "Contacto": {
+            "Telefono": "COM-654-3210",
+            "Correo_Electronico": "min.justicia@coruscant.sw"
+        },
+        "Direccion": "Edificio de la Justicia Galáctica, Distrito Judicial Coruscant",
+        "deptos_subordinados": [
+            "Departamento Seguridad Pública",
+            "Departamento de Administración de Justicia"
+        ]
+    },
+    {   "Id": "MRI-007",
+        "Nombre_Ministerio": "Ministerio de Relaciones Intergalácticas",
+        "Descripcion_Ministerio": "El Ministerio de Relaciones Intergalácticas se encarga de las relaciones diplomáticas y políticas entre la República Galáctica y otras entidades galácticas, promoviendo la paz y la cooperación intergaláctica.",
+        "Funcion": ["Las principales funciones del Ministerio de Relaciones Intergalácticas son",
+            "Gestionar las relaciones diplomáticas con otras entidades galácticas.",
+            "Promover tratados y acuerdos intergalácticos.",
+            "Coordinar misiones diplomáticas y embajadas.",
+            "Fomentar la cooperación cultural y científica.",
+            "Resolver conflictos diplomáticos pacíficamente."
+        ],
+        "Nombre_Encargado": "Padmé Amidala",
+        "Contacto": {
+            "Telefono": "COM-456-7890",
+            "Correo_Electronico": "min.relaciones@coruscant.sw"
+        },
+        "Direccion": "Avda Ewoks, Edificio de la Paz, Distrito Diplomático Coruscant",
+        "deptos_subordinados": [
+            "Departamento de Embajadas y Misiones Diplomáticas",
+            "Departamento de Cooperación Interplanetaria"
+        ]
+    },
+    {
+        "id": "MSB-008",
+        "Nombre_Ministerio": "Ministerio de Salud y Bienestar",
+        "Descripcion_Ministerio": "El Ministerio de Salud y Bienestar es responsable de la salud pública y el bienestar de los ciudadanos galácticos, asegurando el acceso a servicios de salud y promoviendo políticas de bienestar social.",
+        "Funcion": ["Las principales funciones del Ministerio de Salud y Bienestar son",
+            "Supervisar el sistema de salud galáctico.",
+            "Coordinar servicios médicos y de emergencia.",
+            "Promover políticas de salud pública y prevención de enfermedades.",
+            "Facilitar el acceso a tratamientos médicos y medicamentos.",
+            "Implementar programas de bienestar social."
+        ],
+        "Nombre_Encargado": "Bail Organa",
+        "Contacto": {
+            "Telefono": "COM-789-6543",
+            "Correo_Electronico": "min.salud@coruscant.sw"
+        },
+        "Direccion": "Edificio de la Salud, Avenida de la Fuerza 12655. Sector Médico Coruscant",
+        "deptos_subordinados": [
+            "Departamento de Salud Pública",
+            "Departamento de Programas de Bienestar"
+        ]
+    },
+    {
+        "Id": "MTC-009",
+        "Nombre_Ministerio": "Ministerio de Tecnología y Ciencia",
+        "Descripcion_Ministerio": "El Ministerio de Tecnología y Ciencia es responsable de la investigación científica y el desarrollo tecnológico en la República Galáctica, promoviendo la innovación y el avance científico.",
+        "Funcion": ["Las principales funciones del Ministerio de Tecnología y Ciencia son",
+            "Fomentar la investigación científica y tecnológica.",
+            "Coordinar proyectos de investigación intergalácticos.",
+            "Promover la innovación y el desarrollo tecnológico.",
+            "Facilitar la transferencia de tecnología entre sistemas.",
+            "Supervisar instituciones científicas y tecnológicas."
+        ],
+        "Nombre_Encargado": "Dexter Jettster",
+        "Contacto": {
+            "Telefono": "COM-321-7890",
+            "Correo_Electronico": "min.tecnologia@coruscant.sw"
+        },
+        "Direccion": "Edificio de la Ciencia, Universidad de Coruscant, Sector Tecnológico",
+        "deptos_subordinados": [
+            "Departamento de Investigación Científica",
+            "Departamento de Desarrollo Tecnológico"
+        ]
+    },
+    {
+        "Id": "MTC-010",
+        "Nombre_Ministerio": "Ministerio de Transporte y Transporte Espacial",
+        "Descripcion_Ministerio": "El Ministerio de Transporte y Transporte Espacial es responsable de la infraestructura de transporte y las redes de transporte espacial en la República Galáctica, asegurando la conectividad entre los sistemas estelares.",
+        "Funcion": ["Las principales funciones del Ministerio de Transporte y Transporte Espacial son",
+            "Supervisar las redes de transporte galáctico.",
+            "Coordinar el transporte espacial y las rutas comerciales.",
+            "Promover la seguridad en el transporte espacial.",
+            "Desarrollar infraestructuras de transporte planetario.",
+            "Facilitar la movilidad de ciudadanos y mercancías."
+        ],
+        "Nombre_Encargado": "Lando Calrissian",
+        "Contacto": {
+            "Telefono": "COM-654-9870",
+            "Correo_Electronico": "min.transporte@coruscant.sw"
+        },
+        "Direccion": "Terminal Espacial Central Coruscant. Edificio 1, Sector G23",
+        "deptos_subordinados": [
+            "Departamento de Investigación Científica",
+            "Departamento de Desarrollo Tecnológico",
+            "Deaprtamento de Transporte Interestelar",
+            "Departamento de Comunicaciones Galácticas"
+        ]
+    }
+]
+
