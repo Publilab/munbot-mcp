@@ -1,188 +1,115 @@
 [
 {
     "id": "CRD-001-requisitos",
-    "texto": [
-      "Requisitos para obtener el Certificado de Residencia Definitiva:",
-      "- Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
-      "- Último Comprobante de Residencia Temporal",
-      "- Formulario de Solicitud Completo",
-      "- Pago de Tarifas Administrativas."
-    ],
-    "doc": "Certificado de Residencia Definitiva",
-    "seccion": "Requisitos",
-    "alias": [
-      "residencia definitiva", 
-      "certificado de residencia", 
-      "certificado residencia definitiva", 
-      "de residencia", 
-      "residencia"
-    ]
+    "doc": "certificado_residencia_definitiva",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Certificado de Residencia Definitiva:\n• Identificación oficial planetaria emitida por un planeta miembro de la República.\n• Último comprobante de residencia temporal.\n• Formulario de solicitud completo.\n• Pago de tarifas administrativas.",
+    "alias": ["requisitos_residencia", "crd_requisitos", "residencia_definitiva"]
   },
   {
     "id": "CRD-001-donde_obtener",
-    "texto": "El Certificado de Residencia Definitiva se obtiene en el Departamento de Registro Civil (Edificio Consistorial Coruscant. Nivel 1313).",
-    "doc": "Certificado de Residencia Definitiva",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "residencia definitiva", 
-      "certificado de residencia", 
-      "certificado residencia definitiva", 
-      "de residencia", 
-      "residencia"
-    ]
+    "doc": "certificado_residencia_definitiva",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "El Certificado de Residencia Definitiva se obtiene en el Departamento de Registro Civil (Edificio Consistorial Coruscant, nivel 1313).",
+    "alias": ["registro_civil", "donde_solicitar_residencia", "crd_donde"]
   },
   {
     "id": "CRD-001-horario",
-    "texto": "Horario de atención para el Certificado de Residencia Definitiva: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Certificado de Residencia Definitiva",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "residencia definitiva", 
-      "certificado de residencia", 
-      "certificado residencia definitiva", 
-      "de residencia", 
-      "residencia"
-    ]
+    "doc": "certificado_residencia_definitiva",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_crd", "horario_residencia", "crd_horario"]
   },
   {
-    "id": "CRD-001-finalidad",
-    "texto": "El Certificado de Residencia Definitiva acredita la residencia permanente en sistemas centrales y permite el acceso a servicios municipales y de bienestar.",
-    "doc": "Certificado de Residencia Definitiva",
-    "seccion": "finalidad",
-    "alias": [
-      "residencia definitiva", 
-      "certificado de residencia", 
-      "certificado residencia definitiva", 
-      "de residencia", 
-      "residencia"
-    ]
+    "id": "CRD-001-utilidad",
+    "doc": "certificado_residencia_definitiva",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Acredita la residencia permanente en sistemas centrales y permite el acceso a servicios municipales y de bienestar.",
+    "alias": ["utilidad_residencia", "servicios_municipales", "crd_utilidad"]
   },
   {
     "id": "CRD-001-penalidad",
+    "doc": "certificado_residencia_definitiva",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
     "texto": "La omisión de este certificado puede acarrear la prohibición de acceso a servicios locales y la inhabilitación para registrarse en el sistema de salud intergaláctico.",
-    "doc": "Certificado de Residencia Definitiva",
-    "seccion": "Penalidad",
-    "alias": [
-      "residencia definitiva", 
-      "certificado de residencia", 
-      "certificado residencia definitiva", 
-      "de residencia", 
-      "residencia"
-    ]
+    "alias": ["sancion_residencia", "crd_penalidad", "salud_inhabilitacion"]
   },
   {
     "id": "CRD-001-notas",
-    "texto": "Nota: Asegúrate de subir todos los documentos originales y copias certificadas.",
-    "doc": "Certificado de Residencia Definitiva",
-    "seccion": "Notas",
-    "alias": [
-      "residencia definitiva", 
-      "certificado de residencia", 
-      "certificado residencia definitiva", 
-      "de residencia", 
-      "residencia"
-    ]
+    "doc": "certificado_residencia_definitiva",
+    "seccion": "notas",
+    "tipo_fragmento": "nota",
+    "texto": "Asegúrate de subir todos los documentos originales y copias certificadas.",
+    "alias": ["documentos_originales", "crd_notas"]
   },
   {
     "id": "CRD-001-tiempo_validez",
-    "texto": "El Certificado de Residencia Definitiva tiene una validez de 1 año.",
-    "doc": "Certificado de Residencia Definitiva",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "residencia definitiva", 
-      "certificado de residencia", 
-      "certificado residencia definitiva", 
-      "de residencia", 
-      "residencia"
-    ]
+    "doc": "certificado_residencia_definitiva",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_residencia", "crd_vigencia"]
   },
   {
     "id": "CET-008-requisitos",
-    "texto": [
-      "Requisitos para obtener el Certificado de Estadía Temporal:",
-      "- Carta de Invitación de un Ciudadano de Coruscant",
-      "- Identificación Oficial",
-      "- Formulario de Solicitud Completo",
-      "- Comprobante de Medios Económicos"
-    ],
-    "doc": "Certificado de Estadía Temporal",
-    "seccion": "Requisitos",
-    "alias": [
-      "certificado estadía temporal", 
-      "certificado de estadía", 
-      "estadía temporal", 
-      "estadía"
-    ]
+    "doc": "certificado_estadia_temporal",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Certificado de Estadía Temporal:\n• Carta de invitación de un ciudadano de Coruscant.\n• Identificación oficial.\n• Formulario de solicitud completo.\n• Comprobante de medios económicos.",
+    "alias": ["requisitos_estadia", "cet_requisitos", "estadia_temporal"]
   },
   {
     "id": "CET-008-donde_obtener",
-    "texto": "El Certificado de Estadía Temporal se obtiene en el Departamento de Registro Civil (Edificio Consistorial Coruscant. Nivel 1313).",
-    "doc": "Certificado de Estadía Temporal",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "certificado estadía temporal", 
-      "certificado de estadía", 
-      "estadía temporal", 
-      "estadía"
-    ]
+    "doc": "certificado_estadia_temporal",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "El Certificado de Estadía Temporal se obtiene en el Departamento de Registro Civil (Edificio Consistorial Coruscant, nivel 1313).",
+    "alias": ["registro_civil", "donde_solicitar_estadia", "cet_donde"]
   },
   {
     "id": "CET-008-horario",
-    "texto": "Horario de atención para el Certificado de Estadía Temporal: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Certificado de Estadía Temporal",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "certificado estadía temporal", 
-      "certificado de estadía", 
-      "estadía temporal", 
-      "estadía"
-    ]
+    "doc": "certificado_estadia_temporal",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_cet", "horario_estadia"]
   },
   {
     "id": "CET-008-utilidad",
-    "texto": [
-      "El Certificado de Estadía Temporal acredita temporalmente la estadía en sistemas federados.",
-      "Permite el acceso a servicios básicos por un período limitado."
-    ],
-    "doc": "Certificado de Estadía Temporal",
-    "seccion": "Utilidad",
-    "alias": [
-      "certificado estadía temporal", 
-      "certificado de estadía", 
-      "estadía temporal", 
-      "estadía"
-    ]
+    "doc": "certificado_estadia_temporal",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Acredita temporalmente la estadía en sistemas federados y permite el acceso a servicios básicos durante un período limitado.",
+    "alias": ["utilidad_estadia", "cet_utilidad"]
   },
   {
     "id": "CET-008-penalidad",
+    "doc": "certificado_estadia_temporal",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
     "texto": "La falta de este certificado implica la expulsión inmediata de naves visitantes y la denegación de acceso a zonas privilegiadas del sistema.",
-    "doc": "Certificado de Estadía Temporal",
-    "seccion": "Penalidad",
-    "alias": ["certificado estadía temporal", "certificado de estadía", "estadía temporal", "estadía"]
+    "alias": ["sancion_estadia", "cet_penalidad"]
   },
   {
-    "id": "CET-008-notas",
-    "texto": "Nota: Asegúrate de traer todos los documentos originales y copias certificadas.",
-    "doc": "Certificado de Estadía Temporal",
-    "seccion": "Notas",
-    "alias": [
-      "certificado estadía temporal", 
-      "certificado de estadía", 
-      "estadía temporal", 
-      "estadía"
-    ]
+    "id": "CET-008-nota",
+    "doc": "certificado_estadia_temporal",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "Asegúrate de llevar todos los documentos originales y copias certificadas.",
+    "alias": ["nota_cet", "documentos_originales"]
   },
   {
-    "id": "CET-008-tiempo_validez",
-    "texto": "El Certificado de Estadía Temporal tiene una validez de 3 meses.",
-    "doc": "Certificado de Estadía Temporal",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "certificado estadía temporal", 
-      "certificado de estadía", 
-      "estadía temporal", 
-      "estadía"
-    ]
+    "id": "CET-008-vigencia",
+    "doc": "certificado_estadia_temporal",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 3 meses.",
+    "alias": ["vigencia_estadia", "cet_vigencia"]
   },
   {
     "id": "CEP-011-requisitos",
@@ -219,89 +146,51 @@
   },
   {
     "id": "CEP-011-horario",
-    "texto": "Horario de atención para el Certificado de Extracción Productiva: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Certificado de Extracción Productiva",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "certificado extracción productiva", 
-      "certificado de extracción", 
-      "certificado extracción", 
-      "extracción productiva", 
-      "extracción"
-    ]
+    "doc": "certificado_extraccion_productiva",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_cep", "horario_extraccion"]
   },
   {
     "id": "CEP-011-utilidad",
-    "texto": "El Certificado de Extracción Productiva permite la extracción legal de recursos energéticos y minerales en sistemas federados y garantiza el respaldo económico para operaciones industriales.",
-  "doc": "Certificado de Extracción Productiva",
-    "seccion": "Utilidad",
-    "alias": [
-      "certificado extracción productiva", 
-      "certificado de extracción", 
-      "certificado extracción", 
-      "extracción productiva", 
-      "extracción"
-    ]
+    "doc": "certificado_extraccion_productiva",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Permite la extracción legal de recursos energéticos y minerales en sistemas federados y respalda económicamente las operaciones industriales.",
+    "alias": ["utilidad_cep", "extraccion_legal"]
   },
   {
     "id": "CEP-011-penalidad",
-    "texto": "La extracción sin certificado resultará en la incautación de la nave y la pérdida de créditos intergalácticos, además de penas de reclusión que serán determinadas por un juez del Gobierno de Curoscant.",
-    "doc": "Certificado de Extracción Productiva",
-    "seccion": "Penalidad",
-    "alias": [
-      "certificado extracción productiva", 
-      "certificado de extracción", 
-      "certificado extracción", 
-      "extracción productiva", 
-      "extracción"
-    ]
+    "doc": "certificado_extraccion_productiva",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La extracción sin certificado resultará en la incautación de la nave, la pérdida de créditos intergalácticos y penas de reclusión dictadas por un juez del Gobierno de Coruscant.",
+    "alias": ["sancion_cep", "penalidad_extraccion"]
   },
   {
-    "id": "CEP-011-notas",
-    "texto": "Antes de iniciar las labores de extracción, autorizadas por este certificado, se requiere una evaluación de impacto económico previa a la aprobación.",
-    "doc": "Certificado de Extracción Productiva",
-    "seccion": "Notas",
-    "alias": [
-      "certificado extracción productiva", 
-      "certificado de extracción", 
-      "certificado extracción", 
-      "extracción productiva", 
-      "extracción"
-    ]
+    "id": "CEP-011-nota",
+    "doc": "certificado_extraccion_productiva",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "Antes de iniciar las labores de extracción se requiere una evaluación de impacto económico previa a la aprobación.",
+    "alias": ["nota_cep", "impacto_economico"]
   },
   {
-    "id": "CEP-011-tiempo_validez",
-    "texto": "El Certificado de Extracción Productiva tiene una validez de 6 meses, renovables según el cumplimiento de las normas legales y el pago de los royalties correspondientes.",
-    "doc": "Certificado de Extracción Productiva",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "certificado extracción productiva", 
-      "certificado de extracción", 
-      "certificado extracción", 
-      "extracción productiva", 
-      "extracción"
-    ]
+    "id": "CEP-011-vigencia",
+    "doc": "certificado_extraccion_productiva",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 6 meses renovables, según cumplimiento de la normativa y pago de royalties.",
+    "alias": ["vigencia_cep", "renovacion_cep"]
   },
   {
     "id": "CEM-013-requisitos",
-    "texto": ["Requisitos para obtener el Certificado de Enrolamiento Militar de la República:",
-      "- Identificación Oficial",
-      "- Certificado Médico Militar",
-      "- Carta de Recomendación",
-      "- Formulario de Enrolamiento Completo",
-      "- Pago de Tarifas de Enrolamiento"
-    ],
-    "doc": "Certificado de Enrolamiento Militar de la República",
-    "seccion": "Requisitos",
-    "alias": [
-      "certificado de enrolamiento militar", 
-      "certificado enrolamiento militar", 
-      "enrolamiento militar", "enrolamiento", 
-      "militar", 
-      "certificado militar", 
-      "certificado enrolamiento", 
-      "certificado de enrolamiento"
-    ]
+    "doc": "certificado_enrolamiento_militar",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Certificado de Enrolamiento Militar de la República:\n• Identificación oficial.\n• Certificado médico militar.\n• Carta de recomendación.\n• Formulario de enrolamiento completo.\n• Pago de tarifas de enrolamiento.",
+    "alias": ["requisitos_cem", "enrolamiento_militar"]
   },
   {
     "id": "CEM-013-donde_obtener",
@@ -395,1210 +284,619 @@
   },
   {
     "id": "CRC-014-requisitos",
-    "texto": ["Requisitos para obtener el Certificado Registro de Carga:",
-      "- Documentación de Mercancías",
-      "- Permiso de Transporte Militar",
-      "- Identificación Oficial",
-      "- Formulario de Registro Completo",
-      "- Evaluación de Seguridad de la Carga"
-    ],
-    "doc": "Certificado Registro de Carga",
-    "seccion": "Requisitos",
-    "alias": [
-      "certificado de registro de carga", 
-      "certificado registro carga", 
-      "registro de carga", 
-      "registro carga", 
-      "carga", 
-      "certificado carga", 
-      "certificado de carga", 
-      "de carga"
-    ]
+    "doc": "certificado_registro_carga",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Certificado de Registro de Carga:\n• Documentación de mercancías.\n• Permiso de transporte militar.\n• Identificación oficial.\n• Formulario de registro completo.\n• Evaluación de seguridad de la carga.",
+    "alias": ["requisitos_carga", "crc_requisitos", "registro_carga"]
   },
   {
     "id": "CRC-014-donde_obtener",
-    "texto": "El Certificado Registro de Carga se obtiene en la Oficina de Logística y Abastecimiento (Edificio Consistorial Coruscant. Nivel 3122).",
-    "doc": "Certificado Registro de Carga",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "certificado de registro de carga", 
-      "certificado registro carga", 
-      "registro de carga", 
-      "registro carga", 
-      "carga", 
-      "certificado carga", 
-      "certificado de carga", 
-      "de carga"
-    ]
+    "doc": "certificado_registro_carga",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se solicita en la Oficina de Logística y Abastecimiento (Edificio Consistorial Coruscant, nivel 3122).",
+    "alias": ["oficina_logistica", "crc_ubicacion", "registro_carga"]
   },
   {
     "id": "CRC-014-horario",
-    "texto": "Horario de atención para el Certificado Registro de Carga: Miércoles a Viernes, 8:00 a 17:00.",
-    "doc": "Certificado Registro de Carga",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "certificado de registro de carga", 
-      "certificado registro carga", 
-      "registro de carga", 
-      "registro carga", 
-      "carga", 
-      "certificado carga", 
-      "certificado de carga", 
-      "de carga"
-    ]
+    "doc": "certificado_registro_carga",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: miércoles a viernes, 08:00–17:00.",
+    "alias": ["horario_crc", "horario_carga"]
   },
   {
     "id": "CRC-014-utilidad",
-    "texto": "El Certificado Registro de Carga certifica la seguridad y el cumplimiento de normativas en el transporte de mercancías, y facilita la operación logística en rutas interplanetarias.",
-    "doc": "Certificado Registro de Carga",
-    "seccion": "Utilidad",
-    "alias": [
-      "certificado de registro de carga", 
-      "certificado registro carga", 
-      "registro de carga", 
-      "registro carga", 
-      "carga", 
-      "certificado carga", 
-      "certificado de carga", 
-      "de carga"
-    ]
+    "doc": "certificado_registro_carga",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Certifica la seguridad y el cumplimiento normativo en el transporte de mercancías, facilitando la logística en rutas interplanetarias.",
+    "alias": ["utilidad_crc", "logistica_carga"]
   },
   {
     "id": "CRC-014-penalidad",
-    "texto": "No presentar este certificado puede resultar en la detención de la carga y sanciones por contrabando a nivel intergaláctico.",
-    "doc": "Certificado Registro de Carga",
-    "seccion": "Penalidad",
-    "alias": [
-      "certificado de registro de carga", 
-      "certificado registro carga", 
-      "registro de carga", 
-      "registro carga", 
-      "carga", 
-      "certificado carga", 
-      "certificado de carga", 
-      "de carga"
-    ]
+    "doc": "certificado_registro_carga",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La falta de este certificado puede conllevar la detención de la carga y sanciones por contrabando de alcance intergaláctico.",
+    "alias": ["sancion_crc", "penalidad_carga"]
   },
   {
-    "id": "CRC-014-notas",
-    "texto": "Todas las cargas deben pasar por una evaluación de seguridad antes del registro.",
-    "doc": "Certificado Registro de Carga",
-    "seccion": "Notas",
-    "alias": [
-      "certificado de registro de carga", 
-      "certificado registro carga", 
-      "registro de carga", 
-      "registro carga", 
-      "carga", 
-      "certificado carga", 
-      "certificado de carga", 
-      "de carga"
-    ]
+    "id": "CRC-014-nota",
+    "doc": "certificado_registro_carga",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "Todas las cargas deben someterse a una evaluación de seguridad previa al registro.",
+    "alias": ["nota_crc", "seguridad_carga"]
   },
   {
-    "id": "CRC-014-tiempo_validez",
-    "texto": "El Certificado Registro de Carga tiene una validez de 6 meses.",
-    "doc": "Certificado Registro de Carga",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "certificado de registro de carga", 
-      "certificado registro carga", 
-      "registro de carga", 
-      "registro carga", 
-      "carga", 
-      "certificado carga", 
-      "certificado de carga", 
-      "de carga"
-    ]
+    "id": "CRC-014-vigencia",
+    "doc": "certificado_registro_carga",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 6 meses.",
+    "alias": ["vigencia_crc", "registro_carga_vigencia"]
   },
   {
     "id": "CAT-019-requisitos",
-    "texto": [
-      "Requisitos para obtener el Certificado de Antecedentes:",
-      "- Solicitud de Certificación",
-      "- Identificación Oficial",
-      "- Historia de Empleo y Residencia",
-      "- Formulario de Solicitud Completo",
-      "- Pago de Tarifas Administrativas"
-    ],
-    "doc": "Certificado de Antecedentes",
-    "seccion": "Requisitos",
-    "alias": [
-      "certificado antecedentes",
-      "antecedentes",
-      "de antecedentes",
-      "antecedentes penales",
-      "certificado de antecedentes penales"
-    ]
+    "doc": "certificado_antecedentes",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Certificado de Antecedentes:\n• Solicitud de certificación.\n• Identificación oficial.\n• Historia de empleo y residencia.\n• Formulario de solicitud completo.\n• Pago de tarifas administrativas.",
+    "alias": ["requisitos_antecedentes", "cat_requisitos", "cert_antecedentes"]
   },
   {
     "id": "CAT-019-donde_obtener",
-    "texto": "El Certificado de Antecedentes se obtiene en el Edificio de la Justicia Coruscant, Tribunal Supremo de la República.",
-    "doc": "Certificado de Antecedentes",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "certificado antecedentes",
-      "antecedentes",
-      "de antecedentes",
-      "antecedentes penales",
-      "certificado de antecedentes penales"
-    ]
+    "doc": "certificado_antecedentes",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se obtiene en el Edificio de la Justicia Coruscant, Tribunal Supremo de la República.",
+    "alias": ["tribunal_supremo", "ubicacion_cat", "cert_antecedentes"]
   },
   {
     "id": "CAT-019-horario",
-    "texto": "Horario de atención para el Certificado de Antecedentes: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Certificado de Antecedentes",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "certificado antecedentes",
-      "antecedentes",
-      "de antecedentes",
-      "antecedentes penales",
-      "certificado de antecedentes penales"
-    ]
+    "doc": "certificado_antecedentes",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_cat", "horario_antecedentes"]
   },
   {
     "id": "CAT-019-utilidad",
-    "texto": "El Certificado de Antecedentes verifica los antecedentes laborales y de residencia, y es requisito para realizar trámites oficiales en la Federación.",
-    "doc": "Certificado de Antecedentes",
-    "seccion": "Utilidad",
-    "alias": [
-      "certificado antecedentes",
-      "antecedentes",
-      "de antecedentes",
-      "antecedentes penales",
-      "certificado de antecedentes penales"
-    ]
+    "doc": "certificado_antecedentes",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Verifica antecedentes laborales y de residencia; es requisito para trámites oficiales en la Federación.",
+    "alias": ["utilidad_cat", "antecedentes_tramites"]
   },
   {
     "id": "CAT-019-penalidad",
-    "texto": "La falta de este certificado puede llevar a la cancelación de contratos oficiales y restricciones de empleo en entidades federadas.",
-    "doc": "Certificado de Antecedentes",
-    "seccion": "Penalidad",
-    "alias": [
-      "certificado antecedentes",
-      "antecedentes",
-      "de antecedentes",
-      "antecedentes penales",
-      "certificado de antecedentes penales"
-    ]
+    "doc": "certificado_antecedentes",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La ausencia de este certificado puede provocar la cancelación de contratos oficiales y restricciones de empleo en entidades federadas.",
+    "alias": ["sancion_cat", "penalidad_antecedentes"]
   },
   {
-    "id": "CAT-019-notas",
-    "texto": "Asegúrate de completar todos los campos y proporcionar la documentación necesaria.",
-    "doc": "Certificado de Antecedentes",
-    "seccion": "Notas",
-    "alias": [
-      "certificado antecedentes",
-      "antecedentes",
-      "de antecedentes",
-      "antecedentes penales",
-      "certificado de antecedentes penales"
-    ]
+    "id": "CAT-019-nota",
+    "doc": "certificado_antecedentes",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "Completa todos los campos y adjunta la documentación solicitada.",
+    "alias": ["nota_cat", "documentacion_antecedentes"]
   },
   {
-    "id": "CAT-019-tiempo_validez",
-    "texto": "El Certificado de Antecedentes tiene una validez de 1 año.",
-    "doc": "Certificado de Antecedentes",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "certificado antecedentes",
-      "antecedentes",
-      "de antecedentes",
-      "antecedentes penales",
-      "certificado de antecedentes penales"
-    ]
+    "id": "CAT-019-vigencia",
+    "doc": "certificado_antecedentes",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_cat", "antecedentes_vigencia"]
   },
   {
     "id": "RDD-017-requisitos",
-    "texto": [
-      "Requisitos para obtener el Certificado Registro de Droides:",
-      "- Certificado de Fabricación",
-      "- Identificación Oficial",
-      "- Evaluación de Seguridad de Droids",
-      "- Formulario de Registro Completo",
-      "- Prueba de Funcionalidad"
-    ],
-    "doc": "Certificado Registro de Droides",
-    "seccion": "Requisitos",
-    "alias": [
-      "certificado de registro de droides", 
-      "certificado registro droides", 
-      "registro de droides", 
-      "registro droides", 
-      "droides", 
-      "certificado droides", 
-      "certificado de droides", 
-      "de droides"
-    ]
+    "doc": "certificado_registro_droides",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Certificado de Registro de Droides:\n• Certificado de fabricación.\n• Identificación oficial.\n• Evaluación de seguridad de droides.\n• Formulario de registro completo.\n• Prueba de funcionalidad.",
+    "alias": ["requisitos_droides", "rdd_requisitos", "registro_droides"]
   },
   {
     "id": "RDD-017-donde_obtener",
-    "texto": "El Certificado Registro de Droides se obtiene en la Torre Holistica de la Ciencia. Piso 1. Ala B.",
-    "doc": "Certificado Registro de Droides",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "certificado de registro de droides", 
-      "certificado registro droides", 
-      "registro de droides", 
-      "registro droides", 
-      "droides", 
-      "certificado droides", 
-      "certificado de droides", 
-      "de droides"
-    ]
+    "doc": "certificado_registro_droides",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en la Torre Holística de la Ciencia, piso 1, ala B.",
+    "alias": ["ubicacion_rdd", "torre_ciencia", "registro_droides"]
   },
   {
     "id": "RDD-017-horario",
-    "texto": "Horario de atención para el Certificado Registro de Droides: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Certificado Registro de Droides",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "certificado de registro de droides", 
-      "certificado registro droides", 
-      "registro de droides", 
-      "registro droides", 
-      "droides", 
-      "certificado droides", 
-      "certificado de droides", 
-      "de droides"
-    ]
+    "doc": "certificado_registro_droides",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_rdd", "horario_droides"]
   },
   {
     "id": "RDD-017-utilidad",
-    "texto": "El Certificado Registro de Droides certifica la integridad y funcionamiento de droides oficiales y permite operar en redes de transporte automatizadas.",
-    "doc": "Certificado Registro de Droides",
-    "seccion": "Utilidad",
-    "alias": [
-      "certificado de registro de droides", 
-      "certificado registro droides", 
-      "registro de droides", 
-      "registro droides", 
-      "droides", 
-      "certificado droides", 
-      "certificado de droides", 
-      "de droides"
-    ]
+    "doc": "certificado_registro_droides",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Certifica la integridad y funcionamiento de droides oficiales y habilita su operación en redes de transporte automatizadas.",
+    "alias": ["utilidad_rdd", "droides_oficiales"]
   },
   {
     "id": "RDD-017-penalidad",
-    "texto": "Sin este registro, los droides serán confiscados y el operador enfrentará restricciones en el uso de sistemas automatizados.",
-    "doc": "Certificado Registro de Droides",
-    "seccion": "Penalidad",
-    "alias": [
-      "certificado de registro de droides", 
-      "certificado registro droides", 
-      "registro de droides", 
-      "registro droides", 
-      "droides", 
-      "certificado droides", 
-      "certificado de droides", 
-      "de droides"
-    ]
+    "doc": "certificado_registro_droides",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La falta de registro conlleva la confiscación de los droides y la restricción de acceso a sistemas automatizados.",
+    "alias": ["sancion_rdd", "penalidad_droides"]
   },
   {
-    "id": "RDD-017-notas",
-    "texto": "Cada dróide debe pasar una prueba de funcionalidad antes del registro.",
-    "doc": "Certificado Registro de Droides",
-    "seccion": "Notas",
-    "alias": [
-      "certificado de registro de droides", 
-      "certificado registro droides", 
-      "registro de droides", 
-      "registro droides", 
-      "droides", 
-      "certificado droides", 
-      "certificado de droides", 
-      "de droides"
-    ]
+    "id": "RDD-017-nota",
+    "doc": "certificado_registro_droides",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "Cada droide debe superar la prueba de funcionalidad antes de ser registrado.",
+    "alias": ["nota_rdd", "funcionalidad_droides"]
   },
   {
-    "id": "RDD-017-tiempo_validez",
-    "texto": "El Certificado Registro de Droides tiene una validez de 6 meses.",
-    "doc": "Certificado Registro de Droides",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "certificado de registro de droides", 
-      "certificado registro droides", 
-      "registro de droides", 
-      "registro droides", 
-      "droides", 
-      "certificado droides", 
-      "certificado de droides", 
-      "de droides"
-    ]
+    "id": "RDD-017-vigencia",
+    "doc": "certificado_registro_droides",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 6 meses.",
+    "alias": ["vigencia_rdd", "registro_droides_vigencia"]
   },
   {
     "id": "CPF-002-requisitos",
-    "texto": [
-      "Requisitos para obtener la Licencia Oficial Piloto Federado:",
-      "- Comprobante de Formación como Piloto",
-      "- Certificado Médico Militar",
-      "- Formulario de Solicitud Completo",
-      "- Pago de Tarifas de Identificación"
-    ],
-    "doc": "Licencia Oficial Piloto Federado",
-    "seccion": "Requisitos",
-    "alias": [
-      "licencia oficial piloto", 
-      "licencia oficial de piloto", 
-      "licencia piloto federado", 
-      "licencia piloto", 
-      "piloto federado", "de piloto federado", 
-      "licencia de piloto", 
-      "licencia de piloto oficial"
-    ]
+    "doc": "licencia_oficial_piloto_federado",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener la Licencia Oficial Piloto Federado:\n• Comprobante de formación como piloto.\n• Certificado médico militar.\n• Formulario de solicitud completo.\n• Pago de tarifas de identificación.",
+    "alias": ["requisitos_piloto", "cpf_requisitos", "licencia_piloto"]
   },
   {
     "id": "CPF-002-donde_obtener",
-    "texto": "La Licencia Oficial Piloto Federado se obtiene en el Centro de Formación Aeronáutica (Sector F-404).",
-    "doc": "Licencia Oficial Piloto Federado",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "licencia oficial piloto", 
-      "licencia oficial de piloto", 
-      "licencia piloto federado", 
-      "licencia piloto", 
-      "piloto federado", "de piloto federado", 
-      "licencia de piloto", 
-      "licencia de piloto oficial"
-    ]
+    "doc": "licencia_oficial_piloto_federado",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en el Centro de Formación Aeronáutica (sector F-404).",
+    "alias": ["centro_formacion", "cpf_ubicacion", "licencia_piloto"]
   },
   {
     "id": "CPF-002-horario",
-    "texto": "Horario de atención para la Licencia Oficial Piloto Federado: Martes a Sábado, 9:00 a 18:00.",
-    "doc": "Licencia Oficial Piloto Federado",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "licencia oficial piloto", 
-      "licencia oficial de piloto", 
-      "licencia piloto federado", 
-      "licencia piloto", 
-      "piloto federado", "de piloto federado", 
-      "licencia de piloto", 
-      "licencia de piloto oficial"
-    ]
+    "doc": "licencia_oficial_piloto_federado",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: martes a sábado, 09:00–18:00.",
+    "alias": ["horario_cpf", "horario_piloto"]
   },
   {
     "id": "CPF-002-utilidad",
-    "texto": "La Licencia Oficial Piloto Federado habilita el pilotaje de naves oficiales y civiles, y permite el acceso a rutas aéreas y espaciales restringidas.",
-    "doc": "Licencia Oficial Piloto Federado",
-    "seccion": "Utilidad",
-    "alias": [
-      "licencia oficial piloto", 
-      "licencia oficial de piloto", 
-      "licencia piloto federado", 
-      "licencia piloto", 
-      "piloto federado", "de piloto federado", 
-      "licencia de piloto", 
-      "licencia de piloto oficial"
-    ]
+    "doc": "licencia_oficial_piloto_federado",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Habilita el pilotaje de naves oficiales y civiles y permite el acceso a rutas aéreas y espaciales restringidas.",
+    "alias": ["utilidad_cpf", "piloto_habilitado"]
   },
   {
     "id": "CPF-002-penalidad",
-    "texto": "Sin esta cédula, se prohíbe el pilotaje en rutas oficiales y se impide participar en misiones de la Flota Republicana.",
-    "doc": "Licencia Oficial Piloto Federado",
-    "seccion": "Penalidad",
-    "alias": [
-      "licencia oficial piloto", 
-      "licencia oficial de piloto", 
-      "licencia piloto federado", 
-      "licencia piloto", 
-      "piloto federado", "de piloto federado", 
-      "licencia de piloto", 
-      "licencia de piloto oficial"
-    ]
+    "doc": "licencia_oficial_piloto_federado",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "Sin esta licencia se prohíbe el pilotaje en rutas oficiales y se impide participar en misiones de la Flota Republicana.",
+    "alias": ["sancion_cpf", "penalidad_piloto"]
   },
   {
-    "id": "CPF-002-notas",
-    "texto": "Es obligatorio presentar el certificado médico vigente.",
-    "doc": "Licencia Oficial Piloto Federado",
-    "seccion": "Notas",
-    "alias": [
-      "licencia oficial piloto", 
-      "licencia oficial de piloto", 
-      "licencia piloto federado", 
-      "licencia piloto", 
-      "piloto federado", "de piloto federado", 
-      "licencia de piloto", 
-      "licencia de piloto oficial"
-    ]
+    "id": "CPF-002-nota",
+    "doc": "licencia_oficial_piloto_federado",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "Es obligatorio presentar un certificado médico vigente al momento de la solicitud.",
+    "alias": ["nota_cpf", "certificado_medico"]
   },
   {
-    "id": "CPF-002-tiempo_validez",
-    "texto": "La Licencia Oficial Piloto Federado tiene una validez de 1 año.",
-    "doc": "Licencia Oficial Piloto Federado",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "licencia oficial piloto", 
-      "licencia oficial de piloto", 
-      "licencia piloto federado", 
-      "licencia piloto", 
-      "piloto federado", "de piloto federado", 
-      "licencia de piloto", 
-      "licencia de piloto oficial"
-    ]
+    "id": "CPF-002-vigencia",
+    "doc": "licencia_oficial_piloto_federado",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_cpf", "licencia_piloto_vigencia"]
   },
   {
     "id": "LTE-003-requisitos",
-    "texto": [
-      "Requisitos para obtener la Licencia de Transporte Espacial:",
-      "- Certificado de Navegación Espacial",
-      "- Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
-      "- Formulario de Solicitud Completo",
-      "- Pago de Tarifas de Licencia"
-    ],
-    "doc": "Licencia de Transporte Espacial",
-    "seccion": "Requisitos",
-    "alias": [
-      "licencia transporte espacial", 
-      "transporte espacial", 
-      "licencia de transporte", 
-      "licencia de transporte interplanetario", 
-      "transporte interplanetario"
-    ]
+    "doc": "licencia_transporte_espacial",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener la Licencia de Transporte Espacial:\n• Certificado de navegación espacial.\n• Identificación oficial planetaria emitida por un planeta miembro de la República.\n• Formulario de solicitud completo.\n• Pago de tarifas de licencia.",
+    "alias": ["requisitos_lte", "licencia_transporte"]
   },
   {
     "id": "LTE-003-donde_obtener",
-    "texto": "La Licencia de Transporte Espacial se obtiene en la Oficina de Transporte Espacial (Edificio Consistorial Coruscant. Nivel 5143).",
-    "doc": "Licencia de Transporte Espacial",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "licencia transporte espacial", 
-      "transporte espacial", 
-      "licencia de transporte", 
-      "licencia de transporte interplanetario", 
-      "transporte interplanetario"
-    ]
+    "doc": "licencia_transporte_espacial",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en la Oficina de Transporte Espacial (Edificio Consistorial Coruscant, nivel 5143).",
+    "alias": ["oficina_transporte", "lte_ubicacion"]
   },
   {
     "id": "LTE-003-horario",
-    "texto": "Horario de atención para la Licencia de Transporte Espacial: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Licencia de Transporte Espacial",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "licencia transporte espacial", 
-      "transporte espacial", 
-      "licencia de transporte", 
-      "licencia de transporte interplanetario", 
-      "transporte interplanetario"
-    ]
+    "doc": "licencia_transporte_espacial",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_lte", "horario_transporte"]
   },
   {
     "id": "LTE-003-utilidad",
-    "texto": "La Licencia de Transporte Espacial habilita el transporte interplanetario de carga y pasajeros, y el acceso a rutas comerciales privilegiadas.",
-    "doc": "Licencia de Transporte Espacial",
-    "seccion": "Utilidad",
-    "alias": [
-      "licencia transporte espacial", 
-      "transporte espacial", 
-      "licencia de transporte", 
-      "licencia de transporte interplanetario", 
-      "transporte interplanetario"
-    ]
+    "doc": "licencia_transporte_espacial",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Habilita el transporte interplanetario de carga y pasajeros y concede acceso a rutas comerciales privilegiadas.",
+    "alias": ["utilidad_lte", "transporte_interplanetario"]
   },
   {
     "id": "LTE-003-penalidad",
-    "texto": "No contar con esta licencia impide operar en rutas oficiales y puede resultar en sanciones económicas severas por la Federación del Comercio.",
-    "doc": "Licencia de Transporte Espacial",
-    "seccion": "Penalidad",
-    "alias": [
-      "licencia transporte espacial", 
-      "transporte espacial", 
-      "licencia de transporte", 
-      "licencia de transporte interplanetario", 
-      "transporte interplanetario"
-    ]
+    "doc": "licencia_transporte_espacial",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "Operar sin esta licencia impide utilizar rutas oficiales y puede acarrear sanciones económicas severas impuestas por la Federación del Comercio.",
+    "alias": ["sancion_lte", "penalidad_transporte"]
   },
   {
-    "id": "LTE-003-notas",
-    "texto": "La licencia es válida por un año y es obligatorio renovarla antes de su vencimiento.",
-    "doc": "Licencia de Transporte Espacial",
-    "seccion": "Notas",
-    "alias": [
-      "licencia transporte espacial", 
-      "transporte espacial", 
-      "licencia de transporte", 
-      "licencia de transporte interplanetario", 
-      "transporte interplanetario"
-    ]
+    "id": "LTE-003-nota",
+    "doc": "licencia_transporte_espacial",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "La licencia debe renovarse antes de su vencimiento.",
+    "alias": ["nota_lte", "renovacion_licencia"]
   },
   {
-    "id": "LTE-003-tiempo_validez",
-    "texto": "La Licencia de Transporte Espacial tiene una validez de 1 año.",
-    "doc": "Licencia de Transporte Espacial",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "licencia transporte espacial", 
-      "transporte espacial", 
-      "licencia de transporte", 
-      "licencia de transporte interplanetario", 
-      "transporte interplanetario"
-    ]
+    "id": "LTE-003-vigencia",
+    "doc": "licencia_transporte_espacial",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_lte", "licencia_transporte_vigencia"]
   },
   {
     "id": "ISP-005-requisitos",
-    "texto": [
-      "Requisitos para obtener la Cédula Única Sistema Planetario:",
-      "- Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
-      "- Formulario de Solicitud Completo",
-      "- Foto Tamaño Identificación",
-      "- Comprobante de Pago"
-    ],
-    "doc": "Cédula Única Sistema Planetario",
-    "seccion": "Requisitos",
-    "alias": [
-      "cédula sistema planetario", 
-      "cédula única", 
-      "cédula de identificación", 
-      "sistema planetario", 
-      "carne de identidad", 
-      "cédula de identidad", 
-      "de identidad", 
-      "identificación oficial"
-    ]
+    "doc": "cedula_unica_sistema_planetario",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener la Cédula Única Sistema Planetario:\n• Identificación oficial planetaria emitida por un planeta miembro de la República.\n• Formulario de solicitud completo.\n• Foto tamaño identificación.\n• Comprobante de pago.",
+    "alias": ["requisitos_cedula", "isp_requisitos"]
   },
   {
     "id": "ISP-005-donde_obtener",
-    "texto": "La Cédula Única Sistema Planetario se obtiene en el Departamento de Identificación (Edificio Consistorial Coruscant. Nivel 1313).",
-    "doc": "Cédula Única Sistema Planetario",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "cédula sistema planetario", 
-      "cédula única", 
-      "cédula de identificación", 
-      "sistema planetario", 
-      "carne de identidad", 
-      "cédula de identidad", 
-      "de identidad", 
-      "identificación oficial"
-    ]
+    "doc": "cedula_unica_sistema_planetario",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se obtiene en el Departamento de Identificación (Edificio Consistorial Coruscant, nivel 1313).",
+    "alias": ["departamento_identificacion", "isp_ubicacion"]
   },
   {
     "id": "ISP-005-horario",
-    "texto": "Horario de atención para la Cédula Única Sistema Planetario: Lunes a Sábado, 9:00 a 18:00.",
-    "doc": "Cédula Única Sistema Planetario",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "cédula sistema planetario", 
-      "cédula única", 
-      "cédula de identificación", 
-      "sistema planetario", 
-      "carne de identidad", 
-      "cédula de identidad", 
-      "de identidad", 
-      "identificación oficial"
-    ]
+    "doc": "cedula_unica_sistema_planetario",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a sábado, 09:00–18:00.",
+    "alias": ["horario_isp", "horario_cedula"]
   },
   {
     "id": "ISP-005-utilidad",
-    "texto": "La Cédula Única Sistema Planetario acredita la identidad a nivel galáctico y permite el acceso a servicios interplanetarios oficiales.",
-    "doc": "Cédula Única Sistema Planetario",
-    "seccion": "Utilidad",
-    "alias": [
-      "cédula sistema planetario", 
-      "cédula única", 
-      "cédula de identificación", 
-      "sistema planetario", 
-      "carne de identidad", 
-      "cédula de identidad", 
-      "de identidad", 
-      "identificación oficial"
-    ]
+    "doc": "cedula_unica_sistema_planetario",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Acredita la identidad a nivel galáctico y permite el acceso a servicios interplanetarios oficiales.",
+    "alias": ["utilidad_isp", "identidad_galactica"]
   },
   {
     "id": "ISP-005-penalidad",
-    "texto": "No disponer de esta identificación puede resultar en la imposibilidad de realizar transacciones oficiales y prohibición de acceso a sistemas federados.",
-    "doc": "Cédula Única Sistema Planetario",
-    "seccion": "Penalidad",
-    "alias": [
-      "cédula sistema planetario", 
-      "cédula única", 
-      "cédula de identificación", 
-      "sistema planetario", 
-      "carne de identidad", 
-      "cédula de identidad", 
-      "de identidad", 
-      "identificación oficial"
-    ]
+    "doc": "cedula_unica_sistema_planetario",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La falta de esta identificación impide realizar transacciones oficiales y prohíbe el acceso a sistemas federados.",
+    "alias": ["sancion_isp", "penalidad_identidad"]
   },
   {
-    "id": "ISP-005-notas",
-    "texto": "El documento tiene una validez de 5 años y es obligatorio renovarlo antes de su vencimiento.",
-    "doc": "Cédula Única Sistema Planetario",
-    "seccion": "Notas",
-    "alias": [
-      "cédula sistema planetario", 
-      "cédula única", 
-      "cédula de identificación", 
-      "sistema planetario", 
-      "carne de identidad", 
-      "cédula de identidad", 
-      "de identidad", 
-      "identificación oficial"
-    ]
+    "id": "ISP-005-nota",
+    "doc": "cedula_unica_sistema_planetario",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "El documento tiene una validez de 5 años y debe renovarse antes de su vencimiento.",
+    "alias": ["nota_isp", "renovacion_cedula"]
   },
   {
-    "id": "ISP-005-tiempo_validez",
-    "texto": "La Cédula Única Sistema Planetario tiene una validez de 5 años.",
-    "doc": "Cédula Única Sistema Planetario",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "cédula sistema planetario", 
-      "cédula única", 
-      "cédula de identificación", 
-      "sistema planetario", 
-      "carne de identidad", 
-      "cédula de identidad", 
-      "de identidad", 
-      "identificación oficial"
-    ]
+    "id": "ISP-005-vigencia",
+    "doc": "cedula_unica_sistema_planetario",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 5 años.",
+    "alias": ["vigencia_isp", "cedula_vigencia"]
   },
   {
     "id": "CBS-015-requisitos",
-    "texto": [
-      "Requisitos para obtener la Cédula de Bienestar Social:",
-      "- Comprobante de Participación en Programas de Bienestar",
-      "- Identificación Oficial",
-      "- Formulario de Solicitud Completo",
-      "- Evaluación de Impacto Personal",
-      "- Referencias de Programas Anteriores"
-    ],
-    "doc": "Cédula de Bienestar Social",
-    "seccion": "Requisitos",
-    "alias": [
-      "cédula bienestar social", 
-      "bienestar social", 
-      "cédula de bienestar", 
-      "bienestar", 
-      "cédula social", 
-      "carne social"
-    ]
+    "doc": "cedula_bienestar_social",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener la Cédula de Bienestar Social:\n• Comprobante de participación en programas de bienestar.\n• Identificación oficial.\n• Formulario de solicitud completo.\n• Evaluación de impacto personal.\n• Referencias de programas anteriores.",
+    "alias": ["requisitos_cbs", "bienestar_requisitos"]
   },
   {
     "id": "CBS-015-donde_obtener",
-    "texto": "La Cédula de Bienestar Social se obtiene en la Sede Federal de la Salud Intergaláctica (Nivel 2).",
-    "doc": "Cédula de Bienestar Social",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "cédula bienestar social",
-      "bienestar social",
-      "cédula de bienestar",
-      "bienestar",
-      "cédula social",
-      "carne social"
-    ]
+    "doc": "cedula_bienestar_social",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en la Sede Federal de la Salud Intergaláctica (nivel 2).",
+    "alias": ["sede_salud", "cbs_ubicacion"]
   },
   {
     "id": "CBS-015-horario",
-    "texto": "Horario de atención para la Cédula de Bienestar Social: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Cédula de Bienestar Social",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "cédula bienestar social",
-      "bienestar social",
-      "cédula de bienestar",
-      "bienestar",
-      "cédula social",
-      "carne social"
-    ]
+    "doc": "cedula_bienestar_social",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_cbs", "horario_bienestar"]
   },
   {
     "id": "CBS-015-utilidad",
-    "texto": "La Cédula de Bienestar Social acredita la participación en programas sociales y permite acceder a subvenciones y beneficios de la Federación.",
-    "doc": "Cédula de Bienestar Social",
-    "seccion": "Utilidad",
-    "alias": [
-      "cédula bienestar social",
-      "bienestar social",
-      "cédula de bienestar",
-      "bienestar",
-      "cédula social",
-      "carne social"
-    ]
+    "doc": "cedula_bienestar_social",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Acredita la participación en programas sociales y permite acceder a subvenciones y beneficios de la Federación.",
+    "alias": ["utilidad_cbs", "beneficios_sociales"]
   },
   {
     "id": "CBS-015-penalidad",
-    "texto": "La falta de esta cédula ocasiona la pérdida de acceso a programas sociales y ayudas federales, afectando el bienestar individual.",
-    "doc": "Cédula de Bienestar Social",
-    "seccion": "Penalidad",
-    "alias": [
-      "cédula bienestar social",
-      "bienestar social",
-      "cédula de bienestar",
-      "bienestar",
-      "cédula social",
-      "carne social"
-    ]
+    "doc": "cedula_bienestar_social",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La falta de esta cédula conlleva la pérdida de acceso a programas sociales y ayudas federales.",
+    "alias": ["sancion_cbs", "penalidad_bienestar"]
   },
   {
-    "id": "CBS-015-notas",
-    "texto": "Es necesario presentar referencias de programas de bienestar en los que hayas participado previamente.",
-    "doc": "Cédula de Bienestar Social",
-    "seccion": "Notas",
-    "alias": [
-      "cédula bienestar social",
-      "bienestar social",
-      "cédula de bienestar",
-      "bienestar",
-      "cédula social",
-      "carne social"
-    ]
+    "id": "CBS-015-nota",
+    "doc": "cedula_bienestar_social",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "Debes presentar referencias de los programas de bienestar en los que hayas participado previamente.",
+    "alias": ["nota_cbs", "referencias_bienestar"]
   },
   {
-    "id": "CBS-015-tiempo_validez",
-    "texto": "La Cédula de Bienestar Social tiene una validez de 1 año.",
-    "doc": "Cédula de Bienestar Social",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "cédula bienestar social",
-      "bienestar social",
-      "cédula de bienestar",
-      "bienestar",
-      "cédula social",
-      "carne social"
-    ]
+    "id": "CBS-015-vigencia",
+    "doc": "cedula_bienestar_social",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_cbs", "bienestar_vigencia"]
   },
   {
     "id": "PEP-009-requisitos",
-    "texto": [
-      "Requisitos para obtener el Permiso de Exploración Planetaria:",
-      "- Carta de Misión",
-      "- Identificación Oficial",
-      "- Plan de Exploración Detallado",
-      "- Formulario de Solicitud Completo",
-      "- Certificado de Seguridad de la Misión"
-    ],
-    "doc": "Permiso de Exploración Planetaria",
-    "seccion": "Requisitos",
-    "alias": [
-      "de exploracion planetaria", 
-      "permiso de exploracion", 
-      "exploracion planetaria", 
-      "exploracion", 
-      "permiso exploracion", 
-      "de exploracion"
-    ]
+    "doc": "permiso_exploracion_planetaria",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Permiso de Exploración Planetaria:\n• Carta de misión.\n• Identificación oficial.\n• Plan de exploración detallado.\n• Formulario de solicitud completo.\n• Certificado de seguridad de la misión.",
+    "alias": ["requisitos_pep", "exploracion_requisitos"]
   },
   {
     "id": "PEP-009-donde_obtener",
-    "texto": "El Permiso de Exploración Planetaria se obtiene en el Centro de Exploración Espacial (Nivel Central, Ala B).",
-    "doc": "Permiso de Exploración Planetaria",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "de exploracion planetaria", 
-      "permiso de exploracion", 
-      "exploracion planetaria", 
-      "exploracion", 
-      "permiso exploracion", 
-      "de exploracion"
-    ]
+    "doc": "permiso_exploracion_planetaria",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en el Centro de Exploración Espacial (nivel central, ala B).",
+    "alias": ["centro_exploracion", "pep_ubicacion"]
   },
   {
     "id": "PEP-009-horario",
-    "texto": "Horario de atención para el Permiso de Exploración Planetaria: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Permiso de Exploración Planetaria",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "de exploracion planetaria", 
-      "permiso de exploracion", 
-      "exploracion planetaria", 
-      "exploracion", 
-      "permiso exploracion", 
-      "de exploracion"
-    ]
+    "doc": "permiso_exploracion_planetaria",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_pep", "horario_exploracion"]
   },
   {
     "id": "PEP-009-utilidad",
-    "texto": "El Permiso de Exploración Planetaria autoriza incursiones en territorios inexplorados y facilita el acceso a recursos y rutas secretas.",
-    "doc": "Permiso de Exploración Planetaria",
-    "seccion": "Utilidad",
-    "alias": [
-      "de exploracion planetaria", 
-      "permiso de exploracion", 
-      "exploracion planetaria", 
-      "exploracion", 
-      "permiso exploracion", 
-      "de exploracion"
-    ]
+    "doc": "permiso_exploracion_planetaria",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Autoriza incursiones en territorios inexplorados y otorga acceso a recursos y rutas confidenciales.",
+    "alias": ["utilidad_pep", "exploracion_autorizada"]
   },
   {
     "id": "PEP-009-penalidad",
-    "texto": "Sin este permiso, los exploradores serán declarados fuera de la ley y sujetos a medidas de confinamiento en estaciones militares.",
-    "doc": "Permiso de Exploración Planetaria",
-    "seccion": "Penalidad",
-    "alias": [
-      "de exploracion planetaria", 
-      "permiso de exploracion", 
-      "exploracion planetaria", 
-      "exploracion", 
-      "permiso exploracion", 
-      "de exploracion"
-    ]
+    "doc": "permiso_exploracion_planetaria",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La ausencia de este permiso declara a los exploradores fuera de la ley y los expone a confinamiento en estaciones militares.",
+    "alias": ["sancion_pep", "penalidad_exploracion"]
   },
   {
-    "id": "PEP-009-notas",
-    "texto": "La misión debe estar aprobada por el Ministerio de Defensa Galáctica.",
-    "doc": "Permiso de Exploración Planetaria",
-    "seccion": "Notas",
-    "alias": [
-      "de exploracion planetaria", 
-      "permiso de exploracion", 
-      "exploracion planetaria", 
-      "exploracion", 
-      "permiso exploracion", 
-      "de exploracion"
-    ]
+    "id": "PEP-009-nota",
+    "doc": "permiso_exploracion_planetaria",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
+    "texto": "La misión debe ser aprobada por el Ministerio de Defensa Galáctica.",
+    "alias": ["nota_pep", "aprobacion_defensa"]
   },
   {
-    "id": "PEP-009-tiempo_validez",
-    "texto": "El Permiso de Exploración Planetaria tiene una validez de 1 año.",
-    "doc": "Permiso de Exploración Planetaria",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "de exploracion planetaria", 
-      "permiso de exploracion", 
-      "exploracion planetaria", 
-      "exploracion", 
-      "permiso exploracion", 
-      "de exploracion"
-    ]
+    "id": "PEP-009-vigencia",
+    "doc": "permiso_exploracion_planetaria",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_pep", "permiso_exploracion_vigencia"]
   },
   {
     "id": "RAS-010-requisitos",
-    "texto": [
-      "Requisitos para obtener el Permiso de Asentamientos Coloniales:",
-      "- Comprobante de Terreno",
-      "- Identificación Oficial",
-      "- Formulario de Registro Completo",
-      "- Certificado de Seguridad Inmobiliaria",
-      "- Plan de Desarrollo Inmobiliario"
-    ],
-    "doc": "Permiso de Asentamientos Coloniales",
-    "seccion": "Requisitos",
-    "alias": [
-      "permiso de asentamientos", 
-      "asentamientos coloniales", 
-      "de asentamientos coloniales", 
-      "asentamientos", 
-      "permiso de colonizacion", 
-      "de asentamientos", 
-      "asentamiento", 
-      "asentamiento colonial", 
-      "colonial"
-    ]
+    "doc": "permiso_asentamientos_coloniales",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Permiso de Asentamientos Coloniales:\n• Comprobante de terreno.\n• Identificación oficial.\n• Formulario de registro completo.\n• Certificado de seguridad inmobiliaria.\n• Plan de desarrollo inmobiliario.",
+    "alias": ["requisitos_ras", "asentamientos_requisitos"]
   },
   {
     "id": "RAS-010-donde_obtener",
-    "texto": "El Permiso de Asentamientos Coloniales se obtiene en la Oficina de Colonización (Palacio de la Cancillería. Nivel 1832).",
-    "doc": "Permiso de Asentamientos Coloniales",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "permiso de asentamientos", 
-      "asentamientos coloniales", 
-      "de asentamientos coloniales", 
-      "asentamientos", 
-      "permiso de colonizacion", 
-      "de asentamientos", 
-      "asentamiento", 
-      "asentamiento colonial", 
-      "colonial"
-    ]
+    "doc": "permiso_asentamientos_coloniales",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en la Oficina de Colonización (Palacio de la Cancillería, nivel 1832).",
+    "alias": ["oficina_colonizacion", "ras_ubicacion"]
   },
   {
     "id": "RAS-010-horario",
-    "texto": "Horario de atención para el Permiso de Asentamientos Coloniales: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Permiso de Asentamientos Coloniales",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "permiso de asentamientos", 
-      "asentamientos coloniales", 
-      "de asentamientos coloniales", 
-      "asentamientos", 
-      "permiso de colonizacion", 
-      "de asentamientos", 
-      "asentamiento", 
-      "asentamiento colonial", 
-      "colonial"
-    ]
+    "doc": "permiso_asentamientos_coloniales",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_ras", "horario_asentamientos"]
   },
   {
     "id": "RAS-010-utilidad",
-    "texto": "El Permiso de Asentamientos Coloniales registra asentamientos en nuevos territorios y facilita la planificación y ejecución de proyectos coloniales.",
-    "doc": "Permiso de Asentamientos Coloniales",
-    "seccion": "Utilidad",
-    "alias": [
-      "permiso de asentamientos", 
-      "asentamientos coloniales", 
-      "de asentamientos coloniales", 
-      "asentamientos", 
-      "permiso de colonizacion", 
-      "de asentamientos", 
-      "asentamiento", 
-      "asentamiento colonial", 
-      "colonial"
-    ]
+    "doc": "permiso_asentamientos_coloniales",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Registra asentamientos en nuevos territorios y facilita la planificación y ejecución de proyectos coloniales.",
+    "alias": ["utilidad_ras", "desarrollo_colonial"]
   },
   {
     "id": "RAS-010-penalidad",
-    "texto": "Sin este registro, los asentamientos serán desmantelados y se impondrán sanciones de exclusión de zonas habitables de la Federación.",
-    "doc": "Permiso de Asentamientos Coloniales",
-    "seccion": "Penalidad",
-    "alias": [
-      "permiso de asentamientos", 
-      "asentamientos coloniales", 
-      "de asentamientos coloniales", 
-      "asentamientos", 
-      "permiso de colonizacion", 
-      "de asentamientos", 
-      "asentamiento", 
-      "asentamiento colonial", 
-      "colonial"
-    ]
+    "doc": "permiso_asentamientos_coloniales",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "Sin este permiso los asentamientos serán desmantelados y se impondrán sanciones de exclusión de zonas habitables.",
+    "alias": ["sancion_ras", "penalidad_asentamientos"]
   },
   {
-    "id": "RAS-010-notas",
+    "id": "RAS-010-nota",
+    "doc": "permiso_asentamientos_coloniales",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
     "texto": "El plan de desarrollo debe incluir medidas de sostenibilidad ambiental.",
-    "doc": "Permiso de Asentamientos Coloniales",
-    "seccion": "Notas",
-    "alias": [
-      "permiso de asentamientos", 
-      "asentamientos coloniales", 
-      "de asentamientos coloniales", 
-      "asentamientos", 
-      "permiso de colonizacion", 
-      "de asentamientos", 
-      "asentamiento", 
-      "asentamiento colonial", 
-      "colonial"
-    ]
+    "alias": ["nota_ras", "sostenibilidad_ambiental"]
   },
   {
-    "id": "RAS-010-tiempo_validez",
-    "texto": "El Permiso de Asentamientos Coloniales tiene una validez de 1 año.",
-    "doc": "Permiso de Asentamientos Coloniales",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "permiso de asentamientos", 
-      "asentamientos coloniales", 
-      "de asentamientos coloniales", 
-      "asentamientos", 
-      "permiso de colonizacion", 
-      "de asentamientos", 
-      "asentamiento", 
-      "asentamiento colonial", 
-      "colonial"
-    ]
+    "id": "RAS-010-vigencia",
+    "doc": "permiso_asentamientos_coloniales",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_ras", "asentamientos_vigencia"]
   },
   {
     "id": "PAT-018-requisitos",
-    "texto": [
-      "Requisitos para obtener el Permiso de Aterrizaje:",
-      "- Licencia de Transporte Espacial",
-      "- Identificación Oficial Planetaria Emitida por un Planeta Perteneciente a la República",
-      "- Plan de Ruta Detallado",
-      "- Formulario de Solicitud Completo",
-      "- Evaluación de Seguridad de Nave"
-    ],
-    "doc": "Permiso de Aterrizaje",
-    "seccion": "Requisitos",
-    "alias": [
-      "permiso aterrizaje", 
-      "aterrizaje", 
-      "de aterrizaje"
-    ]
+    "doc": "permiso_aterrizaje",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener el Permiso de Aterrizaje:\n• Licencia de transporte espacial.\n• Identificación oficial planetaria.\n• Plan de ruta detallado.\n• Formulario de solicitud completo.\n• Evaluación de seguridad de la nave.",
+    "alias": ["requisitos_pat", "permiso_aterrizaje"]
   },
   {
     "id": "PAT-018-donde_obtener",
-    "texto": "El Permiso de Aterrizaje se obtiene en el Edificio Consistorial Coruscant (Nivel 5143).",
-    "doc": "Permiso de Aterrizaje",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "permiso aterrizaje", 
-      "aterrizaje", 
-      "de aterrizaje"
-    ]
+    "doc": "permiso_aterrizaje",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en el Edificio Consistorial Coruscant (nivel 5143).",
+    "alias": ["ubicacion_pat", "edificio_consistorial"]
   },
   {
     "id": "PAT-018-horario",
-    "texto": "Horario de atención para el Permiso de Aterrizaje: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Permiso de Aterrizaje",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "permiso aterrizaje", 
-      "aterrizaje", 
-      "de aterrizaje"
-    ]
+    "doc": "permiso_aterrizaje",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_pat", "horario_aterrizaje"]
   },
   {
     "id": "PAT-018-utilidad",
-    "texto": "El Permiso de Aterrizaje otorga autorización para el aterrizaje temporal en plataformas de Coruscant y acceso a zonas de desembarque y controles migratorios.",
-    "doc": "Permiso de Aterrizaje",
-    "seccion": "Utilidad",
-    "alias": [
-      "permiso aterrizaje", 
-      "aterrizaje", 
-      "de aterrizaje"
-    ]
+    "doc": "permiso_aterrizaje",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Autoriza el aterrizaje temporal en plataformas de Coruscant y el acceso a zonas de desembarque y controles migratorios.",
+    "alias": ["utilidad_pat", "aterrizaje_autorizado"]
   },
   {
     "id": "PAT-018-penalidad",
-    "texto": "La infracción conlleva la expulsión de naves visitantes y sanciones que incluyen prohibiciones en futuros aterrizajes.",
-    "doc": "Permiso de Aterrizaje",
-    "seccion": "Penalidad",
-    "alias": [
-      "permiso aterrizaje", 
-      "aterrizaje", 
-      "de aterrizaje"
-    ]
+    "doc": "permiso_aterrizaje",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "La infracción conlleva la expulsión de naves visitantes y la prohibición de futuros aterrizajes.",
+    "alias": ["sancion_pat", "penalidad_aterrizaje"]
   },
   {
-    "id": "PAT-018-notas",
+    "id": "PAT-018-nota",
+    "doc": "permiso_aterrizaje",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
     "texto": "Se requiere una evaluación de seguridad de la nave antes de emitir el permiso.",
-    "doc": "Permiso de Aterrizaje",
-    "seccion": "Notas",
-    "alias": [
-      "permiso aterrizaje", 
-      "aterrizaje", 
-      "de aterrizaje"
-    ]
+    "alias": ["nota_pat", "seguridad_nave"]
   },
   {
-    "id": "PAT-018-tiempo_validez",
-    "texto": "El Permiso de Aterrizaje tiene una validez de 3 meses.",
-    "doc": "Permiso de Aterrizaje",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "permiso aterrizaje", 
-      "aterrizaje", 
-      "de aterrizaje"
-    ]
+    "id": "PAT-018-vigencia",
+    "doc": "permiso_aterrizaje",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 3 meses.",
+    "alias": ["vigencia_pat", "aterrizaje_vigencia"]
   },
   {
     "id": "PCI-012-requisitos",
-    "texto": [
-      "Requisitos para obtener la Patente Comercial Intergaláctica:",
-      "- Registro de Empresa a Nivel Galáctico",
-      "- Identificación Fiscal Internacional",
-      "- Certificado de Buenas Prácticas Comerciales",
-      "- Formulario de Solicitud Completo",
-      "- Pago de Tarifas Internacionales"
-    ],
-    "doc": "Patente Comercial Intergaláctica",
-    "seccion": "Requisitos",
-    "alias": [
-      "patente comercial", 
-      "comercial intergaláctica", 
-      "comercial", 
-      "patente de comercio", 
-      "patente de comercio intergaláctico", 
-      "patente para negocio", "de negocio", 
-      "patente para comercio", 
-      "patente para poner un negocio", 
-      "para negocio"
-    ]
+    "doc": "patente_comercial_intergalactica",
+    "seccion": "requisitos",
+    "tipo_fragmento": "requisito",
+    "texto": "Requisitos para obtener la Patente Comercial Intergaláctica:\n• Registro de empresa a nivel galáctico.\n• Identificación fiscal internacional.\n• Certificado de buenas prácticas comerciales.\n• Formulario de solicitud completo.\n• Pago de tarifas internacionales.",
+    "alias": ["requisitos_pci", "patente_comercial"]
   },
   {
     "id": "PCI-012-donde_obtener",
-    "texto": "La Patente Comercial Intergaláctica se obtiene en la Oficina de Desarrollo Económico (Torre de Comercio. Sector E-5377).",
-    "doc": "Patente Comercial Intergaláctica",
-    "seccion": "Dónde_Obtener",
-    "alias": [
-      "patente comercial", 
-      "comercial intergaláctica", 
-      "comercial", 
-      "patente de comercio", 
-      "patente de comercio intergaláctico", 
-      "patente para negocio", "de negocio", 
-      "patente para comercio", 
-      "patente para poner un negocio", 
-      "para negocio"
-    ]
+    "doc": "patente_comercial_intergalactica",
+    "seccion": "donde_obtener",
+    "tipo_fragmento": "ubicacion",
+    "texto": "Se tramita en la Oficina de Desarrollo Económico (Torre de Comercio, sector E-5377).",
+    "alias": ["oficina_comercio", "pci_ubicacion"]
   },
   {
     "id": "PCI-012-horario",
-    "texto": "Horario de atención para la Patente Comercial Intergaláctica: Lunes a Viernes, 8:00 a 17:00.",
-    "doc": "Patente Comercial Intergaláctica",
-    "seccion": "Horario_Atencion",
-    "alias": [
-      "patente comercial", 
-      "comercial intergaláctica", 
-      "comercial", 
-      "patente de comercio", 
-      "patente de comercio intergaláctico", 
-      "patente para negocio", "de negocio", 
-      "patente para comercio", 
-      "patente para poner un negocio", 
-      "para negocio"
-    ]
+    "doc": "patente_comercial_intergalactica",
+    "seccion": "horario_atencion",
+    "tipo_fragmento": "horario",
+    "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
+    "alias": ["horario_pci", "horario_comercial"]
   },
   {
     "id": "PCI-012-utilidad",
-    "texto": "La Patente Comercial Intergaláctica permite la operación de negocios interplanetarios y facilita la apertura de sucursales en sistemas afiliados.",
-    "doc": "Patente Comercial Intergaláctica",
-    "seccion": "Utilidad",
-    "alias": [
-      "patente comercial", 
-      "comercial intergaláctica", 
-      "comercial", 
-      "patente de comercio", 
-      "patente de comercio intergaláctico", 
-      "patente para negocio", "de negocio", 
-      "patente para comercio", 
-      "patente para poner un negocio", 
-      "para negocio"
-    ]
+    "doc": "patente_comercial_intergalactica",
+    "seccion": "utilidad",
+    "tipo_fragmento": "utilidad",
+    "texto": "Permite la operación de negocios interplanetarios y la apertura de sucursales en sistemas afiliados.",
+    "alias": ["utilidad_pci", "negocio_interplanetario"]
   },
   {
     "id": "PCI-012-penalidad",
-    "texto": "Sin patente, se vetará el comercio en sistemas asociados y se confiscará el equipamiento comercial.",
-    "doc": "Patente Comercial Intergaláctica",
-    "seccion": "Penalidad",
-    "alias": [
-      "patente comercial", 
-      "comercial intergaláctica", 
-      "comercial", 
-      "patente de comercio", 
-      "patente de comercio intergaláctico", 
-      "patente para negocio", "de negocio", 
-      "patente para comercio", 
-      "patente para poner un negocio", 
-      "para negocio"
-    ]
+    "doc": "patente_comercial_intergalactica",
+    "seccion": "penalidad",
+    "tipo_fragmento": "sancion",
+    "texto": "Sin patente se vetará el comercio en sistemas asociados y se confiscará el equipamiento comercial.",
+    "alias": ["sancion_pci", "penalidad_comercial"]
   },
   {
-    "id": "PCI-012-notas",
+    "id": "PCI-012-nota",
+    "doc": "patente_comercial_intergalactica",
+    "seccion": "nota",
+    "tipo_fragmento": "nota",
     "texto": "Se requiere una evaluación de impacto económico previa a la aprobación.",
-    "doc": "Patente Comercial Intergaláctica",
-    "seccion": "Notas",
-    "alias": [
-      "patente comercial", 
-      "comercial intergaláctica", 
-      "comercial", 
-      "patente de comercio", 
-      "patente de comercio intergaláctico", 
-      "patente para negocio", "de negocio", 
-      "patente para comercio", 
-      "patente para poner un negocio", 
-      "para negocio"
-    ]
+    "alias": ["nota_pci", "impacto_economico"]
   },
   {
-    "id": "PCI-012-tiempo_validez",
-    "texto": "La Patente Comercial Intergaláctica tiene una validez de 1 año.",
-    "doc": "Patente Comercial Intergaláctica",
-    "seccion": "Tiempo_Validez",
-    "alias": [
-      "patente comercial", 
-      "comercial intergaláctica", 
-      "comercial", 
-      "patente de comercio", 
-      "patente de comercio intergaláctico", 
-      "patente para negocio", "de negocio", 
-      "patente para comercio", 
-      "patente para poner un negocio", 
-      "para negocio"
-    ]
+    "id": "PCI-012-vigencia",
+    "doc": "patente_comercial_intergalactica",
+    "seccion": "tiempo_validez",
+    "tipo_fragmento": "vigencia",
+    "texto": "Vigencia: 1 año.",
+    "alias": ["vigencia_pci", "patente_vigencia"]
   },
   {
     "id": "RIV-016-requisitos",

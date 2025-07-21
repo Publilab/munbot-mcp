@@ -5,8 +5,6 @@
     "texto": "Regula la entrega de ayudas sociales y económicas a personas vulnerables en el Gobierno de Curoscant. Establece procedimientos, beneficiarios, tipos de ayuda, causales de negación y las bases legales para su ejecución.",
     "fuente": "Decreto N° 1457/2017",
     "alias": [
-      "manual ayudas sociales",
-      "procedimientos entrega ayuda",
       "ayudas económicas vulnerables",
       "beneficiarios ayudas sociales",
       "tipos de ayuda social",
@@ -15,7 +13,7 @@
       "regulación ayudas sociales"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "",
     "fecha": "2017",
     "seccion": "titulo 1",
@@ -31,28 +29,28 @@
       "definición ayuda social"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "4",
     "fecha": "2017",
     "seccion": "titulo 1",
     "titulo_seccion": "generalidades",
-    "tipo_fragmento": "definición"
+    "tipo_fragmento": "descripción"
   },
     {
     "id": "ASOC-003",
     "titulo": "Características de la Ayuda Social",
-    "texto": "El Gobierno de Curoscant podrá otorgar beneficios por concepto de Ayuda Social, tanto en dinero como en bienes y servicios.",
+    "texto": "El Gobierno de Curoscant podrá otorgar beneficios por concepto de Ayuda Social, tanto en dinero como en bienes y servicios. Las ayudas sociales son de carácter excepcional, transitorio y complementario, y se otorgarán a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarle los medios indispensables para su bienestar. Las ayudas sociales no constituyen un derecho adquirido ni una obligación del Gobierno de Curoscant, sino que son una medida de apoyo a las personas y familias en situación de vulnerabilidad.",
     "fuente": "Decreto N° 1457/2017",
     "alias": [
       "tipos ayudas sociales"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "5",
     "fecha": "2017",
     "seccion": "titulo 1",
     "titulo_seccion": "generalidades",
-    "tipo_fragmento": "característica"
+    "tipo_fragmento": "definición"
   },
 
   {
@@ -71,12 +69,12 @@
       "familias siniestro ayuda social"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "6",
     "fecha": "2017",
     "seccion": "titulo 2",
     "titulo_seccion": "de los usuarios y/o beneficiarios",
-    "tipo_fragmento": "beneficiarios"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ASOC-005",
@@ -93,12 +91,12 @@
       "prestación vestuario adultos mayores"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "7",
     "fecha": "2017",
     "seccion": "titulo 2",
     "titulo_seccion": "de los usuarios y/o beneficiarios",
-    "tipo_fragmento": "tipos de ayudas"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ASOC-006",
@@ -107,7 +105,6 @@
     "fuente": "Artículo 8",
     "alias": [
       "tipos de ayudas sociales",
-      "clasificación ayudas sociales",
       "ayuda alimentos funerarios salud",
       "prestaciones pasajes vivienda",
       "beneficios adicionales sociales",
@@ -115,12 +112,12 @@
       "prestación vestuario adultos mayores"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "8",
     "fecha": "2017",
     "seccion": "titulo 3",
     "titulo_seccion": "de los beneficios otorgados como ayudas sociales",
-    "tipo_fragmento": "tipos de ayudas"
+    "tipo_fragmento": "clasificación"
   },
   {
     "id": "ASOC-007",
@@ -143,12 +140,12 @@
       "asistente social alimentos"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "9",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición bolsa de alimentos"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-008",
@@ -171,12 +168,12 @@
       "certificado de defunción ayuda"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "10",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición aporte funerario y cementerio"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-009",
@@ -191,12 +188,12 @@
       "bienestar social evaluación"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "11",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Monto de ayudas"
+    "tipo_fragmento": "monto"
   },
   {
     "id": "ASOC-010",
@@ -220,12 +217,12 @@
       "asistente social salud"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "12",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Atenciones de salud, medicamentos, ayudas técnicas"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-011",
@@ -245,12 +242,12 @@
       "asistente social pasajes"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "13",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte en pasajes"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-012",
@@ -258,16 +255,16 @@
     "texto": "Se le entregará pasajes solo al beneficiario que requiere la hora y en casos justificados se le entregará este beneficio al acompañante según grado de dependencia y situación socioeconómica que presente la familia, siempre y cuando el servicio de salud no realice aporte. Se priorizara primero a la persona afectada, luego al acompañante.",
     "fuente": "Artículos 14",
     "alias": [
-      "entrega aporte en pasaje",
-      "ayuda pasajes médicos"
+      "entrega dinero traslado",
+      "ayuda monetaria pasajes"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "14",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte en pasajes"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ASOC-013",
@@ -292,12 +289,12 @@
       "asistente social vivienda"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "15",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte materiales de construcción"
+    "tipo_fragmento": "requisitos"
   },
   {
     "id": "ASOC-014",
@@ -312,12 +309,12 @@
       "asistente social pañales"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "16",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte pañales adultos y niños/as"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ASOC-015",
@@ -332,12 +329,12 @@
       "asistente social vestuario"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "17",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte en vestuario infantil y adulto mayor"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-016",
@@ -359,12 +356,12 @@
       "ayuda nutricional social"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "18",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte en Suplemento alimenticio"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-017",
@@ -380,12 +377,12 @@
       "asistente social agua"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "19",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte Entrega de agua mediante camión aljibe"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-018",
@@ -401,12 +398,12 @@
       "asistente social estanque"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "20",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición Aporte Entrega de estanque de agua"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ASOC-019",
@@ -423,7 +420,7 @@
       "tesorería entrega ayuda"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "21",
     "fecha": "2017",
     "seccion": "titulo 4",
@@ -444,12 +441,12 @@
       "venta regalo ayuda social"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "22",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "rechazo"
+    "tipo_fragmento": "procedimiento"
   },
   {
     "id": "ASOC-021",
@@ -465,12 +462,12 @@
       "asistente social rendición"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "23",
     "fecha": "2017",
     "seccion": "titulo 4",
     "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "rendición"
+    "tipo_fragmento": "procedimiento"
   },
   {
     "id": "ASOC-022",
@@ -486,7 +483,7 @@
       "asistente social supervisión"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "24",
     "fecha": "2017",
     "seccion": "titulo 4",
@@ -507,7 +504,7 @@
       "asistente social observaciones"
     ],
     "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto ": "1457",
+    "decreto": "1457",
     "articulo": "25",
     "fecha": "2017",
     "seccion": "titulo 4",

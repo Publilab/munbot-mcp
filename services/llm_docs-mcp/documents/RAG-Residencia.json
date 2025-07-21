@@ -18,8 +18,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "1",
-    "seccion": "generalidades",
-    "titulo_seccion": "Titulo 1",
+    "titulo_seccion": "generalidades",
+    "seccion": "Titulo 1",
     "tipo_fragmento": "generalidades"
   },
   {
@@ -38,9 +38,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "2",
-    "seccion": "definiciones",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "definiciones"
+    "titulo_seccion": "definiciones",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "definición"
   },
   {
     "id": "RD-003",
@@ -59,8 +59,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "3",
-    "seccion": "principios",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "principios",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "principios"
   },
   {
@@ -79,9 +79,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "4",
-    "seccion": "tipos",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "tipos"
+    "titulo_seccion": "tipos",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "categorías"
   },
   {
     "id": "RD-005",
@@ -96,9 +96,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "5",
-    "seccion": "causas",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "causas"
+    "titulo_seccion": "causas",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "RD-006",
@@ -112,9 +112,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "6",
-    "seccion": "proceso",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "proceso"
+    "titulo_seccion": "proceso",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "procedimiento"
   },
   {
     "id": "RD-007",
@@ -128,9 +128,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "7",
-    "seccion": "documentacion",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "documentacion"
+    "titulo_seccion": "documentacion",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "requisitos"
   },
   {
     "id": "RD-008",
@@ -144,8 +144,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "8",
-    "seccion": "plazos",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "plazos",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "plazos"
   },
   {
@@ -160,8 +160,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "9",
-    "seccion": "renovacion",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "renovacion",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "renovacion"
   },
   {
@@ -176,8 +176,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "10",
-    "seccion": "requisitos",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "requisitos",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "requisitos"
   },
   {
@@ -192,8 +192,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "11",
-    "seccion": "proceso",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "proceso",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "proceso"
   },
   {
@@ -208,8 +208,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "12",
-    "seccion": "documentacion",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "documentacion",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "documentacion"
   },
   {
@@ -224,8 +224,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "13",
-    "seccion": "plazos",
-    "titulo_seccion": "Titulo 3",
+    "titulo_seccion": "plazos",
+    "seccion": "Titulo 3",
     "tipo_fragmento": "plazos"
   },
   {
@@ -240,8 +240,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "14",
-    "seccion": "penalidades",
-    "titulo_seccion": "Titulo 3",
+    "titulo_seccion": "penalidades",
+    "seccion": "Titulo 3",
     "tipo_fragmento": "penalidades"
   },
   {
@@ -256,9 +256,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "15",
-    "seccion": "derechos",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "derechos"
+    "titulo_seccion": "derechos",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "RD-016",
@@ -272,8 +272,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "16",
-    "seccion": "deberes",
-    "titulo_seccion": "Titulo 3",
+    "titulo_seccion": "deberes",
+    "seccion": "Titulo 3",
     "tipo_fragmento": "deberes"
   },
   {
@@ -288,8 +288,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "17",
-    "seccion": "derechos",
-    "titulo_seccion": "Titulo 3",
+    "titulo_seccion": "derechos",
+    "seccion": "Titulo 3",
     "tipo_fragmento": "derechos"
   },
   {
@@ -304,8 +304,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "18",
-    "seccion": "deberes",
-    "titulo_seccion": "Titulo 3",
+    "titulo_seccion": "deberes",
+    "seccion": "Titulo 3",
     "tipo_fragmento": "deberes"
   },
   {
@@ -320,9 +320,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "19",
-    "seccion": "recursos",
-    "titulo_seccion": "Titulo 4",
-    "tipo_fragmento": "recursos"
+    "titulo_seccion": "recursos",
+    "seccion": "Titulo 4",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "RD-020",
@@ -336,9 +336,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "20",
-    "seccion": "medidas",
-    "titulo_seccion": "Titulo 4",
-    "tipo_fragmento": "medidas"
+    "titulo_seccion": "medidas",
+    "seccion": "Titulo 4",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "RD-021",
@@ -352,9 +352,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "21",
-    "seccion": "revocación",
-    "titulo_seccion": "Titulo 4",
-    "tipo_fragmento": "revocacon"
+    "titulo_seccion": "revocación",
+    "seccion": "Titulo 4",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "RD-022",
@@ -368,8 +368,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "22",
-    "seccion": "tasas",
-    "titulo_seccion": "Titulo 4",
+    "titulo_seccion": "tasas",
+    "seccion": "Titulo 4",
     "tipo_fragmento": "tasas"
   },
   {
@@ -387,9 +387,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "23",
-    "seccion": "casos especiales",
-    "titulo_seccion": "Titulo 5",
-    "tipo_fragmento": "casos especiales"
+    "titulo_seccion": "casos especiales",
+    "seccion": "Titulo 5",
+    "tipo_fragmento": "anexo"
   },
   {
     "id": "RD-024",
@@ -406,9 +406,9 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "24",
-    "seccion": "modificaciones",
-    "titulo_seccion": "Titulo 5",
-    "tipo_fragmento": "modificaciones"
+    "titulo_seccion": "modificaciones",
+    "seccion": "Titulo 5",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "RD-025",
@@ -425,8 +425,8 @@
     "doc": "Ordenanza Residencias Coruscant",
     "decreto": "1499",
     "articulo": "25",
-    "seccion": "vigencia",
-    "titulo_seccion": "Titulo 5",
+    "titulo_seccion": "vigencia",
+    "seccion": "Titulo 5",
     "tipo_fragmento": "vigencia"
   }
 ]

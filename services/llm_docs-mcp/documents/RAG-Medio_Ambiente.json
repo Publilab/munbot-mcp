@@ -12,8 +12,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "1",
-    "seccion": "generalidades",
-    "titulo_seccion": "Titulo 1",
+    "titulo_seccion": "generalidades",
+    "seccion": "Titulo 1",
     "tipo_fragmento": "generalidades"
   },
   {
@@ -25,7 +25,13 @@
       "Ámbito de Aplicación del Reglamento",
       "Normativa Ambiental Curoscant",
       "Reglamento de Protección Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "2",
+    "titulo_seccion": "ambito de aplicacion",
+    "seccion": "Titulo 1",
+    "tipo_fragmento": "definición"
   },
   {
     "id": "MED-003",
@@ -40,8 +46,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "2",
-    "seccion": "principios ambientales",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "principios ambientales",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "principios"
   },
   {
@@ -57,9 +63,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "3",
-    "seccion": "calidad del aire",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "calidad"
+    "titulo_seccion": "calidad del aire",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-005",
@@ -74,9 +80,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "4",
-    "seccion": "gestion de residuos solidos",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "gestion"
+    "titulo_seccion": "gestion de residuos solidos",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-006",
@@ -91,8 +97,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "5",
-    "seccion": "prohibicion de vertidos",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "prohibicion de vertidos",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "prohibicion"
   },
   {
@@ -108,9 +114,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "6",
-    "seccion": "reciclaje obligatorio",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "reciclaje"
+    "titulo_seccion": "reciclaje obligatorio",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-008",
@@ -125,9 +131,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "7",
-    "seccion": "compostaje comunitario",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "compostaje"
+    "titulo_seccion": "compostaje comunitario",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-009",
@@ -142,9 +148,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "8",
-    "seccion": "responsabilidad del productor",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "responsabilidad"
+    "titulo_seccion": "responsabilidad del productor",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-010",
@@ -159,9 +165,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "9",
-    "seccion": "reduccion de plastico",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "reduccion"
+    "titulo_seccion": "reduccion de plastico",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-011",
@@ -176,9 +182,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "10",
-    "seccion": "proteccion de recursos hidro",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "proteccion"
+    "titulo_seccion": "proteccion de recursos hidro",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-012",
@@ -193,9 +199,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "11",
-    "seccion": "contaminacion lumínica",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "contaminacion"
+    "titulo_seccion": "contaminacion lumínica",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-013",
@@ -210,9 +216,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "12",
-    "seccion": "contaminacion acustica",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "contaminacion"
+    "titulo_seccion": "contaminacion acustica",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-014",
@@ -227,9 +233,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "13",
-    "seccion": "energías renovables",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "energías"
+    "titulo_seccion": "energías renovables",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-015",
@@ -244,9 +250,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "14",
-    "seccion": "proteccion de areas verdes",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "proteccion"
+    "titulo_seccion": "proteccion de areas verdes",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-016",
@@ -261,9 +267,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "15",
-    "seccion": "fomento de iniciativas",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "fomento"
+    "titulo_seccion": "fomento de iniciativas",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-017",
@@ -278,9 +284,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "16",
-    "seccion": "educacion ambiental",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "educacion"
+    "titulo_seccion": "educacion ambiental",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-018",
@@ -295,8 +301,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "17",
-    "seccion": "fiscalizacion ambiental",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "fiscalizacion ambiental",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "fiscalizacion"
   },
   {
@@ -312,9 +318,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "18",
-    "seccion": "consejos ambientales",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "consejos"
+    "titulo_seccion": "consejos ambientales",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-020",
@@ -329,9 +335,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "19",
-    "seccion": "transparencia ambiental",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "transparencia"
+    "titulo_seccion": "transparencia ambiental",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "obligación"
   },
   {
     "id": "MED-021",
@@ -346,9 +352,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "20",
-    "seccion": "cooperacion interinstitucional",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "cooperacion"
+    "titulo_seccion": "cooperacion interinstitucional",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-022",
@@ -363,9 +369,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "21",
-    "seccion": "revision trienal",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "revision"
+    "titulo_seccion": "revision trienal",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-023",
@@ -380,9 +386,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "22",
-    "seccion": "voluntariado ambiental",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "voluntariado"
+    "titulo_seccion": "voluntariado ambiental",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-024",
@@ -397,9 +403,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "23",
-    "seccion": "incentivos economicos",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "incentivos"
+    "titulo_seccion": "incentivos economicos",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-025",
@@ -414,9 +420,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "24",
-    "seccion": "huertos urbanos",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "huertos"
+    "titulo_seccion": "huertos urbanos",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-026",
@@ -431,9 +437,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "25",
-    "seccion": "movilidad sostenible",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "movilidad"
+    "titulo_seccion": "movilidad sostenible",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-027",
@@ -448,8 +454,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "26",
-    "seccion": "gestion de demolicion",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "gestion de demolicion",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "gestion"
   },
   {
@@ -465,9 +471,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "27",
-    "seccion": "construccion ecologica",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "construccion"
+    "titulo_seccion": "construccion ecologica",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-029",
@@ -482,9 +488,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "28",
-    "seccion": "espacios pegados a zonas naturales",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "espacios"
+    "titulo_seccion": "espacios pegados a zonas naturales",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-030",
@@ -499,9 +505,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "29",
-    "seccion": "proteccion de fauna urbana",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "proteccion"
+    "titulo_seccion": "proteccion de fauna urbana",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-031",
@@ -516,8 +522,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "30",
-    "seccion": "control de plagas",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "control de plagas",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "control"
   },
   {
@@ -533,9 +539,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "31",
-    "seccion": "gestion de areas protegidas",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "gestion"
+    "titulo_seccion": "gestion de areas protegidas",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-033",
@@ -550,8 +556,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "32",
-    "seccion": "educacion continua",
-    "titulo_seccion": "Titulo 2",
+    "titulo_seccion": "educacion continua",
+    "seccion": "Titulo 2",
     "tipo_fragmento": "educacion"
   },
   {
@@ -567,9 +573,9 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "33",
-    "seccion": "sostenibilidad economica",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "sostenibilidad"
+    "titulo_seccion": "sostenibilidad economica",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "MED-035",
@@ -584,8 +590,8 @@
     "doc": "Reglamento Medio Ambiente",
     "decreto": "127",
     "articulo": "34",
-    "seccion": "vigencia y derogacion",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "vigencia"
+    "titulo_seccion": "vigencia y derogacion",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "duración"
   }
 ]

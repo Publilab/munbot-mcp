@@ -1,6 +1,6 @@
 [
   {
-    "id": "COM-ORDENANZA-001",
+    "id": "COM-001",
     "titulo": "Decreto sobre horarios y medidas de funcionamiento de comercios",
     "texto": "El Gobierno de Curoscant, a través del Departamento de Administración y Finanzas, aprueba la modificación del decreto que regula los horarios y las medidas de funcionamiento de locales comerciales, kioscos, carros, food trucks y ferias libres, además del uso obligatorio de mascarillas en todo el territorio del Gobierno de Curoscant, en el contexto del brote de enfermedades transmisibles galácticas.",
     "fuente": "Decreto N° 481, Gobierno de Curoscant",
@@ -12,18 +12,14 @@
     "doc": "Ordenanza Horarios Funcionamiento del Comercio",
     "decreto": "481",
     "articulo": "1",
-    "seccion": "generalidades",
-    "titulo_seccion": "Titulo 1",
+    "titulo_seccion": "generalidades",
+    "seccion": "Titulo 1",
     "tipo_fragmento": "generalidades"
   },
   {
-    "id": "COM-ARTICULO-004",
+    "id": "COM-002",
     "titulo": "Horario de cierre de comercios durante estado de emergencia",
-    "texto": [
-      "Con el objetivo de evitar aglomeraciones y disminuir el contacto entre personas, todo comercio local deberá cerrar sus puertas al público a las 20:00 horas mientras dure el Estado de Excepción Constitucional de Catástrofe y Calamidad Pública decretado en Curoscant.",
-      "Esta medida aplica para: minimercados, almacenes, restaurantes, depósitos de licores, locales de alimentos preparados y consumo al paso, verdulerías, panaderías, pastelerías, peluquerías, tiendas, bazares, paqueterías, carros, kioscos, food trucks y otros giros identificados en el registro de patentes comerciales del Gobierno de Curoscant.",
-      "Sin perjuicio de lo anterior, los supermercados deben cerrar sus puertas al público a las 19:00 horas, según Resolución Exenta N° 3640/36/1576."
-    ],
+    "texto": "Con el objetivo de evitar aglomeraciones y disminuir el contacto entre personas, todo comercio local deberá cerrar sus puertas al público a las 20:00 horas mientras dure el Estado de Excepción Constitucional de Catástrofe y Calamidad Pública decretado en Curoscant. Esta medida aplica para: minimercados, almacenes, restaurantes, depósitos de licores, locales de alimentos preparados y consumo al paso, verdulerías, panaderías, pastelerías, peluquerías, tiendas, bazares, paqueterías, carros, kioscos, food trucks y otros giros identificados en el registro de patentes comerciales del Gobierno de Curoscant. Sin perjuicio de lo anterior, los supermercados deben cerrar sus puertas al público a las 19:00 horas, según Resolución Exenta N° 3640/36/1576.",
     "fuente": "Artículo 4, Decreto N° 481, Gobierno de Curoscant",
     "alias": [
       "Horario de cierre de comercios",
@@ -33,18 +29,14 @@
     "doc": "Ordenanza Horarios Funcionamiento del Comercio",
     "decreto": "481",
     "articulo": "4",
-    "seccion": "horario cierre",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "horario cierre"
+    "titulo_seccion": "horario cierre",
+    "seccion": "Titulo 1",
+    "tipo_fragmento": "descripción"
   },
   {
-    "id": "COM-ARTICULO-008",
+    "id": "COM-003",
     "titulo": "Horario de funcionamiento de Ferias Libres",
-    "texto": [
-      "El horario de instalación y funcionamiento de la Feria Libre será entre las 13:00 y las 20:00 horas.",
-      "La duración de estas medidas preventivas regirá hasta que sea levantada la Alerta Sanitaria decretada por el Gobierno de Curoscant.",
-      "Estas medidas podrán ser prorrogadas si las circunstancias sanitarias así lo ameritan."
-    ],
+    "texto": "El horario de instalación y funcionamiento de la Feria Libre será entre las 13:00 y las 20:00 horas, La duración de estas medidas preventivas regirá hasta que sea levantada la Alerta Sanitaria decretada por el Gobierno de Curoscant. Estas medidas podrán ser prorrogadas si las circunstancias sanitarias así lo ameritan.",
     "fuente": "Artículo 8, Decreto N° 481, Gobierno de Curoscant",
     "alias": [
       "Horario Ferias Libres",
@@ -54,8 +46,8 @@
     "doc": "Ordenanza Horarios Funcionamiento del Comercio",
     "decreto": "481",
     "articulo": "8",
-    "seccion": "horario ferias",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "horario ferias"
+    "titulo_seccion": "horario ferias",
+    "seccion": "Titulo 1",
+    "tipo_fragmento": "descripción"
   }
 ]

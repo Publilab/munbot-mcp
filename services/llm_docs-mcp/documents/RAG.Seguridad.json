@@ -12,9 +12,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "1",
-    "seccion": "Declaración",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "Declaración"
+    "titulo_seccion": "Declaración",
+    "seccion": "Titulo 1",
+    "tipo_fragmento": "generalidades"
   },
   {
     "id": "SGM-002",
@@ -29,9 +29,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "2",
-    "seccion": "Definiciones",
-    "titulo_seccion": "Titulo 2",
-    "tipo_fragmento": "Definiciones"
+    "titulo_seccion": "Definiciones",
+    "seccion": "Titulo 2",
+    "tipo_fragmento": "definición"
   },
   {
     "id": "SGM-003",
@@ -46,9 +46,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "3",
-    "seccion": "Marco Legal",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Marco Legal"
+    "titulo_seccion": "Marco Legal",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-004",
@@ -63,8 +63,8 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "4",
-    "seccion": "Principios",
-    "titulo_seccion": "Titulo 3",
+    "titulo_seccion": "Principios",
+    "seccion": "Titulo 3",
     "tipo_fragmento": "Principios"
   },
   {
@@ -80,9 +80,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "5",
-    "seccion": "Comando",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Comando"
+    "titulo_seccion": "Comando",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-006",
@@ -97,9 +97,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "6",
-    "seccion": "Fuerzas",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Fuerzas"
+    "titulo_seccion": "Fuerzas",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-007",
@@ -114,9 +114,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "7",
-    "seccion": "Coordinación",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Coordinación"
+    "titulo_seccion": "Coordinación",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-008",
@@ -131,9 +131,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "8",
-    "seccion": "Centros",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Centros"
+    "titulo_seccion": "Centros",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-009",
@@ -148,9 +148,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "9",
-    "seccion": "Sistema",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Sistema"
+    "titulo_seccion": "Sistema",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-010",
@@ -165,9 +165,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "10",
-    "seccion": "Control",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Control"
+    "titulo_seccion": "Control",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-011",
@@ -182,9 +182,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "11",
-    "seccion": "Restricciones",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Restricciones"
+    "titulo_seccion": "Restricciones",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-012",
@@ -199,9 +199,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "12",
-    "seccion": "Protección",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Protección"
+    "titulo_seccion": "Protección",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-013",
@@ -216,9 +216,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "13",
-    "seccion": "Identificación",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Identificación"
+    "titulo_seccion": "Identificación",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-014",
@@ -233,9 +233,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "14",
-    "seccion": "Control",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Control"
+    "titulo_seccion": "Control",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-015",
@@ -250,9 +250,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "15",
-    "seccion": "Seguridad",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Seguridad"
+    "titulo_seccion": "Seguridad",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-016",
@@ -267,9 +267,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "16",
-    "seccion": "Interrogatorios",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Interrogatorios"
+    "titulo_seccion": "Interrogatorios",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-017",
@@ -284,9 +284,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "17",
-    "seccion": "Sistemas",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Sistemas"
+    "titulo_seccion": "Sistemas",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-018",
@@ -301,9 +301,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "18",
-    "seccion": "Detección",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Detección"
+    "titulo_seccion": "Detección",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-019",
@@ -318,9 +318,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "19",
-    "seccion": "Evacuación",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Evacuación"
+    "titulo_seccion": "Evacuación",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-020",
@@ -335,9 +335,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "20",
-    "seccion": "Puertos",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Puertos"
+    "titulo_seccion": "Puertos",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-021",
@@ -352,9 +352,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "21",
-    "seccion": "Requisición",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Requisición"
+    "titulo_seccion": "Requisición",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-022",
@@ -369,9 +369,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "22",
-    "seccion": "Racionamiento",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Racionamiento"
+    "titulo_seccion": "Racionamiento",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-023",
@@ -386,9 +386,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "23",
-    "seccion": "Industria",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Industria"
+    "titulo_seccion": "Industria",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-024",
@@ -403,9 +403,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "24",
-    "seccion": "Financiamiento",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Financiamiento"
+    "titulo_seccion": "Financiamiento",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-025",
@@ -420,9 +420,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "25",
-    "seccion": "Tribunales",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Tribunales"
+    "titulo_seccion": "Tribunales",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-026",
@@ -438,9 +438,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "26",
-    "seccion": "Crimenes",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Crimenes"
+    "titulo_seccion": "Crimenes",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-027",
@@ -456,9 +456,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "27",
-    "seccion": "Sanciones",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Sanciones"
+    "titulo_seccion": "Sanciones",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "penalidades"
   },
   {
     "id": "SGM-028",
@@ -473,9 +473,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "28",
-    "seccion": "Expeditos",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Expeditos"
+    "titulo_seccion": "Expeditos",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "proceso"
   },
   {
     "id": "SGM-029",
@@ -490,9 +490,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "29",
-    "seccion": "Control Medios",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Control Medios"
+    "titulo_seccion": "Control Medios",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-030",
@@ -507,8 +507,8 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "30",
-    "seccion": "Educación",
-    "titulo_seccion": "Titulo 3",
+    "titulo_seccion": "Educación",
+    "seccion": "Titulo 3",
     "tipo_fragmento": "Educación"
   },
   {
@@ -524,9 +524,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "31",
-    "seccion": "Celebraciones",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Celebraciones"
+    "titulo_seccion": "Celebraciones",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-032",
@@ -541,9 +541,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "32",
-    "seccion": "Moral",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Moral"
+    "titulo_seccion": "Moral",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-033",
@@ -558,9 +558,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "33",
-    "seccion": "Duración",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Duración"
+    "titulo_seccion": "Duración",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-034",
@@ -575,9 +575,9 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "34",
-    "seccion": "Transición",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Transición"
+    "titulo_seccion": "Transición",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "SGM-035",
@@ -592,8 +592,8 @@
     "doc": "Ordenanza Seguridad de la Republica",
     "decreto": "132-A",
     "articulo": "35",
-    "seccion": "Victoria",
-    "titulo_seccion": "Titulo 3",
-    "tipo_fragmento": "Victoria"
+    "titulo_seccion": "Victoria",
+    "seccion": "Titulo 3",
+    "tipo_fragmento": "descripción"
   }
 ]

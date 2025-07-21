@@ -12,7 +12,6 @@
       "ordenanza contribuciones"
     ],
     "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto ": "1365",
     "decreto": "1365",
     "articulo": "1",
     "fecha": "2017",
@@ -41,7 +40,7 @@
     "fecha": "2017",
     "seccion": "definición",
     "titulo_seccion": "generalidades",
-    "tipo_fragmento": "definiciones" 
+    "tipo_fragmento": "definición" 
   },
   {
     "id": "ORD-003",
@@ -59,7 +58,9 @@
     "decreto": "1365",
     "articulo": "3",
     "fecha": "2017",
-    "seccion": "marco legal"
+    "seccion": "marco legal",
+    "titulo_seccion": "generalidades",
+    "tipo_fragmento": "generalidades"
   },
   {
     "id": "ORD-004",
@@ -78,7 +79,7 @@
     "fecha": "2017",
     "seccion": "principios tributarios",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "principios tributarios"
+    "tipo_fragmento": "principios"
   },
   {
     "id": "ORD-005",
@@ -98,7 +99,7 @@
     "fecha": "2017",
     "seccion": "tasas",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "tasas"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-006",
@@ -118,7 +119,7 @@
     "fecha": "2017",
     "seccion": "aseo domiciliario",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "aseo domiciliario"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-007",
@@ -138,7 +139,7 @@
     "fecha": "2017",
     "seccion": "alumbrado público",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "alumbrado público"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-008",
@@ -158,7 +159,7 @@
     "fecha": "2017",
     "seccion": "mantención espacios públicos",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "mantención espacios públicos"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-009",
@@ -178,7 +179,7 @@
     "fecha": "2017",
     "seccion": "servicios cementeriales",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "servicios cementeriales"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-010",
@@ -198,7 +199,7 @@
     "fecha": "2017",
     "seccion": "seguridad ciudadana",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "seguridad ciudadana"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-011",
@@ -218,7 +219,7 @@
     "fecha": "2017",
     "seccion": "permisos edificación",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "permisos edificación"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-012",
@@ -238,7 +239,7 @@
     "fecha": "2017",
     "seccion": "permisos subdivisión y loteo",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "permisos subdivisión y loteo"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-013",
@@ -258,7 +259,7 @@
     "fecha": "2017",
     "seccion": "patentes comerciales e industriales",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "patentes comerciales e industriales"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-014",
@@ -278,7 +279,7 @@
     "fecha": "2017",
     "seccion": "permisos circulación",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "permisos circulación"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-015",
@@ -292,12 +293,13 @@
       "exención ocupación espacios públicos curoscant",
       "normativas uso espacios públicos curoscant"
     ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
     "decreto": "1365",
     "articulo": "15",
     "fecha": "2017",
     "seccion": "ocupación bienes nacionales",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "ocupación bienes nacionales"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-016",
@@ -317,7 +319,7 @@
     "fecha": "2017",
     "seccion": "permisos sanitarios",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "permisos sanitarios"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-017",
@@ -337,7 +339,7 @@
     "fecha": "2017",
     "seccion": "permisos",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "permisos"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-018",
@@ -357,7 +359,7 @@
     "fecha": "2017",
     "seccion": "contribución mejoras",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "contribución mejoras"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-019",
@@ -377,7 +379,7 @@
     "fecha": "2017",
     "seccion": "contribución bienes raíces",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "bienes raices"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-020",
@@ -397,7 +399,7 @@
     "fecha": "2017",
     "seccion": "contribución territorial adicional",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "contribución territorial"
+    "tipo_fragmento": "definición"
   },
   {
     "id": "ORD-021",
@@ -417,7 +419,7 @@
     "fecha": "2017",
     "seccion": "exenciones legales",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "exenciones legales"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-022",
@@ -437,7 +439,7 @@
     "fecha": "2017",
     "seccion": "beneficios condición social",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "beneficios por condicion social"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-023",
@@ -457,7 +459,7 @@
     "fecha": "2017",
     "seccion": "incentivos al desarrollo",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "incentivos"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-024",
@@ -476,7 +478,7 @@
     "articulo": "24",
     "seccion": "beneficios",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "beneficios pronto pago"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-025",
@@ -495,7 +497,7 @@
     "articulo": "25",
     "seccion": "determinación a la obligación",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "obligaciones"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-026",
@@ -514,7 +516,7 @@
     "articulo": "26",
     "seccion": "facturación y cobranza",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "facturación y confianza"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-027",
@@ -533,7 +535,7 @@
     "articulo": "27",
     "seccion": "intereses y reajustes",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "intereses y reajustes"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-028",
@@ -552,7 +554,7 @@
     "articulo": "28",
     "seccion": "prescripción obligaciones",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "prescripción obigaciones"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-029",
@@ -571,7 +573,7 @@
     "articulo": "29",
     "seccion": "reclamos",
     "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "reclamos"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-030",
@@ -590,7 +592,7 @@
     "articulo": "30",
     "seccion": "recursos",
     "titulo_seccion": "Recursos",
-    "tipo_fragmento": "recursos"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-031",
@@ -609,7 +611,7 @@
     "articulo": "31",
     "seccion": "recursos",
     "titulo_seccion": "Recursos",
-    "tipo_fragmento": "recursos juridiccionales"
+    "tipo_fragmento": "descripción"
   },
   {
     "id": "ORD-032",
@@ -628,7 +630,7 @@
     "articulo": "32",
     "seccion": "recursos",
     "titulo_seccion": "Recursos",
-    "tipo_fragmento": "facultades fiscalización"
+    "tipo_fragmento": "fiscalización"
   },
   {
     "id": "ORD-033",
@@ -647,7 +649,7 @@
     "articulo": "33",
     "seccion": "recursos",
     "titulo_seccion": "Recursos",
-    "tipo_fragmento": "Infracciones y Secciones"
+    "tipo_fragmento": "penalidades"
   },
   {
     "id": "ORD-034",
@@ -666,7 +668,7 @@
     "articulo": "34",
     "seccion": "recursos",
     "titulo_seccion": "Recursos",
-    "tipo_fragmento": "Vigencia"
+    "tipo_fragmento": "duración"
   },
   {
     "id": "ORD-035",
@@ -685,6 +687,6 @@
     "articulo": "35",
     "seccion": "recursos",
     "titulo_seccion": "Recursos",
-    "tipo_fragmento": "Disposiciones especiales"
+    "tipo_fragmento": "apendices"
   }
 ]

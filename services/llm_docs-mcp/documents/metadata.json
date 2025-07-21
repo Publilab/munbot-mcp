@@ -2,42 +2,74 @@
   "RAG-Ayudas_Sociales.json": {
     "tags": ["ayudas sociales", "beneficios municipales", "vulnerabilidad", "procedimientos sociales"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "Ordenanza",
+    "peso_normativo": "0.5"
   },
   "RAG-Contrib_Derechos.json": {
     "tags": ["contribuciones municipales", "derechos municipales", "tasas y permisos", "tributación local"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "Ordenanza",
+    "peso_normativo": "0.5"
   },
   "RAG-depto_info.json": {
     "tags": ["departamentos municipales", "organización institucional", "contacto", "servicios municipales"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "informativo",
+    "peso_normativo": "0.1"
   },
   "RAG-doc_tramites.json": {
     "tags": ["documentos", "tramites", "requisitos", "certificados", "licencias"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "informativo",
+    "peso_normativo": "0.1"
   },
   "RAG-faq.json": {
     "tags": ["preguntas frecuentes", "FAQ", "dudas comunes", "guía ciudadana"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "faq",
+    "peso_normativo": "0.1"
   },
   "RAG-Horario_Comercio.json": {
     "tags": ["horario comercio", "reglamento comercial", "normativa local", "comercio municipal"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "Ordenanza",
+    "peso_normativo": "0.5"
   },
   "RAG-Medio_Ambiente.json": {
     "tags": ["medio ambiente", "regulación ambiental", "sostenibilidad", "reciclaje", "entorno urbano"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "Reglamento",
+    "peso_normativo": "0.5"
   },
   "RAG-min_info.json": {
     "tags": ["ministerios", "subministerios", "estructura gubernamental", "organización estatal"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "informativo",
+    "peso_normativo": "0.1"
   },
   "RAG-Residencia.json": {
     "tags": ["residencia", "inmigración", "estadía temporal", "residencia definitiva", "ordenanza migratoria"],
@@ -47,6 +79,10 @@
   "RAG-Seguridad.json": {
     "tags": ["seguridad ciudadana", "estado de guerra", "defensa municipal", "ordenanza militar"],
     "version": "1.0.0",
-    "last_updated": "2025-07-20"
+    "last_updated": "2025-07-20",
+    "vigencia_inicio": "2025-07-20",
+    "vigencia_fin": "2030-07-20",
+    "nivel_normativo": "Ordenanza",
+    "peso_normativo": "0.5"
   }
 }
