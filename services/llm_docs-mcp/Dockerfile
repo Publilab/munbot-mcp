@@ -6,7 +6,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Instalar dependencias del sistema
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git gcc g++ cmake \
+    apt-get install -y --no-install-recommends git gcc g++ cmake netcat-traditional \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -25,6 +25,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY .env ./
 COPY . .
 COPY documents/ ./documents/
+COPY entrypoint.sh /app/entrypoint.sh
+COPY scripts/ /app/scripts/
+RUN chmod +x /app/entrypoint.sh
 
 # Crear directorios necesarios
 RUN mkdir -p documents
@@ -36,5 +39,5 @@ RUN mkdir -p models
 # Exponer puerto
 EXPOSE 8000
 
-# Comando para iniciar la aplicación
-CMD ["uvicorn", "gateway:app", "--host", "0.0.0.0", "--port", "8000"]
+# Script de arranque
+ENTRYPOINT ["/app/entrypoint.sh"]

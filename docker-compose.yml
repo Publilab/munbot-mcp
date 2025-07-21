@@ -85,6 +85,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:1.7
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+    networks:
+      - munbot-net
+    volumes:
+      - qdrant_data:/qdrant/storage
       
   mcp-core:
     build:
@@ -139,6 +149,8 @@ services:
       - ./services/llm_docs-mcp/.env
     environment:
       - REDIS_HOST=redis
+    depends_on:
+      - qdrant
     expose:
       - "8000"
     restart: unless-stopped
@@ -182,3 +194,4 @@ networks:
 
 volumes:
   postgres_data:
+  qdrant_data:
