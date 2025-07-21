@@ -14,7 +14,13 @@
       "Procedimientos Residencias Coruscant",
       "Estadías y Residencias Coruscant",
       "Residencias Coruscant"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "1",
+    "seccion": "generalidades",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "generalidades"
   },
   {
     "id": "RD-002",
@@ -28,7 +34,13 @@
       "Terminología Residencia",
       "Glosario Residencia",
       "Términos Residencia"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "2",
+    "seccion": "definiciones",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "definiciones"
   },
   {
     "id": "RD-003",
@@ -43,7 +55,13 @@
       "Fundamentos Residencia",
       "Bases Residencia",
       "Lineamientos Residencia",
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "3",
+    "seccion": "principios",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "principios"
   },
   {
     "id": "RD-004",
@@ -57,7 +75,13 @@
       "Residencia Categorías Estadía Temporal",
       "Clasificación de Estadía Temporal Residencia",
       "Residencia Clasificación Estadía Temporal",
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "4",
+    "seccion": "tipos",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "tipos"
   },
   {
     "id": "RD-005",
@@ -68,7 +92,13 @@
       "Causas para Otorgamiento Temporal Residencia", 
       "Residencia Causas Otorgamiento",
       "Motivos para Otorgamiento Temporal Residencia",
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "5",
+    "seccion": "causas",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "causas"
   },
   {
     "id": "RD-006",
@@ -78,7 +108,13 @@
     "alias": [
       "Proceso de Solicitud Temporal Residencia", 
       "Residencia Proceso Solicitud"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "6",
+    "seccion": "proceso",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "proceso"
   },
   {
     "id": "RD-007",
@@ -87,9 +123,14 @@
     "fuente": "Ordenanza Residencias Coruscant",
     "alias": [
       "Documentación para Temporal Residencia", 
-      "Residencia Documentación Temporal",
-
-    ]
+      "Residencia Documentación Temporal"
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "7",
+    "seccion": "documentacion",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "documentacion"
   },
   {
     "id": "RD-008",
@@ -99,7 +140,13 @@
     "alias": [
       "Plazos de Estadía Temporal Residencia", 
       "Residencia Plazos Temporal",
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "8",
+    "seccion": "plazos",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "plazos"
   },
   {
     "id": "RD-009",
@@ -109,7 +156,13 @@
     "alias": [
       "Renovación de Temporal Residencia", 
       "Residencia Renovación Temporal"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "9",
+    "seccion": "renovacion",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "renovacion"
   },
   {
     "id": "RD-010",
@@ -119,7 +172,13 @@
     "alias": [
       "Requisitos para Residencia Definitiva Residencia", 
       "Residencia Requisitos Definitiva"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "10",
+    "seccion": "requisitos",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "requisitos"
   },
   {
     "id": "RD-011",
@@ -129,7 +188,13 @@
     "alias": [
       "Proceso de Obtención Definitiva Residencia", 
       "Residencia Proceso Definitiva"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "11",
+    "seccion": "proceso",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "proceso"
   },
   {
     "id": "RD-012",
@@ -139,7 +204,13 @@
     "alias": [
       "Documentación para Definitiva Residencia", 
       "Residencia Documentación Definitiva"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "12",
+    "seccion": "documentacion",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "documentacion"
   },
   {
     "id": "RD-013",
@@ -149,7 +220,13 @@
     "alias": [
       "Plazos de Tramitación Definitiva Residencia", 
       "Residencia Plazos Definitiva"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "13",
+    "seccion": "plazos",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "plazos"
   },
   {
     "id": "RD-014",
@@ -159,7 +236,13 @@
     "alias": [
       "Penalidades por Incumplimiento Definitiva Residencia", 
       "Residencia Penalidades Definitiva"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "14",
+    "seccion": "penalidades",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "penalidades"
   },
   {
     "id": "RD-015",
@@ -169,7 +252,13 @@
     "alias": [
       "Derechos de Residentes Temporales Residencia", 
       "Residencia Derechos Temporales"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "15",
+    "seccion": "derechos",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "derechos"
   },
   {
     "id": "RD-016",
@@ -179,7 +268,13 @@
     "alias": [
       "Deberes de Residentes Temporales Residencia", 
       "Residencia Deberes Temporales"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "16",
+    "seccion": "deberes",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "deberes"
   },
   {
     "id": "RD-017",
@@ -189,7 +284,13 @@
     "alias": [
       "Derechos de Residentes Definitivos Residencia", 
       "Residencia Derechos Definitivos"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "17",
+    "seccion": "derechos",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "derechos"
   },
   {
     "id": "RD-018",
@@ -199,7 +300,13 @@
     "alias": [
       "Deberes de Residentes Definitivos Residencia", 
       "Residencia Deberes Definitivos"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "18",
+    "seccion": "deberes",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "deberes"
   },
   {
     "id": "RD-019",
@@ -209,7 +316,13 @@
     "alias": [
       "Recursos y Apelaciones Residencia", 
       "Residencia Recursos Apelaciones"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "19",
+    "seccion": "recursos",
+    "titulo_seccion": "Titulo 4",
+    "tipo_fragmento": "recursos"
   },
   {
     "id": "RD-020",
@@ -219,7 +332,13 @@
     "alias": [
       "Medidas Cautelares Residencia", 
       "Residencia Medidas Cautelares"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "20",
+    "seccion": "medidas",
+    "titulo_seccion": "Titulo 4",
+    "tipo_fragmento": "medidas"
   },
   {
     "id": "RD-021",
@@ -229,7 +348,13 @@
     "alias": [
       "Revocación y Cancelación Residencia", 
       "Residencia Revocación Cancelación"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "21",
+    "seccion": "revocación",
+    "titulo_seccion": "Titulo 4",
+    "tipo_fragmento": "revocacon"
   },
   {
     "id": "RD-022",
@@ -239,7 +364,13 @@
     "alias": [
       "Tasas y Aranceles Residencia", 
       "Residencia Tasas Aranceles"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "22",
+    "seccion": "tasas",
+    "titulo_seccion": "Titulo 4",
+    "tipo_fragmento": "tasas"
   },
   {
     "id": "RD-023",
@@ -252,7 +383,13 @@
       "Excepciones Residencia",
       "Situaciones Especiales Residencia",
       "Casos No Previstas Residencia"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "23",
+    "seccion": "casos especiales",
+    "titulo_seccion": "Titulo 5",
+    "tipo_fragmento": "casos especiales"
   },
   {
     "id": "RD-024",
@@ -265,7 +402,13 @@
       "Cambios Residencia",
       "Actualizaciones Residencia",
       "Reformas Residencia"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "24",
+    "seccion": "modificaciones",
+    "titulo_seccion": "Titulo 5",
+    "tipo_fragmento": "modificaciones"
   },
   {
     "id": "RD-025",
@@ -278,6 +421,12 @@
       "Inicio Vigencia Residencia",
       "Comienzo Vigencia Residencia",
       "Vigencia Residencia"
-    ]
+    ],
+    "doc": "Ordenanza Residencias Coruscant",
+    "decreto": "1499",
+    "articulo": "25",
+    "seccion": "vigencia",
+    "titulo_seccion": "Titulo 5",
+    "tipo_fragmento": "vigencia"
   }
 ]

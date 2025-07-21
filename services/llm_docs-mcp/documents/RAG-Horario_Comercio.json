@@ -8,7 +8,13 @@
       "Decreto N° 481",
       "Regulación de horarios comerciales",
       "Medidas de funcionamiento de comercios"
-    ]
+    ],
+    "doc": "Ordenanza Horarios Funcionamiento del Comercio",
+    "decreto": "481",
+    "articulo": "1",
+    "seccion": "generalidades",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "generalidades"
   },
   {
     "id": "COM-ARTICULO-004",
@@ -23,7 +29,13 @@
       "Horario de cierre de comercios",
       "Estado de emergencia",
       "Cierre a las 20:00 horas"
-    ]
+    ],
+    "doc": "Ordenanza Horarios Funcionamiento del Comercio",
+    "decreto": "481",
+    "articulo": "4",
+    "seccion": "horario cierre",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "horario cierre"
   },
   {
     "id": "COM-ARTICULO-008",
@@ -38,6 +50,12 @@
       "Horario Ferias Libres",
       "Funcionamiento Ferias Libres",
       "Alerta Sanitaria Ferias"
-    ]
+    ],
+    "doc": "Ordenanza Horarios Funcionamiento del Comercio",
+    "decreto": "481",
+    "articulo": "8",
+    "seccion": "horario ferias",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "horario ferias"
   }
 ]

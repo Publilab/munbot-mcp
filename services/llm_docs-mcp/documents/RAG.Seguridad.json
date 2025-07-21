@@ -8,7 +8,13 @@
       "Estado de Guerra",
       "Defensa Planetaria",
       "Soberanía Local"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "1",
+    "seccion": "Declaración",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "Declaración"
   },
   {
     "id": "SGM-002",
@@ -19,7 +25,13 @@
       "Amenaza Imperial",
       "Zonas de Riesgo",
       "Estrategias de Defensa"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "2",
+    "seccion": "Definiciones",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "Definiciones"
   },
   {
     "id": "SGM-003",
@@ -30,7 +42,13 @@
       "Marco Legal de Emergencia",
       "Facultades Extraordinarias",
       "Coordinación Militar"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "3",
+    "seccion": "Marco Legal",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Marco Legal"
   },
   {
     "id": "SGM-004",
@@ -41,7 +59,13 @@
       "Defensa Ciudadana",
       "Solidaridad Planetaria",
       "Protección Civil"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "4",
+    "seccion": "Principios",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Principios"
   },
   {
     "id": "SGM-005",
@@ -52,7 +76,13 @@
       "Comando Municipal de Defensa",
       "Cadena de Mando",
       "Protocolos de Comunicación"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "5",
+    "seccion": "Comando",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Comando"
   },
   {
     "id": "SGM-006",
@@ -63,7 +93,13 @@
       "Milicias Ciudadanas",
       "Entrenamiento Obligatorio",
       "Armamento Defensivo"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "6",
+    "seccion": "Fuerzas",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Fuerzas"
   },
   {
     "id": "SGM-007",
@@ -74,7 +110,13 @@
       "Coordinación Interinstitucional",
       "Enlaces Operativos",
       "Redes de Comunicación Seguras"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "7",
+    "seccion": "Coordinación",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Coordinación"
   },
   {
     "id": "SGM-008",
@@ -85,7 +127,13 @@
       "Centros de Comando",
       "Búnkeres Municipales",
       "Protocolos de Evacuación"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "8",
+    "seccion": "Centros",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Centros"
   },
   {
     "id": "SGM-009",
@@ -96,7 +144,13 @@
       "Sistema de Alerta Temprana",
       "Vigilancia Ciudadana",
       "Protocolos de Alarma"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "9",
+    "seccion": "Sistema",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Sistema"
   },
   {
     "id": "SGM-010",
@@ -107,7 +161,13 @@
       "Control de Fronteras",
       "Checkpoints de Acceso",
       "Identificación Obligatoria"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "10",
+    "seccion": "Control",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Control"
   },
   {
     "id": "SGM-011",
@@ -118,7 +178,13 @@
       "Restricciones de Movilidad",
       "Toques de Queda",
       "Zonas Prohibidas"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "11",
+    "seccion": "Restricciones",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Restricciones"
   },
   {
     "id": "SGM-012",
@@ -129,7 +195,13 @@
       "Protección de Infraestructura",
       "Resguardo Especial",
       "Fortificación de Edificios"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "12",
+    "seccion": "Protección",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Protección"
   },
   {
     "id": "SGM-013",
@@ -140,7 +212,13 @@
       "Identificación de Agentes Enemigos",
       "Verificación de Identidad",
       "Registro de Extranjeros"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "13",
+    "seccion": "Identificación",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Identificación"
   },
   {
     "id": "SGM-014",
@@ -151,7 +229,13 @@
       "Control de Comunicaciones",
       "Monitoreo de Transmisiones",
       "Cifrado Obligatorio"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "14",
+    "seccion": "Control",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Control"
   },
   {
     "id": "SGM-015",
@@ -162,7 +246,13 @@
       "Seguridad de la Información",
       "Clasificación Sensible",
       "Protocolos de Manejo"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "15",
+    "seccion": "Seguridad",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Seguridad"
   },
   {
     "id": "SGM-016",
@@ -173,7 +263,13 @@
       "Interrogatorios y Detenciones",
       "Procedimientos Excepcionales",
       "Centros de Detención"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "16",
+    "seccion": "Interrogatorios",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Interrogatorios"
   },
   {
     "id": "SGM-017",
@@ -184,7 +280,13 @@
       "Defensa Antiaérea",
       "Cañones Antiaéreos",
       "Refugios Subterráneos"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "17",
+    "seccion": "Sistemas",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Sistemas"
   },
   {
     "id": "SGM-018",
@@ -195,7 +297,13 @@
       "Detección de Naves Piratas",
       "Red Municipal de Radar",
       "Coordinación con Defensa Planetaria"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "18",
+    "seccion": "Detección",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Detección"
   },
   {
     "id": "SGM-019",
@@ -206,7 +314,13 @@
       "Evacuación y Refugios",
       "Búnkeres Ciudadanos",
       "Protocolos de Evacuación"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "19",
+    "seccion": "Evacuación",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Evacuación"
   },
   {
     "id": "SGM-020",
@@ -217,7 +331,13 @@
       "Defensa de Puertos Espaciales",
       "Control Militar de Terminales",
       "Inspección Obligatoria de Naves"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "20",
+    "seccion": "Puertos",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Puertos"
   },
   {
     "id": "SGM-021",
@@ -228,7 +348,13 @@
       "Requisición de Bienes Privados",
       "Expropiación Temporal",
       "Compensación Posterior"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "21",
+    "seccion": "Requisición",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Requisición"
   },
   {
     "id": "SGM-022",
@@ -239,7 +365,13 @@
       "Racionamiento de Suministros",
       "Control de Alimentos",
       "Cupones de Racionamiento"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "22",
+    "seccion": "Racionamiento",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Racionamiento"
   },
   {
     "id": "SGM-023",
@@ -250,7 +382,13 @@
       "Industria de Guerra Municipal",
       "Conversión Industrial",
       "Producción Bélica"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "23",
+    "seccion": "Industria",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Industria"
   },
   {
     "id": "SGM-024",
@@ -261,7 +399,13 @@
       "Financiamiento de la Resistencia",
       "Impuesto de Emergencia",
       "Bonos de Guerra"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "24",
+    "seccion": "Financiamiento",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Financiamiento"
   },
   {
     "id": "SGM-025",
@@ -272,7 +416,13 @@
       "Tribunales de Guerra",
       "Cortes Marciales",
       "Juicios Sumarios"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "25",
+    "seccion": "Tribunales",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Tribunales"
   },
   {
     "id": "SGM-026",
@@ -284,7 +434,13 @@
       "Traición",
       "Sabotaje",
       "Deserción"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "26",
+    "seccion": "Crimenes",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Crimenes"
   },
   {
     "id": "SGM-027",
@@ -296,7 +452,13 @@
       "Pena de Muerte",
       "Trabajo Forzado",
       "Confiscación de Bienes"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "27",
+    "seccion": "Sanciones",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Sanciones"
   },
   {
     "id": "SGM-028",
@@ -307,7 +469,13 @@
       "Procedimientos Expeditos",
       "Juicios Militares",
       "Suspensión de Derechos Civiles"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "28",
+    "seccion": "Expeditos",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Expeditos"
   },
   {
     "id": "SGM-029",
@@ -318,7 +486,13 @@
       "Control de Medios",
       "Censura de Noticias",
       "Propaganda Oficial"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "29",
+    "seccion": "Control Medios",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Control Medios"
   },
   {
     "id": "SGM-030",
@@ -329,7 +503,13 @@
       "Educación para la Resistencia",
       "Entrenamiento Militar Escolar",
       "Historia Bélica Local"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "30",
+    "seccion": "Educación",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Educación"
   },
   {
     "id": "SGM-031",
@@ -340,7 +520,13 @@
       "Celebraciones y Símbolos",
       "Prohibición de Símbolos Imperiales",
       "Ceremonias de Resistencia"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "31",
+    "seccion": "Celebraciones",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Celebraciones"
   },
   {
     "id": "SGM-032",
@@ -351,7 +537,13 @@
       "Control de Moral Pública",
       "Prohibición de Pacifismo",
       "Incentivos a la Valentía"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "32",
+    "seccion": "Moral",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Moral"
   },
   {
     "id": "SGM-033",
@@ -362,7 +554,13 @@
       "Duración del Estado de Guerra",
       "Revisión Mensual",
       "Poderes Extraordinarios"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "33",
+    "seccion": "Duración",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Duración"
   },
   {
     "id": "SGM-034",
@@ -373,7 +571,13 @@
       "Transición Post‑Guerra",
       "Desarme y Reintegración",
       "Rehabilitación de Excombatientes"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "34",
+    "seccion": "Transición",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Transición"
   },
   {
     "id": "SGM-035",
@@ -384,6 +588,12 @@
       "Cláusulas de Victoria",
       "Celebraciones Públicas",
       "Monumentos a Héroes"
-    ]
+    ],
+    "doc": "Ordenanza Seguridad de la Republica",
+    "decreto": "132-A",
+    "articulo": "35",
+    "seccion": "Victoria",
+    "titulo_seccion": "Titulo 3",
+    "tipo_fragmento": "Victoria"
   }
 ]

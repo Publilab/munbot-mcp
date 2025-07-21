@@ -10,7 +10,15 @@
       "marco normativo curoscant",
       "recaudación municipal curoscant",
       "ordenanza contribuciones"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto ": "1365",
+    "decreto": "1365",
+    "articulo": "1",
+    "fecha": "2017",
+    "seccion": "titulo 1",
+    "titulo_seccion": "generalidades",
+    "tipo_fragmento": "generalidades"
   },
   {
     "id": "ORD-002",
@@ -26,7 +34,14 @@
       "bienes públicos curoscant",
       "permisos y patentes curoscant",
       "exenciones y beneficios curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "2",
+    "fecha": "2017",
+    "seccion": "definición",
+    "titulo_seccion": "generalidades",
+    "tipo_fragmento": "definiciones" 
   },
   {
     "id": "ORD-003",
@@ -39,7 +54,12 @@
       "reglamentos tributarios curoscant",
       "facultades gobierno curoscant",
       "principios constitucionales curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "3",
+    "fecha": "2017",
+    "seccion": "marco legal"
   },
   {
     "id": "ORD-004",
@@ -51,7 +71,14 @@
       "legalidad tributaria curoscant",
       "igualdad y proporcionalidad curoscant",
       "no confiscatoriedad curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "4",
+    "fecha": "2017",
+    "seccion": "principios tributarios",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "principios tributarios"
   },
   {
     "id": "ORD-005",
@@ -64,7 +91,14 @@
       "naturaleza tasas curoscant",
       "servicios tasa curoscant",
       "contraprestación tasa curoscant"
-    ] 
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "5",
+    "fecha": "2017",
+    "seccion": "tasas",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "tasas"
   },
   {
     "id": "ORD-006",
@@ -77,7 +111,14 @@
       "recolección residuos curoscant",
       "exención aseo curoscant",
       "servicio limpieza calles curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "6",
+    "fecha": "2017",
+    "seccion": "aseo domiciliario",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "aseo domiciliario"
   },
   {
     "id": "ORD-007",
@@ -90,7 +131,14 @@
       "mantención alumbrado curoscant",
       "exención alumbrado curoscant",
       "iluminación espacios públicos curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "7",
+    "fecha": "2017",
+    "seccion": "alumbrado público",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "alumbrado público"
   },
   {
     "id": "ORD-008",
@@ -103,7 +151,14 @@
       "poda árboles curoscant",
       "exención espacios públicos curoscant",
       "embellecimiento espacios públicos curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "8",
+    "fecha": "2017",
+    "seccion": "mantención espacios públicos",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "mantención espacios públicos"
   },
   {
     "id": "ORD-009",
@@ -116,7 +171,14 @@
       "mantención nichos tumbas curoscant",
       "exención servicios funerarios curoscant",
       "conservación cementerios curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "9",
+    "fecha": "2017",
+    "seccion": "servicios cementeriales",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "servicios cementeriales"
   },
   {
     "id": "ORD-010",
@@ -129,7 +191,14 @@
       "videovigilancia curoscant",
       "exención seguridad ciudadana curoscant",
       "participación ciudadana seguridad curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "10",
+    "fecha": "2017",
+    "seccion": "seguridad ciudadana",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "seguridad ciudadana"
   },
   {
     "id": "ORD-011",
@@ -142,7 +211,14 @@
       "revisión de proyectos curoscant",
       "exención permisos edificación curoscant",
       "normativas urbanísticas curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "11",
+    "fecha": "2017",
+    "seccion": "permisos edificación",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "permisos edificación"
   },
   {
     "id": "ORD-012",
@@ -155,7 +231,14 @@
       "derechos de subdivisión curoscant",
       "exención permisos loteo curoscant",
       "normativas planificación territorial curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "12",
+    "fecha": "2017",
+    "seccion": "permisos subdivisión y loteo",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "permisos subdivisión y loteo"
   },
   {
     "id": "ORD-013",
@@ -168,7 +251,14 @@
       "derechos de patentes curoscant",
       "exención patentes curoscant",
       "normativas comerciales curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "13",
+    "fecha": "2017",
+    "seccion": "patentes comerciales e industriales",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "patentes comerciales e industriales"
   },
   {
     "id": "ORD-014",
@@ -181,7 +271,14 @@
       "renovación permisos circulación curoscant",
       "exención permisos circulación curoscant",
       "normativas tránsito curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "14",
+    "fecha": "2017",
+    "seccion": "permisos circulación",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "permisos circulación"
   },
   {
     "id": "ORD-015",
@@ -194,7 +291,13 @@
       "quioscos y ferias libres curoscant",
       "exención ocupación espacios públicos curoscant",
       "normativas uso espacios públicos curoscant"
-    ]
+    ],
+    "decreto": "1365",
+    "articulo": "15",
+    "fecha": "2017",
+    "seccion": "ocupación bienes nacionales",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "ocupación bienes nacionales"
   },
   {
     "id": "ORD-016",
@@ -207,7 +310,14 @@
       "establecimientos de salud curoscant",
       "exención permisos sanitarios curoscant",
       "normativas sanitarias curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "16",
+    "fecha": "2017",
+    "seccion": "permisos sanitarios",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "permisos sanitarios"
   },
   {
     "id": "ORD-017",
@@ -220,7 +330,14 @@
       "espectáculos artísticos curoscant",
       "exención permisos espectáculos curoscant",
       "normativas seguridad eventos curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "17",
+    "fecha": "2017",
+    "seccion": "permisos",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "permisos"
   },
   {
     "id": "ORD-018",
@@ -233,7 +350,14 @@
       "construcción de aceras curoscant",
       "exención contribuciones mejoras curoscant",
       "normativas urbanismo curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "18",
+    "fecha": "2017",
+    "seccion": "contribución mejoras",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "contribución mejoras"
   },
   {
     "id": "ORD-019",
@@ -246,7 +370,14 @@
       "tasas diferenciadas curoscant",
       "exención bienes raíces curoscant",
       "normativas propiedad curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "19",
+    "fecha": "2017",
+    "seccion": "contribución bienes raíces",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "bienes raices"
   },
   {
     "id": "ORD-020",
@@ -259,7 +390,14 @@
       "alto valor inmobiliario curoscant",
       "exención territorial adicional curoscant",
       "normativas desarrollo territorial curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "20",
+    "fecha": "2017",
+    "seccion": "contribución territorial adicional",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "contribución territorial"
   },
   {
     "id": "ORD-021",
@@ -272,7 +410,14 @@
       "organizaciones benéficas curoscant",
       "exención adultos mayores curoscant",
       "normativas exenciones tributarias curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "21",
+    "fecha": "2017",
+    "seccion": "exenciones legales",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "exenciones legales"
   },
   {
     "id": "ORD-022",
@@ -285,7 +430,14 @@
       "familias vulnerables curoscant",
       "veteranos curoscant",
       "subsidios habitacionales curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "22",
+    "fecha": "2017",
+    "seccion": "beneficios condición social",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "beneficios por condicion social"
   },
   {
     "id": "ORD-023",
@@ -298,7 +450,14 @@
       "empresas creadoras de empleo curoscant",
       "proyectos sustentables curoscant",
       "recuperación patrimonial curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "23",
+    "fecha": "2017",
+    "seccion": "incentivos al desarrollo",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "incentivos"
   },
   {
     "id": "ORD-024",
@@ -311,7 +470,13 @@
       "cumplimiento obligaciones tributarias curoscant",
       "exención pronto pago curoscant",
       "normativas recaudación curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "24",
+    "seccion": "beneficios",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "beneficios pronto pago"
   },
   {
     "id": "ORD-025",
@@ -324,7 +489,13 @@
       "aplicación tasas curoscant",
       "fecha de devengo curoscant",
       "notificación al contribuyente curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "25",
+    "seccion": "determinación a la obligación",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "obligaciones"
   },
   {
     "id": "ORD-026",
@@ -337,7 +508,13 @@
       "plazos de pago curoscant",
       "convenios de pago curoscant",
       "facilidades de pago curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "26",
+    "seccion": "facturación y cobranza",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "facturación y confianza"
   },
   {
     "id": "ORD-027",
@@ -350,7 +527,13 @@
       "reajustes automáticos curoscant",
       "multas por incumplimiento curoscant",
       "normativas recaudación curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "27",
+    "seccion": "intereses y reajustes",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "intereses y reajustes"
   },
   {
     "id": "ORD-028",
@@ -363,7 +546,13 @@
       "causas de interrupción curoscant",
       "efectos legales prescripción curoscant",
       "normativas prescripción tributaria curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "28",
+    "seccion": "prescripción obligaciones",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "prescripción obigaciones"
   },
   {
     "id": "ORD-029",
@@ -376,7 +565,13 @@
       "plazos de reclamo curoscant",
       "documentación requerida curoscant",
       "normativas reclamo tributario curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "29",
+    "seccion": "reclamos",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "reclamos"
   },
   {
     "id": "ORD-030",
@@ -389,7 +584,13 @@
       "resolución administrativa curoscant",
       "documentación recurso reposición curoscant",
       "normativas reposición tributaria curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "30",
+    "seccion": "recursos",
+    "titulo_seccion": "Recursos",
+    "tipo_fragmento": "recursos"
   },
   {
     "id": "ORD-031",
@@ -402,7 +603,13 @@
       "apelación Corte de Apelaciones curoscant",
       "procedimiento jurisdiccional curoscant",
       "normativas jurisdiccionales tributarias curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "31",
+    "seccion": "recursos",
+    "titulo_seccion": "Recursos",
+    "tipo_fragmento": "recursos juridiccionales"
   },
   {
     "id": "ORD-032",
@@ -415,7 +622,13 @@
       "solicitud de información curoscant",
       "colaboración organismos curoscant",
       "normativas fiscalización tributaria curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "32",
+    "seccion": "recursos",
+    "titulo_seccion": "Recursos",
+    "tipo_fragmento": "facultades fiscalización"
   },
   {
     "id": "ORD-033",
@@ -428,7 +641,13 @@
       "clausuras permisos curoscant",
       "suspensiones de permisos curoscant",
       "normativas infracciones tributarias curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "33",
+    "seccion": "recursos",
+    "titulo_seccion": "Recursos",
+    "tipo_fragmento": "Infracciones y Secciones"
   },
   {
     "id": "ORD-034",
@@ -441,7 +660,13 @@
       "régimen transitorio curoscant",
       "normativas vigencia curoscant",
       "adaptación a nueva ordenanza curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "34",
+    "seccion": "recursos",
+    "titulo_seccion": "Recursos",
+    "tipo_fragmento": "Vigencia"
   },
   {
     "id": "ORD-035",
@@ -454,6 +679,12 @@
       "criterios de interpretación curoscant",
       "actualizaciones y modificaciones curoscant",
       "publicidad obligaciones curoscant"
-    ]
+    ],
+    "doc": "Normativa de Tributación y Derechos Económicos",
+    "decreto": "1365",
+    "articulo": "35",
+    "seccion": "recursos",
+    "titulo_seccion": "Recursos",
+    "tipo_fragmento": "Disposiciones especiales"
   }
 ]

@@ -8,7 +8,13 @@
       "Reglamento Ambiental Curoscant",
       "Normativa Ambiental Curoscant",
       "Reglamento de Protección Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "1",
+    "seccion": "generalidades",
+    "titulo_seccion": "Titulo 1",
+    "tipo_fragmento": "generalidades"
   },
   {
     "id": "MED-002",
@@ -30,7 +36,13 @@
       "Principios del Reglamento Ambiental",
       "Normativa Ambiental Curoscant",
       "Reglamento de Protección Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "2",
+    "seccion": "principios ambientales",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "principios"
   },
   {
     "id": "MED-004",
@@ -41,7 +53,13 @@
       "Calidad del Aire Curoscant",
       "Normativa de Emisiones Curoscant",
       "Reglamento de Protección del Aire"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "3",
+    "seccion": "calidad del aire",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "calidad"
   },
   {
     "id": "MED-005",
@@ -52,7 +70,13 @@
       "Gestión de Residuos Curoscant",
       "Normativa de Residuos Sólidos Curoscant",
       "Reglamento de Manejo de Residuos"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "4",
+    "seccion": "gestion de residuos solidos",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "gestion"
   },
   {
     "id": "MED-006",
@@ -63,7 +87,13 @@
       "Prohibición de Vertidos Curoscant",
       "Normativa de Vertidos Curoscant",
       "Reglamento de Protección de Espacios Públicos"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "5",
+    "seccion": "prohibicion de vertidos",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "prohibicion"
   },
   {
     "id": "MED-007",
@@ -74,7 +104,13 @@
       "Reciclaje Obligatorio Curoscant",
       "Normativa de Reciclaje Curoscant",
       "Reglamento de Manejo de Residuos Reciclables"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "6",
+    "seccion": "reciclaje obligatorio",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "reciclaje"
   },
   {
     "id": "MED-008",
@@ -85,7 +121,13 @@
       "Compostaje Comunitario Curoscant",
       "Normativa de Compostaje Curoscant",
       "Reglamento de Manejo de Residuos Orgánicos"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "7",
+    "seccion": "compostaje comunitario",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "compostaje"
   },
   {
     "id": "MED-009",
@@ -96,7 +138,13 @@
       "Responsabilidad del Productor Curoscant",
       "Normativa de Responsabilidad Extendida Curoscant",
       "Reglamento de Manejo de Productos al Final de su Vida Útil"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "8",
+    "seccion": "responsabilidad del productor",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "responsabilidad"
   },
   {
     "id": "MED-010",
@@ -107,7 +155,13 @@
       "Reducción de Plásticos Curoscant",
       "Normativa de Plásticos de un Solo Uso Curoscant",
       "Reglamento de Manejo de Plásticos"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "9",
+    "seccion": "reduccion de plastico",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "reduccion"
   },
   {
     "id": "MED-011",
@@ -118,7 +172,13 @@
       "Protección de Recursos Hídricos Curoscant",
       "Normativa de Agua Curoscant",
       "Reglamento de Manejo de Recursos Hídricos"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "10",
+    "seccion": "proteccion de recursos hidro",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "proteccion"
   },
   {
     "id": "MED-012",
@@ -129,7 +189,13 @@
       "Contaminación Lumínica Curoscant",
       "Normativa de Iluminación Curoscant",
       "Reglamento de Manejo de Luz Artificial"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "11",
+    "seccion": "contaminacion lumínica",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "contaminacion"
   },
   {
     "id": "MED-013",
@@ -140,7 +206,13 @@
       "Contaminación Acústica Curoscant",
       "Normativa de Ruido Curoscant",
       "Reglamento de Manejo de Ruido"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "12",
+    "seccion": "contaminacion acustica",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "contaminacion"
   },
   {
     "id": "MED-014",
@@ -151,7 +223,13 @@
       "Energías Renovables Curoscant",
       "Normativa de Energías Limpias Curoscant",
       "Reglamento de Manejo de Energía"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "13",
+    "seccion": "energías renovables",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "energías"
   },
   {
     "id": "MED-015",
@@ -162,7 +240,13 @@
       "Protección de Áreas Verdes Curoscant",
       "Normativa de Espacios Verdes Curoscant",
       "Reglamento de Manejo de Áreas Naturales"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "14",
+    "seccion": "proteccion de areas verdes",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "proteccion"
   },
   {
     "id": "MED-016",
@@ -173,7 +257,13 @@
       "Fomento de Iniciativas Ciudadanas Curoscant",
       "Normativa de Proyectos Ambientales Curoscant",
       "Reglamento de Participación Ciudadana"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "15",
+    "seccion": "fomento de iniciativas",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "fomento"
   },
   {
     "id": "MED-017",
@@ -184,7 +274,13 @@
       "Educación Ambiental Curoscant",
       "Normativa de Concienciación Ambiental Curoscant",
       "Reglamento de Formación Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "16",
+    "seccion": "educacion ambiental",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "educacion"
   },
   {
     "id": "MED-018",
@@ -195,7 +291,13 @@
       "Fiscalización Ambiental Curoscant",
       "Normativa de Inspección Ambiental Curoscant",
       "Reglamento de Control Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "17",
+    "seccion": "fiscalizacion ambiental",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "fiscalizacion"
   },
   {
     "id": "MED-019",
@@ -206,7 +308,13 @@
       "Consejos Ambientales Comunitarios Curoscant",
       "Normativa de Participación Comunitaria Curoscant",
       "Reglamento de Gestión Ambiental Local"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "18",
+    "seccion": "consejos ambientales",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "consejos"
   },
   {
     "id": "MED-020",
@@ -217,7 +325,13 @@
       "Transparencia Ambiental Curoscant",
       "Normativa de Rendición de Cuentas Ambiental Curoscant",
       "Reglamento de Información Ambiental Pública"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "19",
+    "seccion": "transparencia ambiental",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "transparencia"
   },
   {
     "id": "MED-021",
@@ -228,7 +342,13 @@
       "Cooperación Interinstitucional Curoscant",
       "Normativa de Alianzas Estratégicas Curoscant",
       "Reglamento de Colaboración Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "20",
+    "seccion": "cooperacion interinstitucional",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "cooperacion"
   },
   {
     "id": "MED-022",
@@ -239,7 +359,13 @@
       "Revisión Trienal Curoscant",
       "Normativa de Actualización Ambiental Curoscant",
       "Reglamento de Mejora Continua Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "21",
+    "seccion": "revision trienal",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "revision"
   },
   {
     "id": "MED-023",
@@ -250,7 +376,13 @@
       "Voluntariado Ambiental Curoscant",
       "Normativa de Participación Voluntaria Curoscant",
       "Reglamento de Acción Comunitaria Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "22",
+    "seccion": "voluntariado ambiental",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "voluntariado"
   },
   {
     "id": "MED-024",
@@ -261,7 +393,13 @@
       "Incentivos Económicos Curoscant",
       "Normativa de Subvenciones Ambientales Curoscant",
       "Reglamento de Apoyo Económico a Iniciativas Verdes"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "23",
+    "seccion": "incentivos economicos",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "incentivos"
   },
   {
     "id": "MED-025",
@@ -272,7 +410,13 @@
       "Huertos Urbanos Curoscant",
       "Normativa de Espacios Verdes Urbanos Curoscant",
       "Reglamento de Agricultura Urbana"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "24",
+    "seccion": "huertos urbanos",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "huertos"
   },
   {
     "id": "MED-026",
@@ -283,7 +427,13 @@
       "Movilidad Sustentable Curoscant",
       "Normativa de Transporte Urbano Curoscant",
       "Reglamento de Infraestructura de Movilidad"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "25",
+    "seccion": "movilidad sostenible",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "movilidad"
   },
   {
     "id": "MED-027",
@@ -294,7 +444,13 @@
       "Gestión de Demolición Curoscant",
       "Normativa de Residuos de Construcción Curoscant",
       "Reglamento de Manejo de Escombros"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "26",
+    "seccion": "gestion de demolicion",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "gestion"
   },
   {
     "id": "MED-028",
@@ -305,7 +461,13 @@
       "Construcción Ecológica Curoscant",
       "Normativa de Edificaciones Sostenibles Curoscant",
       "Reglamento de Infraestructura Verde"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "27",
+    "seccion": "construccion ecologica",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "construccion"
   },
   {
     "id": "MED-029",
@@ -316,7 +478,13 @@
       "Espacios Pegados a Zonas Naturales Curoscant",
       "Normativa de Protección de Ecosistemas Curoscant",
       "Reglamento de Manejo de Áreas Naturales"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "28",
+    "seccion": "espacios pegados a zonas naturales",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "espacios"
   },
   {
     "id": "MED-030",
@@ -327,7 +495,13 @@
       "Protección de Fauna Urbana Curoscant",
       "Normativa de Conservación de Especies Urbanas Curoscant",
       "Reglamento de Manejo de Vida Silvestre Urbana"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "29",
+    "seccion": "proteccion de fauna urbana",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "proteccion"
   },
   {
     "id": "MED-031",
@@ -338,7 +512,13 @@
       "Control de Plagas Curoscant",
       "Normativa de Manejo de Plagas Urbanas Curoscant",
       "Reglamento de Protección de Salud Pública"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "30",
+    "seccion": "control de plagas",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "control"
   },
   {
     "id": "MED-032",
@@ -349,7 +529,13 @@
       "Gestión de Áreas Protegidas Curoscant",
       "Normativa de Conservación de Espacios Naturales Curoscant",
       "Reglamento de Manejo de Áreas Protegidas"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "31",
+    "seccion": "gestion de areas protegidas",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "gestion"
   },
   {
     "id": "MED-033",
@@ -360,7 +546,13 @@
       "Educación Continua Curoscant",
       "Normativa de Capacitación Ambiental Curoscant",
       "Reglamento de Formación y Actualización Ambiental"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "32",
+    "seccion": "educacion continua",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "educacion"
   },
   {
     "id": "MED-034",
@@ -371,7 +563,13 @@
       "Sostenibilidad Económica Curoscant",
       "Normativa de Economía Circular Curoscant",
       "Reglamento de Modelos Empresariales Verdes"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "33",
+    "seccion": "sostenibilidad economica",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "sostenibilidad"
   },
   {
     "id": "MED-035",
@@ -382,6 +580,12 @@
       "Vigencia y Derogación Curoscant",
       "Normativa de Entrada en Vigencia Curoscant",
       "Reglamento de Aplicación y Modificaciones"
-    ]
+    ],
+    "doc": "Reglamento Medio Ambiente",
+    "decreto": "127",
+    "articulo": "34",
+    "seccion": "vigencia y derogacion",
+    "titulo_seccion": "Titulo 2",
+    "tipo_fragmento": "vigencia"
   }
 ]
