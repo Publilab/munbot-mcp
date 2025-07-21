@@ -48,8 +48,16 @@ PY
 # ──────────────────────────────────────────────────────────────
 COPY .env ./
 COPY . .
-# (si `documents/` se genera en runtime, basta el mkdir; si contiene seed files déjalo)
-RUN mkdir -p documents prompts tools models
+COPY documents/ ./documents/
+COPY entrypoint.sh /app/entrypoint.sh
+COPY scripts/ /app/scripts/
+RUN chmod +x /app/entrypoint.sh
+
+# Crear directorios necesarios
+RUN mkdir -p documents
+RUN mkdir -p prompts
+RUN mkdir -p tools
+RUN mkdir -p models
 
 # ──────────────────────────────────────────────────────────────
 # Variable para desactivar paralelismo excesivo de tokenizers
@@ -59,4 +67,6 @@ ENV TOKENIZERS_PARALLELISM=false \
 
 EXPOSE 8000
 
+# Script de arranque
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["uvicorn", "gateway:app", "--host", "0.0.0.0", "--port", "8000"]
