@@ -1299,6 +1299,7 @@ def orchestrate(
     session_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     sid = session_id or str(uuid.uuid4())
+    session_id = sid
 
     ctx = context_manager.get_context(sid)
 
@@ -1419,13 +1420,20 @@ def orchestrate(
             }
             campo = campo_map.get(campo_raw.lower())
             if campo:
-                resp = responder_sobre_documento(
-                    user_input,
-                    sid,
-                    tipo=tipo + "s",
-                    nombre=nombre,
-                    campos=[campo],
+                params = {"pregunta": user_input}
+                if nombre:
+                    params["documento"] = nombre
+                service_resp = call_tool_microservice(
+                    "doc-generar_respuesta_llm", params
                 )
+                resp = (
+                    service_resp.get("respuesta")
+                    or service_resp.get("answer")
+                    or service_resp.get("mensaje")
+                )
+                refs = service_resp.get("referencias")
+                if refs:
+                    resp = f"{resp}\nFuente: {'; '.join(refs)}"
                 context_manager.clear_consultas_tramites_pending(sid)
                 context_manager.update_context(sid, user_input, resp)
                 return {"respuesta": resp, "session_id": sid}
@@ -1525,7 +1533,16 @@ def orchestrate(
             orig_q = pending_doc.get("question", "")
             doc_name = pending_doc.get("doc")
             context_manager.clear_doc_clarification(sid)
-            resp = responder_sobre_documento(f"{doc_name} {orig_q}", sid)
+            params = {"pregunta": f"{doc_name} {orig_q}"}
+            service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
+            resp = (
+                service_resp.get("respuesta")
+                or service_resp.get("answer")
+                or service_resp.get("mensaje")
+            )
+            refs = service_resp.get("referencias")
+            if refs:
+                resp = f"{resp}\nFuente: {'; '.join(refs)}"
             context_manager.update_context(sid, user_input, resp)
             context_manager.set_current_flow(sid, "documento")
             return {"respuesta": resp, "session_id": sid}
@@ -1588,7 +1605,18 @@ def orchestrate(
 
     # --- Listado de trámites solicitado directamente ---
     if is_list_request(user_input):
-        resp = responder_sobre_documento(user_input, sid, listar_todo=True)
+        params = {"pregunta": user_input}
+        service_resp = call_tool_microservice(
+            "doc-generar_respuesta_llm", params
+        )
+        resp = (
+            service_resp.get("respuesta")
+            or service_resp.get("answer")
+            or service_resp.get("mensaje")
+        )
+        refs = service_resp.get("referencias")
+        if refs:
+            resp = f"{resp}\nFuente: {'; '.join(refs)}"
         context_manager.set_current_flow(sid, "documento")
         context_manager.update_context(sid, user_input, resp)
         context_manager.reset_fallback_count(sid)
@@ -1675,26 +1703,8 @@ def orchestrate(
         else:
             msg = "Entendido. ¿En qué más puedo ayudarte?"
             context_manager.update_context(sid, user_input, msg)
-            return {"respuesta": msg, "session_id": sid}
+            return {"respuesta": msg, "session_id": sid
 
-
-    # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
-    # DEPRECADO: la búsqueda estática en JSON se reemplaza por el flujo RAG del
-    # microservicio llm_docs-mcp. Se conserva la lógica anterior comentada para
-    # referencia pero todas las consultas se canalizan ahora por llm_docs-mcp.
-    # respuesta_doc = responder_sobre_documento(user_input, sid)
-    # if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
-    #     context_manager.update_context(sid, user_input, respuesta_doc)
-    #     context_manager.set_current_flow(sid, "documento")
-    #     context_manager.reset_fallback_count(sid)
-    #     context_manager.set_last_sentiment(sid, "neutral")
-    #     return {"respuesta": respuesta_doc, "session_id": sid}
-
-
-
-    # Obtener o crear session_id
-    if not session_id:
-        session_id = str(uuid.uuid4())
     session = get_session(session_id)
     convo_ctx = context_manager.get_context(session_id)
     if extra_context:
@@ -2342,127 +2352,28 @@ def buscar_oficina_por_documento(nombre_doc):
 
 
 def responder_sobre_documento(
-    pregunta_usuario,
+    pregunta_usuario: str,
     session_id: Optional[str] = None,
     listar_todo: bool = False,
     channel: Optional[str] = None,
-):
-    tipo = detectar_tipo_documento(pregunta_usuario)
-    nombre = None
-    pregunta_norm = normalize_text(pregunta_usuario)
-    ctx = context_manager.get_context(session_id) if session_id else {}
-
-    # Reutilizar documento en contexto si no se menciona uno nuevo
-    if not tipo and not nombre and ctx.get("doc_actual"):
-        nombre = ctx.get("doc_actual")
-        tipo = infer_type_from_doc_name(nombre)
-
-    # coincidencia directa por substring
-    for doc in documentos:
-        if doc["Nombre_Documento"].lower() in pregunta_usuario.lower():
-            nombre = doc["Nombre_Documento"]
-            break
-
-    # Revisar alias conocidos
-    if not nombre:
-        for alias_norm, real in DOC_ALIAS_MAP.items():
-            if alias_norm in pregunta_norm:
-                nombre = real
-                break
-
-    # si no hubo match directo, probar búsqueda difusa
-    if not nombre:
-        best_doc, score = buscar_documento_fuzzy(pregunta_usuario)
-        if score >= 90 and best_doc:
-            nombre = best_doc["Nombre_Documento"]
-        elif best_doc and 80 <= score < 90 and session_id:
-            context_manager.set_doc_clarification(session_id, best_doc["Nombre_Documento"], pregunta_usuario)
-            return adapt_markdown_for_channel(
-                f"¿Quizás te refieres al **{best_doc['Nombre_Documento']}**? Responde 'sí' o 'no'.",
-                channel,
-            )
-
-    # usar el contexto si el usuario ya había seleccionado un documento
-    if session_id and not nombre:
-        seleccionado = context_manager.get_selected_document(session_id)
-        if seleccionado:
-            nombre = seleccionado
-
-    if listar_todo and tipo:
-        opciones = listar_documentos_por_tipo(tipo)
-        if opciones:
-            opciones = list(opciones) + ["Mi opción no está en la lista"]
-            if session_id:
-                context_manager.set_document_options(session_id, opciones)
-            listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
-            mensaje = (
-                f"Estos son los {tipo}s disponibles:\n{listado}\nPuedes elegir una opción por número o nombre."
-            )
-            return adapt_markdown_for_channel(mensaje, channel)
-        # continuar flujo normal si no hay opciones
-
-    if tipo and not nombre:
-        opciones = listar_documentos_por_tipo(tipo)
-        if opciones:
-            opciones = list(opciones) + ["Mi opción no está en la lista"]
-            if session_id:
-                context_manager.set_document_options(session_id, opciones)
-            listado = "\n".join(f"{i+1}. {op}" for i, op in enumerate(opciones))
-            mensaje = (
-                f"¿Sobre qué {tipo} necesitas información?\n{listado}\nPor favor, ingresa el número de la opción deseada."
-            )
-            return adapt_markdown_for_channel(mensaje, channel)
-        else:
-            return adapt_markdown_for_channel(
-                f"No encontré {tipo}s disponibles.", channel
-            )
-    elif nombre:
-        doc = buscar_documento_por_nombre(nombre)
-        if doc:
-            if session_id:
-                context_manager.set_selected_document(session_id, nombre)
-                context_manager.clear_document_options(session_id)
-                if ctx.get("doc_actual") != nombre:
-                    context_manager.update_context_data(session_id, {"doc_actual": nombre})
-
-            if INCLUIR_FICHA_COMPLETA_POR_DEFECTO:
-                campos_solicitados = [c for c in CAMPO_LABELS.keys() if doc.get(c)]
-            else:
-                campos_solicitados = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
-
-            campos_existentes = [c for c in campos_solicitados if doc.get(c)]
-            missing = [c for c in campos_solicitados if not doc.get(c)]
-
-            if not campos_existentes:
-                faltantes = ", ".join(CAMPO_LABELS.get(c, c) for c in missing)
-                return adapt_markdown_for_channel(
-                    f"El documento {doc['Nombre_Documento']} no tiene registrado {faltantes.lower()}.",
-                    channel,
-                )
-
-            respuesta = armar_respuesta_combinada(doc, campos_existentes)
-            if doc.get("Notas") and "Nota:" not in respuesta and (
-                "Requisitos" in campos_existentes or len(campos_existentes) > 1
-            ):
-                respuesta += f"\n\n**Nota:** {doc['Notas']}"
-            if missing:
-                respuesta += (
-                    "\n"
-                    + "No contamos con información de "
-                    + ", ".join(CAMPO_LABELS.get(c, c).lower() for c in missing)
-                    + "."
-                )
-            return adapt_markdown_for_channel(respuesta, channel)
-        else:
-            return adapt_markdown_for_channel(
-                "No encontré información específica sobre ese documento.",
-                channel,
-            )
-    else:
-        return adapt_markdown_for_channel(
-            "¿Podrías especificar si buscas un permiso, certificado, patente, etc.?",
-            channel,
-        )
+) -> str:
+    """DEPRECATED: utiliza el microservicio doc-generar_respuesta_llm."""
+    params = {"pregunta": pregunta_usuario}
+    if session_id:
+        selected = context_manager.get_selected_document(session_id)
+        if selected:
+            params["documento"] = selected
+    resp = call_tool_microservice("doc-generar_respuesta_llm", params)
+    texto = (
+        resp.get("respuesta")
+        or resp.get("answer")
+        or resp.get("mensaje")
+        or ""
+    )
+    refs = resp.get("referencias")
+    if refs:
+        texto = f"{texto}\nFuente: {'; '.join(refs)}"
+    return adapt_markdown_for_channel(texto, channel)
 
 
 # --- INTEGRACIÓN EN EL ORQUESTADOR ---
