@@ -17,4 +17,4 @@ if COLLECTION not in existing:
     )
     print(f"✅  Colección creada: {COLLECTION}")
 else:
-    print(f"ℹ️  Colección {COLLECTION} ya existe — sin cambios.")
+    print(f"ℹ️  Colección {COLLECTION} ya existe — sin cambios.") 

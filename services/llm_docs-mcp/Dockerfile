@@ -1,72 +1,37 @@
-# ──────────────────────────────────────────────────────────────
-# Imagen base mínima con Python 3.11 (CPU) + OpenBLAS
-# ──────────────────────────────────────────────────────────────
 FROM python:3.11-slim
 
-# Zona horaria ─ evita warn de datetime en logs
-ENV TZ=America/Santiago
+ENV TZ=America/Santiago \
+    TOKENIZERS_PARALLELISM=false \
+    OMP_NUM_THREADS=4 \
+    SENTENCE_TRANSFORMERS_HOME=/app/models \
+    TRANSFORMERS_CACHE=/app/models
+
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# ──────────────────────────────────────────────────────────────
-# Paquetes de sistema esenciales
-# ──────────────────────────────────────────────────────────────
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        build-essential  \
-        git \
-        libopenblas-base \
-    && rm -rf /var/lib/apt/lists/*
+        build-essential git libopenblas-base netcat-traditional && \
+    rm -rf /var/lib/apt/lists/*
 
-# ──────────────────────────────────────────────────────────────
-# Copiamos primero sólo requirements para aprovechar capa-cache
-# ──────────────────────────────────────────────────────────────
 WORKDIR /app
 
 COPY requirements.txt .
-
-# 1) actualizamos pip
-RUN pip install --no-cache-dir -U pip
-
-# 2) instalamos PyTorch CPU build *antes* para evitar wheels CUDA
-RUN pip install --no-cache-dir \
-    torch --index-url https://download.pytorch.org/whl/cpu
-
-# 3) instalamos resto de dependencias del proyecto
+RUN pip install -U pip --no-cache-dir
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ──────────────────────────────────────────────────────────────
-# Descarga del modelo MiniLM (opcional pero acelera primer arranque)
-# ──────────────────────────────────────────────────────────────
-RUN python - <<'PY'
+# Descarga del modelo
+RUN mkdir -p /app/models && \
+    python - <<'PY'
 from sentence_transformers import SentenceTransformer
-SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-                    device='cpu')
+SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", device="cpu")
 PY
 
-# ──────────────────────────────────────────────────────────────
-# Copiamos el resto del código y recursos
-# ──────────────────────────────────────────────────────────────
-COPY .env ./
+# Copia código y scripts (una sola instrucción)
 COPY . .
-COPY documents/ ./documents/
-COPY entrypoint.sh /app/entrypoint.sh
-COPY scripts/ /app/scripts/
+
+# Asegurar permisos
 RUN chmod +x /app/entrypoint.sh
 
-# Crear directorios necesarios
-RUN mkdir -p documents
-RUN mkdir -p prompts
-RUN mkdir -p tools
-RUN mkdir -p models
-
-# ──────────────────────────────────────────────────────────────
-# Variable para desactivar paralelismo excesivo de tokenizers
-# ──────────────────────────────────────────────────────────────
-ENV TOKENIZERS_PARALLELISM=false \
-    OMP_NUM_THREADS=4         # ajusta según CPU del host
-
 EXPOSE 8000
-
-# Script de arranque
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["uvicorn", "gateway:app", "--host", "0.0.0.0", "--port", "8000"]
