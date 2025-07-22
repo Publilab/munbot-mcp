@@ -17,6 +17,35 @@ class FakeLlama:
 fake_llama.Llama = FakeLlama
 sys.modules["llama_cpp"] = fake_llama
 
+# Stub sklearn modules used in gateway
+fake_sklearn = types.ModuleType("sklearn")
+fake_feature = types.ModuleType("sklearn.feature_extraction")
+fake_text = types.ModuleType("sklearn.feature_extraction.text")
+class FakeVectorizer:
+    def fit(self, *a, **k):
+        return self
+    def fit_transform(self, *a, **k):
+        return [[0]]
+    def transform(self, *a, **k):
+        return [[0]]
+class FakeTfidfVectorizer(FakeVectorizer):
+    pass
+fake_text.TfidfVectorizer = FakeTfidfVectorizer
+fake_feature.text = fake_text
+fake_sklearn.feature_extraction = fake_feature
+fake_metrics = types.ModuleType("sklearn.metrics")
+fake_pairwise = types.ModuleType("sklearn.metrics.pairwise")
+def fake_cosine_similarity(*a, **k):
+    return [[1.0]]
+fake_pairwise.cosine_similarity = fake_cosine_similarity
+fake_metrics.pairwise = fake_pairwise
+fake_sklearn.metrics = fake_metrics
+sys.modules.setdefault("sklearn", fake_sklearn)
+sys.modules["sklearn.feature_extraction"] = fake_feature
+sys.modules["sklearn.feature_extraction.text"] = fake_text
+sys.modules["sklearn.metrics"] = fake_metrics
+sys.modules["sklearn.metrics.pairwise"] = fake_pairwise
+
 from gateway import app
 
 class TestGateway(unittest.TestCase):

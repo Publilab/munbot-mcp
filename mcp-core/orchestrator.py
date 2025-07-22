@@ -794,53 +794,6 @@ def detect_intent(
     return detect_intent_llm(user_input, history)
 
 
-def retrieve_context_snippets(pregunta: str, limit: int = 3) -> List[str]:
-    """Devuelve fragmentos relevantes de FAQ o documentos oficiales."""
-    snippets: List[str] = []
-
-    # 1) Buscar coincidencias en FAQ
-    try:
-        with open(FAQ_DB_PATH, "r", encoding="utf-8") as f:
-            faqs = json.load(f)
-        pregunta_tokens = set(tokenize(pregunta))
-        for entry in faqs:
-            entry_preguntas = entry["pregunta"]
-            if isinstance(entry_preguntas, str):
-                entry_preguntas = [entry_preguntas]
-            for alt in entry_preguntas:
-                entry_tokens = set(tokenize(normalize_text(alt)))
-                if pregunta_tokens & entry_tokens:
-                    snippets.append(entry["respuesta"].strip())
-                    break  # Solo una vez por entrada
-            if len(snippets) >= limit:
-                break
-    except Exception as e:
-        logging.warning(f"No se pudo consultar contexto FAQ: {e}")
-
-    # 2) Consultar documentos en la base de datos
-    try:
-        if len(snippets) < limit:
-            conn = get_db()
-            cur = conn.cursor(cursor_factory=RealDictCursor)
-            like = f"%{pregunta.lower()}%"
-            cur.execute(
-                "SELECT nombre, descripcion FROM documentos WHERE LOWER(nombre) LIKE %s OR LOWER(descripcion) LIKE %s LIMIT %s",
-                (like, like, limit - len(snippets)),
-            )
-            docs = cur.fetchall()
-            for doc in docs:
-                texto = doc.get("descripcion") or doc.get("nombre")
-                if texto:
-                    snippets.append(texto.strip())
-                    if len(snippets) >= limit:
-                        break
-            conn.close()
-    except Exception as e:
-        logging.warning(f"No se pudo consultar documentos: {e}")
-
-    return snippets[:limit]
-
-
 def get_best_faq_match(pregunta: str):
     """Devuelve la pregunta más parecida y su puntaje."""
     faqs = load_faq_cache()
@@ -2222,22 +2175,23 @@ def orchestrate(
             context_manager.clear_context_field(session_id, "doc_actual")
             return {"respuesta": answer, "session_id": session_id}
 
-        snippets = retrieve_context_snippets(user_input)
-        history = convo_ctx.get("history", [])
-        history_text = context_manager.get_history_as_string(history)
-        prompt_template = load_prompt("doc-generar_respuesta_llm.txt")
-        prompt = fill_prompt(
-            prompt_template,
-            {
-                "pregunta": user_input,
-                "language": "es",
-                "faq_context": "\n".join(snippets),
-            },
+        params = {"pregunta": user_input}
+        selected = context_manager.get_selected_document(session_id)
+        if selected:
+            params["documento"] = selected
+        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
+        ans = (
+            service_resp.get("respuesta")
+            or service_resp.get("answer")
+            or service_resp.get("mensaje")
         )
-        prompt = f"{history_text}\n{prompt}"
-        ans = generate_response(prompt)
-        ans += "\n¿Te fue útil mi respuesta? (Sí/No)"
-        context_manager.set_feedback_pending(session_id, None)
+        if not ans:
+            ans = service_resp.get(
+                "error", "Lo siento, hubo un error al consultar el servicio."
+            )
+        else:
+            ans += "\n¿Te fue útil mi respuesta? (Sí/No)"
+            context_manager.set_feedback_pending(session_id, None)
         context_manager.update_context(session_id, user_input, ans)
         context_manager.clear_context_field(session_id, "doc_actual")
         return {"respuesta": ans, "session_id": session_id}

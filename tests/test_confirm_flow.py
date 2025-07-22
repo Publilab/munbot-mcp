@@ -11,6 +11,30 @@ os.environ["TESTING"] = "1"
 base_dir = os.path.join("services", "scheduler-mcp")
 sys.path.insert(0, base_dir)
 
+# Load scheduler utils as 'utils'
+import importlib.util as _util
+utils_spec = _util.spec_from_file_location("utils", os.path.join(base_dir, "utils", "__init__.py"))
+utils_pkg = _util.module_from_spec(utils_spec)
+utils_spec.loader.exec_module(utils_pkg)
+import types as _types
+email_utils_mod = _types.ModuleType("utils.email_utils")
+def _dummy(*a, **k):
+    pass
+email_utils_mod.send_email = _dummy
+rut_utils_spec = _util.spec_from_file_location("utils.rut_utils", os.path.join(base_dir, "utils", "rut_utils.py"))
+rut_utils_mod = _util.module_from_spec(rut_utils_spec)
+rut_utils_spec.loader.exec_module(rut_utils_mod)
+audit_spec = _util.spec_from_file_location("utils.audit", os.path.join(base_dir, "utils", "audit.py"))
+audit_mod = _util.module_from_spec(audit_spec)
+audit_spec.loader.exec_module(audit_mod)
+utils_pkg.email_utils = email_utils_mod
+utils_pkg.rut_utils = rut_utils_mod
+utils_pkg.audit = audit_mod
+sys.modules["utils"] = utils_pkg
+sys.modules["utils.email_utils"] = email_utils_mod
+sys.modules["utils.rut_utils"] = rut_utils_mod
+sys.modules["utils.audit"] = audit_mod
+
 spec = importlib.util.spec_from_file_location("scheduler_mcp", os.path.join(base_dir, "app.py"))
 scheduler_mcp = importlib.util.module_from_spec(spec)
 sys.modules["scheduler_mcp"] = scheduler_mcp
