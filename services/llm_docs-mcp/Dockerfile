@@ -21,8 +21,7 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Descarga del modelo
-RUN mkdir -p /app/models && \
-    python - <<'PY'
+RUN python - <<'PY'
 from sentence_transformers import SentenceTransformer
 SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", device="cpu")
 PY
