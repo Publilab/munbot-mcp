@@ -29,6 +29,8 @@ try:
 except ModuleNotFoundError:
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ''))
     import importlib
+    if 'utils' in sys.modules:
+        del sys.modules['utils']
     parse_date_time = importlib.import_module('utils.parser').parse_date_time
 import importlib.util
 service_path = '/app/scheduler-mcp/service.py'
@@ -2171,7 +2173,29 @@ def orchestrate(
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
         return format_response(result, sid, trace_id=sid)
 
-    if tool in ("unknown", "doc-generar_respuesta_llm"):
+    if tool == "doc-generar_respuesta_llm":
+        params = {"pregunta": user_input}
+        selected = context_manager.get_selected_document(session_id)
+        if selected:
+            params["documento"] = selected
+        service_resp = call_tool_microservice(tool, params)
+        answer = (
+            service_resp.get("respuesta")
+            or service_resp.get("answer")
+            or service_resp.get("mensaje")
+        )
+        if not answer:
+            answer = service_resp.get(
+                "error", "Lo siento, hubo un error al consultar el servicio."
+            )
+        else:
+            answer += "\n¿Te fue útil mi respuesta? (Sí/No)"
+            context_manager.set_feedback_pending(session_id, None)
+        context_manager.update_context(session_id, user_input, answer)
+        context_manager.clear_context_field(session_id, "doc_actual")
+        return {"respuesta": answer, "session_id": session_id}
+
+    if tool == "unknown":
         faq_hit = lookup_faq_respuesta(user_input)
         if faq_hit:
             if faq_hit.get("needs_confirmation"):
