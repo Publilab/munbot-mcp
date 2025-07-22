@@ -12,11 +12,8 @@ from starlette.responses import JSONResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from llama_client import LlamaClient
-
-from rag import (
-    doc_buscar_fragmento_documento,
-    doc_generar_respuesta_llm,
-)
+from embeddings import embed
+from qdrant_utils import search_in_qdrant, filter_by_document
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -134,11 +131,72 @@ def generate_response(prompt: str) -> str:
 
 
 def generar_respuesta_llm(params: dict) -> dict:
-    """Genera respuesta usando la lógica RAG centralizada."""
+    """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
+
+    Devuelve tanto la respuesta generada como las referencias utilizadas."""
     pregunta = params.get("pregunta", "")
-    documento = params.get("documento")
-    respuesta = doc_generar_respuesta_llm(pregunta, documento)
-    return {"respuesta": respuesta}
+    if not pregunta:
+        return {"respuesta": "", "referencias": [], "no_results": True}
+
+    # 1) Obtener embedding de la pregunta
+    vector = embed([pregunta])[0]
+
+    # 2) Aplicar filtro por documento si corresponde
+    filtro = filter_by_document(params.get("documento"))
+
+    # 3) Buscar fragmentos relevantes en Qdrant
+    try:
+        hits = search_in_qdrant(vector, top_k=5, filtro=filtro)
+    except Exception as e:
+        logger.error(f"Qdrant search failed: {e}")
+        hits = []
+
+    # 3.1) Verificar si hay resultados relevantes usando un umbral de confianza
+    if not hits or hits[0].score < 0.25:
+        return {
+            "respuesta": "No encontré información precisa sobre tu consulta.",
+            "referencias": [],
+            "no_results": True,
+        }
+
+    # 4) Construir contexto a partir de los fragmentos recuperados
+    fragments = []
+    referencias = []
+    for idx, h in enumerate(hits, start=1):
+        # Opcional: filtrar también los resultados secundarios por score
+        if h.score < 0.25:
+            continue
+        payload = getattr(h, "payload", {}) or {}
+        texto = payload.get("texto") or payload.get("text")
+        fuente = payload.get("fuente") or payload.get("doc")
+        if texto:
+            item = f"{idx}. {texto}"
+            if fuente:
+                item += f" (Fuente: {fuente})"
+                referencias.append(fuente)
+            fragments.append(item)
+
+    # Si después de filtrar por score no queda nada
+    if not fragments:
+        return {
+            "respuesta": "No encontré información suficientemente relevante sobre tu consulta.",
+            "referencias": [],
+            "no_results": True,
+        }
+
+    contexto = "\n".join(fragments)
+    prompt = (
+        f"El usuario pregunt\u00f3: {pregunta}\n"
+        "A continuaci\u00f3n se te proporcionan partes de documentos y datos relevantes:\n"
+        f"{contexto}\n"
+        "Utiliza esta informaci\u00f3n para responder de forma concisa y en espa\u00f1ol a la pregunta del usuario. "
+        "Si la informaci\u00f3n proporcionada no es suficiente para responder, indica que no tienes los detalles necesarios. No inventes informaci\u00f3n."
+    )
+
+    # 5) Generar respuesta con Llama
+    respuesta = generate_response(prompt)
+    # Devolvemos las referencias como una lista separada para que el orquestador decida cómo usarlas
+    return {"respuesta": respuesta, "referencias": list(set(referencias)), "no_results": False}
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
@@ -176,11 +234,6 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         respuesta = generar_respuesta_llm(params)
         logger.info("Respuesta generada por Llama con RAG")
         return respuesta
-    elif tool == "doc-buscar_fragmento_documento":
-        pregunta = params.get("pregunta") or params.get("consulta", "")
-        documento = params.get("documento")
-        frags = doc_buscar_fragmento_documento(pregunta, documento)
-        return {"fragmentos": frags}
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
 
@@ -188,13 +241,6 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
 async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
     """Endpoint directo que combina búsqueda y generación."""
     return generar_respuesta_llm(params)
-
-
-@app.post("/doc-buscar_fragmento_documento")
-async def doc_buscar_fragmento_documento_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
-    pregunta = params.get("pregunta") or params.get("consulta", "")
-    documento = params.get("documento")
-    return {"fragmentos": doc_buscar_fragmento_documento(pregunta, documento)}
 
 @app.get("/health")
 def health():
@@ -206,7 +252,6 @@ def list_endpoints():
         "/tools/list",
         "/tools/call",
         "/doc-generar_respuesta_llm",
-        "/doc-buscar_fragmento_documento",
         "/health",
         "/metrics",
         "/process",
@@ -224,13 +269,7 @@ def process(data: dict, credentials: HTTPBasicCredentials = Depends(authenticate
 def root():
     return {
         "status": "MunBoT LLM Docs MCP running",
-        "endpoints": [
-            "/tools/list",
-            "/tools/call",
-            "/health",
-            "/doc-generar_respuesta_llm",
-            "/doc-buscar_fragmento_documento",
-        ],
+        "endpoints": ["/tools/list", "/tools/call", "/health"],
         "version": "1.0.0"
     }
 
