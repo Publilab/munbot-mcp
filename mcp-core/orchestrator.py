@@ -66,17 +66,6 @@ MICROSERVICES = {
 # == Rutas de los archivos ==
 PROMPTS_PATH = os.getenv("PROMPTS_PATH")
 TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
-FAQ_DB_PATH = os.getenv("FAQ_DB_PATH")
-
-# == Parámetros de fuzzy [Ubrales de Coincidencias] ==
-FUZZY_STRICT_THRESHOLD = 90
-FUZZY_CLARIFY_THRESHOLD = 85
-BEST_ALT_THRESHOLD = 80
-
-# == Ruta del archivo de log de preguntas perdidas ==
-MISSED_LOG_PATH = os.path.join(
-    os.path.dirname(__file__), "databases", "missed_questions.csv"
-)
 
 # == Configuración de la base de datos ==
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
@@ -136,14 +125,51 @@ audit_logger = logging.getLogger("audit")
 if not audit_logger.handlers:
     audit_logger.addHandler(logging.StreamHandler())
 
-# --- CACHE FAQ EN MEMORIA ---
-_FAQ_CACHE = None
 
 # --- Instancia tu LLM local (única instancia) ---
 llm = LlamaClient()
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+
+# Respuestas directas para saludos y despedidas
+GREETING_TERMS = [
+    "hola",
+    "buenos dias",
+    "buenas tardes",
+    "buenas noches",
+    "saludos",
+    "hey",
+    "holi",
+    "hello",
+    "hi",
+    "buenas",
+]
+GREETING_RESPONSE = (
+    "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Curoscant. "
+    "¿En qué puedo ayudarte hoy?"
+)
+
+FAREWELL_TERMS = [
+    "adios",
+    "hasta luego",
+    "nos vemos",
+    "chau",
+    "chao",
+    "bye",
+    "hasta pronto",
+    "hasta la proxima",
+    "me despido",
+    "no necesito mas ayuda",
+    "eso es todo",
+    "termine",
+    "ya esta",
+    "ya termine",
+]
+FAREWELL_RESPONSE = (
+    "¡Hasta luego! Tu sesión ha terminado. Si necesitas algo más, "
+    "inicia una nueva conversación."
+)
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
     """Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback."""
@@ -218,19 +244,6 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
     email = resp.strip().splitlines()[0]
     return email if es_email_valido(email) else None
 
-def load_faq_cache() -> list:
-    global _FAQ_CACHE
-    if _FAQ_CACHE is None:
-        try:
-            with open(FAQ_DB_PATH, "r", encoding="utf-8") as f:
-                _FAQ_CACHE = json.load(f)
-        except Exception as e:
-            logging.warning(f"No se pudo cargar FAQ: {e}")
-            _FAQ_CACHE = []
-    return _FAQ_CACHE
-
-
-
 def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     """Adaptar formato Markdown según el canal."""
     if channel in ["web", "whatsapp", None]:
@@ -275,177 +288,6 @@ def preprocess_input(text: str) -> str:
     return t
 
 
-def lookup_faq_respuesta(pregunta: str) -> Optional[Dict[str, Any]]:
-    """Busca la mejor coincidencia en la base de FAQ y devuelve información
-    para decidir la respuesta final."""
-    def apply_priority_filter(matches: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        if any(m["entry"].get("categoria") == "despedidas" for m in matches):
-            return [m for m in matches if m["entry"].get("categoria") == "despedidas"]
-        return matches
-    try:
-        faqs = load_faq_cache()
-        pregunta_norm = normalize_text(pregunta)
-
-        if "cedula" in pregunta_norm and "identidad" not in pregunta_norm:
-            return None
-
-        best_score = 0
-        best_entry = None
-        best_alt = None
-        high_matches: List[Dict[str, Any]] = []
-
-        # Coincidencia exacta (normalizada)
-        for entry in faqs:
-            entry_preguntas = entry["pregunta"]
-            if not isinstance(entry_preguntas, list):
-                entry_preguntas = [entry_preguntas]
-            for alt in entry_preguntas:
-                alt_norm = normalize_text(alt)
-                if alt_norm == pregunta_norm:
-                    return {
-                        "entry": entry,
-                        "pregunta": alt,
-                        "score": 100,
-                        "needs_confirmation": False,
-                    }
-
-        # Fuzzy matching y score
-        for entry in faqs:
-            entry_preguntas = entry["pregunta"]
-            if not isinstance(entry_preguntas, list):
-                entry_preguntas = [entry_preguntas]
-            for alt in entry_preguntas:
-                alt_norm = normalize_text(alt)
-                score = fuzz.ratio(pregunta_norm, alt_norm)
-                if score >= FUZZY_STRICT_THRESHOLD:
-                    high_matches.append(
-                        {"entry": entry, "pregunta": alt, "score": score}
-                    )
-                if score > best_score:
-                    best_score = score
-                    best_entry = entry
-                    best_alt = alt
-
-        if high_matches:
-            high_matches.sort(key=lambda x: x["score"], reverse=True)
-            # FILTRO: DESPEDIDAS SIEMPRE TIENEN PRIORIDAD
-            high_matches = apply_priority_filter(high_matches)
-            # FILTRO SALUDOS/ESTADO_ANIMO + OTRA CATEGORIA
-            if len(high_matches) > 1 and any(
-                m["entry"].get("categoria") in ("saludos", "estado_animo")
-                for m in high_matches
-            ):
-                high_matches = [
-                    m
-                    for m in high_matches
-                    if m["entry"].get("categoria") not in ("saludos", "estado_animo")
-                ]
-            # FILTRO SALUDOS + OTRA CATEGORIA
-            if len(high_matches) > 1 and any(m["entry"].get("categoria") == "saludos" for m in high_matches):
-                high_matches = [m for m in high_matches if m["entry"].get("categoria") != "saludos"]
-
-            if len(high_matches) == 1:
-                m = high_matches[0]
-                logging.info(
-                    f"FAQ: Coincidencia fuzzy alta ({m['score']}) para '{pregunta}' ≈ '{m['pregunta']}'"
-                )
-                return {
-                    "entry": m["entry"],
-                    "pregunta": m["pregunta"],
-                    "score": m["score"],
-                    "needs_confirmation": False,
-                }
-            else:
-                logging.info(
-                    f"FAQ: Varias coincidencias fuzzy altas para '{pregunta}': {[m['pregunta'] for m in high_matches]}"
-                )
-                return {
-                    "alternatives": [m["pregunta"] for m in high_matches[:3]],
-                    "matches": [m["entry"] for m in high_matches[:3]],
-                    "score": high_matches[0]["score"],
-                    "needs_confirmation": True,
-                    "type": "choose",
-                }
-
-        if best_score >= FUZZY_CLARIFY_THRESHOLD and best_entry is not None:
-            logging.info(
-                f"FAQ: Coincidencia intermedia ({best_score}) para '{pregunta}' ≈ '{best_alt}'"
-            )
-            return {
-                "entry": best_entry,
-                "pregunta": best_alt,
-                "score": best_score,
-                "needs_confirmation": True,
-                "type": "confirm",
-            }
-
-        # Búsqueda por palabras clave
-        pregunta_tokens = set(tokenize(pregunta_norm))
-        keyword_hits = []
-        for entry in faqs:
-            entry_preguntas = entry["pregunta"]
-            if isinstance(entry_preguntas, str):
-                entry_preguntas = [entry_preguntas]
-            for alt in entry_preguntas:
-                entry_tokens = set(tokenize(normalize_text(alt)))
-                common = pregunta_tokens & entry_tokens
-                union = pregunta_tokens | entry_tokens
-                jaccard = len(common) / len(union) if union else 0
-                if len(common) >= 2 or jaccard >= 0.3:
-                    keyword_hits.append({"entry": entry, "pregunta": alt})
-                    break
-        if keyword_hits:
-            logging.info(
-                f"FAQ: Sugiriendo temas por palabras clave para '{pregunta}': {[h['pregunta'] for h in keyword_hits]}"
-            )
-            keyword_hits = apply_priority_filter(keyword_hits)
-            # FILTRO SALUDOS/ESTADO_ANIMO + OTRA CATEGORIA
-            if len(keyword_hits) > 1 and any(
-                k["entry"].get("categoria") in ("saludos", "estado_animo")
-                for k in keyword_hits
-            ):
-                keyword_hits = [
-                    k
-                    for k in keyword_hits
-                    if k["entry"].get("categoria") not in ("saludos", "estado_animo")
-                ]
-            if len(keyword_hits) == 1:
-                m = keyword_hits[0]
-                return {
-                    "entry": m["entry"],
-                    "pregunta": m["pregunta"],
-                    "score": 0,
-                    "needs_confirmation": False,
-                }
-            return {
-                "alternatives": [h["pregunta"] for h in keyword_hits[:3]],
-                "matches": [h["entry"] for h in keyword_hits[:3]],
-                "needs_confirmation": True,
-                "type": "choose",
-            }
-
-        logging.warning(
-            f"FAQ: Pregunta no encontrada: '{pregunta}' (mejor score: {best_score} con '{best_alt}')"
-        )
-    except Exception as e:
-        logging.warning(f"No se pudo consultar FAQ: {e}")
-    return None
-
-
-def lookup_multiple_faqs(pregunta: str) -> Optional[str]:
-    """Intenta dividir la consulta en posibles subpreguntas y responde a cada una."""
-    partes = re.split(r"\?|\by\b|\be\b", pregunta)
-    partes = [p.strip() for p in partes if p.strip()]
-    if len(partes) < 2:
-        return None
-    respuestas = []
-    for p in partes:
-        faq = lookup_faq_respuesta(p)
-        if faq and not faq.get("needs_confirmation"):
-            respuestas.append(faq["entry"]["respuesta"])
-    if len(respuestas) >= 2:
-        return "\n".join(f"- {r}" for r in respuestas)
-    return None
 
 
 # === Carga y utilidades ===
@@ -648,104 +490,6 @@ def normalize(text):
     )
 
 
-# Lista de stopwords simples para tokenización básica
-# Stopwords include articles, pronouns and other very common words. Keep this
-# list short to avoid removing meaningful tokens when tokenizing.
-STOPWORDS = {
-    "a",
-    "al",
-    "del",
-    "de",
-    "la",
-    "el",
-    "los",
-    "las",
-    "un",
-    "una",
-    "unos",
-    "unas",
-    "y",
-    "o",
-    "en",
-    "por",
-    "quiero",
-    "como",
-    "donde",
-    "necesito",
-    "municipalidad",
-    "municipio",
-    "gobierno",
-    "coruscant",
-    "yo",
-    "me",
-    "mi",
-    "conmigo",
-    "tu",
-    "te",
-    "ti",
-    "contigo",
-    "vos",
-    "usted",
-    "lo",
-    "le",
-    "se",
-    "si",
-    "ella",
-    "ello",
-    "nosotros",
-    "nosotras",
-    "nos",
-    "vosotros",
-    "vosotras",
-    "os",
-    "ustedes",
-    "ellos",
-    "ellas",
-    "les",
-    "mio",
-    "mia",
-    "mios",
-    "mias",
-    "tuyo",
-    "tuya",
-    "tuyos",
-    "tuyas",
-    "suyo",
-    "suya",
-    "suyos",
-    "suyas",
-    "nuestro",
-    "nuestra",
-    "nuestros",
-    "nuestras",
-    "vuestro",
-    "vuestra",
-    "vuestros",
-    "vuestras",
-    "este",
-    "esta",
-    "esto",
-    "estos",
-    "estas",
-    "ese",
-    "esa",
-    "eso",
-    "esos",
-    "esas",
-    "aquel",
-    "aquella",
-    "aquello",
-    "aquellos",
-    "aquellas",
-}
-
-
-def tokenize(text: str) -> List[str]:
-    """Tokeniza una cadena ignorando stopwords y palabras cortas."""
-    text = normalize(text)
-    words = re.findall(r"\w+", text)
-    return [w for w in words if len(w) >= 3 and w not in STOPWORDS]
-
 
 def detect_intent_keywords(user_input: str) -> str:
     text = normalize(user_input)
@@ -793,89 +537,6 @@ def detect_intent(
     # Llamar al LLM para casos no detectados por matcher
     return detect_intent_llm(user_input, history)
 
-
-def get_best_faq_match(pregunta: str):
-    """Devuelve la pregunta más parecida y su puntaje."""
-    faqs = load_faq_cache()
-    pregunta_norm = normalize_text(pregunta)
-    best_score = 0
-    best_entry = None
-    best_alt = None
-    for entry in faqs:
-        entry_preguntas = entry["pregunta"]
-        if not isinstance(entry_preguntas, list):
-            entry_preguntas = [entry_preguntas]
-        for alt in entry_preguntas:
-            alt_norm = normalize_text(alt)
-            score = fuzz.ratio(pregunta_norm, alt_norm)
-            if score > best_score:
-                best_score = score
-                best_entry = entry
-                best_alt = alt
-    return best_alt, best_score, best_entry
-
-
-def find_related_faqs(pregunta: str, limit: int = 3) -> List[str]:
-    """Busca preguntas frecuentes que compartan palabras clave."""
-    faqs = load_faq_cache()
-    tokens = set(tokenize(normalize_text(pregunta)))
-    related = []
-    for entry in faqs:
-        if len(related) >= limit:
-            break
-        entry_preguntas = entry["pregunta"]
-        if isinstance(entry_preguntas, str):
-            entry_preguntas = [entry_preguntas]
-        for alt in entry_preguntas:
-            entry_tokens = set(tokenize(normalize_text(alt)))
-            common = tokens & entry_tokens
-            if len(common) >= 2:
-                related.append(alt)
-                break
-    return related
-
-
-def log_missed_question(
-    question: str, best_alt: Optional[str] = None, best_score: Optional[int] = None
-):
-    """Registra preguntas no respondidas en un archivo CSV."""
-    try:
-        first = not os.path.exists(MISSED_LOG_PATH)
-        with open(MISSED_LOG_PATH, "a", encoding="utf-8") as f:
-            if first:
-                f.write("timestamp,question,best_alt,best_score\n")
-            line = f"{datetime.now().isoformat()},{question.replace(',', ' ')},{best_alt or ''},{best_score or ''}\n"
-            f.write(line)
-    except Exception as e:
-        logging.warning(f"No se pudo registrar pregunta no respondida: {e}")
-
-
-def registrar_pregunta_no_contestada(
-    texto_pregunta: str,
-    respuesta_dada: str,
-    intent_detectada: str = "unknown",
-    canal: Optional[str] = None,
-    usuario_id: Optional[str] = None,
-) -> Optional[int]:
-    """Inserta en la BD una pregunta no respondida y devuelve su ID."""
-    try:
-        conn = get_db()
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                INSERT INTO preguntas_no_contestadas (texto_pregunta, respuesta_dada, intent_detectada, canal, usuario_id)
-                VALUES (%s, %s, %s, %s, %s)
-                RETURNING id
-                """,
-                (texto_pregunta, respuesta_dada, intent_detectada, canal, usuario_id),
-            )
-            qid = cur.fetchone()[0]
-            conn.commit()
-        conn.close()
-        return qid
-    except Exception as e:
-        logging.warning(f"No se pudo registrar en BD la pregunta no contestada: {e}")
-        return None
 
 
 def registrar_feedback_usuario(
@@ -1339,6 +1000,7 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
 def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
     fecha, hora = parse_date_time(texto_usuario, trace_id=sid)
     ctx = context_manager.get_context(sid)
+
     agenda = ctx.get("agenda", {"fecha": None, "hora": None})
     if fecha:
         agenda["fecha"] = fecha
@@ -1637,6 +1299,12 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    user_norm = normalize_text(user_input)
+    if any(re.search(r"\b" + re.escape(normalize_text(t)) + r"\b", user_norm) for t in GREETING_TERMS):
+        context_manager.update_context(sid, user_input, GREETING_RESPONSE)
+        context_manager.set_last_sentiment(sid, "neutral")
+        return {"respuesta": GREETING_RESPONSE, "session_id": sid}
+
     # Comando para cancelar flujo en curso (se revisa antes de slot-filling)
     if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
         is_cancellable_state = (
@@ -1783,25 +1451,11 @@ def orchestrate(
         return resp
 
     # --- Manejar despedidas de forma prioritaria ---
-    faqs = load_faq_cache()
-    despedida_entry = next((e for e in faqs if e.get("categoria") == "despedidas"), None)
-    if despedida_entry:
-        despedida_terms = despedida_entry["pregunta"]
-        # Normalizar términos y entrada para una coincidencia sin tildes
-        despedida_terms_norm = [normalize_text(t) for t in despedida_terms]
-        pattern = r"\b(" + "|".join(re.escape(term) for term in despedida_terms_norm) + r")\b"
-        if re.search(pattern, normalize_text(user_input)):
-            # Al detectar una despedida, se limpia el contexto para finalizar la sesión.
-            # NOTA: Se asume que context_manager tiene un método `clear_context` que elimina
-            # todas las claves de Redis para la sesión. Si no existe, debería ser creado.
-            # Ejemplo de implementación en ConversationalContextManager:
-            # def clear_context(self, session_id: str):
-            #     for key in self.redis_client.scan_iter(f"ctx:{session_id}:*"):
-            #         self.redis_client.delete(key)
-            context_manager.clear_context(sid)
-            delete_session(sid) # Limpia también el estado de la sesión de slot-filling (legado)
-            respuesta_despedida = despedida_entry["respuesta"]
-            return {"respuesta": respuesta_despedida, "session_id": sid}
+    user_norm = normalize_text(user_input)
+    if any(re.search(r"\b" + re.escape(normalize_text(t)) + r"\b", user_norm) for t in FAREWELL_TERMS):
+        context_manager.clear_context(sid)
+        delete_session(sid)
+        return {"respuesta": FAREWELL_RESPONSE, "session_id": sid}
 
     # --- Manejar feedback pendiente ---
     has_fb = context_manager.has_feedback_pending(sid)
@@ -1979,64 +1633,7 @@ def orchestrate(
             context_manager.update_context(sid, "", question_msg)
             return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
 
-    # === 0) Consultar primero en la base de FAQs ===
-    multi = lookup_multiple_faqs(user_input)
-    if multi:
-        context_manager.update_context(sid, user_input, multi)
-        context_manager.clear_context_field(sid, "doc_actual")
-        return {"respuesta": multi, "session_id": sid}
 
-    faq = lookup_faq_respuesta(user_input)
-    if faq is not None:
-        if faq.get("needs_confirmation"):
-            alts = faq.get("alternatives", [])
-            if faq.get("type") == "choose":
-                alts = list(alts) + ["Mi opción no está en la lista"]
-                faq["alternatives"] = alts
-            context_manager.set_faq_clarification(sid, faq)
-            if faq.get("type") == "confirm":
-                msg = f"¿Quisiste decir '{faq['pregunta']}'?"
-            else:
-                opts = "\n".join(
-                    f"{i+1}. {q}" for i, q in enumerate(alts)
-                )
-                msg = (
-                    "Encontré varias preguntas similares:\n"
-                    + opts
-                    + "\nPor favor, ingresa el número de la opción deseada."
-                )
-            context_manager.update_context(sid, user_input, msg)
-            context_manager.clear_context_field(sid, "doc_actual")
-            return {"respuesta": msg, "session_id": sid}
-
-        answer = faq["entry"]["respuesta"]
-        if faq["entry"].get("categoria") == "consultas_tramites":
-            tipo_detectado = infer_type_from_doc_name(user_input)
-            if tipo_detectado:
-                context_manager.update_context_data(
-                    sid,
-                    {
-                        "consultas_tramites_pending": True,
-                        "consultas_tramites_tipo": tipo_detectado,
-                    },
-                )
-        if faq["entry"].get("categoria") == "despedidas":
-            context_manager.clear_context(sid)
-            delete_session(sid)
-            return {"respuesta": answer, "session_id": sid}
-
-        if faq["entry"].get("categoria") == "consultas_tramites":
-            tipo = detectar_tipo_documento(user_input)
-            context_manager.update_context_data(
-                sid,
-                {"consultas_tramites_pending": True, "consultas_tramites_tipo": tipo},
-            )
-
-        context_manager.update_context(sid, user_input, answer)
-        context_manager.clear_context_field(sid, "doc_actual")
-        context_manager.reset_fallback_count(sid)
-        context_manager.set_last_sentiment(sid, "neutral")
-        return {"respuesta": answer, "session_id": sid}
 
     # --- Handler UNIFICADO de confirmaciones ---
     if context_manager.get_pending_confirmation(sid):
@@ -2149,32 +1746,6 @@ def orchestrate(
         return {"respuesta": answer, "session_id": session_id}
 
     if tool == "unknown":
-        faq_hit = lookup_faq_respuesta(user_input)
-        if faq_hit:
-            if faq_hit.get("needs_confirmation"):
-                context_manager.set_faq_clarification(session_id, faq_hit)
-                if faq_hit.get("type") == "confirm":
-                    msg = f"¿Quisiste decir '{faq_hit['pregunta']}'?"
-                else:
-                    opts = "\n".join(
-                        f"{i+1}. {q}" for i, q in enumerate(faq_hit.get("alternatives", []))
-                    )
-                    msg = (
-                        "Encontré varias preguntas similares:\n"
-                        + opts
-                        + "\nPor favor, ingresa el número de la opción deseada."
-                    )
-                context_manager.update_context(session_id, user_input, msg)
-                context_manager.clear_context_field(session_id, "doc_actual")
-                return {"respuesta": msg, "session_id": session_id}
-
-            answer = faq_hit["entry"]["respuesta"]
-            answer += "\n¿Te fue útil mi respuesta? (Sí/No)"
-            context_manager.set_feedback_pending(session_id, None)
-            context_manager.update_context(session_id, user_input, answer)
-            context_manager.clear_context_field(session_id, "doc_actual")
-            return {"respuesta": answer, "session_id": session_id}
-
         params = {"pregunta": user_input}
         selected = context_manager.get_selected_document(session_id)
         if selected:
@@ -2444,7 +2015,6 @@ DOCUMENTOS_PATH = os.path.join(
     os.path.dirname(__file__), "databases/documento_requisito.json"
 )
 OFICINAS_PATH = os.path.join(os.path.dirname(__file__), "databases/oficina_info.json")
-FAQS_PATH = os.path.join(os.path.dirname(__file__), "databases/faq_respuestas.json")
 
 
 def cargar_json(path):
@@ -2459,7 +2029,6 @@ def cargar_json(path):
 
 documentos = cargar_json(DOCUMENTOS_PATH)
 oficinas = cargar_json(OFICINAS_PATH)
-faqs = cargar_json(FAQS_PATH)
 
 # Construir mapa de alias de documentos combinando los alias declarados en
 # el JSON con los alias definidos manualmente.
@@ -2472,194 +2041,6 @@ for doc in documentos:
 # Controla si se incluyen todos los campos del documento cuando
 # el usuario no especifica un dato particular.
 INCLUIR_FICHA_COMPLETA_POR_DEFECTO = False
-
-# Mapeo de palabras clave a campos del JSON de documentos. Las palabras se
-# normalizan sin tildes para realizar la comparación.
-KEYWORD_FIELDS = {
-    "Requisitos": [
-        "Que requisitos necesito",
-        "cuales son los requisitos",
-        "que necesito para obtenerlo",
-        "qué necesito para sacarlo",
-        "que tengo que traer",
-        "que papeles tengo que traer",
-        "que papel tengo que traer",
-        "que papeles tengo que llevar",
-        "que papel tengo que llevar",
-        "que documentos necesito",
-        "que documentos tengo que llevar",
-        "que documentos tengo que traer",
-        "que documentos tengo que presentar",
-        "que documentos tengo que mostrar",
-        "que documentos tengo que entregar",
-        "que documentos tengo que llevar para obtenerlo",
-        "que documentos tengo que llevar para sacarlo",
-        "que documentos tengo que llevar para solicitarlo",
-        "que documentos tengo que llevar para pedirlo",
-        "que papeles necesito",
-        "que papeles tengo que llevar",
-        "que papeles tengo que traer",
-        "que papeles tengo que presentar",
-        "que papeles tengo que mostrar",
-        "que papeles tengo que entregar",
-        "que papeles tengo que llevar para obtenerlo",
-        "que papeles tengo que llevar para sacarlo",
-        "que papeles tengo que llevar para solicitarlo",
-        "que papeles tengo que llevar para pedirlo",
-    ],
-    "Dónde_Obtener": [
-        "donde puedo obtenerlo",
-        "donde puedo sacarlo",
-        "donde lo saco",
-        "donde lo consigo",
-        "donde lo obtengo",
-        "donde puedo conseguirlo",
-        "donde puedo sacarlo",
-        "donde puedo pedirlo",
-        "donde puedo solicitarlo",
-        "donde lo solicito",
-        "donde lo pido",
-        "donde puedo tramitarlo",
-        "donde tramitarlo",
-        "donde tramitar",
-        "donde se tramita",
-        "en que lugar se tramita",
-    ],
-    "Horario_Atencion": [
-        "cual es el horario de atencion",
-        "horario de atencion",
-        "horario",
-        "horarios",
-        "A que hora atienden",
-        "A que hora puedo ir",
-        "A que hora abren",
-        "cuando atienden",
-        "en que horario",
-        "que horarios tienen",
-        "a que hora cierran",
-    ],
-    "Correo_Electronico": [
-        "correo",
-        "mail",
-        "email",
-        "a que correo",
-        "a que mail",
-        "cual es el correo",
-        "cual es el mail",
-        "cual es el email",
-        "dame el mail",
-        "dame el correo",
-        "dame el correo electronico",
-        "correo electronico",
-        "correo de contacto",
-        "mail de contacto",
-        "me puedes dar el correo",
-        "me puedes dar el mail",
-        "me puedes dar el email",
-    ],
-    "telefono": [
-        "cual es el telefono", 
-        "cual es el numero", 
-        "cual es el número de telefono", 
-        "dame el telefono", 
-        "dame el numero de telefono", 
-        "a que telefono puedo llamar", 
-        "a que numero puedo llamar", 
-        "telefono", 
-        "número de teléfono", 
-        "número de telefono", 
-        "me puedes dar el telefono", 
-        "me puedes dar el número de telefono", 
-        "me puedes dar el número de teléfono", 
-        "dar el telefono", 
-        "dar el número de teléfono", 
-        "dar el número de telefono"
-    ],
-    "Direccion": [
-        "Cual es la direccion", 
-        "dirección", 
-        "Cual es la ubicacion", 
-        "ubicación", 
-        "A que direccion", 
-        "donde queda", 
-        "donde esta", 
-        "donde está", 
-        "donde se encuentra", 
-        "donde queda la oficina", 
-        "donde esta la oficina", 
-        "donde está la oficina", 
-        "donde se encuentra la oficina", 
-        "direccion", 
-        "dirección de la oficina", 
-        "ubicación de la oficina", 
-        "donde queda las oficinas", 
-        "donde esta las oficinas", 
-        "donde está las oficinas", 
-        "donde se encuentra las oficinas", 
-        "dirección de las oficinas", 
-        "ubicación de las oficinas", 
-        "donde queda el departamento", 
-        "donde esta el departamento", 
-        "donde está el departamento", 
-        "donde se encuentra el departamento", 
-        "direccion", 
-        "dirección de el departamento", 
-        "ubicación de el departamento"
-    ],
-    "tiempo_validez": [
-        "Cual es su vigencia", 
-        "cuando es el tiempo de vigencia", 
-        "Cual es la vigencia", 
-        "vigencia", "validez", 
-        "Cuanto es el tiempo de validez", 
-        "duracion", 
-        "Cuanto dura",
-        "valido", 
-        "válido", 
-        "Cuanto tiempo es valido"
-    ],
-    "utilidad": [
-        "para que sirve", 
-        "para qué sirve", 
-        "cual es su utilidad", 
-        "cual es la utilidad", 
-        "utilidad", 
-        "para que sirve este documento", 
-        "para que sirve este trámite", 
-        "para que sirve este permiso", 
-        "para que sirve esta licencia", 
-        "para que sirve esta cedula", 
-        "para qué sirve esta cédula", 
-        "para que sirve este certificado", 
-        "para qué sirve este certificado", 
-        "para que sirve este registro", 
-        "para qué sirve este registro", 
-        "para que sirve este documento oficial", 
-        "para qué sirve este documento oficial"
-    ],
-    "penalidad": [
-        "que pasa si no lo saco", 
-        "que pasa si no lo tengo", 
-        "que pasa si no lo obtengo", 
-        "que pasa si no lo solicito", 
-        "que pasa si no lo pido", 
-        "cuales son las sanciones"
-    ],
-    "costo": [
-        "Cuanto cuesta", 
-        "cual es el costo", 
-        "cual es el valor", 
-        "cual es el precio", 
-        "Cuanto vale", 
-        "Cuanto cuesta", 
-        "Cuanto es el costo", 
-        "Cuanto es el valor", 
-        "Cuanto es el precio", 
-        "costo", 
-        "valor", 
-        "precio"
-    ]
-    }
 
 # Alias conocidos para referirse a algunos documentos con nombres alternativos.
 DOC_ALIASES = {
@@ -2903,13 +2284,6 @@ def buscar_oficina_por_documento(nombre_doc):
     return None
 
 
-def buscar_faq_por_pregunta(pregunta):
-    for entry in faqs:
-        for alt in entry["pregunta"]:
-            if pregunta.lower() == alt.lower():
-                return entry
-    return None
-
 
 def responder_sobre_documento(
     pregunta_usuario,
@@ -2995,24 +2369,10 @@ def responder_sobre_documento(
                 if ctx.get("doc_actual") != nombre:
                     context_manager.update_context_data(session_id, {"doc_actual": nombre})
 
-            campos_solicitados: List[str] = []
-            for campo, kws in KEYWORD_FIELDS.items():
-                for kw in kws:
-                    kw_norm = normalize_text(kw)
-                    if kw_norm in pregunta_norm:
-                        campos_solicitados.append(campo)
-                        break
-                    if fuzz.partial_ratio(pregunta_norm, kw_norm) >= 85:
-                        campos_solicitados.append(campo)
-                        break
-
-            if not campos_solicitados:
-                if INCLUIR_FICHA_COMPLETA_POR_DEFECTO:
-                    campos_solicitados = [
-                        c for c in CAMPO_LABELS.keys() if doc.get(c)
-                    ]
-                else:
-                    campos_solicitados = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
+            if INCLUIR_FICHA_COMPLETA_POR_DEFECTO:
+                campos_solicitados = [c for c in CAMPO_LABELS.keys() if doc.get(c)]
+            else:
+                campos_solicitados = ["Nombre_Documento", "Requisitos", "Dónde_Obtener"]
 
             campos_existentes = [c for c in campos_solicitados if doc.get(c)]
             missing = [c for c in campos_solicitados if not doc.get(c)]
@@ -3043,12 +2403,6 @@ def responder_sobre_documento(
                 channel,
             )
     else:
-        faq = buscar_faq_por_pregunta(pregunta_usuario)
-        if faq:
-            return adapt_markdown_for_channel(
-                f"**Pregunta:** {pregunta_usuario}\n**Respuesta:** {faq['respuesta']}",
-                channel,
-            )
         return adapt_markdown_for_channel(
             "¿Podrías especificar si buscas un permiso, certificado, patente, etc.?",
             channel,
