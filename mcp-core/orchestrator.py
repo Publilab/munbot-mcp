@@ -1703,10 +1703,7 @@ def orchestrate(
         else:
             msg = "Entendido. ¿En qué más puedo ayudarte?"
             context_manager.update_context(sid, user_input, msg)
-            return {"respuesta": msg, "session_id": sid}
-
-
-
+            return {"respuesta": msg, "session_id": sid
 
     session = get_session(session_id)
     convo_ctx = context_manager.get_context(session_id)
