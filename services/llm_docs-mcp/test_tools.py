@@ -95,5 +95,11 @@ class TestGateway(unittest.TestCase):
         response = self.client.post("/tools/call", json=payload, auth=("admin", "admin"))
         self.assertEqual(response.status_code, 200)
 
+    def test_doc_generar_respuesta_llm_direct(self):
+        payload = {"pregunta": "hola"}
+        resp = self.client.post("/doc-generar_respuesta_llm", json=payload, auth=("admin", "admin"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("respuesta", resp.json())
+
 if __name__ == "__main__":
     unittest.main()
