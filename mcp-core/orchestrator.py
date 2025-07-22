@@ -1520,6 +1520,8 @@ def orchestrate(
         selected = context_manager.get_selected_document(session_id)
         if selected:
             params["documento"] = selected
+            if len(user_input.split()) < 6:
+                params["pregunta"] = f"{user_input} del trámite {selected}"
         service_resp = call_tool_microservice(tool, params)
         answer = (
             service_resp.get("respuesta")
@@ -1566,6 +1568,8 @@ def orchestrate(
         selected = context_manager.get_selected_document(session_id)
         if selected:
             params["documento"] = selected
+            if len(user_input.split()) < 6:
+                params["pregunta"] = f"{user_input} del trámite {selected}"
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         ans = (
             service_resp.get("respuesta")
