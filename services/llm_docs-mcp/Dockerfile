@@ -10,7 +10,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        build-essential git libopenblas-base netcat-traditional && \
+        build-essential git libopenblas0 netcat-traditional && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
