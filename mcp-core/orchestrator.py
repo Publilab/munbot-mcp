@@ -1737,6 +1737,9 @@ def orchestrate(
             or service_resp.get("answer")
             or service_resp.get("mensaje")
         )
+        references = service_resp.get("referencias")
+        if references:
+            answer = f"{answer}\nFuente: {'; '.join(references)}"
         no_results = (
             answer is None
             or not str(answer).strip()
@@ -1764,7 +1767,10 @@ def orchestrate(
             context_manager.set_feedback_pending(session_id, None)
             context_manager.update_context(session_id, user_input, answer)
             context_manager.clear_context_field(session_id, "doc_actual")
-            return {"respuesta": answer, "session_id": session_id}
+            resp = {"respuesta": answer, "session_id": session_id}
+            if references:
+                resp["referencias"] = references
+            return resp
 
     if tool == "unknown":
         params = {"pregunta": user_input}
@@ -1777,6 +1783,9 @@ def orchestrate(
             or service_resp.get("answer")
             or service_resp.get("mensaje")
         )
+        references = service_resp.get("referencias")
+        if references:
+            ans = f"{ans}\nFuente: {'; '.join(references)}"
         no_results = (
             ans is None
             or not str(ans).strip()
@@ -1804,7 +1813,10 @@ def orchestrate(
             context_manager.set_feedback_pending(session_id, None)
             context_manager.update_context(session_id, user_input, ans)
             context_manager.clear_context_field(session_id, "doc_actual")
-            return {"respuesta": ans, "session_id": session_id}
+            resp = {"respuesta": ans, "session_id": session_id}
+            if references:
+                resp["referencias"] = references
+            return resp
 
 
 # === API REST ===

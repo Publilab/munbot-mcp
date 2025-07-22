@@ -176,6 +176,8 @@ def generar_respuesta_llm(params: dict) -> dict:
 
     # 5) Generar respuesta con Llama
     respuesta = generate_response(prompt)
+    if referencias:
+        respuesta = f"{respuesta}\n\nFuentes: {'; '.join(referencias)}"
     return {"respuesta": respuesta, "referencias": referencias}
 
 # ==== MCP Endpoints ====
