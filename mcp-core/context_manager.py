@@ -171,31 +171,6 @@ class ConversationalContextManager:
             ex=self.session_expiry_seconds
         )
 
-    def set_faq_clarification(self, session_id: str, data: Dict[str, Any]):
-        """Guarda datos de una aclaración de FAQ pendiente."""
-        context = self.get_context(session_id)
-        context["faq_pending"] = data
-        self.redis_client.set(
-            f"session:{session_id}",
-            json.dumps(context),
-            ex=self.session_expiry_seconds
-        )
-
-    def get_faq_clarification(self, session_id: str) -> Optional[Dict[str, Any]]:
-        """Obtiene la aclaración de FAQ pendiente si existe."""
-        context = self.get_context(session_id)
-        return context.get("faq_pending")
-
-    def clear_faq_clarification(self, session_id: str):
-        """Elimina cualquier aclaración de FAQ pendiente."""
-        context = self.get_context(session_id)
-        if "faq_pending" in context:
-            del context["faq_pending"]
-        self.redis_client.set(
-            f"session:{session_id}",
-            json.dumps(context),
-            ex=self.session_expiry_seconds
-        )
 
     # ---- Manejo de selección de documentos ----
     def set_document_options(self, session_id: str, options: List[str]):
@@ -304,7 +279,7 @@ class ConversationalContextManager:
     def clear_suggestion_state(self, session_id: str):
         """Limpia cualquier estado relacionado con sugerencias pendientes."""
         context = self.get_context(session_id)
-        for key in ("faq_pending", "doc_clarify", "doc_options"):
+        for key in ("doc_clarify", "doc_options"):
             context.pop(key, None)
         self.redis_client.set(
             f"session:{session_id}",
