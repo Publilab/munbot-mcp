@@ -27,3 +27,27 @@ def generar_respuesta(pregunta: str, k: int = 3, documento: str | None = None):
     prompt = f"{contexto}\n\nPregunta: {pregunta}\nRespuesta:"
     respuesta = llama.generate(prompt)
     return {"respuesta": respuesta, "fragmentos": fragmentos}
+
+
+# === API simplificada utilizada por algunos servicios ===
+def doc_buscar_fragmento_documento(pregunta: str, documento: str | None = None):
+    """Devuelve una lista de fragmentos de texto para una pregunta dada."""
+    resultados = obtener_fragmentos(pregunta, 5, documento)
+    return [r["parrafo"] for r in resultados]
+
+
+def construir_prompt_con_fragmentos(pregunta: str, fragmentos: list[str]) -> str:
+    joined = "\n".join([f"- {frag}" for frag in fragmentos])
+    return (
+        "Responde a la siguiente pregunta usando la información dada.\n\n"
+        f"Pregunta: {pregunta}\n\n"
+        "Información relevante:\n"
+        f"{joined}\n\nRespuesta:"
+    )
+
+
+def doc_generar_respuesta_llm(pregunta: str, documento: str | None = None) -> str:
+    fragmentos = doc_buscar_fragmento_documento(pregunta, documento)
+    prompt = construir_prompt_con_fragmentos(pregunta, fragmentos)
+    respuesta = llama.generate(prompt)
+    return respuesta

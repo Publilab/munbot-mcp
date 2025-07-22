@@ -13,7 +13,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from llama_client import LlamaClient
 
-from rag import generar_respuesta, obtener_fragmentos
+from rag import (
+    doc_buscar_fragmento_documento,
+    doc_generar_respuesta_llm,
+)
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -133,9 +136,9 @@ def generate_response(prompt: str) -> str:
 def generar_respuesta_llm(params: dict) -> dict:
     """Genera respuesta usando la lógica RAG centralizada."""
     pregunta = params.get("pregunta", "")
-    k = int(params.get("k", 3))
-    doc = params.get("documento")
-    return generar_respuesta(pregunta, k, doc)
+    documento = params.get("documento")
+    respuesta = doc_generar_respuesta_llm(pregunta, documento)
+    return {"respuesta": respuesta}
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
@@ -174,9 +177,9 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         logger.info("Respuesta generada por Llama con RAG")
         return respuesta
     elif tool == "doc-buscar_fragmento_documento":
-        consulta = params.get("consulta", "")
-        k = int(params.get("k", 3))
-        frags = obtener_fragmentos(consulta, k)
+        pregunta = params.get("pregunta") or params.get("consulta", "")
+        documento = params.get("documento")
+        frags = doc_buscar_fragmento_documento(pregunta, documento)
         return {"fragmentos": frags}
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
@@ -189,9 +192,9 @@ async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasi
 
 @app.post("/doc-buscar_fragmento_documento")
 async def doc_buscar_fragmento_documento_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
-    consulta = params.get("consulta", "")
-    k = int(params.get("k", 3))
-    return {"fragmentos": obtener_fragmentos(consulta, k)}
+    pregunta = params.get("pregunta") or params.get("consulta", "")
+    documento = params.get("documento")
+    return {"fragmentos": doc_buscar_fragmento_documento(pregunta, documento)}
 
 @app.get("/health")
 def health():
