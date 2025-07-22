@@ -12,6 +12,8 @@ from starlette.responses import JSONResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from llama_client import LlamaClient
+from embeddings import embed
+from qdrant_utils import search_in_qdrant, filter_by_document
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -127,6 +129,40 @@ def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
     return llama.generate(prompt)
 
+
+def generar_respuesta_llm(params: dict) -> str:
+    """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama."""
+    pregunta = params.get("pregunta", "")
+    if not pregunta:
+        return ""
+
+    # 1) Obtener embedding de la pregunta
+    vector = embed([pregunta])[0]
+
+    # 2) Aplicar filtro por documento si corresponde
+    filtro = filter_by_document(params.get("documento"))
+
+    # 3) Buscar fragmentos relevantes en Qdrant
+    try:
+        hits = search_in_qdrant(vector, top_k=5, filtro=filtro)
+    except Exception as e:
+        logger.error(f"Qdrant search failed: {e}")
+        hits = []
+
+    # 4) Construir contexto a partir de los fragmentos recuperados
+    fragments = []
+    for h in hits:
+        payload = getattr(h, "payload", {}) or {}
+        texto = payload.get("texto") or payload.get("text")
+        if texto:
+            fragments.append(texto)
+
+    contexto = "\n".join(fragments)
+    prompt = f"Contexto:\n{contexto}\n\nPregunta: {pregunta}\nRespuesta:"
+
+    # 5) Generar respuesta con Llama
+    return generate_response(prompt)
+
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
 def tools_list():
@@ -159,6 +195,10 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         respuesta = generate_response(pregunta)
         logger.info("Respuesta generada por Llama (tool directo MCP)")
         return respuesta  # Solo el texto
+    elif tool == "doc-generar_respuesta_llm":
+        respuesta = generar_respuesta_llm(params)
+        logger.info("Respuesta generada por Llama con RAG")
+        return respuesta
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
 

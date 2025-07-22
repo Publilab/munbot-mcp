@@ -46,6 +46,25 @@ sys.modules["sklearn.feature_extraction.text"] = fake_text
 sys.modules["sklearn.metrics"] = fake_metrics
 sys.modules["sklearn.metrics.pairwise"] = fake_pairwise
 
+# Stub embeddings and Qdrant utils
+fake_embeddings = types.ModuleType("embeddings")
+def fake_embed(texts, batch_size=32):
+    return [[0.0] * 384 for _ in texts]
+fake_embeddings.embed = fake_embed
+sys.modules["embeddings"] = fake_embeddings
+
+fake_qdrant = types.ModuleType("qdrant_utils")
+class FakeHit:
+    def __init__(self):
+        self.payload = {"texto": "fragmento"}
+def fake_search_in_qdrant(*a, **k):
+    return [FakeHit()]
+def fake_filter_by_document(doc_name):
+    return None
+fake_qdrant.search_in_qdrant = fake_search_in_qdrant
+fake_qdrant.filter_by_document = fake_filter_by_document
+sys.modules["qdrant_utils"] = fake_qdrant
+
 from gateway import app
 
 class TestGateway(unittest.TestCase):
@@ -67,6 +86,14 @@ class TestGateway(unittest.TestCase):
         response = self.client.post("/process", json=data, auth=("admin", "admin"))
         self.assertEqual(response.status_code, 200)
         self.assertIn("respuesta", response.json())
+
+    def test_doc_generar_respuesta_llm(self):
+        payload = {
+            "tool": "doc-generar_respuesta_llm",
+            "params": {"pregunta": "hola"}
+        }
+        response = self.client.post("/tools/call", json=payload, auth=("admin", "admin"))
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == "__main__":
     unittest.main()
