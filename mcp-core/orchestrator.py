@@ -267,6 +267,8 @@ def format_response(data: Dict[str, Any], sid: str, trace_id=None) -> Dict[str, 
         resp["pending"] = data["pending"]
     if "finish" in data:
         resp["finish"] = data["finish"]
+    if "referencias" in data:
+        resp["referencias"] = data["referencias"]
     return resp
 
 

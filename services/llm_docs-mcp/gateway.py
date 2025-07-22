@@ -130,11 +130,13 @@ def generate_response(prompt: str) -> str:
     return llama.generate(prompt, max_tokens=256, temperature=0.6, top_p=0.95)
 
 
-def generar_respuesta_llm(params: dict) -> str:
-    """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama."""
+def generar_respuesta_llm(params: dict) -> dict:
+    """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
+
+    Devuelve tanto la respuesta generada como las referencias utilizadas."""
     pregunta = params.get("pregunta", "")
     if not pregunta:
-        return ""
+        return {"respuesta": "", "referencias": []}
 
     # 1) Obtener embedding de la pregunta
     vector = embed([pregunta])[0]
@@ -151,6 +153,7 @@ def generar_respuesta_llm(params: dict) -> str:
 
     # 4) Construir contexto a partir de los fragmentos recuperados
     fragments = []
+    referencias = []
     for idx, h in enumerate(hits, start=1):
         payload = getattr(h, "payload", {}) or {}
         texto = payload.get("texto") or payload.get("text")
@@ -159,6 +162,7 @@ def generar_respuesta_llm(params: dict) -> str:
             item = f"{idx}. {texto}"
             if fuente:
                 item += f" (Fuente: {fuente})"
+                referencias.append(fuente)
             fragments.append(item)
 
     contexto = "\n".join(fragments)
@@ -171,7 +175,8 @@ def generar_respuesta_llm(params: dict) -> str:
     )
 
     # 5) Generar respuesta con Llama
-    return generate_response(prompt)
+    respuesta = generate_response(prompt)
+    return {"respuesta": respuesta, "referencias": referencias}
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
