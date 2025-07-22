@@ -219,13 +219,25 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
 
+@app.post("/doc-generar_respuesta_llm")
+async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+    """Endpoint directo que combina búsqueda y generación."""
+    return generar_respuesta_llm(params)
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
 @app.get("/endpoints")
 def list_endpoints():
-    return {"endpoints": ["/tools/list", "/tools/call", "/health", "/metrics", "/process"]}
+    return {"endpoints": [
+        "/tools/list",
+        "/tools/call",
+        "/doc-generar_respuesta_llm",
+        "/health",
+        "/metrics",
+        "/process",
+    ]}
 
 @app.get("/metrics")
 def metrics():
