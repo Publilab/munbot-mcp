@@ -2,6 +2,23 @@ import os
 from llama_cpp import Llama
 
 
+llm = Llama(
+    model_path=os.getenv("LLAMA_MODEL_PATH", "./models/Llama-3.2-3B-Instruct-Q6_K.gguf"),
+    n_ctx=int(os.getenv("N_CTX", 2048)),
+    n_threads=int(os.getenv("N_THREADS", 4)),
+)
+
+
+def generar_respuesta_llm(prompt: str) -> str:
+    resultado = llm(
+        prompt,
+        max_tokens=512,
+        temperature=0.7,
+        stop=["Usuario:", "Pregunta:"],
+    )
+    return resultado["choices"][0]["text"].strip()
+
+
 class LlamaRunner:
     def __init__(self, model_path: str | None = None, n_ctx: int = 4096, n_threads: int = 2):
         self.model_path = model_path or os.getenv("LLAMA_MODEL_PATH", "models/Llama-3.2-3B-Instruct-Q6_K.gguf")
