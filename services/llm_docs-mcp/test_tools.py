@@ -65,6 +65,24 @@ fake_qdrant.search_in_qdrant = fake_search_in_qdrant
 fake_qdrant.filter_by_document = fake_filter_by_document
 sys.modules["qdrant_utils"] = fake_qdrant
 
+# Stub qdrant_client and llama_runner used by rag
+fake_qdrant_client = types.ModuleType("qdrant_client")
+class FakeHit2:
+    def __init__(self):
+        self.payload = {"doc": "doc.txt", "texto": "fragmento"}
+        self.score = 1.0
+def fake_buscar_fragmentos(*a, **k):
+    return [FakeHit2()]
+fake_qdrant_client.buscar_fragmentos = fake_buscar_fragmentos
+sys.modules["qdrant_client"] = fake_qdrant_client
+
+fake_llama_runner = types.ModuleType("llama_runner")
+class FakeRunner:
+    def generate(self, *a, **k):
+        return "ok"
+fake_llama_runner.LlamaRunner = lambda *a, **k: FakeRunner()
+sys.modules["llama_runner"] = fake_llama_runner
+
 from gateway import app
 
 class TestGateway(unittest.TestCase):
@@ -100,6 +118,17 @@ class TestGateway(unittest.TestCase):
         resp = self.client.post("/doc-generar_respuesta_llm", json=payload, auth=("admin", "admin"))
         self.assertEqual(resp.status_code, 200)
         self.assertIn("respuesta", resp.json())
+
+    def test_doc_buscar_fragmento_documento(self):
+        payload = {"consulta": "hola"}
+        resp = self.client.post("/doc-buscar_fragmento_documento", json=payload, auth=("admin", "admin"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("fragmentos", resp.json())
+
+    def test_doc_buscar_fragmento_documento_tool(self):
+        payload = {"tool": "doc-buscar_fragmento_documento", "params": {"consulta": "hola"}}
+        resp = self.client.post("/tools/call", json=payload, auth=("admin", "admin"))
+        self.assertEqual(resp.status_code, 200)
 
 if __name__ == "__main__":
     unittest.main()
