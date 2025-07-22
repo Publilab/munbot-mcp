@@ -1677,14 +1677,19 @@ def orchestrate(
             context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
 
+
     # --- INTEGRACIÓN: Respuesta combinada de documentos/oficinas/FAQ ---
-    respuesta_doc = responder_sobre_documento(user_input, sid)
-    if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
-        context_manager.update_context(sid, user_input, respuesta_doc)
-        context_manager.set_current_flow(sid, "documento")
-        context_manager.reset_fallback_count(sid)
-        context_manager.set_last_sentiment(sid, "neutral")
-        return {"respuesta": respuesta_doc, "session_id": sid}
+    # DEPRECADO: la búsqueda estática en JSON se reemplaza por el flujo RAG del
+    # microservicio llm_docs-mcp. Se conserva la lógica anterior comentada para
+    # referencia pero todas las consultas se canalizan ahora por llm_docs-mcp.
+    # respuesta_doc = responder_sobre_documento(user_input, sid)
+    # if respuesta_doc and not respuesta_doc.startswith("¿Podrías especificar"):
+    #     context_manager.update_context(sid, user_input, respuesta_doc)
+    #     context_manager.set_current_flow(sid, "documento")
+    #     context_manager.reset_fallback_count(sid)
+    #     context_manager.set_last_sentiment(sid, "neutral")
+    #     return {"respuesta": respuesta_doc, "session_id": sid}
+
 
 
     # Obtener o crear session_id
