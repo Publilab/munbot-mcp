@@ -370,6 +370,7 @@ def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
 
 def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
     service_url = route_to_service(tool)
+    logger.info(f"intent={tool}, routing to {service_url}")
     payload = {"tool": tool, "params": params}
     try:
         resp = requests.post(service_url, json=payload, timeout=30)
