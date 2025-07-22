@@ -5,7 +5,6 @@ import types
 import fakeredis
 
 os.environ["DISABLE_PERIODIC_MIGRATION"] = "1"
-os.environ["FAQ_DB_PATH"] = os.path.join('mcp-core', 'databases', 'faq_respuestas.json')
 os.environ["PROMPTS_PATH"] = os.path.join('mcp-core', 'prompts')
 
 fake_llama = types.ModuleType('llama_cpp')
@@ -22,7 +21,6 @@ sys.path.insert(0, os.path.abspath('mcp-core'))
 spec = importlib.util.spec_from_file_location('orchestrator', os.path.join('mcp-core','orchestrator.py'))
 orchestrator = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(orchestrator)
-os.environ.pop("FAQ_DB_PATH", None)
 os.environ.pop("PROMPTS_PATH", None)
 
 fake = fakeredis.FakeRedis()
