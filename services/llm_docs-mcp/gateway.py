@@ -127,7 +127,7 @@ llama = LlamaClient()
 
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
-    return llama.generate(prompt)
+    return llama.generate(prompt, max_tokens=256, temperature=0.6, top_p=0.95)
 
 
 def generar_respuesta_llm(params: dict) -> str:
@@ -151,14 +151,24 @@ def generar_respuesta_llm(params: dict) -> str:
 
     # 4) Construir contexto a partir de los fragmentos recuperados
     fragments = []
-    for h in hits:
+    for idx, h in enumerate(hits, start=1):
         payload = getattr(h, "payload", {}) or {}
         texto = payload.get("texto") or payload.get("text")
+        fuente = payload.get("fuente") or payload.get("doc")
         if texto:
-            fragments.append(texto)
+            item = f"{idx}. {texto}"
+            if fuente:
+                item += f" (Fuente: {fuente})"
+            fragments.append(item)
 
     contexto = "\n".join(fragments)
-    prompt = f"Contexto:\n{contexto}\n\nPregunta: {pregunta}\nRespuesta:"
+    prompt = (
+        f"El usuario pregunt\u00f3: {pregunta}\n"
+        "A continuaci\u00f3n se te proporcionan partes de documentos y datos relevantes:\n"
+        f"{contexto}\n"
+        "Utiliza esta informaci\u00f3n para responder de forma concisa y en espa\u00f1ol a la pregunta del usuario. "
+        "Si corresponde, indica la fuente de donde proviene la informaci\u00f3n."
+    )
 
     # 5) Generar respuesta con Llama
     return generate_response(prompt)

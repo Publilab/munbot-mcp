@@ -11,13 +11,21 @@ class LlamaClient:
         else:
             self.llm = Llama(model_path=self.model_path, n_ctx=self.n_ctx, n_threads=self.n_threads)
 
-    def generate(self, prompt: str, max_tokens: int = 256, temperature: float = 0.7) -> str:
+    def generate(
+        self,
+        prompt: str,
+        max_tokens: int = 256,
+        temperature: float = 0.7,
+        top_p: float = 0.95,
+    ) -> str:
+        """Generate text from the model using the provided prompt."""
         if self.llm is None:
             return ""
         output = self.llm(
             prompt,
             max_tokens=max_tokens,
             temperature=temperature,
+            top_p=top_p,
             stop=["</s>", "<|endoftext|>"]
         )
         return output["choices"][0]["text"].strip()
