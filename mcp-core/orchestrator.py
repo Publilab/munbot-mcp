@@ -1734,16 +1734,34 @@ def orchestrate(
             or service_resp.get("answer")
             or service_resp.get("mensaje")
         )
-        if not answer:
-            answer = service_resp.get(
-                "error", "Lo siento, hubo un error al consultar el servicio."
-            )
+        no_results = (
+            answer is None
+            or not str(answer).strip()
+            or service_resp.get("no_results")
+            or service_resp.get("hits") == []
+        )
+        if no_results:
+            context_manager.increment_fallback_count(session_id)
+            fallback_count = context_manager.get_fallback_count(session_id)
+            if fallback_count >= 3:
+                answer = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
+                context_manager.update_context(session_id, user_input, answer)
+                return {"respuesta": answer, "session_id": session_id, "escalado": True}
+            elif fallback_count == 2:
+                answer = (
+                    "Aún no logro entender. Puedo ayudarte con trámites, horarios, reclamos o certificados… ¿prefieres que siga o te conecto a un agente?"
+                )
+            else:
+                answer = "No encontré información precisa. ¿Podrías darme más detalles o especificar el trámite?"
+            context_manager.update_context(session_id, user_input, answer)
+            context_manager.clear_context_field(session_id, "doc_actual")
+            return {"respuesta": answer, "session_id": session_id}
         else:
             answer += "\n¿Te fue útil mi respuesta? (Sí/No)"
             context_manager.set_feedback_pending(session_id, None)
-        context_manager.update_context(session_id, user_input, answer)
-        context_manager.clear_context_field(session_id, "doc_actual")
-        return {"respuesta": answer, "session_id": session_id}
+            context_manager.update_context(session_id, user_input, answer)
+            context_manager.clear_context_field(session_id, "doc_actual")
+            return {"respuesta": answer, "session_id": session_id}
 
     if tool == "unknown":
         params = {"pregunta": user_input}
@@ -1756,16 +1774,34 @@ def orchestrate(
             or service_resp.get("answer")
             or service_resp.get("mensaje")
         )
-        if not ans:
-            ans = service_resp.get(
-                "error", "Lo siento, hubo un error al consultar el servicio."
-            )
+        no_results = (
+            ans is None
+            or not str(ans).strip()
+            or service_resp.get("no_results")
+            or service_resp.get("hits") == []
+        )
+        if no_results:
+            context_manager.increment_fallback_count(session_id)
+            fallback_count = context_manager.get_fallback_count(session_id)
+            if fallback_count >= 3:
+                ans = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
+                context_manager.update_context(session_id, user_input, ans)
+                return {"respuesta": ans, "session_id": session_id, "escalado": True}
+            elif fallback_count == 2:
+                ans = (
+                    "Aún no logro entender. Puedo ayudarte con trámites, horarios, reclamos o certificados… ¿prefieres que siga o te conecto a un agente?"
+                )
+            else:
+                ans = "No encontré información precisa. ¿Podrías darme más detalles o especificar el trámite?"
+            context_manager.update_context(session_id, user_input, ans)
+            context_manager.clear_context_field(session_id, "doc_actual")
+            return {"respuesta": ans, "session_id": session_id}
         else:
             ans += "\n¿Te fue útil mi respuesta? (Sí/No)"
             context_manager.set_feedback_pending(session_id, None)
-        context_manager.update_context(session_id, user_input, ans)
-        context_manager.clear_context_field(session_id, "doc_actual")
-        return {"respuesta": ans, "session_id": session_id}
+            context_manager.update_context(session_id, user_input, ans)
+            context_manager.clear_context_field(session_id, "doc_actual")
+            return {"respuesta": ans, "session_id": session_id}
 
 
 # === API REST ===
