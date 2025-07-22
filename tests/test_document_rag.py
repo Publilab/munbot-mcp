@@ -3,6 +3,7 @@ import os
 import sys
 import types
 import fakeredis
+import uuid
 
 os.environ["DISABLE_PERIODIC_MIGRATION"] = "1"
 
@@ -51,3 +52,15 @@ def test_followup_session(monkeypatch):
     orchestrator.orchestrate('y el horario?', session_id=sid)
     assert calls[0]['pregunta'] == 'informacion permiso de aterrizaje'
     assert len(calls) >= 1
+
+def test_short_question_expands(monkeypatch):
+    calls = []
+    def fake_call(tool, params):
+        calls.append(params.copy())
+        return {'respuesta': 'ok'}
+    monkeypatch.setattr(orchestrator, 'call_tool_microservice', fake_call)
+    sid = str(uuid.uuid4())
+    orchestrator.context_manager.set_selected_document(sid, 'Permiso de Circulacion')
+    orchestrator.orchestrate('y el costo?', session_id=sid)
+    assert calls[0]['documento'] == 'Permiso de Circulacion'
+    assert calls[0]['pregunta'].endswith('del trámite Permiso de Circulacion')
