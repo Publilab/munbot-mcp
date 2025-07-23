@@ -62,9 +62,15 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
                         metadata["decreto"] = item["decreto"]
 
                     chunks.append({
-                        "id": item.get("id", str(uuid.uuid4())),
+                        # Qdrant solo acepta enteros o UUIDs como identificadores.
+                        # Para garantizar la compatibilidad, generamos siempre
+                        # un nuevo UUID y almacenamos el id original en el payload.
+                        "id": str(uuid.uuid4()),
                         "text": text_to_embed,
-                        "metadata": metadata,
+                        "metadata": {
+                            **metadata,
+                            "orig_id": item.get("id"),
+                        },
                     })
     return chunks
 
