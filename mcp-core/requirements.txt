@@ -10,3 +10,4 @@ fakeredis
 chilean-rut
 phonenumbers
 prometheus_client>=0.16.0
+python-json-logger

@@ -8,3 +8,4 @@ llama-cpp-python>=0.3.9
 sentence-transformers==2.7.0
 torch==2.3.0
 qdrant-client==1.7.0
+python-json-logger

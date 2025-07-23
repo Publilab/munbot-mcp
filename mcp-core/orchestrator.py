@@ -129,11 +129,23 @@ HISTORIAL_TABLE = "conversaciones_historial"
 
 # Inicializa el FastAPI
 app = FastAPI()
-logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
-logger = logging.getLogger(__name__)
+
+from pythonjsonlogger import jsonlogger
+
+logger = logging.getLogger("munbot")
+logger.setLevel(logging.INFO)
+logHandler = logging.StreamHandler()
+formatter = jsonlogger.JsonFormatter(
+    '%(asctime)s %(levelname)s %(name)s %(message)s %(trace_id)s'
+)
+logHandler.setFormatter(formatter)
+logger.addHandler(logHandler)
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.INFO)
+root_logger.addHandler(logHandler)
 audit_logger = logging.getLogger("audit")
 if not audit_logger.handlers:
-    audit_logger.addHandler(logging.StreamHandler())
+    audit_logger.addHandler(logHandler)
 
 # Prometheus metric for tracking microservice errors
 PROM_REGISTRY = CollectorRegistry()
@@ -411,10 +423,12 @@ def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
     return prompt
 
 
-def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
+def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | None = None) -> Dict[str, Any]:
     service_url = route_to_service(tool)
     logger.info(f"intent={tool}, routing to {service_url}")
     payload = {"tool": tool, "params": params}
+    if trace_id is not None:
+        payload["trace_id"] = trace_id
     try:
         resp = requests.post(service_url, json=payload, timeout=30)
         if 200 <= resp.status_code < 300:
@@ -1026,11 +1040,15 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
             "categoria": 1,
             "prioridad": 3,
         }
-        logging.info(
-            f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}"
+        logger.info(
+            f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}",
+            extra={"trace_id": trace_id},
         )
-        response = call_tool_microservice("complaint-registrar_reclamo", params)
-        logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
+        response = call_tool_microservice("complaint-registrar_reclamo", params, trace_id)
+        logger.info(
+            f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}",
+            extra={"trace_id": trace_id},
+        )
         context_manager.clear_complaint_state(sid)
         err = handle_service_error(response, "complaint-registrar_reclamo", sid)
         if err:
@@ -1070,7 +1088,7 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
         return {"answer": msg, "pending": True}
 
     payload = {"fecha": agenda["fecha"], "hora": agenda["hora"]}
-    resultado = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+    resultado = call_tool_microservice("scheduler-listar_horas_disponibles", payload, trace_id)
     err = handle_service_error(resultado, "scheduler-listar_horas_disponibles", sid)
     if err:
         return {"answer": err["texto"], "finish": True}
@@ -1121,6 +1139,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                     "exclude": excluidos,
                     "limit": 5,
                 },
+                trace_id,
             )
             err = handle_service_error(nuevas, "scheduler-listar_horas_cercanas", sid)
             if err:
@@ -1173,7 +1192,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
 
         # Buscar bloques disponibles
         payload = {"fecha": ctx["bloque_cita"]["fecha"], "hora": ctx["bloque_cita"]["hora"]}
-        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload, trace_id)
         err = handle_service_error(raw, "scheduler-listar_horas_disponibles", sid)
         if err:
             return {"answer": err["texto"], "finish": True}
@@ -1209,6 +1228,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         alternativas = call_tool_microservice(
             "scheduler-listar_horas_cercanas",
             {"fecha": ctx["bloque_cita"]["fecha"], "hora_rango": f"{ctx['bloque_cita']['hora']}-%", "limit": 5},
+            trace_id,
         )
         opciones = alternativas if isinstance(alternativas, list) else alternativas.get("data", [])
         if not opciones:
@@ -1325,9 +1345,15 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         if ctx.get("depto_cita"):
             payload["departamento_codigo"] = ctx["depto_cita"]
         import logging
-        logging.info(f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}")
-        tool_result = call_tool_microservice("scheduler-reservar_hora", payload)
-        logging.info(f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}")
+        logger.info(
+            f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}",
+            extra={"trace_id": trace_id},
+        )
+        tool_result = call_tool_microservice("scheduler-reservar_hora", payload, trace_id)
+        logger.info(
+            f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}",
+            extra={"trace_id": trace_id},
+        )
         err = handle_service_error(tool_result, "scheduler-reservar_hora", sid)
         if err:
             context_manager.set_current_flow(sid, None)
@@ -1356,6 +1382,8 @@ def orchestrate(
     session_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     sid = session_id or str(uuid.uuid4())
+    trace_id = str(uuid.uuid4())
+    context_manager.update_context_data(sid, {"trace_id": trace_id})
 
     ctx = context_manager.get_context(sid)
 
@@ -1552,6 +1580,7 @@ def orchestrate(
     if not session_id:
         session_id = str(uuid.uuid4())
     session = get_session(session_id)
+    session["trace_id"] = trace_id
     convo_ctx = context_manager.get_context(session_id)
     if extra_context:
         session.update(extra_context)
@@ -1599,7 +1628,9 @@ def orchestrate(
             params["documento"] = selected
             if len(user_input.split()) < 6:
                 params["pregunta"] = f"{user_input} del trámite {selected}"
-        service_resp = call_tool_microservice(tool, params)
+        start_time = time.perf_counter()
+        service_resp = call_tool_microservice(tool, params, trace_id)
+        latency = (time.perf_counter() - start_time) * 1000
         err = handle_service_error(service_resp, tool, sid)
         if err:
             context_manager.clear_context_field(session_id, "doc_actual")
@@ -1612,6 +1643,17 @@ def orchestrate(
         references = service_resp.get("referencias")
         if references:
             answer = f"{answer}\nFuente: {'; '.join(references)}"
+        logger.info(
+            "Respuesta generada",
+            extra={
+                "trace_id": trace_id,
+                "session_id": session_id,
+                "intent": tool,
+                "latency_ms": latency,
+                "fragments": references,
+                "microservice": "llm_docs-mcp",
+            },
+        )
         no_results = (
             answer is None
             or not str(answer).strip()
@@ -1655,7 +1697,7 @@ def orchestrate(
             params["documento"] = selected
             if len(user_input.split()) < 6:
                 params["pregunta"] = f"{user_input} del trámite {selected}"
-        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
+        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params, trace_id)
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
             context_manager.clear_context_field(session_id, "doc_actual")
