@@ -23,6 +23,8 @@ TOOLS_PATH = os.getenv("TOOLS_PATH", "tools/")
 SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.2))
 N_THREADS = int(os.getenv("N_THREADS", 2))
 N_CTX = int(os.getenv("N_CTX", 4096))
+# Nuevo umbral de similitud para Qdrant (por defecto 0.3)
+QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.3))
 
 # ==== FastAPI y Seguridad ====
 app = FastAPI()
@@ -152,9 +154,12 @@ def generar_respuesta_llm(params: dict) -> dict:
         hits = []
 
     # 3.1) Verificar si hay resultados relevantes usando un umbral de confianza
-    if not hits or hits[0].score < 0.25:
+    if not hits or hits[0].score < QDRANT_SIMILARITY_THRESHOLD:
+        logger.info(
+            f"Insufficient similarity (score={hits[0].score if hits else 'N/A'}) – fallback triggered"
+        )
         return {
-            "respuesta": "No encontré información precisa sobre tu consulta.",
+            "respuesta": "No encontré información.",
             "referencias": [],
             "no_results": True,
         }
@@ -164,7 +169,7 @@ def generar_respuesta_llm(params: dict) -> dict:
     referencias = []
     for idx, h in enumerate(hits, start=1):
         # Opcional: filtrar también los resultados secundarios por score
-        if h.score < 0.25:
+        if h.score < QDRANT_SIMILARITY_THRESHOLD:
             continue
         payload = getattr(h, "payload", {}) or {}
         texto = payload.get("texto") or payload.get("text")
@@ -179,7 +184,7 @@ def generar_respuesta_llm(params: dict) -> dict:
     # Si después de filtrar por score no queda nada
     if not fragments:
         return {
-            "respuesta": "No encontré información suficientemente relevante sobre tu consulta.",
+            "respuesta": "No encontré información.",
             "referencias": [],
             "no_results": True,
         }
