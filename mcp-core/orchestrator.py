@@ -25,6 +25,11 @@ except ModuleNotFoundError:
     from text import normalize_text
 from llama_client import LlamaClient
 try:
+    from utils.human import registrar_evento_humano
+except Exception:  # pragma: no cover - allow tests to run without full package
+    def registrar_evento_humano(session_id: str, pregunta: str, trace_id: str | None = None) -> None:
+        pass
+try:
     from utils.parser import parse_date_time
 except ModuleNotFoundError:
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), ''))
@@ -1385,6 +1390,18 @@ def orchestrate(
         if re.fullmatch(r"(?i)(sí|si|yes|ok|okay|vale)", user_input.strip()):
             ack = "Gracias, me alegra que te haya ayudado."
         elif re.fullmatch(r"(?i)(no|n|nope)", user_input.strip()):
+            context_manager.increment_fallback_count(sid)
+            count = context_manager.get_fallback_count(sid)
+            logger.info(
+                f"Negative feedback. Fallback count increased to {count}",
+                extra={"trace_id": sid},
+            )
+            if count >= 3:
+                registrar_evento_humano(sid, user_input, trace_id=sid)
+                logger.info("Escalamiento a humano", extra={"trace_id": sid})
+                msg = "Lo siento, no puedo ayudarte... un experto te contactará."
+                context_manager.update_context(sid, user_input, msg)
+                return {"respuesta": msg, "session_id": sid, "escalado": True}
             ack = "Entiendo, seguiré mejorando. Gracias por tu feedback."
         else:
             ack = "Gracias por tu comentario."
@@ -1497,6 +1514,8 @@ def orchestrate(
         fallback_count = context_manager.get_fallback_count(session_id)
         if fallback_count >= 3 or sentiment == "very_negative":
             fallback_resp = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
+            registrar_evento_humano(session_id, user_input, trace_id=session_id)
+            logger.info("Escalamiento a humano", extra={"trace_id": session_id})
             context_manager.update_context(session_id, user_input, fallback_resp)
             return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
         elif fallback_count == 2:
@@ -1542,6 +1561,8 @@ def orchestrate(
             fallback_count = context_manager.get_fallback_count(session_id)
             if fallback_count >= 3:
                 answer = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
+                registrar_evento_humano(session_id, user_input, trace_id=session_id)
+                logger.info("Escalamiento a humano", extra={"trace_id": session_id})
                 context_manager.update_context(session_id, user_input, answer)
                 return {"respuesta": answer, "session_id": session_id, "escalado": True}
             elif fallback_count == 2:
@@ -1590,6 +1611,8 @@ def orchestrate(
             fallback_count = context_manager.get_fallback_count(session_id)
             if fallback_count >= 3:
                 ans = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
+                registrar_evento_humano(session_id, user_input, trace_id=session_id)
+                logger.info("Escalamiento a humano", extra={"trace_id": session_id})
                 context_manager.update_context(session_id, user_input, ans)
                 return {"respuesta": ans, "session_id": session_id, "escalado": True}
             elif fallback_count == 2:

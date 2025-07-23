@@ -19,3 +19,5 @@ Este documento describe brevemente las tablas incorporadas para almacenar pregun
 - **usuario_id**: identificador opcional del usuario.
 
 Estas tablas permiten analizar con mayor detalle en qué temas falla el bot y recopilar comentarios directos de los usuarios para mejorar continuamente el sistema.
+
+Cuando el usuario responde **"No"** al preguntar si la información fue útil, se considera un feedback negativo y se incrementa el contador interno de _fallbacks_. Alcanzado el umbral de tres fallos acumulados el orquestador derivará la conversación a un agente humano.
