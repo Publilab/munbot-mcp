@@ -582,7 +582,7 @@ def detect_intent_keywords(user_input: str) -> str:
         r"\b(documento|documentos|certificado|certificados|ordenanza|ordenanzas|norma|normas|reglamento|reglamentos|buscar|busqueda|consulta|consultar)\b",
         text,
     ):
-        return "doc-buscar_fragmento_documento"
+        return "doc-generar_respuesta_llm"
 
     # Añade más intents según necesidades del bot
 
@@ -1621,7 +1621,11 @@ def orchestrate(
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
         return format_response(result, sid, trace_id=sid)
 
-    if tool == "doc-generar_respuesta_llm":
+    if tool in ["doc-generar_respuesta_llm", "doc-buscar_fragmento_documento"]:
+        if tool == "doc-buscar_fragmento_documento":
+            logger.info(
+                f"Intent detected as doc-buscar_fragmento_documento. Routing to doc-generar_respuesta_llm with query: {user_input}"
+            )
         params = {"pregunta": user_input}
         selected = context_manager.get_selected_document(session_id)
         if selected:
@@ -1629,9 +1633,9 @@ def orchestrate(
             if len(user_input.split()) < 6:
                 params["pregunta"] = f"{user_input} del trámite {selected}"
         start_time = time.perf_counter()
-        service_resp = call_tool_microservice(tool, params, trace_id)
+        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params, trace_id)
         latency = (time.perf_counter() - start_time) * 1000
-        err = handle_service_error(service_resp, tool, sid)
+        err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
             context_manager.clear_context_field(session_id, "doc_actual")
             return {"respuesta": err["texto"], "session_id": sid}
@@ -1648,7 +1652,7 @@ def orchestrate(
             extra={
                 "trace_id": trace_id,
                 "session_id": session_id,
-                "intent": tool,
+                "intent": "doc-generar_respuesta_llm",
                 "latency_ms": latency,
                 "fragments": references,
                 "microservice": "llm_docs-mcp",
