@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import json
 import requests
 from typing import Dict, Any, List, Optional
-from fastapi import FastAPI, HTTPException, Request, Body
+from fastapi import FastAPI, HTTPException, Request, Body, Response
 from pydantic import BaseModel
 import logging
 import psycopg2
@@ -18,7 +18,12 @@ import time
 import concurrent.futures
 from context_manager import ConversationalContextManager
 import unicodedata
-from prometheus_client import Counter, CollectorRegistry
+from prometheus_client import (
+    Counter,
+    CollectorRegistry,
+    generate_latest,
+    CONTENT_TYPE_LATEST,
+)
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -132,6 +137,22 @@ if not audit_logger.handlers:
 
 # Prometheus metric for tracking microservice errors
 PROM_REGISTRY = CollectorRegistry()
+REQUEST_COUNTER = Counter(
+    "munbot_requests_total",
+    "Número de peticiones procesadas",
+    ["intent"],
+    registry=PROM_REGISTRY,
+)
+FALLBACK_COUNTER = Counter(
+    "munbot_fallbacks_total",
+    "Número de fallbacks activados",
+    registry=PROM_REGISTRY,
+)
+HUMAN_ESCALATION_COUNTER = Counter(
+    "munbot_human_escalations_total",
+    "Número de escalamientos a humano",
+    registry=PROM_REGISTRY,
+)
 ERROR_COUNTER = Counter(
     "mcp_microservice_errors_total",
     "Errores al invocar microservicios",
@@ -145,6 +166,12 @@ llm = LlamaClient()
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
+STOPWORDS = {"y", "de", "la", "el", "que", "en"}
+
+
+def tokenize(text: str) -> list[str]:
+    tokens = [t.strip(".,¡!¿?\"").lower() for t in text.split()]
+    return [t for t in tokens if t and t not in STOPWORDS]
 
 # Respuestas directas para saludos y despedidas
 GREETING_TERMS = [
@@ -1417,6 +1444,7 @@ def orchestrate(
             ack = "Gracias, me alegra que te haya ayudado."
         elif re.fullmatch(r"(?i)(no|n|nope)", user_input.strip()):
             context_manager.increment_fallback_count(sid)
+            FALLBACK_COUNTER.inc()
             count = context_manager.get_fallback_count(sid)
             logger.info(
                 f"Negative feedback. Fallback count increased to {count}",
@@ -1425,6 +1453,7 @@ def orchestrate(
             if count >= 3:
                 registrar_evento_humano(sid, user_input, trace_id=sid)
                 logger.info("Escalamiento a humano", extra={"trace_id": sid})
+                HUMAN_ESCALATION_COUNTER.inc()
                 msg = "Lo siento, no puedo ayudarte... un experto te contactará."
                 context_manager.update_context(sid, user_input, msg)
                 return {"respuesta": msg, "session_id": sid, "escalado": True}
@@ -1531,17 +1560,20 @@ def orchestrate(
     # Detectar intención
     intent_data = detect_intent(user_input, convo_ctx.get("history"))
     tool = intent_data.get("intent")
+    REQUEST_COUNTER.labels(intent=tool).inc()
     confidence = intent_data.get("confidence", 0)
     sentiment = intent_data.get("sentiment", "neutral")
     context_manager.set_last_sentiment(session_id, sentiment)
     # Lógica de fallback y escalación simplificada
     if confidence < 0.6 or sentiment in ["very_negative", "negative"]:
         context_manager.increment_fallback_count(session_id)
+        FALLBACK_COUNTER.inc()
         fallback_count = context_manager.get_fallback_count(session_id)
         if fallback_count >= 3 or sentiment == "very_negative":
             fallback_resp = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
             registrar_evento_humano(session_id, user_input, trace_id=session_id)
             logger.info("Escalamiento a humano", extra={"trace_id": session_id})
+            HUMAN_ESCALATION_COUNTER.inc()
             context_manager.update_context(session_id, user_input, fallback_resp)
             return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
         elif fallback_count == 2:
@@ -1588,11 +1620,13 @@ def orchestrate(
         )
         if no_results:
             context_manager.increment_fallback_count(session_id)
+            FALLBACK_COUNTER.inc()
             fallback_count = context_manager.get_fallback_count(session_id)
             if fallback_count >= 3:
                 answer = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
                 registrar_evento_humano(session_id, user_input, trace_id=session_id)
                 logger.info("Escalamiento a humano", extra={"trace_id": session_id})
+                HUMAN_ESCALATION_COUNTER.inc()
                 context_manager.update_context(session_id, user_input, answer)
                 return {"respuesta": answer, "session_id": session_id, "escalado": True}
             elif fallback_count == 2:
@@ -1642,11 +1676,13 @@ def orchestrate(
         )
         if no_results:
             context_manager.increment_fallback_count(session_id)
+            FALLBACK_COUNTER.inc()
             fallback_count = context_manager.get_fallback_count(session_id)
             if fallback_count >= 3:
                 ans = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
                 registrar_evento_humano(session_id, user_input, trace_id=session_id)
                 logger.info("Escalamiento a humano", extra={"trace_id": session_id})
+                HUMAN_ESCALATION_COUNTER.inc()
                 context_manager.update_context(session_id, user_input, ans)
                 return {"respuesta": ans, "session_id": session_id, "escalado": True}
             elif fallback_count == 2:
@@ -1721,9 +1757,14 @@ def health():
 def root():
     return {
         "status": "MunBoT MCP Orchestrator running",
-        "endpoints": ["/orchestrate", "/health"],
+        "endpoints": ["/orchestrate", "/health", "/metrics"],
         "version": "1.0.0",
     }
+
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
 
 
 # === Endpoints de administración de documentos ===
