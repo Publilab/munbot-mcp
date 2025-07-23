@@ -1,597 +1,597 @@
 [
-  {
-    "id": "MED-001",
-    "titulo": "Objeto del Reglamento Ambiental",
-    "texto": "Establece normas para preservar el entorno, promover el buen vivir, conservar recursos naturales, y fomentar reciclaje, compostaje e iniciativas ciudadanas en todo el territorio del Gobierno de Curoscant.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Reglamento Ambiental Curoscant",
-      "Normativa Ambiental Curoscant",
-      "Reglamento de Protección Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "1",
-    "titulo_seccion": "generalidades",
-    "seccion": "Titulo 1",
-    "tipo_fragmento": "generalidades"
-  },
-  {
-    "id": "MED-002",
-    "titulo": "Ámbito de Aplicación",
-    "texto": "Aplica a personas naturales y jurídicas, empresas, comunidad y dependencias del Gobierno de Curoscant que realicen actividades públicas o privadas en su territorio. Excluye actividades militares, policiales y de seguridad nacional. No aplica a actividades de pesca, caza y recolección de recursos naturales en áreas protegidas.",
-    "fuente": "Reglamento Ambiental Curoscant 2025", 
-    "alias": [
-      "Ámbito de Aplicación del Reglamento",
-      "Normativa Ambiental Curoscant",
-      "Reglamento de Protección Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "2",
-    "titulo_seccion": "ambito de aplicacion",
-    "seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "MED-003",
-    "titulo": "Principios Ambientales",
-    "texto": "Se basa en los principios de precaución, sostenibilidad intergeneracional, responsabilidad extendida del productor, participación ciudadana y equidad en el uso de recursos. Se prioriza la protección de ecosistemas y la salud pública. Las decisiones deben ser transparentes y basadas en evidencia científica. La educación ambiental es fundamental para fomentar una cultura de respeto y cuidado del medio ambiente. La cooperación entre el Gobierno, la comunidad y las empresas es esencial para lograr los objetivos ambientales. La innovación y el uso de tecnologías limpias son promovidos para mejorar la eficiencia y reducir el impacto ambiental.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Principios del Reglamento Ambiental",
-      "Normativa Ambiental Curoscant",
-      "Reglamento de Protección Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "2",
-    "titulo_seccion": "principios ambientales",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "principios"
-  },
-  {
-    "id": "MED-004",
-    "titulo": "Calidad del Aire",
-    "texto": "Se exige control de emisiones contaminantes (polvo, gases, humo). Las actividades industriales y vehículos públicos deberán ajustarse a los estándares de calidad del aire. Las industrias deben presentar planes de mitigación y remediación de contaminación atmosférica. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará el uso de tecnologías limpias y energías renovables para reducir la huella de carbono. Las comunidades afectadas por la contaminación del aire tendrán acceso a información y mecanismos de participación en la toma de decisiones. Se promoverán campañas de concienciación sobre la importancia de la calidad del aire y su impacto en la salud pública. La colaboración con universidades y centros de investigación será clave para desarrollar soluciones innovadoras. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus emisiones. La educación ambiental en escuelas y comunidades fomentará una cultura de respeto por el aire limpio.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Calidad del Aire Curoscant",
-      "Normativa de Emisiones Curoscant",
-      "Reglamento de Protección del Aire"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "3",
-    "titulo_seccion": "calidad del aire",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-005",
-    "titulo": "Gestión de Residuos Sólidos",
-    "texto": "Se establece la separación de residuos en orgánicos, reciclables y no valorizables, usando contenedores diferenciados y recogida específica. Los residuos peligrosos deben ser gestionados por empresas autorizadas, con trazabilidad y control. Las empresas deben presentar planes de gestión de residuos y cumplir con normativas de reducción y reciclaje. Se prohíbe la incineración de residuos sin autorización. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la correcta gestión de residuos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas recicladoras será clave para mejorar la eficiencia del sistema. Se promoverán iniciativas de economía circular para reducir la generación de residuos. La transparencia en la gestión de residuos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Gestión de Residuos Curoscant",
-      "Normativa de Residuos Sólidos Curoscant",
-      "Reglamento de Manejo de Residuos"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "4",
-    "titulo_seccion": "gestion de residuos solidos",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-006",
-    "titulo": "Prohibición de Vertidos",
-    "texto": "Prohíbe el vertido de residuos o sustancias en espacios públicos, cuerpos de agua, cauces o terrenos no autorizados. Las empresas deben presentar planes de gestión de vertidos y cumplir con normativas de tratamiento. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de evitar vertidos en espacios públicos y cuerpos de agua. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de residuos. Se promoverán iniciativas de limpieza comunitaria y recuperación de espacios degradados. La transparencia en la gestión de vertidos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Prohibición de Vertidos Curoscant",
-      "Normativa de Vertidos Curoscant",
-      "Reglamento de Protección de Espacios Públicos"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "5",
-    "titulo_seccion": "prohibicion de vertidos",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "prohibicion"
-  },
-  {
-    "id": "MED-007",
-    "titulo": "Reciclaje Obligatorio",
-    "texto": "Residencias, empresas y edificios públicos deben separar residuos reciclables. Los recicladores deben informar mensualmente los volúmenes procesados. Las autoridades establecerán puntos de acopio y promoverán campañas de concienciación. Se fomentará la educación ambiental sobre la importancia del reciclaje en escuelas y comunidades. La colaboración con organizaciones sociales y empresas recicladoras será clave para mejorar la eficiencia del sistema. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus residuos. La transparencia en la gestión de reciclaje será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Reciclaje Obligatorio Curoscant",
-      "Normativa de Reciclaje Curoscant",
-      "Reglamento de Manejo de Residuos Reciclables"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "6",
-    "titulo_seccion": "reciclaje obligatorio",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-008",
-    "titulo": "Compostaje Comunitario",
-    "texto": "Fomenta la creación de huertos comunitarios y puntos de compostaje, con apoyo técnico y reconocimiento a asociaciones. Las empresas deben presentar planes de gestión de compostaje y cumplir con normativas de tratamiento. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se promoverán iniciativas de educación ambiental sobre la importancia del compostaje en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de residuos orgánicos. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus residuos orgánicos. La transparencia en la gestión de compostaje será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Compostaje Comunitario Curoscant",
-      "Normativa de Compostaje Curoscant",
-      "Reglamento de Manejo de Residuos Orgánicos"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "7",
-    "titulo_seccion": "compostaje comunitario",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-009",
-    "titulo": "Responsabilidad del Productor",
-    "texto": "Proveedores deben implementar sistemas de devolución de envases y productos al final de su vida útil, financiando la logística requerida. Las empresas deben presentar planes de gestión de responsabilidad del productor y cumplir con normativas de responsabilidad extendida. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de la responsabilidad del productor en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de productos al final de su vida útil. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus residuos. La transparencia en la gestión de responsabilidad del productor será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Responsabilidad del Productor Curoscant",
-      "Normativa de Responsabilidad Extendida Curoscant",
-      "Reglamento de Manejo de Productos al Final de su Vida Útil"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "8",
-    "titulo_seccion": "responsabilidad del productor",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-010",
-    "titulo": "Reducción de Plásticos de un Solo Uso",
-    "texto": "Prohibido uso de plásticos desechables en eventos, mercados y comercio; se promueven alternativas reciclables o reutilizables. Los comercios deben presentar planes de reducción de plásticos y cumplir con normativas de sostenibilidad. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de reducir plásticos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de plásticos. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus plásticos. La transparencia en la gestión de plásticos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Reducción de Plásticos Curoscant",
-      "Normativa de Plásticos de un Solo Uso Curoscant",
-      "Reglamento de Manejo de Plásticos"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "9",
-    "titulo_seccion": "reduccion de plastico",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-011",
-    "titulo": "Protección de Recursos Hídricos",
-    "texto": "Se prohíje la contaminación de ríos, lagos y drenajes. Industrias y obras deben presentar planes de tratamiento y remediación. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de proteger los recursos hídricos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del agua. Se promoverán iniciativas de conservación y restauración de ecosistemas acuáticos. La transparencia en la gestión de recursos hídricos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Protección de Recursos Hídricos Curoscant",
-      "Normativa de Agua Curoscant",
-      "Reglamento de Manejo de Recursos Hídricos"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "10",
-    "titulo_seccion": "proteccion de recursos hidro",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-012",
-    "titulo": "Contaminación Lumínica",
-    "texto": "Se regulan niveles y direccionamiento de luz artificial para evitar molestias y daño a ecosistemas nocturnos. Las instalaciones deben cumplir con normativas de eficiencia energética y reducción de contaminación lumínica. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de reducir la contaminación lumínica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de la luz artificial. Se promoverán iniciativas de diseño urbano que minimicen el impacto de la iluminación en ecosistemas nocturnos. La transparencia en la gestión de contaminación lumínica será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Contaminación Lumínica Curoscant",
-      "Normativa de Iluminación Curoscant",
-      "Reglamento de Manejo de Luz Artificial"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "11",
-    "titulo_seccion": "contaminacion lumínica",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-013",
-    "titulo": "Contaminación Acústica",
-    "texto": "Se limitan niveles de ruido según zonas y horarios. El incumplimiento podrá derivar en sanciones. Las actividades ruidosas deben cumplir con normativas de control y reducción de ruido. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de reducir la contaminación acústica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del ruido. Se promoverán iniciativas de diseño urbano que minimicen el impacto del ruido en ecosistemas urbanos. La transparencia en la gestión de contaminación acústica será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Contaminación Acústica Curoscant",
-      "Normativa de Ruido Curoscant",
-      "Reglamento de Manejo de Ruido"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "12",
-    "titulo_seccion": "contaminacion acustica",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-014",
-    "titulo": "Energías Renovables",
-    "texto": "Edificaciones nuevas y públicas deberán incorporar al menos 30% de su energía desde fuentes renovables en cinco años. Las empresas deben presentar planes de transición energética y cumplir con normativas de sostenibilidad. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de las energías renovables en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión energética. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de energías renovables será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Energías Renovables Curoscant",
-      "Normativa de Energías Limpias Curoscant",
-      "Reglamento de Manejo de Energía"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "13",
-    "titulo_seccion": "energías renovables",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-015",
-    "titulo": "Protección de Áreas Verdes",
-    "texto": "Parques, corredores biológicos y espacios comunitarios quedan bajo protección; la tala de especies nativas requiere autorización especial. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de las áreas verdes en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios verdes. Se promoverán iniciativas de reforestación y restauración de ecosistemas urbanos. La transparencia en la gestión de áreas verdes será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Protección de Áreas Verdes Curoscant",
-      "Normativa de Espacios Verdes Curoscant",
-      "Reglamento de Manejo de Áreas Naturales"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "14",
-    "titulo_seccion": "proteccion de areas verdes",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-016",
-    "titulo": "Fomento de Iniciativas Ciudadanas",
-    "texto": "Se ofrecen incentivos, subvenciones y reconocimiento a organizaciones sociales con proyectos ambientales. Las empresas deben presentar planes de desarrollo sostenible y cumplir con normativas de responsabilidad social. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de las iniciativas ciudadanas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión ambiental. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de iniciativas ciudadanas será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Fomento de Iniciativas Ciudadanas Curoscant",
-      "Normativa de Proyectos Ambientales Curoscant",
-      "Reglamento de Participación Ciudadana"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "15",
-    "titulo_seccion": "fomento de iniciativas",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-017",
-    "titulo": "Educación Ambiental",
-    "texto": "Se realizan campañas informativas, talleres y educación en escuelas y lugares públicos. Los programas deben incluir temas de sostenibilidad, reciclaje, conservación y cambio climático. Las autoridades colaborarán con instituciones educativas y organizaciones sociales para implementar estas iniciativas. Se establecerán alianzas con empresas para promover prácticas sostenibles y reducir el impacto ambiental. La educación ambiental será un componente clave en la formación de ciudadanos responsables y comprometidos con el medio ambiente. Se fomentará la participación activa de la comunidad en proyectos ambientales locales. La transparencia en la gestión de programas educativos será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Educación Ambiental Curoscant",
-      "Normativa de Concienciación Ambiental Curoscant",
-      "Reglamento de Formación Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "16",
-    "titulo_seccion": "educacion ambiental",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-018",
-    "titulo": "Fiscalización Ambiental",
-    "texto": "La autoridad ambiental realizará inspecciones y determinará sanciones proporcionales según gravedad y daño. Las empresas deben presentar informes periódicos sobre sus actividades y cumplir con normativas ambientales. Las autoridades establecerán mecanismos de denuncia y participación ciudadana para fortalecer la fiscalización. Se fomentará la educación ambiental sobre la importancia de la fiscalización en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión ambiental. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de fiscalización ambiental será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Fiscalización Ambiental Curoscant",
-      "Normativa de Inspección Ambiental Curoscant",
-      "Reglamento de Control Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "17",
-    "titulo_seccion": "fiscalizacion ambiental",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "fiscalizacion"
-  },
-  {
-    "id": "MED-019",
-    "titulo": "Consejos Ambientales Comunitarios",
-    "texto": "Se conforman consejos locales para fomentar la gestión colaborativa y la presentación de propuestas al Gobierno. Los consejos estarán integrados por representantes de la comunidad, organizaciones sociales, empresas y autoridades locales. Se promoverá la participación activa de los ciudadanos en la toma de decisiones ambientales. Los consejos tendrán la facultad de proponer iniciativas, proyectos y programas para mejorar la calidad ambiental en sus territorios. La colaboración entre los consejos y el Gobierno será clave para implementar políticas públicas efectivas. Se fomentará la educación ambiental y la capacitación de los miembros de los consejos para fortalecer su labor. La transparencia en la gestión de los consejos ambientales será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Consejos Ambientales Comunitarios Curoscant",
-      "Normativa de Participación Comunitaria Curoscant",
-      "Reglamento de Gestión Ambiental Local"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "18",
-    "titulo_seccion": "consejos ambientales",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-020",
-    "titulo": "Transparencia Ambiental",
-    "texto": "Se publicará anualmente un informe de gestión con resultados, indicadores y sanciones. Los informes incluirán datos sobre la calidad del aire, gestión de residuos, uso de energías renovables, protección de áreas verdes y cumplimiento de normativas ambientales. Las autoridades establecerán mecanismos de acceso a la información y participación ciudadana en la elaboración de los informes. Se fomentará la educación ambiental sobre la importancia de la transparencia en la gestión pública. La colaboración con organizaciones sociales y empresas será clave para mejorar la transparencia y rendición de cuentas. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión ambiental será prioritaria, con informes públicos accesibles a toda la ciudadanía.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Transparencia Ambiental Curoscant",
-      "Normativa de Rendición de Cuentas Ambiental Curoscant",
-      "Reglamento de Información Ambiental Pública"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "19",
-    "titulo_seccion": "transparencia ambiental",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "obligación"
-  },
-  {
-    "id": "MED-021",
-    "titulo": "Cooperación Interinstitucional",
-    "texto": "Se facilitará el trabajo conjunto con universidades, ONG, empresas y centros de investigación. Las autoridades establecerán convenios y alianzas estratégicas para promover la investigación, desarrollo e implementación de tecnologías limpias y sostenibles. Se fomentará la capacitación y formación de profesionales en temas ambientales. La colaboración entre instituciones será clave para fortalecer la gestión ambiental y promover prácticas sostenibles en todos los sectores. Se promoverán iniciativas conjuntas para abordar desafíos ambientales locales y regionales. La transparencia en la gestión de la cooperación interinstitucional será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Cooperación Interinstitucional Curoscant",
-      "Normativa de Alianzas Estratégicas Curoscant",
-      "Reglamento de Colaboración Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "20",
-    "titulo_seccion": "cooperacion interinstitucional",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-022",
-    "titulo": "Revisión Trienal",
-    "texto": "El reglamento se revisará cada tres años para incorporar nuevas prácticas y avances tecnológicos. Las autoridades establecerán un proceso participativo para la revisión, que incluirá consultas públicas, talleres y reuniones con la comunidad, organizaciones sociales y empresas. Se fomentará la educación ambiental sobre la importancia de la revisión y actualización del reglamento en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión ambiental y promover prácticas sostenibles. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en el proceso de revisión será prioritaria, con informes públicos sobre las modificaciones propuestas y los resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Revisión Trienal Curoscant",
-      "Normativa de Actualización Ambiental Curoscant",
-      "Reglamento de Mejora Continua Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "21",
-    "titulo_seccion": "revision trienal",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-023",
-    "titulo": "Voluntariado Ambiental",
-    "texto": "Se habilitarán programas de voluntariado para limpieza, reforestación y monitoreo ecológico. Los voluntarios recibirán capacitación y reconocimiento por su labor. Las autoridades establecerán alianzas con organizaciones sociales, empresas y universidades para promover el voluntariado ambiental. Se fomentará la participación activa de la comunidad en proyectos ambientales locales. La colaboración entre los voluntarios y el Gobierno será clave para implementar políticas públicas efectivas. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión del voluntariado ambiental será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Voluntariado Ambiental Curoscant",
-      "Normativa de Participación Voluntaria Curoscant",
-      "Reglamento de Acción Comunitaria Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "22",
-    "titulo_seccion": "voluntariado ambiental",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-024",
-    "titulo": "Incentivos Económicos",
-    "texto": "Pequeñas subvenciones y beneficios tributarios se entregarán a iniciativas verdes comunitarias. Las empresas deben presentar planes de incentivo económico y cumplir con normativas de responsabilidad social. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos financiados. Se fomentará la educación ambiental sobre la importancia de los incentivos económicos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de iniciativas verdes. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de incentivos económicos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Incentivos Económicos Curoscant",
-      "Normativa de Subvenciones Ambientales Curoscant",
-      "Reglamento de Apoyo Económico a Iniciativas Verdes"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "23",
-    "titulo_seccion": "incentivos economicos",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-025",
-    "titulo": "Huertos Urbanos",
-    "texto": "Se facilitará la creación de huertos urbanos en espacios públicos y equipamiento comunitario. Las empresas deben presentar planes de gestión de huertos y cumplir con normativas de responsabilidad social. Las autoridades establecerán mecanismos de apoyo técnico y recursos para la implementación de los huertos urbanos. Se fomentará la educación ambiental sobre la importancia de los huertos urbanos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios verdes urbanos. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de huertos urbanos será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Huertos Urbanos Curoscant",
-      "Normativa de Espacios Verdes Urbanos Curoscant",
-      "Reglamento de Agricultura Urbana"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "24",
-    "titulo_seccion": "huertos urbanos",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-026",
-    "titulo": "Movilidad Sustentable",
-    "texto": "Se promueve el uso de transporte público, ciclismo y caminata; además de infraestructura segura y conectada. Las empresas deben presentar planes de gestión de movilidad y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de movilidad sustentable. Se fomentará la educación ambiental sobre la importancia de la movilidad sustentable en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del transporte urbano. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de movilidad sustentable será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Movilidad Sustentable Curoscant",
-      "Normativa de Transporte Urbano Curoscant",
-      "Reglamento de Infraestructura de Movilidad"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "25",
-    "titulo_seccion": "movilidad sostenible",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-027",
-    "titulo": "Gestión de Demolición",
-    "texto": "Restos de demolición deben separarse y destinarse a reciclaje o reutilización, con trazabilidad y control. Las empresas deben presentar planes de gestión de demolición y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de demolición. Se fomentará la educación ambiental sobre la importancia de la gestión de demolición en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de residuos de construcción. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de demolición será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Gestión de Demolición Curoscant",
-      "Normativa de Residuos de Construcción Curoscant",
-      "Reglamento de Manejo de Escombros"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "26",
-    "titulo_seccion": "gestion de demolicion",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "gestion"
-  },
-  {
-    "id": "MED-028",
-    "titulo": "Construcción Ecológica",
-    "texto": "Nuevas edificaciones deberán cumplir estándares de eficiencia energética y utilización de materiales sostenibles. Las empresas deben presentar planes de gestión de construcción y cumplir con normativas de responsabilidad social y sustentabilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de construcción ecológica. Se fomentará la educación ambiental sobre la importancia de la construcción ecológica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de edificaciones sostenibles. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de construcción ecológica será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Construcción Ecológica Curoscant",
-      "Normativa de Edificaciones Sostenibles Curoscant",
-      "Reglamento de Infraestructura Verde"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "27",
-    "titulo_seccion": "construccion ecologica",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-029",
-    "titulo": "Espacios Pegados a Zonas Naturales",
-    "texto": "Las construcciones cerca de ecosistemas deben incorporar medidas de protección y amortiguamiento ambiental. Las empresas deben presentar planes de gestión de espacios pegados y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos en estas áreas. Se fomentará la educación ambiental sobre la importancia de proteger los ecosistemas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios naturales. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de espacios pegados a zonas naturales será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Espacios Pegados a Zonas Naturales Curoscant",
-      "Normativa de Protección de Ecosistemas Curoscant",
-      "Reglamento de Manejo de Áreas Naturales"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "28",
-    "titulo_seccion": "espacios pegados a zonas naturales",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-030",
-    "titulo": "Protección de Fauna Urbana",
-    "texto": "Se prohíbe el uso de cebos tóxicos y se fomenta la coexistencia con especies urbanas. Las empresas deben presentar planes de gestión de fauna urbana y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de protección de fauna. Se fomentará la educación ambiental sobre la importancia de la fauna urbana en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de la fauna urbana. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de fauna urbana será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Protección de Fauna Urbana Curoscant",
-      "Normativa de Conservación de Especies Urbanas Curoscant",
-      "Reglamento de Manejo de Vida Silvestre Urbana"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "29",
-    "titulo_seccion": "proteccion de fauna urbana",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-031",
-    "titulo": "Control de Plagas",
-    "texto": "Se establece un plan de control integrado de plagas con técnicas ecológicas. Las empresas deben presentar planes de gestión de plagas y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de control de plagas. Se fomentará la educación ambiental sobre la importancia del control de plagas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de plagas urbanas. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión del control de plagas será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Control de Plagas Curoscant",
-      "Normativa de Manejo de Plagas Urbanas Curoscant",
-      "Reglamento de Protección de Salud Pública"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "30",
-    "titulo_seccion": "control de plagas",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "control"
-  },
-  {
-    "id": "MED-032",
-    "titulo": "Gestión de Áreas Protegidas",
-    "texto": "Se identifican áreas protegidas la República con criterios ecológicos y culturales. Las actividades en estas áreas deben cumplir con normativas de conservación y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos en áreas protegidas. Se fomentará la educación ambiental sobre la importancia de las áreas protegidas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios naturales. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de áreas protegidas será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Gestión de Áreas Protegidas Curoscant",
-      "Normativa de Conservación de Espacios Naturales Curoscant",
-      "Reglamento de Manejo de Áreas Protegidas"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "31",
-    "titulo_seccion": "gestion de areas protegidas",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-033",
-    "titulo": "Educación Continua",
-    "texto": "Se realizarán capacitaciones periódicas a funcionarios, comerciantes y vecinos sobre el reglamento. Las autoridades establecerán programas de formación y actualización en temas ambientales. Se fomentará la educación ambiental sobre la importancia de la capacitación continua en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del conocimiento ambiental. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de la educación continua será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Educación Continua Curoscant",
-      "Normativa de Capacitación Ambiental Curoscant",
-      "Reglamento de Formación y Actualización Ambiental"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "32",
-    "titulo_seccion": "educacion continua",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "educacion"
-  },
-  {
-    "id": "MED-034",
-    "titulo": "Sostenibilidad Económica",
-    "texto": "Se promoverá circularidad y modelos empresariales verdes que integren producción y reciclaje. Las empresas deben presentar planes de sostenibilidad económica y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de sostenibilidad económica. Se fomentará la educación ambiental sobre la importancia de la sostenibilidad económica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión económica sostenible. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de sostenibilidad económica será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Sostenibilidad Económica Curoscant",
-      "Normativa de Economía Circular Curoscant",
-      "Reglamento de Modelos Empresariales Verdes"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "33",
-    "titulo_seccion": "sostenibilidad economica",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "MED-035",
-    "titulo": "Vigencia y Derogación",
-    "texto": "Entra en vigencia al día siguiente de su publicación y deroga normas anteriores incompatibles. Las autoridades deberán garantizar la difusión y comprensión del reglamento entre la población. Se establecerán mecanismos de revisión y actualización periódica del reglamento para adaptarlo a nuevas realidades y avances tecnológicos. La colaboración con organizaciones sociales y empresas será clave para asegurar la implementación efectiva del reglamento. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión del reglamento será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
-    "fuente": "Reglamento Ambiental Curoscant 2025",
-    "alias": [
-      "Vigencia y Derogación Curoscant",
-      "Normativa de Entrada en Vigencia Curoscant",
-      "Reglamento de Aplicación y Modificaciones"
-    ],
-    "doc": "Reglamento Medio Ambiente",
-    "decreto": "127",
-    "articulo": "34",
-    "titulo_seccion": "vigencia y derogacion",
-    "seccion": "Titulo 2",
-    "tipo_fragmento": "duración"
-  }
+    {
+        "id": "MED-001",
+        "titulo": "Objeto del Reglamento Ambiental",
+        "texto": "Establece normas para preservar el entorno, promover el buen vivir, conservar recursos naturales, y fomentar reciclaje, compostaje e iniciativas ciudadanas en todo el territorio del Gobierno de Curoscant.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Reglamento Ambiental Curoscant",
+            "Normativa Ambiental Curoscant",
+            "Reglamento de Protección Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "1",
+        "titulo_seccion": "generalidades",
+        "seccion": "Titulo 1",
+        "tipo_fragmento": "generalidades"
+    },
+    {
+        "id": "MED-002",
+        "titulo": "Ámbito de Aplicación",
+        "texto": "Aplica a personas naturales y jurídicas, empresas, comunidad y dependencias del Gobierno de Curoscant que realicen actividades públicas o privadas en su territorio. Excluye actividades militares, policiales y de seguridad nacional. No aplica a actividades de pesca, caza y recolección de recursos naturales en áreas protegidas.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Ámbito de Aplicación del Reglamento",
+            "Normativa Ambiental Curoscant",
+            "Reglamento de Protección Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "2",
+        "titulo_seccion": "ambito de aplicacion",
+        "seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "MED-003",
+        "titulo": "Principios Ambientales",
+        "texto": "Se basa en los principios de precaución, sostenibilidad intergeneracional, responsabilidad extendida del productor, participación ciudadana y equidad en el uso de recursos. Se prioriza la protección de ecosistemas y la salud pública. Las decisiones deben ser transparentes y basadas en evidencia científica. La educación ambiental es fundamental para fomentar una cultura de respeto y cuidado del medio ambiente. La cooperación entre el Gobierno, la comunidad y las empresas es esencial para lograr los objetivos ambientales. La innovación y el uso de tecnologías limpias son promovidos para mejorar la eficiencia y reducir el impacto ambiental.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Principios del Reglamento Ambiental",
+            "Normativa Ambiental Curoscant",
+            "Reglamento de Protección Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "2",
+        "titulo_seccion": "principios ambientales",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "principios"
+    },
+    {
+        "id": "MED-004",
+        "titulo": "Calidad del Aire",
+        "texto": "Se exige control de emisiones contaminantes (polvo, gases, humo). Las actividades industriales y vehículos públicos deberán ajustarse a los estándares de calidad del aire. Las industrias deben presentar planes de mitigación y remediación de contaminación atmosférica. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará el uso de tecnologías limpias y energías renovables para reducir la huella de carbono. Las comunidades afectadas por la contaminación del aire tendrán acceso a información y mecanismos de participación en la toma de decisiones. Se promoverán campañas de concienciación sobre la importancia de la calidad del aire y su impacto en la salud pública. La colaboración con universidades y centros de investigación será clave para desarrollar soluciones innovadoras. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus emisiones. La educación ambiental en escuelas y comunidades fomentará una cultura de respeto por el aire limpio.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Calidad del Aire Curoscant",
+            "Normativa de Emisiones Curoscant",
+            "Reglamento de Protección del Aire"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "3",
+        "titulo_seccion": "calidad del aire",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-005",
+        "titulo": "Gestión de Residuos Sólidos",
+        "texto": "Se establece la separación de residuos en orgánicos, reciclables y no valorizables, usando contenedores diferenciados y recogida específica. Los residuos peligrosos deben ser gestionados por empresas autorizadas, con trazabilidad y control. Las empresas deben presentar planes de gestión de residuos y cumplir con normativas de reducción y reciclaje. Se prohíbe la incineración de residuos sin autorización. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la correcta gestión de residuos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas recicladoras será clave para mejorar la eficiencia del sistema. Se promoverán iniciativas de economía circular para reducir la generación de residuos. La transparencia en la gestión de residuos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Gestión de Residuos Curoscant",
+            "Normativa de Residuos Sólidos Curoscant",
+            "Reglamento de Manejo de Residuos"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "4",
+        "titulo_seccion": "gestion de residuos solidos",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-006",
+        "titulo": "Prohibición de Vertidos",
+        "texto": "Prohíbe el vertido de residuos o sustancias en espacios públicos, cuerpos de agua, cauces o terrenos no autorizados. Las empresas deben presentar planes de gestión de vertidos y cumplir con normativas de tratamiento. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de evitar vertidos en espacios públicos y cuerpos de agua. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de residuos. Se promoverán iniciativas de limpieza comunitaria y recuperación de espacios degradados. La transparencia en la gestión de vertidos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Prohibición de Vertidos Curoscant",
+            "Normativa de Vertidos Curoscant",
+            "Reglamento de Protección de Espacios Públicos"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "5",
+        "titulo_seccion": "prohibicion de vertidos",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "prohibicion"
+    },
+    {
+        "id": "MED-007",
+        "titulo": "Reciclaje Obligatorio",
+        "texto": "Residencias, empresas y edificios públicos deben separar residuos reciclables. Los recicladores deben informar mensualmente los volúmenes procesados. Las autoridades establecerán puntos de acopio y promoverán campañas de concienciación. Se fomentará la educación ambiental sobre la importancia del reciclaje en escuelas y comunidades. La colaboración con organizaciones sociales y empresas recicladoras será clave para mejorar la eficiencia del sistema. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus residuos. La transparencia en la gestión de reciclaje será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Reciclaje Obligatorio Curoscant",
+            "Normativa de Reciclaje Curoscant",
+            "Reglamento de Manejo de Residuos Reciclables"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "6",
+        "titulo_seccion": "reciclaje obligatorio",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-008",
+        "titulo": "Compostaje Comunitario",
+        "texto": "Fomenta la creación de huertos comunitarios y puntos de compostaje, con apoyo técnico y reconocimiento a asociaciones. Las empresas deben presentar planes de gestión de compostaje y cumplir con normativas de tratamiento. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se promoverán iniciativas de educación ambiental sobre la importancia del compostaje en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de residuos orgánicos. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus residuos orgánicos. La transparencia en la gestión de compostaje será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Compostaje Comunitario Curoscant",
+            "Normativa de Compostaje Curoscant",
+            "Reglamento de Manejo de Residuos Orgánicos"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "7",
+        "titulo_seccion": "compostaje comunitario",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-009",
+        "titulo": "Responsabilidad del Productor",
+        "texto": "Proveedores deben implementar sistemas de devolución de envases y productos al final de su vida útil, financiando la logística requerida. Las empresas deben presentar planes de gestión de responsabilidad del productor y cumplir con normativas de responsabilidad extendida. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de la responsabilidad del productor en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de productos al final de su vida útil. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus residuos. La transparencia en la gestión de responsabilidad del productor será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Responsabilidad del Productor Curoscant",
+            "Normativa de Responsabilidad Extendida Curoscant",
+            "Reglamento de Manejo de Productos al Final de su Vida Útil"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "8",
+        "titulo_seccion": "responsabilidad del productor",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-010",
+        "titulo": "Reducción de Plásticos de un Solo Uso",
+        "texto": "Prohibido uso de plásticos desechables en eventos, mercados y comercio; se promueven alternativas reciclables o reutilizables. Los comercios deben presentar planes de reducción de plásticos y cumplir con normativas de sostenibilidad. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de reducir plásticos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de plásticos. Se establecerán incentivos para empresas que implementen prácticas sostenibles y reduzcan sus plásticos. La transparencia en la gestión de plásticos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Reducción de Plásticos Curoscant",
+            "Normativa de Plásticos de un Solo Uso Curoscant",
+            "Reglamento de Manejo de Plásticos"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "9",
+        "titulo_seccion": "reduccion de plastico",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-011",
+        "titulo": "Protección de Recursos Hídricos",
+        "texto": "Se prohíje la contaminación de ríos, lagos y drenajes. Industrias y obras deben presentar planes de tratamiento y remediación. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de proteger los recursos hídricos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del agua. Se promoverán iniciativas de conservación y restauración de ecosistemas acuáticos. La transparencia en la gestión de recursos hídricos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Protección de Recursos Hídricos Curoscant",
+            "Normativa de Agua Curoscant",
+            "Reglamento de Manejo de Recursos Hídricos"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "10",
+        "titulo_seccion": "proteccion de recursos hidro",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-012",
+        "titulo": "Contaminación Lumínica",
+        "texto": "Se regulan niveles y direccionamiento de luz artificial para evitar molestias y daño a ecosistemas nocturnos. Las instalaciones deben cumplir con normativas de eficiencia energética y reducción de contaminación lumínica. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de reducir la contaminación lumínica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de la luz artificial. Se promoverán iniciativas de diseño urbano que minimicen el impacto de la iluminación en ecosistemas nocturnos. La transparencia en la gestión de contaminación lumínica será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Contaminación Lumínica Curoscant",
+            "Normativa de Iluminación Curoscant",
+            "Reglamento de Manejo de Luz Artificial"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "11",
+        "titulo_seccion": "contaminacion lumínica",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-013",
+        "titulo": "Contaminación Acústica",
+        "texto": "Se limitan niveles de ruido según zonas y horarios. El incumplimiento podrá derivar en sanciones. Las actividades ruidosas deben cumplir con normativas de control y reducción de ruido. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de reducir la contaminación acústica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del ruido. Se promoverán iniciativas de diseño urbano que minimicen el impacto del ruido en ecosistemas urbanos. La transparencia en la gestión de contaminación acústica será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Contaminación Acústica Curoscant",
+            "Normativa de Ruido Curoscant",
+            "Reglamento de Manejo de Ruido"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "12",
+        "titulo_seccion": "contaminacion acustica",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-014",
+        "titulo": "Energías Renovables",
+        "texto": "Edificaciones nuevas y públicas deberán incorporar al menos 30% de su energía desde fuentes renovables en cinco años. Las empresas deben presentar planes de transición energética y cumplir con normativas de sostenibilidad. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de las energías renovables en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión energética. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de energías renovables será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Energías Renovables Curoscant",
+            "Normativa de Energías Limpias Curoscant",
+            "Reglamento de Manejo de Energía"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "13",
+        "titulo_seccion": "energías renovables",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-015",
+        "titulo": "Protección de Áreas Verdes",
+        "texto": "Parques, corredores biológicos y espacios comunitarios quedan bajo protección; la tala de especies nativas requiere autorización especial. Las autoridades realizarán monitoreos periódicos y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de las áreas verdes en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios verdes. Se promoverán iniciativas de reforestación y restauración de ecosistemas urbanos. La transparencia en la gestión de áreas verdes será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Protección de Áreas Verdes Curoscant",
+            "Normativa de Espacios Verdes Curoscant",
+            "Reglamento de Manejo de Áreas Naturales"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "14",
+        "titulo_seccion": "proteccion de areas verdes",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-016",
+        "titulo": "Fomento de Iniciativas Ciudadanas",
+        "texto": "Se ofrecen incentivos, subvenciones y reconocimiento a organizaciones sociales con proyectos ambientales. Las empresas deben presentar planes de desarrollo sostenible y cumplir con normativas de responsabilidad social. Las autoridades realizarán inspecciones periódicas y establecerán sanciones por incumplimiento. Se fomentará la educación ambiental sobre la importancia de las iniciativas ciudadanas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión ambiental. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de iniciativas ciudadanas será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Fomento de Iniciativas Ciudadanas Curoscant",
+            "Normativa de Proyectos Ambientales Curoscant",
+            "Reglamento de Participación Ciudadana"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "15",
+        "titulo_seccion": "fomento de iniciativas",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-017",
+        "titulo": "Educación Ambiental",
+        "texto": "Se realizan campañas informativas, talleres y educación en escuelas y lugares públicos. Los programas deben incluir temas de sostenibilidad, reciclaje, conservación y cambio climático. Las autoridades colaborarán con instituciones educativas y organizaciones sociales para implementar estas iniciativas. Se establecerán alianzas con empresas para promover prácticas sostenibles y reducir el impacto ambiental. La educación ambiental será un componente clave en la formación de ciudadanos responsables y comprometidos con el medio ambiente. Se fomentará la participación activa de la comunidad en proyectos ambientales locales. La transparencia en la gestión de programas educativos será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Educación Ambiental Curoscant",
+            "Normativa de Concienciación Ambiental Curoscant",
+            "Reglamento de Formación Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "16",
+        "titulo_seccion": "educacion ambiental",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-018",
+        "titulo": "Fiscalización Ambiental",
+        "texto": "La autoridad ambiental realizará inspecciones y determinará sanciones proporcionales según gravedad y daño. Las empresas deben presentar informes periódicos sobre sus actividades y cumplir con normativas ambientales. Las autoridades establecerán mecanismos de denuncia y participación ciudadana para fortalecer la fiscalización. Se fomentará la educación ambiental sobre la importancia de la fiscalización en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión ambiental. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de fiscalización ambiental será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Fiscalización Ambiental Curoscant",
+            "Normativa de Inspección Ambiental Curoscant",
+            "Reglamento de Control Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "17",
+        "titulo_seccion": "fiscalizacion ambiental",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "fiscalizacion"
+    },
+    {
+        "id": "MED-019",
+        "titulo": "Consejos Ambientales Comunitarios",
+        "texto": "Se conforman consejos locales para fomentar la gestión colaborativa y la presentación de propuestas al Gobierno. Los consejos estarán integrados por representantes de la comunidad, organizaciones sociales, empresas y autoridades locales. Se promoverá la participación activa de los ciudadanos en la toma de decisiones ambientales. Los consejos tendrán la facultad de proponer iniciativas, proyectos y programas para mejorar la calidad ambiental en sus territorios. La colaboración entre los consejos y el Gobierno será clave para implementar políticas públicas efectivas. Se fomentará la educación ambiental y la capacitación de los miembros de los consejos para fortalecer su labor. La transparencia en la gestión de los consejos ambientales será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Consejos Ambientales Comunitarios Curoscant",
+            "Normativa de Participación Comunitaria Curoscant",
+            "Reglamento de Gestión Ambiental Local"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "18",
+        "titulo_seccion": "consejos ambientales",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-020",
+        "titulo": "Transparencia Ambiental",
+        "texto": "Se publicará anualmente un informe de gestión con resultados, indicadores y sanciones. Los informes incluirán datos sobre la calidad del aire, gestión de residuos, uso de energías renovables, protección de áreas verdes y cumplimiento de normativas ambientales. Las autoridades establecerán mecanismos de acceso a la información y participación ciudadana en la elaboración de los informes. Se fomentará la educación ambiental sobre la importancia de la transparencia en la gestión pública. La colaboración con organizaciones sociales y empresas será clave para mejorar la transparencia y rendición de cuentas. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión ambiental será prioritaria, con informes públicos accesibles a toda la ciudadanía.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Transparencia Ambiental Curoscant",
+            "Normativa de Rendición de Cuentas Ambiental Curoscant",
+            "Reglamento de Información Ambiental Pública"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "19",
+        "titulo_seccion": "transparencia ambiental",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "obligación"
+    },
+    {
+        "id": "MED-021",
+        "titulo": "Cooperación Interinstitucional",
+        "texto": "Se facilitará el trabajo conjunto con universidades, ONG, empresas y centros de investigación. Las autoridades establecerán convenios y alianzas estratégicas para promover la investigación, desarrollo e implementación de tecnologías limpias y sostenibles. Se fomentará la capacitación y formación de profesionales en temas ambientales. La colaboración entre instituciones será clave para fortalecer la gestión ambiental y promover prácticas sostenibles en todos los sectores. Se promoverán iniciativas conjuntas para abordar desafíos ambientales locales y regionales. La transparencia en la gestión de la cooperación interinstitucional será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Cooperación Interinstitucional Curoscant",
+            "Normativa de Alianzas Estratégicas Curoscant",
+            "Reglamento de Colaboración Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "20",
+        "titulo_seccion": "cooperacion interinstitucional",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-022",
+        "titulo": "Revisión Trienal",
+        "texto": "El reglamento se revisará cada tres años para incorporar nuevas prácticas y avances tecnológicos. Las autoridades establecerán un proceso participativo para la revisión, que incluirá consultas públicas, talleres y reuniones con la comunidad, organizaciones sociales y empresas. Se fomentará la educación ambiental sobre la importancia de la revisión y actualización del reglamento en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión ambiental y promover prácticas sostenibles. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en el proceso de revisión será prioritaria, con informes públicos sobre las modificaciones propuestas y los resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Revisión Trienal Curoscant",
+            "Normativa de Actualización Ambiental Curoscant",
+            "Reglamento de Mejora Continua Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "21",
+        "titulo_seccion": "revision trienal",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-023",
+        "titulo": "Voluntariado Ambiental",
+        "texto": "Se habilitarán programas de voluntariado para limpieza, reforestación y monitoreo ecológico. Los voluntarios recibirán capacitación y reconocimiento por su labor. Las autoridades establecerán alianzas con organizaciones sociales, empresas y universidades para promover el voluntariado ambiental. Se fomentará la participación activa de la comunidad en proyectos ambientales locales. La colaboración entre los voluntarios y el Gobierno será clave para implementar políticas públicas efectivas. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión del voluntariado ambiental será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Voluntariado Ambiental Curoscant",
+            "Normativa de Participación Voluntaria Curoscant",
+            "Reglamento de Acción Comunitaria Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "22",
+        "titulo_seccion": "voluntariado ambiental",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-024",
+        "titulo": "Incentivos Económicos",
+        "texto": "Pequeñas subvenciones y beneficios tributarios se entregarán a iniciativas verdes comunitarias. Las empresas deben presentar planes de incentivo económico y cumplir con normativas de responsabilidad social. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos financiados. Se fomentará la educación ambiental sobre la importancia de los incentivos económicos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de iniciativas verdes. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de incentivos económicos será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Incentivos Económicos Curoscant",
+            "Normativa de Subvenciones Ambientales Curoscant",
+            "Reglamento de Apoyo Económico a Iniciativas Verdes"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "23",
+        "titulo_seccion": "incentivos economicos",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-025",
+        "titulo": "Huertos Urbanos",
+        "texto": "Se facilitará la creación de huertos urbanos en espacios públicos y equipamiento comunitario. Las empresas deben presentar planes de gestión de huertos y cumplir con normativas de responsabilidad social. Las autoridades establecerán mecanismos de apoyo técnico y recursos para la implementación de los huertos urbanos. Se fomentará la educación ambiental sobre la importancia de los huertos urbanos en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios verdes urbanos. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias. La transparencia en la gestión de huertos urbanos será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Huertos Urbanos Curoscant",
+            "Normativa de Espacios Verdes Urbanos Curoscant",
+            "Reglamento de Agricultura Urbana"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "24",
+        "titulo_seccion": "huertos urbanos",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-026",
+        "titulo": "Movilidad Sustentable",
+        "texto": "Se promueve el uso de transporte público, ciclismo y caminata; además de infraestructura segura y conectada. Las empresas deben presentar planes de gestión de movilidad y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de movilidad sustentable. Se fomentará la educación ambiental sobre la importancia de la movilidad sustentable en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del transporte urbano. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de movilidad sustentable será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Movilidad Sustentable Curoscant",
+            "Normativa de Transporte Urbano Curoscant",
+            "Reglamento de Infraestructura de Movilidad"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "25",
+        "titulo_seccion": "movilidad sostenible",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-027",
+        "titulo": "Gestión de Demolición",
+        "texto": "Restos de demolición deben separarse y destinarse a reciclaje o reutilización, con trazabilidad y control. Las empresas deben presentar planes de gestión de demolición y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de demolición. Se fomentará la educación ambiental sobre la importancia de la gestión de demolición en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de residuos de construcción. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de demolición será prioritaria, con informes públicos sobre volúmenes procesados y reciclados.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Gestión de Demolición Curoscant",
+            "Normativa de Residuos de Construcción Curoscant",
+            "Reglamento de Manejo de Escombros"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "26",
+        "titulo_seccion": "gestion de demolicion",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "gestion"
+    },
+    {
+        "id": "MED-028",
+        "titulo": "Construcción Ecológica",
+        "texto": "Nuevas edificaciones deberán cumplir estándares de eficiencia energética y utilización de materiales sostenibles. Las empresas deben presentar planes de gestión de construcción y cumplir con normativas de responsabilidad social y sustentabilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de construcción ecológica. Se fomentará la educación ambiental sobre la importancia de la construcción ecológica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de edificaciones sostenibles. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de construcción ecológica será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Construcción Ecológica Curoscant",
+            "Normativa de Edificaciones Sostenibles Curoscant",
+            "Reglamento de Infraestructura Verde"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "27",
+        "titulo_seccion": "construccion ecologica",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-029",
+        "titulo": "Espacios Pegados a Zonas Naturales",
+        "texto": "Las construcciones cerca de ecosistemas deben incorporar medidas de protección y amortiguamiento ambiental. Las empresas deben presentar planes de gestión de espacios pegados y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos en estas áreas. Se fomentará la educación ambiental sobre la importancia de proteger los ecosistemas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios naturales. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de espacios pegados a zonas naturales será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Espacios Pegados a Zonas Naturales Curoscant",
+            "Normativa de Protección de Ecosistemas Curoscant",
+            "Reglamento de Manejo de Áreas Naturales"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "28",
+        "titulo_seccion": "espacios pegados a zonas naturales",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-030",
+        "titulo": "Protección de Fauna Urbana",
+        "texto": "Se prohíbe el uso de cebos tóxicos y se fomenta la coexistencia con especies urbanas. Las empresas deben presentar planes de gestión de fauna urbana y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de protección de fauna. Se fomentará la educación ambiental sobre la importancia de la fauna urbana en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de la fauna urbana. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de fauna urbana será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Protección de Fauna Urbana Curoscant",
+            "Normativa de Conservación de Especies Urbanas Curoscant",
+            "Reglamento de Manejo de Vida Silvestre Urbana"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "29",
+        "titulo_seccion": "proteccion de fauna urbana",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-031",
+        "titulo": "Control de Plagas",
+        "texto": "Se establece un plan de control integrado de plagas con técnicas ecológicas. Las empresas deben presentar planes de gestión de plagas y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de control de plagas. Se fomentará la educación ambiental sobre la importancia del control de plagas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de plagas urbanas. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión del control de plagas será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Control de Plagas Curoscant",
+            "Normativa de Manejo de Plagas Urbanas Curoscant",
+            "Reglamento de Protección de Salud Pública"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "30",
+        "titulo_seccion": "control de plagas",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "control"
+    },
+    {
+        "id": "MED-032",
+        "titulo": "Gestión de Áreas Protegidas",
+        "texto": "Se identifican áreas protegidas la República con criterios ecológicos y culturales. Las actividades en estas áreas deben cumplir con normativas de conservación y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos en áreas protegidas. Se fomentará la educación ambiental sobre la importancia de las áreas protegidas en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión de espacios naturales. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de áreas protegidas será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Gestión de Áreas Protegidas Curoscant",
+            "Normativa de Conservación de Espacios Naturales Curoscant",
+            "Reglamento de Manejo de Áreas Protegidas"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "31",
+        "titulo_seccion": "gestion de areas protegidas",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-033",
+        "titulo": "Educación Continua",
+        "texto": "Se realizarán capacitaciones periódicas a funcionarios, comerciantes y vecinos sobre el reglamento. Las autoridades establecerán programas de formación y actualización en temas ambientales. Se fomentará la educación ambiental sobre la importancia de la capacitación continua en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión del conocimiento ambiental. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de la educación continua será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Educación Continua Curoscant",
+            "Normativa de Capacitación Ambiental Curoscant",
+            "Reglamento de Formación y Actualización Ambiental"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "32",
+        "titulo_seccion": "educacion continua",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "educacion"
+    },
+    {
+        "id": "MED-034",
+        "titulo": "Sostenibilidad Económica",
+        "texto": "Se promoverá circularidad y modelos empresariales verdes que integren producción y reciclaje. Las empresas deben presentar planes de sostenibilidad económica y cumplir con normativas de responsabilidad social y sostenibilidad. Las autoridades establecerán mecanismos de evaluación y seguimiento de los proyectos de sostenibilidad económica. Se fomentará la educación ambiental sobre la importancia de la sostenibilidad económica en escuelas y comunidades. La colaboración con organizaciones sociales y empresas será clave para mejorar la gestión económica sostenible. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión de sostenibilidad económica será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Sostenibilidad Económica Curoscant",
+            "Normativa de Economía Circular Curoscant",
+            "Reglamento de Modelos Empresariales Verdes"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "33",
+        "titulo_seccion": "sostenibilidad economica",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "MED-035",
+        "titulo": "Vigencia y Derogación",
+        "texto": "Entra en vigencia al día siguiente de su publicación y deroga normas anteriores incompatibles. Las autoridades deberán garantizar la difusión y comprensión del reglamento entre la población. Se establecerán mecanismos de revisión y actualización periódica del reglamento para adaptarlo a nuevas realidades y avances tecnológicos. La colaboración con organizaciones sociales y empresas será clave para asegurar la implementación efectiva del reglamento. Se promoverán iniciativas de investigación y desarrollo en tecnologías limpias y sostenibles. La transparencia en la gestión del reglamento será prioritaria, con informes públicos sobre actividades realizadas y resultados obtenidos.",
+        "fuente": "Reglamento Ambiental Curoscant 2025",
+        "alias": [
+            "Vigencia y Derogación Curoscant",
+            "Normativa de Entrada en Vigencia Curoscant",
+            "Reglamento de Aplicación y Modificaciones"
+        ],
+        "doc": "Reglamento Medio Ambiente",
+        "decreto": "127",
+        "articulo": "34",
+        "titulo_seccion": "vigencia y derogacion",
+        "seccion": "Titulo 2",
+        "tipo_fragmento": "duración"
+    }
 ]

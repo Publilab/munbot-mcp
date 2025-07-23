@@ -3,7 +3,8 @@
         "Id": "MAI-001",
         "Nombre_Ministerio": "Ministerio de Asuntos Internos",
         "Descripcion_Ministerio": "El Ministerio de Asuntos Internos es responsable de la administración interna de la República Galáctica, asegurando la cohesión y cooperación entre los sistemas estelares miembros.",
-        "Funcion": ["Las principales funciones del ministerio de Asuntos Internos son",
+        "Funcion": [
+            "Las principales funciones del ministerio de Asuntos Internos son",
             "Supervisar la implementación de políticas internas.",
             "Coordinar con los gobiernos planetarios y regionales.",
             "Gestionar el registro y documentación de ciudadanos.",
@@ -24,7 +25,8 @@
         "Id": "MAI-002",
         "Nombre_Ministerio": "Ministerio de Comercio y Economía Galáctica",
         "Descripcion_Ministerio": "El Ministerio de Comercio y Economía Galáctica regula las actividades comerciales y económicas entre los sistemas estelares, promoviendo el desarrollo económico sostenible.",
-        "Funcion": ["Las principales funciones del Ministerio de Comercio y Economía Galáctica son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Comercio y Economía Galáctica son",
             "Regular el comercio interplanetario.",
             "Fomentar la inversión y el desarrollo económico.",
             "Supervisar las políticas fiscales y monetarias.",
@@ -35,7 +37,7 @@
         "Contacto": {
             "Telefono": "COM-987-6543",
             "Correo_Electronico": "min.comercioeconomia@coruscant.sw"
-            },
+        },
         "Direccion": "Edificio del Comercio Galáctico, Distrito Financiero Coruscant",
         "deptos_subordinados": [
             "Departamento de Regulación Comercial",
@@ -46,7 +48,8 @@
         "Id": "MDG-003",
         "Nombre_Ministerio": "Ministerio de Defensa Galáctica",
         "Descripcion_Ministerio": "El Ministerio de Defensa Galáctica es responsable de la protección y defensa de la República Galáctica contra amenazas internas y externas. Colabora estrechamente con las Fuerzas Armadas y la Orden Jedi para garantizar la seguridad de los sistemas estelares.",
-        "Funcion": [ "Las principales tareas del Ministerio de Defensa Galáctica son:",
+        "Funcion": [
+            "Las principales tareas del Ministerio de Defensa Galáctica son:",
             "Supervisar las Fuerzas Armadas de la República.",
             "Coordinar con la Orden Jedi para misiones de seguridad.",
             "Implementar estrategias de defensa y seguridad.",
@@ -61,13 +64,14 @@
         "deptos_subordinados": [
             "Departamento de Estrategia Militar",
             "Departamento de Logística y Abastecimiento"
-            ]
+        ]
     },
     {
         "Id": "MEI-004",
         "Nombre_Ministerio": "Ministerio de Educación e Instrucción",
         "Descripcion_Ministerio": "El Ministerio de Educación e Instrucción se encarga de la formación y educación de los ciudadanos galácticos, promoviendo el conocimiento y la cultura en todos los sistemas estelares.",
-        "Funcion": ["Las principales funciones del Ministerio de Educación e Instrucción son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Educación e Instrucción son",
             "Desarrollar políticas educativas galácticas.",
             "Supervisar instituciones educativas en todos los sistemas.",
             "Promover la investigación y el desarrollo cultural.",
@@ -89,7 +93,8 @@
         "Id": "MEC-005",
         "Nombre_Ministerio": "Ministerio de Exploración y Colonización",
         "Descripcion_Ministerio": "El Ministerio de Exploración y Colonización se encarga de la exploración de nuevos sistemas estelares y la colonización de planetas, promoviendo la expansión pacífica de la República Galáctica.",
-        "Funcion": ["Las principales funciones del Ministerio de Exploración y Colonización son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Exploración y Colonización son",
             "Coordinar expediciones de exploración espacial.",
             "Planificar y ejecutar misiones de exploración.",
             "Facilitar la colonización de nuevos planetas.",
@@ -111,7 +116,8 @@
         "Id": "MJO-006",
         "Nombre_Ministerio": "Ministerio de Justicia y Orden Público",
         "Descripcion_Ministerio": "El Ministerio de Justicia y Orden Público es responsable de mantener la ley y el orden en la República Galáctica, asegurando que se respeten los derechos de los ciudadanos y se aplique la justicia de manera equitativa.",
-        "Funcion": ["Las principales funciones del Ministerio de Justicia y Orden Público son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Justicia y Orden Público son",
             "Administrar el sistema judicial galáctico.",
             "Supervisar las fuerzas de seguridad y policía galáctica.",
             "Coordinar con los tribunales y fiscales galácticos.",
@@ -129,10 +135,12 @@
             "Departamento de Administración de Justicia"
         ]
     },
-    {   "Id": "MRI-007",
+    {
+        "Id": "MRI-007",
         "Nombre_Ministerio": "Ministerio de Relaciones Intergalácticas",
         "Descripcion_Ministerio": "El Ministerio de Relaciones Intergalácticas se encarga de las relaciones diplomáticas y políticas entre la República Galáctica y otras entidades galácticas, promoviendo la paz y la cooperación intergaláctica.",
-        "Funcion": ["Las principales funciones del Ministerio de Relaciones Intergalácticas son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Relaciones Intergalácticas son",
             "Gestionar las relaciones diplomáticas con otras entidades galácticas.",
             "Promover tratados y acuerdos intergalácticos.",
             "Coordinar misiones diplomáticas y embajadas.",
@@ -154,7 +162,8 @@
         "Id": "MSB-008",
         "Nombre_Ministerio": "Ministerio de Salud y Bienestar",
         "Descripcion_Ministerio": "El Ministerio de Salud y Bienestar es responsable de la salud pública y el bienestar de los ciudadanos galácticos, asegurando el acceso a servicios de salud y promoviendo políticas de bienestar social.",
-        "Funcion": ["Las principales funciones del Ministerio de Salud y Bienestar son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Salud y Bienestar son",
             "Supervisar el sistema de salud galáctico.",
             "Coordinar servicios médicos y de emergencia.",
             "Promover políticas de salud pública y prevención de enfermedades.",
@@ -176,7 +185,8 @@
         "Id": "MTC-009",
         "Nombre_Ministerio": "Ministerio de Tecnología y Ciencia",
         "Descripcion_Ministerio": "El Ministerio de Tecnología y Ciencia es responsable de la investigación científica y el desarrollo tecnológico en la República Galáctica, promoviendo la innovación y el avance científico.",
-        "Funcion": ["Las principales funciones del Ministerio de Tecnología y Ciencia son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Tecnología y Ciencia son",
             "Fomentar la investigación científica y tecnológica.",
             "Coordinar proyectos de investigación intergalácticos.",
             "Promover la innovación y el desarrollo tecnológico.",
@@ -198,7 +208,8 @@
         "Id": "MTC-010",
         "Nombre_Ministerio": "Ministerio de Transporte y Transporte Espacial",
         "Descripcion_Ministerio": "El Ministerio de Transporte y Transporte Espacial es responsable de la infraestructura de transporte y las redes de transporte espacial en la República Galáctica, asegurando la conectividad entre los sistemas estelares.",
-        "Funcion": ["Las principales funciones del Ministerio de Transporte y Transporte Espacial son",
+        "Funcion": [
+            "Las principales funciones del Ministerio de Transporte y Transporte Espacial son",
             "Supervisar las redes de transporte galáctico.",
             "Coordinar el transporte espacial y las rutas comerciales.",
             "Promover la seguridad en el transporte espacial.",
@@ -219,4 +230,3 @@
         ]
     }
 ]
-

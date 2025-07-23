@@ -1,515 +1,513 @@
 [
-  {
-    "id": "ASOC-001",
-    "titulo": "Manual de Procedimientos para Ayudas Sociales",
-    "texto": "Regula la entrega de ayudas sociales y económicas a personas vulnerables en el Gobierno de Curoscant. Establece procedimientos, beneficiarios, tipos de ayuda, causales de negación y las bases legales para su ejecución.",
-    "fuente": "Decreto N° 1457/2017",
-    "alias": [
-      "ayudas económicas vulnerables",
-      "beneficiarios ayudas sociales",
-      "tipos de ayuda social",
-      "criterios negación ayuda",
-      "bases legales ayuda social",
-      "regulación ayudas sociales"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "",
-    "fecha": "2017",
-    "seccion": "titulo 1",
-    "titulo_seccion": "generalidades",
-    "tipo_fragmento": "generalidades"
-  },
-  {
-    "id": "ASOC-002",
-    "titulo": "Definición de Ayuda Social",
-    "texto": "Se entenderá como 'Ayuda Social' aquella que consiste en la asistencia directa y específica dirigida a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarle los medios indispensables para su bienestar.",
-    "fuente": "Decreto N° 1457/2017",
-    "alias": [
-      "definición ayuda social"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "4",
-    "fecha": "2017",
-    "seccion": "titulo 1",
-    "titulo_seccion": "generalidades",
-    "tipo_fragmento": "descripción"
-  },
     {
-    "id": "ASOC-003",
-    "titulo": "Características de la Ayuda Social",
-    "texto": "El Gobierno de Curoscant podrá otorgar beneficios por concepto de Ayuda Social, tanto en dinero como en bienes y servicios. Las ayudas sociales son de carácter excepcional, transitorio y complementario, y se otorgarán a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarle los medios indispensables para su bienestar. Las ayudas sociales no constituyen un derecho adquirido ni una obligación del Gobierno de Curoscant, sino que son una medida de apoyo a las personas y familias en situación de vulnerabilidad.",
-    "fuente": "Decreto N° 1457/2017",
-    "alias": [
-      "tipos ayudas sociales"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "5",
-    "fecha": "2017",
-    "seccion": "titulo 1",
-    "titulo_seccion": "generalidades",
-    "tipo_fragmento": "definición"
-  },
-
-  {
-    "id": "ASOC-004",
-    "titulo": "¿Quiénes pueden recibir ayudas sociales?",
-    "texto": "Son beneficiarios todos los habitantes y familias de Curoscant en alguno de estos estados individuales: a) Indigencia (carencia absoluta de medios para subsistir), b) Pertenencia al 40% de menores ingresos o vulnerabilidad según Registro Imperial de Ciudadanos (RIC), c) Estado de necesidad manifiesta acreditado por Asistente Social, d) Personas o familias afectadas por siniestros o catástrofes naturales. Tendrán prioridad adultos mayores, mujeres jefas de hogar, madres solteras, adolescentes embarazadas, niños/as, jóvenes, personas con discapacidad y pueblos originarios.",
-    "fuente": "Artículos 6",
-    "alias": [
-      "beneficiarios ayudas sociales",
-      "ayuda personas vulnerables",
-      "familias vulnerables curoscant",
-      "indigencia RIC",
-      "prioridad adultos mayores",
-      "acreditación de estado apto para recibir la ayuda social",
-      "beneficios mujeres jefas hogar",
-      "familias siniestro ayuda social"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "6",
-    "fecha": "2017",
-    "seccion": "titulo 2",
-    "titulo_seccion": "de los usuarios y/o beneficiarios",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ASOC-005",
-    "titulo": "Prioridad de las ayudas sociales",
-    "texto": "Independiente de lo señalado en el artículo precedente, la asignación de recursos de este Municipio privilegiará a los grupos definidos como prioritarios, vale decir personas Adultos Mayores, Mujeres Jefas de Hogar, madres solteras, adolescentes embarazadas, Niños/as y Jóvenes, personas en situación de Discapacidad y Pueblos Originarios que se encuentren en los estados señalados en el artículo seis.",
-    "fuente": "Artículo 7",
-    "alias": [
-      "tipos de ayudas sociales",
-      "clasificación ayudas sociales",
-      "ayuda alimentos funerarios salud",
-      "prestaciones pasajes vivienda",
-      "beneficios adicionales sociales",
-      "ayuda útiles escolares",
-      "prestación vestuario adultos mayores"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "7",
-    "fecha": "2017",
-    "seccion": "titulo 2",
-    "titulo_seccion": "de los usuarios y/o beneficiarios",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ASOC-006",
-    "titulo": "Clasificación de ayudas sociales",
-    "texto": "Las ayudas sociales se clasifican en: 1) Alimentos: Bolsa de alimentos. 2) Servicios funerarios: aporte para cementerio o servicios funerarios. 3) Prestación de salud: atención médica, exámenes, medicamentos, lentes ópticos, ayudas técnicas. 4) Prestación de pasajes: traslados por motivos médicos, legales o sociales. 5) Prestación de vivienda: materiales de construcción. 6) Otros: pañales, vestuario, suplemento alimenticio, útiles escolares, pago de servicios, agua en camión aljibe, entrega de estanque.",
-    "fuente": "Artículo 8",
-    "alias": [
-      "tipos de ayudas sociales",
-      "ayuda alimentos funerarios salud",
-      "prestaciones pasajes vivienda",
-      "beneficios adicionales sociales",
-      "ayuda útiles escolares",
-      "prestación vestuario adultos mayores"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "8",
-    "fecha": "2017",
-    "seccion": "titulo 3",
-    "titulo_seccion": "de los beneficios otorgados como ayudas sociales",
-    "tipo_fragmento": "clasificación"
-  },
-  {
-    "id": "ASOC-007",
-    "titulo": "Bolsa de alimentos",
-    "texto": "Ayuda Social - Bolsa de alimentos: Entrega de alimentos a familias indigentes, en estado de necesidad manifiesta o en el 40% de menores ingresos según el RIC. Si no cumplen el 40%, pueden acreditar necesidad ante la Asistente Social. Se proveerá de alimentos a las familias indigentes y/o que se encuentren en estado de necesidad manifiesta, o que su hogar sea calificado en el 40% de menores ingresos o mayor vulnerabilidad socioeconómica, según Cartela Hogar del Registro social de Hogares (RSH) cuyo beneficio consistirá en la entrega de una bolsa de alimentos. Si no contara con R.S.H, o fuera mayor a 40%, acreditar a través de Asistente Social estado de Necesidad manifiesta. Procedimiento de entrega de Caja de Mercadería: 1) Solicitud de alimentos ingresada por oficina de partes a través de carta o por presentación ante la Asistente Social; 2) Cartola del Registro Social de Hogares que acredite residencia y vulnerabilidad del usuario solicitante; 3) Certificado Social emitido por el Profesional Competente donde se acredite la presencia de cualquier situación señalada en el artículo no 6 y no 7 del presente reglamento; 4) Firma de recepción de entrega de ayuda social (recibo de especies) La ayuda se entregará directamente al solicitante.",
-    "requisitos": [
-      "Solicitud ingresada por oficina de partes ante Asistente Social.",
-      "Cartola del Registro Imperial de Ciudadanos que acredite residencia y vulnerabilidad.",
-      "Certificado Social que acredite condición señalada en los artículos 6 y 7.",
-      "Firma de recepción de ayuda social.",
-      "Entrega directa al solicitante."
-    ],
-    "fuente": "Artículo 9",
-    "alias": [
-      "bolsa de alimentos curoscant",
-      "ayuda alimentaria indigentes",
-      "requisitos bolsa alimentos",
-      "ayuda alimentaria RIC",
-      "entrega directa alimentos",
-      "asistente social alimentos"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "9",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-008",
-    "titulo": "Aporte funerario y cementerio",
-    "texto": "Ayuda Social - Aporte funerario y cementerio: Aporte económico para gastos de cementerio o adquisición de servicios funerarios, cuando no exista beneficio de cuota mortuoria. El Gobierno también dispone de nichos en préstamo por hasta seis meses. Consiste en aportar económicamente para entrada al Cementerio y en casos determinados para aporte adquisición del servicio funerario y /o que no posean beneficio de cuota mortuoria. Procedimientos de Entrega de Ayudas Sociales. El procedimiento para la entrega de este beneficio: 1) Solicitud de aporte funerario ingresada por oficina de partes o por presentación ante la Asistente Social; 2) Informe Social. (Verificación de cuota mortuoria; 3) Certificado de defunción; 4) La ayuda económica se entregara directamente al familiar que realice el trámite y acredite tal calidad; 5) Rendir el comprobante de pago. Cabe en este artículo, mencionar que el Municipio cuenta con nichos, en caso que las familias lo requieran para préstamo, no superior a los seis meses.",
-    "requisitos": [
-      "Solicitud ingresada por oficina de partes o ante Asistente Social.",
-      "Informe social y verificación de cuota mortuoria.",
-      "Certificado de defunción.",
-      "Entrega directa al familiar responsable.",
-      "Rendición de comprobante de pago."
-    ],
-    "fuente": "Artículo 10",
-    "alias": [
-      "aporte funerario curoscant",
-      "ayuda cementerio",
-      "requisitos aporte funerario",
-      "nichos en préstamo",
-      "servicios funerarios sociales",
-      "certificado de defunción ayuda"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "10",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-009",
-    "titulo": "Monto de ayudas",
-    "texto": "El monto de ayudas de alimentos y funerarias será definido por evaluación social del Departamento de Bienestar Social. El monto asignado en lo que respecta a cualquiera de los dos tipos de ayuda establecidos en los artículos anteriores (artículo Nº9 y articulo Nº 10), será según evaluación social que realice el profesional del Departamento Social.",
-    "fuente": "Artículo 11",
-    "alias": [
-      "monto ayudas sociales",
-      "evaluación social curoscant",
-      "definición monto alimentos",
-      "ayudas funerarias monto",
-      "bienestar social evaluación"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "11",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "monto"
-  },
-  {
-    "id": "ASOC-010",
-    "titulo": "Atenciones de salud, medicamentos, ayudas técnicas",
-    "texto": "Se otorgan ayudas para atenciones médicas, exámenes, operaciones, medicamentos, audífonos, lentes ópticos y otras ayudas técnicas a quienes no puedan resolver su situación en la red de salud pública. En relación a las Atenciones de especialidades médicas, exámenes médicos, aporte para operación, aportes para la compra de medicamentos, aporte para audífonos y lentes ópticos y aporte para otras ayudas técnicas. Éstos se realizaran a las personas que se encuentren en los estados señalados en el art. 6o de este reglamento y que no puedan resolver su situación a través de la red de salud pública. El procedimiento para la entrega de este beneficio, será: a) Ingresar solicitud por oficina de partes por atención médica y/o exámenes médicos, aporte para operación o aporte para compra de medicamentos, aporte para compra de audífonos, lentes u otras ayudas técnicas, según corresponda y o atención en oficina del depto. Social. b) Certificado Médico donde se indique patología o diagnóstico que afecta al usuario en cuestión para todos los casos señalados en la letra A del presente artículo. c) Presupuesto y cotización según requerimiento emitido por la institución de salud correspondiente. d) Informe Social emitido por Profesional del Departamento de Salud Municipal que acredite que la red de salud pública no cubre el servicio o no otorga la prestación requerida por el usuario, esto aplica para todos los casos señalados en la letra A del presente artículo. e) Receta según corresponda. f) Atención de la persona, visita si corresponde y tramitación de la solicitud",
-    "requisitos": [
-      "Solicitud por oficina de partes o atención en Departamento Bienestar Social.",
-      "Certificado médico con diagnóstico.",
-      "Presupuesto/cotización emitida por la institución de salud.",
-      "Informe Social que acredite imposibilidad de solución en red pública.",
-      "Receta médica, si corresponde.",
-      "Visita y tramitación por la Asistente Social."
-    ],
-    "fuente": "Artículo 12",
-    "alias": [
-      "ayudas salud curoscant",
-      "atenciones médicas ayudas",
-      "medicamentos ayudas sociales",
-      "ayudas técnicas curoscant",
-      "requisitos atención salud",
-      "asistente social salud"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "12",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-011",
-    "titulo": "Aporte en pasajes",
-    "texto": "Aporte para pago de pasajes para usuarios que deban viajar a controles médicos, tribunales, centros de rehabilitación u otros, fuera del sector planetario. La prestación de pasajes está destinada al aporte para pago de pasajes de usuarios que tengan horas y controles médicos y/o profesionales, o que tengan que asistir a exámenes, tribunales, centros de rehabilitación, hogares de niños/as o ancianos, recintos penitenciarios o establecimientos de educación ubicados fuera del sistema planetario. Lo anterior, para aquellas personas que se encuentren en los estados mencionados en el art. 6o de este reglamento de procedimientos y que estén en una de las siguientes situaciones: a) Ser derivado por un médico a un centro de salud ubicado fuera de la comuna, debiendo presentar orden médica o interconsulta, comprobante de citación u orden de exámenes. b) Presentar una enfermedad que requiera de controles con especialista, debiendo presentar la citación correspondiente. c) Presentar documentos que acredite la citación a tribunales, si corresponde. d) Presentar documentos que acredite citación a centro de rehabilitación.",
-    "requisitos": [
-      "Derivación médica u orden de exámenes.",
-      "Comprobante de citación.",
-      "Documentos que acrediten citación a tribunales o centros de rehabilitación, si corresponde."
-    ],
-    "fuente": "Artículos 13",
-    "alias": [
-      "aporte pasajes curoscant",
-      "ayuda pasajes médicos",
-      "requisitos aporte pasajes",
-      "viajes tribunales rehabilitación",
-      "asistente social pasajes"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "13",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-012",
-    "titulo": "Aporte en pasajes",
-    "texto": "Se le entregará pasajes solo al beneficiario que requiere la hora y en casos justificados se le entregará este beneficio al acompañante según grado de dependencia y situación socioeconómica que presente la familia, siempre y cuando el servicio de salud no realice aporte. Se priorizara primero a la persona afectada, luego al acompañante.",
-    "fuente": "Artículos 14",
-    "alias": [
-      "entrega dinero traslado",
-      "ayuda monetaria pasajes"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "14",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ASOC-013",
-    "titulo": "Aporte en materiales de construcción",
-    "texto": "Entrega de materiales de construcción para mejoramiento de vivienda, solo en caso de deterioro visible o hacinamiento.",
-    "requisitos": [
-      "Solicitud por oficina de partes.",
-      "Acreditar residencia mínima de 2 años mediante RIC.",
-      "Ser propietario o tener autorización del propietario.",
-      "Escritura o contrato de arriendo.",
-      "Cédula de Identidad.",
-      "Informe Social.",
-      "Certificado de recepción de la ayuda."
-    ],
-    "fuente": "Artículo 15",
-    "alias": [
-      "aporte materiales construcción",
-      "mejoramiento vivienda curoscant",
-      "requisitos aporte vivienda",
-      "residencia mínima 2 años",
-      "ayuda construcción social",
-      "asistente social vivienda"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "15",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "requisitos"
-  },
-  {
-    "id": "ASOC-014",
-    "titulo": "Ayuda en pañales adultos y niños/as",
-    "texto": "Máximo 2 paquetes mensuales. Para adultos mayores postrados, según lista del Ministerio de Salud y evaluación profesional. Para niños menores de 2 años, solo por hospitalización y con documento que acredite el estado.",
-    "fuente": "Artículo 16",
-    "alias": [
-      "ayuda pañales curoscant",
-      "pañales adultos mayores",
-      "pañales niños hospitalizados",
-      "requisitos ayuda pañales",
-      "asistente social pañales"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "16",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ASOC-015",
-    "titulo": "Ayuda en vestuario infantil y adulto mayor",
-    "texto": "Aporte para vestuario básico a niños menores de 12 años de familias vulnerables y adultos mayores. Monto máximo: 2 U.T.M.",
-    "fuente": "Artículo 17",
-    "alias": [
-      "ayuda vestuario curoscant",
-      "vestuario infantil social",
-      "vestuario adulto mayor",
-      "requisitos ayuda vestuario",
-      "asistente social vestuario"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "17",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-016",
-    "titulo": "Suplemento alimenticio",
-    "texto": "Ayuda para personas que no puedan resolver su situación a través de la red de salud pública.",
-    "requisitos": [
-      "Solicitud por oficina de partes o ante Asistente Social.",
-      "Certificado médico o diagnóstico.",
-      "Receta que indique suplemento.",
-      "Informe Social.",
-      "Cotización de suplemento."
-    ],
-    "fuente": "Artículo 18",
-    "alias": [
-      "suplemento alimenticio curoscant",
-      "ayuda suplemento salud",
-      "requisitos suplemento alimenticio",
-      "asistente social suplemento",
-      "ayuda nutricional social"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "18",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-017",
-    "titulo": "Entrega de agua mediante camión aljibe",
-    "texto": "Entrega de agua a personas vulnerables o que cumplan con residencia mínima de 18 meses y vulnerabilidad según el RIC. Se requiere estanque propio y en buen estado.",
-    "fuente": "Artículo 19",
-    "alias": [
-      "entrega agua camión aljibe",
-      "ayuda agua curoscant",
-      "requisitos entrega agua",
-      "residencia mínima 18 meses",
-      "vulnerabilidad RIC agua",
-      "asistente social agua"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "19",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-018",
-    "titulo": "Entrega de estanque de agua",
-    "texto": "Entrega de estanque a personas sin otro estanque, con residencia mínima de 2 años y vulnerabilidad según el RIC.",
-    "fuente": "Artículo 20",
-    "alias": [
-      "entrega estanque agua",
-      "ayuda estanque curoscant",
-      "requisitos entrega estanque",
-      "residencia mínima 2 años",
-      "vulnerabilidad RIC estanque",
-      "asistente social estanque"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "20",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ASOC-019",
-    "titulo": "Procedimiento general de solicitud y entrega",
-    "texto": "Todas las ayudas se solicitan por oficina de partes o atención en el Departamento Bienestar Social. Se verifica la situación mediante entrevista y, si procede, visita domiciliaria. Luego se emite informe social y se solicita aprobación al Jefe de Gobierno. Tras la autorización y validación presupuestaria, el solicitante retira el beneficio con su cédula de identidad en Tesorería del Gobierno. Cada ayuda debe ser rendida antes de poder solicitar otra. El plazo promedio de entrega es de siete días hábiles.",
-    "fuente": "Artículo 21",
-    "alias": [
-      "procedimiento solicitud ayuda",
-      "entrega ayudas sociales",
-      "requisitos solicitud ayuda",
-      "verificación situación social",
-      "informe social curoscant",
-      "aprobación jefe de gobierno",
-      "tesorería entrega ayuda"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "21",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "procedimiento"
-  },
-  {
-    "id": "ASOC-020",
-    "titulo": "Causales de negación al beneficio asistencial",
-    "texto": "Se negará el beneficio en los siguientes casos: a) No pertenecer a la comuna o no tener Registro Imperial de Ciudadanos y/o menos de un año de residencia, b) Vender, regalar o no utilizar la ayuda otorgada, c) Falsear u omitir información requerida, d) No participar activamente en la solución del problema, e) Otras incompatibilidades legales.",
-    "fuente": "Artículo 22",
-    "alias": [
-      "causales negación ayuda",
-      "rechazo solicitud social",
-      "incompatibilidades legales ayuda",
-      "falsificación información ayuda",
-      "no residencia curoscant",
-      "venta regalo ayuda social"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "22",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "procedimiento"
-  },
-  {
-    "id": "ASOC-021",
-    "titulo": "Rendición y control de ayudas sociales",
-    "texto": "Toda ayuda entregada debe ser rendida mediante comprobantes, facturas, boletas o documentación respaldatoria. El incumplimiento en la rendición impide nuevas solicitudes hasta regularizar la situación. El Departamento de Bienestar Social lleva registro y control de todas las ayudas sociales otorgadas.",
-    "fuente": "Manual de Procedimientos para Ayudas Sociales, Gobierno de Curoscant",
-    "alias": [
-      "rendición ayudas sociales",
-      "control ayudas curoscant",
-      "documentación respaldatoria ayuda",
-      "incumplimiento rendición",
-      "registro ayudas sociales",
-      "asistente social rendición"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "23",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "procedimiento"
-  },
-  {
-    "id": "ASOC-022",
-    "titulo": "Supervisión y fiscalización",
-    "texto": "El Jefe de Gobierno y el Departamento de Bienestar Social están facultados para supervisar y fiscalizar el cumplimiento de los procedimientos y requisitos en la entrega de ayudas sociales. Cualquier irregularidad detectada será informada y sancionada según la normativa vigente.",
-    "fuente": "Manual de Procedimientos para Ayudas Sociales, Gobierno de Curoscant",
-    "alias": [
-      "supervisión ayudas sociales",
-      "fiscalización curoscant",
-      "cumplimiento procedimientos ayuda",
-      "irregularidades ayudas sociales",
-      "sanciones normativa vigente",
-      "asistente social supervisión"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "24",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "fizcalización"
-  },
-  {
-    "id": "ASOC-023",
-    "titulo": "Observaciones generales",
-    "texto": "Las solicitudes deben ser fundadas y todos los antecedentes presentados serán revisados por el equipo profesional del Gobierno de Curoscant. La falsificación de antecedentes o entrega de información incompleta puede ser causal de negación o anulación del beneficio.",
-    "fuente": "Manual de Procedimientos para Ayudas Sociales, Gobierno de Curoscant",
-    "alias": [
-      "observaciones ayudas sociales",
-      "antecedentes solicitud ayuda",
-      "falsificación antecedentes ayuda",
-      "información incompleta ayuda",
-      "negación anulación beneficio",
-      "asistente social observaciones"
-    ],
-    "doc": "Manual de Procedimientos para Ayudas Sociales",
-    "decreto": "1457",
-    "articulo": "25",
-    "fecha": "2017",
-    "seccion": "titulo 4",
-    "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
-    "tipo_fragmento": "penalización"
-  }
+        "id": "ASOC-001",
+        "titulo": "Manual de Procedimientos para Ayudas Sociales",
+        "texto": "Regula la entrega de ayudas sociales y económicas a personas vulnerables en el Gobierno de Curoscant. Establece procedimientos, beneficiarios, tipos de ayuda, causales de negación y las bases legales para su ejecución.",
+        "fuente": "Decreto N° 1457/2017",
+        "alias": [
+            "ayudas económicas vulnerables",
+            "beneficiarios ayudas sociales",
+            "tipos de ayuda social",
+            "criterios negación ayuda",
+            "bases legales ayuda social",
+            "regulación ayudas sociales"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "",
+        "fecha": "2017",
+        "seccion": "titulo 1",
+        "titulo_seccion": "generalidades",
+        "tipo_fragmento": "generalidades"
+    },
+    {
+        "id": "ASOC-002",
+        "titulo": "Definición de Ayuda Social",
+        "texto": "Se entenderá como 'Ayuda Social' aquella que consiste en la asistencia directa y específica dirigida a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarle los medios indispensables para su bienestar.",
+        "fuente": "Decreto N° 1457/2017",
+        "alias": [
+            "definición ayuda social"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "4",
+        "fecha": "2017",
+        "seccion": "titulo 1",
+        "titulo_seccion": "generalidades",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ASOC-003",
+        "titulo": "Características de la Ayuda Social",
+        "texto": "El Gobierno de Curoscant podrá otorgar beneficios por concepto de Ayuda Social, tanto en dinero como en bienes y servicios. Las ayudas sociales son de carácter excepcional, transitorio y complementario, y se otorgarán a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarle los medios indispensables para su bienestar. Las ayudas sociales no constituyen un derecho adquirido ni una obligación del Gobierno de Curoscant, sino que son una medida de apoyo a las personas y familias en situación de vulnerabilidad.",
+        "fuente": "Decreto N° 1457/2017",
+        "alias": [
+            "tipos ayudas sociales"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "5",
+        "fecha": "2017",
+        "seccion": "titulo 1",
+        "titulo_seccion": "generalidades",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-004",
+        "titulo": "¿Quiénes pueden recibir ayudas sociales?",
+        "texto": "Son beneficiarios todos los habitantes y familias de Curoscant en alguno de estos estados individuales: a) Indigencia (carencia absoluta de medios para subsistir), b) Pertenencia al 40% de menores ingresos o vulnerabilidad según Registro Imperial de Ciudadanos (RIC), c) Estado de necesidad manifiesta acreditado por Asistente Social, d) Personas o familias afectadas por siniestros o catástrofes naturales. Tendrán prioridad adultos mayores, mujeres jefas de hogar, madres solteras, adolescentes embarazadas, niños/as, jóvenes, personas con discapacidad y pueblos originarios.",
+        "fuente": "Artículos 6",
+        "alias": [
+            "beneficiarios ayudas sociales",
+            "ayuda personas vulnerables",
+            "familias vulnerables curoscant",
+            "indigencia RIC",
+            "prioridad adultos mayores",
+            "acreditación de estado apto para recibir la ayuda social",
+            "beneficios mujeres jefas hogar",
+            "familias siniestro ayuda social"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "6",
+        "fecha": "2017",
+        "seccion": "titulo 2",
+        "titulo_seccion": "de los usuarios y/o beneficiarios",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ASOC-005",
+        "titulo": "Prioridad de las ayudas sociales",
+        "texto": "Independiente de lo señalado en el artículo precedente, la asignación de recursos de este Municipio privilegiará a los grupos definidos como prioritarios, vale decir personas Adultos Mayores, Mujeres Jefas de Hogar, madres solteras, adolescentes embarazadas, Niños/as y Jóvenes, personas en situación de Discapacidad y Pueblos Originarios que se encuentren en los estados señalados en el artículo seis.",
+        "fuente": "Artículo 7",
+        "alias": [
+            "tipos de ayudas sociales",
+            "clasificación ayudas sociales",
+            "ayuda alimentos funerarios salud",
+            "prestaciones pasajes vivienda",
+            "beneficios adicionales sociales",
+            "ayuda útiles escolares",
+            "prestación vestuario adultos mayores"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "7",
+        "fecha": "2017",
+        "seccion": "titulo 2",
+        "titulo_seccion": "de los usuarios y/o beneficiarios",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ASOC-006",
+        "titulo": "Clasificación de ayudas sociales",
+        "texto": "Las ayudas sociales se clasifican en: 1) Alimentos: Bolsa de alimentos. 2) Servicios funerarios: aporte para cementerio o servicios funerarios. 3) Prestación de salud: atención médica, exámenes, medicamentos, lentes ópticos, ayudas técnicas. 4) Prestación de pasajes: traslados por motivos médicos, legales o sociales. 5) Prestación de vivienda: materiales de construcción. 6) Otros: pañales, vestuario, suplemento alimenticio, útiles escolares, pago de servicios, agua en camión aljibe, entrega de estanque.",
+        "fuente": "Artículo 8",
+        "alias": [
+            "tipos de ayudas sociales",
+            "ayuda alimentos funerarios salud",
+            "prestaciones pasajes vivienda",
+            "beneficios adicionales sociales",
+            "ayuda útiles escolares",
+            "prestación vestuario adultos mayores"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "8",
+        "fecha": "2017",
+        "seccion": "titulo 3",
+        "titulo_seccion": "de los beneficios otorgados como ayudas sociales",
+        "tipo_fragmento": "clasificación"
+    },
+    {
+        "id": "ASOC-007",
+        "titulo": "Bolsa de alimentos",
+        "texto": "Ayuda Social - Bolsa de alimentos: Entrega de alimentos a familias indigentes, en estado de necesidad manifiesta o en el 40% de menores ingresos según el RIC. Si no cumplen el 40%, pueden acreditar necesidad ante la Asistente Social. Se proveerá de alimentos a las familias indigentes y/o que se encuentren en estado de necesidad manifiesta, o que su hogar sea calificado en el 40% de menores ingresos o mayor vulnerabilidad socioeconómica, según Cartela Hogar del Registro social de Hogares (RSH) cuyo beneficio consistirá en la entrega de una bolsa de alimentos. Si no contara con R.S.H, o fuera mayor a 40%, acreditar a través de Asistente Social estado de Necesidad manifiesta. Procedimiento de entrega de Caja de Mercadería: 1) Solicitud de alimentos ingresada por oficina de partes a través de carta o por presentación ante la Asistente Social; 2) Cartola del Registro Social de Hogares que acredite residencia y vulnerabilidad del usuario solicitante; 3) Certificado Social emitido por el Profesional Competente donde se acredite la presencia de cualquier situación señalada en el artículo no 6 y no 7 del presente reglamento; 4) Firma de recepción de entrega de ayuda social (recibo de especies) La ayuda se entregará directamente al solicitante.",
+        "requisitos": [
+            "Solicitud ingresada por oficina de partes ante Asistente Social.",
+            "Cartola del Registro Imperial de Ciudadanos que acredite residencia y vulnerabilidad.",
+            "Certificado Social que acredite condición señalada en los artículos 6 y 7.",
+            "Firma de recepción de ayuda social.",
+            "Entrega directa al solicitante."
+        ],
+        "fuente": "Artículo 9",
+        "alias": [
+            "bolsa de alimentos curoscant",
+            "ayuda alimentaria indigentes",
+            "requisitos bolsa alimentos",
+            "ayuda alimentaria RIC",
+            "entrega directa alimentos",
+            "asistente social alimentos"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "9",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-008",
+        "titulo": "Aporte funerario y cementerio",
+        "texto": "Ayuda Social - Aporte funerario y cementerio: Aporte económico para gastos de cementerio o adquisición de servicios funerarios, cuando no exista beneficio de cuota mortuoria. El Gobierno también dispone de nichos en préstamo por hasta seis meses. Consiste en aportar económicamente para entrada al Cementerio y en casos determinados para aporte adquisición del servicio funerario y /o que no posean beneficio de cuota mortuoria. Procedimientos de Entrega de Ayudas Sociales. El procedimiento para la entrega de este beneficio: 1) Solicitud de aporte funerario ingresada por oficina de partes o por presentación ante la Asistente Social; 2) Informe Social. (Verificación de cuota mortuoria; 3) Certificado de defunción; 4) La ayuda económica se entregara directamente al familiar que realice el trámite y acredite tal calidad; 5) Rendir el comprobante de pago. Cabe en este artículo, mencionar que el Municipio cuenta con nichos, en caso que las familias lo requieran para préstamo, no superior a los seis meses.",
+        "requisitos": [
+            "Solicitud ingresada por oficina de partes o ante Asistente Social.",
+            "Informe social y verificación de cuota mortuoria.",
+            "Certificado de defunción.",
+            "Entrega directa al familiar responsable.",
+            "Rendición de comprobante de pago."
+        ],
+        "fuente": "Artículo 10",
+        "alias": [
+            "aporte funerario curoscant",
+            "ayuda cementerio",
+            "requisitos aporte funerario",
+            "nichos en préstamo",
+            "servicios funerarios sociales",
+            "certificado de defunción ayuda"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "10",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-009",
+        "titulo": "Monto de ayudas",
+        "texto": "El monto de ayudas de alimentos y funerarias será definido por evaluación social del Departamento de Bienestar Social. El monto asignado en lo que respecta a cualquiera de los dos tipos de ayuda establecidos en los artículos anteriores (artículo Nº9 y articulo Nº 10), será según evaluación social que realice el profesional del Departamento Social.",
+        "fuente": "Artículo 11",
+        "alias": [
+            "monto ayudas sociales",
+            "evaluación social curoscant",
+            "definición monto alimentos",
+            "ayudas funerarias monto",
+            "bienestar social evaluación"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "11",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "monto"
+    },
+    {
+        "id": "ASOC-010",
+        "titulo": "Atenciones de salud, medicamentos, ayudas técnicas",
+        "texto": "Se otorgan ayudas para atenciones médicas, exámenes, operaciones, medicamentos, audífonos, lentes ópticos y otras ayudas técnicas a quienes no puedan resolver su situación en la red de salud pública. En relación a las Atenciones de especialidades médicas, exámenes médicos, aporte para operación, aportes para la compra de medicamentos, aporte para audífonos y lentes ópticos y aporte para otras ayudas técnicas. Éstos se realizaran a las personas que se encuentren en los estados señalados en el art. 6o de este reglamento y que no puedan resolver su situación a través de la red de salud pública. El procedimiento para la entrega de este beneficio, será: a) Ingresar solicitud por oficina de partes por atención médica y/o exámenes médicos, aporte para operación o aporte para compra de medicamentos, aporte para compra de audífonos, lentes u otras ayudas técnicas, según corresponda y o atención en oficina del depto. Social. b) Certificado Médico donde se indique patología o diagnóstico que afecta al usuario en cuestión para todos los casos señalados en la letra A del presente artículo. c) Presupuesto y cotización según requerimiento emitido por la institución de salud correspondiente. d) Informe Social emitido por Profesional del Departamento de Salud Municipal que acredite que la red de salud pública no cubre el servicio o no otorga la prestación requerida por el usuario, esto aplica para todos los casos señalados en la letra A del presente artículo. e) Receta según corresponda. f) Atención de la persona, visita si corresponde y tramitación de la solicitud",
+        "requisitos": [
+            "Solicitud por oficina de partes o atención en Departamento Bienestar Social.",
+            "Certificado médico con diagnóstico.",
+            "Presupuesto/cotización emitida por la institución de salud.",
+            "Informe Social que acredite imposibilidad de solución en red pública.",
+            "Receta médica, si corresponde.",
+            "Visita y tramitación por la Asistente Social."
+        ],
+        "fuente": "Artículo 12",
+        "alias": [
+            "ayudas salud curoscant",
+            "atenciones médicas ayudas",
+            "medicamentos ayudas sociales",
+            "ayudas técnicas curoscant",
+            "requisitos atención salud",
+            "asistente social salud"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "12",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-011",
+        "titulo": "Aporte en pasajes",
+        "texto": "Aporte para pago de pasajes para usuarios que deban viajar a controles médicos, tribunales, centros de rehabilitación u otros, fuera del sector planetario. La prestación de pasajes está destinada al aporte para pago de pasajes de usuarios que tengan horas y controles médicos y/o profesionales, o que tengan que asistir a exámenes, tribunales, centros de rehabilitación, hogares de niños/as o ancianos, recintos penitenciarios o establecimientos de educación ubicados fuera del sistema planetario. Lo anterior, para aquellas personas que se encuentren en los estados mencionados en el art. 6o de este reglamento de procedimientos y que estén en una de las siguientes situaciones: a) Ser derivado por un médico a un centro de salud ubicado fuera de la comuna, debiendo presentar orden médica o interconsulta, comprobante de citación u orden de exámenes. b) Presentar una enfermedad que requiera de controles con especialista, debiendo presentar la citación correspondiente. c) Presentar documentos que acredite la citación a tribunales, si corresponde. d) Presentar documentos que acredite citación a centro de rehabilitación.",
+        "requisitos": [
+            "Derivación médica u orden de exámenes.",
+            "Comprobante de citación.",
+            "Documentos que acrediten citación a tribunales o centros de rehabilitación, si corresponde."
+        ],
+        "fuente": "Artículos 13",
+        "alias": [
+            "aporte pasajes curoscant",
+            "ayuda pasajes médicos",
+            "requisitos aporte pasajes",
+            "viajes tribunales rehabilitación",
+            "asistente social pasajes"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "13",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-012",
+        "titulo": "Aporte en pasajes",
+        "texto": "Se le entregará pasajes solo al beneficiario que requiere la hora y en casos justificados se le entregará este beneficio al acompañante según grado de dependencia y situación socioeconómica que presente la familia, siempre y cuando el servicio de salud no realice aporte. Se priorizara primero a la persona afectada, luego al acompañante.",
+        "fuente": "Artículos 14",
+        "alias": [
+            "entrega dinero traslado",
+            "ayuda monetaria pasajes"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "14",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ASOC-013",
+        "titulo": "Aporte en materiales de construcción",
+        "texto": "Entrega de materiales de construcción para mejoramiento de vivienda, solo en caso de deterioro visible o hacinamiento.",
+        "requisitos": [
+            "Solicitud por oficina de partes.",
+            "Acreditar residencia mínima de 2 años mediante RIC.",
+            "Ser propietario o tener autorización del propietario.",
+            "Escritura o contrato de arriendo.",
+            "Cédula de Identidad.",
+            "Informe Social.",
+            "Certificado de recepción de la ayuda."
+        ],
+        "fuente": "Artículo 15",
+        "alias": [
+            "aporte materiales construcción",
+            "mejoramiento vivienda curoscant",
+            "requisitos aporte vivienda",
+            "residencia mínima 2 años",
+            "ayuda construcción social",
+            "asistente social vivienda"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "15",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "requisitos"
+    },
+    {
+        "id": "ASOC-014",
+        "titulo": "Ayuda en pañales adultos y niños/as",
+        "texto": "Máximo 2 paquetes mensuales. Para adultos mayores postrados, según lista del Ministerio de Salud y evaluación profesional. Para niños menores de 2 años, solo por hospitalización y con documento que acredite el estado.",
+        "fuente": "Artículo 16",
+        "alias": [
+            "ayuda pañales curoscant",
+            "pañales adultos mayores",
+            "pañales niños hospitalizados",
+            "requisitos ayuda pañales",
+            "asistente social pañales"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "16",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ASOC-015",
+        "titulo": "Ayuda en vestuario infantil y adulto mayor",
+        "texto": "Aporte para vestuario básico a niños menores de 12 años de familias vulnerables y adultos mayores. Monto máximo: 2 U.T.M.",
+        "fuente": "Artículo 17",
+        "alias": [
+            "ayuda vestuario curoscant",
+            "vestuario infantil social",
+            "vestuario adulto mayor",
+            "requisitos ayuda vestuario",
+            "asistente social vestuario"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "17",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-016",
+        "titulo": "Suplemento alimenticio",
+        "texto": "Ayuda para personas que no puedan resolver su situación a través de la red de salud pública.",
+        "requisitos": [
+            "Solicitud por oficina de partes o ante Asistente Social.",
+            "Certificado médico o diagnóstico.",
+            "Receta que indique suplemento.",
+            "Informe Social.",
+            "Cotización de suplemento."
+        ],
+        "fuente": "Artículo 18",
+        "alias": [
+            "suplemento alimenticio curoscant",
+            "ayuda suplemento salud",
+            "requisitos suplemento alimenticio",
+            "asistente social suplemento",
+            "ayuda nutricional social"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "18",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-017",
+        "titulo": "Entrega de agua mediante camión aljibe",
+        "texto": "Entrega de agua a personas vulnerables o que cumplan con residencia mínima de 18 meses y vulnerabilidad según el RIC. Se requiere estanque propio y en buen estado.",
+        "fuente": "Artículo 19",
+        "alias": [
+            "entrega agua camión aljibe",
+            "ayuda agua curoscant",
+            "requisitos entrega agua",
+            "residencia mínima 18 meses",
+            "vulnerabilidad RIC agua",
+            "asistente social agua"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "19",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-018",
+        "titulo": "Entrega de estanque de agua",
+        "texto": "Entrega de estanque a personas sin otro estanque, con residencia mínima de 2 años y vulnerabilidad según el RIC.",
+        "fuente": "Artículo 20",
+        "alias": [
+            "entrega estanque agua",
+            "ayuda estanque curoscant",
+            "requisitos entrega estanque",
+            "residencia mínima 2 años",
+            "vulnerabilidad RIC estanque",
+            "asistente social estanque"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "20",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ASOC-019",
+        "titulo": "Procedimiento general de solicitud y entrega",
+        "texto": "Todas las ayudas se solicitan por oficina de partes o atención en el Departamento Bienestar Social. Se verifica la situación mediante entrevista y, si procede, visita domiciliaria. Luego se emite informe social y se solicita aprobación al Jefe de Gobierno. Tras la autorización y validación presupuestaria, el solicitante retira el beneficio con su cédula de identidad en Tesorería del Gobierno. Cada ayuda debe ser rendida antes de poder solicitar otra. El plazo promedio de entrega es de siete días hábiles.",
+        "fuente": "Artículo 21",
+        "alias": [
+            "procedimiento solicitud ayuda",
+            "entrega ayudas sociales",
+            "requisitos solicitud ayuda",
+            "verificación situación social",
+            "informe social curoscant",
+            "aprobación jefe de gobierno",
+            "tesorería entrega ayuda"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "21",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "procedimiento"
+    },
+    {
+        "id": "ASOC-020",
+        "titulo": "Causales de negación al beneficio asistencial",
+        "texto": "Se negará el beneficio en los siguientes casos: a) No pertenecer a la comuna o no tener Registro Imperial de Ciudadanos y/o menos de un año de residencia, b) Vender, regalar o no utilizar la ayuda otorgada, c) Falsear u omitir información requerida, d) No participar activamente en la solución del problema, e) Otras incompatibilidades legales.",
+        "fuente": "Artículo 22",
+        "alias": [
+            "causales negación ayuda",
+            "rechazo solicitud social",
+            "incompatibilidades legales ayuda",
+            "falsificación información ayuda",
+            "no residencia curoscant",
+            "venta regalo ayuda social"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "22",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "procedimiento"
+    },
+    {
+        "id": "ASOC-021",
+        "titulo": "Rendición y control de ayudas sociales",
+        "texto": "Toda ayuda entregada debe ser rendida mediante comprobantes, facturas, boletas o documentación respaldatoria. El incumplimiento en la rendición impide nuevas solicitudes hasta regularizar la situación. El Departamento de Bienestar Social lleva registro y control de todas las ayudas sociales otorgadas.",
+        "fuente": "Manual de Procedimientos para Ayudas Sociales, Gobierno de Curoscant",
+        "alias": [
+            "rendición ayudas sociales",
+            "control ayudas curoscant",
+            "documentación respaldatoria ayuda",
+            "incumplimiento rendición",
+            "registro ayudas sociales",
+            "asistente social rendición"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "23",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "procedimiento"
+    },
+    {
+        "id": "ASOC-022",
+        "titulo": "Supervisión y fiscalización",
+        "texto": "El Jefe de Gobierno y el Departamento de Bienestar Social están facultados para supervisar y fiscalizar el cumplimiento de los procedimientos y requisitos en la entrega de ayudas sociales. Cualquier irregularidad detectada será informada y sancionada según la normativa vigente.",
+        "fuente": "Manual de Procedimientos para Ayudas Sociales, Gobierno de Curoscant",
+        "alias": [
+            "supervisión ayudas sociales",
+            "fiscalización curoscant",
+            "cumplimiento procedimientos ayuda",
+            "irregularidades ayudas sociales",
+            "sanciones normativa vigente",
+            "asistente social supervisión"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "24",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "fizcalización"
+    },
+    {
+        "id": "ASOC-023",
+        "titulo": "Observaciones generales",
+        "texto": "Las solicitudes deben ser fundadas y todos los antecedentes presentados serán revisados por el equipo profesional del Gobierno de Curoscant. La falsificación de antecedentes o entrega de información incompleta puede ser causal de negación o anulación del beneficio.",
+        "fuente": "Manual de Procedimientos para Ayudas Sociales, Gobierno de Curoscant",
+        "alias": [
+            "observaciones ayudas sociales",
+            "antecedentes solicitud ayuda",
+            "falsificación antecedentes ayuda",
+            "información incompleta ayuda",
+            "negación anulación beneficio",
+            "asistente social observaciones"
+        ],
+        "doc": "Manual de Procedimientos para Ayudas Sociales",
+        "decreto": "1457",
+        "articulo": "25",
+        "fecha": "2017",
+        "seccion": "titulo 4",
+        "titulo_seccion": "De la descripción y procedimiento de entrega de las ayudas sociales.",
+        "tipo_fragmento": "penalización"
+    }
 ]
-

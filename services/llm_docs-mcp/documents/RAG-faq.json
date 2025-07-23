@@ -1,219 +1,360 @@
 [
-  {
-    "id": "faq_saludo_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "hola",
-    "triggers": ["hola","buenos días","buenas tardes","buenas noches","saludos","hello","hi"],
-    "respuesta": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. ¿En qué puedo ayudarte hoy?",
-    "categoria": "saludo"
-  },
-  {
-    "id": "faq_saludo_02",
-    "tipo_fragmento": "faq",
-    "pregunta": "alo",
-    "triggers": ["alo","alo munbot"],
-    "respuesta": "¡Alo! ¿En qué puedo ayudarte?",
-    "categoria": "saludo"
-  },
-  {
-    "id": "faq_despedida_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "adiós",
-    "triggers": ["adiós","hasta luego","nos vemos","chau","chao","bye","hasta pronto","hasta la próxima","me despido"],
-    "respuesta": "¡Hasta luego! Si necesitas algo más, no dudes en consultarme.",
-    "categoria": "despedida"
-  },
-  {
-    "id": "faq_despedida_02",
-    "tipo_fragmento": "faq",
-    "pregunta": "no necesito más ayuda",
-    "triggers": ["no necesito más ayuda","no necesito ayuda","eso es todo","terminé","ya está","ya terminé"],
-    "respuesta": "¡Entendido! Espero haber sido de ayuda. Si necesitas algo en el futuro, aquí estaré.",
-    "categoria": "despedida"
-  },
-  {
-    "id": "faq_agradecimiento_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "gracias",
-    "triggers": ["gracias","muchas gracias","te agradezco","agradecido","agradecida"],
-    "respuesta": "¡No tienes por qué agradecerme! Mi misión es ayudarte. ¿Hay algo más en lo que pueda asistirte?",
-    "categoria": "agradecimiento"
-  },
-  {
-    "id": "faq_agradecimiento_02",
-    "tipo_fragmento": "faq",
-    "pregunta": "gracias por tu ayuda",
-    "triggers": ["gracias por tu ayuda","gracias por ayudarme","gracias por la información"],
-    "respuesta": "¡De nada! Si tienes más preguntas, aquí estoy.",
-    "categoria": "agradecimiento"
-  },
-  {
-    "id": "faq_estado_animo_positivo",
-    "tipo_fragmento": "faq",
-    "pregunta": "estoy bien",
-    "triggers": ["estoy bien","todo bien","genial","excelente","perfecto","feliz","me alegro"],
-    "respuesta": "¡Me alegra que todo vaya bien! Recuerda que estoy aquí para ayudarte.",
-    "categoria": "estado_animo"
-  },
-  {
-    "id": "faq_estado_animo_negativo",
-    "tipo_fragmento": "faq",
-    "pregunta": "no me siento bien",
-    "triggers": ["no me siento bien","no estoy bien","me siento mal","estoy triste"],
-    "respuesta": "Lamento que te sientas así. Si puedo ayudarte, dímelo por favor.",
-    "categoria": "estado_animo"
-  },
-  {
-    "id": "faq_estado_animo_bot",
-    "tipo_fragmento": "faq",
-    "pregunta": "cómo estás",
-    "triggers": ["cómo estás","cómo te encuentras","cómo va todo","cómo va tu día"],
-    "respuesta": "¡Gracias por preguntar! Como IA no experimento emociones, pero estoy listo para ayudarte. ¿En qué puedo asistirte?",
-    "categoria": "estado_animo"
-  },
-  {
-    "id": "faq_decepcion_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "no es la respuesta que esperaba",
-    "triggers": ["no es la respuesta que esperaba","mala respuesta","no me ayudaste","no resolviste mi problema","no me sirvió"],
-    "respuesta": "Lamento no haber cumplido tus expectativas. Si reformulas la pregunta o agregas más detalles, intentaré ayudarte mejor.",
-    "categoria": "decepcion"
-  },
-  {
-    "id": "faq_funcion_bot_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "¿qué haces?",
-    "triggers": ["¿qué haces?","para qué te crearon","qué puedes hacer"],
-    "respuesta": "Puedo responder preguntas y guiarte en trámites y servicios del Gobierno de Coruscant.",
-    "categoria": "funcion_bot"
-  },
-  {
-    "id": "faq_disponibilidad_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "¿a qué horas estás disponible?",
-    "triggers": ["¿a qué horas estás disponible?","¿cuál es tu horario de atención?","¿cuándo puedo contactarte?"],
-    "respuesta": "Estoy disponible 24/7, siempre listo para ayudarte.",
-    "categoria": "disponibilidad"
-  },
-  {
-    "id": "faq_idiomas_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "¿en qué idiomas hablas?",
-    "triggers": ["¿en qué idiomas hablas?","¿qué idioma hablas?","¿qué idiomas entiendes?"],
-    "respuesta": "Por ahora respondo en español, idioma oficial de la República.",
-    "categoria": "idiomas"
-  },
-  {
-    "id": "faq_privacidad_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "¿cómo proteges mis datos?",
-    "triggers": ["¿cómo proteges mis datos?","política de privacidad","mis datos están seguros"],
-    "respuesta": "Tratamos tus datos según la ley vigente y nunca los compartimos con terceros sin tu consentimiento.",
-    "categoria": "privacidad"
-  },
-  {
-    "id": "faq_contacto_humano_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "quiero contactar a un humano",
-    "triggers": ["quiero contactar a un humano","hablar con un funcionario","contactar un agente humano"],
-    "respuesta": "Puedes enviar un correo a contacto@coruscant.gov o pedir una cita desde aquí y la agendamos.",
-    "categoria": "contacto_humano"
-  },
-  {
-    "id": "faq_costos_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "¿cuánto cuesta munbot?",
-    "triggers": ["¿cuánto cuesta munbot?","precio de munbot","¿cuánto cuesta la implementación?"],
-    "respuesta": "El costo depende de los módulos requeridos. Escríbenos a ei@publilab.cl y un asesor te cotizará.",
-    "categoria": "costos"
-  },
-  {
-    "id": "faq_reclamos_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "quiero hacer un reclamo",
-    "triggers": ["quiero hacer un reclamo","dejar una queja","escribir un reclamo"],
-    "respuesta": "Claro. Escribe los detalles de tu reclamo y te ayudaré a registrarlo.",
-    "categoria": "reclamos"
-  },
-  {
-    "id": "faq_citas_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "quiero agendar una cita",
-    "triggers": ["quiero agendar una cita","pedir una hora","cómo agendar una cita"],
-    "respuesta": "Indícame el trámite y la fecha deseada y generaré la reserva.",
-    "categoria": "citas"
-  },
-  {
-    "id": "faq_clave_unica_01",
-    "tipo_fragmento": "faq",
-    "pregunta": "¿cómo obtengo mi clave única?",
-    "triggers": ["¿cómo obtengo mi clave única?","proceso para obtener clave única"],
-    "respuesta": "Visita https://claveunica.gob.cl, selecciona “Obtener Clave Única” y sigue las instrucciones de validación.",
-    "categoria": "clave_unica"
-  },
-  {
-    "id": "faq-consultas_tramites-01",
-    "pregunta": [
-        "Qué tipo de consultas puedo hacer?", "¿Qué trámites puedo realizar?", "¿Qué te puedo preguntar?"
-    ],
-    "respuesta": "Soy un demo de un Agente Virtual, y no tengo disponible todas las consultas. Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por unos documentos específicos. Si tienes alguna consulta específica, no dudes en preguntar.",
-    "categoria": "consultas_tramites"
-  },
-  {
-    "id": "faq-consultas_tramites-02",
-    "pregunta": [
-        "obtener un certificado", "solicitar un certificado", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "sacar un certificado"
-    ],
-    "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún certificado en particular?",
-    "categoria": "consultas_tramites"
-  },
-  {
-    "id": "faq-consultas_tramites-03",
-    "pregunta": [
-        "obtener un permiso", "solicitar un permiso", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "sacar un permiso"
-    ],
-    "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún permiso en particular?",
-    "categoria": "consultas_tramites"
-  },
-  {
-    "id": "faq-consultas_tramites-04",
-    "pregunta": [
-        "obtener una licencia", "solicitar una licencia", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"
-    ],
-    "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
-    "categoria": "consultas_tramites"
-  },
-  {
-    "id": "faq-consultas_tramites-05",
-    "pregunta": [
-        "obtener una patente", "solicitar una patente", "quiero obtener una patente", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"
-    ],
-    "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
-    "categoria": "consultas_tramites"
-  },
-  {
-    "id": "faq-consultas_tramites-06",
-    "pregunta": [
-        "¿Qué requisitos necesito para obtener una cédula de identidad?"
-    ],
-    "respuesta": "Para obtener la Cédula Única Sistema Planetario necesitas Identificación Oficial Planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago.",
-    "categoria": "tramites"
-  },
-  {
-    "id": "faq-contacto_humano-02",
-    "pregunta": [
-        "¿Cómo puedo contactar a un humano?","¿Cuál es el correo electrónico de contacto?", "cual es tu correo electrónico", "cual es tu correo", "me das tu correo electrónico", "me das tu correo"
-    ],
-    "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
-    "categoria": "contacto_humano"
-  },
-  {
-    "id": "faq-otras_consultas-01",
-    "pregunta":[
-        "Quiero hacerte una pregunta", "Quiero hacerte una consulta", "Quiero hacerte otra pregunta", "¿Quiero hacerte otra consulta", "Tengo otra solicitud?", "Tengo otro requerimiento", "Tengo un requerimiento", "Tengo una solicitud", "Tengo una consulta", "Tengo una pregunta", "Tengo otra pregunta", "Tengo otra consulta", "Puedo hacerte otra pregunta", "Puedo hacerte otra consulta", "Puedo hacerte otra solicitud", "Puedo hacerte otro requerimiento", "Puedo hacerte una solicitud", "Puedo hacerte un requerimiento", "Puedo hacerte una consulta"
-    ],
-    "respuesta": "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?",
-    "categoria": "otras_consultas"
-  }
+    {
+        "id": "faq_saludo_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "hola",
+        "triggers": [
+            "hola",
+            "buenos días",
+            "buenas tardes",
+            "buenas noches",
+            "saludos",
+            "hello",
+            "hi"
+        ],
+        "respuesta": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. ¿En qué puedo ayudarte hoy?",
+        "categoria": "saludo"
+    },
+    {
+        "id": "faq_saludo_02",
+        "tipo_fragmento": "faq",
+        "pregunta": "alo",
+        "triggers": [
+            "alo",
+            "alo munbot"
+        ],
+        "respuesta": "¡Alo! ¿En qué puedo ayudarte?",
+        "categoria": "saludo"
+    },
+    {
+        "id": "faq_despedida_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "adiós",
+        "triggers": [
+            "adiós",
+            "hasta luego",
+            "nos vemos",
+            "chau",
+            "chao",
+            "bye",
+            "hasta pronto",
+            "hasta la próxima",
+            "me despido"
+        ],
+        "respuesta": "¡Hasta luego! Si necesitas algo más, no dudes en consultarme.",
+        "categoria": "despedida"
+    },
+    {
+        "id": "faq_despedida_02",
+        "tipo_fragmento": "faq",
+        "pregunta": "no necesito más ayuda",
+        "triggers": [
+            "no necesito más ayuda",
+            "no necesito ayuda",
+            "eso es todo",
+            "terminé",
+            "ya está",
+            "ya terminé"
+        ],
+        "respuesta": "¡Entendido! Espero haber sido de ayuda. Si necesitas algo en el futuro, aquí estaré.",
+        "categoria": "despedida"
+    },
+    {
+        "id": "faq_agradecimiento_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "gracias",
+        "triggers": [
+            "gracias",
+            "muchas gracias",
+            "te agradezco",
+            "agradecido",
+            "agradecida"
+        ],
+        "respuesta": "¡No tienes por qué agradecerme! Mi misión es ayudarte. ¿Hay algo más en lo que pueda asistirte?",
+        "categoria": "agradecimiento"
+    },
+    {
+        "id": "faq_agradecimiento_02",
+        "tipo_fragmento": "faq",
+        "pregunta": "gracias por tu ayuda",
+        "triggers": [
+            "gracias por tu ayuda",
+            "gracias por ayudarme",
+            "gracias por la información"
+        ],
+        "respuesta": "¡De nada! Si tienes más preguntas, aquí estoy.",
+        "categoria": "agradecimiento"
+    },
+    {
+        "id": "faq_estado_animo_positivo",
+        "tipo_fragmento": "faq",
+        "pregunta": "estoy bien",
+        "triggers": [
+            "estoy bien",
+            "todo bien",
+            "genial",
+            "excelente",
+            "perfecto",
+            "feliz",
+            "me alegro"
+        ],
+        "respuesta": "¡Me alegra que todo vaya bien! Recuerda que estoy aquí para ayudarte.",
+        "categoria": "estado_animo"
+    },
+    {
+        "id": "faq_estado_animo_negativo",
+        "tipo_fragmento": "faq",
+        "pregunta": "no me siento bien",
+        "triggers": [
+            "no me siento bien",
+            "no estoy bien",
+            "me siento mal",
+            "estoy triste"
+        ],
+        "respuesta": "Lamento que te sientas así. Si puedo ayudarte, dímelo por favor.",
+        "categoria": "estado_animo"
+    },
+    {
+        "id": "faq_estado_animo_bot",
+        "tipo_fragmento": "faq",
+        "pregunta": "cómo estás",
+        "triggers": [
+            "cómo estás",
+            "cómo te encuentras",
+            "cómo va todo",
+            "cómo va tu día"
+        ],
+        "respuesta": "¡Gracias por preguntar! Como IA no experimento emociones, pero estoy listo para ayudarte. ¿En qué puedo asistirte?",
+        "categoria": "estado_animo"
+    },
+    {
+        "id": "faq_decepcion_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "no es la respuesta que esperaba",
+        "triggers": [
+            "no es la respuesta que esperaba",
+            "mala respuesta",
+            "no me ayudaste",
+            "no resolviste mi problema",
+            "no me sirvió"
+        ],
+        "respuesta": "Lamento no haber cumplido tus expectativas. Si reformulas la pregunta o agregas más detalles, intentaré ayudarte mejor.",
+        "categoria": "decepcion"
+    },
+    {
+        "id": "faq_funcion_bot_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "¿qué haces?",
+        "triggers": [
+            "¿qué haces?",
+            "para qué te crearon",
+            "qué puedes hacer"
+        ],
+        "respuesta": "Puedo responder preguntas y guiarte en trámites y servicios del Gobierno de Coruscant.",
+        "categoria": "funcion_bot"
+    },
+    {
+        "id": "faq_disponibilidad_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "¿a qué horas estás disponible?",
+        "triggers": [
+            "¿a qué horas estás disponible?",
+            "¿cuál es tu horario de atención?",
+            "¿cuándo puedo contactarte?"
+        ],
+        "respuesta": "Estoy disponible 24/7, siempre listo para ayudarte.",
+        "categoria": "disponibilidad"
+    },
+    {
+        "id": "faq_idiomas_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "¿en qué idiomas hablas?",
+        "triggers": [
+            "¿en qué idiomas hablas?",
+            "¿qué idioma hablas?",
+            "¿qué idiomas entiendes?"
+        ],
+        "respuesta": "Por ahora respondo en español, idioma oficial de la República.",
+        "categoria": "idiomas"
+    },
+    {
+        "id": "faq_privacidad_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "¿cómo proteges mis datos?",
+        "triggers": [
+            "¿cómo proteges mis datos?",
+            "política de privacidad",
+            "mis datos están seguros"
+        ],
+        "respuesta": "Tratamos tus datos según la ley vigente y nunca los compartimos con terceros sin tu consentimiento.",
+        "categoria": "privacidad"
+    },
+    {
+        "id": "faq_contacto_humano_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "quiero contactar a un humano",
+        "triggers": [
+            "quiero contactar a un humano",
+            "hablar con un funcionario",
+            "contactar un agente humano"
+        ],
+        "respuesta": "Puedes enviar un correo a contacto@coruscant.gov o pedir una cita desde aquí y la agendamos.",
+        "categoria": "contacto_humano"
+    },
+    {
+        "id": "faq_costos_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "¿cuánto cuesta munbot?",
+        "triggers": [
+            "¿cuánto cuesta munbot?",
+            "precio de munbot",
+            "¿cuánto cuesta la implementación?"
+        ],
+        "respuesta": "El costo depende de los módulos requeridos. Escríbenos a ei@publilab.cl y un asesor te cotizará.",
+        "categoria": "costos"
+    },
+    {
+        "id": "faq_reclamos_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "quiero hacer un reclamo",
+        "triggers": [
+            "quiero hacer un reclamo",
+            "dejar una queja",
+            "escribir un reclamo"
+        ],
+        "respuesta": "Claro. Escribe los detalles de tu reclamo y te ayudaré a registrarlo.",
+        "categoria": "reclamos"
+    },
+    {
+        "id": "faq_citas_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "quiero agendar una cita",
+        "triggers": [
+            "quiero agendar una cita",
+            "pedir una hora",
+            "cómo agendar una cita"
+        ],
+        "respuesta": "Indícame el trámite y la fecha deseada y generaré la reserva.",
+        "categoria": "citas"
+    },
+    {
+        "id": "faq_clave_unica_01",
+        "tipo_fragmento": "faq",
+        "pregunta": "¿cómo obtengo mi clave única?",
+        "triggers": [
+            "¿cómo obtengo mi clave única?",
+            "proceso para obtener clave única"
+        ],
+        "respuesta": "Visita https://claveunica.gob.cl, selecciona “Obtener Clave Única” y sigue las instrucciones de validación.",
+        "categoria": "clave_unica"
+    },
+    {
+        "id": "faq-consultas_tramites-01",
+        "pregunta": [
+            "Qué tipo de consultas puedo hacer?",
+            "¿Qué trámites puedo realizar?",
+            "¿Qué te puedo preguntar?"
+        ],
+        "respuesta": "Soy un demo de un Agente Virtual, y no tengo disponible todas las consultas. Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por unos documentos específicos. Si tienes alguna consulta específica, no dudes en preguntar.",
+        "categoria": "consultas_tramites"
+    },
+    {
+        "id": "faq-consultas_tramites-02",
+        "pregunta": [
+            "obtener un certificado",
+            "solicitar un certificado",
+            "quiero obtener un certificado",
+            "quiero solicitar un certificado",
+            "quiero un certificado",
+            "sacar un certificado"
+        ],
+        "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún certificado en particular?",
+        "categoria": "consultas_tramites"
+    },
+    {
+        "id": "faq-consultas_tramites-03",
+        "pregunta": [
+            "obtener un permiso",
+            "solicitar un permiso",
+            "quiero obtener un permiso",
+            "quiero solicitar un permiso",
+            "quiero un permiso",
+            "sacar un permiso"
+        ],
+        "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún permiso en particular?",
+        "categoria": "consultas_tramites"
+    },
+    {
+        "id": "faq-consultas_tramites-04",
+        "pregunta": [
+            "obtener una licencia",
+            "solicitar una licencia",
+            "quiero obtener una licencia",
+            "quiero solicitar una licencia",
+            "quiero una licencia",
+            "sacar una licencia"
+        ],
+        "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
+        "categoria": "consultas_tramites"
+    },
+    {
+        "id": "faq-consultas_tramites-05",
+        "pregunta": [
+            "obtener una patente",
+            "solicitar una patente",
+            "quiero obtener una patente",
+            "quiero solicitar una licencia",
+            "quiero una licencia",
+            "sacar una licencia"
+        ],
+        "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
+        "categoria": "consultas_tramites"
+    },
+    {
+        "id": "faq-consultas_tramites-06",
+        "pregunta": [
+            "¿Qué requisitos necesito para obtener una cédula de identidad?"
+        ],
+        "respuesta": "Para obtener la Cédula Única Sistema Planetario necesitas Identificación Oficial Planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago.",
+        "categoria": "tramites"
+    },
+    {
+        "id": "faq-contacto_humano-02",
+        "pregunta": [
+            "¿Cómo puedo contactar a un humano?",
+            "¿Cuál es el correo electrónico de contacto?",
+            "cual es tu correo electrónico",
+            "cual es tu correo",
+            "me das tu correo electrónico",
+            "me das tu correo"
+        ],
+        "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
+        "categoria": "contacto_humano"
+    },
+    {
+        "id": "faq-otras_consultas-01",
+        "pregunta": [
+            "Quiero hacerte una pregunta",
+            "Quiero hacerte una consulta",
+            "Quiero hacerte otra pregunta",
+            "¿Quiero hacerte otra consulta",
+            "Tengo otra solicitud?",
+            "Tengo otro requerimiento",
+            "Tengo un requerimiento",
+            "Tengo una solicitud",
+            "Tengo una consulta",
+            "Tengo una pregunta",
+            "Tengo otra pregunta",
+            "Tengo otra consulta",
+            "Puedo hacerte otra pregunta",
+            "Puedo hacerte otra consulta",
+            "Puedo hacerte otra solicitud",
+            "Puedo hacerte otro requerimiento",
+            "Puedo hacerte una solicitud",
+            "Puedo hacerte un requerimiento",
+            "Puedo hacerte una consulta"
+        ],
+        "respuesta": "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?",
+        "categoria": "otras_consultas"
+    }
 ]
-

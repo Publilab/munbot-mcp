@@ -1,692 +1,692 @@
 [
-  {
-    "id": "ORD-001",
-    "titulo": "Objeto y Ámbito de Aplicación",
-    "texto": "Establecer el marco normativo para la recaudación municipal de contribuciones, derechos y tasas en el territorio del Gobierno de Curoscant, regulando su aplicación, principios y responsables. Incluye contribuciones por servicios, permisos, patentes y derechos de uso de bienes públicos, aplicables a personas naturales y jurídicas. La ordenanza es de aplicación general y rige para todos los habitantes del territorio municipal, sin perjuicio de las normas especiales que regulen ciertos tributos.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "contribuciones curoscant",
-      "derechos y tasas curoscant",
-      "marco normativo curoscant",
-      "recaudación municipal curoscant",
-      "ordenanza contribuciones"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "1",
-    "fecha": "2017",
-    "seccion": "titulo 1",
-    "titulo_seccion": "generalidades",
-    "tipo_fragmento": "generalidades"
-  },
-  {
-    "id": "ORD-002",
-    "titulo": "Definiciones y Conceptos",
-    "texto": "Contribuyente: persona natural o jurídica sujeta a impuestos, tasas o derechos. Tasas: pagos por servicios específicos. Derechos: autorizaciones del Gobierno. Contribuciones: aportes especiales. Servicios del Gobierno: actividades prestadas por el Gobierno de Curoscant. Bienes nacionales de uso público: espacios públicos y bienes destinados al uso general. Permisos: autorizaciones para actividades específicas. Patentes: licencias comerciales o industriales. Derechos de uso: pagos por utilización de bienes públicos. Exenciones: liberaciones de obligaciones tributarias. Beneficios: incentivos fiscales. Obligaciones tributarias: deberes de pago y cumplimiento. Procedimientos administrativos: trámites para la gestión tributaria. Reclamos: acciones para impugnar decisiones tributarias. Recursos jurisdiccionales: acciones legales ante tribunales. Fiscalización: supervisión del cumplimiento tributario. Infracciones: violaciones a la normativa tributaria. Sanciones: castigos por incumplimiento. Vigencia: período de aplicación de la ordenanza.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "definiciones curoscant",
-      "conceptos tributarios curoscant",
-      "contribuyente curoscant",
-      "tasas y derechos curoscant",
-      "servicios del gobierno curoscant",
-      "bienes públicos curoscant",
-      "permisos y patentes curoscant",
-      "exenciones y beneficios curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "2",
-    "fecha": "2017",
-    "seccion": "definición",
-    "titulo_seccion": "generalidades",
-    "tipo_fragmento": "definición" 
-  },
-  {
-    "id": "ORD-003",
-    "titulo": "Marco Legal",
-    "texto": "La ordenanza se basa en la Ley Orgánica Constitucional de Municipalidades, sus reglamentos y otras normas vigentes, y remite en lo no previsto a las leyes nacionales. Establece que el Gobierno de Curoscant tiene facultades para crear, modificar y derogar tributos locales, siempre respetando los principios constitucionales y legales. Las disposiciones de la ordenanza son de carácter general y aplicables a todos los contribuyentes del territorio municipal.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias" : [
-      "marco legal curoscant",
-      "ley orgánica municipalidades",
-      "reglamentos tributarios curoscant",
-      "facultades gobierno curoscant",
-      "principios constitucionales curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "3",
-    "fecha": "2017",
-    "seccion": "marco legal",
-    "titulo_seccion": "generalidades",
-    "tipo_fragmento": "generalidades"
-  },
-  {
-    "id": "ORD-004",
-    "titulo": "Principios Tributarios Municipales",
-    "texto": "Se aplican los principios de legalidad, igualdad, proporcionalidad y no confiscatoriedad en todas las obligaciones tributarias del Gobierno. La recaudación debe ser transparente, eficiente y orientada al beneficio de la comunidad. el Gobierno de Curoscant debe garantizar el acceso a la información tributaria y facilitar el cumplimiento de las obligaciones por parte de los contribuyentes. Los tributos deben ser justos y equitativos, evitando cargas desproporcionadas a los ciudadanos. La administración tributaria debe actuar con imparcialidad y respeto a los derechos de los contribuyentes. La recaudación debe destinarse a financiar servicios públicos y proyectos de desarrollo local.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "principios tributarios curoscant",
-      "legalidad tributaria curoscant",
-      "igualdad y proporcionalidad curoscant",
-      "no confiscatoriedad curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "4",
-    "fecha": "2017",
-    "seccion": "principios tributarios",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "principios"
-  },
-  {
-    "id": "ORD-005",
-    "titulo": "Definición y Naturaleza de las Tasas",
-    "texto": "La tasa municipal es el pago por un servicio concreto, con contraprestación directa al contribuyente, y debe reflejar el costo real del servicio. No puede ser superior al costo de prestación del servicio y debe ser proporcional al beneficio recibido. Las tasas se aplican a servicios como recolección de basura, alumbrado público, mantención de espacios públicos, entre otros. La tasa no es un impuesto, ya que implica una contraprestación específica y directa por parte de el Gobierno de Curoscant al contribuyente. Las tasas deben ser aprobadas por el Concejo Municipal y publicadas en el Diario Oficial, especificando su monto, periodicidad y condiciones de pago. Las tasas son exigibles una vez que el servicio ha sido prestado o está disponible para el contribuyente.",
-    "fuente": "Ordenanza de Contribuciones Curoscant", 
-    "alias": [
-      "tasas municipales curoscant",
-      "definición tasas curoscant",
-      "naturaleza tasas curoscant",
-      "servicios tasa curoscant",
-      "contraprestación tasa curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "5",
-    "fecha": "2017",
-    "seccion": "tasas",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-006",
-    "titulo": "Servicios de Aseo Domiciliario",
-    "texto": "Se cobra tarifa por retiro de residuos domiciliarios según frecuencia establecida. Existen opciones de pago mensual, trimestral o anual. Exención parcial para adultos mayores y personas con discapacidad. La tarifa se calcula en base al avalúo fiscal de la propiedad y el número de habitantes. el Gobierno de Curoscant debe garantizar la recolección eficiente y regular de residuos, así como la disposición adecuada de los mismos. Los contribuyentes deben cumplir con las normativas de separación de residuos y horarios de recolección. La tarifa incluye el servicio de limpieza de calles y espacios públicos, así como la promoción de campañas de reciclaje y educación ambiental. el Gobierno de Curoscant podrá establecer convenios con empresas privadas para mejorar la eficiencia del servicio de aseo domiciliario.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "aseo domiciliario curoscant",
-      "tarifa aseo curoscant",
-      "recolección residuos curoscant",
-      "exención aseo curoscant",
-      "servicio limpieza calles curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "6",
-    "fecha": "2017",
-    "seccion": "aseo domiciliario",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-007",
-    "titulo": "Servicios de Alumbrado Público",
-    "texto": "Contribución por mantención del alumbrado, calculada según avalúo fiscal y superficie cubierta, pagadera semestralmente. Exención parcial para personas con discapacidad. La tarifa incluye el costo de instalación, mantenimiento y operación del sistema de alumbrado público. el Gobierno de Curoscant debe garantizar un servicio eficiente y seguro, con iluminación adecuada en calles, plazas y espacios públicos. Se fomentará el uso de tecnologías sustentables y energías renovables para mejorar la eficiencia energética del alumbrado público. Los contribuyentes deben informar sobre fallas o problemas en el sistema de alumbrado para su pronta reparación. el Gobierno de Curoscant podrá establecer programas de mejora continua y modernización del sistema de alumbrado público.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "alumbrado público curoscant",
-      "contribución alumbrado curoscant",
-      "mantención alumbrado curoscant",
-      "exención alumbrado curoscant",
-      "iluminación espacios públicos curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "7",
-    "fecha": "2017",
-    "seccion": "alumbrado público",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-008",
-    "titulo": "Servicios de Mantención de Espacios Públicos",
-    "texto": "Cobro por conservación de plazas, parques, veredas y poda de árboles frente a la propiedad. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar la limpieza, conservación y embellecimiento de los espacios públicos, promoviendo su uso y disfrute por parte de la comunidad. Se fomentará la participación ciudadana en el cuidado y mantenimiento de los espacios públicos, a través de programas de voluntariado y educación ambiental. Los contribuyentes deben colaborar con el Gobierno de Curoscant en el cuidado de los espacios públicos, evitando actos de vandalismo y mal uso. el Gobierno de Curoscant podrá establecer convenios con organizaciones comunitarias para mejorar la gestión y mantenimiento de los espacios públicos.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "mantención espacios públicos curoscant",
-      "conservación plazas parques curoscant",
-      "poda árboles curoscant",
-      "exención espacios públicos curoscant",
-      "embellecimiento espacios públicos curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "8",
-    "fecha": "2017",
-    "seccion": "mantención espacios públicos",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-009",
-    "titulo": "Servicios Cementeriales",
-    "texto": "Derecho por sepultación, mantención de nichos y tumbas, y servicios funerarios del Gobierno según tarifa vigente. Exención parcial para personas con discapacidad. La tarifa incluye el uso de instalaciones, servicios de inhumación y cremación, y mantenimiento de cementerios. el Gobierno de Curoscant debe garantizar un servicio digno y respetuoso para los difuntos y sus familias, con instalaciones adecuadas y personal capacitado. Se fomentará la conservación y embellecimiento de los cementerios, promoviendo su uso como espacios de memoria y reflexión. Los contribuyentes deben cumplir con las normativas de uso y conservación de los cementerios, evitando actos de vandalismo o mal uso. el Gobierno de Curoscant podrá establecer programas de mejora continua en la gestión de los servicios cementeriales.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "servicios cementeriales curoscant",
-      "derecho sepultación curoscant",
-      "mantención nichos tumbas curoscant",
-      "exención servicios funerarios curoscant",
-      "conservación cementerios curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "9",
-    "fecha": "2017",
-    "seccion": "servicios cementeriales",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-010",
-    "titulo": "Servicios de Seguridad Ciudadana",
-    "texto": "Contribución especial para sistemas de seguridad pública, videovigilancia y guardias del Gobierno, cobrada anualmente. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar un servicio de seguridad eficiente, con patrullajes regulares y sistemas de videovigilancia en espacios públicos. Se fomentará la participación ciudadana en la seguridad, a través de programas de prevención del delito y educación cívica. Los contribuyentes deben colaborar con el Gobierno de Curoscant en la denuncia de delitos y actos delictivos, así como en la promoción de una cultura de seguridad. el Gobierno de Curoscant podrá establecer convenios con carabineros y otras instituciones para mejorar la seguridad ciudadana.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "seguridad ciudadana curoscant",
-      "contribución seguridad curoscant",
-      "videovigilancia curoscant",
-      "exención seguridad ciudadana curoscant",
-      "participación ciudadana seguridad curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "10",
-    "fecha": "2017",
-    "seccion": "seguridad ciudadana",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-011",
-    "titulo": "Permisos de Edificación",
-    "texto": "Derechos por revisión de proyectos, permisos de obra mayor, menor, ampliaciones y modificaciones según zonas y tipos de obra. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos de edificación, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas urbanísticas y de construcción, promoviendo edificaciones seguras y sustentables. Los contribuyentes deben cumplir con las normativas de construcción y urbanismo, evitando obras ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las normativas de edificación.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "permisos de edificación curoscant",
-      "derechos de obra curoscant",
-      "revisión de proyectos curoscant",
-      "exención permisos edificación curoscant",
-      "normativas urbanísticas curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "11",
-    "fecha": "2017",
-    "seccion": "permisos edificación",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-012",
-    "titulo": "Permisos de Subdivisión y Loteo",
-    "texto": "Derechos por subdivisión de predios, loteo y fusión de propiedades, calculados según dimensiones y destino. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la obtención de permisos de subdivisión y loteo, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas urbanísticas y de planificación territorial, promoviendo un desarrollo ordenado y sustentable. Los contribuyentes deben cumplir con las normativas de subdivisión y loteo, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de asesoría técnica y capacitación para facilitar el cumplimiento de las normativas de subdivisión y loteo.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "permisos de subdivisión curoscant",
-      "loteo curoscant",
-      "derechos de subdivisión curoscant",
-      "exención permisos loteo curoscant",
-      "normativas planificación territorial curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "12",
-    "fecha": "2017",
-    "seccion": "permisos subdivisión y loteo",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-013",
-    "titulo": "Patentes Comerciales e Industriales",
-    "texto": "Incluye patentes de alcoholes, comerciales, industriales, profesionales y microempresas familiares, con tarifas diferenciadas. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y tipo de actividad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de patentes, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas comerciales e industriales, promoviendo actividades económicas legales y sustentables. Los contribuyentes deben cumplir con las normativas de funcionamiento y seguridad, evitando actividades ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las normativas de patentes comerciales e industriales.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "patentes comerciales curoscant",
-      "patentes industriales curoscant",
-      "derechos de patentes curoscant",
-      "exención patentes curoscant",
-      "normativas comerciales curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "13",
-    "fecha": "2017",
-    "seccion": "patentes comerciales e industriales",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-014",
-    "titulo": "Permisos de Circulación",
-    "texto": "Derechos por renovación, transferencia, duplicado o reposición de permisos de circulación vehicular. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del vehículo y su antigüedad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos de circulación, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de tránsito y seguridad vial, promoviendo una circulación ordenada y segura. Los contribuyentes deben cumplir con las normativas de tránsito, evitando infracciones o conductas peligrosas. el Gobierno de Curoscant podrá establecer programas de educación vial y promoción del uso responsable del transporte.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "permisos de circulación curoscant",
-      "derechos de circulación curoscant",
-      "renovación permisos circulación curoscant",
-      "exención permisos circulación curoscant",
-      "normativas tránsito curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "14",
-    "fecha": "2017",
-    "seccion": "permisos circulación",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-015",
-    "titulo": "Ocupación de Bienes Nacionales de Uso Público",
-    "texto": "Permisos para instalación de quioscos, ocupación de veredas, ferias libres, mercados y eventos en espacios públicos. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del espacio ocupado y la duración del permiso. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la obtención de permisos de ocupación, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de uso de espacios públicos, promoviendo un uso ordenado y respetuoso. Los contribuyentes deben cumplir con las normativas de ocupación y uso de bienes nacionales, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de regulación y control de ocupaciones en espacios públicos.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "ocupación bienes públicos curoscant",
-      "permisos ocupación curoscant",
-      "quioscos y ferias libres curoscant",
-      "exención ocupación espacios públicos curoscant",
-      "normativas uso espacios públicos curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "15",
-    "fecha": "2017",
-    "seccion": "ocupación bienes nacionales",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-016",
-    "titulo": "Permisos Sanitarios",
-    "texto": "Derechos por permisos sanitarios para expendios de alimentos, establecimientos de salud, peluquerías y centros de estética. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del establecimiento y tipo de actividad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos sanitarios, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas sanitarias y de salud pública, promoviendo actividades comerciales seguras y saludables. Los contribuyentes deben cumplir con las normativas sanitarias, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las normativas sanitarias.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "permisos sanitarios curoscant",
-      "derechos sanitarios curoscant",
-      "establecimientos de salud curoscant",
-      "exención permisos sanitarios curoscant",
-      "normativas sanitarias curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "16",
-    "fecha": "2017",
-    "seccion": "permisos sanitarios",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-017",
-    "titulo": "Permisos de Espectáculos Públicos",
-    "texto": "Derechos para eventos masivos, espectáculos artísticos, actividades deportivas y fiestas, establecidos por ticket o aforo. Exención parcial para personas con discapacidad. La tarifa se calcula en base al tipo de evento, aforo y duración. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos de espectáculos públicos, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de seguridad y orden público, promoviendo eventos seguros y organizados. Los contribuyentes deben cumplir con las normativas de realización de espectáculos, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de regulación y control de eventos masivos en espacios públicos.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "permisos espectáculos públicos curoscant",
-      "derechos eventos masivos curoscant",
-      "espectáculos artísticos curoscant",
-      "exención permisos espectáculos curoscant",
-      "normativas seguridad eventos curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "17",
-    "fecha": "2017",
-    "seccion": "permisos",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-018",
-    "titulo": "Contribuciones por Mejoras",
-    "texto": "Cobro por pavimentación, instalación de redes y construcción de aceras, financiadas parcialmente por contribuyentes beneficiados. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal de la propiedad beneficiada y el costo de la mejora. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la recaudación de contribuciones por mejoras, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de urbanismo y obras públicas, promoviendo un desarrollo ordenado y sustentable. Los contribuyentes deben cumplir con las normativas de pago de contribuciones por mejoras, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de financiamiento y facilidades de pago para contribuir al desarrollo urbano.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "contribuciones por mejoras curoscant",
-      "pavimentación y redes curoscant",
-      "construcción de aceras curoscant",
-      "exención contribuciones mejoras curoscant",
-      "normativas urbanismo curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "18",
-    "fecha": "2017",
-    "seccion": "contribución mejoras",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-019",
-    "titulo": "Contribución de Bienes Raíces",
-    "texto": "Calculada sobre base del avalúo fiscal, con tasas diferenciadas según zona y uso (agrícola, urbano, comercial). Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del bien raíz y su ubicación. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la recaudación de contribuciones de bienes raíces, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de propiedad y urbanismo, promoviendo un desarrollo ordenado y sustentable. Los contribuyentes deben cumplir con las normativas de pago de contribuciones de bienes raíces, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de actualización catastral y asesoría técnica para facilitar el cumplimiento de las normativas de contribuciones de bienes raíces.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "contribución bienes raíces curoscant",
-      "avalúo fiscal curoscant",
-      "tasas diferenciadas curoscant",
-      "exención bienes raíces curoscant",
-      "normativas propiedad curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "19",
-    "fecha": "2017",
-    "seccion": "contribución bienes raíces",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-020",
-    "titulo": "Contribución Territorial Adicional",
-    "texto": "Aporte adicional por ubicación privilegiada (zonas centrales o de alto valor inmobiliario). Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del bien raíz y su ubicación privilegiada. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la recaudación de contribuciones territoriales adicionales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de urbanismo y desarrollo territorial, promoviendo un uso ordenado y sustentable del suelo. Los contribuyentes deben cumplir con las normativas de pago de contribuciones territoriales adicionales, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de actualización catastral y asesoría técnica para facilitar el cumplimiento de las normativas de contribuciones territoriales adicionales.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "contribución territorial adicional curoscant",
-      "ubicación privilegiada curoscant",
-      "alto valor inmobiliario curoscant",
-      "exención territorial adicional curoscant",
-      "normativas desarrollo territorial curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "20",
-    "fecha": "2017",
-    "seccion": "contribución territorial adicional",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "definición"
-  },
-  {
-    "id": "ORD-021",
-    "titulo": "Exenciones Legales",
-    "texto": "Exenciones para bienes fiscales, del Gobierno, instituciones religiosas, organizaciones benéficas y adultos mayores. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de exenciones legales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de exenciones tributarias, promoviendo un uso ordenado y sustentable de los recursos públicos. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de exenciones, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de fiscalización y control para asegurar el correcto uso de las exenciones legales.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "exenciones legales curoscant",
-      "bienes fiscales curoscant",
-      "organizaciones benéficas curoscant",
-      "exención adultos mayores curoscant",
-      "normativas exenciones tributarias curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "21",
-    "fecha": "2017",
-    "seccion": "exenciones legales",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-022",
-    "titulo": "Beneficios por Condición Social",
-    "texto": "Beneficios tributarios para personas con discapacidad, familias vulnerables, veteranos y beneficiarios de subsidios habitacionales. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de beneficios por condición social, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de inclusión social y equidad tributaria, promoviendo un trato justo y equitativo a los contribuyentes en situación de vulnerabilidad. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de beneficios, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de apoyo y asesoría para facilitar el acceso a los beneficios tributarios por condición social.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "beneficios condición social curoscant",
-      "personas con discapacidad curoscant",
-      "familias vulnerables curoscant",
-      "veteranos curoscant",
-      "subsidios habitacionales curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "22",
-    "fecha": "2017",
-    "seccion": "beneficios condición social",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-023",
-    "titulo": "Incentivos al Desarrollo",
-    "texto": "Descuentos o exenciones para nuevas inversiones, empresas creadoras de empleo, proyectos sustentables o recuperación patrimonial. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de incentivos al desarrollo, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de desarrollo económico y sustentable, promoviendo la inversión y generación de empleo en el territorio municipal. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de incentivos, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y apoyo a iniciativas de desarrollo económico local.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "incentivos al desarrollo curoscant",
-      "nuevas inversiones curoscant",
-      "empresas creadoras de empleo curoscant",
-      "proyectos sustentables curoscant",
-      "recuperación patrimonial curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "23",
-    "fecha": "2017",
-    "seccion": "incentivos al desarrollo",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-024",
-    "titulo": "Beneficios por Pronto Pago",
-    "texto": "Descuentos por pago anticipado, pago anual adelantado o cumplimiento previo de obligaciones tributarias. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de beneficios por pronto pago, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de recaudación y pago tributario, promoviendo una cultura de cumplimiento y responsabilidad fiscal entre los contribuyentes. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de beneficios por pronto pago, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y educación tributaria para incentivar el pronto pago.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "beneficios pronto pago curoscant",
-      "descuentos pago anticipado curoscant",
-      "cumplimiento obligaciones tributarias curoscant",
-      "exención pronto pago curoscant",
-      "normativas recaudación curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "24",
-    "seccion": "beneficios",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-025",
-    "titulo": "Determinación de la Obligación",
-    "texto": "Define base imponible, aplicación de tasas, fecha de devengo y forma de notificación al contribuyente. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la determinación de las obligaciones tributarias, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de determinación tributaria, promoviendo una correcta identificación y cálculo de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de notificación y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las obligaciones tributarias.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "determinación obligación curoscant",
-      "base imponible curoscant",
-      "aplicación tasas curoscant",
-      "fecha de devengo curoscant",
-      "notificación al contribuyente curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "25",
-    "seccion": "determinación a la obligación",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-026",
-    "titulo": "Facturación y Cobranza",
-    "texto": "Regula emisión de facturas, plazos y modalidades de pago, convenios y facilidades de pago. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la facturación y cobranza de las obligaciones tributarias, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de facturación y cobranza, promoviendo una correcta gestión de los ingresos del Gobierno. Los contribuyentes deben cumplir con las normativas de pago y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de facilidades de pago y convenios para facilitar el cumplimiento de las obligaciones tributarias.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "facturación y cobranza curoscant",
-      "emisión de facturas curoscant",
-      "plazos de pago curoscant",
-      "convenios de pago curoscant",
-      "facilidades de pago curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "26",
-    "seccion": "facturación y cobranza",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-027",
-    "titulo": "Intereses y Reajustes",
-    "texto": "Se aplican intereses por mora, reajustes automáticos según índice y multas por incumplimiento. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de intereses y reajustes, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de recaudación y pago tributario, promoviendo una cultura de cumplimiento y responsabilidad fiscal entre los contribuyentes. Los contribuyentes deben cumplir con las normativas de pago y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y educación tributaria para incentivar el cumplimiento oportuno de las obligaciones tributarias.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "intereses y reajustes curoscant",
-      "intereses por mora curoscant",
-      "reajustes automáticos curoscant",
-      "multas por incumplimiento curoscant",
-      "normativas recaudación curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "27",
-    "seccion": "intereses y reajustes",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-028",
-    "titulo": "Prescripción de las Obligaciones",
-    "texto": "Se establece plazo de prescripción, causas de interrupción y efectos legales una vez cumplidos. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la prescripción de las obligaciones tributarias, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de prescripción tributaria, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de notificación y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las obligaciones tributarias y su prescripción.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "prescripción obligaciones curoscant",
-      "plazo de prescripción curoscant",
-      "causas de interrupción curoscant",
-      "efectos legales prescripción curoscant",
-      "normativas prescripción tributaria curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "28",
-    "seccion": "prescripción obligaciones",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-029",
-    "titulo": "Derecho a Reclamo",
-    "texto": "Establece procedimiento de reclamo, plazos y documentación requerida para impugnar liquidaciones o cobros. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la presentación y resolución de reclamos, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de reclamo tributario, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de presentación de reclamos y documentación, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el ejercicio del derecho a reclamo.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "derecho a reclamo curoscant",
-      "procedimiento de reclamo curoscant",
-      "plazos de reclamo curoscant",
-      "documentación requerida curoscant",
-      "normativas reclamo tributario curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "29",
-    "seccion": "reclamos",
-    "titulo_seccion": "Titulo 1",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-030",
-    "titulo": "Recurso de Reposición",
-    "texto": "Explica cómo presentar recurso de reposición, plazos de interposición y resolución administrativa. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la presentación y resolución de recursos de reposición, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de reposición tributaria, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de presentación de recursos y documentación, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el ejercicio del recurso de reposición.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "recurso de reposición curoscant",
-      "plazos de reposición curoscant",
-      "resolución administrativa curoscant",
-      "documentación recurso reposición curoscant",
-      "normativas reposición tributaria curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "30",
-    "seccion": "recursos",
-    "titulo_seccion": "Recursos",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-031",
-    "titulo": "Recursos Jurisdiccionales",
-    "texto": "Describe procedimiento en Juzgado de Policía Local y apelación ante Corte de Apelaciones. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la presentación y resolución de recursos jurisdiccionales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas jurisdiccionales tributarias, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de presentación de recursos jurisdiccionales y documentación, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el ejercicio de los recursos jurisdiccionales.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "recursos jurisdiccionales curoscant",
-      "Juzgado de Policía Local curoscant",
-      "apelación Corte de Apelaciones curoscant",
-      "procedimiento jurisdiccional curoscant",
-      "normativas jurisdiccionales tributarias curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "31",
-    "seccion": "recursos",
-    "titulo_seccion": "Recursos",
-    "tipo_fragmento": "descripción"
-  },
-  {
-    "id": "ORD-032",
-    "titulo": "Facultades de Fiscalización",
-    "texto": "el Gobierno de Curoscant puede inspeccionar, solicitar información y requerir colaboración de organismos, con deberes del contribuyente. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la fiscalización tributaria, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de fiscalización tributaria, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de colaboración y presentación de información, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las obligaciones tributarias y la fiscalización.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "facultades de fiscalización curoscant",
-      "inspección tributaria curoscant",
-      "solicitud de información curoscant",
-      "colaboración organismos curoscant",
-      "normativas fiscalización tributaria curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "32",
-    "seccion": "recursos",
-    "titulo_seccion": "Recursos",
-    "tipo_fragmento": "fiscalización"
-  },
-  {
-    "id": "ORD-033",
-    "titulo": "Infracciones y Sanciones",
-    "texto": "Se describen multas, clausuras, suspensiones de permisos y graduación de sanciones según gravedad y reincidencia. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de infracciones y sanciones, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de infracciones tributarias, promoviendo una cultura de cumplimiento y responsabilidad fiscal entre los contribuyentes. Los contribuyentes deben cumplir con las normativas de pago de multas y sanciones, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y educación tributaria para prevenir infracciones y fomentar el cumplimiento voluntario.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "infracciones y sanciones curoscant",
-      "multas tributarias curoscant",
-      "clausuras permisos curoscant",
-      "suspensiones de permisos curoscant",
-      "normativas infracciones tributarias curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "33",
-    "seccion": "recursos",
-    "titulo_seccion": "Recursos",
-    "tipo_fragmento": "penalidades"
-  },
-  {
-    "id": "ORD-034",
-    "titulo": "Vigencia y Derogación",
-    "texto": "La ordenanza entra en vigencia al día siguiente de su publicación, deroga normas anteriores y establece un régimen transitorio. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la implementación de la ordenanza, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de vigencia y derogación, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de transición y adaptación a la nueva ordenanza, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar la transición a la nueva normativa tributaria.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "vigencia y derogación curoscant",
-      "ordenanza tributaria curoscant",
-      "régimen transitorio curoscant",
-      "normativas vigencia curoscant",
-      "adaptación a nueva ordenanza curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "34",
-    "seccion": "recursos",
-    "titulo_seccion": "Recursos",
-    "tipo_fragmento": "duración"
-  },
-  {
-    "id": "ORD-035",
-    "titulo": "Disposiciones Especiales",
-    "texto": "Regula situaciones no previstas, criterios de interpretación, actualizaciones, modificaciones y obligaciones de publicidad. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de disposiciones especiales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de disposiciones especiales, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de interpretación y aplicación de disposiciones especiales, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las disposiciones especiales.",
-    "fuente": "Ordenanza de Contribuciones Curoscant",
-    "alias": [
-      "disposiciones especiales curoscant",
-      "situaciones no previstas curoscant",
-      "criterios de interpretación curoscant",
-      "actualizaciones y modificaciones curoscant",
-      "publicidad obligaciones curoscant"
-    ],
-    "doc": "Normativa de Tributación y Derechos Económicos",
-    "decreto": "1365",
-    "articulo": "35",
-    "seccion": "recursos",
-    "titulo_seccion": "Recursos",
-    "tipo_fragmento": "apendices"
-  }
+    {
+        "id": "ORD-001",
+        "titulo": "Objeto y Ámbito de Aplicación",
+        "texto": "Establecer el marco normativo para la recaudación municipal de contribuciones, derechos y tasas en el territorio del Gobierno de Curoscant, regulando su aplicación, principios y responsables. Incluye contribuciones por servicios, permisos, patentes y derechos de uso de bienes públicos, aplicables a personas naturales y jurídicas. La ordenanza es de aplicación general y rige para todos los habitantes del territorio municipal, sin perjuicio de las normas especiales que regulen ciertos tributos.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "contribuciones curoscant",
+            "derechos y tasas curoscant",
+            "marco normativo curoscant",
+            "recaudación municipal curoscant",
+            "ordenanza contribuciones"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "1",
+        "fecha": "2017",
+        "seccion": "titulo 1",
+        "titulo_seccion": "generalidades",
+        "tipo_fragmento": "generalidades"
+    },
+    {
+        "id": "ORD-002",
+        "titulo": "Definiciones y Conceptos",
+        "texto": "Contribuyente: persona natural o jurídica sujeta a impuestos, tasas o derechos. Tasas: pagos por servicios específicos. Derechos: autorizaciones del Gobierno. Contribuciones: aportes especiales. Servicios del Gobierno: actividades prestadas por el Gobierno de Curoscant. Bienes nacionales de uso público: espacios públicos y bienes destinados al uso general. Permisos: autorizaciones para actividades específicas. Patentes: licencias comerciales o industriales. Derechos de uso: pagos por utilización de bienes públicos. Exenciones: liberaciones de obligaciones tributarias. Beneficios: incentivos fiscales. Obligaciones tributarias: deberes de pago y cumplimiento. Procedimientos administrativos: trámites para la gestión tributaria. Reclamos: acciones para impugnar decisiones tributarias. Recursos jurisdiccionales: acciones legales ante tribunales. Fiscalización: supervisión del cumplimiento tributario. Infracciones: violaciones a la normativa tributaria. Sanciones: castigos por incumplimiento. Vigencia: período de aplicación de la ordenanza.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "definiciones curoscant",
+            "conceptos tributarios curoscant",
+            "contribuyente curoscant",
+            "tasas y derechos curoscant",
+            "servicios del gobierno curoscant",
+            "bienes públicos curoscant",
+            "permisos y patentes curoscant",
+            "exenciones y beneficios curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "2",
+        "fecha": "2017",
+        "seccion": "definición",
+        "titulo_seccion": "generalidades",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-003",
+        "titulo": "Marco Legal",
+        "texto": "La ordenanza se basa en la Ley Orgánica Constitucional de Municipalidades, sus reglamentos y otras normas vigentes, y remite en lo no previsto a las leyes nacionales. Establece que el Gobierno de Curoscant tiene facultades para crear, modificar y derogar tributos locales, siempre respetando los principios constitucionales y legales. Las disposiciones de la ordenanza son de carácter general y aplicables a todos los contribuyentes del territorio municipal.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "marco legal curoscant",
+            "ley orgánica municipalidades",
+            "reglamentos tributarios curoscant",
+            "facultades gobierno curoscant",
+            "principios constitucionales curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "3",
+        "fecha": "2017",
+        "seccion": "marco legal",
+        "titulo_seccion": "generalidades",
+        "tipo_fragmento": "generalidades"
+    },
+    {
+        "id": "ORD-004",
+        "titulo": "Principios Tributarios Municipales",
+        "texto": "Se aplican los principios de legalidad, igualdad, proporcionalidad y no confiscatoriedad en todas las obligaciones tributarias del Gobierno. La recaudación debe ser transparente, eficiente y orientada al beneficio de la comunidad. el Gobierno de Curoscant debe garantizar el acceso a la información tributaria y facilitar el cumplimiento de las obligaciones por parte de los contribuyentes. Los tributos deben ser justos y equitativos, evitando cargas desproporcionadas a los ciudadanos. La administración tributaria debe actuar con imparcialidad y respeto a los derechos de los contribuyentes. La recaudación debe destinarse a financiar servicios públicos y proyectos de desarrollo local.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "principios tributarios curoscant",
+            "legalidad tributaria curoscant",
+            "igualdad y proporcionalidad curoscant",
+            "no confiscatoriedad curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "4",
+        "fecha": "2017",
+        "seccion": "principios tributarios",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "principios"
+    },
+    {
+        "id": "ORD-005",
+        "titulo": "Definición y Naturaleza de las Tasas",
+        "texto": "La tasa municipal es el pago por un servicio concreto, con contraprestación directa al contribuyente, y debe reflejar el costo real del servicio. No puede ser superior al costo de prestación del servicio y debe ser proporcional al beneficio recibido. Las tasas se aplican a servicios como recolección de basura, alumbrado público, mantención de espacios públicos, entre otros. La tasa no es un impuesto, ya que implica una contraprestación específica y directa por parte de el Gobierno de Curoscant al contribuyente. Las tasas deben ser aprobadas por el Concejo Municipal y publicadas en el Diario Oficial, especificando su monto, periodicidad y condiciones de pago. Las tasas son exigibles una vez que el servicio ha sido prestado o está disponible para el contribuyente.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "tasas municipales curoscant",
+            "definición tasas curoscant",
+            "naturaleza tasas curoscant",
+            "servicios tasa curoscant",
+            "contraprestación tasa curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "5",
+        "fecha": "2017",
+        "seccion": "tasas",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-006",
+        "titulo": "Servicios de Aseo Domiciliario",
+        "texto": "Se cobra tarifa por retiro de residuos domiciliarios según frecuencia establecida. Existen opciones de pago mensual, trimestral o anual. Exención parcial para adultos mayores y personas con discapacidad. La tarifa se calcula en base al avalúo fiscal de la propiedad y el número de habitantes. el Gobierno de Curoscant debe garantizar la recolección eficiente y regular de residuos, así como la disposición adecuada de los mismos. Los contribuyentes deben cumplir con las normativas de separación de residuos y horarios de recolección. La tarifa incluye el servicio de limpieza de calles y espacios públicos, así como la promoción de campañas de reciclaje y educación ambiental. el Gobierno de Curoscant podrá establecer convenios con empresas privadas para mejorar la eficiencia del servicio de aseo domiciliario.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "aseo domiciliario curoscant",
+            "tarifa aseo curoscant",
+            "recolección residuos curoscant",
+            "exención aseo curoscant",
+            "servicio limpieza calles curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "6",
+        "fecha": "2017",
+        "seccion": "aseo domiciliario",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-007",
+        "titulo": "Servicios de Alumbrado Público",
+        "texto": "Contribución por mantención del alumbrado, calculada según avalúo fiscal y superficie cubierta, pagadera semestralmente. Exención parcial para personas con discapacidad. La tarifa incluye el costo de instalación, mantenimiento y operación del sistema de alumbrado público. el Gobierno de Curoscant debe garantizar un servicio eficiente y seguro, con iluminación adecuada en calles, plazas y espacios públicos. Se fomentará el uso de tecnologías sustentables y energías renovables para mejorar la eficiencia energética del alumbrado público. Los contribuyentes deben informar sobre fallas o problemas en el sistema de alumbrado para su pronta reparación. el Gobierno de Curoscant podrá establecer programas de mejora continua y modernización del sistema de alumbrado público.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "alumbrado público curoscant",
+            "contribución alumbrado curoscant",
+            "mantención alumbrado curoscant",
+            "exención alumbrado curoscant",
+            "iluminación espacios públicos curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "7",
+        "fecha": "2017",
+        "seccion": "alumbrado público",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-008",
+        "titulo": "Servicios de Mantención de Espacios Públicos",
+        "texto": "Cobro por conservación de plazas, parques, veredas y poda de árboles frente a la propiedad. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar la limpieza, conservación y embellecimiento de los espacios públicos, promoviendo su uso y disfrute por parte de la comunidad. Se fomentará la participación ciudadana en el cuidado y mantenimiento de los espacios públicos, a través de programas de voluntariado y educación ambiental. Los contribuyentes deben colaborar con el Gobierno de Curoscant en el cuidado de los espacios públicos, evitando actos de vandalismo y mal uso. el Gobierno de Curoscant podrá establecer convenios con organizaciones comunitarias para mejorar la gestión y mantenimiento de los espacios públicos.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "mantención espacios públicos curoscant",
+            "conservación plazas parques curoscant",
+            "poda árboles curoscant",
+            "exención espacios públicos curoscant",
+            "embellecimiento espacios públicos curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "8",
+        "fecha": "2017",
+        "seccion": "mantención espacios públicos",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-009",
+        "titulo": "Servicios Cementeriales",
+        "texto": "Derecho por sepultación, mantención de nichos y tumbas, y servicios funerarios del Gobierno según tarifa vigente. Exención parcial para personas con discapacidad. La tarifa incluye el uso de instalaciones, servicios de inhumación y cremación, y mantenimiento de cementerios. el Gobierno de Curoscant debe garantizar un servicio digno y respetuoso para los difuntos y sus familias, con instalaciones adecuadas y personal capacitado. Se fomentará la conservación y embellecimiento de los cementerios, promoviendo su uso como espacios de memoria y reflexión. Los contribuyentes deben cumplir con las normativas de uso y conservación de los cementerios, evitando actos de vandalismo o mal uso. el Gobierno de Curoscant podrá establecer programas de mejora continua en la gestión de los servicios cementeriales.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "servicios cementeriales curoscant",
+            "derecho sepultación curoscant",
+            "mantención nichos tumbas curoscant",
+            "exención servicios funerarios curoscant",
+            "conservación cementerios curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "9",
+        "fecha": "2017",
+        "seccion": "servicios cementeriales",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-010",
+        "titulo": "Servicios de Seguridad Ciudadana",
+        "texto": "Contribución especial para sistemas de seguridad pública, videovigilancia y guardias del Gobierno, cobrada anualmente. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar un servicio de seguridad eficiente, con patrullajes regulares y sistemas de videovigilancia en espacios públicos. Se fomentará la participación ciudadana en la seguridad, a través de programas de prevención del delito y educación cívica. Los contribuyentes deben colaborar con el Gobierno de Curoscant en la denuncia de delitos y actos delictivos, así como en la promoción de una cultura de seguridad. el Gobierno de Curoscant podrá establecer convenios con carabineros y otras instituciones para mejorar la seguridad ciudadana.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "seguridad ciudadana curoscant",
+            "contribución seguridad curoscant",
+            "videovigilancia curoscant",
+            "exención seguridad ciudadana curoscant",
+            "participación ciudadana seguridad curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "10",
+        "fecha": "2017",
+        "seccion": "seguridad ciudadana",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-011",
+        "titulo": "Permisos de Edificación",
+        "texto": "Derechos por revisión de proyectos, permisos de obra mayor, menor, ampliaciones y modificaciones según zonas y tipos de obra. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos de edificación, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas urbanísticas y de construcción, promoviendo edificaciones seguras y sustentables. Los contribuyentes deben cumplir con las normativas de construcción y urbanismo, evitando obras ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las normativas de edificación.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "permisos de edificación curoscant",
+            "derechos de obra curoscant",
+            "revisión de proyectos curoscant",
+            "exención permisos edificación curoscant",
+            "normativas urbanísticas curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "11",
+        "fecha": "2017",
+        "seccion": "permisos edificación",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-012",
+        "titulo": "Permisos de Subdivisión y Loteo",
+        "texto": "Derechos por subdivisión de predios, loteo y fusión de propiedades, calculados según dimensiones y destino. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y superficie de la propiedad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la obtención de permisos de subdivisión y loteo, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas urbanísticas y de planificación territorial, promoviendo un desarrollo ordenado y sustentable. Los contribuyentes deben cumplir con las normativas de subdivisión y loteo, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de asesoría técnica y capacitación para facilitar el cumplimiento de las normativas de subdivisión y loteo.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "permisos de subdivisión curoscant",
+            "loteo curoscant",
+            "derechos de subdivisión curoscant",
+            "exención permisos loteo curoscant",
+            "normativas planificación territorial curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "12",
+        "fecha": "2017",
+        "seccion": "permisos subdivisión y loteo",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-013",
+        "titulo": "Patentes Comerciales e Industriales",
+        "texto": "Incluye patentes de alcoholes, comerciales, industriales, profesionales y microempresas familiares, con tarifas diferenciadas. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal y tipo de actividad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de patentes, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas comerciales e industriales, promoviendo actividades económicas legales y sustentables. Los contribuyentes deben cumplir con las normativas de funcionamiento y seguridad, evitando actividades ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las normativas de patentes comerciales e industriales.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "patentes comerciales curoscant",
+            "patentes industriales curoscant",
+            "derechos de patentes curoscant",
+            "exención patentes curoscant",
+            "normativas comerciales curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "13",
+        "fecha": "2017",
+        "seccion": "patentes comerciales e industriales",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-014",
+        "titulo": "Permisos de Circulación",
+        "texto": "Derechos por renovación, transferencia, duplicado o reposición de permisos de circulación vehicular. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del vehículo y su antigüedad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos de circulación, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de tránsito y seguridad vial, promoviendo una circulación ordenada y segura. Los contribuyentes deben cumplir con las normativas de tránsito, evitando infracciones o conductas peligrosas. el Gobierno de Curoscant podrá establecer programas de educación vial y promoción del uso responsable del transporte.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "permisos de circulación curoscant",
+            "derechos de circulación curoscant",
+            "renovación permisos circulación curoscant",
+            "exención permisos circulación curoscant",
+            "normativas tránsito curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "14",
+        "fecha": "2017",
+        "seccion": "permisos circulación",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-015",
+        "titulo": "Ocupación de Bienes Nacionales de Uso Público",
+        "texto": "Permisos para instalación de quioscos, ocupación de veredas, ferias libres, mercados y eventos en espacios públicos. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del espacio ocupado y la duración del permiso. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la obtención de permisos de ocupación, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de uso de espacios públicos, promoviendo un uso ordenado y respetuoso. Los contribuyentes deben cumplir con las normativas de ocupación y uso de bienes nacionales, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de regulación y control de ocupaciones en espacios públicos.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "ocupación bienes públicos curoscant",
+            "permisos ocupación curoscant",
+            "quioscos y ferias libres curoscant",
+            "exención ocupación espacios públicos curoscant",
+            "normativas uso espacios públicos curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "15",
+        "fecha": "2017",
+        "seccion": "ocupación bienes nacionales",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-016",
+        "titulo": "Permisos Sanitarios",
+        "texto": "Derechos por permisos sanitarios para expendios de alimentos, establecimientos de salud, peluquerías y centros de estética. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del establecimiento y tipo de actividad. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos sanitarios, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas sanitarias y de salud pública, promoviendo actividades comerciales seguras y saludables. Los contribuyentes deben cumplir con las normativas sanitarias, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las normativas sanitarias.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "permisos sanitarios curoscant",
+            "derechos sanitarios curoscant",
+            "establecimientos de salud curoscant",
+            "exención permisos sanitarios curoscant",
+            "normativas sanitarias curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "16",
+        "fecha": "2017",
+        "seccion": "permisos sanitarios",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-017",
+        "titulo": "Permisos de Espectáculos Públicos",
+        "texto": "Derechos para eventos masivos, espectáculos artísticos, actividades deportivas y fiestas, establecidos por ticket o aforo. Exención parcial para personas con discapacidad. La tarifa se calcula en base al tipo de evento, aforo y duración. el Gobierno de Curoscant debe garantizar un proceso ágil y transparente para la obtención de permisos de espectáculos públicos, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de seguridad y orden público, promoviendo eventos seguros y organizados. Los contribuyentes deben cumplir con las normativas de realización de espectáculos, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de regulación y control de eventos masivos en espacios públicos.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "permisos espectáculos públicos curoscant",
+            "derechos eventos masivos curoscant",
+            "espectáculos artísticos curoscant",
+            "exención permisos espectáculos curoscant",
+            "normativas seguridad eventos curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "17",
+        "fecha": "2017",
+        "seccion": "permisos",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-018",
+        "titulo": "Contribuciones por Mejoras",
+        "texto": "Cobro por pavimentación, instalación de redes y construcción de aceras, financiadas parcialmente por contribuyentes beneficiados. Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal de la propiedad beneficiada y el costo de la mejora. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la recaudación de contribuciones por mejoras, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de urbanismo y obras públicas, promoviendo un desarrollo ordenado y sustentable. Los contribuyentes deben cumplir con las normativas de pago de contribuciones por mejoras, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de financiamiento y facilidades de pago para contribuir al desarrollo urbano.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "contribuciones por mejoras curoscant",
+            "pavimentación y redes curoscant",
+            "construcción de aceras curoscant",
+            "exención contribuciones mejoras curoscant",
+            "normativas urbanismo curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "18",
+        "fecha": "2017",
+        "seccion": "contribución mejoras",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-019",
+        "titulo": "Contribución de Bienes Raíces",
+        "texto": "Calculada sobre base del avalúo fiscal, con tasas diferenciadas según zona y uso (agrícola, urbano, comercial). Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del bien raíz y su ubicación. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la recaudación de contribuciones de bienes raíces, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de propiedad y urbanismo, promoviendo un desarrollo ordenado y sustentable. Los contribuyentes deben cumplir con las normativas de pago de contribuciones de bienes raíces, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de actualización catastral y asesoría técnica para facilitar el cumplimiento de las normativas de contribuciones de bienes raíces.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "contribución bienes raíces curoscant",
+            "avalúo fiscal curoscant",
+            "tasas diferenciadas curoscant",
+            "exención bienes raíces curoscant",
+            "normativas propiedad curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "19",
+        "fecha": "2017",
+        "seccion": "contribución bienes raíces",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-020",
+        "titulo": "Contribución Territorial Adicional",
+        "texto": "Aporte adicional por ubicación privilegiada (zonas centrales o de alto valor inmobiliario). Exención parcial para personas con discapacidad. La tarifa se calcula en base al avalúo fiscal del bien raíz y su ubicación privilegiada. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la recaudación de contribuciones territoriales adicionales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de urbanismo y desarrollo territorial, promoviendo un uso ordenado y sustentable del suelo. Los contribuyentes deben cumplir con las normativas de pago de contribuciones territoriales adicionales, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de actualización catastral y asesoría técnica para facilitar el cumplimiento de las normativas de contribuciones territoriales adicionales.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "contribución territorial adicional curoscant",
+            "ubicación privilegiada curoscant",
+            "alto valor inmobiliario curoscant",
+            "exención territorial adicional curoscant",
+            "normativas desarrollo territorial curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "20",
+        "fecha": "2017",
+        "seccion": "contribución territorial adicional",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "definición"
+    },
+    {
+        "id": "ORD-021",
+        "titulo": "Exenciones Legales",
+        "texto": "Exenciones para bienes fiscales, del Gobierno, instituciones religiosas, organizaciones benéficas y adultos mayores. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de exenciones legales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de exenciones tributarias, promoviendo un uso ordenado y sustentable de los recursos públicos. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de exenciones, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de fiscalización y control para asegurar el correcto uso de las exenciones legales.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "exenciones legales curoscant",
+            "bienes fiscales curoscant",
+            "organizaciones benéficas curoscant",
+            "exención adultos mayores curoscant",
+            "normativas exenciones tributarias curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "21",
+        "fecha": "2017",
+        "seccion": "exenciones legales",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-022",
+        "titulo": "Beneficios por Condición Social",
+        "texto": "Beneficios tributarios para personas con discapacidad, familias vulnerables, veteranos y beneficiarios de subsidios habitacionales. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de beneficios por condición social, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de inclusión social y equidad tributaria, promoviendo un trato justo y equitativo a los contribuyentes en situación de vulnerabilidad. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de beneficios, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de apoyo y asesoría para facilitar el acceso a los beneficios tributarios por condición social.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "beneficios condición social curoscant",
+            "personas con discapacidad curoscant",
+            "familias vulnerables curoscant",
+            "veteranos curoscant",
+            "subsidios habitacionales curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "22",
+        "fecha": "2017",
+        "seccion": "beneficios condición social",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-023",
+        "titulo": "Incentivos al Desarrollo",
+        "texto": "Descuentos o exenciones para nuevas inversiones, empresas creadoras de empleo, proyectos sustentables o recuperación patrimonial. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de incentivos al desarrollo, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de desarrollo económico y sustentable, promoviendo la inversión y generación de empleo en el territorio municipal. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de incentivos, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y apoyo a iniciativas de desarrollo económico local.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "incentivos al desarrollo curoscant",
+            "nuevas inversiones curoscant",
+            "empresas creadoras de empleo curoscant",
+            "proyectos sustentables curoscant",
+            "recuperación patrimonial curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "23",
+        "fecha": "2017",
+        "seccion": "incentivos al desarrollo",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-024",
+        "titulo": "Beneficios por Pronto Pago",
+        "texto": "Descuentos por pago anticipado, pago anual adelantado o cumplimiento previo de obligaciones tributarias. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de beneficios por pronto pago, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de recaudación y pago tributario, promoviendo una cultura de cumplimiento y responsabilidad fiscal entre los contribuyentes. Los contribuyentes deben cumplir con las normativas de solicitud y justificación de beneficios por pronto pago, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y educación tributaria para incentivar el pronto pago.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "beneficios pronto pago curoscant",
+            "descuentos pago anticipado curoscant",
+            "cumplimiento obligaciones tributarias curoscant",
+            "exención pronto pago curoscant",
+            "normativas recaudación curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "24",
+        "seccion": "beneficios",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-025",
+        "titulo": "Determinación de la Obligación",
+        "texto": "Define base imponible, aplicación de tasas, fecha de devengo y forma de notificación al contribuyente. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la determinación de las obligaciones tributarias, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de determinación tributaria, promoviendo una correcta identificación y cálculo de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de notificación y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las obligaciones tributarias.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "determinación obligación curoscant",
+            "base imponible curoscant",
+            "aplicación tasas curoscant",
+            "fecha de devengo curoscant",
+            "notificación al contribuyente curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "25",
+        "seccion": "determinación a la obligación",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-026",
+        "titulo": "Facturación y Cobranza",
+        "texto": "Regula emisión de facturas, plazos y modalidades de pago, convenios y facilidades de pago. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la facturación y cobranza de las obligaciones tributarias, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de facturación y cobranza, promoviendo una correcta gestión de los ingresos del Gobierno. Los contribuyentes deben cumplir con las normativas de pago y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de facilidades de pago y convenios para facilitar el cumplimiento de las obligaciones tributarias.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "facturación y cobranza curoscant",
+            "emisión de facturas curoscant",
+            "plazos de pago curoscant",
+            "convenios de pago curoscant",
+            "facilidades de pago curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "26",
+        "seccion": "facturación y cobranza",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-027",
+        "titulo": "Intereses y Reajustes",
+        "texto": "Se aplican intereses por mora, reajustes automáticos según índice y multas por incumplimiento. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de intereses y reajustes, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de recaudación y pago tributario, promoviendo una cultura de cumplimiento y responsabilidad fiscal entre los contribuyentes. Los contribuyentes deben cumplir con las normativas de pago y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y educación tributaria para incentivar el cumplimiento oportuno de las obligaciones tributarias.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "intereses y reajustes curoscant",
+            "intereses por mora curoscant",
+            "reajustes automáticos curoscant",
+            "multas por incumplimiento curoscant",
+            "normativas recaudación curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "27",
+        "seccion": "intereses y reajustes",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-028",
+        "titulo": "Prescripción de las Obligaciones",
+        "texto": "Se establece plazo de prescripción, causas de interrupción y efectos legales una vez cumplidos. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la prescripción de las obligaciones tributarias, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de prescripción tributaria, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de notificación y presentación de antecedentes, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las obligaciones tributarias y su prescripción.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "prescripción obligaciones curoscant",
+            "plazo de prescripción curoscant",
+            "causas de interrupción curoscant",
+            "efectos legales prescripción curoscant",
+            "normativas prescripción tributaria curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "28",
+        "seccion": "prescripción obligaciones",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-029",
+        "titulo": "Derecho a Reclamo",
+        "texto": "Establece procedimiento de reclamo, plazos y documentación requerida para impugnar liquidaciones o cobros. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la presentación y resolución de reclamos, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de reclamo tributario, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de presentación de reclamos y documentación, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el ejercicio del derecho a reclamo.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "derecho a reclamo curoscant",
+            "procedimiento de reclamo curoscant",
+            "plazos de reclamo curoscant",
+            "documentación requerida curoscant",
+            "normativas reclamo tributario curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "29",
+        "seccion": "reclamos",
+        "titulo_seccion": "Titulo 1",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-030",
+        "titulo": "Recurso de Reposición",
+        "texto": "Explica cómo presentar recurso de reposición, plazos de interposición y resolución administrativa. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la presentación y resolución de recursos de reposición, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de reposición tributaria, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de presentación de recursos y documentación, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el ejercicio del recurso de reposición.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "recurso de reposición curoscant",
+            "plazos de reposición curoscant",
+            "resolución administrativa curoscant",
+            "documentación recurso reposición curoscant",
+            "normativas reposición tributaria curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "30",
+        "seccion": "recursos",
+        "titulo_seccion": "Recursos",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-031",
+        "titulo": "Recursos Jurisdiccionales",
+        "texto": "Describe procedimiento en Juzgado de Policía Local y apelación ante Corte de Apelaciones. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la presentación y resolución de recursos jurisdiccionales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas jurisdiccionales tributarias, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de presentación de recursos jurisdiccionales y documentación, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el ejercicio de los recursos jurisdiccionales.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "recursos jurisdiccionales curoscant",
+            "Juzgado de Policía Local curoscant",
+            "apelación Corte de Apelaciones curoscant",
+            "procedimiento jurisdiccional curoscant",
+            "normativas jurisdiccionales tributarias curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "31",
+        "seccion": "recursos",
+        "titulo_seccion": "Recursos",
+        "tipo_fragmento": "descripción"
+    },
+    {
+        "id": "ORD-032",
+        "titulo": "Facultades de Fiscalización",
+        "texto": "el Gobierno de Curoscant puede inspeccionar, solicitar información y requerir colaboración de organismos, con deberes del contribuyente. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la fiscalización tributaria, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de fiscalización tributaria, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de colaboración y presentación de información, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las obligaciones tributarias y la fiscalización.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "facultades de fiscalización curoscant",
+            "inspección tributaria curoscant",
+            "solicitud de información curoscant",
+            "colaboración organismos curoscant",
+            "normativas fiscalización tributaria curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "32",
+        "seccion": "recursos",
+        "titulo_seccion": "Recursos",
+        "tipo_fragmento": "fiscalización"
+    },
+    {
+        "id": "ORD-033",
+        "titulo": "Infracciones y Sanciones",
+        "texto": "Se describen multas, clausuras, suspensiones de permisos y graduación de sanciones según gravedad y reincidencia. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de infracciones y sanciones, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de infracciones tributarias, promoviendo una cultura de cumplimiento y responsabilidad fiscal entre los contribuyentes. Los contribuyentes deben cumplir con las normativas de pago de multas y sanciones, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de promoción y educación tributaria para prevenir infracciones y fomentar el cumplimiento voluntario.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "infracciones y sanciones curoscant",
+            "multas tributarias curoscant",
+            "clausuras permisos curoscant",
+            "suspensiones de permisos curoscant",
+            "normativas infracciones tributarias curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "33",
+        "seccion": "recursos",
+        "titulo_seccion": "Recursos",
+        "tipo_fragmento": "penalidades"
+    },
+    {
+        "id": "ORD-034",
+        "titulo": "Vigencia y Derogación",
+        "texto": "La ordenanza entra en vigencia al día siguiente de su publicación, deroga normas anteriores y establece un régimen transitorio. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la implementación de la ordenanza, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de vigencia y derogación, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de transición y adaptación a la nueva ordenanza, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar la transición a la nueva normativa tributaria.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "vigencia y derogación curoscant",
+            "ordenanza tributaria curoscant",
+            "régimen transitorio curoscant",
+            "normativas vigencia curoscant",
+            "adaptación a nueva ordenanza curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "34",
+        "seccion": "recursos",
+        "titulo_seccion": "Recursos",
+        "tipo_fragmento": "duración"
+    },
+    {
+        "id": "ORD-035",
+        "titulo": "Disposiciones Especiales",
+        "texto": "Regula situaciones no previstas, criterios de interpretación, actualizaciones, modificaciones y obligaciones de publicidad. Exención parcial para personas con discapacidad. el Gobierno de Curoscant debe garantizar un proceso transparente y eficiente para la aplicación de disposiciones especiales, con plazos claros y requisitos definidos. Se fomentará el cumplimiento de normativas de disposiciones especiales, promoviendo una correcta identificación y gestión de las obligaciones por parte de los contribuyentes. Los contribuyentes deben cumplir con las normativas de interpretación y aplicación de disposiciones especiales, evitando prácticas ilegales o no autorizadas. el Gobierno de Curoscant podrá establecer programas de capacitación y asesoría técnica para facilitar el cumplimiento de las disposiciones especiales.",
+        "fuente": "Ordenanza de Contribuciones Curoscant",
+        "alias": [
+            "disposiciones especiales curoscant",
+            "situaciones no previstas curoscant",
+            "criterios de interpretación curoscant",
+            "actualizaciones y modificaciones curoscant",
+            "publicidad obligaciones curoscant"
+        ],
+        "doc": "Normativa de Tributación y Derechos Económicos",
+        "decreto": "1365",
+        "articulo": "35",
+        "seccion": "recursos",
+        "titulo_seccion": "Recursos",
+        "tipo_fragmento": "apendices"
+    }
 ]
