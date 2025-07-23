@@ -18,6 +18,7 @@ import time
 import concurrent.futures
 from context_manager import ConversationalContextManager
 import unicodedata
+from prometheus_client import Counter, CollectorRegistry
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -128,6 +129,15 @@ logger = logging.getLogger(__name__)
 audit_logger = logging.getLogger("audit")
 if not audit_logger.handlers:
     audit_logger.addHandler(logging.StreamHandler())
+
+# Prometheus metric for tracking microservice errors
+PROM_REGISTRY = CollectorRegistry()
+ERROR_COUNTER = Counter(
+    "mcp_microservice_errors_total",
+    "Errores al invocar microservicios",
+    ["intent"],
+    registry=PROM_REGISTRY,
+)
 
 
 # --- Instancia tu LLM local (única instancia) ---
@@ -385,6 +395,17 @@ def call_tool_microservice(tool: str, params: Dict[str, Any]) -> Dict[str, Any]:
         return {"error": f"Error {resp.status_code}: {resp.text}"}
     except requests.RequestException as e:
         return {"error": f"Connection error: {e}"}
+
+
+def handle_service_error(resp: Dict[str, Any], intent: str, trace_id: str | None = None) -> Optional[Dict[str, str]]:
+    """Check microservice response and return friendly message on error."""
+    if resp.get("error"):
+        logger.error(
+            f"Microservice error: {resp['error']}", extra={"trace_id": trace_id}
+        )
+        ERROR_COUNTER.labels(intent=intent).inc()
+        return {"texto": "Ocurrió un problema al consultar nuestros servicios. Por favor, intenta más tarde."}
+    return None
 
 
 def call_scheduler_endpoint(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
@@ -984,13 +1005,9 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
         response = call_tool_microservice("complaint-registrar_reclamo", params)
         logging.info(f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}")
         context_manager.clear_complaint_state(sid)
-        if "error" in response:
-            err = response.get("error", "")
-            if "Connection error" in err or "Error 5" in err:
-                msg_err = "No pude registrar tu reclamo por un problema técnico. Por favor intenta más tarde."
-            else:
-                msg_err = "Hubo un error al registrar tu reclamo. Por favor, intenta nuevamente."
-            return {"respuesta": msg_err, "session_id": sid}
+        err = handle_service_error(response, "complaint-registrar_reclamo", sid)
+        if err:
+            return {"respuesta": err["texto"], "session_id": sid}
         success_msg = (
             "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
             "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
@@ -1027,6 +1044,9 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
 
     payload = {"fecha": agenda["fecha"], "hora": agenda["hora"]}
     resultado = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+    err = handle_service_error(resultado, "scheduler-listar_horas_disponibles", sid)
+    if err:
+        return {"answer": err["texto"], "finish": True}
     # Compatibilidad: acepta tanto 'data' como 'disponibles' como clave de bloques
     horas = resultado.get("data")
     if horas is None:
@@ -1075,6 +1095,9 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                     "limit": 5,
                 },
             )
+            err = handle_service_error(nuevas, "scheduler-listar_horas_cercanas", sid)
+            if err:
+                return {"answer": err["texto"], "finish": True}
             nuevas = nuevas if isinstance(nuevas, list) else nuevas.get("data", [])
             if nuevas:
                 ctx["last_suggestions"] = nuevas
@@ -1124,6 +1147,9 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         # Buscar bloques disponibles
         payload = {"fecha": ctx["bloque_cita"]["fecha"], "hora": ctx["bloque_cita"]["hora"]}
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
+        err = handle_service_error(raw, "scheduler-listar_horas_disponibles", sid)
+        if err:
+            return {"answer": err["texto"], "finish": True}
         bloques = raw.get("data") or raw.get("disponibles", [])
         hora_user_dt = datetime.strptime(
             ctx["bloque_cita"]["hora"], "%H:%M"
@@ -1275,11 +1301,11 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         logging.info(f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}")
         tool_result = call_tool_microservice("scheduler-reservar_hora", payload)
         logging.info(f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}")
-        # Mostrar mensaje de error específico si está presente
-        if tool_result.get("error"):
-            message = f"No se pudo agendar la cita. Detalle: {tool_result['error']}"
-        else:
-            message = tool_result.get("mensaje", "No se pudo agendar la cita.")
+        err = handle_service_error(tool_result, "scheduler-reservar_hora", sid)
+        if err:
+            context_manager.set_current_flow(sid, None)
+            return {"answer": err["texto"], "finish": True}
+        message = tool_result.get("mensaje", "No se pudo agendar la cita.")
         context_manager.set_current_flow(sid, None)
         return {"answer": message, "finish": True}
 
@@ -1542,6 +1568,10 @@ def orchestrate(
             if len(user_input.split()) < 6:
                 params["pregunta"] = f"{user_input} del trámite {selected}"
         service_resp = call_tool_microservice(tool, params)
+        err = handle_service_error(service_resp, tool, sid)
+        if err:
+            context_manager.clear_context_field(session_id, "doc_actual")
+            return {"respuesta": err["texto"], "session_id": sid}
         answer = (
             service_resp.get("respuesta")
             or service_resp.get("answer")
@@ -1592,6 +1622,10 @@ def orchestrate(
             if len(user_input.split()) < 6:
                 params["pregunta"] = f"{user_input} del trámite {selected}"
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
+        err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
+        if err:
+            context_manager.clear_context_field(session_id, "doc_actual")
+            return {"respuesta": err["texto"], "session_id": sid}
         ans = (
             service_resp.get("respuesta")
             or service_resp.get("answer")
