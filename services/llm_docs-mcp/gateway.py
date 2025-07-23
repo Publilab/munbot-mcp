@@ -3,17 +3,26 @@ import json
 import glob
 import logging
 import traceback
+import time
 import requests
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException, Request, Depends, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from prometheus_client import (
+    Counter,
+    Histogram,
+    CollectorRegistry,
+    generate_latest,
+    CONTENT_TYPE_LATEST,
+)
 from llama_client import LlamaClient
 from embeddings import embed
 from qdrant_utils import search_in_qdrant, filter_by_document
+from rag import doc_buscar_fragmento_documento
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -67,6 +76,37 @@ logging.basicConfig(
     handlers=[log_handler, logging.StreamHandler()]
 )
 logger = logging.getLogger(__name__)
+
+# ==== Prometheus metrics ====
+PROM_REGISTRY = CollectorRegistry()
+REQUEST_COUNTER = Counter(
+    "munbot_requests_total",
+    "Número de peticiones procesadas",
+    ["intent"],
+    registry=PROM_REGISTRY,
+)
+FALLBACK_COUNTER = Counter(
+    "munbot_fallbacks_total",
+    "Número de fallbacks activados",
+    registry=PROM_REGISTRY,
+)
+HUMAN_ESCALATION_COUNTER = Counter(
+    "munbot_human_escalations_total",
+    "Número de escalamientos a humano",
+    registry=PROM_REGISTRY,
+)
+ERROR_COUNTER = Counter(
+    "munbot_errors_total",
+    "Número de errores de microservicios",
+    ["intent"],
+    registry=PROM_REGISTRY,
+)
+RAG_LATENCY_HISTOGRAM = Histogram(
+    "rag_latency_seconds",
+    "Tiempo de latencia RAG",
+    buckets=[0.1, 0.5, 1, 2, 5, 10],
+    registry=PROM_REGISTRY,
+)
 
 # ==== Utilidades ====
 def load_metadata():
@@ -137,6 +177,7 @@ def generar_respuesta_llm(params: dict) -> dict:
 
     Devuelve tanto la respuesta generada como las referencias utilizadas."""
     pregunta = params.get("pregunta", "")
+    REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
     if not pregunta:
         return {"respuesta": "", "referencias": [], "no_results": True}
 
@@ -148,16 +189,20 @@ def generar_respuesta_llm(params: dict) -> dict:
 
     # 3) Buscar fragmentos relevantes en Qdrant
     try:
+        start_time = time.perf_counter()
         hits = search_in_qdrant(vector, top_k=5, filtro=filtro)
+        RAG_LATENCY_HISTOGRAM.observe(time.perf_counter() - start_time)
     except Exception as e:
         logger.error(f"Qdrant search failed: {e}")
+        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
         hits = []
 
     # 3.1) Verificar si hay resultados relevantes usando un umbral de confianza
-    if not hits or hits[0].score < QDRANT_SIMILARITY_THRESHOLD:
+    if not hits or getattr(hits[0], "score", 1.0) < QDRANT_SIMILARITY_THRESHOLD:
         logger.info(
             f"Insufficient similarity (score={hits[0].score if hits else 'N/A'}) – fallback triggered"
         )
+        FALLBACK_COUNTER.inc()
         return {
             "respuesta": "No encontré información.",
             "referencias": [],
@@ -169,7 +214,7 @@ def generar_respuesta_llm(params: dict) -> dict:
     referencias = []
     for idx, h in enumerate(hits, start=1):
         # Opcional: filtrar también los resultados secundarios por score
-        if h.score < QDRANT_SIMILARITY_THRESHOLD:
+        if getattr(h, "score", 1.0) < QDRANT_SIMILARITY_THRESHOLD:
             continue
         payload = getattr(h, "payload", {}) or {}
         texto = payload.get("texto") or payload.get("text")
@@ -183,6 +228,7 @@ def generar_respuesta_llm(params: dict) -> dict:
 
     # Si después de filtrar por score no queda nada
     if not fragments:
+        FALLBACK_COUNTER.inc()
         return {
             "respuesta": "No encontré información.",
             "referencias": [],
@@ -212,6 +258,7 @@ def tools_list():
 async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depends(authenticate)):
     req = await request.json()
     tool = req.get("tool")
+    REQUEST_COUNTER.labels(intent=tool).inc()
     params = req.get("params", {})
     faq_context = params.get("faq_context")
     if tool == "buscar_documento_por_tag":
@@ -227,6 +274,7 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
             return texto  # Solo el texto
         # Fallback LLM
         respuesta = generate_response(pregunta)
+        FALLBACK_COUNTER.inc()
         logger.info("Respuesta generada por Llama (fallback MCP)")
         return respuesta  # Solo el texto
     elif tool == "generar_respuesta_llm":
@@ -239,6 +287,11 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         respuesta = generar_respuesta_llm(params)
         logger.info("Respuesta generada por Llama con RAG")
         return respuesta
+    elif tool == "doc-buscar_fragmento_documento":
+        consulta = params.get("consulta", "")
+        documento = params.get("documento")
+        frags = doc_buscar_fragmento_documento(consulta, documento)
+        return {"fragmentos": frags}
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
 
@@ -246,6 +299,14 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
 async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
     """Endpoint directo que combina búsqueda y generación."""
     return generar_respuesta_llm(params)
+
+
+@app.post("/doc-buscar_fragmento_documento")
+async def doc_buscar_fragmento_documento_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+    consulta = params.get("consulta", "")
+    documento = params.get("documento")
+    frags = doc_buscar_fragmento_documento(consulta, documento)
+    return {"fragmentos": frags}
 
 @app.get("/health")
 def health():
@@ -257,6 +318,7 @@ def list_endpoints():
         "/tools/list",
         "/tools/call",
         "/doc-generar_respuesta_llm",
+        "/doc-buscar_fragmento_documento",
         "/health",
         "/metrics",
         "/process",
@@ -264,7 +326,7 @@ def list_endpoints():
 
 @app.get("/metrics")
 def metrics():
-    return "# HELP dummy"  # simplified for tests
+    return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
 
 @app.post("/process")
 def process(data: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
@@ -274,7 +336,7 @@ def process(data: dict, credentials: HTTPBasicCredentials = Depends(authenticate
 def root():
     return {
         "status": "MunBoT LLM Docs MCP running",
-        "endpoints": ["/tools/list", "/tools/call", "/health"],
+        "endpoints": ["/tools/list", "/tools/call", "/health", "/metrics", "/doc-buscar_fragmento_documento"],
         "version": "1.0.0"
     }
 

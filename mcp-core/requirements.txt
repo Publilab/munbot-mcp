@@ -9,3 +9,4 @@ rapidfuzz
 fakeredis
 chilean-rut
 phonenumbers
+prometheus_client>=0.16.0

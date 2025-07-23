@@ -25,7 +25,7 @@ DB_NAME = os.getenv("POSTGRES_DB")
 DB_USER = os.getenv("POSTGRES_USER")
 DB_PASS = os.getenv("POSTGRES_PASSWORD")
 
-from db import get_conn
+from db import get_conn, get_db
 
 
 def get_available_block(fecha: date, hora: dtime, trace_id: str | None = None):
