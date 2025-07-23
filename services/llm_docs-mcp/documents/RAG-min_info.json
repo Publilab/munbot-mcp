@@ -57,7 +57,7 @@
             "Telefono": "COM-555-1234",
             "Correo_Electronico": "min.defensa@coruscant.sw"
         },
-        "Direccion": "Direccion": "Cuartel General de Defensa Galáctica, Sector Militar Coruscant",
+        "Direccion": "Cuartel General de Defensa Galáctica, Sector Militar Coruscant",
         "deptos_subordinados": [
             "Departamento de Estrategia Militar",
             "Departamento de Logística y Abastecimiento"
@@ -151,7 +151,7 @@
         ]
     },
     {
-        "id": "MSB-008",
+        "Id": "MSB-008",
         "Nombre_Ministerio": "Ministerio de Salud y Bienestar",
         "Descripcion_Ministerio": "El Ministerio de Salud y Bienestar es responsable de la salud pública y el bienestar de los ciudadanos galácticos, asegurando el acceso a servicios de salud y promoviendo políticas de bienestar social.",
         "Funcion": ["Las principales funciones del Ministerio de Salud y Bienestar son",
@@ -214,7 +214,7 @@
         "deptos_subordinados": [
             "Departamento de Investigación Científica",
             "Departamento de Desarrollo Tecnológico",
-            "Deaprtamento de Transporte Interestelar",
+            "Departamento de Transporte Interestelar",
             "Departamento de Comunicaciones Galácticas"
         ]
     }
