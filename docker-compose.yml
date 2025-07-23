@@ -149,6 +149,7 @@ services:
       - ./services/llm_docs-mcp/.env
     environment:
       - REDIS_HOST=redis
+      - QDRANT_SIMILARITY_THRESHOLD=0.3
     depends_on:
       - qdrant
     expose:
