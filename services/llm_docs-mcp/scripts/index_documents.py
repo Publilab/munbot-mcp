@@ -7,7 +7,7 @@ import json
 import uuid
 import logging
 import re
-from qdrant_client import QdrantClient, models
+from qdrant_client import QdrantClient
 from embeddings import embed  # Reutilizamos el helper de embeddings
 
 logging.basicConfig(level=logging.INFO)
@@ -31,7 +31,12 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
             try:
                 with open(filepath, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                for item in data:
+            except Exception as e:
+                logger.error(f"Error cargando archivo RAG JSON {filename}: {e}")
+                data = None
+            if data is None:
+                continue  # Salta este documento
+            for item in data:
                     # Crear un texto semánticamente rico para el embedding
                     if 'pregunta' in item and 'respuesta' in item:
                         text_to_embed = f"Pregunta frecuente: {item['pregunta']}\nRespuesta: {item['respuesta']}"
@@ -50,16 +55,16 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
                         "texto": metadata_text,
                         "tipo_fragmento": item.get("tipo_fragmento", "general")
                     }
-                    if "articulo" in item: metadata["articulo"] = item["articulo"]
-                    if "decreto" in item: metadata["decreto"] = item["decreto"]
+                    if "articulo" in item:
+                        metadata["articulo"] = item["articulo"]
+                    if "decreto" in item:
+                        metadata["decreto"] = item["decreto"]
 
                     chunks.append({
                         "id": item.get("id", str(uuid.uuid4())),
                         "text": text_to_embed,
-                        "metadata": metadata
+                        "metadata": metadata,
                     })
-            except Exception as e:
-                logger.error(f"Error cargando archivo RAG JSON {filename}: {e}")
     return chunks
 
 
@@ -117,12 +122,32 @@ def main():
     vectors = embed([chunk["text"] for chunk in all_chunks])
 
     logger.info("Subiendo puntos a Qdrant...")
+
+    docs_to_upload = []
+    for chunk, vector in zip(all_chunks, vectors):
+        if vector is None or chunk is None:
+            continue
+        if len(vector) != 384:
+            logger.error(
+                f"Vector con tamaño inesperado ({len(vector)}) para id {chunk['id']}"
+            )
+            continue
+        docs_to_upload.append({
+            "id": str(chunk["id"]),
+            "vector": vector,
+            "payload": chunk["metadata"],
+        })
+
+    docs_to_upload = [doc for doc in docs_to_upload if doc is not None]
+    if not docs_to_upload:
+        logger.warning("No hay documentos válidos para subir a Qdrant.")
+        return
+
+    logger.debug(f"Payload de ejemplo: {docs_to_upload[:1]}")
+
     client.upsert(
         collection_name=COLLECTION_NAME,
-        points=[
-            models.PointStruct(id=str(chunk["id"]), vector=vector, payload=chunk["metadata"])
-            for chunk, vector in zip(all_chunks, vectors)
-        ],
+        points=docs_to_upload,
         wait=True,
     )
     logger.info(f"✅ Indexación completada. {len(all_chunks)} puntos subidos a la colección '{COLLECTION_NAME}'.")
