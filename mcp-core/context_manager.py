@@ -23,7 +23,9 @@ class ConversationalContextManager:
     def get_context(self, session_id: str) -> Dict[str, Any]:
         """Obtiene el contexto completo de la sesión."""
         context_str = self.redis_client.get(f"session:{session_id}")
-        context = json.loads(context_str) if context_str else {}
+        if context_str is None:
+            return {}
+        context = json.loads(context_str)
         if "agenda" not in context:
             context["agenda"] = {"fecha": None, "hora": None}
         return context

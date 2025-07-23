@@ -31,6 +31,11 @@ except ModuleNotFoundError:
     from text import normalize_text
 from llama_client import LlamaClient
 try:
+    from utils.intent_classifier import classify_intent_with_llm
+except ModuleNotFoundError:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
+    from intent_classifier import classify_intent_with_llm
+try:
     from utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
     def registrar_evento_humano(session_id: str, pregunta: str, trace_id: str | None = None) -> None:
@@ -560,33 +565,36 @@ def normalize(text):
 
 
 
-def detect_intent_keywords(user_input: str) -> str:
-    text = normalize(user_input)
+def detect_intent_keywords(text: str) -> str:
+    """
+    Nuevo clasificador semántico de intenciones basado en LLM.
+    Reemplaza los patrones heurísticos por comprensión contextual.
+    """
+    try:
+        return classify_intent_with_llm(text)
+    except Exception as e:
+        logger.warning(f"Fallo el clasificador LLM, usando fallback: {e}")
+        return detect_intent_fallback(text)
 
-    # Reclamos y quejas
-    if re.search(
-        r"\b(reclamo|reclamar|reclamacion|reclamaciones|queja|quejas|protesta|demanda|denuncia|denunciar|problema|problemas|reporte|reportar|sugerencia|inconformidad)\b",
-        text,
-    ):
-        return "complaint-registrar_reclamo"
 
-    # Agendar cita/hora/turno
-    if re.search(
-        r"\b(agendar|agenda|reservar|reserva|programar|concertar|coordinar una cita|solicitar una cita|hora|cita|turno|atencion|atención|visita|pedir|solicitar|sacar)\b",
-        text,
-    ):
-        return "scheduler-appointment_create"
+def detect_intent_fallback(text: str) -> str:
+    """
+    Clasificador heurístico simple para casos de emergencia.
+    """
+    text = normalize(text)
 
-    # Consultar documentos
-    if re.search(
-        r"\b(documento|documentos|certificado|certificados|ordenanza|ordenanzas|norma|normas|reglamento|reglamentos|buscar|busqueda|consulta|consultar)\b",
-        text,
-    ):
+    if "certificado" in text or "documento" in text or any(x in text for x in ["licencia", "permiso", "mail", "correo", "informacion", "horario", "costo"]):
         return "doc-generar_respuesta_llm"
+    if "reclamo" in text or "denuncia" in text:
+        return "complaint-registrar_reclamo"
+    if "cita" in text or "hora" in text or "turno" in text:
+        return "scheduler-appointment_create"
+    if any(x in text for x in ["hola", "buenas", "saludos"]):
+        return "saludo"
+    if any(x in text for x in ["gracias", "chao", "nos vemos", "adios", "adiós"]):
+        return "despedida"
 
-    # Añade más intents según necesidades del bot
-
-    return "unknown"
+    return "informacion_general"
 
 
 def detect_intent(
@@ -1044,7 +1052,7 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
             f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}",
             extra={"trace_id": trace_id},
         )
-        response = call_tool_microservice("complaint-registrar_reclamo", params, trace_id)
+        response = call_tool_microservice("complaint-registrar_reclamo", params)
         logger.info(
             f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}",
             extra={"trace_id": trace_id},
@@ -1088,7 +1096,7 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
         return {"answer": msg, "pending": True}
 
     payload = {"fecha": agenda["fecha"], "hora": agenda["hora"]}
-    resultado = call_tool_microservice("scheduler-listar_horas_disponibles", payload, trace_id)
+    resultado = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
     err = handle_service_error(resultado, "scheduler-listar_horas_disponibles", sid)
     if err:
         return {"answer": err["texto"], "finish": True}
@@ -1139,7 +1147,6 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                     "exclude": excluidos,
                     "limit": 5,
                 },
-                trace_id,
             )
             err = handle_service_error(nuevas, "scheduler-listar_horas_cercanas", sid)
             if err:
@@ -1192,7 +1199,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
 
         # Buscar bloques disponibles
         payload = {"fecha": ctx["bloque_cita"]["fecha"], "hora": ctx["bloque_cita"]["hora"]}
-        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload, trace_id)
+        raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
         err = handle_service_error(raw, "scheduler-listar_horas_disponibles", sid)
         if err:
             return {"answer": err["texto"], "finish": True}
@@ -1228,7 +1235,6 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         alternativas = call_tool_microservice(
             "scheduler-listar_horas_cercanas",
             {"fecha": ctx["bloque_cita"]["fecha"], "hora_rango": f"{ctx['bloque_cita']['hora']}-%", "limit": 5},
-            trace_id,
         )
         opciones = alternativas if isinstance(alternativas, list) else alternativas.get("data", [])
         if not opciones:
@@ -1349,7 +1355,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
             f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}",
             extra={"trace_id": trace_id},
         )
-        tool_result = call_tool_microservice("scheduler-reservar_hora", payload, trace_id)
+        tool_result = call_tool_microservice("scheduler-reservar_hora", payload)
         logger.info(
             f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}",
             extra={"trace_id": trace_id},
@@ -1511,14 +1517,9 @@ def orchestrate(
             user_input,
             re.IGNORECASE,
         ):
-            context_manager.set_pending_confirmation(sid, True)
-            context_manager.set_current_flow(sid, "cita")
-            msg = (
-                "Entiendo. Si quieres reservar una cita con un funcionario, puedo ayudarte a agendarla por este mismo medio. "
-                "¿Quieres hacerla ahora mismo?"
-            )
-            context_manager.update_context(sid, user_input, msg)
-            return {"respuesta": msg, "session_id": sid}
+            context_manager.set_current_flow(sid, "scheduler")
+            result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
+            return format_response(result, sid, trace_id=sid)
         if kw_intent == "complaint-registrar_reclamo":
             context_manager.set_pending_confirmation(sid, True)
             context_manager.set_current_flow(sid, "reclamo")
@@ -1589,6 +1590,7 @@ def orchestrate(
     # Detectar intención
     intent_data = detect_intent(user_input, convo_ctx.get("history"))
     tool = intent_data.get("intent")
+    logger.info(f"[INTENT] Intención detectada: {tool}", extra={"trace_id": sid})
     REQUEST_COUNTER.labels(intent=tool).inc()
     confidence = intent_data.get("confidence", 0)
     sentiment = intent_data.get("sentiment", "neutral")
@@ -1633,7 +1635,7 @@ def orchestrate(
             if len(user_input.split()) < 6:
                 params["pregunta"] = f"{user_input} del trámite {selected}"
         start_time = time.perf_counter()
-        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params, trace_id)
+        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         latency = (time.perf_counter() - start_time) * 1000
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
@@ -1701,7 +1703,7 @@ def orchestrate(
             params["documento"] = selected
             if len(user_input.split()) < 6:
                 params["pregunta"] = f"{user_input} del trámite {selected}"
-        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params, trace_id)
+        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
             context_manager.clear_context_field(session_id, "doc_actual")
