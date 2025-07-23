@@ -8,6 +8,7 @@ import uuid
 import logging
 import re
 from qdrant_client import QdrantClient
+from qdrant_client.http.models import PointStruct
 from embeddings import embed  # Reutilizamos el helper de embeddings
 
 logging.basicConfig(level=logging.INFO)
@@ -132,11 +133,13 @@ def main():
                 f"Vector con tamaño inesperado ({len(vector)}) para id {chunk['id']}"
             )
             continue
-        docs_to_upload.append({
-            "id": str(chunk["id"]),
-            "vector": vector,
-            "payload": chunk["metadata"],
-        })
+        docs_to_upload.append(
+            PointStruct(
+                id=str(chunk["id"]),
+                vector=vector,
+                payload=chunk["metadata"],
+            )
+        )
 
     docs_to_upload = [doc for doc in docs_to_upload if doc is not None]
     if not docs_to_upload:
