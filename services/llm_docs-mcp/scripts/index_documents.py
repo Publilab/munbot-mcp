@@ -1,5 +1,7 @@
 import os
 import sys
+# Ensure the root directory is on the path so 'embeddings' can be imported when
+# running this script from the scripts/ folder.
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import json
 import uuid
