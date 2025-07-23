@@ -69,13 +69,22 @@ def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
 # ==== Logging estructurado ====
 log_path = os.getenv("LOG_PATH", "gateway.log")
 from logging.handlers import RotatingFileHandler
+from pythonjsonlogger import jsonlogger
+
 log_handler = RotatingFileHandler(log_path, maxBytes=2*1024*1024, backupCount=5)
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(message)s',
-    handlers=[log_handler, logging.StreamHandler()]
+
+logger = logging.getLogger("munbot")
+logger.setLevel(logging.INFO)
+stream_handler = logging.StreamHandler()
+formatter = jsonlogger.JsonFormatter(
+    '%(asctime)s %(levelname)s %(name)s %(message)s %(trace_id)s'
 )
-logger = logging.getLogger(__name__)
+stream_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
+logger.addHandler(log_handler)
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.INFO)
+root_logger.addHandler(stream_handler)
 
 # ==== Prometheus metrics ====
 PROM_REGISTRY = CollectorRegistry()
@@ -172,7 +181,7 @@ def generate_response(prompt: str) -> str:
     return llama.generate(prompt, max_tokens=256, temperature=0.6, top_p=0.95)
 
 
-def generar_respuesta_llm(params: dict) -> dict:
+def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
 
     Devuelve tanto la respuesta generada como las referencias utilizadas."""
@@ -182,6 +191,7 @@ def generar_respuesta_llm(params: dict) -> dict:
         return {"respuesta": "", "referencias": [], "no_results": True}
 
     # 1) Obtener embedding de la pregunta
+    logger.info("Generando embeddings", extra={"trace_id": trace_id})
     vector = embed([pregunta])[0]
 
     # 2) Aplicar filtro por documento si corresponde
@@ -193,14 +203,15 @@ def generar_respuesta_llm(params: dict) -> dict:
         hits = search_in_qdrant(vector, top_k=5, filtro=filtro)
         RAG_LATENCY_HISTOGRAM.observe(time.perf_counter() - start_time)
     except Exception as e:
-        logger.error(f"Qdrant search failed: {e}")
+        logger.error(f"Qdrant search failed: {e}", extra={"trace_id": trace_id})
         ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
         hits = []
 
     # 3.1) Verificar si hay resultados relevantes usando un umbral de confianza
     if not hits or getattr(hits[0], "score", 1.0) < QDRANT_SIMILARITY_THRESHOLD:
         logger.info(
-            f"Insufficient similarity (score={hits[0].score if hits else 'N/A'}) – fallback triggered"
+            f"Insufficient similarity (score={hits[0].score if hits else 'N/A'}) – fallback triggered",
+            extra={"trace_id": trace_id},
         )
         FALLBACK_COUNTER.inc()
         return {
@@ -246,6 +257,13 @@ def generar_respuesta_llm(params: dict) -> dict:
 
     # 5) Generar respuesta con Llama
     respuesta = generate_response(prompt)
+    logger.info(
+        "Respuesta generada",
+        extra={
+            "trace_id": trace_id,
+            "fragments": referencias,
+        },
+    )
     # Devolvemos las referencias como una lista separada para que el orquestador decida cómo usarlas
     return {"respuesta": respuesta, "referencias": list(set(referencias)), "no_results": False}
 
@@ -257,6 +275,7 @@ def tools_list():
 @app.post("/tools/call")
 async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depends(authenticate)):
     req = await request.json()
+    trace_id = req.get("trace_id", "unknown")
     tool = req.get("tool")
     REQUEST_COUNTER.labels(intent=tool).inc()
     params = req.get("params", {})
@@ -270,22 +289,25 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         docs_filtrados = buscar_documentos_por_tags(tags_encontrados, metadata)
         texto, docname = buscar_similitud_en_documentos(pregunta, docs_filtrados)
         if texto:
-            logger.info(f"Respuesta encontrada en documento: {docname}")
+            logger.info(
+                f"Respuesta encontrada en documento: {docname}",
+                extra={"trace_id": trace_id},
+            )
             return texto  # Solo el texto
         # Fallback LLM
         respuesta = generate_response(pregunta)
         FALLBACK_COUNTER.inc()
-        logger.info("Respuesta generada por Llama (fallback MCP)")
+        logger.info("Respuesta generada por Llama (fallback MCP)", extra={"trace_id": trace_id})
         return respuesta  # Solo el texto
     elif tool == "generar_respuesta_llm":
         pregunta = params["pregunta"]
         language = params.get("language", "es")
         respuesta = generate_response(pregunta)
-        logger.info("Respuesta generada por Llama (tool directo MCP)")
+        logger.info("Respuesta generada por Llama (tool directo MCP)", extra={"trace_id": trace_id})
         return respuesta  # Solo el texto
     elif tool == "doc-generar_respuesta_llm":
-        respuesta = generar_respuesta_llm(params)
-        logger.info("Respuesta generada por Llama con RAG")
+        respuesta = generar_respuesta_llm(params, trace_id=trace_id)
+        logger.info("Respuesta generada por Llama con RAG", extra={"trace_id": trace_id})
         return respuesta
     elif tool == "doc-buscar_fragmento_documento":
         consulta = params.get("consulta", "")
@@ -298,14 +320,17 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
 @app.post("/doc-generar_respuesta_llm")
 async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
     """Endpoint directo que combina búsqueda y generación."""
-    return generar_respuesta_llm(params)
+    trace_id = params.get("trace_id", "unknown")
+    return generar_respuesta_llm(params, trace_id=trace_id)
 
 
 @app.post("/doc-buscar_fragmento_documento")
 async def doc_buscar_fragmento_documento_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+    trace_id = params.get("trace_id", "unknown")
     consulta = params.get("consulta", "")
     documento = params.get("documento")
     frags = doc_buscar_fragmento_documento(consulta, documento)
+    logger.info("Fragmentos buscados", extra={"trace_id": trace_id})
     return {"fragmentos": frags}
 
 @app.get("/health")
