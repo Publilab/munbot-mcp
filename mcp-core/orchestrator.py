@@ -17,7 +17,6 @@ import threading
 import time
 import concurrent.futures
 from context_manager import ConversationalContextManager
-import unicodedata
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -498,92 +497,14 @@ def handle_confirmation(session_id: str) -> str:
     return "Entendido. ¿En qué más puedo ayudarte?"
 
 
-def detect_intent_llm(
-    user_input: str, history: List[Dict[str, str]] = None
-) -> Dict[str, Any]:
-    """Usa Mistral vía HuggingFace API para inferir intención, confianza y sentimiento."""
-    VALID_INTENTS = {
-        "complaint-registrar_reclamo",
-        "doc-buscar_fragmento_documento",
-        "doc-generar_respuesta_llm",
-        "scheduler-reservar_hora",
-        "scheduler-appointment_create",
-        "scheduler-listar_horas_disponibles",
-        "scheduler-cancelar_hora",
-        "scheduler-confirmar_hora",
-    }
-    history_text = ""
-    if history:
-        history_text = context_manager.get_history_as_string(history)
-
-    prompt = (
-        "Eres un orquestador inteligente. Analiza el mensaje del usuario y "
-        "devuelve un JSON con los campos 'intent', 'confidence' (0-1) y 'sentiment' (very_negative, negative, neutral, positive, very_positive).\n"
-        "Opciones de intent:\n"
-        "complaint-registrar_reclamo, doc-buscar_fragmento_documento, "
-        "doc-generar_respuesta_llm, scheduler-reservar_hora, "
-        "scheduler-appointment_create, scheduler-listar_horas_disponibles, "
-        "scheduler-cancelar_hora, scheduler-confirmar_hora.\n"
-        f"Historial:\n{history_text}\nMensaje: {user_input}\n"
-        "Ejemplo de respuesta JSON:\n"
-        '{"intent": "doc-generar_respuesta_llm", "confidence": 0.95, "sentiment": "neutral"}'
-        "\nJSON:"
-    )
-    logging.info("Prompt enviado a Llama: %s", prompt)
-    try:
-        # Usa el modelo local de Llama vía LlamaClient
-        llama = LlamaClient()
-        predicted = llama.generate(prompt, max_tokens=256)
-        logging.info(f"LLM raw response: {predicted}")
-        match = re.search(r"{.*}", predicted)
-        if match:
-            data = json.loads(match.group(0))
-            intent = data.get("intent")
-            confidence = float(data.get("confidence", 0))
-            sentiment = data.get("sentiment", "neutral")
-            if not intent or intent not in VALID_INTENTS or confidence < 0.6:
-                # usar matcher keywords antes de fallback total
-                intent = detect_intent_keywords(user_input)
-                confidence = 0.8
-                logging.info(f"Intento forzado por matcher: {intent}")
-            return {"intent": intent, "confidence": confidence, "sentiment": sentiment}
-    except Exception as e:
-        logging.error("Error durante la inferencia con Llama local: %s", e)
-
-    # Fallback total si todo falla
-    intent = detect_intent_keywords(user_input)
-    logging.info(f"Intento fallback por matcher: {intent}")
-    return {"intent": intent, "confidence": 0.6, "sentiment": "neutral"}
-
-
-def normalize(text):
-    """Convierte texto a minúsculas y elimina tildes."""
-    text = text.lower()
-    return "".join(
-        c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
-    )
-
-
-
-def detect_intent_keywords(text: str) -> str:
-    """
-    Nuevo clasificador semántico de intenciones basado en LLM.
-    Reemplaza los patrones heurísticos por comprensión contextual.
-    """
-    try:
-        return classify_intent_with_llm(text)
-    except Exception as e:
-        logger.warning(f"Fallo el clasificador LLM, usando fallback: {e}")
-        return detect_intent_fallback(text)
-
 
 def detect_intent_fallback(text: str) -> str:
-    """
-    Clasificador heurístico simple para casos de emergencia.
-    """
-    text = normalize(text)
+    """Clasificador heurístico simple para casos de emergencia."""
+    text = text.lower()
 
-    if "certificado" in text or "documento" in text or any(x in text for x in ["licencia", "permiso", "mail", "correo", "informacion", "horario", "costo"]):
+    if "certificado" in text or "documento" in text or any(
+        x in text for x in ["licencia", "permiso", "mail", "correo", "informacion", "horario", "costo"]
+    ):
         return "doc-generar_respuesta_llm"
     if "reclamo" in text or "denuncia" in text:
         return "complaint-registrar_reclamo"
@@ -591,28 +512,20 @@ def detect_intent_fallback(text: str) -> str:
         return "scheduler-appointment_create"
     if any(x in text for x in ["hola", "buenas", "saludos"]):
         return "saludo"
-    if any(x in text for x in ["gracias", "chao", "nos vemos", "adios", "adiós"]):
+    if any(x in text for x in ["gracias", "chao", "nos vemos", "adiós"]):
         return "despedida"
-
     return "informacion_general"
 
 
-def detect_intent(
-    user_input: str, history: List[Dict[str, str]] = None
-) -> Dict[str, Any]:
-    """Obtiene intención priorizando matcher de palabras clave y desactiva LLM en tests."""
-    # 4) Desactivar LLM en entorno de test
-    if os.getenv("ENV") == "test":
-        intent = detect_intent_keywords(user_input)
-        return {"intent": intent, "confidence": 0.8, "sentiment": "neutral"}
-
-    # 2) Priorizar matcher de palabras clave
-    kw_intent = detect_intent_keywords(user_input)
-    if kw_intent != "unknown":
-        return {"intent": kw_intent, "confidence": 0.8, "sentiment": "neutral"}
-
-    # Llamar al LLM para casos no detectados por matcher
-    return detect_intent_llm(user_input, history)
+def detect_intent(text: str, testing: bool = False) -> str:
+    """Única función de detección de intención."""
+    try:
+        if testing:
+            return detect_intent_fallback(text)
+        return classify_intent_with_llm(text)
+    except Exception as e:
+        logger.warning(f"[INTENT] Fallback por error en LLM: {e}")
+        return detect_intent_fallback(text)
 
 
 
@@ -1501,7 +1414,7 @@ def orchestrate(
     ctx = context_manager.get_context(sid)
     pending = ctx.get("pending_field")
     if not pending:
-        kw_intent = detect_intent_keywords(user_input)
+        kw_intent = detect_intent(user_input, testing=os.getenv("ENV") == "test")
         agenda = ctx.get("agenda", {})
 
         if (
@@ -1588,12 +1501,11 @@ def orchestrate(
     # Mantener la consulta original en la sesión para validaciones posteriores
     session["pregunta"] = user_input
     # Detectar intención
-    intent_data = detect_intent(user_input, convo_ctx.get("history"))
-    tool = intent_data.get("intent")
+    tool = detect_intent(user_input, testing=os.getenv("ENV") == "test")
     logger.info(f"[INTENT] Intención detectada: {tool}", extra={"trace_id": sid})
     REQUEST_COUNTER.labels(intent=tool).inc()
-    confidence = intent_data.get("confidence", 0)
-    sentiment = intent_data.get("sentiment", "neutral")
+    confidence = 0.8
+    sentiment = "neutral"
     context_manager.set_last_sentiment(session_id, sentiment)
     # Lógica de fallback y escalación simplificada
     if confidence < 0.6 or sentiment in ["very_negative", "negative"]:
