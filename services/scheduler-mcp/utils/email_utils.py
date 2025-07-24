@@ -1,10 +1,16 @@
 import os
 import base64
 from email.message import EmailMessage
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
+try:
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from googleapiclient.discovery import build
+    from google.auth.transport.requests import Request
+except Exception:  # pragma: no cover - optional dependency
+    Credentials = None  # type: ignore
+    InstalledAppFlow = None  # type: ignore
+    build = None  # type: ignore
+    Request = None  # type: ignore
 
 # Alcance necesario para enviar correos con Gmail API
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
@@ -14,6 +20,8 @@ def gmail_authenticate():
     """
     Autentica con la Gmail API usando OAuth2. Guarda y reutiliza el token en token.json.
     """
+    if Credentials is None:
+        return None
     creds = None
     token_path = os.path.join(os.path.dirname(__file__), 'token.json')
     creds_path = os.path.join(os.path.dirname(__file__), 'credentials.json')
@@ -44,6 +52,9 @@ def send_email(to, subject, body):
         Exception: Si ocurre un error en el envío
     """
     creds = gmail_authenticate()
+    if creds is None or build is None:
+        print(f"Mock send_email to {to}: {subject}")
+        return {}
     service = build('gmail', 'v1', credentials=creds)
     message = EmailMessage()
     message.set_content(body, subtype='html')

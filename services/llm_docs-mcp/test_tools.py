@@ -71,9 +71,29 @@ class FakeHit2:
     def __init__(self):
         self.payload = {"doc": "doc.txt", "texto": "fragmento"}
         self.score = 1.0
+class FakeQdrantClient:
+    def __init__(self, *a, **k):
+        pass
+    def search(self, *a, **k):
+        return [FakeHit2()]
 def fake_buscar_fragmentos(*a, **k):
     return [FakeHit2()]
 fake_qdrant_client.buscar_fragmentos = fake_buscar_fragmentos
+fake_qdrant_client.QdrantClient = FakeQdrantClient
+# Minimal stub for qdrant_client.http.models to satisfy imports
+fake_http = types.ModuleType("http")
+fake_models = types.ModuleType("models")
+class Dummy:
+    def __init__(self, *a, **k):
+        pass
+fake_models.Filter = Dummy
+fake_models.FieldCondition = Dummy
+fake_models.MatchValue = Dummy
+fake_http.models = fake_models
+fake_qdrant_client.http = fake_http
+fake_qdrant_client.__path__ = []
+sys.modules["qdrant_client.http"] = fake_http
+sys.modules["qdrant_client.http.models"] = fake_models
 sys.modules["qdrant_client"] = fake_qdrant_client
 
 fake_llama_runner = types.ModuleType("llama_runner")
