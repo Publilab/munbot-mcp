@@ -1,5 +1,5 @@
 from embeddings import embed
-from qdrant_client import buscar_fragmentos
+from qdrant_helpers import buscar_fragmentos
 from llama_runner import LlamaRunner
 
 
