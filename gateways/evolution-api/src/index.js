@@ -175,46 +175,30 @@ wss.on('connection', (ws, req) => {
         ).catch(err => console.error('Error enviando a Complaints API:', err));
       }
 
-      // Enviar mensaje a Rasa
+      // La pasarela solo debe reenviar el mensaje al orquestador (MCP),
+      // que es el responsable de la lógica de negocio (llamar a RAG, Rasa, etc.).
       let reply;
       try {
-        const rasaResponse = await axios.post(
-          process.env.RASA_URL || 'http://localhost:5005/webhooks/evolution',
-          { message: parsedData }
-        );
-        reply = rasaResponse.data.reply;
-      } catch (err) {
-        console.error('Error con Rasa:', err);
-      }
-
-      // Si Rasa no responde o no se obtiene reply, usar LLM Gateway como fallback
-      if (!reply) {
-        try {
-          const llmResponse = await axios.post(
-            process.env.LLM_URL || 'http://llm-gateway:8000/process',
-            { message: parsedData }
-          );
-          reply = llmResponse.data.reply;
-        } catch (err) {
-          console.error('Error con LLM Gateway:', err);
-          reply = "Lo siento, ha ocurrido un error al procesar tu mensaje.";
-        }
-      }
-
-      // Enviar mensaje al MCP
-      try {
-        const mcpUrl = process.env.MCP_URL || 'http://mcp-core:000/route';
+        // 1. Corregir URL del MCP: el endpoint es /orchestrate
+        const mcpUrl = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
+        
+        // 2. El payload ya está en el formato correcto que espera el orquestador
         const mcpPayload = {
-          sender: phoneNumber,
-          message: messageText
+          pregunta: messageText,
+          context: { sender: phoneNumber },
+          session_id: null, // Aquí podrías manejar un ID de sesión si lo tienes
+          channel: 'whatsapp'
         };
+
         const mcpResponse = await axios.post(mcpUrl, mcpPayload);
+
         if (mcpResponse.data && mcpResponse.data.respuesta) {
           reply = mcpResponse.data.respuesta;
         } else if (mcpResponse.data && mcpResponse.data.message) {
           reply = mcpResponse.data.message;
         } else {
-          reply = 'No se recibió respuesta válida del MCP.';
+          // Fallback si el MCP no da una respuesta en el formato esperado
+          reply = 'No se recibió una respuesta válida del servicio.';
         }
       } catch (err) {
         console.error('Error al comunicarse con el MCP:', err);
