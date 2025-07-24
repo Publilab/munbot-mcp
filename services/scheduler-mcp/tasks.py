@@ -2,6 +2,7 @@ import os
 from typing import Iterable
 import requests
 from psycopg2.extras import RealDictCursor
+from datetime import time
 
 from db import get_conn
 from notifications import send_email

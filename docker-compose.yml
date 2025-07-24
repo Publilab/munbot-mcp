@@ -128,6 +128,8 @@ services:
       - ./services/complaints-mcp/.env
     environment:
       - REDIS_HOST=redis
+      # Variable para el remitente del correo
+      - GMAIL_FROM=tu-correo-verificado@gmail.com
     ports:
       - "7000:7000"
     depends_on:
@@ -175,6 +177,8 @@ services:
       - ./services/scheduler-mcp/.env
     environment:
       - REDIS_HOST=redis
+      # Variable para el remitente del correo
+      - GMAIL_FROM=tu-correo-verificado@gmail.com
 
     ports:
       - "6001:6001"
