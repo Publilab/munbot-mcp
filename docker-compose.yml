@@ -117,6 +117,8 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      llm_docs-mcp:
+        condition: service_healthy
     restart: unless-stopped
 
   complaints-mcp:
