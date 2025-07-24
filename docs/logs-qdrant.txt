@@ -1,0 +1,24 @@
+docker compose logs -f qdrant
+qdrant  |            _                 _    
+qdrant  |   __ _  __| |_ __ __ _ _ __ | |_  
+qdrant  |  / _` |/ _` | '__/ _` | '_ \| __| 
+qdrant  | | (_| | (_| | | | (_| | | | | |_  
+qdrant  |  \__, |\__,_|_|  \__,_|_| |_|\__| 
+qdrant  |     |_|                           
+qdrant  | 
+qdrant  | Access web UI at http://0.0.0.0:6333/dashboard
+qdrant  | 
+qdrant  | 2025-07-24T16:21:48.563213Z  INFO storage::content_manager::consensus::persistent: Initializing new raft state at ./storage/raft_state.json    
+qdrant  | 2025-07-24T16:21:48.620620Z  INFO qdrant: Distributed mode disabled    
+qdrant  | 2025-07-24T16:21:48.620649Z  INFO qdrant: Telemetry reporting enabled, id: 405eb787-824e-49fb-980d-5df786a27101    
+qdrant  | 2025-07-24T16:21:48.621917Z  INFO qdrant::actix: TLS disabled for REST API    
+qdrant  | 2025-07-24T16:21:48.622306Z  INFO qdrant::actix: Qdrant HTTP listening on 6333    
+qdrant  | 2025-07-24T16:21:48.622489Z  INFO actix_server::builder: Starting 3 workers
+qdrant  | 2025-07-24T16:21:48.622543Z  INFO actix_server::server: Actix runtime found; starting in Actix runtime
+qdrant  | 2025-07-24T16:21:48.624700Z  INFO qdrant::tonic: Qdrant gRPC listening on 6334    
+qdrant  | 2025-07-24T16:21:48.624730Z  INFO qdrant::tonic: TLS disabled for gRPC API    
+qdrant  | 2025-07-24T16:21:50.594605Z  INFO actix_web::middleware::logger: 172.18.0.5 "GET /collections HTTP/1.1" 200 81 "-" "python-httpx/0.28.1" 0.000778    
+qdrant  | 2025-07-24T16:21:50.598124Z  INFO storage::content_manager::toc::collection_meta_ops: Creating collection munbot_docs    
+qdrant  | 2025-07-24T16:21:50.827963Z  INFO actix_web::middleware::logger: 172.18.0.5 "PUT /collections/munbot_docs HTTP/1.1" 200 71 "-" "python-httpx/0.28.1" 0.230802    
+qdrant  | 2025-07-24T16:21:58.445618Z  INFO actix_web::middleware::logger: 172.18.0.5 "POST /collections/munbot_docs/points/count HTTP/1.1" 200 78 "-" "python-httpx/0.28.1" 0.001133    
+qdrant  | 2025-07-24T16:23:09.533543Z  INFO actix_web::middleware::logger: 172.18.0.5 "PUT /collections/munbot_docs/points?wait=true HTTP/1.1" 200 92 "-" "python-httpx/0.28.1" 0.056026   

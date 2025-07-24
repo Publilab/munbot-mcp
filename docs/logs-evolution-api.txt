@@ -1,0 +1,3 @@
+docker compose logs -f evolution-api
+evolution-api  | 🚀 Servidor escuchando en puerto 8080
+evolution-api  | 🟢 Redis conectado
