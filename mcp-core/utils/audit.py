@@ -5,20 +5,21 @@ import logging
 import inspect
 
 logger = logging.getLogger("audit")
-ENABLED = os.getenv("AUDIT_SCHEDULER_DEBUG", "false").lower() == "true"
 
 
 def audit_step(label):
     def wrapper(fn):
-        if not ENABLED:
-            return fn
-
         @functools.wraps(fn)
         def inner(*args, **kw):
+            if os.getenv("AUDIT_SCHEDULER_DEBUG", "false").lower() != "true":
+                return fn(*args, **kw)
+
             trace_id = kw.get("trace_id")
-            if trace_id is None and args:
-                trace_id = getattr(args[0], "sid", None)
             arg_names = inspect.getfullargspec(fn).args
+            if trace_id is None and "sid" in arg_names:
+                idx = arg_names.index("sid")
+                if idx < len(args):
+                    trace_id = args[idx]
             payload = {
                 "step": label,
                 "trace_id": trace_id,

@@ -345,13 +345,16 @@ def list_available(request: Request):
         pattern = build_sql_pattern(hora_time)
         rows = get_available_blocks(date.fromisoformat(fecha), pattern)
     elif desde and hasta:
-        with get_conn() as conn:
-            with conn.cursor(cursor_factory=RealDictCursor) as cur:
-                cur.execute(
-                    "SELECT * FROM appointments WHERE fecha BETWEEN %s AND %s",
-                    (desde, hasta),
-                )
-                rows = cur.fetchall()
+        conn = get_db()
+        try:
+            cur = conn.cursor(cursor_factory=RealDictCursor)
+            cur.execute(
+                "SELECT * FROM appointments WHERE fecha BETWEEN %s AND %s",
+                (desde, hasta),
+            )
+            rows = cur.fetchall()
+        finally:
+            conn.close()
     else:
         return {"disponibles": []}
     out = []

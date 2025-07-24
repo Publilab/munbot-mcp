@@ -522,7 +522,10 @@ def detect_intent(text: str, testing: bool = False) -> str:
     try:
         if testing:
             return detect_intent_fallback(text)
-        return classify_intent_with_llm(text)
+        intent = classify_intent_with_llm(text)
+        if intent == "otra":
+            return detect_intent_fallback(text)
+        return intent
     except Exception as e:
         logger.warning(f"[INTENT] Fallback por error en LLM: {e}")
         return detect_intent_fallback(text)
@@ -1332,6 +1335,20 @@ def orchestrate(
             return {"respuesta": no_cancel_msg, "session_id": sid}
 
     # ----------- Inicio prioridad modo cita -----------
+    if os.getenv("AUDIT_SCHEDULER_DEBUG") == "true":
+        agenda = ctx.get("agenda", {})
+        if (
+            context_manager.get_current_flow(sid) == "scheduler"
+            or agenda.get("fecha")
+            or agenda.get("hora")
+            or re.search(
+                r"\b(?:agendar|reservar|cita|hora|turno)\b", user_input, re.IGNORECASE
+            )
+        ):
+            context_manager.set_current_flow(sid, "scheduler")
+            result = handle_agenda(user_input, sid)
+            return format_response(result, sid, trace_id=sid)
+
     if context_manager.get_current_flow(sid) == "scheduler":
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
         if result.get("pending") or result.get("finish"):
@@ -1431,7 +1448,12 @@ def orchestrate(
             re.IGNORECASE,
         ):
             context_manager.set_current_flow(sid, "scheduler")
-            result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
+            if os.getenv("AUDIT_SCHEDULER_DEBUG") == "true":
+                result = handle_agenda(user_input, sid)
+            else:
+                result = _handle_scheduler_flow(
+                    sid, user_input, datetime.now(tz=SANTIAGO_TZ)
+                )
             return format_response(result, sid, trace_id=sid)
         if kw_intent == "complaint-registrar_reclamo":
             context_manager.set_pending_confirmation(sid, True)
@@ -1608,7 +1630,7 @@ def orchestrate(
                 resp["referencias"] = references
             return resp
 
-    if tool == "unknown":
+    if tool in ["unknown", "informacion_general", "otra"]:
         params = {"pregunta": user_input}
         selected = context_manager.get_selected_document(session_id)
         if selected:
