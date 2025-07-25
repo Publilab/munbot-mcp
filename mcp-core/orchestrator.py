@@ -183,6 +183,11 @@ ERROR_COUNTER = Counter(
 
 # --- Instancia tu LLM local (única instancia) ---
 llm = LlamaClient()
+try:
+    # Warm-up para compilar modelos antes de marcar el servicio listo
+    llm.generate("hola", max_tokens=1, temperature=0.0)
+except Exception:
+    pass
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
@@ -1739,7 +1744,26 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    db_ok = False
+    model_ok = False
+    try:
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("SELECT 1")
+        cur.fetchone()
+        cur.close()
+        conn.close()
+        db_ok = True
+    except Exception:
+        db_ok = False
+    try:
+        # Verificamos que el modelo esté cargado
+        if getattr(llm, "llm", None) is not None:
+            model_ok = True
+    except Exception:
+        model_ok = False
+    status = "ok" if db_ok and model_ok else "error"
+    return {"status": status, "database": db_ok, "model": model_ok}
 
 
 @app.get("/")
