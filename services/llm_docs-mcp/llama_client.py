@@ -1,4 +1,5 @@
 import os
+import logging
 from llama_cpp import Llama
 
 class LlamaClient:
@@ -10,6 +11,11 @@ class LlamaClient:
             self.llm = None
         else:
             self.llm = Llama(model_path=self.model_path, n_ctx=self.n_ctx, n_threads=self.n_threads)
+            try:
+                # Warm-up call to reduce first request latency
+                self.llm("Hola", max_tokens=1)
+            except Exception as e:
+                logging.getLogger(__name__).warning(f"Llama warm-up failed: {e}")
 
     def generate(
         self,

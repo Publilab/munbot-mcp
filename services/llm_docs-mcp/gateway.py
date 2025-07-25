@@ -50,12 +50,18 @@ security = HTTPBasic()
 
 # --- Lista de IPs/Redes permitidas (con soporte para CIDR) ---
 ALLOWED_IPS_STR = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16")
-try:
-    # Convertimos la lista de strings a objetos de red/IP para una comparación eficiente
-    ALLOWED_NETWORKS = [ipaddress.ip_network(ip.strip()) for ip in ALLOWED_IPS_STR.split(",")]
-except ValueError as e:
-    logging.critical(f"Variable de entorno ALLOWED_IPS inválida: {e}. Usando fallback a localhost.")
-    ALLOWED_NETWORKS = [ipaddress.ip_network("127.0.0.1")]
+ALLOWED_NETWORKS = []
+ALLOWED_HOSTS = []
+for token in ALLOWED_IPS_STR.split(","):
+    token = token.strip()
+    try:
+        ALLOWED_NETWORKS.append(ipaddress.ip_network(token))
+    except ValueError:
+        # Permitir tokens no válidos como nombres de host explícitos (ej. testclient)
+        ALLOWED_HOSTS.append(token)
+        logging.getLogger("munbot").warning(
+            f"Entrada ALLOWED_IPS no es IP/CIDR válido: {token}. Tratando como hostname."
+        )
 
 API_USERNAME = os.getenv("API_USERNAME")
 API_PASSWORD = os.getenv("API_PASSWORD")
@@ -68,17 +74,21 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
         client_ip_str = request.client.host
         try:
             client_ip = ipaddress.ip_address(client_ip_str)
-            # Comprobamos si la IP del cliente pertenece a alguna de las redes permitidas
             if not any(client_ip in network for network in ALLOWED_NETWORKS):
                 logging.getLogger("munbot").warning(f"Acceso denegado a IP no autorizada: {client_ip_str}")
                 return JSONResponse(status_code=403, content={"detail": "IP no autorizada"})
         except ValueError:
-            logging.getLogger("munbot").warning(f"Intento de acceso desde una dirección de cliente inválida: {client_ip_str}")
-            return JSONResponse(status_code=403, content={"detail": "IP no autorizada"})
+            if client_ip_str not in ALLOWED_HOSTS:
+                logging.getLogger("munbot").warning(
+                    f"Intento de acceso desde una dirección de cliente inválida: {client_ip_str}"
+                )
+                return JSONResponse(status_code=403, content={"detail": "IP no autorizada"})
         return await call_next(request)
 app.add_middleware(IPWhitelistMiddleware)
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
-    if credentials.username != API_USERNAME or credentials.password != API_PASSWORD:
+    if API_USERNAME and credentials.username != API_USERNAME:
+        raise HTTPException(status_code=401, detail="Credenciales inválidas")
+    if API_PASSWORD and credentials.password != API_PASSWORD:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
     return credentials
 
