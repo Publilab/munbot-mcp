@@ -57,8 +57,8 @@ except ValueError as e:
     logging.critical(f"Variable de entorno ALLOWED_IPS inválida: {e}. Usando fallback a localhost.")
     ALLOWED_NETWORKS = [ipaddress.ip_network("127.0.0.1")]
 
-API_USERNAME = os.getenv("API_USERNAME", "admin")
-API_PASSWORD = os.getenv("API_PASSWORD", "admin")
+API_USERNAME = os.getenv("API_USERNAME")
+API_PASSWORD = os.getenv("API_PASSWORD")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Permitir acceso sin restricciones a endpoints públicos como healthcheck

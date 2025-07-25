@@ -53,7 +53,7 @@ services:
       - munbot-net
     depends_on:
       - evolution-api
-      mcp-core:
+    mcp-core:
         condition: service_healthy
 
   postgres:
