@@ -87,8 +87,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    sysctls:
-      vm.overcommit_memory: "1"
 
   qdrant:
     image: qdrant/qdrant:v1.7.0
