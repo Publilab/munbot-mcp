@@ -136,6 +136,12 @@ ERROR_COUNTER = Counter(
     ["intent"],
     registry=PROM_REGISTRY,
 )
+
+# === Métrica de latencia RAG para auditoría ===
+rag_latency = Histogram(
+    "rag_latency_seconds",
+    "Tiempo total de ejecución del flujo RAG (Qdrant -> Prompt -> LLM)"
+)
 RAG_LATENCY_HISTOGRAM = Histogram(
     "rag_latency_seconds",
     "Tiempo de latencia RAG",
@@ -205,6 +211,57 @@ llama = LlamaClient()
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
     return llama.generate(prompt, max_tokens=256, temperature=0.6, top_p=0.95)
+
+
+# --- Nueva función de auditoría para RAG ---
+@rag_latency.time()
+async def generate_response_rag(pregunta: str, modelo) -> dict:
+    logger.info(f"[AUDIT] Pregunta recibida para RAG: '{pregunta}'")
+    start_time = time.time()
+
+    try:
+        # 1) Búsqueda en Qdrant
+        logger.info("[AUDIT] Realizando búsqueda en Qdrant...")
+        docs = vector_store.similarity_search(pregunta, top_k=5)
+        logger.info(f"[AUDIT] Qdrant devolvió {len(docs)} fragmentos: {[d.metadata['source'] for d in docs]}")
+
+        if not docs:
+            logger.warning("[AUDIT] No se encontraron documentos relevantes.")
+            elapsed = round(time.time() - start_time, 2)
+            logger.info(f"[AUDIT] Tiempo total sin docs: {elapsed}s")
+            return {
+                "respuesta": "No encontré información precisa...",
+                "referencias": [],
+                "no_results": True
+            }
+
+        # 2) Construcción del prompt
+        logger.info("[AUDIT] Construyendo prompt para el modelo...")
+        prompt = build_prompt(pregunta, docs)
+        logger.info(f"[AUDIT] Prompt generado (longitud {len(prompt)} chars): {prompt[:200]}...")
+
+        # 3) Llamada al modelo
+        logger.info("[AUDIT] Llamando al LLM para generar respuesta...")
+        respuesta = modelo.generate_response(
+            prompt,
+            max_tokens=150,
+            temperature=0.7,
+            stop=['</s>']
+        )
+        logger.info(f"[AUDIT] Respuesta generada ({len(respuesta.split())} tokens): {respuesta[:200]}...")
+
+        # 4) Métrica de duración
+        elapsed = round(time.time() - start_time, 2)
+        logger.info(f"[AUDIT] Tiempo total RAG: {elapsed}s")
+
+        return {
+            "respuesta": respuesta,
+            "referencias": [d.metadata['source'] for d in docs]
+        }
+
+    except Exception:
+        logger.exception("[AUDIT] Error inesperado durante el flujo RAG")
+        raise
 
 
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
