@@ -53,13 +53,13 @@ io.on('connection', (socket) => {
             }
             const data = response.data || {};
             if (Array.isArray(data.respuestas)) {
-                // enviamos la primera burbuja inmediatamente
-                socket.emit('bot_message', data.respuestas[0]);
-                // y la siguiente tras 1 segundo
-                setTimeout(() => {
-                    socket.emit('bot_message', data.respuestas[1]);
-                }, 1000);
-            }
+                // Manejar una lista de respuestas de cualquier longitud
+                data.respuestas.forEach((botMsg, index) => {
+                    setTimeout(() => {
+                        socket.emit('bot_message', botMsg);
+                    }, index * 1200); // Pausa de 1.2 segundos entre mensajes
+                });
+            } 
             else if (data.respuesta) {
                 socket.emit('bot_message', data.respuesta);
             }

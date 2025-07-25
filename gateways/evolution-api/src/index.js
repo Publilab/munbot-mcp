@@ -192,14 +192,22 @@ wss.on('connection', (ws, req) => {
 
         const mcpResponse = await axios.post(mcpUrl, mcpPayload);
 
-        if (mcpResponse.data && mcpResponse.data.respuesta) {
-          reply = mcpResponse.data.respuesta;
-        } else if (mcpResponse.data && mcpResponse.data.message) {
-          reply = mcpResponse.data.message;
+        // --- Lógica mejorada para manejar respuestas múltiples o únicas ---
+        if (mcpResponse.data && Array.isArray(mcpResponse.data.respuestas)) {
+          // Si es una lista, enviar cada mensaje secuencialmente
+          for (const msg of mcpResponse.data.respuestas) {
+            await sendWhatsAppMessage(phoneNumber, msg);
+          }
+          // No hay una única respuesta para enviar al final, así que salimos.
+          return; 
+        } else if (mcpResponse.data && (mcpResponse.data.respuesta || mcpResponse.data.message)) {
+          // Si es una respuesta única
+          reply = mcpResponse.data.respuesta || mcpResponse.data.message;
         } else {
           // Fallback si el MCP no da una respuesta en el formato esperado
           reply = 'No se recibió una respuesta válida del servicio.';
         }
+
       } catch (err) {
         console.error('Error al comunicarse con el MCP:', err);
         reply = 'Lo siento, hubo un error procesando tu solicitud.';
