@@ -10,9 +10,9 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
-    libopenblas-base \
+    libopenblas0 \
     curl \
-    netcat \
+    netcat-openbsd \
   && rm -rf /var/lib/apt/lists/*
 
 # ───────────────────────────────
