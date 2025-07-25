@@ -6,12 +6,14 @@ FROM python:3.10-slim
 # ───────────────────────────────
 ENV TZ=America/Santiago
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
- && echo ${TZ} > /etc/timezone \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
-        git build-essential cmake gcc g++ \
-        libblas-dev liblapack-dev \
- && rm -rf /var/lib/apt/lists/*
+ && echo ${TZ} > /etc/timezone
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    libopenblas-base \
+    curl \
+    netcat \
+  && rm -rf /var/lib/apt/lists/*
 
 # ───────────────────────────────
 # 2) Dependencias Python
@@ -33,6 +35,9 @@ COPY services/ ./services/
 COPY databases/ ./databases/
 COPY mcp-core/utils/ ./utils/
 COPY tests/ ./tests/
+
+RUN chmod +x wait-for-deps.sh
+ENTRYPOINT ["wait-for-deps.sh"]
 
 # ───────────────────────────────
 # 4) Variables de entorno y puertos

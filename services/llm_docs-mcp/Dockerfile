@@ -6,7 +6,8 @@ ENV TZ=America/Santiago \
     SENTENCE_TRANSFORMERS_HOME=/app/models \
     HF_HOME=/app/models
 
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
+ && echo ${TZ} > /etc/timezone
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \

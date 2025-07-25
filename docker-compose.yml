@@ -123,11 +123,12 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      # Período de gracia para que el contenedor complete su arranque (carga de modelo LLM)
+      start_period: 300s
 
   complaints-mcp:
     build: 
@@ -162,6 +163,8 @@ services:
     environment:
       - REDIS_HOST=redis
       - QDRANT_SIMILARITY_THRESHOLD=0.3
+      - LLM_DOCS_MCP_USER=publilab
+      - LLM_DOCS_MCP_PASSWORD=Publ14b#Mun801
     depends_on:
       - qdrant
     expose:

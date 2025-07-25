@@ -2,8 +2,9 @@
 FROM python:3.9-slim
 
 # Configurar zona horaria para evitar errores
-ENV TZ=America/Chile/Santiago
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV TZ=America/Santiago
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
 
 # Crear usuario no root
 RUN useradd -m -d /home/appuser -s /bin/bash appuser
