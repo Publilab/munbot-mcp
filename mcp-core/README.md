@@ -8,6 +8,7 @@ This directory contains the core logic for the Modular Conversational Platform (
   rarely helpful adverbs were removed to avoid filtering meaningful tokens.
 - `tool_schemas/`: JSON schemas describing each microservice's API as callable tools.
 - `prompts/`: Prompt templates for the LLM to guide tool usage and conversation flow.
+- A `/health` endpoint checks the database connection and that the LLM model is loaded.
 
 ## Next Steps
 - Implement the orchestrator logic in `orchestrator.py`.
