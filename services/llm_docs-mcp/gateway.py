@@ -4,6 +4,7 @@ import glob
 import logging
 import traceback
 import time
+import ipaddress
 import requests
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -46,18 +47,33 @@ app.add_middleware(
 )
 # Seguridad básica HTTP/IP
 security = HTTPBasic()
-# Redes o direcciones IP permitidas por defecto
-ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16,192.168.1.100").split(",")
+
+# --- Lista de IPs/Redes permitidas (con soporte para CIDR) ---
+ALLOWED_IPS_STR = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16")
+try:
+    # Convertimos la lista de strings a objetos de red/IP para una comparación eficiente
+    ALLOWED_NETWORKS = [ipaddress.ip_network(ip.strip()) for ip in ALLOWED_IPS_STR.split(",")]
+except ValueError as e:
+    logging.critical(f"Variable de entorno ALLOWED_IPS inválida: {e}. Usando fallback a localhost.")
+    ALLOWED_NETWORKS = [ipaddress.ip_network("127.0.0.1")]
+
 API_USERNAME = os.getenv("API_USERNAME", "admin")
 API_PASSWORD = os.getenv("API_PASSWORD", "admin")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
-        # Permitir acceso sin restricciones a healthcheck y raíz
-        if request.url.path in ("/health", "/"):
+        # Permitir acceso sin restricciones a endpoints públicos como healthcheck
+        if request.url.path in ("/health", "/", "/metrics", "/endpoints"):
             return await call_next(request)
-            
-        client_ip = request.client.host
-        if client_ip not in ALLOWED_IPS:
+
+        client_ip_str = request.client.host
+        try:
+            client_ip = ipaddress.ip_address(client_ip_str)
+            # Comprobamos si la IP del cliente pertenece a alguna de las redes permitidas
+            if not any(client_ip in network for network in ALLOWED_NETWORKS):
+                logging.getLogger("munbot").warning(f"Acceso denegado a IP no autorizada: {client_ip_str}")
+                return JSONResponse(status_code=403, content={"detail": "IP no autorizada"})
+        except ValueError:
+            logging.getLogger("munbot").warning(f"Intento de acceso desde una dirección de cliente inválida: {client_ip_str}")
             return JSONResponse(status_code=403, content={"detail": "IP no autorizada"})
         return await call_next(request)
 app.add_middleware(IPWhitelistMiddleware)
