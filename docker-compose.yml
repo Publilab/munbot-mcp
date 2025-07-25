@@ -52,9 +52,10 @@ services:
     networks:
       - munbot-net
     depends_on:
-      - evolution-api
-      - mcp-core:
-          condition: service_healthy
+      evolution-api:
+        condition: service_started
+      mcp-core:
+        condition: service_healthy
 
   postgres:
     image: postgres:14
