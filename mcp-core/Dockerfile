@@ -37,7 +37,7 @@ COPY mcp-core/utils/ ./utils/
 COPY tests/ ./tests/
 
 RUN chmod +x wait-for-deps.sh
-ENTRYPOINT ["wait-for-deps.sh"]
+ENTRYPOINT ["./wait-for-deps.sh"]
 
 # ───────────────────────────────
 # 4) Variables de entorno y puertos
