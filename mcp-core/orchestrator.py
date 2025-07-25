@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import json
 import requests
+from requests.auth import HTTPBasicAuth
 from typing import Dict, Any, List, Optional
 from fastapi import FastAPI, HTTPException, Request, Body, Response
 from pydantic import BaseModel
@@ -72,11 +73,14 @@ SANTIAGO_TZ = ZoneInfo("America/Santiago")
 # === Configuración ===
 
 MICROSERVICES = {
-# == Rutas de los microservicios ==
+    # == Rutas de los microservicios ==
     "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL"),
     "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL"),
     "llm_docs-mcp": os.getenv("LLM_DOCS_MCP_URL"),
 }
+# Credenciales opcionales para microservicios
+LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
+LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
 # == Rutas de los archivos ==
 PROMPTS_PATH = os.getenv("PROMPTS_PATH")
 TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
@@ -433,8 +437,11 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
     payload = {"tool": tool, "params": params}
     if trace_id is not None:
         payload["trace_id"] = trace_id
+    auth = None
+    if tool.startswith("doc-") and LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
+        auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
     try:
-        resp = requests.post(service_url, json=payload, timeout=30)
+        resp = requests.post(service_url, json=payload, auth=auth, timeout=30)
         if 200 <= resp.status_code < 300:
             return resp.json()
         return {"error": f"Error {resp.status_code}: {resp.text}"}
