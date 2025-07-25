@@ -28,22 +28,10 @@ const io = new Server(server, {
 });
 
 const MCP_URL = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate'; // Nueva URL del MCP
-const MCP_TIMEOUT = parseInt(process.env.MCP_TIMEOUT || '5000', 10);
+const MCP_TIMEOUT = parseInt(process.env.MCP_TIMEOUT || '15000', 10);
 
-async function postWithRetry(payload, attempts = 3, delay = 1000) {
-    let lastError;
-    for (let i = 0; i < attempts; i++) {
-        try {
-            return await axios.post(MCP_URL, payload, { timeout: MCP_TIMEOUT });
-        } catch (err) {
-            lastError = err;
-            if (i < attempts - 1) {
-                await new Promise(res => setTimeout(res, delay));
-                delay *= 2;
-            }
-        }
-    }
-    throw lastError;
+async function sendToMCP(payload) {
+    return axios.post(MCP_URL, payload, { timeout: MCP_TIMEOUT });
 }
 
 io.on('connection', (socket) => {
@@ -62,8 +50,8 @@ io.on('connection', (socket) => {
                 session_id: socket.sessionId, // USAR sessionId del socket
                 channel: 'web'
             };
-            // Enviar el mensaje al MCP con reintentos
-            const response = await postWithRetry(payload);
+            // Enviar el mensaje al MCP con un único intento
+            const response = await sendToMCP(payload);
             // Actualizar el identificador de sesion si es devuelto por el MCP
             if (response.data) {
                 socket.sessionId = response.data.session_id || socket.sessionId;
