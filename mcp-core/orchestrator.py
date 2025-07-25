@@ -31,10 +31,10 @@ except ModuleNotFoundError:
     from text import normalize_text
 from llama_client import LlamaClient
 try:
-    from utils.intent_classifier import classify_intent_with_llm
+    from utils.intent_classifier import classify_intent_with_llm, set_llm_client
 except ModuleNotFoundError:
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
-    from intent_classifier import classify_intent_with_llm
+    from intent_classifier import classify_intent_with_llm, set_llm_client
 try:
     from utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
@@ -188,6 +188,7 @@ try:
     llm.generate("hola", max_tokens=1, temperature=0.0)
 except Exception:
     pass
+set_llm_client(llm)
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
@@ -534,7 +535,7 @@ def detect_intent(text: str, testing: bool = False) -> str:
     try:
         if testing:
             return detect_intent_fallback(text)
-        intent = classify_intent_with_llm(text)
+        intent = classify_intent_with_llm(text, llm)
         if intent == "otra":
             return detect_intent_fallback(text)
         return intent
