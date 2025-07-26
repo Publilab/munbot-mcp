@@ -3,9 +3,14 @@ import logging
 from typing import Optional
 
 try:  # pragma: no cover - allow running tests without transformers installed
-    from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+    from transformers import (
+        AutoModelForCausalLM,
+        AutoTokenizer,
+        pipeline,
+        BitsAndBytesConfig,
+    )
 except Exception:  # pragma: no cover - fallback for environments without deps
-    AutoModelForCausalLM = AutoTokenizer = pipeline = None
+    AutoModelForCausalLM = AutoTokenizer = pipeline = BitsAndBytesConfig = None
 
 class LlamaClient:
     """Wrapper around a quantized HF model for text generation."""
@@ -27,11 +32,12 @@ class LlamaClient:
             return
 
         tokenizer = AutoTokenizer.from_pretrained(self.model_path, use_fast=True)
+        bnb_config = BitsAndBytesConfig(load_in_4bit=True)
         model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            quantization_config={"bits": 4},
+            quantization_config=bnb_config,
         )
         self.generator = pipeline(
             "text-generation",

@@ -2,20 +2,26 @@ import os
 from typing import Optional
 
 try:  # pragma: no cover
-    from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+    from transformers import (
+        AutoModelForCausalLM,
+        AutoTokenizer,
+        pipeline,
+        BitsAndBytesConfig,
+    )
 except Exception:  # pragma: no cover - allow tests without deps
-    AutoModelForCausalLM = AutoTokenizer = pipeline = None
+    AutoModelForCausalLM = AutoTokenizer = pipeline = BitsAndBytesConfig = None
 
 
 _model_path = os.getenv("MODEL_PATH") or os.getenv("LLAMA_MODEL_PATH", "./models/Llama-2-7B-GPTQ")
 
 if AutoTokenizer is not None and os.getenv("LLAMA_MOCK") != "1":
     tokenizer = AutoTokenizer.from_pretrained(_model_path, use_fast=True)
+    bnb_config = BitsAndBytesConfig(load_in_4bit=True)
     model = AutoModelForCausalLM.from_pretrained(
         _model_path,
         trust_remote_code=True,
         device_map="auto",
-        quantization_config={"bits": 4},
+        quantization_config=bnb_config,
     )
     llm = pipeline(
         "text-generation",
@@ -49,11 +55,12 @@ class LlamaRunner:
         if os.getenv("LLAMA_MOCK") == "1" or AutoTokenizer is None:
             return
         tokenizer = AutoTokenizer.from_pretrained(self.model_path, use_fast=True)
+        bnb_config = BitsAndBytesConfig(load_in_4bit=True)
         model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            quantization_config={"bits": 4},
+            quantization_config=bnb_config,
         )
         self.generator = pipeline(
             "text-generation",
