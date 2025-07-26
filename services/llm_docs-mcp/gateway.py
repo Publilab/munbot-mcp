@@ -24,6 +24,7 @@ from llama_client import LlamaClient
 from embeddings import embed
 from qdrant_utils import search_in_qdrant, filter_by_document
 from rag import doc_buscar_fragmento_documento
+from intent_classifier import classify_intent_with_llm, set_llm_client
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH", "documents/")
@@ -207,6 +208,7 @@ def buscar_similitud_en_documentos(pregunta, docs_relevantes):
 
 # === Cliente Llama ===
 llama = LlamaClient()
+set_llm_client(llama)
 
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local."""
@@ -397,6 +399,10 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         documento = params.get("documento")
         frags = doc_buscar_fragmento_documento(consulta, documento)
         return {"fragmentos": frags}
+    elif tool == "classify_intent_llm":
+        texto = params.get("texto", "")
+        intent = classify_intent_with_llm(texto, llama)
+        return {"intent": intent}
     else:
         raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
 
@@ -405,6 +411,19 @@ async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasi
     """Endpoint directo que combina búsqueda y generación."""
     trace_id = params.get("trace_id", "unknown")
     return generar_respuesta_llm(params, trace_id=trace_id)
+
+
+@app.post("/tools/doc-generar_respuesta_llm")
+async def tools_doc_generar_respuesta_llm(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+    trace_id = params.get("trace_id", "unknown")
+    return generar_respuesta_llm(params, trace_id=trace_id)
+
+
+@app.post("/tools/classify_intent_llm")
+async def tools_classify_intent_llm(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+    texto = params.get("texto", "")
+    intent = classify_intent_with_llm(texto, llama)
+    return {"intent": intent}
 
 
 @app.post("/doc-buscar_fragmento_documento")
@@ -425,6 +444,8 @@ def list_endpoints():
     return {"endpoints": [
         "/tools/list",
         "/tools/call",
+        "/tools/doc-generar_respuesta_llm",
+        "/tools/classify_intent_llm",
         "/doc-generar_respuesta_llm",
         "/doc-buscar_fragmento_documento",
         "/health",
@@ -444,7 +465,15 @@ def process(data: dict, credentials: HTTPBasicCredentials = Depends(authenticate
 def root():
     return {
         "status": "MunBoT LLM Docs MCP running",
-        "endpoints": ["/tools/list", "/tools/call", "/health", "/metrics", "/doc-buscar_fragmento_documento"],
+        "endpoints": [
+            "/tools/list",
+            "/tools/call",
+            "/tools/doc-generar_respuesta_llm",
+            "/tools/classify_intent_llm",
+            "/health",
+            "/metrics",
+            "/doc-buscar_fragmento_documento",
+        ],
         "version": "1.0.0"
     }
 
