@@ -21,6 +21,11 @@ RUN pip install -U pip --no-cache-dir
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Clona el modelo 4-bit
+RUN git clone --depth 1 \
+    https://huggingface.co/TheBloke/Llama-2-7B-GPTQ \
+    /models/Llama-2-7B-GPTQ
+
 # Descarga del modelo
 RUN python - <<'PY'
 from sentence_transformers import SentenceTransformer
@@ -29,6 +34,10 @@ PY
 
 # Copia código y scripts (una sola instrucción)
 COPY . .
+
+# Variables de entorno para carga de modelo
+ENV MODEL_PATH=/models/Llama-2-7B-GPTQ
+ENV LLAMA_N_THREADS=4
 
 # Asegurar permisos
 RUN chmod +x /app/entrypoint.sh
