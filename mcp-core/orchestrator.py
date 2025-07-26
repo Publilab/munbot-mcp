@@ -192,44 +192,17 @@ def tokenize(text: str) -> list[str]:
     tokens = [t.strip(".,¡!¿?\"").lower() for t in text.split()]
     return [t for t in tokens if t and t not in STOPWORDS]
 
-# Respuestas directas para saludos y despedidas
-GREETING_TERMS = [
-    "hola",
-    "buenos dias",
-    "buenas tardes",
-    "buenas noches",
-    "saludos",
-    "hey",
-    "holi",
-    "hello",
-    "hi",
-    "buenas",
-]
+# Respuestas base para saludos y despedidas
 GREETING_RESPONSE = (
     "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Curoscant. "
     "¿En qué puedo ayudarte hoy?"
 )
 
-FAREWELL_TERMS = [
-    "adios",
-    "hasta luego",
-    "nos vemos",
-    "chau",
-    "chao",
-    "bye",
-    "hasta pronto",
-    "hasta la proxima",
-    "me despido",
-    "no necesito mas ayuda",
-    "eso es todo",
-    "termine",
-    "ya esta",
-    "ya termine",
-]
 FAREWELL_RESPONSE = (
     "¡Hasta luego! Tu sesión ha terminado. Si necesitas algo más, "
     "inicia una nueva conversación."
 )
+
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
     """Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback."""
@@ -1340,10 +1313,6 @@ def orchestrate(
     ctx = context_manager.get_context(sid)
 
     user_norm = normalize_text(user_input)
-    if any(re.search(r"\b" + re.escape(normalize_text(t)) + r"\b", user_norm) for t in GREETING_TERMS):
-        context_manager.update_context(sid, user_input, GREETING_RESPONSE)
-        context_manager.set_last_sentiment(sid, "neutral")
-        return {"respuesta": GREETING_RESPONSE, "session_id": sid}
 
     # Comando para cancelar flujo en curso (se revisa antes de slot-filling)
     if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
@@ -1423,10 +1392,6 @@ def orchestrate(
 
     # --- Manejar despedidas de forma prioritaria ---
     user_norm = normalize_text(user_input)
-    if any(re.search(r"\b" + re.escape(normalize_text(t)) + r"\b", user_norm) for t in FAREWELL_TERMS):
-        context_manager.clear_context(sid)
-        delete_session(sid)
-        return {"respuesta": FAREWELL_RESPONSE, "session_id": sid}
 
     # --- Manejar feedback pendiente ---
     has_fb = context_manager.has_feedback_pending(sid)
@@ -1586,6 +1551,17 @@ def orchestrate(
     if tool == "scheduler-appointment_create":
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
         return format_response(result, sid, trace_id=sid)
+
+    if tool in ["saludo", "despedida"]:
+        answer = GREETING_RESPONSE if tool == "saludo" else FAREWELL_RESPONSE
+        if tool == "despedida":
+            context_manager.clear_context(sid)
+            delete_session(sid)
+            return {"respuesta": answer, "session_id": sid}
+        else:
+            context_manager.set_last_sentiment(sid, "neutral")
+            context_manager.update_context(sid, user_input, answer)
+            return {"respuesta": answer, "session_id": sid}
 
     if tool in ["doc-generar_respuesta_llm", "doc-buscar_fragmento_documento"]:
         if tool == "doc-buscar_fragmento_documento":
