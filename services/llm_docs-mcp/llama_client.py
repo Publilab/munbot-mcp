@@ -33,12 +33,16 @@ class LlamaClient:
             return
 
         tokenizer = AutoTokenizer.from_pretrained(self.model_path, use_fast=True)
-        bnb_config = BitsAndBytesConfig()
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype="float16",
+        )
         model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            load_in_4bit=True,
+            quantization_config=bnb_config,
         )
         self.generator = pipeline(
             "text-generation",
