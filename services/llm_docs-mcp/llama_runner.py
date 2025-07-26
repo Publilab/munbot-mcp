@@ -15,7 +15,6 @@ if AutoTokenizer is not None and os.getenv("LLAMA_MOCK") != "1":
         _model_path,
         trust_remote_code=True,
         device_map="auto",
-        load_in_4bit=True,
         quantization_config={"bits": 4},
     )
     llm = pipeline(
@@ -54,7 +53,6 @@ class LlamaRunner:
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            load_in_4bit=True,
             quantization_config={"bits": 4},
         )
         self.generator = pipeline(
