@@ -29,12 +29,11 @@ try:
 except ModuleNotFoundError:
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
     from text import normalize_text
-from llama_client import LlamaClient
 try:
-    from utils.intent_classifier import classify_intent_with_llm, set_llm_client
+    from classification_utils import classify_reclamo_response
 except ModuleNotFoundError:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
-    from intent_classifier import classify_intent_with_llm, set_llm_client
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ''))
+    from classification_utils import classify_reclamo_response
 try:
     from utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
@@ -78,6 +77,8 @@ MICROSERVICES = {
     "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL"),
     "llm_docs-mcp": os.getenv("LLM_DOCS_MCP_URL"),
 }
+# Base URL for llm_docs-mcp without tool path
+LLM_DOCS_BASE = re.sub(r"/tools.*$", "", MICROSERVICES["llm_docs-mcp"] or "http://llm_docs-mcp:8000")
 # Credenciales opcionales para microservicios
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
@@ -181,14 +182,6 @@ ERROR_COUNTER = Counter(
 )
 
 
-# --- Instancia tu LLM local (única instancia) ---
-llm = LlamaClient()
-try:
-    # Warm-up para compilar modelos antes de marcar el servicio listo
-    llm.generate("hola", max_tokens=1, temperature=0.0)
-except Exception:
-    pass
-set_llm_client(llm)
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
@@ -269,7 +262,7 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
     )
 
     try:
-        resp = llm.generate(prompt)
+        resp = remote_llm_generate(prompt)
     except Exception as e:
         logging.error(f"LLM error extrayendo nombre: {e}")
         return None
@@ -303,7 +296,7 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
     )
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
-            future = ex.submit(llm.generate, prompt)
+            future = ex.submit(remote_llm_generate, prompt)
             resp = future.result(timeout=timeout)
     except Exception as e:
         logging.error(f"LLM error extrayendo correo: {e}")
@@ -455,6 +448,30 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
         return {"error": f"Connection error: {e}"}
 
 
+def remote_llm_generate(prompt: str, timeout: float = 30.0) -> str:
+    """Generate text using llm_docs-mcp generic endpoint."""
+    auth = None
+    if LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
+        auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
+    url = LLM_DOCS_BASE.rstrip("/") + "/tools/generar_respuesta_llm"
+    resp = requests.post(url, json={"pregunta": prompt}, auth=auth, timeout=timeout)
+    resp.raise_for_status()
+    data = resp.json()
+    if isinstance(data, dict):
+        return data.get("respuesta", "")
+    return str(data)
+
+
+def remote_classify_intent(text: str, timeout: float = 30.0) -> str:
+    auth = None
+    if LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
+        auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
+    url = LLM_DOCS_BASE.rstrip("/") + "/tools/classify_intent_llm"
+    resp = requests.post(url, json={"texto": text}, auth=auth, timeout=timeout)
+    resp.raise_for_status()
+    return resp.json().get("intent", "otra")
+
+
 def handle_service_error(resp: Dict[str, Any], intent: str, trace_id: str | None = None) -> Optional[Dict[str, str]]:
     """Check microservice response and return friendly message on error."""
     if resp.get("error"):
@@ -489,12 +506,12 @@ def find_next_available_slot():
     pass
 
 def generate_response(prompt: str) -> str:
-    """Genera una respuesta utilizando el modelo Llama local."""
-    return llm.generate(prompt)
+    """Genera una respuesta utilizando llm_docs-mcp."""
+    return remote_llm_generate(prompt)
 
 
 def infer_intent_with_llm(prompt):
-    return generate_response(prompt)
+    return remote_llm_generate(prompt)
 
 
 def handle_confirmation(session_id: str) -> str:
@@ -535,7 +552,7 @@ def detect_intent(text: str, testing: bool = False) -> str:
     try:
         if testing:
             return detect_intent_fallback(text)
-        intent = classify_intent_with_llm(text, llm)
+        intent = remote_classify_intent(text)
         if intent == "otra":
             return detect_intent_fallback(text)
         return intent
@@ -1758,8 +1775,8 @@ def health():
     except Exception:
         db_ok = False
     try:
-        # Verificamos que el modelo esté cargado
-        if getattr(llm, "llm", None) is not None:
+        resp = requests.get(MICROSERVICES["llm_docs-mcp"].rstrip("/") + "/health", timeout=5)
+        if resp.status_code == 200:
             model_ok = True
     except Exception:
         model_ok = False
