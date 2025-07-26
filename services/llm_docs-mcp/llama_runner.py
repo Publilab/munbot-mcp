@@ -1,36 +1,76 @@
 import os
-from llama_cpp import Llama
+from typing import Optional
+
+try:  # pragma: no cover
+    from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+except Exception:  # pragma: no cover - allow tests without deps
+    AutoModelForCausalLM = AutoTokenizer = pipeline = None
 
 
-llm = Llama(
-    model_path=os.getenv("LLAMA_MODEL_PATH", "./models/Llama-3.2-3B-Instruct-Q6_K.gguf"),
-    n_ctx=int(os.getenv("N_CTX", 2048)),
-    n_threads=int(os.getenv("N_THREADS", 4)),
-)
+_model_path = os.getenv("MODEL_PATH") or os.getenv("LLAMA_MODEL_PATH", "./models/Llama-2-7B-GPTQ")
+
+if AutoTokenizer is not None and os.getenv("LLAMA_MOCK") != "1":
+    tokenizer = AutoTokenizer.from_pretrained(_model_path, use_fast=True)
+    model = AutoModelForCausalLM.from_pretrained(
+        _model_path,
+        trust_remote_code=True,
+        device_map="auto",
+        load_in_4bit=True,
+        quantization_config={"bits": 4},
+    )
+    llm = pipeline(
+        "text-generation",
+        model=model,
+        tokenizer=tokenizer,
+        max_new_tokens=512,
+        do_sample=False,
+        temperature=0.7,
+        top_p=0.95,
+    )
+else:  # pragma: no cover - mock or missing deps
+    llm = None
 
 
 def generar_respuesta_llm(prompt: str) -> str:
-    resultado = llm(
-        prompt,
-        max_tokens=512,
-        temperature=0.7,
-        stop=["Usuario:", "Pregunta:"],
-    )
-    return resultado["choices"][0]["text"].strip()
+    if llm is None:
+        return ""
+    resultado = llm(prompt)[0]["generated_text"]
+    if resultado.startswith(prompt):
+        resultado = resultado[len(prompt):]
+    return resultado.strip()
 
 
 class LlamaRunner:
-    def __init__(self, model_path: str | None = None, n_ctx: int = 4096, n_threads: int = 2):
-        self.model_path = model_path or os.getenv("LLAMA_MODEL_PATH", "models/Llama-3.2-3B-Instruct-Q6_K.gguf")
-        self.n_ctx = int(os.getenv("N_CTX", n_ctx))
-        self.n_threads = int(os.getenv("N_THREADS", n_threads))
-        if os.getenv("LLAMA_MOCK") == "1":
-            self.llm = None
-        else:
-            self.llm = Llama(model_path=self.model_path, n_ctx=self.n_ctx, n_threads=self.n_threads)
+    def __init__(self, model_path: Optional[str] = None, n_threads: int = 2):
+        env_model = os.getenv("MODEL_PATH") or os.getenv("LLAMA_MODEL_PATH")
+        self.model_path = model_path or env_model or "models/Llama-2-7B-GPTQ"
+        self.n_threads = int(os.getenv("LLAMA_N_THREADS", n_threads))
+
+        self.generator = None
+        if os.getenv("LLAMA_MOCK") == "1" or AutoTokenizer is None:
+            return
+        tokenizer = AutoTokenizer.from_pretrained(self.model_path, use_fast=True)
+        model = AutoModelForCausalLM.from_pretrained(
+            self.model_path,
+            trust_remote_code=True,
+            device_map="auto",
+            load_in_4bit=True,
+            quantization_config={"bits": 4},
+        )
+        self.generator = pipeline(
+            "text-generation",
+            model=model,
+            tokenizer=tokenizer,
+            max_new_tokens=256,
+            do_sample=False,
+            temperature=0.6,
+            top_p=0.95,
+        )
 
     def generate(self, prompt: str, max_tokens: int = 256, temperature: float = 0.6, top_p: float = 0.95) -> str:
-        if self.llm is None:
+        if self.generator is None:
             return ""
-        out = self.llm(prompt, max_tokens=max_tokens, temperature=temperature, top_p=top_p, stop=["</s>", "<|endoftext|>"])
-        return out["choices"][0]["text"].strip()
+        out = self.generator(prompt, max_new_tokens=max_tokens, do_sample=False, temperature=temperature, top_p=top_p)[0]["generated_text"]
+        if out.startswith(prompt):
+            out = out[len(prompt):]
+        return out.strip()
