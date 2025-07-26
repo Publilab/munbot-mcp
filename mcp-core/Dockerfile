@@ -23,7 +23,6 @@ WORKDIR /app
 #   Copiamos sólo requirements para aprovechar la cache
 COPY mcp-core/requirements.txt ./requirements.txt
 RUN pip install --upgrade pip setuptools wheel \
- && pip install torch --index-url https://download.pytorch.org/whl/cpu \
  && pip install --no-cache-dir -r requirements.txt
 
 # ───────────────────────────────
