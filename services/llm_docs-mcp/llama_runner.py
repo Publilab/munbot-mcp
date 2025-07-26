@@ -8,7 +8,7 @@ try:  # pragma: no cover
         pipeline,
         BitsAndBytesConfig,
     )
-    
+
 except Exception:  # pragma: no cover - allow tests without deps
     AutoModelForCausalLM = AutoTokenizer = pipeline = BitsAndBytesConfig = None
 
@@ -22,7 +22,7 @@ if AutoTokenizer is not None and os.getenv("LLAMA_MOCK") != "1":
         _model_path,
         trust_remote_code=True,
         device_map="auto",
-        quantization_config=bnb_config,
+        load_in_4bit=True,
     )
     llm = pipeline(
         "text-generation",
@@ -59,7 +59,7 @@ class LlamaRunner:
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            quantization_config=bnb_config,
+            load_in_4bit=True,
         )
         self.generator = pipeline(
             "text-generation",

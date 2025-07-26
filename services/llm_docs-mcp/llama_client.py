@@ -38,7 +38,7 @@ class LlamaClient:
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            quantization_config=bnb_config,
+            load_in_4bit=True,
         )
         self.generator = pipeline(
             "text-generation",
