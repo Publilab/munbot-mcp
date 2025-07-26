@@ -31,7 +31,6 @@ class LlamaClient:
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            load_in_4bit=True,
             quantization_config={"bits": 4},
         )
         self.generator = pipeline(
