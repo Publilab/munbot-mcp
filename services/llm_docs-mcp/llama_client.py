@@ -9,6 +9,7 @@ try:  # pragma: no cover - allow running tests without transformers installed
         pipeline,
         BitsAndBytesConfig,
     )
+
 except Exception:  # pragma: no cover - fallback for environments without deps
     AutoModelForCausalLM = AutoTokenizer = pipeline = BitsAndBytesConfig = None
 
@@ -32,7 +33,7 @@ class LlamaClient:
             return
 
         tokenizer = AutoTokenizer.from_pretrained(self.model_path, use_fast=True)
-        bnb_config = BitsAndBytesConfig(load_in_4bit=True)
+        bnb_config = BitsAndBytesConfig()
         model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             trust_remote_code=True,
