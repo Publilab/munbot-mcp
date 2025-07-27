@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "scheduler-appointment_create",
+  "description": "Crea una cita en el sistema de turnos municipales, asignando un horario disponible y registrando los datos del usuario.",
+  "type": "object",
+  "properties": {
+    "motiv": {
+      "type": "string",
+      "description": "Motivo de la cita."
+    },
+    "usu_name": {
+      "type": "string",
+      "description": "Nombre completo del usuario que agenda la cita."
+    },
+    "usu_mail": {
+      "type": "string",
+      "format": "email",
+      "description": "Correo electrónico del usuario."
+    },
+    "usu_whatsapp": {
+      "type": "string",
+      "description": "Número de WhatsApp del usuario (con código de país, formato internacional)."
+    },
+    "fecha": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha solicitada para la cita (YYYY-MM-DD)."
+    },
+    "hora": {
+      "type": "string",
+      "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+      "description": "Hora solicitada para la cita (HH:mm, 24h)."
+    }
+  },
+  "required": ["motiv", "usu_name", "usu_mail", "usu_whatsapp", "fecha", "hora"],
+  "example": {
+    "motiv": "Renovación de licencia",
+    "usu_name": "Ana Gómez",
+    "usu_mail": "ana.gomez@email.com",
+    "usu_whatsapp": "+56912345678",
+    "fecha": "2024-06-15",
+    "hora": "10:30"
+  }
+}

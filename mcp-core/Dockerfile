@@ -31,7 +31,6 @@ RUN pip install --upgrade pip setuptools wheel \
 # ───────────────────────────────
 #   Copiamos de una sola vez los directorios que necesitamos
 COPY mcp-core/ ./
-COPY services/ ./services/
 COPY databases/ ./databases/
 COPY mcp-core/utils/ ./utils/
 COPY tests/ ./tests/

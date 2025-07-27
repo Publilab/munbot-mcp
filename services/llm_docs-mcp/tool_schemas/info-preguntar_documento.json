@@ -1,0 +1,44 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "info-preguntar_documento",
+    "version": "1.0.0",
+    "description": "Genera una respuesta elaborada usando RAG (retrieval-augmented generation) sobre documentos oficiales.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "pregunta": {
+          "type": "string",
+          "description": "Pregunta del usuario sobre normativas, ordenanzas u otro documento oficial."
+        }
+      },
+      "required": ["pregunta"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "respuesta": {
+          "type": "string",
+          "description": "Respuesta generada por el modelo, citando la normativa relevante."
+        },
+        "fuentes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "doc_id":  { "type": "string" },
+              "titulo":  { "type": "string" },
+              "parrafo": { "type": "string" }
+            },
+            "required": ["doc_id", "titulo", "parrafo"],
+            "additionalProperties": false
+          },
+          "description": "Fragmentos concretos usados como evidencia."
+        }
+      },
+      "required": ["respuesta", "fuentes"],
+      "additionalProperties": false
+    }
+  }
+  

@@ -1,0 +1,43 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "info-listar_documentos",
+    "version": "1.0.0",
+    "description": "Devuelve un listado de documentos filtrado por clase (certificado, permiso, licencia…) o por público objetivo.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "clase": {
+          "type": "string",
+          "description": "Categoría de documento (certificado, licencia, permiso, etc.)."
+        },
+        "aplica_a": {
+          "type": "string",
+          "description": "Tipo de ciudadano o entidad a la que aplica."
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "documentos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id_documento": { "type": "string" },
+              "nombre":       { "type": "string" }
+            },
+            "required": ["id_documento", "nombre"],
+            "additionalProperties": false
+          },
+          "description": "Listado resumido de documentos."
+        }
+      },
+      "required": ["documentos"],
+      "additionalProperties": false
+    }
+  }
+  

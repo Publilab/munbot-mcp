@@ -19,7 +19,11 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -U pip --no-cache-dir
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-RUN BUILD_CUDA_EXT=0 pip install --no-cache-dir -r requirements.txt
+# Instala dependencias de requirements.txt (que ya no incluye auto-gptq)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Instala auto-gptq desde el índice recomendado para compatibilidad con CPU, asegurando que se instale correctamente.
+RUN pip install --no-cache-dir auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cpu/
 
 # Clona el modelo 4-bit
 RUN git lfs install && \
@@ -35,6 +39,13 @@ PY
 
 # Copia código y scripts (una sola instrucción)
 COPY . .
+
+# asumiendo que en tu repo tienes ../mcp-core/prompts y ../mcp-core/tool_schemas
+COPY prompts/ ./prompts
+COPY tool_schemas/ /app/tool_schemas
+
+ENV PROMPTS_PATH=/app/prompts
+ENV TOOLS_PATH=/app/tool_schemas
 
 # Variables de entorno para carga de modelo
 ENV MODEL_PATH=/models/Llama-2-7B-GPTQ

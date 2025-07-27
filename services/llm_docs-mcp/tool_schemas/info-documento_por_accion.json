@@ -1,0 +1,39 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "name": "info-documento_por_accion",
+    "version": "1.0.0",
+    "description": "Sugiere el documento adecuado a partir de un verbo o frase de acción (por ejemplo, \"renovar licencia\").",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "accion": {
+          "type": "string",
+          "description": "Verbo o frase que describe la acción del ciudadano."
+        }
+      },
+      "required": ["accion"],
+      "additionalProperties": false
+    },
+    "result_schema": {
+      "type": "object",
+      "properties": {
+        "id_documento": {
+          "type": "string",
+          "description": "Identificador interno del documento."
+        },
+        "nombre": {
+          "type": "string",
+          "description": "Nombre oficial del documento."
+        },
+        "requisitos": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Lista de requisitos resumidos."
+        }
+      },
+      "required": ["id_documento", "nombre", "requisitos"],
+      "additionalProperties": false
+    }
+  }
+  
