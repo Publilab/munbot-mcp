@@ -1,16 +1,18 @@
 import os
 from typing import Optional
+from transformers import BitsAndBytesConfig, AutoTokenizer, AutoModelForCausalLM, pipeline
 
-try:  # pragma: no cover
-    from transformers import (
-        AutoModelForCausalLM,
-        AutoTokenizer,
-        pipeline,
-        BitsAndBytesConfig,
-    )
+# Monkey-patch para añadir get_loading_attributes si falta
+ing = BitsAndBytesConfig
+if not hasattr(BitsAndBytesConfig, "get_loading_attributes"):
+    def _get_loading_attributes(self):
+        return {
+            "load_in_4bit": getattr(self, "load_in_4bit", False),
+            "bnb_4bit_quant_type": getattr(self, "bnb_4bit_quant_type", None),
+            "bnb_4bit_compute_dtype": getattr(self, "bnb_4bit_compute_dtype", None),
+        }
+    BitsAndBytesConfig.get_loading_attributes = _get_loading_attributes
 
-except Exception:  # pragma: no cover - allow tests without deps
-    AutoModelForCausalLM = AutoTokenizer = pipeline = BitsAndBytesConfig = None
 
 
 _model_path = os.getenv("MODEL_PATH") or os.getenv("LLAMA_MODEL_PATH", "./models/Llama-2-7B-GPTQ")

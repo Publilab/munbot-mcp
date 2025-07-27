@@ -1,17 +1,18 @@
 import os
 import logging
 from typing import Optional
+from transformers import BitsAndBytesConfig, AutoTokenizer, AutoModelForCausalLM, pipeline
 
-try:  # pragma: no cover - allow running tests without transformers installed
-    from transformers import (
-        AutoModelForCausalLM,
-        AutoTokenizer,
-        pipeline,
-        BitsAndBytesConfig,
-    )
-
-except Exception:  # pragma: no cover - fallback for environments without deps
-    AutoModelForCausalLM = AutoTokenizer = pipeline = BitsAndBytesConfig = None
+# Monkey-patch para añadir get_loading_attributes si falta
+ing = BitsAndBytesConfig
+if not hasattr(BitsAndBytesConfig, "get_loading_attributes"):
+    def _get_loading_attributes(self):
+        return {
+            "load_in_4bit": getattr(self, "load_in_4bit", False),
+            "bnb_4bit_quant_type": getattr(self, "bnb_4bit_quant_type", None),
+            "bnb_4bit_compute_dtype": getattr(self, "bnb_4bit_compute_dtype", None),
+        }
+    BitsAndBytesConfig.get_loading_attributes = _get_loading_attributes
 
 class LlamaClient:
     """Wrapper around a quantized HF model for text generation."""
