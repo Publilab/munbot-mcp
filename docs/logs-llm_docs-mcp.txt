@@ -1,65 +1,736 @@
 docker logs llm_docs-mcp
 ⌛ Esperando a Qdrant en qdrant:6333…
 ✅ Qdrant listo.
-✅  Colección creada: munbot_docs
+ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:Cargando y procesando documentos...
-INFO:__main__:Generando embeddings para 484 chunks...
-/usr/local/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
-  return forward_call(*args, **kwargs)
-INFO:__main__:Subiendo puntos a Qdrant...
-INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
-INFO:__main__:✅ Indexación completada. 484 puntos subidos a la colección 'munbot_docs'.
-🧠 Modelo cargado en 3,435 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-CUDA extension not installed.
-CUDA extension not installed.
-`loss_type=None` was set in the config but it is unrecognised.Using the default loss: `ForCausalLMLoss`.
-Some weights of the model checkpoint at /models/Llama-2-7B-GPTQ were not used when initializing LlamaForCausalLM: ['model.layers.0.mlp.down_proj.bias', 'model.layers.0.mlp.gate_proj.bias', 'model.layers.0.mlp.up_proj.bias', 'model.layers.0.self_attn.k_proj.bias', 'model.layers.0.self_attn.o_proj.bias', 'model.layers.0.self_attn.q_proj.bias', 'model.layers.0.self_attn.v_proj.bias', 'model.layers.1.mlp.down_proj.bias', 'model.layers.1.mlp.gate_proj.bias', 'model.layers.1.mlp.up_proj.bias', 'model.layers.1.self_attn.k_proj.bias', 'model.layers.1.self_attn.o_proj.bias', 'model.layers.1.self_attn.q_proj.bias', 'model.layers.1.self_attn.v_proj.bias', 'model.layers.10.mlp.down_proj.bias', 'model.layers.10.mlp.gate_proj.bias', 'model.layers.10.mlp.up_proj.bias', 'model.layers.10.self_attn.k_proj.bias', 'model.layers.10.self_attn.o_proj.bias', 'model.layers.10.self_attn.q_proj.bias', 'model.layers.10.self_attn.v_proj.bias', 'model.layers.11.mlp.down_proj.bias', 'model.layers.11.mlp.gate_proj.bias', 'model.layers.11.mlp.up_proj.bias', 'model.layers.11.self_attn.k_proj.bias', 'model.layers.11.self_attn.o_proj.bias', 'model.layers.11.self_attn.q_proj.bias', 'model.layers.11.self_attn.v_proj.bias', 'model.layers.12.mlp.down_proj.bias', 'model.layers.12.mlp.gate_proj.bias', 'model.layers.12.mlp.up_proj.bias', 'model.layers.12.self_attn.k_proj.bias', 'model.layers.12.self_attn.o_proj.bias', 'model.layers.12.self_attn.q_proj.bias', 'model.layers.12.self_attn.v_proj.bias', 'model.layers.13.mlp.down_proj.bias', 'model.layers.13.mlp.gate_proj.bias', 'model.layers.13.mlp.up_proj.bias', 'model.layers.13.self_attn.k_proj.bias', 'model.layers.13.self_attn.o_proj.bias', 'model.layers.13.self_attn.q_proj.bias', 'model.layers.13.self_attn.v_proj.bias', 'model.layers.14.mlp.down_proj.bias', 'model.layers.14.mlp.gate_proj.bias', 'model.layers.14.mlp.up_proj.bias', 'model.layers.14.self_attn.k_proj.bias', 'model.layers.14.self_attn.o_proj.bias', 'model.layers.14.self_attn.q_proj.bias', 'model.layers.14.self_attn.v_proj.bias', 'model.layers.15.mlp.down_proj.bias', 'model.layers.15.mlp.gate_proj.bias', 'model.layers.15.mlp.up_proj.bias', 'model.layers.15.self_attn.k_proj.bias', 'model.layers.15.self_attn.o_proj.bias', 'model.layers.15.self_attn.q_proj.bias', 'model.layers.15.self_attn.v_proj.bias', 'model.layers.16.mlp.down_proj.bias', 'model.layers.16.mlp.gate_proj.bias', 'model.layers.16.mlp.up_proj.bias', 'model.layers.16.self_attn.k_proj.bias', 'model.layers.16.self_attn.o_proj.bias', 'model.layers.16.self_attn.q_proj.bias', 'model.layers.16.self_attn.v_proj.bias', 'model.layers.17.mlp.down_proj.bias', 'model.layers.17.mlp.gate_proj.bias', 'model.layers.17.mlp.up_proj.bias', 'model.layers.17.self_attn.k_proj.bias', 'model.layers.17.self_attn.o_proj.bias', 'model.layers.17.self_attn.q_proj.bias', 'model.layers.17.self_attn.v_proj.bias', 'model.layers.18.mlp.down_proj.bias', 'model.layers.18.mlp.gate_proj.bias', 'model.layers.18.mlp.up_proj.bias', 'model.layers.18.self_attn.k_proj.bias', 'model.layers.18.self_attn.o_proj.bias', 'model.layers.18.self_attn.q_proj.bias', 'model.layers.18.self_attn.v_proj.bias', 'model.layers.19.mlp.down_proj.bias', 'model.layers.19.mlp.gate_proj.bias', 'model.layers.19.mlp.up_proj.bias', 'model.layers.19.self_attn.k_proj.bias', 'model.layers.19.self_attn.o_proj.bias', 'model.layers.19.self_attn.q_proj.bias', 'model.layers.19.self_attn.v_proj.bias', 'model.layers.2.mlp.down_proj.bias', 'model.layers.2.mlp.gate_proj.bias', 'model.layers.2.mlp.up_proj.bias', 'model.layers.2.self_attn.k_proj.bias', 'model.layers.2.self_attn.o_proj.bias', 'model.layers.2.self_attn.q_proj.bias', 'model.layers.2.self_attn.v_proj.bias', 'model.layers.20.mlp.down_proj.bias', 'model.layers.20.mlp.gate_proj.bias', 'model.layers.20.mlp.up_proj.bias', 'model.layers.20.self_attn.k_proj.bias', 'model.layers.20.self_attn.o_proj.bias', 'model.layers.20.self_attn.q_proj.bias', 'model.layers.20.self_attn.v_proj.bias', 'model.layers.21.mlp.down_proj.bias', 'model.layers.21.mlp.gate_proj.bias', 'model.layers.21.mlp.up_proj.bias', 'model.layers.21.self_attn.k_proj.bias', 'model.layers.21.self_attn.o_proj.bias', 'model.layers.21.self_attn.q_proj.bias', 'model.layers.21.self_attn.v_proj.bias', 'model.layers.22.mlp.down_proj.bias', 'model.layers.22.mlp.gate_proj.bias', 'model.layers.22.mlp.up_proj.bias', 'model.layers.22.self_attn.k_proj.bias', 'model.layers.22.self_attn.o_proj.bias', 'model.layers.22.self_attn.q_proj.bias', 'model.layers.22.self_attn.v_proj.bias', 'model.layers.23.mlp.down_proj.bias', 'model.layers.23.mlp.gate_proj.bias', 'model.layers.23.mlp.up_proj.bias', 'model.layers.23.self_attn.k_proj.bias', 'model.layers.23.self_attn.o_proj.bias', 'model.layers.23.self_attn.q_proj.bias', 'model.layers.23.self_attn.v_proj.bias', 'model.layers.24.mlp.down_proj.bias', 'model.layers.24.mlp.gate_proj.bias', 'model.layers.24.mlp.up_proj.bias', 'model.layers.24.self_attn.k_proj.bias', 'model.layers.24.self_attn.o_proj.bias', 'model.layers.24.self_attn.q_proj.bias', 'model.layers.24.self_attn.v_proj.bias', 'model.layers.25.mlp.down_proj.bias', 'model.layers.25.mlp.gate_proj.bias', 'model.layers.25.mlp.up_proj.bias', 'model.layers.25.self_attn.k_proj.bias', 'model.layers.25.self_attn.o_proj.bias', 'model.layers.25.self_attn.q_proj.bias', 'model.layers.25.self_attn.v_proj.bias', 'model.layers.26.mlp.down_proj.bias', 'model.layers.26.mlp.gate_proj.bias', 'model.layers.26.mlp.up_proj.bias', 'model.layers.26.self_attn.k_proj.bias', 'model.layers.26.self_attn.o_proj.bias', 'model.layers.26.self_attn.q_proj.bias', 'model.layers.26.self_attn.v_proj.bias', 'model.layers.27.mlp.down_proj.bias', 'model.layers.27.mlp.gate_proj.bias', 'model.layers.27.mlp.up_proj.bias', 'model.layers.27.self_attn.k_proj.bias', 'model.layers.27.self_attn.o_proj.bias', 'model.layers.27.self_attn.q_proj.bias', 'model.layers.27.self_attn.v_proj.bias', 'model.layers.28.mlp.down_proj.bias', 'model.layers.28.mlp.gate_proj.bias', 'model.layers.28.mlp.up_proj.bias', 'model.layers.28.self_attn.k_proj.bias', 'model.layers.28.self_attn.o_proj.bias', 'model.layers.28.self_attn.q_proj.bias', 'model.layers.28.self_attn.v_proj.bias', 'model.layers.29.mlp.down_proj.bias', 'model.layers.29.mlp.gate_proj.bias', 'model.layers.29.mlp.up_proj.bias', 'model.layers.29.self_attn.k_proj.bias', 'model.layers.29.self_attn.o_proj.bias', 'model.layers.29.self_attn.q_proj.bias', 'model.layers.29.self_attn.v_proj.bias', 'model.layers.3.mlp.down_proj.bias', 'model.layers.3.mlp.gate_proj.bias', 'model.layers.3.mlp.up_proj.bias', 'model.layers.3.self_attn.k_proj.bias', 'model.layers.3.self_attn.o_proj.bias', 'model.layers.3.self_attn.q_proj.bias', 'model.layers.3.self_attn.v_proj.bias', 'model.layers.30.mlp.down_proj.bias', 'model.layers.30.mlp.gate_proj.bias', 'model.layers.30.mlp.up_proj.bias', 'model.layers.30.self_attn.k_proj.bias', 'model.layers.30.self_attn.o_proj.bias', 'model.layers.30.self_attn.q_proj.bias', 'model.layers.30.self_attn.v_proj.bias', 'model.layers.31.mlp.down_proj.bias', 'model.layers.31.mlp.gate_proj.bias', 'model.layers.31.mlp.up_proj.bias', 'model.layers.31.self_attn.k_proj.bias', 'model.layers.31.self_attn.o_proj.bias', 'model.layers.31.self_attn.q_proj.bias', 'model.layers.31.self_attn.v_proj.bias', 'model.layers.4.mlp.down_proj.bias', 'model.layers.4.mlp.gate_proj.bias', 'model.layers.4.mlp.up_proj.bias', 'model.layers.4.self_attn.k_proj.bias', 'model.layers.4.self_attn.o_proj.bias', 'model.layers.4.self_attn.q_proj.bias', 'model.layers.4.self_attn.v_proj.bias', 'model.layers.5.mlp.down_proj.bias', 'model.layers.5.mlp.gate_proj.bias', 'model.layers.5.mlp.up_proj.bias', 'model.layers.5.self_attn.k_proj.bias', 'model.layers.5.self_attn.o_proj.bias', 'model.layers.5.self_attn.q_proj.bias', 'model.layers.5.self_attn.v_proj.bias', 'model.layers.6.mlp.down_proj.bias', 'model.layers.6.mlp.gate_proj.bias', 'model.layers.6.mlp.up_proj.bias', 'model.layers.6.self_attn.k_proj.bias', 'model.layers.6.self_attn.o_proj.bias', 'model.layers.6.self_attn.q_proj.bias', 'model.layers.6.self_attn.v_proj.bias', 'model.layers.7.mlp.down_proj.bias', 'model.layers.7.mlp.gate_proj.bias', 'model.layers.7.mlp.up_proj.bias', 'model.layers.7.self_attn.k_proj.bias', 'model.layers.7.self_attn.o_proj.bias', 'model.layers.7.self_attn.q_proj.bias', 'model.layers.7.self_attn.v_proj.bias', 'model.layers.8.mlp.down_proj.bias', 'model.layers.8.mlp.gate_proj.bias', 'model.layers.8.mlp.up_proj.bias', 'model.layers.8.self_attn.k_proj.bias', 'model.layers.8.self_attn.o_proj.bias', 'model.layers.8.self_attn.q_proj.bias', 'model.layers.8.self_attn.v_proj.bias', 'model.layers.9.mlp.down_proj.bias', 'model.layers.9.mlp.gate_proj.bias', 'model.layers.9.mlp.up_proj.bias', 'model.layers.9.self_attn.k_proj.bias', 'model.layers.9.self_attn.o_proj.bias', 'model.layers.9.self_attn.q_proj.bias', 'model.layers.9.self_attn.v_proj.bias']
-- This IS expected if you are initializing LlamaForCausalLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing LlamaForCausalLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-Found modules on cpu/disk. Using Exllama/Exllamav2 backend requires all the modules to be on GPU. Setting `disable_exllama=True`
-Device set to use cpu
-The following generation flags are not valid and may be ignored: ['temperature', 'top_p']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-Some weights of the model checkpoint at /models/Llama-2-7B-GPTQ were not used when initializing LlamaForCausalLM: ['model.layers.0.mlp.down_proj.bias', 'model.layers.0.mlp.gate_proj.bias', 'model.layers.0.mlp.up_proj.bias', 'model.layers.0.self_attn.k_proj.bias', 'model.layers.0.self_attn.o_proj.bias', 'model.layers.0.self_attn.q_proj.bias', 'model.layers.0.self_attn.v_proj.bias', 'model.layers.1.mlp.down_proj.bias', 'model.layers.1.mlp.gate_proj.bias', 'model.layers.1.mlp.up_proj.bias', 'model.layers.1.self_attn.k_proj.bias', 'model.layers.1.self_attn.o_proj.bias', 'model.layers.1.self_attn.q_proj.bias', 'model.layers.1.self_attn.v_proj.bias', 'model.layers.10.mlp.down_proj.bias', 'model.layers.10.mlp.gate_proj.bias', 'model.layers.10.mlp.up_proj.bias', 'model.layers.10.self_attn.k_proj.bias', 'model.layers.10.self_attn.o_proj.bias', 'model.layers.10.self_attn.q_proj.bias', 'model.layers.10.self_attn.v_proj.bias', 'model.layers.11.mlp.down_proj.bias', 'model.layers.11.mlp.gate_proj.bias', 'model.layers.11.mlp.up_proj.bias', 'model.layers.11.self_attn.k_proj.bias', 'model.layers.11.self_attn.o_proj.bias', 'model.layers.11.self_attn.q_proj.bias', 'model.layers.11.self_attn.v_proj.bias', 'model.layers.12.mlp.down_proj.bias', 'model.layers.12.mlp.gate_proj.bias', 'model.layers.12.mlp.up_proj.bias', 'model.layers.12.self_attn.k_proj.bias', 'model.layers.12.self_attn.o_proj.bias', 'model.layers.12.self_attn.q_proj.bias', 'model.layers.12.self_attn.v_proj.bias', 'model.layers.13.mlp.down_proj.bias', 'model.layers.13.mlp.gate_proj.bias', 'model.layers.13.mlp.up_proj.bias', 'model.layers.13.self_attn.k_proj.bias', 'model.layers.13.self_attn.o_proj.bias', 'model.layers.13.self_attn.q_proj.bias', 'model.layers.13.self_attn.v_proj.bias', 'model.layers.14.mlp.down_proj.bias', 'model.layers.14.mlp.gate_proj.bias', 'model.layers.14.mlp.up_proj.bias', 'model.layers.14.self_attn.k_proj.bias', 'model.layers.14.self_attn.o_proj.bias', 'model.layers.14.self_attn.q_proj.bias', 'model.layers.14.self_attn.v_proj.bias', 'model.layers.15.mlp.down_proj.bias', 'model.layers.15.mlp.gate_proj.bias', 'model.layers.15.mlp.up_proj.bias', 'model.layers.15.self_attn.k_proj.bias', 'model.layers.15.self_attn.o_proj.bias', 'model.layers.15.self_attn.q_proj.bias', 'model.layers.15.self_attn.v_proj.bias', 'model.layers.16.mlp.down_proj.bias', 'model.layers.16.mlp.gate_proj.bias', 'model.layers.16.mlp.up_proj.bias', 'model.layers.16.self_attn.k_proj.bias', 'model.layers.16.self_attn.o_proj.bias', 'model.layers.16.self_attn.q_proj.bias', 'model.layers.16.self_attn.v_proj.bias', 'model.layers.17.mlp.down_proj.bias', 'model.layers.17.mlp.gate_proj.bias', 'model.layers.17.mlp.up_proj.bias', 'model.layers.17.self_attn.k_proj.bias', 'model.layers.17.self_attn.o_proj.bias', 'model.layers.17.self_attn.q_proj.bias', 'model.layers.17.self_attn.v_proj.bias', 'model.layers.18.mlp.down_proj.bias', 'model.layers.18.mlp.gate_proj.bias', 'model.layers.18.mlp.up_proj.bias', 'model.layers.18.self_attn.k_proj.bias', 'model.layers.18.self_attn.o_proj.bias', 'model.layers.18.self_attn.q_proj.bias', 'model.layers.18.self_attn.v_proj.bias', 'model.layers.19.mlp.down_proj.bias', 'model.layers.19.mlp.gate_proj.bias', 'model.layers.19.mlp.up_proj.bias', 'model.layers.19.self_attn.k_proj.bias', 'model.layers.19.self_attn.o_proj.bias', 'model.layers.19.self_attn.q_proj.bias', 'model.layers.19.self_attn.v_proj.bias', 'model.layers.2.mlp.down_proj.bias', 'model.layers.2.mlp.gate_proj.bias', 'model.layers.2.mlp.up_proj.bias', 'model.layers.2.self_attn.k_proj.bias', 'model.layers.2.self_attn.o_proj.bias', 'model.layers.2.self_attn.q_proj.bias', 'model.layers.2.self_attn.v_proj.bias', 'model.layers.20.mlp.down_proj.bias', 'model.layers.20.mlp.gate_proj.bias', 'model.layers.20.mlp.up_proj.bias', 'model.layers.20.self_attn.k_proj.bias', 'model.layers.20.self_attn.o_proj.bias', 'model.layers.20.self_attn.q_proj.bias', 'model.layers.20.self_attn.v_proj.bias', 'model.layers.21.mlp.down_proj.bias', 'model.layers.21.mlp.gate_proj.bias', 'model.layers.21.mlp.up_proj.bias', 'model.layers.21.self_attn.k_proj.bias', 'model.layers.21.self_attn.o_proj.bias', 'model.layers.21.self_attn.q_proj.bias', 'model.layers.21.self_attn.v_proj.bias', 'model.layers.22.mlp.down_proj.bias', 'model.layers.22.mlp.gate_proj.bias', 'model.layers.22.mlp.up_proj.bias', 'model.layers.22.self_attn.k_proj.bias', 'model.layers.22.self_attn.o_proj.bias', 'model.layers.22.self_attn.q_proj.bias', 'model.layers.22.self_attn.v_proj.bias', 'model.layers.23.mlp.down_proj.bias', 'model.layers.23.mlp.gate_proj.bias', 'model.layers.23.mlp.up_proj.bias', 'model.layers.23.self_attn.k_proj.bias', 'model.layers.23.self_attn.o_proj.bias', 'model.layers.23.self_attn.q_proj.bias', 'model.layers.23.self_attn.v_proj.bias', 'model.layers.24.mlp.down_proj.bias', 'model.layers.24.mlp.gate_proj.bias', 'model.layers.24.mlp.up_proj.bias', 'model.layers.24.self_attn.k_proj.bias', 'model.layers.24.self_attn.o_proj.bias', 'model.layers.24.self_attn.q_proj.bias', 'model.layers.24.self_attn.v_proj.bias', 'model.layers.25.mlp.down_proj.bias', 'model.layers.25.mlp.gate_proj.bias', 'model.layers.25.mlp.up_proj.bias', 'model.layers.25.self_attn.k_proj.bias', 'model.layers.25.self_attn.o_proj.bias', 'model.layers.25.self_attn.q_proj.bias', 'model.layers.25.self_attn.v_proj.bias', 'model.layers.26.mlp.down_proj.bias', 'model.layers.26.mlp.gate_proj.bias', 'model.layers.26.mlp.up_proj.bias', 'model.layers.26.self_attn.k_proj.bias', 'model.layers.26.self_attn.o_proj.bias', 'model.layers.26.self_attn.q_proj.bias', 'model.layers.26.self_attn.v_proj.bias', 'model.layers.27.mlp.down_proj.bias', 'model.layers.27.mlp.gate_proj.bias', 'model.layers.27.mlp.up_proj.bias', 'model.layers.27.self_attn.k_proj.bias', 'model.layers.27.self_attn.o_proj.bias', 'model.layers.27.self_attn.q_proj.bias', 'model.layers.27.self_attn.v_proj.bias', 'model.layers.28.mlp.down_proj.bias', 'model.layers.28.mlp.gate_proj.bias', 'model.layers.28.mlp.up_proj.bias', 'model.layers.28.self_attn.k_proj.bias', 'model.layers.28.self_attn.o_proj.bias', 'model.layers.28.self_attn.q_proj.bias', 'model.layers.28.self_attn.v_proj.bias', 'model.layers.29.mlp.down_proj.bias', 'model.layers.29.mlp.gate_proj.bias', 'model.layers.29.mlp.up_proj.bias', 'model.layers.29.self_attn.k_proj.bias', 'model.layers.29.self_attn.o_proj.bias', 'model.layers.29.self_attn.q_proj.bias', 'model.layers.29.self_attn.v_proj.bias', 'model.layers.3.mlp.down_proj.bias', 'model.layers.3.mlp.gate_proj.bias', 'model.layers.3.mlp.up_proj.bias', 'model.layers.3.self_attn.k_proj.bias', 'model.layers.3.self_attn.o_proj.bias', 'model.layers.3.self_attn.q_proj.bias', 'model.layers.3.self_attn.v_proj.bias', 'model.layers.30.mlp.down_proj.bias', 'model.layers.30.mlp.gate_proj.bias', 'model.layers.30.mlp.up_proj.bias', 'model.layers.30.self_attn.k_proj.bias', 'model.layers.30.self_attn.o_proj.bias', 'model.layers.30.self_attn.q_proj.bias', 'model.layers.30.self_attn.v_proj.bias', 'model.layers.31.mlp.down_proj.bias', 'model.layers.31.mlp.gate_proj.bias', 'model.layers.31.mlp.up_proj.bias', 'model.layers.31.self_attn.k_proj.bias', 'model.layers.31.self_attn.o_proj.bias', 'model.layers.31.self_attn.q_proj.bias', 'model.layers.31.self_attn.v_proj.bias', 'model.layers.4.mlp.down_proj.bias', 'model.layers.4.mlp.gate_proj.bias', 'model.layers.4.mlp.up_proj.bias', 'model.layers.4.self_attn.k_proj.bias', 'model.layers.4.self_attn.o_proj.bias', 'model.layers.4.self_attn.q_proj.bias', 'model.layers.4.self_attn.v_proj.bias', 'model.layers.5.mlp.down_proj.bias', 'model.layers.5.mlp.gate_proj.bias', 'model.layers.5.mlp.up_proj.bias', 'model.layers.5.self_attn.k_proj.bias', 'model.layers.5.self_attn.o_proj.bias', 'model.layers.5.self_attn.q_proj.bias', 'model.layers.5.self_attn.v_proj.bias', 'model.layers.6.mlp.down_proj.bias', 'model.layers.6.mlp.gate_proj.bias', 'model.layers.6.mlp.up_proj.bias', 'model.layers.6.self_attn.k_proj.bias', 'model.layers.6.self_attn.o_proj.bias', 'model.layers.6.self_attn.q_proj.bias', 'model.layers.6.self_attn.v_proj.bias', 'model.layers.7.mlp.down_proj.bias', 'model.layers.7.mlp.gate_proj.bias', 'model.layers.7.mlp.up_proj.bias', 'model.layers.7.self_attn.k_proj.bias', 'model.layers.7.self_attn.o_proj.bias', 'model.layers.7.self_attn.q_proj.bias', 'model.layers.7.self_attn.v_proj.bias', 'model.layers.8.mlp.down_proj.bias', 'model.layers.8.mlp.gate_proj.bias', 'model.layers.8.mlp.up_proj.bias', 'model.layers.8.self_attn.k_proj.bias', 'model.layers.8.self_attn.o_proj.bias', 'model.layers.8.self_attn.q_proj.bias', 'model.layers.8.self_attn.v_proj.bias', 'model.layers.9.mlp.down_proj.bias', 'model.layers.9.mlp.gate_proj.bias', 'model.layers.9.mlp.up_proj.bias', 'model.layers.9.self_attn.k_proj.bias', 'model.layers.9.self_attn.o_proj.bias', 'model.layers.9.self_attn.q_proj.bias', 'model.layers.9.self_attn.v_proj.bias']
-- This IS expected if you are initializing LlamaForCausalLM from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing LlamaForCausalLM from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-{"asctime": "2025-07-27 10:56:23,162", "levelname": "WARNING", "name": "optimum.gptq.quantizer", "message": "Found modules on cpu/disk. Using Exllama/Exllamav2 backend requires all the modules to be on GPU. Setting `disable_exllama=True`", "trace_id": null}
-Device set to use cpu
-The following generation flags are not valid and may be ignored: ['temperature', 'top_p']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
-INFO:     Started server process [1]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-🧠 Modelo cargado en 2,908 ms (CPU)
-INFO:     127.0.0.1:53668 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:59666 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:59672 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:37832 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:55880 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:39614 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:47738 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:47528 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:42732 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:42188 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:40624 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:58146 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:33086 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:55318 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:55306 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:42460 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:33450 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:58676 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:33102 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:55820 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:33364 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:32824 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51650 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:33854 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:59170 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:46520 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:42084 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:53560 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51212 - "GET /tools/call/health HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:46838 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:43486 - "GET /tools/call/health HTTP/1.1" 404 Not Found
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,257 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,520 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,532 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,466 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,610 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,341 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,513 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,908 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,389 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,390 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,592 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 3,863 ms (CPU)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 22, in import_from_string
+    raise exc from None
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 23, in <module>
+    from llama_client import LlamaClient
+  File "/app/llama_client.py", line 6, in <module>
+    from safetensors.errors import SafetensorsError
+ModuleNotFoundError: No module named 'safetensors.errors'
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
