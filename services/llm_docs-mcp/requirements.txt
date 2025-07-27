@@ -7,7 +7,7 @@ requests>=2.25.1
 
 # LLM, RAG & Vector DB
 # Versiones actualizadas para compatibilidad con modelos GPTQ
-transformers>=4.32.0
+transformers>=4.32.0    
 accelerate>=0.25.0
 optimum>=1.12.0
 safetensors>=0.5.3

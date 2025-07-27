@@ -9,116 +9,31 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-{"asctime": "2025-07-27 10:56:28,883", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
-INFO:     127.0.0.1:36262 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34686 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40608 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60118 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52664 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41530 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52134 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55386 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53134 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51574 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55406 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51218 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37694 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36928 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43636 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58238 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56862 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44350 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60496 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53400 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45514 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34348 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34258 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50990 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52624 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59902 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42300 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45604 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51504 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35172 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52372 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58120 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60864 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35788 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37098 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55606 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52168 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56002 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56244 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49164 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59176 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37224 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35520 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52008 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43360 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33422 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34526 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43380 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57372 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40742 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37906 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54608 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54568 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33874 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51972 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45974 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50436 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44434 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54270 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60598 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59560 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-07-27 11:26:47,873", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:26:47,873", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-INFO:     127.0.0.1:42834 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-07-27 11:27:17,904", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:27:17,904", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:27:17,905", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "ffba25d5-ea68-42f7-9ab1-98d57eef2d50"}
-{"asctime": "2025-07-27 11:27:17,905", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "ffba25d5-ea68-42f7-9ab1-98d57eef2d50"}
-{"asctime": "2025-07-27 11:27:38,867", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:27:38,867", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:27:40,301", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:27:40,301", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-INFO:     127.0.0.1:56128 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-07-27 11:28:08,898", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:08,898", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:08,898", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "029d1343-e765-480a-99f8-c064abe67ee5"}
-{"asctime": "2025-07-27 11:28:08,898", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "029d1343-e765-480a-99f8-c064abe67ee5"}
-{"asctime": "2025-07-27 11:28:10,335", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:10,335", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:10,335", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "d7698dd8-49a3-41c0-980d-f40b20c119e4"}
-{"asctime": "2025-07-27 11:28:10,335", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "d7698dd8-49a3-41c0-980d-f40b20c119e4"}
-{"asctime": "2025-07-27 11:28:10,336", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-07-27 11:28:10,336", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-INFO:     127.0.0.1:53722 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-07-27 11:28:30,885", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:30,885", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:31,322", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:31,322", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:28:40,347", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: Connection error: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30)", "trace_id": "d7698dd8-49a3-41c0-980d-f40b20c119e4"}
-{"asctime": "2025-07-27 11:28:40,347", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: Connection error: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30)", "trace_id": "d7698dd8-49a3-41c0-980d-f40b20c119e4"}
-{"asctime": "2025-07-27 11:29:00,916", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:00,916", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:00,916", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "ca0a1f7a-3eda-480e-8266-b528be1d7057"}
-{"asctime": "2025-07-27 11:29:00,916", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "ca0a1f7a-3eda-480e-8266-b528be1d7057"}
-{"asctime": "2025-07-27 11:29:01,346", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:01,346", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:01,346", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "94b595eb-d7e6-4690-90b5-7725bc435cc1"}
-{"asctime": "2025-07-27 11:29:01,346", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "94b595eb-d7e6-4690-90b5-7725bc435cc1"}
-{"asctime": "2025-07-27 11:29:01,349", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-07-27 11:29:01,349", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-INFO:     127.0.0.1:43558 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-07-27 11:29:23,324", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:23,324", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:31,379", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: Connection error: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30)", "trace_id": "94b595eb-d7e6-4690-90b5-7725bc435cc1"}
-{"asctime": "2025-07-27 11:29:31,379", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: Connection error: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30)", "trace_id": "94b595eb-d7e6-4690-90b5-7725bc435cc1"}
-INFO:     127.0.0.1:50810 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-07-27 11:29:53,338", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:53,338", "levelname": "WARNING", "name": "munbot", "message": "[INTENT] Fallback por error en LLM: HTTPConnectionPool(host='llm_docs-mcp', port=8000): Read timed out. (read timeout=30.0)", "trace_id": null}
-{"asctime": "2025-07-27 11:29:53,339", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "5746c6ac-2ac3-48e5-b51c-8bcdf9054826"}
-{"asctime": "2025-07-27 11:29:53,339", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "5746c6ac-2ac3-48e5-b51c-8bcdf9054826"}
-{"asctime": "2025-07-27 11:29:53,340", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-07-27 11:29:53,340", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-27 17:09:44,683", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+INFO:     127.0.0.1:41522 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41130 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49114 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43108 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38242 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60606 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60976 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34532 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50212 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34222 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44662 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50964 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46182 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40376 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46820 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34712 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43356 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33402 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54498 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52764 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57234 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35524 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50578 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35406 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38850 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34640 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58446 - "GET /health HTTP/1.1" 200 OK
