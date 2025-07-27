@@ -6,7 +6,7 @@ python-json-logger
 requests>=2.25.1
 
 # LLM, RAG & Vector DB
-llama-cpp-python>=0.2.79 # Para inferencia de modelos GGUF en CPU
+llama-cpp-python>=0.2.11 # Para inferencia de modelos GGUF en CPU
 # sentence-transformers se usa para embeddings y depende de transformers.
 transformers>=4.32.0
 safetensors>=0.5.3
