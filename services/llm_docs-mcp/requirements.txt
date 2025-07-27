@@ -6,6 +6,8 @@ scikit-learn>=0.24.2
 prometheus_client>=0.16.0
 git+https://github.com/huggingface/transformers.git@main#egg=transformers
 git+https://github.com/huggingface/accelerate.git@main#egg=accelerate
+optimum
+auto-gptq
 bitsandbytes>=0.43.0
 sentence-transformers==2.7.0
 torch==2.3.0

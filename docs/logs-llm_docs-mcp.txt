@@ -9,11 +9,13 @@ INFO:__main__:Generando embeddings para 484 chunks...
 INFO:__main__:Subiendo puntos a Qdrant...
 INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
 INFO:__main__:✅ Indexación completada. 484 puntos subidos a la colección 'munbot_docs'.
-🧠 Modelo cargado en 4,250 ms (CPU)
+🧠 Modelo cargado en 4,133 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
-🧠 Modelo cargado en 2,876 ms (CPU)
+🧠 Modelo cargado en 2,858 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -67,7 +69,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -76,20 +78,598 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,091 ms (CPU)
+🧠 Modelo cargado en 4,140 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,808 ms (CPU)
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 3,070 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,265 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 3,843 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,173 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,880 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,123 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,779 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,107 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,838 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,302 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,984 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,179 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,822 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+🧠 Modelo cargado en 4,208 ms (CPU)
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+🧠 Modelo cargado en 2,829 ms (CPU)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
     sys.exit(main())
@@ -145,7 +725,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -154,97 +734,23 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,065 ms (CPU)
+🧠 Modelo cargado en 4,134 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,907 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,106 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
 🧠 Modelo cargado en 2,859 ms (CPU)
@@ -301,7 +807,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -310,22 +816,26 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,320 ms (CPU)
+🧠 Modelo cargado en 4,111 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
-🧠 Modelo cargado en 2,817 ms (CPU)
+🧠 Modelo cargado en 2,875 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -379,7 +889,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -388,22 +898,26 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,108 ms (CPU)
+🧠 Modelo cargado en 4,235 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
-🧠 Modelo cargado en 3,294 ms (CPU)
+🧠 Modelo cargado en 2,849 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -457,7 +971,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -466,22 +980,26 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,136 ms (CPU)
+🧠 Modelo cargado en 4,120 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,802 ms (CPU)
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,853 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -535,7 +1053,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -544,100 +1062,26 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,229 ms (CPU)
+🧠 Modelo cargado en 4,278 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-🧠 Modelo cargado en 2,919 ms (CPU)
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,470 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,881 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 3,171 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -691,7 +1135,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -700,100 +1144,26 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,151 ms (CPU)
+🧠 Modelo cargado en 4,185 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-🧠 Modelo cargado en 2,841 ms (CPU)
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,128 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 3,004 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,837 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -847,7 +1217,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -856,643 +1226,23 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,274 ms (CPU)
+🧠 Modelo cargado en 4,160 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-🧠 Modelo cargado en 2,817 ms (CPU)
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,122 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-🧠 Modelo cargado en 2,781 ms (CPU)
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,096 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-🧠 Modelo cargado en 2,788 ms (CPU)
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,080 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,909 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,165 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-Traceback (most recent call last):
-🧠 Modelo cargado en 2,817 ms (CPU)
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,075 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,809 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,208 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,929 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,212 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,969 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,089 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
 🧠 Modelo cargado en 2,847 ms (CPU)
@@ -1549,7 +1299,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -1558,20 +1308,188 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,529 ms (CPU)
+🧠 Modelo cargado en 4,205 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,806 ms (CPU)
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,810 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,102 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,978 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,057 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+🧠 Modelo cargado en 2,846 ms (CPU)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
     sys.exit(main())
@@ -1627,7 +1545,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -1636,22 +1554,26 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,159 ms (CPU)
+🧠 Modelo cargado en 4,126 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,871 ms (CPU)
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,852 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -1705,7 +1627,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -1714,100 +1636,26 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,114 ms (CPU)
+🧠 Modelo cargado en 4,121 ms (CPU)
 You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
 Traceback (most recent call last):
   File "/usr/local/bin/uvicorn", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-🧠 Modelo cargado en 2,865 ms (CPU)
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-         ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/gateway.py", line 26, in <module>
-    from rag import doc_buscar_fragmento_documento
-  File "/app/rag.py", line 3, in <module>
-    from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
-    model = AutoModelForCausalLM.from_pretrained(
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
-    return model_class.from_pretrained(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
-    return func(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,675 ms (CPU)
-You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
-🧠 Modelo cargado en 2,886 ms (CPU)
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,811 ms (CPU)
     sys.exit(main())
              ^^^^^^
   File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
@@ -1861,7 +1709,7 @@ Traceback (most recent call last):
     from rag import doc_buscar_fragmento_documento
   File "/app/rag.py", line 3, in <module>
     from llama_runner import LlamaRunner
-  File "/app/llama_runner.py", line 25, in <module>
+  File "/app/llama_runner.py", line 27, in <module>
     model = AutoModelForCausalLM.from_pretrained(
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
@@ -1870,15 +1718,509 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
     return func(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4805, in from_pretrained
-    config.quantization_config = AutoHfQuantizer.merge_quantization_configs(
-                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 219, in merge_quantization_configs
-    loading_attr_dict = quantization_config_from_args.get_loading_attributes()
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: 'BitsAndBytesConfig' object has no attribute 'get_loading_attributes'
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
-🧠 Modelo cargado en 4,267 ms (CPU)
+🧠 Modelo cargado en 4,175 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,794 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,098 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,801 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,098 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,842 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,108 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,959 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,192 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 3,249 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,121 ms (CPU)
+You are using the default legacy behaviour of the <class 'transformers.models.llama.tokenization_llama_fast.LlamaTokenizerFast'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565 - if you loaded a llama tokenizer from a GGUF file you can ignore this message.
+/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py:226: UserWarning: You passed `quantization_config` or equivalent parameters to `from_pretrained` but the model you're loading already has a `quantization_config` attribute. The `quantization_config` from the model will be used.However, loading attributes (e.g. ['load_in_4bit', 'bnb_4bit_quant_type', 'bnb_4bit_compute_dtype']) will be overwritten with the one you passed to `from_pretrained`. The rest will be ignored.
+  warnings.warn(warning_msg)
+Traceback (most recent call last):
+  File "/usr/local/bin/uvicorn", line 8, in <module>
+🧠 Modelo cargado en 2,849 ms (CPU)
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1442, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1363, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 1226, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/click/core.py", line 794, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 413, in main
+    run(
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/main.py", line 580, in run
+    server.run()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 67, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 71, in serve
+    await self._serve(sockets)
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/server.py", line 78, in _serve
+    config.load()
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/config.py", line 436, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/app/gateway.py", line 26, in <module>
+    from rag import doc_buscar_fragmento_documento
+  File "/app/rag.py", line 3, in <module>
+    from llama_runner import LlamaRunner
+  File "/app/llama_runner.py", line 27, in <module>
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 600, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 315, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4811, in from_pretrained
+    hf_quantizer = AutoHfQuantizer.from_config(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/auto.py", line 181, in from_config
+    return target_cls(quantization_config, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/transformers/quantizers/quantizer_gptq.py", line 49, in __init__
+    raise ImportError("Loading a GPTQ quantized model requires optimum (`pip install optimum`)")
+ImportError: Loading a GPTQ quantized model requires optimum (`pip install optimum`)
+✅ Qdrant listo.
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 484 puntos. Saltando indexación.
+🧠 Modelo cargado en 4,124 ms (CPU)

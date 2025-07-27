@@ -19,7 +19,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -U pip --no-cache-dir
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-RUN pip install --no-cache-dir -r requirements.txt
+RUN BUILD_CUDA_EXT=0 pip install --no-cache-dir -r requirements.txt
 
 # Clona el modelo 4-bit
 RUN git clone --depth 1 \
