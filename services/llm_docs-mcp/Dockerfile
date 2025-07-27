@@ -23,9 +23,9 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Instala auto-gptq desde el índice recomendado para compatibilidad con CPU, asegurando que se instale correctamente.
-# Se añade CUDA_VERSION=0.0 como variable de entorno para solucionar un bug en el setup.py de auto-gptq
-# que ocurre al compilar desde fuente en arquitecturas (como arm64) que no tienen wheels pre-compilados.
-RUN CUDA_VERSION=0.0 pip install --no-cache-dir auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cpu/
+# Se añade BUILD_CUDA_EXT=0 para forzar la compilación para CPU y evitar que busque CUDA_HOME,
+# especialmente en arquitecturas (como arm64) que no tienen wheels pre-compilados.
+RUN BUILD_CUDA_EXT=0 pip install --no-cache-dir auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cpu/
 
 # Clona el modelo 4-bit
 RUN git lfs install && \
