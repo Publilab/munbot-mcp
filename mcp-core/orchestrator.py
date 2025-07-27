@@ -436,6 +436,8 @@ def remote_llm_generate(prompt: str, timeout: float = 30.0) -> str:
 
 
 def remote_classify_intent(text: str, timeout: float = 30.0) -> str:
+    # Aumentamos el timeout a 120 segundos para dar margen a la inferencia en CPU
+    timeout = 120.0
     auth = None
     if LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
@@ -1954,5 +1956,3 @@ def validar_telefono_movil(numero: str) -> Optional[str]:
     if re.fullmatch(r"\+569\d{8}", n):
         return n
     return None
-
-
