@@ -1,9 +1,24 @@
 import os
 import logging
 from typing import Optional
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
-from safetensors import safe_open
-from safetensors.errors import SafetensorsError
+
+# Permit the deprecated `sklearn` package alias required by `transformers` during import
+os.environ.setdefault("SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_IMPORT", "1")
+
+import sys
+import importlib.machinery
+if 'sklearn' not in sys.modules:
+    dummy = type(sys)("sklearn")
+    dummy.__spec__ = importlib.machinery.ModuleSpec('sklearn', None)
+    sys.modules['sklearn'] = dummy
+
+AutoTokenizer = AutoModelForCausalLM = pipeline = None
+try:
+    from safetensors import safe_open, SafetensorError
+except Exception:  # pragma: no cover - optional dependency
+    safe_open = None
+    class SafetensorError(Exception):
+        """Fallback error used when `safetensors` is unavailable."""
 
 class LlamaClient:
     """Wrapper around a quantized HF model for text generation."""
@@ -21,9 +36,13 @@ class LlamaClient:
         if os.getenv("LLAMA_MOCK") == "1" or os.getenv("TESTING") == "1":
             return
 
-        if AutoTokenizer is None:  # transformers not installed
-            self.logger.warning("transformers not available")
-            return
+        global AutoTokenizer, AutoModelForCausalLM, pipeline
+        if AutoTokenizer is None:
+            try:
+                from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+            except Exception:  # pragma: no cover - optional dependency missing
+                self.logger.warning("transformers not available")
+                return
 
         # El fichero del modelo dentro del directorio descargado
         safetensors_file = os.path.join(self.model_path, "model.safetensors")
@@ -38,13 +57,22 @@ class LlamaClient:
         self.logger.info(f"[LLAMA_CLIENT] {safetensors_file} existe, tamaño = {stat.st_size / (1024**2):.2f} MiB")
 
         # 2) Intentar abrir el header para detectar corrupción
-        try:
-            with safe_open(safetensors_file, framework="pt") as f:
-                _ = f.keys()  # Leer las claves es una forma segura de validar el header
-            self.logger.info(f"[LLAMA_CLIENT] Header de safetensors en {safetensors_file} parece válido.")
-        except SafetensorsError as e:
-            self.logger.error(f"[LLAMA_CLIENT][ERROR] al leer header safetensors: {e}", exc_info=True)
-            raise
+        if safe_open:
+            try:
+                with safe_open(safetensors_file, framework="pt") as f:
+                    _ = f.keys()  # Leer las claves es una forma segura de validar el header
+                self.logger.info(
+                    f"[LLAMA_CLIENT] Header de safetensors en {safetensors_file} parece válido."
+                )
+            except SafetensorError as e:
+                self.logger.error(
+                    f"[LLAMA_CLIENT][ERROR] al leer header safetensors: {e}", exc_info=True
+                )
+                raise
+        else:
+            self.logger.warning(
+                "[LLAMA_CLIENT] 'safetensors' no está disponible; se omite la validación del header."
+            )
 
         # 3) Cargar el modelo y el tokenizador con `transformers`
         try:
