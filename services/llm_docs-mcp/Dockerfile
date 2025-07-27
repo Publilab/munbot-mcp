@@ -11,7 +11,7 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        build-essential git libopenblas0 netcat-traditional && \
+        build-essential git git-lfs libopenblas0 netcat-traditional && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -22,7 +22,8 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 RUN BUILD_CUDA_EXT=0 pip install --no-cache-dir -r requirements.txt
 
 # Clona el modelo 4-bit
-RUN git clone --depth 1 \
+RUN git lfs install && \
+    git clone --depth 1 \
     https://huggingface.co/TheBloke/Llama-2-7B-GPTQ \
     /models/Llama-2-7B-GPTQ
 

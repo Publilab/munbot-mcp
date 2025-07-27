@@ -1,18 +1,7 @@
 import os
 import logging
 from typing import Optional
-from transformers import BitsAndBytesConfig, AutoTokenizer, AutoModelForCausalLM, pipeline
-
-# Monkey-patch para añadir get_loading_attributes si falta
-ing = BitsAndBytesConfig
-if not hasattr(BitsAndBytesConfig, "get_loading_attributes"):
-    def _get_loading_attributes(self):
-        return {
-            "load_in_4bit": getattr(self, "load_in_4bit", False),
-            "bnb_4bit_quant_type": getattr(self, "bnb_4bit_quant_type", None),
-            "bnb_4bit_compute_dtype": getattr(self, "bnb_4bit_compute_dtype", None),
-        }
-    BitsAndBytesConfig.get_loading_attributes = _get_loading_attributes
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 class LlamaClient:
     """Wrapper around a quantized HF model for text generation."""
@@ -34,16 +23,11 @@ class LlamaClient:
             return
 
         tokenizer = AutoTokenizer.from_pretrained(self.model_path, use_fast=True)
-        bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_compute_dtype="float16",
-        )
         model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             trust_remote_code=True,
             device_map="auto",
-            quantization_config=bnb_config,
+            # No se necesita quantization_config para un modelo GPTQ ya cuantizado
         )
         self.generator = pipeline(
             "text-generation",

@@ -1,9 +1,9 @@
 from embeddings import embed
 from qdrant_helpers import buscar_fragmentos
-from llama_runner import LlamaRunner
+from llama_client import LlamaClient
 
 
-llama = LlamaRunner()
+llama = LlamaClient()
 
 
 def obtener_fragmentos(consulta: str, k: int = 3, documento: str | None = None):

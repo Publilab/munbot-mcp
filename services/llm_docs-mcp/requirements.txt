@@ -1,15 +1,18 @@
 fastapi>=0.68.0
-uvicorn>=0.15.0
-requests>=2.25.1
-nltk==3.7
+uvicorn[standard]>=0.15.0
 scikit-learn>=0.24.2
 prometheus_client>=0.16.0
-git+https://github.com/huggingface/transformers.git@main#egg=transformers
-git+https://github.com/huggingface/accelerate.git@main#egg=accelerate
-optimum
-auto-gptq
-bitsandbytes>=0.43.0
-sentence-transformers==2.7.0
-torch==2.3.0
-qdrant-client==1.7.0
 python-json-logger
+requests>=2.25.1
+
+# LLM, RAG & Vector DB
+# Versiones actualizadas para compatibilidad con modelos GPTQ
+transformers>=4.32.0
+accelerate>=0.25.0
+optimum>=1.12.0
+auto-gptq>=0.7.1
+safetensors>=0.4.0
+sentence-transformers==2.7.0
+qdrant-client==1.7.0
+# torch se instala por separado en el Dockerfile.
+# bitsandbytes y nltk se eliminan al no ser necesarios.
