@@ -180,6 +180,11 @@ ERROR_COUNTER = Counter(
     ["intent"],
     registry=PROM_REGISTRY,
 )
+CACHE_HIT_COUNTER = Counter(
+    "munbot_cache_hits_total",
+    "Número de respuestas servidas desde el caché",
+    registry=PROM_REGISTRY,
+)
 
 
 
@@ -413,7 +418,9 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
     if tool.startswith("doc-") and LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
     try:
-        resp = requests.post(service_url, json=payload, auth=auth, timeout=30)
+        # Aumentamos el timeout para las llamadas a servicios de LLM que pueden ser lentas
+        timeout = 120 if tool.startswith("doc-") else 30
+        resp = requests.post(service_url, json=payload, auth=auth, timeout=timeout)
         if 200 <= resp.status_code < 300:
             return resp.json()
         return {"error": f"Error {resp.status_code}: {resp.text}"}
@@ -421,12 +428,13 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
         return {"error": f"Connection error: {e}"}
 
 
-def remote_llm_generate(prompt: str, timeout: float = 30.0) -> str:
+def remote_llm_generate(prompt: str, timeout: float = 120.0) -> str:
     """Generate text using llm_docs-mcp generic endpoint."""
     auth = None
     if LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
     url = LLM_DOCS_BASE.rstrip("/") + "/tools/generar_respuesta_llm"
+    # El timeout se aumenta para dar tiempo a la inferencia del modelo
     resp = requests.post(url, json={"pregunta": prompt}, auth=auth, timeout=timeout)
     resp.raise_for_status()
     data = resp.json()
@@ -435,9 +443,8 @@ def remote_llm_generate(prompt: str, timeout: float = 30.0) -> str:
     return str(data)
 
 
-def remote_classify_intent(text: str, timeout: float = 30.0) -> str:
-    # Aumentamos el timeout a 120 segundos para dar margen a la inferencia en CPU
-    timeout = 120.0
+def remote_classify_intent(text: str, timeout: float = 120.0) -> str:
+    """Clasifica la intención del texto usando llm_docs-mcp."""
     auth = None
     if LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
@@ -1316,6 +1323,24 @@ def orchestrate(
 
     user_norm = normalize_text(user_input)
 
+    # --- Verificación de caché de respuestas frecuentes ---
+    cache_key = f"faq_cache:{user_norm}"
+    try:
+        cached_response_str = redis_client.get(cache_key)
+        if cached_response_str:
+            logger.info(f"Cache hit for query: '{user_input}'", extra={"trace_id": trace_id})
+            CACHE_HIT_COUNTER.inc()
+            cached_response = json.loads(cached_response_str)
+            # Actualizar con el ID de sesión actual
+            cached_response['session_id'] = sid
+            # Actualizar el contexto de la conversación con la respuesta cacheada
+            context_manager.update_context(sid, user_input, cached_response.get("respuesta", ""))
+            # Añadir pregunta al historial de la sesión actual
+            context_manager.update_context(sid, user_input, cached_response.get("respuesta"))
+            return cached_response
+    except Exception as e:
+        logger.warning(f"Error al consultar caché de Redis: {e}", extra={"trace_id": trace_id})
+
     # Comando para cancelar flujo en curso (se revisa antes de slot-filling)
     if re.search(r"\b(cancelar|anular|olvida|olvídalo|terminar|salir)\b", user_input, re.IGNORECASE):
         is_cancellable_state = (
@@ -1636,6 +1661,13 @@ def orchestrate(
             resp = {"respuesta": answer, "session_id": session_id}
             if references:
                 resp["referencias"] = references
+            
+            # Guardar en caché la respuesta exitosa
+            try:
+                redis_client.set(cache_key, json.dumps(resp), ex=3600) # Cache por 1 hora
+                logger.info(f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id})
+            except Exception as e:
+                logger.warning(f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id})
             return resp
 
     if tool in ["unknown", "informacion_general", "otra"]:
@@ -1692,6 +1724,13 @@ def orchestrate(
             resp = {"respuesta": ans, "session_id": session_id}
             if references:
                 resp["referencias"] = references
+
+            # Guardar en caché la respuesta exitosa
+            try:
+                redis_client.set(cache_key, json.dumps(resp), ex=3600) # Cache por 1 hora
+                logger.info(f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id})
+            except Exception as e:
+                logger.warning(f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id})
             return resp
 
 

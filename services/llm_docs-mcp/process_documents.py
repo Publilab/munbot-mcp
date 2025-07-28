@@ -16,7 +16,7 @@ def clean_text(text):
     text = re.sub(r'\n\s*\n+', '\n', text)
     return text.strip()
 
-def split_text_into_chunks(text, max_chunk_size=2048):
+def split_text_into_chunks(text, max_chunk_size=1024): # Reducido de 2048 a 1024
     sentences = sent_tokenize(text)
     chunks = []
     current_chunk = ""
