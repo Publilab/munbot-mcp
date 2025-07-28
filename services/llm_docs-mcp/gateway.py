@@ -65,8 +65,8 @@ for token in ALLOWED_IPS_STR.split(","):
             f"Entrada ALLOWED_IPS no es IP/CIDR válido: {token}. Tratando como hostname."
         )
 
-API_USERNAME = os.getenv("API_USERNAME")
-API_PASSWORD = os.getenv("API_PASSWORD")
+LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
+ LLM_DOCS_MCP_PASSWORD = os.getenv(" LLM_DOCS_MCP_PASSWORD")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Permitir acceso sin restricciones a endpoints públicos como healthcheck
@@ -88,9 +88,9 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 app.add_middleware(IPWhitelistMiddleware)
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
-    if API_USERNAME and credentials.username != API_USERNAME:
+    if LLM_DOCS_MCP_USER and credentials.username != LLM_DOCS_MCP_USER:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    if API_PASSWORD and credentials.password != API_PASSWORD:
+    if  LLM_DOCS_MCP_PASSWORD and credentials.password !=  LLM_DOCS_MCP_PASSWORD:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
     return credentials
 
