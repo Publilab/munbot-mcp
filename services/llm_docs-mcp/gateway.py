@@ -66,7 +66,7 @@ for token in ALLOWED_IPS_STR.split(","):
         )
 
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
- LLM_DOCS_MCP_PASSWORD = os.getenv(" LLM_DOCS_MCP_PASSWORD")
+LLM_DOCS_MCP_PASSWORD = os.getenv(" LLM_DOCS_MCP_PASSWORD")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Permitir acceso sin restricciones a endpoints públicos como healthcheck
