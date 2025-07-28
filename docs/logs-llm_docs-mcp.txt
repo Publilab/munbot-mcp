@@ -70,7 +70,7 @@ Traceback (most recent call last):
                ^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/llama_cpp/llama.py", line 370, in __init__
     raise ValueError(f"Model path does not exist: {model_path}")
-ValueError: Model path does not exist: /models/Llama-3.2-3B-Instruct-Q6_K.gguf
+ValueError: Model path does not exist: /models/phi-2.Q4_K_M.gguf
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
@@ -136,7 +136,7 @@ Traceback (most recent call last):
                ^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/llama_cpp/llama.py", line 370, in __init__
     raise ValueError(f"Model path does not exist: {model_path}")
-ValueError: Model path does not exist: /models/Llama-3.2-3B-Instruct-Q6_K.gguf
+ValueError: Model path does not exist: /models/phi-2.Q4_K_M.gguf
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
@@ -202,6 +202,6 @@ Traceback (most recent call last):
                ^^^^^^^
   File "/usr/local/lib/python3.11/site-packages/llama_cpp/llama.py", line 370, in __init__
     raise ValueError(f"Model path does not exist: {model_path}")
-ValueError: Model path does not exist: /models/Llama-3.2-3B-Instruct-Q6_K.gguf
+ValueError: Model path does not exist: /models/phi-2.Q4_K_M.gguf
 ✅ Qdrant listo.
 ℹ️  Colección munbot_docs ya existe — sin cambios.
