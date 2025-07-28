@@ -37,6 +37,8 @@ N_THREADS = int(os.getenv("N_THREADS", 4))
 N_CTX = int(os.getenv("N_CTX", 2048))
 # Nuevo umbral de similitud para Qdrant (por defecto 0.3)
 QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.3))
+# Umbral de alta confianza para los resultados de Qdrant
+HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.75))
 
 # ==== FastAPI y Seguridad ====
 app = FastAPI()
@@ -293,15 +295,17 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
         hits = []
 
-    # 3.1) Verificar si hay resultados relevantes usando un umbral de confianza
-    if not hits or getattr(hits[0], "score", 1.0) < QDRANT_SIMILARITY_THRESHOLD:
+    # 3.1) Evaluar la similitud del mejor resultado
+    score = getattr(hits[0], "score", 0.0) if hits else 0.0
+
+    if not hits or score < QDRANT_SIMILARITY_THRESHOLD:
         logger.info(
-            f"Insufficient similarity (score={hits[0].score if hits else 'N/A'}) – fallback triggered",
+            f"Insufficient similarity (score={score}) – fallback triggered",
             extra={"trace_id": trace_id},
         )
         FALLBACK_COUNTER.inc()
         return {
-            "respuesta": "No encontré información.",
+            "respuesta": "No encontré información. ¿Podrías aclarar tu pregunta?",
             "referencias": [],
             "no_results": True,
         }
@@ -327,19 +331,28 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     if not fragments:
         FALLBACK_COUNTER.inc()
         return {
-            "respuesta": "No encontré información.",
+            "respuesta": "No encontré información. ¿Podrías aclarar tu pregunta?",
             "referencias": [],
             "no_results": True,
         }
 
     contexto = "\n".join(fragments)
-    prompt = (
-        f"El usuario pregunt\u00f3: {pregunta}\n"
-        "A continuaci\u00f3n se te proporcionan partes de documentos y datos relevantes:\n"
-        f"{contexto}\n"
-        "Utiliza esta informaci\u00f3n para responder de forma concisa y en espa\u00f1ol a la pregunta del usuario. "
-        "Si la informaci\u00f3n proporcionada no es suficiente para responder, indica que no tienes los detalles necesarios. No inventes informaci\u00f3n."
-    )
+
+    if score >= HIGH_CONFIDENCE_THRESHOLD:
+        prompt = (
+            f"El usuario pregunt\u00f3: {pregunta}\n"
+            "A continuaci\u00f3n se te proporcionan partes de documentos y datos relevantes:\n"
+            f"{contexto}\n"
+            "Utiliza esta informaci\u00f3n para responder de forma concisa y en espa\u00f1ol a la pregunta del usuario. "
+            "Si la informaci\u00f3n proporcionada no es suficiente para responder, indica que no tienes los detalles necesarios. No inventes informaci\u00f3n."
+        )
+    else:
+        prompt = (
+            f"El usuario pregunt\u00f3: {pregunta}\n"
+            "La siguiente informaci\u00f3n podr\u00eda ser relevante pero no necesariamente responde de forma exacta:\n"
+            f"{contexto}\n"
+            "Intenta ayudar bas\u00e1ndote en este contexto, pero aclara que podr\u00edas no tener todos los detalles y evita inventar informaci\u00f3n."
+        )
 
     # 5) Generar respuesta con Llama
     respuesta = generate_response(prompt)
