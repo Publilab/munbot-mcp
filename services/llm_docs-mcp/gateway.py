@@ -338,21 +338,17 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
 
     contexto = "\n".join(fragments)
 
-    if score >= HIGH_CONFIDENCE_THRESHOLD:
-        prompt = (
-            f"El usuario pregunt\u00f3: {pregunta}\n"
-            "A continuaci\u00f3n se te proporcionan partes de documentos y datos relevantes:\n"
-            f"{contexto}\n"
-            "Utiliza esta informaci\u00f3n para responder de forma concisa y en espa\u00f1ol a la pregunta del usuario. "
-            "Si la informaci\u00f3n proporcionada no es suficiente para responder, indica que no tienes los detalles necesarios. No inventes informaci\u00f3n."
-        )
-    else:
-        prompt = (
-            f"El usuario pregunt\u00f3: {pregunta}\n"
-            "La siguiente informaci\u00f3n podr\u00eda ser relevante pero no necesariamente responde de forma exacta:\n"
-            f"{contexto}\n"
-            "Intenta ayudar bas\u00e1ndote en este contexto, pero aclara que podr\u00edas no tener todos los detalles y evita inventar informaci\u00f3n."
-        )
+    prompt = (
+        "<s>[INST] Eres un asistente virtual del Gobierno de Curoscant. Tu tarea es responder a las preguntas de los ciudadanos de forma precisa y concisa, utilizando \u00fAnicamente la informaci\u00f3n de contexto que se te proporciona. "
+        "Si el contexto no es suficiente para responder, indica que no tienes los detalles necesarios. "
+        "Si la pregunta del usuario es demasiado vaga o general (ej. 'necesito ayuda' o 'informaci\u00f3n sobre un certificado'), pide amablemente que especifique el tr\u00e1mite o la consulta. No inventes informaci\u00f3n. [/INST]\n"
+        "</s><s>[INST] CONTEXTO:\n"
+        "---------------------\n"
+        f"{contexto}\n"
+        "</s><s>[INST] PREGUNTA:\n"
+        f"{pregunta}\n"
+        "[/INST]"
+    )
 
     # 5) Generar respuesta con Llama
     respuesta = generate_response(prompt)
