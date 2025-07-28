@@ -3,6 +3,7 @@ FROM python:3.11-slim
 ENV TZ=America/Santiago \
     TOKENIZERS_PARALLELISM=false \
     OMP_NUM_THREADS=4 \
+    EMBEDDING_MODEL_NAME="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2" \
     SENTENCE_TRANSFORMERS_HOME=/app/models \
     HF_HOME=/app/models
 
@@ -24,13 +25,7 @@ RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/wh
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Pre-descarga el modelo de embeddings para acelerar el arranque del contenedor
-RUN python - <<'PY'
-from sentence_transformers import SentenceTransformer
-SentenceTransformer(
-    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-    device="cpu",
-)
-PY
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('${EMBEDDING_MODEL_NAME}', device='cpu')"
 
 # Copia código y scripts (una sola instrucción)
 COPY . .
