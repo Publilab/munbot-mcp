@@ -181,7 +181,7 @@ services:
       # Período de gracia para que el contenedor complete su arranque (indexación, carga de modelos)
       start_period: 300s
     volumes:
-      - ./services/llm_docs-mcp/models:/app/services/llm_docs-mcp/models
+      - ./services/llm_docs-mcp/models:/models
 
   scheduler-mcp:
     build: 
