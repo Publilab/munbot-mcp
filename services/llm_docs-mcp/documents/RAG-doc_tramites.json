@@ -6,9 +6,21 @@
         "tipo_fragmento": "requisito",
         "texto": "Requisitos para obtener el Certificado de Residencia Definitiva:\n• Identificación oficial planetaria emitida por un planeta miembro de la República.\n• Último comprobante de residencia temporal.\n• Formulario de solicitud completo.\n• Pago de tarifas administrativas.",
         "alias": [
-            "requisitos_residencia",
-            "crd_requisitos",
-            "residencia_definitiva"
+            "que necesito para la residencia definitiva",
+            "que necesito para sacar la residencia permanente",
+            "que necesito para el certificado de residencia definitiva",
+            "que documentos necesito para sacar el certificado de residencia definitiva",
+            "necesito algun papel para sacar la residencia definitiva",
+            "documentos para la residencia definitiva",
+            "cuales son los documentos para obtener la residencia definitiva",
+            "que papeles necesito para sacar el documento de residencia definitiva",
+            "que nesesito para sacar la residencia definitiva",
+            "cuales son los rekisitos para sacar el sertificado de residencia definitiva",
+            "oiga buenas, que papeles tengo que llevar para la residencia",
+            "que papeles tengo que llevar para la residencia definitiva",
+            "que papeles tengo k yebar para la recidencia definitiva",
+            "me dijeron que necesitaba un papel para sacar el certificado de residencia definitiva. Cual es?",
+            "Cual es el papel que nesesito para sacar el certificado de residencia definitiva",
         ]
     },
     {
@@ -18,9 +30,10 @@
         "tipo_fragmento": "ubicacion",
         "texto": "El Certificado de Residencia Definitiva se obtiene en el Departamento de Registro Civil (Edificio Consistorial Coruscant, nivel 1313).",
         "alias": [
-            "registro_civil",
-            "donde_solicitar_residencia",
-            "crd_donde"
+            "dónde se saca la residencia definitiva",
+            "oficina para el certificado de residencia",
+            "a qué departamento voy para la residencia permanente",
+            "ubicación del registro civil para residencia"
         ]
     },
     {
@@ -30,9 +43,9 @@
         "tipo_fragmento": "horario",
         "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
         "alias": [
-            "horario_crd",
-            "horario_residencia",
-            "crd_horario"
+            "a qué hora atienden para la residencia definitiva",
+            "horario del departamento de registro civil",
+            "cuándo puedo ir a sacar la residencia"
         ]
     },
     {
@@ -42,9 +55,9 @@
         "tipo_fragmento": "utilidad",
         "texto": "Acredita la residencia permanente en sistemas centrales y permite el acceso a servicios municipales y de bienestar.",
         "alias": [
-            "utilidad_residencia",
-            "servicios_municipales",
-            "crd_utilidad"
+            "para qué sirve el certificado de residencia definitiva",
+            "beneficios de la residencia permanente",
+            "qué puedo hacer con la residencia definitiva"
         ]
     },
     {
@@ -54,9 +67,9 @@
         "tipo_fragmento": "sancion",
         "texto": "La omisión de este certificado puede acarrear la prohibición de acceso a servicios locales y la inhabilitación para registrarse en el sistema de salud intergaláctico.",
         "alias": [
-            "sancion_residencia",
-            "crd_penalidad",
-            "salud_inhabilitacion"
+            "qué pasa si no tengo el certificado de residencia",
+            "multa por no tener residencia definitiva",
+            "consecuencias de no sacar la residencia"
         ]
     },
     {
@@ -66,8 +79,9 @@
         "tipo_fragmento": "nota",
         "texto": "Asegúrate de subir todos los documentos originales y copias certificadas.",
         "alias": [
-            "documentos_originales",
-            "crd_notas"
+            "nota importante sobre la residencia definitiva",
+            "consejo para el trámite de residencia",
+            "qué tipo de documentos debo llevar"
         ]
     },
     {
@@ -77,8 +91,9 @@
         "tipo_fragmento": "vigencia",
         "texto": "Vigencia: 1 año.",
         "alias": [
-            "vigencia_residencia",
-            "crd_vigencia"
+            "cuánto dura el certificado de residencia definitiva",
+            "validez de la residencia permanente",
+            "cada cuánto se renueva la residencia definitiva"
         ]
     },
     {
@@ -88,9 +103,11 @@
         "tipo_fragmento": "requisito",
         "texto": "Requisitos para obtener el Certificado de Estadía Temporal:\n• Carta de invitación de un ciudadano de Coruscant.\n• Identificación oficial.\n• Formulario de solicitud completo.\n• Comprobante de medios económicos.",
         "alias": [
-            "requisitos_estadia",
-            "cet_requisitos",
-            "estadia_temporal"
+            "qué necesito para la estadía temporal",
+            "documentos para la residencia temporal",
+            "cómo obtener un permiso de estadía temporal",
+            "cuáles son los requisitos para la estadía temporal",
+            "trámite de residencia temporal"
         ]
     },
     {
@@ -100,9 +117,10 @@
         "tipo_fragmento": "ubicacion",
         "texto": "El Certificado de Estadía Temporal se obtiene en el Departamento de Registro Civil (Edificio Consistorial Coruscant, nivel 1313).",
         "alias": [
-            "registro_civil",
-            "donde_solicitar_estadia",
-            "cet_donde"
+            "dónde se saca el certificado de estadía temporal",
+            "oficina para la residencia temporal",
+            "a qué departamento voy para la estadía temporal",
+            "ubicación para el permiso temporal"
         ]
     },
     {
@@ -112,8 +130,9 @@
         "tipo_fragmento": "horario",
         "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
         "alias": [
-            "horario_cet",
-            "horario_estadia"
+            "a qué hora atienden para la estadía temporal",
+            "horario para sacar la residencia temporal",
+            "cuándo puedo ir a por el permiso temporal"
         ]
     },
     {
@@ -123,8 +142,9 @@
         "tipo_fragmento": "utilidad",
         "texto": "Acredita temporalmente la estadía en sistemas federados y permite el acceso a servicios básicos durante un período limitado.",
         "alias": [
-            "utilidad_estadia",
-            "cet_utilidad"
+            "para qué sirve el certificado de estadía temporal",
+            "beneficios de la residencia temporal",
+            "qué puedo hacer con el permiso de estadía temporal"
         ]
     },
     {
@@ -134,8 +154,9 @@
         "tipo_fragmento": "sancion",
         "texto": "La falta de este certificado implica la expulsión inmediata de naves visitantes y la denegación de acceso a zonas privilegiadas del sistema.",
         "alias": [
-            "sancion_estadia",
-            "cet_penalidad"
+            "qué pasa si no tengo el certificado de estadía temporal",
+            "multa por no tener residencia temporal",
+            "consecuencias de no sacar el permiso temporal"
         ]
     },
     {
@@ -145,8 +166,9 @@
         "tipo_fragmento": "nota",
         "texto": "Asegúrate de llevar todos los documentos originales y copias certificadas.",
         "alias": [
-            "nota_cet",
-            "documentos_originales"
+            "nota importante sobre la estadía temporal",
+            "consejo para el trámite de residencia temporal",
+            "qué documentos necesito para la estadía temporal"
         ]
     },
     {
@@ -156,8 +178,9 @@
         "tipo_fragmento": "vigencia",
         "texto": "Vigencia: 3 meses.",
         "alias": [
-            "vigencia_estadia",
-            "cet_vigencia"
+            "cuánto dura el certificado de estadía temporal",
+            "validez de la residencia temporal",
+            "cada cuánto se renueva el permiso temporal"
         ]
     },
     {
@@ -173,11 +196,9 @@
         "doc": "Certificado de Extracción Productiva",
         "seccion": "Requisitos",
         "alias": [
-            "certificado extracción productiva",
-            "certificado de extracción",
-            "certificado extracción",
-            "extracción productiva",
-            "extracción"
+            "requisitos para el certificado de extracción productiva",
+            "cómo obtener el permiso de extracción",
+            "documentos para la extracción de recursos"
         ]
     },
     {
@@ -186,11 +207,9 @@
         "doc": "Certificado de Extracción Productiva",
         "seccion": "Dónde_Obtener",
         "alias": [
-            "certificado extracción productiva",
-            "certificado de extracción",
-            "certificado extracción",
-            "extracción productiva",
-            "extracción"
+            "dónde se solicita el certificado de extracción",
+            "oficina para permisos de extracción productiva",
+            "a dónde voy para la extracción de minerales"
         ]
     },
     {
@@ -200,8 +219,8 @@
         "tipo_fragmento": "horario",
         "texto": "Horario de atención: lunes a viernes, 08:00–17:00.",
         "alias": [
-            "horario_cep",
-            "horario_extraccion"
+            "horario de la oficina de desarrollo económico",
+            "a qué hora atienden para permisos de extracción"
         ]
     },
     {
@@ -211,8 +230,8 @@
         "tipo_fragmento": "utilidad",
         "texto": "Permite la extracción legal de recursos energéticos y minerales en sistemas federados y respalda económicamente las operaciones industriales.",
         "alias": [
-            "utilidad_cep",
-            "extraccion_legal"
+            "para qué sirve el certificado de extracción productiva",
+            "beneficios del permiso de extracción"
         ]
     },
     {
@@ -222,8 +241,8 @@
         "tipo_fragmento": "sancion",
         "texto": "La extracción sin certificado resultará en la incautación de la nave, la pérdida de créditos intergalácticos y penas de reclusión dictadas por un juez del Gobierno de Coruscant.",
         "alias": [
-            "sancion_cep",
-            "penalidad_extraccion"
+            "qué pasa si extraigo recursos sin permiso",
+            "multa por extracción ilegal"
         ]
     },
     {
@@ -233,8 +252,8 @@
         "tipo_fragmento": "nota",
         "texto": "Antes de iniciar las labores de extracción se requiere una evaluación de impacto económico previa a la aprobación.",
         "alias": [
-            "nota_cep",
-            "impacto_economico"
+            "nota importante sobre la extracción productiva",
+            "evaluación de impacto económico para extracción"
         ]
     },
     {
@@ -244,8 +263,8 @@
         "tipo_fragmento": "vigencia",
         "texto": "Vigencia: 6 meses renovables, según cumplimiento de la normativa y pago de royalties.",
         "alias": [
-            "vigencia_cep",
-            "renovacion_cep"
+            "cuánto dura el permiso de extracción",
+            "validez del certificado de extracción productiva"
         ]
     },
     {
@@ -265,14 +284,9 @@
         "doc": "Certificado de Enrolamiento Militar de la República",
         "seccion": "Dónde_Obtener",
         "alias": [
-            "certificado de enrolamiento militar",
-            "certificado enrolamiento militar",
-            "enrolamiento militar",
-            "enrolamiento",
-            "militar",
-            "certificado militar",
-            "certificado enrolamiento",
-            "certificado de enrolamiento"
+            "dónde me enrolo en el ejército",
+            "oficina de reclutamiento militar",
+            "ubicación del cuartel general de la defensa"
         ]
     },
     {
@@ -281,14 +295,8 @@
         "doc": "Certificado de Enrolamiento Militar de la República",
         "seccion": "Horario_Atencion",
         "alias": [
-            "certificado de enrolamiento militar",
-            "certificado enrolamiento militar",
-            "enrolamiento militar",
-            "enrolamiento",
-            "militar",
-            "certificado militar",
-            "certificado enrolamiento",
-            "certificado de enrolamiento"
+            "horario de la oficina de enrolamiento militar",
+            "a qué hora puedo ir a enrolarme"
         ]
     },
     {
@@ -297,14 +305,8 @@
         "doc": "Certificado de Enrolamiento Militar de la República",
         "seccion": "Utilidad",
         "alias": [
-            "certificado de enrolamiento militar",
-            "certificado enrolamiento militar",
-            "enrolamiento militar",
-            "enrolamiento",
-            "militar",
-            "certificado militar",
-            "certificado enrolamiento",
-            "certificado de enrolamiento"
+            "para qué sirve el certificado de enrolamiento",
+            "beneficios de estar enrolado en el ejército"
         ]
     },
     {
@@ -313,14 +315,8 @@
         "doc": "Certificado de Enrolamiento Militar de la República",
         "seccion": "Penalidad",
         "alias": [
-            "certificado de enrolamiento militar",
-            "certificado enrolamiento militar",
-            "enrolamiento militar",
-            "enrolamiento",
-            "militar",
-            "certificado militar",
-            "certificado enrolamiento",
-            "certificado de enrolamiento"
+            "qué pasa si no me enrolo en el ejército",
+            "consecuencias de no tener el certificado militar"
         ]
     },
     {
@@ -329,14 +325,8 @@
         "doc": "Certificado de Enrolamiento Militar de la República",
         "seccion": "Notas",
         "alias": [
-            "certificado de enrolamiento militar",
-            "certificado enrolamiento militar",
-            "enrolamiento militar",
-            "enrolamiento",
-            "militar",
-            "certificado militar",
-            "certificado enrolamiento",
-            "certificado de enrolamiento"
+            "nota importante sobre el enrolamiento militar",
+            "es obligatorio el certificado militar en zonas de conflicto"
         ]
     },
     {
@@ -345,14 +335,8 @@
         "doc": "Certificado de Enrolamiento Militar de la República",
         "seccion": "Tiempo_Validez",
         "alias": [
-            "certificado de enrolamiento militar",
-            "certificado enrolamiento militar",
-            "enrolamiento militar",
-            "enrolamiento",
-            "militar",
-            "certificado militar",
-            "certificado enrolamiento",
-            "certificado de enrolamiento"
+            "cuánto dura el certificado de enrolamiento militar",
+            "validez del certificado militar"
         ]
     },
     {
@@ -374,9 +358,9 @@
         "tipo_fragmento": "ubicacion",
         "texto": "Se solicita en la Oficina de Logística y Abastecimiento (Edificio Consistorial Coruscant, nivel 3122).",
         "alias": [
-            "oficina_logistica",
-            "crc_ubicacion",
-            "registro_carga"
+            "dónde registro mi carga",
+            "oficina de logística para transporte",
+            "ubicación para el certificado de carga"
         ]
     },
     {

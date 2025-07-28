@@ -333,12 +333,15 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         }
 
     contexto = "\n".join(fragments)
+    # Prompt mejorado con roles claros para el LLM
     prompt = (
-        f"El usuario pregunt\u00f3: {pregunta}\n"
-        "A continuaci\u00f3n se te proporcionan partes de documentos y datos relevantes:\n"
+        "<s>[INST] Eres un asistente virtual del Gobierno de Curoscant. Tu tarea es responder a las preguntas de los ciudadanos de forma precisa y concisa, utilizando únicamente la información de contexto que se te proporciona. Si el contexto no es suficiente, debes indicarlo claramente. No inventes información. [/INST]\n"
+        "</s><s>[INST] CONTEXTO:\n"
+        "---------------------\n"
         f"{contexto}\n"
-        "Utiliza esta informaci\u00f3n para responder de forma concisa y en espa\u00f1ol a la pregunta del usuario. "
-        "Si la informaci\u00f3n proporcionada no es suficiente para responder, indica que no tienes los detalles necesarios. No inventes informaci\u00f3n."
+        "---------------------\n\n"
+        f"PREGUNTA DEL USUARIO: {pregunta}\n\n"
+        "RESPUESTA: [/INST]"
     )
 
     # 5) Generar respuesta con Llama
