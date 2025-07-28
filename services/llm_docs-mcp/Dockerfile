@@ -25,6 +25,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Pre-descarga el modelo de embeddings para acelerar el arranque del contenedor
 RUN python - <<'PY'
+from sentence_transformers import SentenceTransformer
+SentenceTransformer(
+    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    device="cpu",
+)
+PY
 
 # Copia código y scripts (una sola instrucción)
 COPY . .
