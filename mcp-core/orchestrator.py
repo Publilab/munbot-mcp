@@ -1753,7 +1753,7 @@ def health():
     except Exception:
         db_ok = False
     try:
-        resp = requests.get(MICROSERVICES["llm_docs-mcp"].rstrip("/") + "/health", timeout=5)
+        resp = requests.get(LLM_DOCS_BASE.rstrip("/") + "/health", timeout=5)
         if resp.status_code == 200:
             model_ok = True
     except Exception:
