@@ -37,6 +37,8 @@ N_THREADS = int(os.getenv("N_THREADS", 4))
 N_CTX = int(os.getenv("N_CTX", 2048))
 # Nuevo umbral de similitud para Qdrant (por defecto 0.3)
 QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.3))
+# Umbral de alta confianza para los resultados de Qdrant
+HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.75))
 
 # ==== FastAPI y Seguridad ====
 app = FastAPI()
@@ -293,15 +295,17 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
         hits = []
 
-    # 3.1) Verificar si hay resultados relevantes usando un umbral de confianza
-    if not hits or getattr(hits[0], "score", 1.0) < QDRANT_SIMILARITY_THRESHOLD:
+    # 3.1) Evaluar la similitud del mejor resultado
+    score = getattr(hits[0], "score", 0.0) if hits else 0.0
+
+    if not hits or score < QDRANT_SIMILARITY_THRESHOLD:
         logger.info(
-            f"Insufficient similarity (score={hits[0].score if hits else 'N/A'}) – fallback triggered",
+            f"Insufficient similarity (score={score}) – fallback triggered",
             extra={"trace_id": trace_id},
         )
         FALLBACK_COUNTER.inc()
         return {
-            "respuesta": "No encontré información.",
+            "respuesta": "No encontré información. ¿Podrías aclarar tu pregunta?",
             "referencias": [],
             "no_results": True,
         }
@@ -327,7 +331,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     if not fragments:
         FALLBACK_COUNTER.inc()
         return {
-            "respuesta": "No encontré información.",
+            "respuesta": "No encontré información. ¿Podrías aclarar tu pregunta?",
             "referencias": [],
             "no_results": True,
         }
