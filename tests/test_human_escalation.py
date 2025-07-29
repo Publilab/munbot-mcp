@@ -19,6 +19,13 @@ class FakeLlama:
 fake_llama.Llama = FakeLlama
 sys.modules['llama_cpp'] = fake_llama
 
+# Stub embeddings to avoid heavy model load
+fake_embeddings = types.ModuleType('embeddings')
+def fake_embed(texts, batch_size=32):
+    return [[0.0] * 384 for _ in texts]
+fake_embeddings.embed = fake_embed
+sys.modules['embeddings'] = fake_embeddings
+
 sys.path.insert(0, os.path.abspath('mcp-core'))
 spec = importlib.util.spec_from_file_location('orchestrator', os.path.join('mcp-core','orchestrator.py'))
 orchestrator = importlib.util.module_from_spec(spec)

@@ -25,7 +25,7 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 from faq_matcher import FAQMatcher
-from document_router import DocumentRouter
+from document_router import DocumentRouter, SemanticDocumentRouter
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -122,6 +122,10 @@ DOCUMENT_TOPIC_MAP = {
     "defensa": "RAG.Seguridad.json"
 }
 document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
+
+# Configuración para el enrutador semántico
+ROUTER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config', 'router_config.json')
+semantic_router = SemanticDocumentRouter(ROUTER_CONFIG_PATH)
 
 # == Campos requeridos por tool ==
 REQUIRED_FIELDS = {
@@ -1442,7 +1446,9 @@ def orchestrate(
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
     # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
     # Esto es más rápido y preciso que depender siempre del LLM para la intención.
-    document_topic = document_router.get_document_topic(user_input)
+    document_topic = semantic_router.get_document_topic(user_input)
+    if not document_topic:
+        document_topic = document_router.get_document_topic(user_input)
     if document_topic:
         logger.info(f"Consulta enrutada al documento '{document_topic}' por tema.", extra={"trace_id": trace_id})
         # Guardamos el documento en el contexto para que el flujo RAG lo utilice.
@@ -1725,13 +1731,15 @@ def orchestrate(
             )
         history = context_manager.get_history(session_id)
         selected = context_manager.get_selected_document(session_id)
-                if summary:
-                    context_manager.update_context(session_id, user_input, summary)
-                    return {"respuesta": summary, "session_id": sid}
-            doc_ref = doc_name or "el documento"
+        params = {}
+
+        if is_generic_doc_query(user_input):
+            doc_name = selected or extract_document_name(user_input) or "el documento"
+            # FIX: Guardar el documento identificado en el contexto de la sesión
+            if doc_name and doc_name != "el documento":
                 context_manager.update_context_data(sid, {"selected_document": doc_name})
-                f"¿Qué información específica deseas sobre {doc_ref}? "
-                "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia."
+
+            msg = (
                 f"¿Qué información específica deseas sobre {doc_name}? "
                 "Puedes consultar requisitos, dónde obtenerlo, horario, utilidad…"
             )

@@ -35,3 +35,37 @@ class DocumentRouter:
                 return self.topic_map[keyword]
         
         return None
+
+import os
+import sys
+import json
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Permite importar 'embeddings' desde el microservicio de RAG
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp')))
+try:
+    from embeddings import embed
+except Exception:
+    # Durante pruebas el módulo puede ser stubbed
+    from importlib import import_module
+    embed = import_module('embeddings').embed
+
+class SemanticDocumentRouter:
+    """Enrutador de documentos basado en similitud semántica."""
+
+    def __init__(self, config_path: str):
+        with open(config_path, 'r', encoding='utf-8') as f:
+            self.config = json.load(f)
+        self.doc_names = list(self.config.keys())
+        descriptions = [d.get('description', '') for d in self.config.values()]
+        # Precalcular embeddings de las descripciones
+        self.description_vectors = embed(descriptions)
+
+    def get_document_topic(self, user_input: str, threshold: float = 0.75) -> Optional[str]:
+        vec = embed([user_input])[0]
+        sims = cosine_similarity([vec], self.description_vectors)[0]
+        best_idx = int(np.argmax(sims))
+        if sims[best_idx] >= threshold:
+            return self.doc_names[best_idx]
+        return None
