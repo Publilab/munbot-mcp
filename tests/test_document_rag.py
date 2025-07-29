@@ -49,9 +49,11 @@ def test_followup_session(monkeypatch):
     monkeypatch.setattr(orchestrator, 'call_tool_microservice', fake_call)
     r1 = orchestrator.orchestrate('informacion permiso de aterrizaje')
     sid = r1['session_id']
+    # primera consulta genérica no debe invocar el microservicio
+    assert calls == []
     orchestrator.orchestrate('y el horario?', session_id=sid)
-    assert calls[0]['pregunta'] == 'informacion permiso de aterrizaje'
-    assert len(calls) >= 1
+    assert len(calls) == 1
+    assert calls[0]['pregunta'] == 'y el horario?'
 
 def test_short_question_expands(monkeypatch):
     calls = []
@@ -64,3 +66,13 @@ def test_short_question_expands(monkeypatch):
     orchestrator.orchestrate('y el costo?', session_id=sid)
     assert calls[0]['documento'] == 'Permiso de Circulacion'
     assert calls[0]['pregunta'].endswith('del trámite Permiso de Circulacion')
+
+
+def test_generic_doc_query_prompts_specific(monkeypatch):
+    def fake_call(tool, params):
+        raise AssertionError('microservice should not be called')
+
+    monkeypatch.setattr(orchestrator, 'call_tool_microservice', fake_call)
+    resp = orchestrator.orchestrate('licencia de conducir')
+    assert 'información específica' in resp['respuesta'].lower()
+    assert 'licencia de conducir' in resp['respuesta'].lower()
