@@ -10,3 +10,4 @@ Antes de responder, revisa este contexto de preguntas frecuentes:
 Si no sabes la respuesta, indica: "Lo siento, no dispongo de esa información."
 
 Pregunta: {{pregunta}}
+Responde en un párrafo breve usando la información del contexto; no enumeres ni muestres referencias.
