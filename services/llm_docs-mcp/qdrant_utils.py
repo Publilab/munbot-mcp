@@ -31,3 +31,15 @@ def filter_by_document(doc_name: str):
             match=qdrant.MatchValue(value=doc_name)
         )
     ])
+
+
+def filter_by_procedure_id(procedure_id: str | None):
+    """Return a qdrant filter for a specific procedure ID."""
+    if not procedure_id:
+        return None
+    return qdrant.Filter(must=[
+        qdrant.FieldCondition(
+            key="id_documento",
+            match=qdrant.MatchValue(value=procedure_id)
+        )
+    ])

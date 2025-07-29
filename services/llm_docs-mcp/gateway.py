@@ -23,7 +23,7 @@ from prometheus_client import (
 )
 from llama_client import LlamaClient
 from embeddings import embed
-from qdrant_utils import search_in_qdrant, filter_by_document
+from qdrant_utils import search_in_qdrant, filter_by_document, filter_by_procedure_id
 from rag import doc_buscar_fragmento_documento
 from intent_classifier import classify_intent_with_llm, set_llm_client
 
@@ -302,8 +302,14 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     logger.info("Generando embeddings", extra={"trace_id": trace_id})
     vector = embed([pregunta])[0]
 
-    # 2) Aplicar filtro por documento si corresponde
-    filtro = filter_by_document(params.get("documento"))
+    # 2) Aplicar filtro por documento o por ID de trámite
+    procedure_id = params.get("procedure_id")
+    document_name = params.get("documento")
+
+    if procedure_id:
+        filtro = filter_by_procedure_id(procedure_id)
+    else:
+        filtro = filter_by_document(document_name)
 
     # 3) Buscar fragmentos relevantes en Qdrant
     try:
