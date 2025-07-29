@@ -1,6 +1,7 @@
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qdrant
 import os
+from typing import Optional, Dict
 
 # Connection and collection configuration
 QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
@@ -32,9 +33,8 @@ def filter_by_document(doc_name: str):
         )
     ])
 
-
-def filter_by_procedure_id(procedure_id: str | None):
-    """Return a qdrant filter for a specific procedure ID."""
+def filter_by_procedure_id(procedure_id: Optional[str]) -> Optional[qdrant.Filter]:
+    """Crea un filtro de Qdrant para un ID de trámite específico."""
     if not procedure_id:
         return None
     return qdrant.Filter(must=[
@@ -44,9 +44,8 @@ def filter_by_procedure_id(procedure_id: str | None):
         )
     ])
 
-
-def filter_by_department_id(department_id: str | None):
-    """Return a qdrant filter for a specific department ID."""
+def filter_by_department_id(department_id: Optional[str]) -> Optional[qdrant.Filter]:
+    """Crea un filtro de Qdrant para un ID de departamento específico."""
     if not department_id:
         return None
     return qdrant.Filter(must=[

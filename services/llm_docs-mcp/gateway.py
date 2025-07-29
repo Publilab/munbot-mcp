@@ -23,7 +23,7 @@ from prometheus_client import (
 )
 from llama_client import LlamaClient
 from embeddings import embed
-from qdrant_utils import search_in_qdrant, filter_by_document
+from qdrant_utils import (
     search_in_qdrant,
     filter_by_document,
     filter_by_procedure_id,
