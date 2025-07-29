@@ -208,6 +208,52 @@ FAREWELL_RESPONSE = (
     "inicia una nueva conversación."
 )
 
+# --- Detección de consultas genéricas sobre documentos ---
+DOC_MENTION_KEYWORDS = [
+    "certificado",
+    "documento",
+    "licencia",
+    "permiso",
+    "tramite",
+    "trámite",
+]
+
+DOC_FIELD_KEYWORDS = [
+    "requisito",
+    "requisitos",
+    "horario",
+    "direccion",
+    "dirección",
+    "donde",
+    "dónde",
+    "correo",
+    "mail",
+    "costo",
+    "valor",
+    "utilidad",
+]
+
+
+def extract_document_name(text: str) -> Optional[str]:
+    """Heurística simple para extraer el nombre de un documento."""
+    pattern = (
+        r"(?i)(certificado|licencia|permiso|documento|tr[áa]mite)"
+        r"(?: de| del)?\s+[A-Za-zÁÉÍÓÚÜáéíóúüñÑ ]+"
+    )
+    m = re.search(pattern, text)
+    if m:
+        return m.group(0).strip()
+    return None
+
+
+def is_generic_doc_query(text: str) -> bool:
+    """Determina si la consulta menciona un documento sin detallar campos."""
+    t = normalize_text(text)
+    mentions_doc = any(k in t for k in DOC_MENTION_KEYWORDS)
+    if not mentions_doc:
+        return False
+    return not any(k in t for k in DOC_FIELD_KEYWORDS)
+
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
     """Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback."""
@@ -1597,6 +1643,16 @@ def orchestrate(
             )
         params = {"pregunta": user_input}
         selected = context_manager.get_selected_document(session_id)
+
+        if is_generic_doc_query(user_input):
+            doc_name = selected or extract_document_name(user_input) or "el documento"
+            msg = (
+                f"¿Qué información específica deseas sobre {doc_name}? "
+                "Puedes consultar requisitos, dónde obtenerlo, horario, utilidad…"
+            )
+            context_manager.update_context(session_id, user_input, msg)
+            return {"respuesta": msg, "session_id": sid}
+
         if selected:
             params["documento"] = selected
             if len(user_input.split()) < 6:
