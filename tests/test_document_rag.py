@@ -76,3 +76,27 @@ def test_generic_doc_query_prompts_specific(monkeypatch):
     resp = orchestrator.orchestrate('licencia de conducir')
     assert 'información específica' in resp['respuesta'].lower()
     assert 'licencia de conducir' in resp['respuesta'].lower()
+
+
+def test_full_info_summary(monkeypatch):
+    def fake_call(tool, params):
+        raise AssertionError('microservice should not be called')
+
+    monkeypatch.setattr(orchestrator, 'call_tool_microservice', fake_call)
+
+    def fake_buscar_doc(acc):
+        return {'id_documento': 'LIC', 'nombre': 'Licencia de Conducir', 'requisitos': ['Foto']}
+
+    def fake_oficinas(doc_id):
+        return {'oficinas': [{'direccion': 'Av 1', 'horario': '8-12', 'correo': 'a@b.cl'}]}
+
+    def fake_info(doc_id, campo):
+        return None
+
+    monkeypatch.setattr(orchestrator, 'buscar_documento_por_accion', fake_buscar_doc)
+    monkeypatch.setattr(orchestrator, 'buscar_oficina_documento', fake_oficinas)
+    monkeypatch.setattr(orchestrator, 'buscar_info_documento_campo', fake_info)
+
+    resp = orchestrator.orchestrate('Quiero toda la información de la Licencia de Conducir')
+    assert 'requisitos' in resp['respuesta'].lower()
+    assert 'dónde tramitar' in resp['respuesta'].lower()
