@@ -255,46 +255,6 @@ def is_generic_doc_query(text: str) -> bool:
     return not any(k in t for k in DOC_FIELD_KEYWORDS)
 
 
-def is_full_info_request(text: str) -> bool:
-    """Detecta si el usuario pide toda la información de un documento."""
-    t = normalize_text(text)
-    return "todo" in t or "completa" in t or "toda la informacion" in t
-
-
-def resumir_documento(nombre_doc: str) -> Optional[str]:
-    """Devuelve un resumen breve con distintos campos del documento."""
-    doc = buscar_documento_por_accion(nombre_doc)
-    if not doc:
-        return None
-    partes: List[str] = []
-    if doc.get("requisitos"):
-        partes.append("Requisitos: " + ", ".join(doc["requisitos"]))
-    oficinas = buscar_oficina_documento(doc["id_documento"])
-    if oficinas and oficinas.get("oficinas"):
-        of = oficinas["oficinas"][0]
-        detalles = []
-        if of.get("direccion"):
-            detalles.append(of["direccion"])
-        if of.get("horario"):
-            detalles.append(f"Horario: {of['horario']}")
-        if of.get("correo"):
-            detalles.append(f"Correo: {of['correo']}")
-        if detalles:
-            partes.append("Dónde tramitar: " + ", ".join(detalles))
-    labels = {
-        "utilidad": "Utilidad",
-        "tiempo_validez": "Vigencia",
-        "costo": "Costo",
-        "penalidad": "Penalidad",
-        "notas": "Notas",
-    }
-    for campo, label in labels.items():
-        info = buscar_info_documento_campo(doc["id_documento"], campo)
-        if info and info.get("valor"):
-            partes.append(f"{label}: {info['valor']}")
-    return "\n".join(partes) if partes else None
-
-
 def extract_name_with_llm(user_text: str) -> Optional[str]:
     """Extrae un nombre completo de un texto, usando heurísticas y un LLM como fallback."""
     cleaned_text = user_text.strip()
@@ -1685,16 +1645,14 @@ def orchestrate(
         selected = context_manager.get_selected_document(session_id)
 
         if is_generic_doc_query(user_input):
-            doc_name = selected or extract_document_name(user_input)
-            if doc_name and is_full_info_request(user_input):
-                summary = resumir_documento(doc_name)
-                if summary:
-                    context_manager.update_context(session_id, user_input, summary)
-                    return {"respuesta": summary, "session_id": sid}
-            doc_ref = doc_name or "el documento"
+            doc_name = selected or extract_document_name(user_input) or "el documento"
+            # FIX: Guardar el documento identificado en el contexto de la sesión
+            if doc_name and doc_name != "el documento":
+                context_manager.update_context_data(sid, {"selected_document": doc_name})
+
             msg = (
-                f"¿Qué información específica deseas sobre {doc_ref}? "
-                "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia."
+                f"¿Qué información específica deseas sobre {doc_name}? "
+                "Puedes consultar requisitos, dónde obtenerlo, horario, utilidad…"
             )
             context_manager.update_context(session_id, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
