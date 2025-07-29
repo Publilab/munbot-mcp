@@ -26,6 +26,7 @@ from prometheus_client import (
 )
 from faq_matcher import FAQMatcher
 from document_router import DocumentRouter, SemanticDocumentRouter
+from procedure_router import ProcedureRouter
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -122,6 +123,20 @@ DOCUMENT_TOPIC_MAP = {
     "defensa": "RAG.Seguridad.json"
 }
 document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
+
+# == Configuración del Procedure Router ==
+PROCEDURE_FILE_PATH = os.getenv(
+    "PROCEDURES_FILE_PATH",
+    os.path.join(
+        os.path.dirname(__file__),
+        '..',
+        'services',
+        'llm_docs-mcp',
+        'documents',
+        'RAG-doc_tramites.json',
+    ),
+)
+procedure_router = ProcedureRouter(PROCEDURE_FILE_PATH)
 
 # Configuración para el enrutador semántico
 ROUTER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config', 'router_config.json')
@@ -1443,6 +1458,15 @@ def orchestrate(
         # Las respuestas de FAQ no piden feedback para no interrumpir flujos simples.
         return {"respuesta": faq_response, "session_id": sid}
 
+    # --- 0.2 Enrutamiento por trámite específico ---
+    procedure_id = procedure_router.get_procedure_id(user_input)
+    if procedure_id:
+        logger.info(
+            f"Consulta enrutada al trámite ID '{procedure_id}' por alias.",
+            extra={"trace_id": trace_id},
+        )
+        context_manager.update_context_data(sid, {"selected_procedure_id": procedure_id})
+
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
     # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
     # Esto es más rápido y preciso que depender siempre del LLM para la intención.
@@ -1748,6 +1772,9 @@ def orchestrate(
 
         if selected:
             params["documento"] = selected
+        procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
+        if procedure_id_ctx:
+            params["procedure_id"] = procedure_id_ctx
         params["pregunta"] = rewrite_query(history, user_input, selected)
         start_time = time.perf_counter()
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
@@ -1822,6 +1849,9 @@ def orchestrate(
         params = {"pregunta": rewrite_query(history, user_input, selected)}
         if selected:
             params["documento"] = selected
+        procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
+        if procedure_id_ctx:
+            params["procedure_id"] = procedure_id_ctx
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
