@@ -274,12 +274,19 @@ async def generate_response_rag(pregunta: str, modelo) -> dict:
 
 
 def _clean_output(text: str) -> str:
-    """Remove internal markers before returning to the frontend."""
+    """Elimina artefactos del prompt y marcadores internos para devolver una respuesta limpia."""
     if not text:
-        return text
-    text = re.sub(r"\[INST\].*?\[/INST\]", "", text, flags=re.DOTALL)
-    text = re.sub(r"Fuente[s]?:.*", "", text, flags=re.IGNORECASE)
-    return text.strip()
+        return ""
+    
+    # Estrategia principal: tomar solo el texto después de la última instrucción.
+    # Esto es muy robusto contra la repetición del contexto.
+    last_inst_pos = text.rfind("[/INST]")
+    if last_inst_pos != -1:
+        text = text[last_inst_pos + len("[/INST]"):]
+
+    # Limpiezas adicionales por si acaso.
+    text = re.sub(r"Fuente[s]?:.*", "", text, flags=re.IGNORECASE | re.DOTALL)
+    return text.strip().replace("<s>", "").replace("</s>", "")
 
 
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:

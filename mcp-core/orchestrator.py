@@ -24,6 +24,8 @@ from prometheus_client import (
     generate_latest,
     CONTENT_TYPE_LATEST,
 )
+from faq_matcher import FAQMatcher
+from document_router import DocumentRouter
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -99,6 +101,27 @@ REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
+
+# == Configuración del FAQ Matcher ==
+FAQ_FILE_PATH = os.getenv("FAQ_FILE_PATH", os.path.join(os.path.dirname(__file__), 'databases', 'faq_respuestas.json'))
+faq_matcher = FAQMatcher(FAQ_FILE_PATH)
+
+# == Configuración del Document Router ==
+DOCUMENT_TOPIC_MAP = {
+    "ayuda social": "RAG-Ayudas_Sociales.json",
+    "beneficio social": "RAG-Ayudas_Sociales.json",
+    "contribuciones": "RAG-Contrib_Derechos.json",
+    "impuestos": "RAG-Contrib_Derechos.json",
+    "horario comercio": "RAG-Horario_Comercio.json",
+    "cierre de locales": "RAG-Horario_Comercio.json",
+    "medio ambiente": "RAG-Medio_Ambiente.json",
+    "reciclaje": "RAG-Medio_Ambiente.json",
+    "residencia": "RAG-Residencia.json",
+    "inmigracion": "RAG-Residencia.json",
+    "seguridad": "RAG.Seguridad.json",
+    "defensa": "RAG.Seguridad.json"
+}
+document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
 
 # == Campos requeridos por tool ==
 REQUIRED_FIELDS = {
@@ -254,6 +277,46 @@ def is_generic_doc_query(text: str) -> bool:
     if not mentions_doc:
         return False
     return not any(k in t for k in DOC_FIELD_KEYWORDS)
+
+def is_full_info_request(text: str) -> bool:
+    """Detecta si el usuario pide toda la información de un documento."""
+    t = normalize_text(text)
+    return "todo" in t or "completa" in t or "toda la informacion" in t
+
+
+def resumir_documento(nombre_doc: str) -> Optional[str]:
+    """Devuelve un resumen breve con distintos campos del documento."""
+    doc = buscar_documento_por_accion(nombre_doc)
+    if not doc:
+        return None
+    partes: List[str] = []
+    if doc.get("requisitos"):
+        partes.append("Requisitos: " + ", ".join(doc["requisitos"]))
+    oficinas = buscar_oficina_documento(doc["id_documento"])
+    if oficinas and oficinas.get("oficinas"):
+        of = oficinas["oficinas"][0]
+        detalles = []
+        if of.get("direccion"):
+            detalles.append(of["direccion"])
+        if of.get("horario"):
+            detalles.append(f"Horario: {of['horario']}")
+        if of.get("correo"):
+            detalles.append(f"Correo: {of['correo']}")
+        if detalles:
+            partes.append("Dónde tramitar: " + ", ".join(detalles))
+    labels = {
+        "utilidad": "Utilidad",
+        "tiempo_validez": "Vigencia",
+        "costo": "Costo",
+        "penalidad": "Penalidad",
+        "notas": "Notas",
+    }
+    for campo, label in labels.items():
+        info = buscar_info_documento_campo(doc["id_documento"], campo)
+        if info and info.get("valor"):
+            partes.append(f"{label}: {info['valor']}")
+    return "\n".join(partes) if partes else None
+
 
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
@@ -1368,6 +1431,24 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid)
 
+    # --- 0. (NUEVO Y PRIORITARIO) Búsqueda en FAQs ---
+    faq_response = faq_matcher.match(user_input)
+    if faq_response:
+        logger.info(f"Respuesta encontrada en FAQ para: '{user_input}'", extra={"trace_id": trace_id})
+        context_manager.update_context(sid, user_input, faq_response)
+        # Las respuestas de FAQ no piden feedback para no interrumpir flujos simples.
+        return {"respuesta": faq_response, "session_id": sid}
+
+    # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
+    # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
+    # Esto es más rápido y preciso que depender siempre del LLM para la intención.
+    document_topic = document_router.get_document_topic(user_input)
+    if document_topic:
+        logger.info(f"Consulta enrutada al documento '{document_topic}' por tema.", extra={"trace_id": trace_id})
+        # Guardamos el documento en el contexto para que el flujo RAG lo utilice.
+        context_manager.update_context_data(sid, {"selected_document": document_topic})
+
+
     user_norm = normalize_text(user_input)
 
     # --- Verificación de caché de respuestas frecuentes ---
@@ -1644,15 +1725,13 @@ def orchestrate(
             )
         history = context_manager.get_history(session_id)
         selected = context_manager.get_selected_document(session_id)
-        params = {}
-
-        if is_generic_doc_query(user_input):
-            doc_name = selected or extract_document_name(user_input) or "el documento"
-            # FIX: Guardar el documento identificado en el contexto de la sesión
-            if doc_name and doc_name != "el documento":
+                if summary:
+                    context_manager.update_context(session_id, user_input, summary)
+                    return {"respuesta": summary, "session_id": sid}
+            doc_ref = doc_name or "el documento"
                 context_manager.update_context_data(sid, {"selected_document": doc_name})
-
-            msg = (
+                f"¿Qué información específica deseas sobre {doc_ref}? "
+                "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia."
                 f"¿Qué información específica deseas sobre {doc_name}? "
                 "Puedes consultar requisitos, dónde obtenerlo, horario, utilidad…"
             )
