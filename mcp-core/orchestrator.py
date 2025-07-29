@@ -1614,8 +1614,6 @@ def orchestrate(
             or service_resp.get("mensaje")
         )
         references = service_resp.get("referencias")
-        if references:
-            answer = f"{answer}\nFuente: {'; '.join(references)}"
         logger.info(
             "Respuesta generada",
             extra={
@@ -1688,8 +1686,6 @@ def orchestrate(
             or service_resp.get("mensaje")
         )
         references = service_resp.get("referencias")
-        if references:
-            ans = f"{ans}\nFuente: {'; '.join(references)}"
         no_results = (
             ans is None
             or not str(ans).strip()
