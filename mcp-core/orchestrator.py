@@ -26,6 +26,7 @@ from prometheus_client import (
 )
 from faq_matcher import FAQMatcher
 from document_router import DocumentRouter
+from procedure_router import ProcedureRouter
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -106,20 +107,24 @@ context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 FAQ_FILE_PATH = os.getenv("FAQ_FILE_PATH", os.path.join(os.path.dirname(__file__), 'databases', 'faq_respuestas.json'))
 faq_matcher = FAQMatcher(FAQ_FILE_PATH)
 
+# == Configuración del Procedure Router (Trámites) ==
+PROCEDURES_FILE_PATH = os.getenv("PROCEDURES_FILE_PATH", os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp', 'documents', 'Originales', 'documento_requisito.json'))
+procedure_router = ProcedureRouter(PROCEDURES_FILE_PATH)
+
+
 # == Configuración del Document Router ==
 DOCUMENT_TOPIC_MAP = {
-    "ayuda social": "RAG-Ayudas_Sociales.json",
-    "beneficio social": "RAG-Ayudas_Sociales.json",
-    "contribuciones": "RAG-Contrib_Derechos.json",
-    "impuestos": "RAG-Contrib_Derechos.json",
-    "horario comercio": "RAG-Horario_Comercio.json",
-    "cierre de locales": "RAG-Horario_Comercio.json",
     "medio ambiente": "RAG-Medio_Ambiente.json",
     "reciclaje": "RAG-Medio_Ambiente.json",
+    "basura": "ORD-Transporte Basura Desecho.txt",
+    "residuos": "ORD-Transporte Basura Desecho.txt",
+    "ayuda social": "RAG-Ayudas_Sociales.json",
+    "beneficio social": "RAG-Ayudas_Sociales.json",
+    "horario comercio": "RAG-Horario_Comercio.json",
+    "cierre de locales": "RAG-Horario_Comercio.json",
+    "patente de alcoholes": "ORD-Patente de Alcoholes.txt",
     "residencia": "RAG-Residencia.json",
-    "inmigracion": "RAG-Residencia.json",
-    "seguridad": "RAG.Seguridad.json",
-    "defensa": "RAG.Seguridad.json"
+    "seguridad": "RAG-Seguridad.json"
 }
 document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
 
@@ -1439,6 +1444,14 @@ def orchestrate(
         # Las respuestas de FAQ no piden feedback para no interrumpir flujos simples.
         return {"respuesta": faq_response, "session_id": sid}
 
+    # --- 0.2 (NUEVO Y ALTA PRIORIDAD) Enrutamiento por trámite específico ---
+    procedure_id = procedure_router.get_procedure_id(user_input)
+    if procedure_id:
+        logger.info(f"Consulta enrutada al trámite ID '{procedure_id}' por alias.", extra={"trace_id": trace_id})
+        # Guardamos el ID del trámite en el contexto para que el RAG lo utilice.
+        context_manager.update_context_data(sid, {"selected_procedure_id": procedure_id})
+
+
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
     # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
     # Esto es más rápido y preciso que depender siempre del LLM para la intención.
@@ -1725,16 +1738,21 @@ def orchestrate(
             )
         history = context_manager.get_history(session_id)
         selected = context_manager.get_selected_document(session_id)
+        params = {}
+        if context_manager.get_context_data(session_id).get("selected_procedure_id"):
+            params["procedure_id"] = context_manager.get_context_data(session_id).get("selected_procedure_id")
+
+        # FIX: Se corrige la lógica para que use el documento seleccionado por el router
+        if is_generic_doc_query(user_input) and not selected:
+            doc_name = selected or extract_document_name(user_input)
+            if doc_name and is_full_info_request(user_input):
+                summary = resumir_documento(doc_name)
                 if summary:
                     context_manager.update_context(session_id, user_input, summary)
                     return {"respuesta": summary, "session_id": sid}
             doc_ref = doc_name or "el documento"
-                context_manager.update_context_data(sid, {"selected_document": doc_name})
-                f"¿Qué información específica deseas sobre {doc_ref}? "
-                "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia."
-                f"¿Qué información específica deseas sobre {doc_name}? "
-                "Puedes consultar requisitos, dónde obtenerlo, horario, utilidad…"
-            )
+            msg = (f"¿Qué información específica deseas sobre {doc_ref}? "
+                   "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia.")
             context_manager.update_context(session_id, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
 
