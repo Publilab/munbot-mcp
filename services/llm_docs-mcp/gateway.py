@@ -75,7 +75,8 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
         if request.url.path in ("/health", "/", "/metrics", "/endpoints"):
             return await call_next(request)
 
-        client_ip_str = request.client.host
+        client = request.client
+        client_ip_str = client.host if client is not None else "testclient"
         try:
             client_ip = ipaddress.ip_address(client_ip_str)
             if not any(client_ip in network for network in ALLOWED_NETWORKS):
@@ -313,7 +314,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     # 4) Construir contexto a partir de los fragmentos recuperados
     fragments = []
     referencias = []
-    for idx, h in enumerate(hits, start=1):
+    for h in hits:
         # Opcional: filtrar también los resultados secundarios por score
         if getattr(h, "score", 1.0) < QDRANT_SIMILARITY_THRESHOLD:
             continue
@@ -321,11 +322,9 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         texto = payload.get("texto") or payload.get("text")
         fuente = payload.get("fuente") or payload.get("doc")
         if texto:
-            item = f"{idx}. {texto}"
+            fragments.append(texto)
             if fuente:
-                item += f" (Fuente: {fuente})"
                 referencias.append(fuente)
-            fragments.append(item)
 
     # Si después de filtrar por score no queda nada
     if not fragments:
