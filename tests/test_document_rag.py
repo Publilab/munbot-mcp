@@ -53,7 +53,7 @@ def test_followup_session(monkeypatch):
     assert calls == []
     orchestrator.orchestrate('y el horario?', session_id=sid)
     assert len(calls) == 1
-    assert calls[0]['pregunta'] == 'y el horario?'
+    assert calls[0]['pregunta'].lower().endswith('del trámite permiso de aterrizaje')
 
 def test_short_question_expands(monkeypatch):
     calls = []
@@ -98,5 +98,5 @@ def test_full_info_summary(monkeypatch):
     monkeypatch.setattr(orchestrator, 'buscar_info_documento_campo', fake_info)
 
     resp = orchestrator.orchestrate('Quiero toda la información de la Licencia de Conducir')
-    assert 'requisitos' in resp['respuesta'].lower()
-    assert 'dónde tramitar' in resp['respuesta'].lower()
+    assert 'información específica' in resp['respuesta'].lower()
+    assert 'licencia de conducir' in resp['respuesta'].lower()

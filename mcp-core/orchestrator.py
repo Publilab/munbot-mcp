@@ -63,6 +63,7 @@ from utils.datetime_utils import (
 from datetime import datetime, date
 from chilean_rut import is_valid, format_rut
 from utils.phone_utils import validar_telefono_movil
+from utils.query_rewriter import rewrite_query
 
 
 
@@ -1641,8 +1642,9 @@ def orchestrate(
             logger.info(
                 f"Intent detected as doc-buscar_fragmento_documento. Routing to doc-generar_respuesta_llm with query: {user_input}"
             )
-        params = {"pregunta": user_input}
+        history = context_manager.get_history(session_id)
         selected = context_manager.get_selected_document(session_id)
+        params = {}
 
         if is_generic_doc_query(user_input):
             doc_name = selected or extract_document_name(user_input) or "el documento"
@@ -1659,8 +1661,7 @@ def orchestrate(
 
         if selected:
             params["documento"] = selected
-            if len(user_input.split()) < 6:
-                params["pregunta"] = f"{user_input} del trámite {selected}"
+        params["pregunta"] = rewrite_query(history, user_input, selected)
         start_time = time.perf_counter()
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         latency = (time.perf_counter() - start_time) * 1000
@@ -1729,12 +1730,11 @@ def orchestrate(
             return resp
 
     if tool in ["unknown", "informacion_general", "otra"]:
-        params = {"pregunta": user_input}
+        history = context_manager.get_history(session_id)
         selected = context_manager.get_selected_document(session_id)
+        params = {"pregunta": rewrite_query(history, user_input, selected)}
         if selected:
             params["documento"] = selected
-            if len(user_input.split()) < 6:
-                params["pregunta"] = f"{user_input} del trámite {selected}"
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
