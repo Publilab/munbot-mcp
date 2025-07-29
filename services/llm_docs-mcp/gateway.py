@@ -4,6 +4,7 @@ import glob
 import logging
 import traceback
 import time
+import re
 import ipaddress
 import requests
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
@@ -272,6 +273,15 @@ async def generate_response_rag(pregunta: str, modelo) -> dict:
         raise
 
 
+def _clean_output(text: str) -> str:
+    """Remove internal markers before returning to the frontend."""
+    if not text:
+        return text
+    text = re.sub(r"\[INST\].*?\[/INST\]", "", text, flags=re.DOTALL)
+    text = re.sub(r"Fuente[s]?:.*", "", text, flags=re.IGNORECASE)
+    return text.strip()
+
+
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
 
@@ -291,8 +301,11 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     # 3) Buscar fragmentos relevantes en Qdrant
     try:
         start_time = time.perf_counter()
-        hits = search_in_qdrant(vector, top_k=3, filtro=filtro) # Reducido de 5 a 3 para acelerar
+        hits = search_in_qdrant(vector, top_k=3, filtro=filtro)  # Reducido de 5 a 3 para acelerar
         RAG_LATENCY_HISTOGRAM.observe(time.perf_counter() - start_time)
+        logger.info(
+            "Qdrant hits", extra={"trace_id": trace_id, "hits": len(hits)}
+        )
     except Exception as e:
         logger.error(f"Qdrant search failed: {e}", extra={"trace_id": trace_id})
         ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
@@ -308,7 +321,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         )
         FALLBACK_COUNTER.inc()
         return {
-            "respuesta": "No encontré información. ¿Podrías aclarar tu pregunta?",
+            "respuesta": "No dispongo de esa información",
             "referencias": [],
             "no_results": True,
         }
@@ -332,7 +345,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     if not fragments:
         FALLBACK_COUNTER.inc()
         return {
-            "respuesta": "No encontré información. ¿Podrías aclarar tu pregunta?",
+            "respuesta": "No dispongo de esa información",
             "referencias": [],
             "no_results": True,
         }
@@ -352,6 +365,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
 
     # 5) Generar respuesta con Llama
     respuesta = generate_response(prompt)
+    respuesta = _clean_output(respuesta)
     logger.info(
         "Respuesta generada",
         extra={
@@ -391,6 +405,7 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
             return texto  # Solo el texto
         # Fallback LLM
         respuesta = generate_response(pregunta)
+        respuesta = _clean_output(respuesta)
         FALLBACK_COUNTER.inc()
         logger.info("Respuesta generada por Llama (fallback MCP)", extra={"trace_id": trace_id})
         return respuesta  # Solo el texto
@@ -398,6 +413,7 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         pregunta = params["pregunta"]
         language = params.get("language", "es")
         respuesta = generate_response(pregunta)
+        respuesta = _clean_output(respuesta)
         logger.info("Respuesta generada por Llama (tool directo MCP)", extra={"trace_id": trace_id})
         return respuesta  # Solo el texto
     elif tool == "doc-generar_respuesta_llm":

@@ -456,3 +456,33 @@ class ConversationalContextManager:
             json.dumps(context),
             ex=self.session_expiry_seconds,
         )
+
+    # ---- Manejo de slot actual ----
+    def set_current_slot(self, session_id: str, slot: str | None):
+        """Guarda el nombre del slot actual en el contexto."""
+        context = self.get_context(session_id)
+        if slot:
+            context["current_slot"] = slot
+        elif "current_slot" in context:
+            del context["current_slot"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
+
+    def get_current_slot(self, session_id: str) -> Optional[str]:
+        """Obtiene el slot actual almacenado."""
+        context = self.get_context(session_id)
+        return context.get("current_slot")
+
+    def clear_current_slot(self, session_id: str):
+        """Elimina el slot actual del contexto."""
+        context = self.get_context(session_id)
+        if "current_slot" in context:
+            del context["current_slot"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds,
+        )
