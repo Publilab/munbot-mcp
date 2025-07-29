@@ -43,3 +43,15 @@ def filter_by_procedure_id(procedure_id: str | None):
             match=qdrant.MatchValue(value=procedure_id)
         )
     ])
+
+
+def filter_by_department_id(department_id: str | None):
+    """Return a qdrant filter for a specific department ID."""
+    if not department_id:
+        return None
+    return qdrant.Filter(must=[
+        qdrant.FieldCondition(
+            key="id",
+            match=qdrant.MatchValue(value=department_id)
+        )
+    ])
