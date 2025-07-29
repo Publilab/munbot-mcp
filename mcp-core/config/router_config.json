@@ -1,0 +1,26 @@
+{
+  "RAG-Ayudas_Sociales.json": {
+    "description": "Información sobre beneficios, subsidios y ayudas económicas para ciudadanos vulnerables.",
+    "keywords": ["ayuda social", "beneficio", "subsidio", "vulnerabilidad"]
+  },
+  "RAG-Contrib_Derechos.json": {
+    "description": "Normativa y procesos relacionados con contribuciones e impuestos municipales.",
+    "keywords": ["contribuciones", "impuestos", "derechos", "cobro"]
+  },
+  "RAG-Horario_Comercio.json": {
+    "description": "Regulaciones sobre horarios de funcionamiento y cierre de locales comerciales.",
+    "keywords": ["horario comercio", "cierre de locales", "apertura", "locales"]
+  },
+  "RAG-Medio_Ambiente.json": {
+    "description": "Normativas sobre protección ambiental, reciclaje, calidad del aire y gestión de residuos.",
+    "keywords": ["medio ambiente", "reciclaje", "contaminación", "residuos"]
+  },
+  "RAG-Residencia.json": {
+    "description": "Información relacionada con residencia, inmigración y trámites de extranjería.",
+    "keywords": ["residencia", "inmigracion", "extranjería", "visa"]
+  },
+  "RAG.Seguridad.json": {
+    "description": "Decretos y manuales sobre seguridad ciudadana y defensa municipal.",
+    "keywords": ["seguridad", "defensa", "orden público", "protección"]
+  }
+}
