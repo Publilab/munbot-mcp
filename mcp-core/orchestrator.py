@@ -27,6 +27,7 @@ from prometheus_client import (
 from faq_matcher import FAQMatcher
 from document_router import DocumentRouter
 from procedure_router import ProcedureRouter
+from department_router import DepartmentRouter
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -110,6 +111,20 @@ faq_matcher = FAQMatcher(FAQ_FILE_PATH)
 # == Configuración del Procedure Router (Trámites) ==
 PROCEDURES_FILE_PATH = os.getenv("PROCEDURES_FILE_PATH", os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp', 'documents', 'Originales', 'documento_requisito.json'))
 procedure_router = ProcedureRouter(PROCEDURES_FILE_PATH)
+
+# == Configuración del Department Router (Departamentos) ==
+DEPARTMENTS_FILE_PATH = os.getenv(
+    "DEPARTMENTS_FILE_PATH",
+    os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "services",
+        "llm_docs-mcp",
+        "documents",
+        "RAG-depto_info.json",
+    ),
+)
+department_router = DepartmentRouter(DEPARTMENTS_FILE_PATH)
 
 
 # == Configuración del Document Router ==
@@ -1451,6 +1466,15 @@ def orchestrate(
         # Guardamos el ID del trámite en el contexto para que el RAG lo utilice.
         context_manager.update_context_data(sid, {"selected_procedure_id": procedure_id})
 
+    # --- 0.3 (NUEVO) Enrutamiento por departamento específico ---
+    department_id = department_router.get_department_id(user_input)
+    if department_id:
+        logger.info(
+            f"Consulta enrutada al departamento ID '{department_id}' por alias.",
+            extra={"trace_id": trace_id},
+        )
+        context_manager.update_context_data(sid, {"selected_department_id": department_id})
+
 
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
     # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
@@ -1739,8 +1763,11 @@ def orchestrate(
         history = context_manager.get_history(session_id)
         selected = context_manager.get_selected_document(session_id)
         params = {}
-        if context_manager.get_context_data(session_id).get("selected_procedure_id"):
-            params["procedure_id"] = context_manager.get_context_data(session_id).get("selected_procedure_id")
+        ctx_data = context_manager.get_context(session_id)
+        if ctx_data.get("selected_procedure_id"):
+            params["procedure_id"] = ctx_data.get("selected_procedure_id")
+        if ctx_data.get("selected_department_id"):
+            params["department_id"] = ctx_data.get("selected_department_id")
 
         # FIX: Se corrige la lógica para que use el documento seleccionado por el router
         if is_generic_doc_query(user_input) and not selected:
@@ -1832,6 +1859,11 @@ def orchestrate(
         params = {"pregunta": rewrite_query(history, user_input, selected)}
         if selected:
             params["documento"] = selected
+        ctx_data = context_manager.get_context(session_id)
+        if ctx_data.get("selected_procedure_id"):
+            params["procedure_id"] = ctx_data.get("selected_procedure_id")
+        if ctx_data.get("selected_department_id"):
+            params["department_id"] = ctx_data.get("selected_department_id")
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:

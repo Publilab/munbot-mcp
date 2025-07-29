@@ -66,6 +66,9 @@ fake_qdrant.filter_by_document = fake_filter_by_document
 def fake_filter_by_procedure_id(pid):
     return None
 fake_qdrant.filter_by_procedure_id = fake_filter_by_procedure_id
+def fake_filter_by_department_id(did):
+    return None
+fake_qdrant.filter_by_department_id = fake_filter_by_department_id
 sys.modules["qdrant_utils"] = fake_qdrant
 
 # Stub qdrant_client and llama_runner used by rag
