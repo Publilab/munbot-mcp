@@ -23,7 +23,7 @@ from prometheus_client import (
 )
 from llama_client import LlamaClient
 from embeddings import embed
-from qdrant_utils import (
+from qdrant_utils import search_in_qdrant, filter_by_document
     search_in_qdrant,
     filter_by_document,
     filter_by_procedure_id,
@@ -296,23 +296,15 @@ def _clean_output(text: str) -> str:
 
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
-
+        return {"respuesta": "", "referencias": [], "no_results": True}
     Devuelve tanto la respuesta generada como las referencias utilizadas."""
     pregunta = params.get("pregunta", "")
     REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
     if not pregunta:
         return {"respuesta": "", "referencias": [], "no_results": True}
+    # 2) Aplicar filtro por documento si corresponde
+    filtro = filter_by_document(params.get("documento"))
 
-    # 1) Obtener embedding de la pregunta
-    logger.info("Generando embeddings", extra={"trace_id": trace_id})
-    vector = embed([pregunta])[0]
-
-    # 2) Aplicar filtro por ID de trámite, departamento o documento
-    procedure_id = params.get("procedure_id")
-    department_id = params.get("department_id")
-    document_name = params.get("documento")
-
-    if procedure_id:
         filtro = filter_by_procedure_id(procedure_id)
     elif department_id:
         filtro = filter_by_department_id(department_id)

@@ -5,24 +5,26 @@ from typing import Optional, Dict, List, Any
 try:
     from utils.text import normalize_text
 except (ModuleNotFoundError, ImportError):
+    # Fallback para pruebas locales
     def normalize_text(text: str) -> str:
         import re
         import unicodedata
         text = text.lower()
         text = ''.join(c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn')
-        text = re.sub(r'[\W_]+', ' ', text)
-        return text.strip()
-
+        text = re.sub(r'[^\w\s]', '', text)
+        return text
 
 class DepartmentRouter:
-    """Identify a department ID from user input based on alias mapping."""
-
-    def __init__(self, departments_path: str) -> None:
+    """
+    Identifica un departamento específico dentro de una consulta
+    basándose en un mapa de alias cargado desde un archivo JSON.
+    """
+    def __init__(self, departments_path: str):
         self.department_map: Dict[str, str] = {}
         if not os.path.exists(departments_path):
-            raise FileNotFoundError(f"Department file not found: {departments_path}")
-
-        with open(departments_path, "r", encoding="utf-8") as f:
+            raise FileNotFoundError(f"El archivo de departamentos no se encontró en: {departments_path}")
+        
+        with open(departments_path, 'r', encoding='utf-8') as f:
             departments: List[Dict[str, Any]] = json.load(f)
 
         for dept in departments:
@@ -31,14 +33,12 @@ class DepartmentRouter:
                 continue
             for alias in dept.get("alias", []):
                 self.department_map[normalize_text(alias)] = dept_id
-
-        # sort aliases by length (desc) to match longest first
+        
         self.sorted_aliases = sorted(self.department_map.keys(), key=len, reverse=True)
 
-    def get_department_id(self, text: str) -> Optional[str]:
-        """Return department ID if any alias is found in text."""
-        normalized = normalize_text(text)
+    def get_department_id(self, user_input: str) -> Optional[str]:
+        normalized_input = normalize_text(user_input)
         for alias in self.sorted_aliases:
-            if alias in normalized:
+            if alias in normalized_input:
                 return self.department_map[alias]
         return None
