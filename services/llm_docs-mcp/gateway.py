@@ -36,6 +36,8 @@ SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.8))
 N_THREADS = int(os.getenv("N_THREADS", 4))
 N_CTX = int(os.getenv("N_CTX", 2048))
 # Nuevo umbral de similitud para Qdrant (por defecto 0.3)
+LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 150))
+
 QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.3))
 # Umbral de alta confianza para los resultados de Qdrant
 HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.75))
@@ -215,8 +217,8 @@ llama = LlamaClient()
 set_llm_client(llama)
 
 def generate_response(prompt: str) -> str:
-    """Genera una respuesta utilizando el modelo Llama local."""
-    return llama.generate(prompt, max_tokens=256, temperature=0.6, top_p=0.95)
+    """Genera una respuesta utilizando el modelo Llama local, usando la configuración del entorno."""
+    return llama.generate(prompt, max_tokens=LLM_MAX_NEW_TOKENS, temperature=0.6, top_p=0.95)
 
 
 # --- Nueva función de auditoría para RAG ---
@@ -337,14 +339,15 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
 
     contexto = "\n".join(fragments)
     # Prompt mejorado con roles claros para el LLM
+    # Se instruye parafrasear, usar un tono conversacional y evitar listas.
     prompt = (
-        "<s>[INST] Eres un asistente virtual del Gobierno de Curoscant. Tu tarea es responder a las preguntas de los ciudadanos de forma precisa y concisa, utilizando únicamente la información de contexto que se te proporciona. Si el contexto no es suficiente, debes indicarlo claramente. No inventes información. [/INST]\n"
+        "<s>[INST] Eres un asistente virtual del Gobierno de Curoscant. Tu tarea es responder la pregunta del usuario basándote únicamente en el CONTEXTO proporcionado. Resume y reescribe la información con tus propias palabras en un solo párrafo conversacional y breve (máximo 120 palabras). No enumeres puntos ni repitas la pregunta. Si el contexto no es suficiente para responder, indica amablemente que no encontraste la información. No inventes nada. [/INST]\n"
         "</s><s>[INST] CONTEXTO:\n"
         "---------------------\n"
         f"{contexto}\n"
         "---------------------\n\n"
         f"PREGUNTA DEL USUARIO: {pregunta}\n\n"
-        "RESPUESTA: [/INST]"
+        "RESPUESTA (en un párrafo breve): [/INST]"
     )
 
     # 5) Generar respuesta con Llama
