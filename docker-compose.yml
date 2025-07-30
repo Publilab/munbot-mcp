@@ -114,6 +114,7 @@ services:
     volumes:
       - ./mcp-core/models:/mcp-core/models
       - ./services/scheduler-mcp:/app/scheduler-mcp:ro
+      - ./services/llm_docs-mcp:/services/llm_docs-mcp:ro
     depends_on:
       redis:
         condition: service_healthy
