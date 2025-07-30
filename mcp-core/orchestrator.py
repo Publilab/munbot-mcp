@@ -1797,6 +1797,8 @@ def orchestrate(
         # FIX: Se corrige la lógica para que use el documento seleccionado por el router
         if is_generic_doc_query(user_input) and not selected:
             doc_name = selected or extract_document_name(user_input)
+            if doc_name:
+                context_manager.set_selected_document(session_id, doc_name)
             if doc_name and is_full_info_request(user_input):
                 summary = resumir_documento(doc_name)
                 if summary:
@@ -1874,12 +1876,16 @@ def orchestrate(
         procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
         if procedure_id_ctx:
             params["procedure_id"] = procedure_id_ctx
-            try:
-                redis_client.set(cache_key, json.dumps(resp), ex=3600) # Cache por 1 hora
-                logger.info(f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id})
-            except Exception as e:
-                logger.warning(f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id})
-            return resp
+        try:
+            redis_client.set(cache_key, json.dumps(resp), ex=3600)  # Cache por 1 hora
+            logger.info(
+                f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id}
+            )
+        except Exception as e:
+            logger.warning(
+                f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id}
+            )
+        return resp
 
     if tool in ["unknown", "informacion_general", "otra"]:
         history = context_manager.get_history(session_id)
