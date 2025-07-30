@@ -12,3 +12,5 @@ phonenumbers
 prometheus_client>=0.16.0
 python-json-logger
 scikit-learn>=0.24.2
+
+sentence-transformers==2.7.0
