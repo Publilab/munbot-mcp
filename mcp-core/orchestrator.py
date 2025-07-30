@@ -27,6 +27,7 @@ from prometheus_client import (
 from faq_matcher import FAQMatcher
 from document_router import DocumentRouter, SemanticDocumentRouter
 from procedure_router import ProcedureRouter
+from department_router import DepartmentRouter
 try:
     from utils.text import normalize_text
 except ModuleNotFoundError:
@@ -111,7 +112,11 @@ faq_matcher = FAQMatcher(FAQ_FILE_PATH)
 PROCEDURES_FILE_PATH = os.getenv("PROCEDURES_FILE_PATH", os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp', 'documents', 'Originales', 'documento_requisito.json'))
 procedure_router = ProcedureRouter(PROCEDURES_FILE_PATH)
 
+# == Configuración del Department Router (Departamentos) ==
+DEPARTMENTS_FILE_PATH = os.getenv(
+    "DEPARTMENTS_FILE_PATH",
     os.path.join(
+        os.path.dirname(__file__),
         "..",
         "services",
         "llm_docs-mcp",
@@ -128,33 +133,19 @@ DOCUMENT_TOPIC_MAP = {
     "reciclaje": "RAG-Medio_Ambiente.json",
     "basura": "ORD-Transporte Basura Desecho.txt",
     "residuos": "ORD-Transporte Basura Desecho.txt",
-# == Configuración del Procedure Router ==
-PROCEDURE_FILE_PATH = os.getenv(
-    "PROCEDURES_FILE_PATH",
-    os.path.join(
-        os.path.dirname(__file__),
-        '..',
-        'services',
-        'llm_docs-mcp',
-        'documents',
-        'RAG-doc_tramites.json',
-    ),
-)
-procedure_router = ProcedureRouter(PROCEDURE_FILE_PATH)
-
-# Configuración para el enrutador semántico
-ROUTER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config', 'router_config.json')
-semantic_router = SemanticDocumentRouter(ROUTER_CONFIG_PATH)
-
     "ayuda social": "RAG-Ayudas_Sociales.json",
     "beneficio social": "RAG-Ayudas_Sociales.json",
     "horario comercio": "RAG-Horario_Comercio.json",
     "cierre de locales": "RAG-Horario_Comercio.json",
     "patente de alcoholes": "ORD-Patente de Alcoholes.txt",
     "residencia": "RAG-Residencia.json",
-    "seguridad": "RAG-Seguridad.json"
+    "seguridad": "RAG-Seguridad.json",
 }
 document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
+
+# Configuración para el enrutador semántico
+ROUTER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config", "router_config.json")
+semantic_router = SemanticDocumentRouter(ROUTER_CONFIG_PATH)
 
 # == Campos requeridos por tool ==
 REQUIRED_FIELDS = {
@@ -1462,7 +1453,6 @@ def orchestrate(
     trace_id = str(uuid.uuid4())
     context_manager.update_context_data(sid, {"trace_id": trace_id})
 
-<<<<<<< HEAD
     ctx = context_manager.get_context(sid)
 
     # --- 0. (NUEVO Y PRIORITARIO) Búsqueda en FAQs ---
@@ -1470,18 +1460,34 @@ def orchestrate(
     if faq_response:
         logger.info(f"Respuesta encontrada en FAQ para: '{user_input}'", extra={"trace_id": trace_id})
         context_manager.update_context(sid, user_input, faq_response)
-        logger.info(f"Consulta enrutada al trámite ID '{procedure_id}' por alias.", extra={"trace_id": trace_id})
-=======
-    # --- 0.2 Enrutamiento por trámite específico ---
+        # Las respuestas de FAQ no piden feedback para no interrumpir flujos simples.
+        return {"respuesta": faq_response, "session_id": sid}
+
+    # --- 0.2 (NUEVO Y ALTA PRIORIDAD) Enrutamiento por trámite específico ---
     procedure_id = procedure_router.get_procedure_id(user_input)
     if procedure_id:
+        logger.info(f"Consulta enrutada al trámite ID '{procedure_id}' por alias.", extra={"trace_id": trace_id})
+        # Guardamos el ID del trámite en el contexto para que el RAG lo utilice.
+        context_manager.update_context_data(sid, {"selected_procedure_id": procedure_id})
+
+    # --- 0.3 (NUEVO) Enrutamiento por departamento específico ---
+    department_id = department_router.get_department_id(user_input)
+    if department_id:
         logger.info(
-            f"Consulta enrutada al trámite ID '{procedure_id}' por alias.",
+            f"Consulta enrutada al departamento ID '{department_id}' por alias.",
             extra={"trace_id": trace_id},
         )
-        context_manager.update_context_data(sid, {"selected_procedure_id": procedure_id})
-        # Guardamos el ID del trámite en el contexto para que el RAG lo utilice.
->>>>>>> c22b04a6ffc11fa543638aecfba80807bed4b4cc
+        context_manager.update_context_data(sid, {"selected_department_id": department_id})
+
+
+    # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
+    # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
+    # Esto es más rápido y preciso que depender siempre del LLM para la intención.
+    document_topic = document_router.get_document_topic(user_input)
+    if document_topic:
+        logger.info(f"Consulta enrutada al documento '{document_topic}' por tema.", extra={"trace_id": trace_id})
+        # Guardamos el documento en el contexto para que el flujo RAG lo utilice.
+        context_manager.update_context_data(sid, {"selected_document": document_topic})
         context_manager.update_context_data(sid, {"selected_procedure_id": procedure_id})
 
     # --- 0.3 (NUEVO) Enrutamiento por departamento específico ---
@@ -1771,9 +1777,9 @@ def orchestrate(
             delete_session(sid)
             return {"respuesta": answer, "session_id": sid}
         else:
-<<<<<<< HEAD
             context_manager.set_last_sentiment(sid, "neutral")
             context_manager.update_context(sid, user_input, answer)
+
     if tool in ["doc-generar_respuesta_llm", "doc-buscar_fragmento_documento"]:
         if tool == "doc-buscar_fragmento_documento":
             logger.info(
@@ -1786,27 +1792,11 @@ def orchestrate(
         if ctx_data.get("selected_procedure_id"):
             params["procedure_id"] = ctx_data.get("selected_procedure_id")
         if ctx_data.get("selected_department_id"):
-=======
-
-        if is_generic_doc_query(user_input):
-            doc_name = selected or extract_document_name(user_input) or "el documento"
-            # FIX: Guardar el documento identificado en el contexto de la sesión
-            if doc_name and doc_name != "el documento":
-                context_manager.update_context_data(sid, {"selected_document": doc_name})
-
-            msg = (
-                f"¿Qué información específica deseas sobre {doc_name}? "
-                "Puedes consultar requisitos, dónde obtenerlo, horario, utilidad…"
-            )
->>>>>>> c22b04a6ffc11fa543638aecfba80807bed4b4cc
             params["department_id"] = ctx_data.get("selected_department_id")
 
         # FIX: Se corrige la lógica para que use el documento seleccionado por el router
         if is_generic_doc_query(user_input) and not selected:
             doc_name = selected or extract_document_name(user_input)
-        procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
-        if procedure_id_ctx:
-            params["procedure_id"] = procedure_id_ctx
             if doc_name and is_full_info_request(user_input):
                 summary = resumir_documento(doc_name)
                 if summary:
