@@ -32,6 +32,7 @@ COPY . .
 
 # asumiendo que en tu repo tienes ../mcp-core/prompts y ../mcp-core/tool_schemas
 COPY prompts/ ./prompts
+COPY models/ ./models
 COPY tool_schemas/ /app/tool_schemas
 
 ENV PROMPTS_PATH=/app/prompts
