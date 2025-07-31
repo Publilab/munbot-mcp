@@ -1,39 +1,211 @@
-docker logs mcp-core
+docker logs -f mcp-core
 → Esperando a Redis en redis:6379...
 → Esperando a Postgres en postgres:5432...
 → Esperando a Qdrant en qdrant:6333...
 → Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
 → Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
 → Todas las dependencias listas. Iniciando mcp‑core...
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
 INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-{"asctime": "2025-07-27 17:09:44,683", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
-INFO:     127.0.0.1:41522 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41130 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49114 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43108 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38242 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60606 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60976 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34532 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50212 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34222 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44662 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50964 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46182 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40376 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46820 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34712 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43356 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33402 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54498 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52764 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57234 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35524 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50578 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35406 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38850 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34640 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58446 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:21:36,543", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+🧠 Modelo cargado en 6,406 ms (CPU)
+INFO:     127.0.0.1:33434 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56986 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37528 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60958 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36736 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53842 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58594 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56508 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34152 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49306 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48262 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:26:41,390", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'Hola'", "trace_id": "ae5cfa4f-020f-4c25-970c-4e14d04000d3"}
+{"asctime": "2025-07-31 09:26:41,390", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'Hola'", "trace_id": "ae5cfa4f-020f-4c25-970c-4e14d04000d3"}
+INFO:     172.18.0.11:58184 - "POST /orchestrate HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:26:47,727", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'Como estas?'", "trace_id": "8e3a7b72-66ef-4e88-894f-f80ea6f64a82"}
+{"asctime": "2025-07-31 09:26:47,727", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'Como estas?'", "trace_id": "8e3a7b72-66ef-4e88-894f-f80ea6f64a82"}
+INFO:     172.18.0.11:57792 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59378 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:27:31,141", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:27:31,141", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:27:31,142", "levelname": "ERROR", "name": "munbot", "message": "Tool handler returned None", "trace_id": null}
+{"asctime": "2025-07-31 09:27:31,142", "levelname": "ERROR", "name": "munbot", "message": "Tool handler returned None", "trace_id": null}
+INFO:     172.18.0.11:57800 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56104 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40838 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35396 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40034 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:29:45,107", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'hasta luego'", "trace_id": "388e39f3-4b8f-473d-83e5-a09e5c8c29be"}
+{"asctime": "2025-07-31 09:29:45,107", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'hasta luego'", "trace_id": "388e39f3-4b8f-473d-83e5-a09e5c8c29be"}
+INFO:     172.18.0.11:45008 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60748 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43858 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43550 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51962 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48308 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52222 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48688 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49570 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41268 - "GET /health HTTP/1.1" 200 OK
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+INFO:     127.0.0.1:43518 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:34:45,586", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:34:45,586", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:34:45,588", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-31 09:34:45,588", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     172.18.0.11:55084 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48030 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37964 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35986 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35718 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52008 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42364 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36136 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55216 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43662 - "GET /health HTTP/1.1" 200 OK
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+{"asctime": "2025-07-31 09:39:07,652", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'hasta pronto'", "trace_id": "dc313d13-c167-41a2-8e8a-9b06fedc71bf"}
+{"asctime": "2025-07-31 09:39:07,652", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'hasta pronto'", "trace_id": "dc313d13-c167-41a2-8e8a-9b06fedc71bf"}
+INFO:     172.18.0.11:54588 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35906 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:39:37,098", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: despedida", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:39:37,098", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: despedida", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+INFO:     172.18.0.11:33164 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41404 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:40:21,036", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'nos vemos'", "trace_id": "04b80967-bfe3-4a65-accd-c7ed847d752c"}
+{"asctime": "2025-07-31 09:40:21,036", "levelname": "INFO", "name": "munbot", "message": "Respuesta encontrada en FAQ para: 'nos vemos'", "trace_id": "04b80967-bfe3-4a65-accd-c7ed847d752c"}
+INFO:     172.18.0.11:58162 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37724 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59136 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51774 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40618 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39420 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40080 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37120 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49336 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45394 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60104 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:45:08,421", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al tr\u00e1mite ID 'PAT-018' por alias.", "trace_id": "13ac1b54-e126-4e73-a51e-1c4ee3afab9f"}
+{"asctime": "2025-07-31 09:45:08,421", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al tr\u00e1mite ID 'PAT-018' por alias.", "trace_id": "13ac1b54-e126-4e73-a51e-1c4ee3afab9f"}
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+INFO:     127.0.0.1:60924 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:45:43,508", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:45:43,508", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+INFO:     172.18.0.11:58958 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52040 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46578 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52170 - "GET /health HTTP/1.1" 200 OK
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+INFO:     127.0.0.1:40404 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:47:39,718", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:47:39,718", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:47:39,720", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-31 09:47:39,720", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     172.18.0.11:33598 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47378 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:48:07,353", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al tr\u00e1mite ID 'PAT-018' por alias.", "trace_id": "a71b603c-d717-479a-8e8d-0bf4fd1125c5"}
+{"asctime": "2025-07-31 09:48:07,353", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al tr\u00e1mite ID 'PAT-018' por alias.", "trace_id": "a71b603c-d717-479a-8e8d-0bf4fd1125c5"}
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+INFO:     127.0.0.1:51190 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:48:43,655", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:48:43,655", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:48:43,656", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-31 09:48:43,656", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-31 09:48:43,696", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada", "trace_id": "a71b603c-d717-479a-8e8d-0bf4fd1125c5", "session_id": "750580cb-5a18-403e-aee9-e71c7bc3856f", "intent": "doc-generar_respuesta_llm", "latency_ms": 39.81234319508076, "fragments": [], "microservice": "llm_docs-mcp"}
+{"asctime": "2025-07-31 09:48:43,696", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada", "trace_id": "a71b603c-d717-479a-8e8d-0bf4fd1125c5", "session_id": "750580cb-5a18-403e-aee9-e71c7bc3856f", "intent": "doc-generar_respuesta_llm", "latency_ms": 39.81234319508076, "fragments": [], "microservice": "llm_docs-mcp"}
+INFO:     172.18.0.11:41762 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36176 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37494 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38950 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57262 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35658 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36532 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57024 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60052 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44444 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41722 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47778 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45970 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40260 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46556 - "GET /health HTTP/1.1" 200 OK
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+INFO:     127.0.0.1:58728 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:56:20,819", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:56:20,819", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:56:20,820", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-31 09:56:20,820", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+INFO:     127.0.0.1:57644 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:57:05,329", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada", "trace_id": "e35b5540-5cc1-4d53-a276-f36e526791f8", "session_id": "750580cb-5a18-403e-aee9-e71c7bc3856f", "intent": "doc-generar_respuesta_llm", "latency_ms": 44508.21914197877, "fragments": ["RAG-depto_info.json"], "microservice": "llm_docs-mcp"}
+{"asctime": "2025-07-31 09:57:05,329", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada", "trace_id": "e35b5540-5cc1-4d53-a276-f36e526791f8", "session_id": "750580cb-5a18-403e-aee9-e71c7bc3856f", "intent": "doc-generar_respuesta_llm", "latency_ms": 44508.21914197877, "fragments": ["RAG-depto_info.json"], "microservice": "llm_docs-mcp"}
+{"asctime": "2025-07-31 09:57:05,330", "levelname": "INFO", "name": "munbot", "message": "Respuesta para 'Cual es el mail del departamento de transito' guardada en cach\u00e9.", "trace_id": "e35b5540-5cc1-4d53-a276-f36e526791f8"}
+{"asctime": "2025-07-31 09:57:05,330", "levelname": "INFO", "name": "munbot", "message": "Respuesta para 'Cual es el mail del departamento de transito' guardada en cach\u00e9.", "trace_id": "e35b5540-5cc1-4d53-a276-f36e526791f8"}
+INFO:     127.0.0.1:40358 - "GET /health HTTP/1.1" 200 OK
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+{"asctime": "2025-07-31 09:57:29,628", "levelname": "INFO", "name": "munbot", "message": "Cache hit for query: 'Cual es el mail del departamento de transito'", "trace_id": "9c5779f3-6375-4ed2-adb3-4941996e2353"}
+{"asctime": "2025-07-31 09:57:29,628", "levelname": "INFO", "name": "munbot", "message": "Cache hit for query: 'Cual es el mail del departamento de transito'", "trace_id": "9c5779f3-6375-4ed2-adb3-4941996e2353"}
+INFO:     172.18.0.11:55526 - "POST /orchestrate HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:57:39,965", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:57:39,965", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:57:39,967", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-31 09:57:39,967", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:53078 - "GET /health HTTP/1.1" 200 OK
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+{"asctime": "2025-07-31 09:58:12,817", "levelname": "WARNING", "name": "root", "message": "No se pudo registrar feedback de usuario: relation \"feedback_usuario\" does not exist\nLINE 2:                 INSERT INTO feedback_usuario (pregunta_id, f...\n                                    ^\n", "trace_id": null}
+{"asctime": "2025-07-31 09:58:12,821", "levelname": "INFO", "name": "munbot", "message": "Negative feedback. Fallback count increased to 1", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 09:58:12,821", "levelname": "INFO", "name": "munbot", "message": "Negative feedback. Fallback count increased to 1", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+INFO:     172.18.0.11:32842 - "POST /orchestrate HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 09:58:20,172", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada", "trace_id": "d30a02ec-8691-4fb4-b459-66ed0f5b9ec4", "session_id": "750580cb-5a18-403e-aee9-e71c7bc3856f", "intent": "doc-generar_respuesta_llm", "latency_ms": 40204.727344214916, "fragments": ["RAG-depto_info.json"], "microservice": "llm_docs-mcp"}
+{"asctime": "2025-07-31 09:58:20,172", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada", "trace_id": "d30a02ec-8691-4fb4-b459-66ed0f5b9ec4", "session_id": "750580cb-5a18-403e-aee9-e71c7bc3856f", "intent": "doc-generar_respuesta_llm", "latency_ms": 40204.727344214916, "fragments": ["RAG-depto_info.json"], "microservice": "llm_docs-mcp"}
+{"asctime": "2025-07-31 09:58:20,174", "levelname": "INFO", "name": "munbot", "message": "Respuesta para 'Cual es el mail del departamento de transito' guardada en cach\u00e9.", "trace_id": "d30a02ec-8691-4fb4-b459-66ed0f5b9ec4"}
+{"asctime": "2025-07-31 09:58:20,174", "levelname": "INFO", "name": "munbot", "message": "Respuesta para 'Cual es el mail del departamento de transito' guardada en cach\u00e9.", "trace_id": "d30a02ec-8691-4fb4-b459-66ed0f5b9ec4"}
+INFO:     127.0.0.1:46860 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43930 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45806 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58034 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35304 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59872 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34484 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36226 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46506 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40778 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44236 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 10:03:42,444", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al tr\u00e1mite ID 'CRD-001' por alias.", "trace_id": "7023a0a1-9442-4bbc-8814-a5d317869738"}
+{"asctime": "2025-07-31 10:03:42,444", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al tr\u00e1mite ID 'CRD-001' por alias.", "trace_id": "7023a0a1-9442-4bbc-8814-a5d317869738"}
+/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+{"asctime": "2025-07-31 10:03:42,482", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-Residencia.json' por tema.", "trace_id": "7023a0a1-9442-4bbc-8814-a5d317869738"}
+{"asctime": "2025-07-31 10:03:42,482", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-Residencia.json' por tema.", "trace_id": "7023a0a1-9442-4bbc-8814-a5d317869738"}
+INFO:     127.0.0.1:42234 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-07-31 10:04:17,440", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 10:04:17,440", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "750580cb-5a18-403e-aee9-e71c7bc3856f"}
+{"asctime": "2025-07-31 10:04:17,442", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-07-31 10:04:17,442", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     172.18.0.11:50332 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50752 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45486 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48374 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34058 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46470 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50208 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55256 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34620 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44688 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33276 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40304 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41542 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51790 - "GET /health HTTP/1.1" 200 OK
