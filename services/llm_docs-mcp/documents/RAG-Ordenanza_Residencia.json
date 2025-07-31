@@ -3,7 +3,7 @@
         "id": "RD-001",
         "titulo": "Objeto y Ámbito de Aplicación",
         "texto": "La presente ordenanza regula los procesos, requisitos y condiciones para el otorgamiento de estadías temporales y residencias definitivas en el territorio de Coruscant, así como los derechos y deberes de los beneficiarios. Su objetivo es promover la integración social y económica de los residentes, garantizando el respeto a los derechos humanos y la seguridad pública. La normativa se aplica a todos los solicitantes, sean ciudadanos de Coruscant o extranjeros, y abarca tanto las solicitudes iniciales como las renovaciones y modificaciones de estatus migratorio. La autoridad competente para su aplicación es el Departamento de Inmigración y Residencia del Gobierno de Coruscant.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Ordenanza Residencias Coruscant",
             "Residencia",
@@ -15,7 +15,7 @@
             "Estadías y Residencias Coruscant",
             "Residencias Coruscant"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "1",
         "titulo_seccion": "generalidades",
@@ -26,7 +26,7 @@
         "id": "RD-002",
         "titulo": "Definiciones",
         "texto": "Estadía Temporal: autorización para permanecer en Coruscant por un período determinado. Residencia Definitiva: autorización permanente para establecerse en Coruscant. Solicitante: persona que requiere esta autorización. Autoridad Competente: Departamento de Inmigración y Residencia del Gobierno de Coruscant. Derechos Humanos: principios fundamentales que garantizan la dignidad y libertad de las personas. Seguridad Pública: protección de la sociedad contra delitos y amenazas. Integración Social: proceso de inclusión de los residentes en la vida comunitaria y económica. Los términos no definidos se interpretarán según el contexto y la legislación vigente.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Definiciones Residencia",
             "Residencia Definiciones",
@@ -35,7 +35,7 @@
             "Glosario Residencia",
             "Términos Residencia"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "2",
         "titulo_seccion": "definiciones",
@@ -46,7 +46,7 @@
         "id": "RD-003",
         "titulo": "Principios Rectores",
         "texto": "La aplicación de esta ordenanza se rige por los principios de transparencia, eficiencia, proporcionalidad y debido proceso, garantizando el tratamiento equitativo de todos los solicitantes. Se priorizará la protección de los derechos humanos, la seguridad pública y la promoción de la integración social y económica. La autoridad competente deberá actuar con imparcialidad, respetando los derechos fundamentales de los solicitantes y asegurando el acceso a recursos administrativos en caso de desacuerdo con las resoluciones emitidas. Asimismo, se fomentará la cooperación con organismos internacionales y organizaciones no gubernamentales para mejorar los procesos migratorios y de residencia en Coruscant.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Principios Rectores Residencia",
             "Residencia Principios",
@@ -56,7 +56,7 @@
             "Bases Residencia",
             "Lineamientos Residencia"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "3",
         "titulo_seccion": "principios",
@@ -67,7 +67,7 @@
         "id": "RD-004",
         "titulo": "Tipos de Estadía Temporal",
         "texto": "Se establecen las siguientes categorías: turismo y recreación; negocios y actividades comerciales; estudios académicos; tratamiento médico; misiones diplomáticas; trabajo temporal especializado; e investigación científica. Cada categoría tendrá requisitos específicos y plazos de estadía determinados, los cuales deberán ser respetados por los solicitantes. La autoridad competente podrá establecer nuevas categorías según las necesidades del país y la evolución de las circunstancias internacionales. Los solicitantes deberán indicar claramente la categoría bajo la cual solicitan su estadía temporal, y cumplir con los requisitos establecidos para cada una de ellas.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Tipos de Estadía Temporal Residencia",
             "Residencia Tipos de Estadía",
@@ -76,7 +76,7 @@
             "Clasificación de Estadía Temporal Residencia",
             "Residencia Clasificación Estadía Temporal"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "4",
         "titulo_seccion": "tipos",
@@ -87,13 +87,13 @@
         "id": "RD-005",
         "titulo": "Causas para Otorgamiento Temporal",
         "texto": "Los permisos temporales se otorgarán cuando el solicitante demuestre motivo legítimo, solvencia económica, ausencia de antecedentes penales graves e intención de retorno a su lugar de origen. La autoridad competente evaluará cada solicitud considerando la situación personal, social y económica del solicitante, así como el impacto en la seguridad pública y el orden interno de Coruscant. En caso de solicitudes por motivos laborales, se deberá presentar contrato de trabajo o carta de invitación de la entidad empleadora, cumpliendo con las normativas laborales vigentes. La autoridad podrá solicitar información adicional o realizar entrevistas para verificar la veracidad de la información proporcionada.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Causas para Otorgamiento Temporal Residencia",
             "Residencia Causas Otorgamiento",
             "Motivos para Otorgamiento Temporal Residencia"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "5",
         "titulo_seccion": "causas",
@@ -104,12 +104,12 @@
         "id": "RD-006",
         "titulo": "Proceso de Solicitud Temporal",
         "texto": "Incluye presentación completa de documentos, evaluación por la autoridad competente, entrevista personal si es necesaria, y emisión de resolución en un plazo máximo de 30 días hábiles. La solicitud deberá incluir formulario oficial, identificación válida, comprobante de solvencia económica, certificado de antecedentes penales y documentos que acrediten el motivo de la estadía. La autoridad competente podrá requerir información adicional o realizar verificaciones para asegurar la autenticidad de los documentos presentados. En caso de aprobación, se emitirá un permiso temporal con validez específica según la categoría solicitada, el cual deberá ser renovado antes de su vencimiento si se desea continuar la estadía en Coruscant.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Proceso de Solicitud Temporal Residencia",
             "Residencia Proceso Solicitud"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "6",
         "titulo_seccion": "proceso",
@@ -120,12 +120,12 @@
         "id": "RD-007",
         "titulo": "Documentación para Temporal",
         "texto": "Se requiere identificación válida, certificado de antecedentes, comprobante de solvencia económica, documentos que acrediten el motivo de la estadía y seguro de salud vigente. La identificación debe ser un documento oficial emitido por la autoridad competente del país de origen, con fotografía y datos personales actualizados. El certificado de antecedentes penales debe ser emitido por las autoridades competentes del país de origen o residencia habitual del solicitante, y no debe tener más de 6 meses de antigüedad. El comprobante de solvencia económica puede ser un estado de cuenta bancario, carta de empleo o cualquier documento que demuestre la capacidad del solicitante para cubrir sus gastos durante la estadía en Coruscant. El seguro de salud debe cubrir emergencias médicas y hospitalarias durante el período de estadía temporal.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Documentación para Temporal Residencia",
             "Residencia Documentación Temporal"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "7",
         "titulo_seccion": "documentacion",
@@ -136,12 +136,12 @@
         "id": "RD-008",
         "titulo": "Plazos de Estadía Temporal",
         "texto": "Los plazos máximos son: turismo 90 días, negocios 180, estudios según duración del programa, tratamiento médico según prescripción y trabajo temporal hasta 12 meses renovables. En casos excepcionales, la autoridad competente podrá autorizar extensiones de estadía temporal por un período adicional, siempre que se justifique adecuadamente y se cumplan los requisitos establecidos. Las solicitudes de renovación deberán presentarse al menos 30 días antes del vencimiento del permiso temporal vigente, acompañadas de la documentación requerida y el pago de las tasas correspondientes. La autoridad competente evaluará las solicitudes de renovación considerando el cumplimiento de las condiciones establecidas en el permiso original y la situación actual del solicitante.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Plazos de Estadía Temporal Residencia",
             "Residencia Plazos Temporal"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "8",
         "titulo_seccion": "plazos",
@@ -152,12 +152,12 @@
         "id": "RD-009",
         "titulo": "Renovación de Temporal",
         "texto": "Podrá renovarse por períodos similares, previa justificación y cumplimiento de requisitos, sin exceder límites establecidos por categoría. La solicitud de renovación deberá presentarse ante la autoridad competente con al menos 30 días de antelación al vencimiento del permiso temporal vigente. La autoridad evaluará la solicitud considerando el cumplimiento de las condiciones establecidas en el permiso original, la situación actual del solicitante y la normativa vigente. En caso de aprobación, se emitirá un nuevo permiso temporal con la duración correspondiente a la categoría solicitada. Si la solicitud de renovación es rechazada, el solicitante deberá abandonar el territorio de Coruscant antes del vencimiento del permiso temporal original, salvo que presente una nueva solicitud para otro tipo de autorización migratoria.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Renovación de Temporal Residencia",
             "Residencia Renovación Temporal"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "9",
         "titulo_seccion": "renovacion",
@@ -168,12 +168,12 @@
         "id": "RD-010",
         "titulo": "Requisitos para Residencia Definitiva",
         "texto": "Se requiere estadía temporal previa de al menos 3 años consecutivos, integración social y económica, examen de conocimientos sobre Coruscant y ausencia de antecedentes penales. La solicitud de residencia definitiva deberá presentarse ante la autoridad competente con la documentación requerida, incluyendo comprobantes de integración social y económica, certificado de antecedentes penales actualizado y resultados del examen de conocimientos sobre Coruscant. La autoridad evaluará el cumplimiento de los requisitos establecidos, así como la situación personal y social del solicitante. En caso de aprobación, se otorgará un permiso de residencia definitiva con validez indefinida, sujeto a las condiciones establecidas en la normativa vigente. La residencia definitiva no exime al titular de cumplir con las obligaciones tributarias y legales establecidas por el Gobierno de Coruscant.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Requisitos para Residencia Definitiva Residencia",
             "Residencia Requisitos Definitiva"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "10",
         "titulo_seccion": "requisitos",
@@ -184,12 +184,12 @@
         "id": "RD-011",
         "titulo": "Proceso de Obtención Definitiva",
         "texto": "Incluye solicitud formal, evaluación integral, exámenes médicos y psicológicos, entrevista de integración y ceremonia de otorgamiento si es aprobada. La solicitud de residencia definitiva deberá presentarse ante la autoridad competente con la documentación requerida, incluyendo comprobantes de integración social y económica, certificado de antecedentes penales actualizado y resultados del examen de conocimientos sobre Coruscant. La autoridad evaluará el cumplimiento de los requisitos establecidos, así como la situación personal y social del solicitante. En caso de aprobación, se otorgará un permiso de residencia definitiva con validez indefinida, sujeto a las condiciones establecidas en la normativa vigente. La residencia definitiva no exime al titular de cumplir con las obligaciones tributarias y legales establecidas por el Gobierno de Coruscant.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Proceso de Obtención Definitiva Residencia",
             "Residencia Proceso Definitiva"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "11",
         "titulo_seccion": "proceso",
@@ -200,12 +200,12 @@
         "id": "RD-012",
         "titulo": "Documentación para Definitiva",
         "texto": "Se requiere historial de estadías temporales, certificados de antecedentes locales e internacionales, comprobantes laborales o sociales, certificado médico integral y de conocimientos básicos sobre Coruscant. La identificación debe ser un documento oficial emitido por la autoridad competente del país de origen, con fotografía y datos personales actualizados. El certificado de antecedentes penales debe ser emitido por las autoridades competentes del país de origen o residencia habitual del solicitante, y no debe tener más de 6 meses de antigüedad. El comprobante de solvencia económica puede ser un estado de cuenta bancario, carta de empleo o cualquier documento que demuestre la capacidad del solicitante para cubrir sus gastos durante la estadía en Coruscant. El certificado médico integral debe ser emitido por un profesional autorizado y acreditar la aptitud física y mental del solicitante para residir en Coruscant. El certificado de conocimientos básicos sobre Coruscant debe ser emitido por un profesional autorizado y acreditar el conocimiento de la historia, cultura y normas básicas de convivencia en Coruscant.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Documentación para Definitiva Residencia",
             "Residencia Documentación Definitiva"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "12",
         "titulo_seccion": "documentacion",
@@ -216,12 +216,12 @@
         "id": "RD-013",
         "titulo": "Plazos de Tramitación Definitiva",
         "texto": "La autoridad resolverá las solicitudes en un plazo máximo de 120 días hábiles desde la presentación completa del expediente. En caso de requerir información adicional o realizar verificaciones, el plazo podrá extenderse hasta 30 días más, notificando al solicitante sobre la prórroga. Si la solicitud es aprobada, se emitirá un permiso de residencia definitiva con validez indefinida, sujeto a las condiciones establecidas en la normativa vigente. En caso de rechazo, el solicitante podrá interponer los recursos administrativos correspondientes dentro del plazo establecido por la normativa vigente. La autoridad competente deberá notificar al solicitante sobre la resolución adoptada y los motivos del rechazo, así como los recursos disponibles para impugnar dicha decisión.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Plazos de Tramitación Definitiva Residencia",
             "Residencia Plazos Definitiva"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "13",
         "titulo_seccion": "plazos",
@@ -232,12 +232,12 @@
         "id": "RD-014",
         "titulo": "Penalidades por Incumplimiento Definitiva",
         "texto": "El incumplimiento puede resultar en amonestación escrita, restricción temporal de derechos, suspensión temporal o revocación definitiva de la residencia en casos graves. Las infracciones leves podrán sancionarse con amonestaciones escritas o multas económicas, mientras que las infracciones graves podrán dar lugar a la suspensión temporal de derechos o la revocación definitiva de la residencia. La autoridad competente evaluará cada caso considerando la gravedad de la infracción, las circunstancias personales del infractor y el impacto en la seguridad pública y el orden interno de Coruscant. En caso de revocación definitiva de la residencia, el titular deberá abandonar el territorio de Coruscant en un plazo máximo de 30 días hábiles, salvo que presente una nueva solicitud para otro tipo de autorización migratoria.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Penalidades por Incumplimiento Definitiva Residencia",
             "Residencia Penalidades Definitiva"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "14",
         "titulo_seccion": "penalidades",
@@ -248,12 +248,12 @@
         "id": "RD-015",
         "titulo": "Derechos de Residentes Temporales",
         "texto": "Incluyen libre tránsito en Coruscant, acceso a servicios de emergencia, protección consular, trabajo autorizado según categoría y debido proceso administrativo. Los residentes temporales tienen derecho a solicitar la renovación de su permiso de estadía, siempre que cumplan con los requisitos establecidos y presenten la documentación requerida. Asimismo, tienen derecho a acceder a servicios públicos básicos, como salud, educación y seguridad, en igualdad de condiciones con los ciudadanos de Coruscant. Los residentes temporales también tienen derecho a participar en actividades culturales y recreativas, así como a asociarse libremente con otros residentes y ciudadanos de Coruscant, respetando las leyes y normas vigentes.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Derechos de Residentes Temporales Residencia",
             "Residencia Derechos Temporales"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "15",
         "titulo_seccion": "derechos",
@@ -264,12 +264,12 @@
         "id": "RD-016",
         "titulo": "Deberes de Residentes Temporales",
         "texto": "Respetar leyes locales, mantener documentación vigente, informar cambios de domicilio, no exceder el plazo autorizado y cooperar con inspecciones rutinarias. Los residentes temporales deben cumplir con las obligaciones tributarias establecidas por el Gobierno de Coruscant, así como con las normativas laborales y de seguridad social aplicables a su situación. Asimismo, deben participar en censos y registros oficiales cuando sean requeridos por la autoridad competente, y mantener actualizada su información personal ante el Departamento de Inmigración y Residencia. En caso de incumplimiento de estas obligaciones, la autoridad competente podrá imponer sanciones administrativas o revocar el permiso de estadía temporal otorgado.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Deberes de Residentes Temporales Residencia",
             "Residencia Deberes Temporales"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "16",
         "titulo_seccion": "deberes",
@@ -280,12 +280,12 @@
         "id": "RD-017",
         "titulo": "Derechos de Residentes Definitivos",
         "texto": "Goza de todos los derechos de temporales, acceso pleno a servicios públicos, derecho al trabajo sin restricciones, participación en organizaciones civiles y protección contra expulsión arbitraria. Los residentes definitivos tienen derecho a solicitar la nacionalidad de Coruscant, siempre que cumplan con los requisitos establecidos por la legislación vigente. Asimismo, tienen derecho a participar en procesos electorales, tanto como votantes como candidatos, en igualdad de condiciones con los ciudadanos de Coruscant. Los residentes definitivos también tienen derecho a acceder a programas de integración social y económica, así como a participar en actividades culturales y recreativas organizadas por el Gobierno de Coruscant o por organizaciones civiles. La autoridad competente deberá garantizar el respeto a los derechos fundamentales de los residentes definitivos y protegerlos contra cualquier forma de discriminación o abuso.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Derechos de Residentes Definitivos Residencia",
             "Residencia Derechos Definitivos"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "17",
         "titulo_seccion": "derechos",
@@ -296,12 +296,12 @@
         "id": "RD-018",
         "titulo": "Deberes de Residentes Definitivos",
         "texto": "Deben cumplir con obligaciones tributarias, participar en censos y registros oficiales, contribuir al bienestar común, respetar la cultura local y mantener actualizada su información. Los residentes definitivos deben cumplir con las obligaciones tributarias establecidas por el Gobierno de Coruscant, así como con las normativas laborales y de seguridad social aplicables a su situación. Asimismo, deben participar en censos y registros oficiales cuando sean requeridos por la autoridad competente, y mantener actualizada su información personal ante el Departamento de Inmigración y Residencia. En caso de incumplimiento de estas obligaciones, la autoridad competente podrá imponer sanciones administrativas o revocar el permiso de residencia definitiva otorgado. Los residentes definitivos también tienen el deber de contribuir al bienestar común, participando en actividades comunitarias y respetando las normas de convivencia establecidas por la sociedad coruscantiana.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Deberes de Residentes Definitivos Residencia",
             "Residencia Deberes Definitivos"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "18",
         "titulo_seccion": "deberes",
@@ -312,12 +312,12 @@
         "id": "RD-019",
         "titulo": "Recursos y Apelaciones",
         "texto": "Los solicitantes pueden interponer recursos de reconsideración o apelaciones ante instancia superior dentro de los 15 días hábiles siguientes a la resolución adversa. Los recursos deberán presentarse por escrito, indicando los fundamentos de la impugnación y acompañando la documentación pertinente. La autoridad competente deberá resolver los recursos en un plazo máximo de 30 días hábiles, notificando al solicitante sobre la decisión adoptada. En caso de que el recurso sea rechazado, el solicitante podrá interponer una apelación ante la instancia superior correspondiente, que deberá resolver en un plazo máximo de 60 días hábiles. Durante el proceso de apelación, se suspenderá la ejecución de la resolución impugnada, salvo que se trate de medidas cautelares urgentes o situaciones que afecten la seguridad pública o el orden interno.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Recursos y Apelaciones Residencia",
             "Residencia Recursos Apelaciones"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "19",
         "titulo_seccion": "recursos",
@@ -328,12 +328,12 @@
         "id": "RD-020",
         "titulo": "Medidas Cautelares",
         "texto": "La autoridad podrá retener documentos, restringir movimiento o aplicar supervisión especial cuando existan riesgos para la seguridad pública o el orden interno. Estas medidas cautelares se aplicarán de manera excepcional y temporal, con el objetivo de prevenir situaciones que puedan comprometer la seguridad pública o el orden interno de Coruscant. La autoridad competente deberá notificar al solicitante sobre la aplicación de estas medidas, indicando los motivos y la duración estimada de las mismas. El solicitante podrá impugnar la decisión ante la instancia superior correspondiente, que deberá resolver en un plazo máximo de 15 días hábiles. Las medidas cautelares no podrán extenderse más allá del plazo necesario para evaluar la situación y tomar una decisión definitiva sobre la solicitud de estadía o residencia.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Medidas Cautelares Residencia",
             "Residencia Medidas Cautelares"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "20",
         "titulo_seccion": "medidas",
@@ -344,12 +344,12 @@
         "id": "RD-021",
         "titulo": "Revocación y Cancelación",
         "texto": "Las autorizaciones podrán revocarse por fraude, comisión de delitos graves, amenaza a la seguridad nacional, incumplimiento reiterado o renuncia voluntaria. La revocación de la autorización implicará la cancelación del permiso de estadía o residencia, y el titular deberá abandonar el territorio de Coruscant en un plazo máximo de 30 días hábiles. La autoridad competente deberá notificar al titular sobre la decisión de revocación, indicando los motivos y el plazo para abandonar el país. En caso de que el titular considere que la revocación es injustificada, podrá interponer los recursos administrativos correspondientes dentro del plazo establecido por la normativa vigente. La autoridad competente deberá resolver los recursos en un plazo máximo de 30 días hábiles, notificando al solicitante sobre la decisión adoptada.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Revocación y Cancelación Residencia",
             "Residencia Revocación Cancelación"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "21",
         "titulo_seccion": "revocación",
@@ -360,12 +360,12 @@
         "id": "RD-022",
         "titulo": "Tasas y Aranceles",
         "texto": "Los procedimientos generarán el pago de tasas y aranceles según el arancel oficial vigente, que será actualizado anualmente por resolución. Los solicitantes deberán abonar las tasas correspondientes al momento de presentar la solicitud de estadía temporal o residencia definitiva, así como al momento de solicitar renovaciones o modificaciones de estatus migratorio. Las tasas y aranceles se destinarán a financiar los costos administrativos y operativos del Departamento de Inmigración y Residencia, así como a programas de integración social y económica para los residentes. La autoridad competente deberá publicar anualmente el arancel oficial vigente, indicando las tasas y aranceles aplicables a cada tipo de solicitud y procedimiento migratorio. Los solicitantes podrán consultar el arancel en el sitio web oficial del Gobierno de Coruscant o en las oficinas del Departamento de Inmigración y Residencia.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Tasas y Aranceles Residencia",
             "Residencia Tasas Aranceles"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "22",
         "titulo_seccion": "tasas",
@@ -376,7 +376,7 @@
         "id": "RD-023",
         "titulo": "Casos Especiales",
         "texto": "Los casos no previstos se resolverán por analogía, aplicando principios generales del derecho administrativo y considerando circunstancias particulares. La autoridad competente podrá establecer procedimientos especiales para casos excepcionales, como situaciones humanitarias, emergencias o crisis internacionales, garantizando el respeto a los derechos humanos y la seguridad pública. En estos casos, se priorizará la protección de las personas afectadas y se buscará una solución que respete la dignidad y los derechos fundamentales de los solicitantes. La autoridad competente deberá notificar al solicitante sobre la decisión adoptada en casos especiales, indicando los motivos y las condiciones aplicables. Asimismo, se fomentará la cooperación con organismos internacionales y organizaciones no gubernamentales para abordar situaciones complejas y garantizar el respeto a los derechos de los solicitantes.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Casos Especiales Residencia",
             "Residencia Casos Especiales",
@@ -384,7 +384,7 @@
             "Situaciones Especiales Residencia",
             "Casos No Previstas Residencia"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "23",
         "titulo_seccion": "casos especiales",
@@ -395,7 +395,7 @@
         "id": "RD-024",
         "titulo": "Modificaciones y Actualizaciones",
         "texto": "La ordenanza podrá ser modificada por el Consejo de Gobierno de Coruscant, previa consulta pública de 30 días y evaluación de impacto. Las modificaciones deberán ser aprobadas por mayoría simple del Consejo de Gobierno y publicadas oficialmente en el Diario Oficial de Coruscant. La autoridad competente deberá garantizar la difusión adecuada de las modificaciones, informando a los solicitantes y residentes sobre los cambios introducidos y su impacto en los procedimientos migratorios y de residencia. Asimismo, se establecerán mecanismos de consulta y participación ciudadana para recoger opiniones y sugerencias sobre las modificaciones propuestas, asegurando la transparencia y el respeto a los derechos de los interesados. Las modificaciones entrarán en vigor 30 días después de su publicación oficial, salvo que se establezca un plazo diferente en la normativa modificada.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Modificaciones y Actualizaciones Residencia",
             "Residencia Modificaciones Actualizaciones",
@@ -403,7 +403,7 @@
             "Actualizaciones Residencia",
             "Reformas Residencia"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "24",
         "titulo_seccion": "modificaciones",
@@ -414,7 +414,7 @@
         "id": "RD-025",
         "titulo": "Entrada en Vigencia",
         "texto": "Entrará en vigor 60 días después de su publicación oficial, durante los cuales se desarrollarán reglamentos complementarios y se capacitará al personal encargado. La autoridad competente deberá garantizar la difusión adecuada de la ordenanza, informando a los solicitantes y residentes sobre los procedimientos, requisitos y derechos establecidos. Asimismo, se establecerán mecanismos de capacitación y formación para el personal encargado de aplicar la normativa, asegurando su conocimiento y comprensión de los principios y procedimientos establecidos. Durante el período de entrada en vigencia, se podrán realizar ajustes y modificaciones necesarias para garantizar una implementación efectiva y eficiente de la ordenanza. La autoridad competente deberá informar periódicamente al Consejo de Gobierno sobre el avance en la implementación de la normativa y las dificultades encontradas, proponiendo soluciones adecuadas para su resolución.",
-        "fuente": "Ordenanza Residencias Coruscant",
+        "nom_doc": "Ordenanza Residencias Coruscant",
         "alias": [
             "Entrada en Vigencia Residencia",
             "Residencia Entrada Vigencia",
@@ -422,7 +422,7 @@
             "Comienzo Vigencia Residencia",
             "Vigencia Residencia"
         ],
-        "doc": "Ordenanza Residencias Coruscant",
+        "doc": "RAG-Ordenanza_Residencia.json",
         "decreto": "1499",
         "articulo": "25",
         "titulo_seccion": "vigencia",

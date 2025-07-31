@@ -1,6 +1,7 @@
 [
     {
         "id": "CRD-001-requisitos",
+        "id_documento": "CRD-001",
         "doc": "certificado_residencia_definitiva",
         "nom_cert": "certificado de residencia definitiva",
         "seccion": "requisitos",
@@ -39,6 +40,7 @@
     },
     {
         "id": "CRD-001-donde_obtener",
+        "id_documento": "CRD-001",
         "doc": "certificado_residencia_definitiva",
         "nom_cert": "certificado de residencia definitiva",
         "seccion": "donde_obtener",
@@ -70,6 +72,7 @@
     },
     {
         "id": "CRD-001-horario",
+        "id_documento": "CRD-001",
         "doc": "certificado_residencia_definitiva",
         "nom_cert": "certificado de residencia definitiva",
         "seccion": "horario_atencion",
@@ -105,6 +108,7 @@
     },
     {
         "id": "CRD-001-utilidad",
+        "id_documento": "CRD-001",
         "doc": "certificado_residencia_definitiva",
         "nom_cert": "certificado de residencia definitiva",
         "seccion": "utilidad",
@@ -128,6 +132,7 @@
     },
     {
         "id": "CRD-001-penalidad",
+        "id_documento": "CRD-001",
         "doc": "certificado_residencia_definitiva",
         "nom_cert": "certificado de residencia definitiva",
         "seccion": "penalidad",
@@ -161,6 +166,7 @@
     },
     {
         "id": "CRD-001-tiempo_validez",
+        "id_documento": "CRD-001",
         "doc": "certificado_residencia_definitiva",
         "nom_cert": "certificado de residencia definitiva",
         "seccion": "tiempo_validez",
@@ -180,6 +186,7 @@
     },
     {
         "id": "CET-008-requisitos",
+        "id_documento": "CET-008",
         "doc": "certificado_estadia_temporal",
         "nombre": "certificado de estadía temporal",
         "seccion": "requisitos",
@@ -218,6 +225,7 @@
     },
     {
         "id": "CET-008-donde_obtener",
+        "id_documento": "CET-008",
         "doc": "certificado_estadia_temporal",
         "nombre": "certificado de estadía temporal",
         "seccion": "donde_obtener",
@@ -248,6 +256,7 @@
     },
     {
         "id": "CET-008-horario",
+        "id_documento": "CET-008",
         "doc": "certificado_estadia_temporal",
         "nombre": "certificado de estadía temporal",
         "seccion": "horario_atencion",
@@ -283,6 +292,7 @@
     },
     {
         "id": "CET-008-utilidad",
+        "id_documento": "CET-008",
         "doc": "certificado_estadia_temporal",
         "nombre": "certificado de estadía temporal",
         "seccion": "utilidad",
@@ -306,6 +316,7 @@
     },
     {
         "id": "CET-008-penalidad",
+        "id_documento": "CET-008",
         "doc": "certificado_estadia_temporal",
         "nombre": "certificado de estadía temporal",
         "seccion": "penalidad",
@@ -339,6 +350,7 @@
     },
     {
         "id": "CET-008-vigencia",
+        "id_documento": "CET-008",
         "doc": "certificado_estadia_temporal",
         "nombre": "certificado de estadía temporal",
         "seccion": "tiempo_validez",
@@ -358,6 +370,7 @@
     },
     {
         "id": "CEP-011-requisitos",
+        "id_documento": "CEP-011",
         "doc": "certificado_extraccion_productiva",
         "nom_cert": "certificado de extracción productiva",
         "texto": [
@@ -404,6 +417,7 @@
     },
     {
         "id": "CEP-011-donde_obtener",
+        "id_documento": "CEP-011",
         "nom_cert": "certificado de extracción productiva",
         "texto": "El Certificado de Extracción Productiva se obtiene en la Oficina de Desarrollo Económico (Torre de Comercio. Sector E-5377).",
         "doc": "Certificado de Extracción Productiva",
@@ -435,6 +449,7 @@
     },
     {
         "id": "CEP-011-horario",
+        "id_documento": "CEP-011",
         "doc": "certificado_extraccion_productiva",
         "nom_cert": "certificado de extracción productiva",
         "seccion": "horario_atencion",
@@ -470,6 +485,7 @@
     },
     {
         "id": "CEP-011-utilidad",
+        "id_documento": "CEP-011",
         "doc": "certificado_extraccion_productiva",
         "nom_cert": "certificado de extracción productiva",
         "seccion": "utilidad",
@@ -492,6 +508,7 @@
     },
     {
         "id": "CEP-011-penalidad",
+        "id_documento": "CEP-011",
         "doc": "certificado_extraccion_productiva",
         "nom_cert": "certificado de extracción productiva",
         "seccion": "penalidad",
@@ -525,6 +542,7 @@
     },
     {
         "id": "CEP-011-vigencia",
+        "id_documento": "CEP-011",
         "doc": "certificado_extraccion_productiva",
         "nom_cert": "certificado de extracción productiva",
         "seccion": "tiempo_validez",
@@ -544,6 +562,7 @@
     },
     {
         "id": "CEM-013-requisitos",
+        "id_documento": "CEM-013",
         "doc": "certificado_enrolamiento_militar",
         "nom_cert": "certificado de enrolamiento militar",
         "seccion": "requisitos",
@@ -583,6 +602,7 @@
     },
     {
         "id": "CEM-013-donde_obtener",
+        "id_documento": "CEM-013",
         "nom_cert": "certificado de enrolamiento militar",
         "texto": "El Certificado de Enrolamiento Militar de la República se obtiene en el Cuartel General de la Defensa (Nivel 212).",
         "doc": "Certificado de Enrolamiento Militar de la República",
@@ -613,6 +633,7 @@
     },
     {
         "id": "CEM-013-horario",
+        "id_documento": "CEM-013",
         "nom_cert": "certificado de enrolamiento militar",
         "texto": "Horario de atención para el Certificado de Enrolamiento Militar de la República: lunes a viernes, 8:00 a 17:00.",
         "doc": "Certificado de Enrolamiento Militar de la República",
@@ -646,6 +667,7 @@
     },
     {
         "id": "CEM-013-utilidad",
+        "id_documento": "CEM-013",
         "nom_cert": "certificado de enrolamiento militar",
         "texto": "El Certificado de Enrolamiento Militar de la República acredita el estado de enrolamiento en las fuerzas armadas de la República Galáctica y permite participar en operaciones de defensa en combate planetaria.",
         "doc": "Certificado de Enrolamiento Militar de la República",
@@ -667,6 +689,7 @@
     },
     {
         "id": "CEM-013-penalidad",
+        "id_documento": "CEM-013",
         "nom_cert": "certificado de enrolamiento militar",
         "texto": "Sin el certificado de enrolamiento, se asume la no participación en el proceso de acreditación militar, lo que puede resultar en la detención del ciudadano hasta que acredite su situación militar.",
         "doc": "Certificado de Enrolamiento Militar de la República",
@@ -698,6 +721,8 @@
     },
     {
         "id": "CEM-013-tiempo_validez",
+        "id_documento": "CEM-013",
+        "nom_cert": "certificado de enrolamiento militar",
         "texto": "El Certificado de Enrolamiento Militar de la República tiene una validez de 1 año.",
         "doc": "Certificado de Enrolamiento Militar de la República",
         "seccion": "Tiempo_Validez",
@@ -715,6 +740,7 @@
     },
     {
         "id": "CRC-014-requisitos",
+        "id_documento": "CRC-014",
         "doc": "certificado_registro_carga",
         "nom_cert": "certificado de registro de carga",
         "seccion": "requisitos",
@@ -753,6 +779,7 @@
     },
     {
         "id": "CRC-014-donde_obtener",
+        "id_documento": "CRC-014",
         "doc": "certificado_registro_carga",
         "nom_cert": "certificado de registro de carga",
         "seccion": "donde_obtener",
@@ -784,6 +811,7 @@
     },
     {
         "id": "CRC-014-horario",
+        "id_documento": "CRC-014",
         "doc": "certificado_registro_carga",
         "nom_cert": "certificado de registro de carga",
         "seccion": "horario_atencion",
@@ -818,6 +846,7 @@
     },
     {
         "id": "CRC-014-utilidad",
+        "id_documento": "CRC-014",
         "doc": "certificado_registro_carga",
         "nom_cert": "certificado de registro de carga",
         "seccion": "utilidad",
@@ -840,6 +869,7 @@
     },
     {
         "id": "CRC-014-penalidad",
+        "id_documento": "CRC-014",
         "doc": "certificado_registro_carga",
         "nom_cert": "certificado de registro de carga",
         "seccion": "penalidad",
@@ -872,6 +902,7 @@
     },
     {
         "id": "CRC-014-vigencia",
+        "id_documento": "CRC-014",
         "doc": "certificado_registro_carga",
         "nom_cert": "certificado de registro de carga",
         "seccion": "tiempo_validez",
@@ -929,6 +960,7 @@
     },
     {
         "id": "CAT-019-donde_obtener",
+        "id_documento": "CAT-019",
         "doc": "certificado_antecedentes",
         "nom_cert": "certificado de antecedentes",
         "seccion": "donde_obtener",
@@ -960,6 +992,7 @@
     },
     {
         "id": "CAT-019-horario",
+        "id_documento": "CAT-019",
         "doc": "certificado_antecedentes",
         "nom_cert": "certificado de antecedentes",
         "seccion": "horario_atencion",
@@ -994,6 +1027,7 @@
     },
     {
         "id": "CAT-019-utilidad",
+        "id_documento": "CAT-019",
         "doc": "certificado_antecedentes",
         "nom_cert": "certificado de antecedentes",
         "seccion": "utilidad",
@@ -1016,6 +1050,7 @@
     },
     {
         "id": "CAT-019-penalidad",
+        "id_documento": "CAT-019",
         "doc": "certificado_antecedentes",
         "nom_cert": "certificado de antecedentes",
         "seccion": "penalidad",
@@ -1047,6 +1082,7 @@
     },
     {
         "id": "CAT-019-vigencia",
+        "id_documento": "CAT-019",
         "doc": "certificado_antecedentes",
         "seccion": "tiempo_validez",
         "tipo_fragmento": "vigencia",
@@ -1065,6 +1101,7 @@
     },
     {
         "id": "RDD-017-requisitos",
+        "id_documento": "RDD-017",
         "doc": "certificado_registro_droides",
         "nom_cert": "certificado de registro de droides",
         "seccion": "requisitos",
@@ -1105,6 +1142,7 @@
     },
     {
         "id": "RDD-017-donde_obtener",
+        "id_documento": "RDD-017",
         "doc": "certificado_registro_droides",
         "nom_cert": "certificado de registro de droides",
         "seccion": "donde_obtener",
@@ -1136,6 +1174,7 @@
     },
     {
         "id": "RDD-017-horario",
+        "id_documento": "RDD-017",
         "doc": "certificado_registro_droides",
         "nom_cert": "certificado de registro de droides",
         "seccion": "horario_atencion",
@@ -1170,6 +1209,7 @@
     },
     {
         "id": "RDD-017-utilidad",
+        "id_documento": "RDD-017",
         "doc": "certificado_registro_droides",
         "nom_cert": "certificado de registro de droides",
         "seccion": "utilidad",
@@ -1192,6 +1232,8 @@
     },
     {
         "id": "RDD-017-penalidad",
+        "id_documento": "RDD-017",
+        "nom_cert": "certificado de registro de droides",
         "doc": "certificado_registro_droides",
         "seccion": "penalidad",
         "tipo_fragmento": "sancion",
@@ -1223,6 +1265,8 @@
     },
     {
         "id": "RDD-017-vigencia",
+        "id_documento": "RDD-017",
+        "nom_cert": "certificado de registro de droides",
         "doc": "certificado_registro_droides",
         "seccion": "tiempo_validez",
         "tipo_fragmento": "vigencia",
@@ -1241,6 +1285,7 @@
     },
     {
         "id": "CPF-002-requisitos",
+        "id_documento": "CPF-002",
         "doc": "licencia_oficial_piloto_federado",
         "nom_cert": "licencia oficial de piloto federado",
         "seccion": "requisitos",
@@ -1280,6 +1325,7 @@
     },
     {
         "id": "CPF-002-donde_obtener",
+        "id_documento": "CPF-002",
         "doc": "licencia_oficial_piloto_federado",
         "nom_cert": "licencia oficial de piloto federado",
         "seccion": "donde_obtener",
@@ -1311,6 +1357,7 @@
     },
     {
         "id": "CPF-002-horario",
+        "id_documento": "CPF-002",
         "doc": "licencia_oficial_piloto_federado",
         "nom_cert": "licencia oficial de piloto federado",
         "seccion": "horario_atencion",
@@ -1345,6 +1392,7 @@
     },
     {
         "id": "CPF-002-utilidad",
+        "id_documento"
         "doc": "licencia_oficial_piloto_federado",
         "nom_cert": "licencia oficial de piloto federado", 
         "seccion": "utilidad",
@@ -1367,6 +1415,7 @@
     },
     {
         "id": "CPF-002-penalidad",
+        "id_documento": "CPF-002",
         "doc": "licencia_oficial_piloto_federado",
         "nom_cert": "licencia oficial de piloto federado",
         "seccion": "penalidad",
@@ -1399,6 +1448,7 @@
     },
     {
         "id": "CPF-002-vigencia",
+        "id_documento": "CPF-002",
         "doc": "licencia_oficial_piloto_federado",
         "nom_cert": "licencia oficial de piloto federado",
         "seccion": "tiempo_validez",
@@ -1418,6 +1468,7 @@
     },
     {
         "id": "LTE-003-requisitos",
+        "id_documento": "LTE-003",
         "doc": "licencia_transporte_espacial",
         "nom_cert": "licencia de transporte espacial",
         "seccion": "requisitos",
@@ -1457,6 +1508,7 @@
     },
     {
         "id": "LTE-003-donde_obtener",
+        "id_documento": "LTE-003",
         "doc": "licencia_transporte_espacial",
         "nom_cert": "licencia de transporte espacial",
         "seccion": "donde_obtener",
@@ -1488,6 +1540,7 @@
     },
     {
         "id": "LTE-003-horario",
+        "id_documento": "LTE-003",
         "doc": "licencia_transporte_espacial",
         "nom_cert": "licencia de transporte espacial",
         "seccion": "horario_atencion",
@@ -1522,6 +1575,7 @@
     },
     {
         "id": "LTE-003-utilidad",
+        "id_documento": "LTE-003",
         "doc": "licencia_transporte_espacial",
         "nom_cert": "licencia de transporte espacial",
         "seccion": "utilidad",
@@ -1544,6 +1598,7 @@
     },
     {
         "id": "LTE-003-penalidad",
+        "id_documento": "LTE-003",
         "doc": "licencia_transporte_espacial",
         "nom_cert": "licencia de transporte espacial",
         "seccion": "penalidad",
@@ -1576,6 +1631,7 @@
     },
     {
         "id": "LTE-003-vigencia",
+        "id_documento": "LTE-003",
         "doc": "licencia_transporte_espacial",
         "nom_cert": "licencia de transporte espacial",
         "seccion": "tiempo_validez",
@@ -1595,6 +1651,7 @@
     },
     {
         "id": "ISP-005-requisitos",
+        "id_documento": "ISP-005",
         "doc": "cedula_unica_sistema_planetario",
         "nom_cert": "cedula unica sistema planetario",
         "seccion": "requisitos",
@@ -1634,6 +1691,7 @@
     },
     {
         "id": "ISP-005-donde_obtener",
+        "id_documento": "ISP-005",
         "doc": "cedula_unica_sistema_planetario",
         "nom_cert": "cedula unica sistema planetario",
         "seccion": "donde_obtener",
@@ -1665,6 +1723,7 @@
     },
     {
         "id": "ISP-005-horario",
+        "id_documento": "ISP-005",
         "doc": "cedula_unica_sistema_planetario",
         "nom_cert": "cedula unica sistema planetario",
         "seccion": "horario_atencion",
@@ -1699,6 +1758,7 @@
     },
     {
         "id": "ISP-005-utilidad",
+        "id_documento": "ISP-005",
         "doc": "cedula_unica_sistema_planetario",
         "nom_cert": "cedula unica sistema planetario",
         "seccion": "utilidad",
@@ -1721,6 +1781,7 @@
     },
     {
         "id": "ISP-005-penalidad",
+        "id_documento": "ISP-005",
         "doc": "cedula_unica_sistema_planetario",
         "nom_cert": "cedula unica sistema planetario",
         "seccion": "penalidad",
@@ -1753,6 +1814,7 @@
     },
     {
         "id": "ISP-005-vigencia",
+        "id_documento": "ISP-005",
         "doc": "cedula_unica_sistema_planetario",
         "nom_cert": "cedula unica sistema planetario",
         "seccion": "tiempo_validez",
@@ -1772,6 +1834,7 @@
     },
     {
         "id": "CBS-015-requisitos",
+        "id_documento": "CBS-015",
         "doc": "cedula_bienestar_social",
         "nom_cert": "cedula de bienestar social",
         "seccion": "requisitos",
@@ -1810,6 +1873,7 @@
     },
     {
         "id": "CBS-015-donde_obtener",
+        "id_documento": "CBS-015",
         "doc": "cedula_bienestar_social",
         "nom_cert": "cedula de bienestar social",
         "seccion": "donde_obtener",
@@ -1841,6 +1905,7 @@
     },
     {
         "id": "CBS-015-horario",
+        "id_documento": "CBS-015",
         "doc": "cedula_bienestar_social",
         "seccion": "horario_atencion",
         "tipo_fragmento": "horario",
@@ -1874,6 +1939,7 @@
     },
     {
         "id": "CBS-015-utilidad",
+        "id_documento": "CBS-015",
         "doc": "cedula_bienestar_social",
         "seccion": "utilidad",
         "tipo_fragmento": "utilidad",
@@ -1895,6 +1961,7 @@
     },
     {
         "id": "CBS-015-penalidad",
+        "id_documento": "CBS-015",
         "doc": "cedula_bienestar_social",
         "seccion": "penalidad",
         "tipo_fragmento": "sancion",
@@ -1926,6 +1993,7 @@
     },
     {
         "id": "CBS-015-vigencia",
+        "id_documento": "CBS-015",
         "doc": "cedula_bienestar_social",
         "nom_cert": "cedula de bienestar social",
         "seccion": "tiempo_validez",
@@ -1945,6 +2013,7 @@
     },
     {
         "id": "PAT-018-requisitos",
+        "id_documento": "PAT-018",
         "doc": "permiso_aterrizaje",
         "nom_cert": "permiso de aterrizaje",
         "seccion": "requisitos",
@@ -1983,6 +2052,7 @@
     },
     {
         "id": "PAT-018-donde_obtener",
+        "id_documento": "PAT-018",
         "doc": "permiso_aterrizaje",
         "nom_cert": "permiso de aterrizaje",
         "seccion": "donde_obtener",
@@ -2014,6 +2084,7 @@
     },
     {
         "id": "PAT-018-horario",
+        "id_documento": "PAT-018",
         "doc": "permiso_aterrizaje",
         "seccion": "horario_atencion",
         "tipo_fragmento": "horario",
@@ -2047,6 +2118,7 @@
     },
     {
         "id": "PAT-018-utilidad",
+        "id_documento": "PAT-018",
         "doc": "permiso_aterrizaje",
         "seccion": "utilidad",
         "tipo_fragmento": "utilidad",
@@ -2068,6 +2140,7 @@
     },
     {
         "id": "PAT-018-penalidad",
+        "id_documento": "PAT-018",
         "doc": "permiso_aterrizaje",
         "seccion": "penalidad",
         "tipo_fragmento": "sancion",
@@ -2099,6 +2172,7 @@
     },
     {
         "id": "PAT-018-vigencia",
+        "id_documento": "PAT-018",
         "doc": "permiso_aterrizaje",
         "seccion": "tiempo_validez",
         "tipo_fragmento": "vigencia",
@@ -2117,6 +2191,7 @@
     },
     {
         "id": "PCI-012-requisitos",
+        "id_documento": "PCI-012",
         "doc": "patente_comercial_intergalactica",
         "nom_cert": "patente comercial intergaláctica",
         "seccion": "requisitos",
@@ -2154,6 +2229,7 @@
     },
     {
         "id": "PCI-012-donde_obtener",
+        "id_documento": "PCI-012",
         "doc": "patente_comercial_intergalactica",
         "seccion": "donde_obtener",
         "tipo_fragmento": "ubicacion",
@@ -2165,6 +2241,7 @@
     },
     {
         "id": "PCI-012-horario",
+        "id_documento": "PCI-012",
         "doc": "patente_comercial_intergalactica",
         "nom_cert": "patente comercial intergaláctica",
         "seccion": "horario_atencion",
@@ -2199,6 +2276,7 @@
     },
     {
         "id": "PCI-012-utilidad",
+        "id_documento": "PCI-012",
         "doc": "patente_comercial_intergalactica",
         "nom_cert": "patente comercial intergaláctica",
         "seccion": "utilidad",
@@ -2221,6 +2299,7 @@
     },
     {
         "id": "PCI-012-penalidad",
+        "id_documento": "PCI-012",
         "doc": "patente_comercial_intergalactica",
         "nom_cert": "patente comercial intergaláctica",
         "seccion": "penalidad",
@@ -2253,6 +2332,7 @@
     },
     {
         "id": "PCI-012-vigencia",
+        "id_documento": "PCI-012",
         "doc": "patente_comercial_intergalactica",
         "nom_cert": "patente comercial intergaláctica",
         "seccion": "tiempo_validez",

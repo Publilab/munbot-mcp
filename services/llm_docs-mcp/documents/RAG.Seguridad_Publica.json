@@ -9,7 +9,8 @@
             "Defensa Planetaria",
             "Soberanía Local"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "1",
         "titulo_seccion": "Declaración",
@@ -26,7 +27,8 @@
             "Zonas de Riesgo",
             "Estrategias de Defensa"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "2",
         "titulo_seccion": "Definiciones",
@@ -43,7 +45,8 @@
             "Facultades Extraordinarias",
             "Coordinación Militar"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "3",
         "titulo_seccion": "Marco Legal",
@@ -60,7 +63,8 @@
             "Solidaridad Planetaria",
             "Protección Civil"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "4",
         "titulo_seccion": "Principios",
@@ -77,7 +81,8 @@
             "Cadena de Mando",
             "Protocolos de Comunicación"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "5",
         "titulo_seccion": "Comando",
@@ -94,7 +99,8 @@
             "Entrenamiento Obligatorio",
             "Armamento Defensivo"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "6",
         "titulo_seccion": "Fuerzas",
@@ -111,7 +117,8 @@
             "Enlaces Operativos",
             "Redes de Comunicación Seguras"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "7",
         "titulo_seccion": "Coordinación",
@@ -128,7 +135,8 @@
             "Búnkeres Municipales",
             "Protocolos de Evacuación"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "8",
         "titulo_seccion": "Centros",
@@ -145,7 +153,8 @@
             "Vigilancia Ciudadana",
             "Protocolos de Alarma"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "9",
         "titulo_seccion": "Sistema",
@@ -162,7 +171,8 @@
             "Checkpoints de Acceso",
             "Identificación Obligatoria"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "10",
         "titulo_seccion": "Control",
@@ -179,7 +189,8 @@
             "Toques de Queda",
             "Zonas Prohibidas"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "11",
         "titulo_seccion": "Restricciones",
@@ -196,7 +207,8 @@
             "Resguardo Especial",
             "Fortificación de Edificios"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "12",
         "titulo_seccion": "Protección",
@@ -213,7 +225,8 @@
             "Verificación de Identidad",
             "Registro de Extranjeros"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "13",
         "titulo_seccion": "Identificación",
@@ -230,7 +243,8 @@
             "Monitoreo de Transmisiones",
             "Cifrado Obligatorio"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "14",
         "titulo_seccion": "Control",
@@ -247,7 +261,8 @@
             "Clasificación Sensible",
             "Protocolos de Manejo"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "15",
         "titulo_seccion": "Seguridad",
@@ -264,7 +279,8 @@
             "Procedimientos Excepcionales",
             "Centros de Detención"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "16",
         "titulo_seccion": "Interrogatorios",
@@ -281,7 +297,8 @@
             "Cañones Antiaéreos",
             "Refugios Subterráneos"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "17",
         "titulo_seccion": "Sistemas",
@@ -298,7 +315,8 @@
             "Red Municipal de Radar",
             "Coordinación con Defensa Planetaria"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "18",
         "titulo_seccion": "Detección",
@@ -315,7 +333,8 @@
             "Búnkeres Ciudadanos",
             "Protocolos de Evacuación"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "19",
         "titulo_seccion": "Evacuación",
@@ -332,7 +351,8 @@
             "Control Militar de Terminales",
             "Inspección Obligatoria de Naves"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "20",
         "titulo_seccion": "Puertos",
@@ -349,7 +369,8 @@
             "Expropiación Temporal",
             "Compensación Posterior"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "21",
         "titulo_seccion": "Requisición",
@@ -366,7 +387,8 @@
             "Control de Alimentos",
             "Cupones de Racionamiento"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "22",
         "titulo_seccion": "Racionamiento",
@@ -383,7 +405,8 @@
             "Conversión Industrial",
             "Producción Bélica"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "23",
         "titulo_seccion": "Industria",
@@ -400,7 +423,8 @@
             "Impuesto de Emergencia",
             "Bonos de Guerra"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "24",
         "titulo_seccion": "Financiamiento",
@@ -417,7 +441,8 @@
             "Cortes Marciales",
             "Juicios Sumarios"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "25",
         "titulo_seccion": "Tribunales",
@@ -435,7 +460,8 @@
             "Sabotaje",
             "Deserción"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "26",
         "titulo_seccion": "Crimenes",
@@ -453,7 +479,8 @@
             "Trabajo Forzado",
             "Confiscación de Bienes"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "27",
         "titulo_seccion": "Sanciones",
@@ -470,7 +497,8 @@
             "Juicios Militares",
             "Suspensión de Derechos Civiles"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "28",
         "titulo_seccion": "Expeditos",
@@ -487,7 +515,8 @@
             "Censura de Noticias",
             "Propaganda Oficial"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "29",
         "titulo_seccion": "Control Medios",
@@ -504,7 +533,8 @@
             "Entrenamiento Militar Escolar",
             "Historia Bélica Local"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "30",
         "titulo_seccion": "Educación",
@@ -521,7 +551,8 @@
             "Prohibición de Símbolos Imperiales",
             "Ceremonias de Resistencia"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "31",
         "titulo_seccion": "Celebraciones",
@@ -538,7 +569,8 @@
             "Prohibición de Pacifismo",
             "Incentivos a la Valentía"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "32",
         "titulo_seccion": "Moral",
@@ -555,7 +587,8 @@
             "Revisión Mensual",
             "Poderes Extraordinarios"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "33",
         "titulo_seccion": "Duración",
@@ -572,7 +605,8 @@
             "Desarme y Reintegración",
             "Rehabilitación de Excombatientes"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "34",
         "titulo_seccion": "Transición",
@@ -589,7 +623,8 @@
             "Celebraciones Públicas",
             "Monumentos a Héroes"
         ],
-        "doc": "Ordenanza Seguridad de la Republica",
+        "nom_doc": "Ordenanza Seguridad de la Republica",
+        "doc": "RAG.Seguridad_Publica.json",
         "decreto": "132-A",
         "articulo": "35",
         "titulo_seccion": "Victoria",

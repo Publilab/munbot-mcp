@@ -27,6 +27,28 @@
         "categoria": "saludo"
     },
     {
+        "id": "faq_saludo_03",
+        "tipo_fragmento": "faq",
+        "pregunta": "Hola, ¿cómo estás?",
+        "triggers": [
+            "hola como estás",
+            "hola, ¿cómo estás?",
+            "hi cómo va todo",
+            "hola, ¿cómo va todo?",
+            "hola, ¿cómo te encuentras?",
+            "hola, ¿cómo va tu día?",
+            "hola, ¿cómo te va?",
+            "hola, ¿cómo te sientes?",
+            "hola, ¿cómo te encuentras hoy?",
+            "hola, ¿cómo estás hoy?",
+            "hola, ¿cómo te va hoy?",
+            "hola, ¿cómo te sientes hoy?",
+            "hola, ¿cómo te encuentras hoy?"
+        ],
+        "respuesta": "¡Todo bien! ¿Y tú? ¿En qué puedo ayudarte hoy?",
+        "categoria": "saludo"
+    },
+    {
         "id": "faq_despedida_01",
         "tipo_fragmento": "faq",
         "pregunta": "adiós",

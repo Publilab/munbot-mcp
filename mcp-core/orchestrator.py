@@ -125,22 +125,246 @@ DEPARTMENTS_FILE_PATH = os.getenv(
     ),
 )
 department_router = DepartmentRouter(DEPARTMENTS_FILE_PATH)
-
-
 # == Configuración del Document Router ==
 DOCUMENT_TOPIC_MAP = {
-    "medio ambiente": "RAG-Medio_Ambiente.json",
-    "reciclaje": "RAG-Medio_Ambiente.json",
-    "basura": "ORD-Transporte Basura Desecho.txt",
-    "residuos": "ORD-Transporte Basura Desecho.txt",
+    # Temas generales
     "ayuda social": "RAG-Ayudas_Sociales.json",
     "beneficio social": "RAG-Ayudas_Sociales.json",
+    "contribuciones": "RAG-Contribuciones.json",
+    "impuestos": "RAG-Contribuciones.json",
     "horario comercio": "RAG-Horario_Comercio.json",
     "cierre de locales": "RAG-Horario_Comercio.json",
-    "patente de alcoholes": "ORD-Patente de Alcoholes.txt",
+    "medio ambiente": "RAG-Medio_Ambiente.json",
     "residencia": "RAG-Residencia.json",
-    "seguridad": "RAG-Seguridad.json",
+    "seguridad publica": "RAG-Seguridad.json",
 }
+SOC_DOC = "RAG-Ayudas_Sociales.json"
+DOCUMENT_TOPIC_MAP.update({
+    # términos generales
+    "ayuda social": SOC_DOC,
+    "ayudas sociales": SOC_DOC,
+    "ayudas economicas": SOC_DOC,
+    "ayudas en dinero": SOC_DOC,
+    "ayudas economicas vulnerables": SOC_DOC,
+    "beneficios sociales": SOC_DOC,
+    "beneficiarios ayudas sociales": SOC_DOC,
+    "ayuda personas vulnerables": SOC_DOC,
+    "familias vulnerables": SOC_DOC,
+    # grupos y prioridad
+    "ancianos": SOC_DOC,
+    "abuelitos": SOC_DOC,
+    "abuelos": SOC_DOC,
+    "adultos mayores": SOC_DOC,
+    "adultos mayores vulnerables": SOC_DOC,
+    "mujeres jefas hogar": SOC_DOC,
+    "mujeres": SOC_DOC,
+    "mujeres vulnerables": SOC_DOC,
+    "pueblos originarios ayuda": SOC_DOC,
+    "sin techo": SOC_DOC,
+    "personas en situacion calle": SOC_DOC,
+    # clasificación / tipos de ayuda
+    "tipos de ayuda social": SOC_DOC,
+    "clasificacion ayudas sociales": SOC_DOC,
+    "bolsa de alimentos": SOC_DOC,
+    "ayuda alimentaria": SOC_DOC,
+    "ayuda en alimentos": SOC_DOC,
+    "canasta familiar": SOC_DOC,
+    "aporte funerario": SOC_DOC,
+    "ayuda en funerales": SOC_DOC,
+    "ayuda funeraria": SOC_DOC,
+    "ayuda para entierro": SOC_DOC,
+    "ayuda cementerio": SOC_DOC,
+    "ayuda salud": SOC_DOC,
+    "ayuda en atencion medica": SOC_DOC,
+    "ayuda para medicamentos": SOC_DOC,
+    "ayuda en medicamentos": SOC_DOC,
+    "atenciones medicas ayudas": SOC_DOC,
+    "medicamentos ayudas sociales": SOC_DOC,
+    "ayudas tecnicas": SOC_DOC,
+    "ayuda pasajes": SOC_DOC,
+    "aporte pasajes": SOC_DOC,
+    "dinero para pasajes": SOC_DOC,
+    "ayuda escolar": SOC_DOC,
+    "ayuda escolaridad": SOC_DOC,
+    "ayuda para estudiantes": SOC_DOC,
+    "ayuda vivienda": SOC_DOC,
+    "materiales de construccion": SOC_DOC,
+    "ayuda pañales": SOC_DOC,
+    "pañales adultos mayores": SOC_DOC,
+    "pañales ninos": SOC_DOC,
+    "pañales bebes": SOC_DOC,
+    "pañales guaguas": SOC_DOC,
+    "pañales guaguitas": SOC_DOC,
+    "ayuda vestuario": SOC_DOC,
+    "ayuda en ropa": SOC_DOC,
+    "ayuda en vestuario": SOC_DOC,
+    "vestuario infantil": SOC_DOC,
+    "vestuario adulto mayor": SOC_DOC,
+    "vestuario abuelitos": SOC_DOC,
+    "vestuario abuelos": SOC_DOC,
+    "suplemento alimenticio": SOC_DOC,
+    "ayuda nutricional": SOC_DOC,
+    "entrega agua camion aljibe": SOC_DOC,
+    "ayuda agua": SOC_DOC,
+    "entrega estanque": SOC_DOC,
+    # requisitos, montos, procedimientos
+    "requisitos ayuda social": SOC_DOC,
+    "requisitos para ayuda social": SOC_DOC,
+    "requisitos para ayudas sociales": SOC_DOC,
+    "procedimiento solicitud ayuda": SOC_DOC,
+    "procedimiento solicitud ayudas sociales": SOC_DOC,
+    "procedimiento para ayuda social": SOC_DOC,
+    "procedimiento para ayudas sociales": SOC_DOC,
+    "entrega ayudas sociales": SOC_DOC,
+    "monto ayudas sociales": SOC_DOC,
+    "evaluacion social": SOC_DOC,
+    "causales negacion ayuda": SOC_DOC,
+    "causales negacion ayudas sociales": SOC_DOC,
+    "rendicion ayudas sociales": SOC_DOC,
+    "control ayudas sociales": SOC_DOC,
+    "fiscalizacion ayudas sociales": SOC_DOC,
+    "registro ayudas sociales": SOC_DOC,
+})
+TAX_DOC = "RAG-Contrib_Derechos.json"
+DOCUMENT_TOPIC_MAP.update({
+    # ── Conceptos generales ───────────────────────────
+    "contribuciones":            TAX_DOC,
+    "pago de contribuciones":    TAX_DOC,
+    "derechos y tasas":          TAX_DOC,
+    "tasas municipales":         TAX_DOC,
+    "ordenanza de contribuciones":  TAX_DOC,
+    "contribuyente":             TAX_DOC,
+
+    # ── Principios / marco legal ─────────────────────
+    "principios tributarios":    TAX_DOC,
+    "legalidad tributaria":      TAX_DOC,
+    "igualdad y proporcionalidad": TAX_DOC,
+    "normativa tributaria":      TAX_DOC,
+    "obligaciones tributarias":   TAX_DOC,
+    "impuestos":                 TAX_DOC,
+    "no confiscatoriedad":       TAX_DOC,
+
+    # ── Tasas y servicios específicos ────────────────
+    "tarifa de aseo":            TAX_DOC,
+    "pago de la basura":         TAX_DOC,
+    "aseo domiciliario":         TAX_DOC,
+    "alumbrado publico":         TAX_DOC,
+    "mantencion espacios publicos": TAX_DOC,
+    "servicios cementeriales":   TAX_DOC,
+    "contribuciones por entierro": TAX_DOC,
+    "contribucion seguridad":    TAX_DOC,
+
+    # ── Permisos y patentes ──────────────────────────
+    "permisos de edificacion":   TAX_DOC,
+    "permisos de subdivision":   TAX_DOC,
+    "permisos sanitarios":       TAX_DOC,
+    "permisos espectaculos publicos": TAX_DOC,
+    "patentes comerciales":      TAX_DOC,
+    "derechos de obra":          TAX_DOC,
+    "permisos circulacion":      TAX_DOC,
+    "ocupacion bienes publicos": TAX_DOC,
+
+    # ── Contribuciones especiales ────────────────────
+    "contribuciones por mejoras": TAX_DOC,
+    "contribucion bienes raices": TAX_DOC,
+    "contribucion territorial adicional": TAX_DOC,
+
+    # ── Beneficios / exenciones ──────────────────────
+    "exenciones legales":        TAX_DOC,
+    "beneficios condicion social": TAX_DOC,
+    "beneficios pronto pago":    TAX_DOC,
+    "incentivos al desarrollo":  TAX_DOC,
+
+    # ── Procedimientos y gestión ─────────────────────
+    "determinacion obligacion":  TAX_DOC,
+    "facturacion y cobranza":    TAX_DOC,
+    "intereses y reajustes":     TAX_DOC,
+    "prescripcion obligaciones": TAX_DOC,
+    "derecho a reclamo":         TAX_DOC,
+    "recurso de reposicion":     TAX_DOC,
+    "recursos jurisdiccionales": TAX_DOC,
+    "facultades de fiscalizacion": TAX_DOC,
+    "infracciones y sanciones":  TAX_DOC,
+})
+# ---------- EXTENSIÓN AUTOMÁTICA PARA MÓDULO MEDIO AMBIENTE ----------
+ENV_DOC = "RAG-Medio_Ambiente.json"
+DOCUMENT_TOPIC_MAP.update({
+    # Residuos & Reciclaje
+    "residuos peligrosos": ENV_DOC,
+    "residuos": ENV_DOC,
+    "liquidos peligrosos": ENV_DOC,
+    "reciclaje obligatorio": ENV_DOC,
+    "gestion de residuos": ENV_DOC,
+    "manejo de residuos": ENV_DOC,
+    "gestion de residuos solidos": ENV_DOC,
+    "residuos organicos": ENV_DOC,
+    "escombros": ENV_DOC,
+    "demolicion": ENV_DOC,
+    "residuos de construccion": ENV_DOC,
+    # Participación y Educación
+    "voluntariado ambiental": ENV_DOC,
+    "educacion ambiental": ENV_DOC,
+    "educacion continua": ENV_DOC,
+    "iniciativas ciudadanas": ENV_DOC,
+    "participacion ciudadana": ENV_DOC,
+    "consejos ambientales": ENV_DOC,
+    # Fiscalización & Transparencia
+    "fiscalizacion ambiental": ENV_DOC,
+    "transparencia ambiental": ENV_DOC,
+    # Incentivos, Economía & Sostenibilidad
+    "incentivos economicos": ENV_DOC,
+    "economia circular": ENV_DOC,
+    "sostenibilidad": ENV_DOC,
+    # Conservación y Biodiversidad
+    "areas protegidas": ENV_DOC,
+    "proteccion de ecosistemas": ENV_DOC,
+    "recursos hidricos": ENV_DOC,
+    "fauna urbana": ENV_DOC,
+    "biodiversidad urbana": ENV_DOC,
+    # Contaminación específica
+    "luz artificial": ENV_DOC,
+    "iluminacion": ENV_DOC,
+    "ruido nocturno": ENV_DOC,
+    # Construcción & Demolición
+    "construccion ecologica": ENV_DOC,
+    "edificacion sostenible": ENV_DOC,
+})
+SHOP_DOC = "RAG-Horario_Comercio.json"
+DOCUMENT_TOPIC_MAP.update({
+    # ── conceptos generales ─────────────────────────
+    "horario comercio":             SHOP_DOC,
+    "horarios comerciales":         SHOP_DOC,
+    "medidas funcionamiento comercios": SHOP_DOC,
+    "decreto 481":                  SHOP_DOC,
+    "ordenanza horarios comercio":  SHOP_DOC,
+
+    # ── cierres y toques de hora ────────────────────
+    "horario cierre comercios":     SHOP_DOC,
+    "cierre a las 20:00":           SHOP_DOC,
+    "cierre supermercados 19:00":   SHOP_DOC,
+    "a que hora cierran los comercios": SHOP_DOC,
+    "a que hora cierran los minimercados": SHOP_DOC,
+    "a que hora cierran las peluquerias":  SHOP_DOC,
+
+    # ── grupos/giros específicos ────────────────────
+    "horario food trucks":          SHOP_DOC,
+    "horario kioscos":              SHOP_DOC,
+    "horario carros comida":        SHOP_DOC,
+    "horario ferias libres":        SHOP_DOC,
+    "horario instalacion feria":    SHOP_DOC,
+    "funcionamiento feria libre":   SHOP_DOC,
+
+    # ── estado de emergencia / alerta sanitaria ────
+    "estado de emergencia comercio": SHOP_DOC,
+    "alerta sanitaria feria":        SHOP_DOC,
+    "prorroga medidas preventivas":  SHOP_DOC,
+
+    # ── mascarillas y fiscalización ────────────────
+    "uso obligatorio mascarillas":   SHOP_DOC,
+    "sanciones uso mascarillas":     SHOP_DOC,
+    "fiscalizacion horarios comercio": SHOP_DOC,
+})
+    
 document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
 
 # Configuración para el enrutador semántico
@@ -1415,12 +1639,12 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         import logging
         logger.info(
             f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}",
-            extra={"trace_id": trace_id},
+            extra={"trace_id": sid},
         )
-        tool_result = call_tool_microservice("scheduler-reservar_hora", payload)
+        tool_result = call_tool_microservice("scheduler-reservar_hora", payload, trace_id=sid)
         logger.info(
             f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}",
-            extra={"trace_id": trace_id},
+            extra={"trace_id": sid},
         )
         err = handle_service_error(tool_result, "scheduler-reservar_hora", sid)
         if err:
@@ -1478,39 +1702,17 @@ def orchestrate(
             extra={"trace_id": trace_id},
         )
         context_manager.update_context_data(sid, {"selected_department_id": department_id})
-
-
+    
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
-    # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
-    # Esto es más rápido y preciso que depender siempre del LLM para la intención.
-    document_topic = document_router.get_document_topic(user_input)
-    if document_topic:
-        logger.info(f"Consulta enrutada al documento '{document_topic}' por tema.", extra={"trace_id": trace_id})
-        # Guardamos el documento en el contexto para que el flujo RAG lo utilice.
-        context_manager.update_context_data(sid, {"selected_document": document_topic})
-        context_manager.update_context_data(sid, {"selected_procedure_id": procedure_id})
-
-    # --- 0.3 (NUEVO) Enrutamiento por departamento específico ---
+    # Primero intento semántico, si no, por palabra clave.
     document_topic = semantic_router.get_document_topic(user_input)
     if not document_topic:
         document_topic = document_router.get_document_topic(user_input)
-    if department_id:
-        logger.info(
-            f"Consulta enrutada al departamento ID '{department_id}' por alias.",
-            extra={"trace_id": trace_id},
-        )
-        context_manager.update_context_data(sid, {"selected_department_id": department_id})
-
-
-    # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
-    # Si no es una FAQ, intentamos identificar si la consulta es sobre un tema conocido.
-    # Esto es más rápido y preciso que depender siempre del LLM para la intención.
-    document_topic = document_router.get_document_topic(user_input)
+    
     if document_topic:
         logger.info(f"Consulta enrutada al documento '{document_topic}' por tema.", extra={"trace_id": trace_id})
         # Guardamos el documento en el contexto para que el flujo RAG lo utilice.
         context_manager.update_context_data(sid, {"selected_document": document_topic})
-
 
     user_norm = normalize_text(user_input)
 
@@ -1747,6 +1949,8 @@ def orchestrate(
         context_manager.increment_fallback_count(session_id)
         FALLBACK_COUNTER.inc()
         fallback_count = context_manager.get_fallback_count(session_id)
+        if ctx_data.get("selected_document"):
+            params["documento"] = ctx_data.get("selected_document")
         if fallback_count >= 3 or sentiment == "very_negative":
             fallback_resp = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
             registrar_evento_humano(session_id, user_input, trace_id=session_id)
