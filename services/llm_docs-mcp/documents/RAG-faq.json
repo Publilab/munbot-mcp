@@ -31,9 +31,9 @@
         "tipo_fragmento": "faq",
         "pregunta": "Hola, ¿cómo estás?",
         "triggers": [
-            "hola como estás",
-            "hola, ¿cómo estás?",
-            "hi cómo va todo",
+            "hola como estas",
+            "hola, como estas?",
+            "hi como va todo",
             "hola, ¿cómo va todo?",
             "hola, ¿cómo te encuentras?",
             "hola, ¿cómo va tu día?",
@@ -45,7 +45,7 @@
             "hola, ¿cómo te sientes hoy?",
             "hola, ¿cómo te encuentras hoy?"
         ],
-        "respuesta": "¡Todo bien! ¿Y tú? ¿En qué puedo ayudarte hoy?",
+        "respuesta": "¡Todo bien! Gracias por preguntar. ¿En qué puedo ayudarte hoy?",
         "categoria": "saludo"
     },
     {
@@ -341,7 +341,7 @@
         "categoria": "tramites"
     },
     {
-        "id": "faq-contacto_humano-02",
+        "id": "faq_contacto_humano-02",
         "pregunta": [
             "¿Cómo puedo contactar a un humano?",
             "¿Cuál es el correo electrónico de contacto?",
@@ -354,7 +354,7 @@
         "categoria": "contacto_humano"
     },
     {
-        "id": "faq-otras_consultas-01",
+        "id": "faq_otras_consultas_01",
         "pregunta": [
             "Quiero hacerte una pregunta",
             "Quiero hacerte una consulta",

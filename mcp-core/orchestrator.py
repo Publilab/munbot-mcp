@@ -1,5 +1,6 @@
 import os
 import sys
+import glob
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import json
 import requests
@@ -105,11 +106,31 @@ redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=Tr
 context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 
 # == Configuración del FAQ Matcher ==
-FAQ_FILE_PATH = os.getenv("FAQ_FILE_PATH", os.path.join(os.path.dirname(__file__), 'databases', 'faq_respuestas.json'))
+FAQ_FILE_PATH = os.getenv(
+    "FAQ_FILE_PATH", 
+    os.path.join(
+        os.path.dirname(__file__), 
+        '..', 
+        'services', 
+        'llm_docs-mcp', 
+        'documents', 
+        'RAG-faq.json'
+    ),
+)
 faq_matcher = FAQMatcher(FAQ_FILE_PATH)
 
 # == Configuración del Procedure Router (Trámites) ==
-PROCEDURES_FILE_PATH = os.getenv("PROCEDURES_FILE_PATH", os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp', 'documents', 'Originales', 'documento_requisito.json'))
+PROCEDURES_FILE_PATH = os.getenv(
+    "PROCEDURES_FILE_PATH", 
+    os.path.join(
+        os.path.dirname(__file__),
+        '..', 
+        'services', 
+        'llm_docs-mcp', 
+        'documents', 
+        'RAG-doc_tramites.json'
+    ),
+)
 procedure_router = ProcedureRouter(PROCEDURES_FILE_PATH)
 
 # == Configuración del Department Router (Departamentos) ==
@@ -125,246 +146,27 @@ DEPARTMENTS_FILE_PATH = os.getenv(
     ),
 )
 department_router = DepartmentRouter(DEPARTMENTS_FILE_PATH)
-# == Configuración del Document Router ==
-DOCUMENT_TOPIC_MAP = {
-    # Temas generales
-    "ayuda social": "RAG-Ayudas_Sociales.json",
-    "beneficio social": "RAG-Ayudas_Sociales.json",
-    "contribuciones": "RAG-Contribuciones.json",
-    "impuestos": "RAG-Contribuciones.json",
-    "horario comercio": "RAG-Horario_Comercio.json",
-    "cierre de locales": "RAG-Horario_Comercio.json",
-    "medio ambiente": "RAG-Medio_Ambiente.json",
-    "residencia": "RAG-Residencia.json",
-    "seguridad publica": "RAG-Seguridad.json",
-}
-SOC_DOC = "RAG-Ayudas_Sociales.json"
-DOCUMENT_TOPIC_MAP.update({
-    # términos generales
-    "ayuda social": SOC_DOC,
-    "ayudas sociales": SOC_DOC,
-    "ayudas economicas": SOC_DOC,
-    "ayudas en dinero": SOC_DOC,
-    "ayudas economicas vulnerables": SOC_DOC,
-    "beneficios sociales": SOC_DOC,
-    "beneficiarios ayudas sociales": SOC_DOC,
-    "ayuda personas vulnerables": SOC_DOC,
-    "familias vulnerables": SOC_DOC,
-    # grupos y prioridad
-    "ancianos": SOC_DOC,
-    "abuelitos": SOC_DOC,
-    "abuelos": SOC_DOC,
-    "adultos mayores": SOC_DOC,
-    "adultos mayores vulnerables": SOC_DOC,
-    "mujeres jefas hogar": SOC_DOC,
-    "mujeres": SOC_DOC,
-    "mujeres vulnerables": SOC_DOC,
-    "pueblos originarios ayuda": SOC_DOC,
-    "sin techo": SOC_DOC,
-    "personas en situacion calle": SOC_DOC,
-    # clasificación / tipos de ayuda
-    "tipos de ayuda social": SOC_DOC,
-    "clasificacion ayudas sociales": SOC_DOC,
-    "bolsa de alimentos": SOC_DOC,
-    "ayuda alimentaria": SOC_DOC,
-    "ayuda en alimentos": SOC_DOC,
-    "canasta familiar": SOC_DOC,
-    "aporte funerario": SOC_DOC,
-    "ayuda en funerales": SOC_DOC,
-    "ayuda funeraria": SOC_DOC,
-    "ayuda para entierro": SOC_DOC,
-    "ayuda cementerio": SOC_DOC,
-    "ayuda salud": SOC_DOC,
-    "ayuda en atencion medica": SOC_DOC,
-    "ayuda para medicamentos": SOC_DOC,
-    "ayuda en medicamentos": SOC_DOC,
-    "atenciones medicas ayudas": SOC_DOC,
-    "medicamentos ayudas sociales": SOC_DOC,
-    "ayudas tecnicas": SOC_DOC,
-    "ayuda pasajes": SOC_DOC,
-    "aporte pasajes": SOC_DOC,
-    "dinero para pasajes": SOC_DOC,
-    "ayuda escolar": SOC_DOC,
-    "ayuda escolaridad": SOC_DOC,
-    "ayuda para estudiantes": SOC_DOC,
-    "ayuda vivienda": SOC_DOC,
-    "materiales de construccion": SOC_DOC,
-    "ayuda pañales": SOC_DOC,
-    "pañales adultos mayores": SOC_DOC,
-    "pañales ninos": SOC_DOC,
-    "pañales bebes": SOC_DOC,
-    "pañales guaguas": SOC_DOC,
-    "pañales guaguitas": SOC_DOC,
-    "ayuda vestuario": SOC_DOC,
-    "ayuda en ropa": SOC_DOC,
-    "ayuda en vestuario": SOC_DOC,
-    "vestuario infantil": SOC_DOC,
-    "vestuario adulto mayor": SOC_DOC,
-    "vestuario abuelitos": SOC_DOC,
-    "vestuario abuelos": SOC_DOC,
-    "suplemento alimenticio": SOC_DOC,
-    "ayuda nutricional": SOC_DOC,
-    "entrega agua camion aljibe": SOC_DOC,
-    "ayuda agua": SOC_DOC,
-    "entrega estanque": SOC_DOC,
-    # requisitos, montos, procedimientos
-    "requisitos ayuda social": SOC_DOC,
-    "requisitos para ayuda social": SOC_DOC,
-    "requisitos para ayudas sociales": SOC_DOC,
-    "procedimiento solicitud ayuda": SOC_DOC,
-    "procedimiento solicitud ayudas sociales": SOC_DOC,
-    "procedimiento para ayuda social": SOC_DOC,
-    "procedimiento para ayudas sociales": SOC_DOC,
-    "entrega ayudas sociales": SOC_DOC,
-    "monto ayudas sociales": SOC_DOC,
-    "evaluacion social": SOC_DOC,
-    "causales negacion ayuda": SOC_DOC,
-    "causales negacion ayudas sociales": SOC_DOC,
-    "rendicion ayudas sociales": SOC_DOC,
-    "control ayudas sociales": SOC_DOC,
-    "fiscalizacion ayudas sociales": SOC_DOC,
-    "registro ayudas sociales": SOC_DOC,
-})
-TAX_DOC = "RAG-Contrib_Derechos.json"
-DOCUMENT_TOPIC_MAP.update({
-    # ── Conceptos generales ───────────────────────────
-    "contribuciones":            TAX_DOC,
-    "pago de contribuciones":    TAX_DOC,
-    "derechos y tasas":          TAX_DOC,
-    "tasas municipales":         TAX_DOC,
-    "ordenanza de contribuciones":  TAX_DOC,
-    "contribuyente":             TAX_DOC,
 
-    # ── Principios / marco legal ─────────────────────
-    "principios tributarios":    TAX_DOC,
-    "legalidad tributaria":      TAX_DOC,
-    "igualdad y proporcionalidad": TAX_DOC,
-    "normativa tributaria":      TAX_DOC,
-    "obligaciones tributarias":   TAX_DOC,
-    "impuestos":                 TAX_DOC,
-    "no confiscatoriedad":       TAX_DOC,
+def load_document_topics_from_files(docs_path: str) -> Dict[str, str]:
+    """Carga dinámicamente los alias de los documentos RAG para el enrutador."""
+    topic_map = {}
+    json_files = glob.glob(os.path.join(docs_path, "RAG-*.json"))
+    json_files += glob.glob(os.path.join(docs_path, "RAG.*.json"))
 
-    # ── Tasas y servicios específicos ────────────────
-    "tarifa de aseo":            TAX_DOC,
-    "pago de la basura":         TAX_DOC,
-    "aseo domiciliario":         TAX_DOC,
-    "alumbrado publico":         TAX_DOC,
-    "mantencion espacios publicos": TAX_DOC,
-    "servicios cementeriales":   TAX_DOC,
-    "contribuciones por entierro": TAX_DOC,
-    "contribucion seguridad":    TAX_DOC,
+    for file_path in json_files:
+        filename = os.path.basename(file_path)
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                for item in data:
+                    for alias in item.get("alias", []):
+                        topic_map[alias] = filename
+        except (json.JSONDecodeError, IOError) as e:
+            logging.warning(f"Could not load or parse {filename}: {e}")
+    return topic_map
 
-    # ── Permisos y patentes ──────────────────────────
-    "permisos de edificacion":   TAX_DOC,
-    "permisos de subdivision":   TAX_DOC,
-    "permisos sanitarios":       TAX_DOC,
-    "permisos espectaculos publicos": TAX_DOC,
-    "patentes comerciales":      TAX_DOC,
-    "derechos de obra":          TAX_DOC,
-    "permisos circulacion":      TAX_DOC,
-    "ocupacion bienes publicos": TAX_DOC,
-
-    # ── Contribuciones especiales ────────────────────
-    "contribuciones por mejoras": TAX_DOC,
-    "contribucion bienes raices": TAX_DOC,
-    "contribucion territorial adicional": TAX_DOC,
-
-    # ── Beneficios / exenciones ──────────────────────
-    "exenciones legales":        TAX_DOC,
-    "beneficios condicion social": TAX_DOC,
-    "beneficios pronto pago":    TAX_DOC,
-    "incentivos al desarrollo":  TAX_DOC,
-
-    # ── Procedimientos y gestión ─────────────────────
-    "determinacion obligacion":  TAX_DOC,
-    "facturacion y cobranza":    TAX_DOC,
-    "intereses y reajustes":     TAX_DOC,
-    "prescripcion obligaciones": TAX_DOC,
-    "derecho a reclamo":         TAX_DOC,
-    "recurso de reposicion":     TAX_DOC,
-    "recursos jurisdiccionales": TAX_DOC,
-    "facultades de fiscalizacion": TAX_DOC,
-    "infracciones y sanciones":  TAX_DOC,
-})
-# ---------- EXTENSIÓN AUTOMÁTICA PARA MÓDULO MEDIO AMBIENTE ----------
-ENV_DOC = "RAG-Medio_Ambiente.json"
-DOCUMENT_TOPIC_MAP.update({
-    # Residuos & Reciclaje
-    "residuos peligrosos": ENV_DOC,
-    "residuos": ENV_DOC,
-    "liquidos peligrosos": ENV_DOC,
-    "reciclaje obligatorio": ENV_DOC,
-    "gestion de residuos": ENV_DOC,
-    "manejo de residuos": ENV_DOC,
-    "gestion de residuos solidos": ENV_DOC,
-    "residuos organicos": ENV_DOC,
-    "escombros": ENV_DOC,
-    "demolicion": ENV_DOC,
-    "residuos de construccion": ENV_DOC,
-    # Participación y Educación
-    "voluntariado ambiental": ENV_DOC,
-    "educacion ambiental": ENV_DOC,
-    "educacion continua": ENV_DOC,
-    "iniciativas ciudadanas": ENV_DOC,
-    "participacion ciudadana": ENV_DOC,
-    "consejos ambientales": ENV_DOC,
-    # Fiscalización & Transparencia
-    "fiscalizacion ambiental": ENV_DOC,
-    "transparencia ambiental": ENV_DOC,
-    # Incentivos, Economía & Sostenibilidad
-    "incentivos economicos": ENV_DOC,
-    "economia circular": ENV_DOC,
-    "sostenibilidad": ENV_DOC,
-    # Conservación y Biodiversidad
-    "areas protegidas": ENV_DOC,
-    "proteccion de ecosistemas": ENV_DOC,
-    "recursos hidricos": ENV_DOC,
-    "fauna urbana": ENV_DOC,
-    "biodiversidad urbana": ENV_DOC,
-    # Contaminación específica
-    "luz artificial": ENV_DOC,
-    "iluminacion": ENV_DOC,
-    "ruido nocturno": ENV_DOC,
-    # Construcción & Demolición
-    "construccion ecologica": ENV_DOC,
-    "edificacion sostenible": ENV_DOC,
-})
-SHOP_DOC = "RAG-Horario_Comercio.json"
-DOCUMENT_TOPIC_MAP.update({
-    # ── conceptos generales ─────────────────────────
-    "horario comercio":             SHOP_DOC,
-    "horarios comerciales":         SHOP_DOC,
-    "medidas funcionamiento comercios": SHOP_DOC,
-    "decreto 481":                  SHOP_DOC,
-    "ordenanza horarios comercio":  SHOP_DOC,
-
-    # ── cierres y toques de hora ────────────────────
-    "horario cierre comercios":     SHOP_DOC,
-    "cierre a las 20:00":           SHOP_DOC,
-    "cierre supermercados 19:00":   SHOP_DOC,
-    "a que hora cierran los comercios": SHOP_DOC,
-    "a que hora cierran los minimercados": SHOP_DOC,
-    "a que hora cierran las peluquerias":  SHOP_DOC,
-
-    # ── grupos/giros específicos ────────────────────
-    "horario food trucks":          SHOP_DOC,
-    "horario kioscos":              SHOP_DOC,
-    "horario carros comida":        SHOP_DOC,
-    "horario ferias libres":        SHOP_DOC,
-    "horario instalacion feria":    SHOP_DOC,
-    "funcionamiento feria libre":   SHOP_DOC,
-
-    # ── estado de emergencia / alerta sanitaria ────
-    "estado de emergencia comercio": SHOP_DOC,
-    "alerta sanitaria feria":        SHOP_DOC,
-    "prorroga medidas preventivas":  SHOP_DOC,
-
-    # ── mascarillas y fiscalización ────────────────
-    "uso obligatorio mascarillas":   SHOP_DOC,
-    "sanciones uso mascarillas":     SHOP_DOC,
-    "fiscalizacion horarios comercio": SHOP_DOC,
-})
-    
+DOCS_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp', 'documents')
+DOCUMENT_TOPIC_MAP = load_document_topics_from_files(DOCS_DIR_PATH)
 document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
 
 # Configuración para el enrutador semántico
@@ -1705,7 +1507,7 @@ def orchestrate(
     
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
     # Primero intento semántico, si no, por palabra clave.
-    document_topic = semantic_router.get_document_topic(user_input)
+    document_topic = semantic_router.get_document_topic(user_input, threshold=0.6)
     if not document_topic:
         document_topic = document_router.get_document_topic(user_input)
     

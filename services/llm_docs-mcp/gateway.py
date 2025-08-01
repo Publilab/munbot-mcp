@@ -38,15 +38,15 @@ METADATA_PATH = os.getenv("METADATA_PATH")
 PROMPTS_PATH = os.getenv("PROMPTS_PATH")
 TOOLS_PATH = os.getenv("TOOLS_PATH")
 MODEL_PATH = os.getenv("MODEL_PATH")
-SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.8))
+SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.6))
 N_THREADS = int(os.getenv("N_THREADS", 4))
 N_CTX = int(os.getenv("N_CTX", 2048))
 # Nuevo umbral de similitud para Qdrant (por defecto 0.3)
 LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 150))
 
-QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.3))
+QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.6))
 # Umbral de alta confianza para los resultados de Qdrant
-HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.75))
+HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.6))
 
 # ==== FastAPI y Seguridad ====
 app = FastAPI()

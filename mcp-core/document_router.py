@@ -62,7 +62,7 @@ class SemanticDocumentRouter:
         # Precalcular embeddings de las descripciones
         self.description_vectors = embed(descriptions)
 
-    def get_document_topic(self, user_input: str, threshold: float = 0.75) -> Optional[str]:
+    def get_document_topic(self, user_input: str, threshold: float = 0.6) -> Optional[str]:
         vec = embed([user_input])[0]
         sims = cosine_similarity([vec], self.description_vectors)[0]
         best_idx = int(np.argmax(sims))
