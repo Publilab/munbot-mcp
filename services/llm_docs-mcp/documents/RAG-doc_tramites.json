@@ -1393,7 +1393,7 @@
     },
     {
         "id": "CPF-002-utilidad",
-        "id_documento"
+        "id_documento": "CPF-002",
         "doc": "licencia_oficial_piloto_federado",
         "nom_cert": "licencia oficial de piloto federado", 
         "seccion": "utilidad",

@@ -24,20 +24,29 @@ from prometheus_client import (
     CollectorRegistry,
     generate_latest,
     CONTENT_TYPE_LATEST,
-)
-from faq_matcher import FAQMatcher
-from document_router import DocumentRouter, SemanticDocumentRouter
-from procedure_router import ProcedureRouter
-from department_router import DepartmentRouter
-try:
-    from utils.text import normalize_text
-except ModuleNotFoundError:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
-    from text import normalize_text
-try:
-    from classification_utils import classify_reclamo_response
-except ModuleNotFoundError:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ''))
+        import logging
+        try:
+            # ...existing code...
+            response = requests.post(endpoint_url, json=payload, timeout=timeout)
+            logging.warning(f"[orchestrator] HTTP status: {response.status_code}")
+            logging.warning(f"[orchestrator] HTTP response text: {response.text}")
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    logging.warning(f"[orchestrator] HTTP response JSON: {data}")
+                except Exception as json_exc:
+                    logging.error(f"[orchestrator] JSON decode error: {json_exc}")
+                    return "No se recibió respuesta válida del MCP."
+                # ...existing code...
+                result = data.get("respuesta", "No se recibió respuesta válida del MCP.")
+                logging.warning(f"[orchestrator] Valor retornado por handler: {result}")
+                return result
+            else:
+                logging.error(f"[orchestrator] HTTP error status: {response.status_code}")
+                return "No se recibió respuesta válida del MCP."
+        except Exception as e:
+            logging.error(f"[orchestrator] Excepción capturada: {e}", exc_info=True)
+            return "No se recibió respuesta válida del MCP."
     from classification_utils import classify_reclamo_response
 try:
     from utils.human import registrar_evento_humano
@@ -1785,6 +1794,7 @@ def orchestrate(
         else:
             context_manager.set_last_sentiment(sid, "neutral")
             context_manager.update_context(sid, user_input, answer)
+            return {"respuesta": answer, "session_id": sid}
 
     if tool in ["doc-generar_respuesta_llm", "doc-buscar_fragmento_documento"]:
         if tool == "doc-buscar_fragmento_documento":

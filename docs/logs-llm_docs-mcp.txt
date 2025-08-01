@@ -1,404 +1,787 @@
-docker logs llm_docs-mcp
-✅ Qdrant listo.
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:ℹ️ La colección 'munbot_docs' ya contiene 363 puntos. Saltando indexación.
-🧠 Modelo cargado en 3,530 ms (CPU)
-llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
-llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
-llama_model_loader: - kv   0:                       general.architecture str              = phi2
-llama_model_loader: - kv   1:                               general.name str              = Phi2
-llama_model_loader: - kv   2:                        phi2.context_length u32              = 2048
-llama_model_loader: - kv   3:                      phi2.embedding_length u32              = 2560
-llama_model_loader: - kv   4:                   phi2.feed_forward_length u32              = 10240
-llama_model_loader: - kv   5:                           phi2.block_count u32              = 32
-llama_model_loader: - kv   6:                  phi2.attention.head_count u32              = 32
-llama_model_loader: - kv   7:               phi2.attention.head_count_kv u32              = 32
-llama_model_loader: - kv   8:          phi2.attention.layer_norm_epsilon f32              = 0.000010
-llama_model_loader: - kv   9:                  phi2.rope.dimension_count u32              = 32
-llama_model_loader: - kv  10:                          general.file_type u32              = 15
-llama_model_loader: - kv  11:               tokenizer.ggml.add_bos_token bool             = false
-llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = gpt2
-llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,51200]   = ["!", "\"", "#", "$", "%", "&", "'", ...
-llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr[i32,51200]   = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
-llama_model_loader: - kv  15:                      tokenizer.ggml.merges arr[str,50000]   = ["Ġ t", "Ġ a", "h e", "i n", "r e",...
-llama_model_loader: - kv  16:                tokenizer.ggml.bos_token_id u32              = 50256
-llama_model_loader: - kv  17:                tokenizer.ggml.eos_token_id u32              = 50256
-llama_model_loader: - kv  18:            tokenizer.ggml.unknown_token_id u32              = 50256
-llama_model_loader: - kv  19:               general.quantization_version u32              = 2
-llama_model_loader: - type  f32:  195 tensors
-llama_model_loader: - type q4_K:   81 tensors
-llama_model_loader: - type q5_K:   32 tensors
-llama_model_loader: - type q6_K:   17 tensors
-print_info: file format = GGUF V3 (latest)
-print_info: file type   = Q4_K - Medium
-print_info: file size   = 1.66 GiB (5.14 BPW) 
-load: missing pre-tokenizer type, using: 'default'
-load:                                             
-load: ************************************        
-load: GENERATION QUALITY WILL BE DEGRADED!        
-load: CONSIDER REGENERATING THE MODEL             
-load: ************************************        
-load:                                             
-init_tokenizer: initializing tokenizer for type 2
-load: special tokens cache size = 944
-load: token to piece cache size = 0.3151 MB
-print_info: arch             = phi2
-print_info: vocab_only       = 0
-print_info: n_ctx_train      = 2048
-print_info: n_embd           = 2560
-print_info: n_layer          = 32
-print_info: n_head           = 32
-print_info: n_head_kv        = 32
-print_info: n_rot            = 32
-print_info: n_swa            = 0
-print_info: is_swa_any       = 0
-print_info: n_embd_head_k    = 80
-print_info: n_embd_head_v    = 80
-print_info: n_gqa            = 1
-print_info: n_embd_k_gqa     = 2560
-print_info: n_embd_v_gqa     = 2560
-print_info: f_norm_eps       = 1.0e-05
-print_info: f_norm_rms_eps   = 0.0e+00
-print_info: f_clamp_kqv      = 0.0e+00
-print_info: f_max_alibi_bias = 0.0e+00
-print_info: f_logit_scale    = 0.0e+00
-print_info: f_attn_scale     = 0.0e+00
-print_info: n_ff             = 10240
-print_info: n_expert         = 0
-print_info: n_expert_used    = 0
-print_info: causal attn      = 1
-print_info: pooling type     = 0
-print_info: rope type        = 2
-print_info: rope scaling     = linear
-print_info: freq_base_train  = 10000.0
-print_info: freq_scale_train = 1
-print_info: n_ctx_orig_yarn  = 2048
-print_info: rope_finetuned   = unknown
-print_info: model type       = 3B
-print_info: model params     = 2.78 B
-print_info: general.name     = Phi2
-print_info: vocab type       = BPE
-print_info: n_vocab          = 51200
-print_info: n_merges         = 50000
-print_info: BOS token        = 50256 '<|endoftext|>'
-print_info: EOS token        = 50256 '<|endoftext|>'
-print_info: EOT token        = 50256 '<|endoftext|>'
-print_info: UNK token        = 50256 '<|endoftext|>'
-print_info: LF token         = 198 'Ċ'
-print_info: EOG token        = 50256 '<|endoftext|>'
-print_info: max token length = 256
-load_tensors: loading model tensors, this can take a while... (mmap = true)
-load_tensors: layer   0 assigned to device CPU, is_swa = 0
-load_tensors: layer   1 assigned to device CPU, is_swa = 0
-load_tensors: layer   2 assigned to device CPU, is_swa = 0
-load_tensors: layer   3 assigned to device CPU, is_swa = 0
-load_tensors: layer   4 assigned to device CPU, is_swa = 0
-load_tensors: layer   5 assigned to device CPU, is_swa = 0
-load_tensors: layer   6 assigned to device CPU, is_swa = 0
-load_tensors: layer   7 assigned to device CPU, is_swa = 0
-load_tensors: layer   8 assigned to device CPU, is_swa = 0
-load_tensors: layer   9 assigned to device CPU, is_swa = 0
-load_tensors: layer  10 assigned to device CPU, is_swa = 0
-load_tensors: layer  11 assigned to device CPU, is_swa = 0
-load_tensors: layer  12 assigned to device CPU, is_swa = 0
-load_tensors: layer  13 assigned to device CPU, is_swa = 0
-load_tensors: layer  14 assigned to device CPU, is_swa = 0
-load_tensors: layer  15 assigned to device CPU, is_swa = 0
-load_tensors: layer  16 assigned to device CPU, is_swa = 0
-load_tensors: layer  17 assigned to device CPU, is_swa = 0
-load_tensors: layer  18 assigned to device CPU, is_swa = 0
-load_tensors: layer  19 assigned to device CPU, is_swa = 0
-load_tensors: layer  20 assigned to device CPU, is_swa = 0
-load_tensors: layer  21 assigned to device CPU, is_swa = 0
-load_tensors: layer  22 assigned to device CPU, is_swa = 0
-load_tensors: layer  23 assigned to device CPU, is_swa = 0
-load_tensors: layer  24 assigned to device CPU, is_swa = 0
-load_tensors: layer  25 assigned to device CPU, is_swa = 0
-load_tensors: layer  26 assigned to device CPU, is_swa = 0
-load_tensors: layer  27 assigned to device CPU, is_swa = 0
-load_tensors: layer  28 assigned to device CPU, is_swa = 0
-load_tensors: layer  29 assigned to device CPU, is_swa = 0
-load_tensors: layer  30 assigned to device CPU, is_swa = 0
-load_tensors: layer  31 assigned to device CPU, is_swa = 0
-load_tensors: layer  32 assigned to device CPU, is_swa = 0
-load_tensors: tensor 'token_embd.weight' (q4_K) (and 324 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
-load_tensors:   CPU_Mapped model buffer size =  1704.63 MiB
-....................................................................................
-llama_context: constructing llama_context
-llama_context: n_seq_max     = 1
-llama_context: n_ctx         = 2048
-llama_context: n_ctx_per_seq = 2048
-llama_context: n_batch       = 512
-llama_context: n_ubatch      = 512
-llama_context: causal_attn   = 1
-llama_context: flash_attn    = 0
-llama_context: freq_base     = 10000.0
-llama_context: freq_scale    = 1
-set_abort_callback: call
-llama_context:        CPU  output buffer size =     0.20 MiB
-create_memory: n_ctx = 2048 (padded)
-llama_kv_cache_unified: layer   0: dev = CPU
-llama_kv_cache_unified: layer   1: dev = CPU
-llama_kv_cache_unified: layer   2: dev = CPU
-llama_kv_cache_unified: layer   3: dev = CPU
-llama_kv_cache_unified: layer   4: dev = CPU
-llama_kv_cache_unified: layer   5: dev = CPU
-llama_kv_cache_unified: layer   6: dev = CPU
-llama_kv_cache_unified: layer   7: dev = CPU
-llama_kv_cache_unified: layer   8: dev = CPU
-llama_kv_cache_unified: layer   9: dev = CPU
-llama_kv_cache_unified: layer  10: dev = CPU
-llama_kv_cache_unified: layer  11: dev = CPU
-llama_kv_cache_unified: layer  12: dev = CPU
-llama_kv_cache_unified: layer  13: dev = CPU
-llama_kv_cache_unified: layer  14: dev = CPU
-llama_kv_cache_unified: layer  15: dev = CPU
-llama_kv_cache_unified: layer  16: dev = CPU
-llama_kv_cache_unified: layer  17: dev = CPU
-llama_kv_cache_unified: layer  18: dev = CPU
-llama_kv_cache_unified: layer  19: dev = CPU
-llama_kv_cache_unified: layer  20: dev = CPU
-llama_kv_cache_unified: layer  21: dev = CPU
-llama_kv_cache_unified: layer  22: dev = CPU
-llama_kv_cache_unified: layer  23: dev = CPU
-llama_kv_cache_unified: layer  24: dev = CPU
-llama_kv_cache_unified: layer  25: dev = CPU
-llama_kv_cache_unified: layer  26: dev = CPU
-llama_kv_cache_unified: layer  27: dev = CPU
-llama_kv_cache_unified: layer  28: dev = CPU
-llama_kv_cache_unified: layer  29: dev = CPU
-llama_kv_cache_unified: layer  30: dev = CPU
-llama_kv_cache_unified: layer  31: dev = CPU
-llama_kv_cache_unified:        CPU KV buffer size =   640.00 MiB
-llama_kv_cache_unified: size =  640.00 MiB (  2048 cells,  32 layers,  1 seqs), K (f16):  320.00 MiB, V (f16):  320.00 MiB
-llama_kv_cache_unified: LLAMA_SET_ROWS=0, using old ggml_cpy() method for backwards compatibility
-llama_context: enumerating backends
-llama_context: backend_ptrs.size() = 1
-llama_context: max_nodes = 65536
-llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
-graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
-graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-llama_context:        CPU compute buffer size =   162.01 MiB
-llama_context: graph nodes  = 1257
-llama_context: graph splits = 1
-CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
-Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
-Using fallback chat format: llama-2
-llama_perf_context_print:        load time =     139.38 ms
-llama_perf_context_print: prompt eval time =     139.25 ms /     2 tokens (   69.62 ms per token,    14.36 tokens per second)
-llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:       total time =     139.89 ms /     3 tokens
-llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
-llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
-llama_model_loader: - kv   0:                       general.architecture str              = phi2
-llama_model_loader: - kv   1:                               general.name str              = Phi2
-llama_model_loader: - kv   2:                        phi2.context_length u32              = 2048
-llama_model_loader: - kv   3:                      phi2.embedding_length u32              = 2560
-llama_model_loader: - kv   4:                   phi2.feed_forward_length u32              = 10240
-llama_model_loader: - kv   5:                           phi2.block_count u32              = 32
-llama_model_loader: - kv   6:                  phi2.attention.head_count u32              = 32
-llama_model_loader: - kv   7:               phi2.attention.head_count_kv u32              = 32
-llama_model_loader: - kv   8:          phi2.attention.layer_norm_epsilon f32              = 0.000010
-llama_model_loader: - kv   9:                  phi2.rope.dimension_count u32              = 32
-llama_model_loader: - kv  10:                          general.file_type u32              = 15
-llama_model_loader: - kv  11:               tokenizer.ggml.add_bos_token bool             = false
-llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = gpt2
-llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,51200]   = ["!", "\"", "#", "$", "%", "&", "'", ...
-llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr[i32,51200]   = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
-llama_model_loader: - kv  15:                      tokenizer.ggml.merges arr[str,50000]   = ["Ġ t", "Ġ a", "h e", "i n", "r e",...
-llama_model_loader: - kv  16:                tokenizer.ggml.bos_token_id u32              = 50256
-llama_model_loader: - kv  17:                tokenizer.ggml.eos_token_id u32              = 50256
-llama_model_loader: - kv  18:            tokenizer.ggml.unknown_token_id u32              = 50256
-llama_model_loader: - kv  19:               general.quantization_version u32              = 2
-llama_model_loader: - type  f32:  195 tensors
-llama_model_loader: - type q4_K:   81 tensors
-llama_model_loader: - type q5_K:   32 tensors
-llama_model_loader: - type q6_K:   17 tensors
-print_info: file format = GGUF V3 (latest)
-print_info: file type   = Q4_K - Medium
-print_info: file size   = 1.66 GiB (5.14 BPW) 
-load: missing pre-tokenizer type, using: 'default'
-load:                                             
-load: ************************************        
-load: GENERATION QUALITY WILL BE DEGRADED!        
-load: CONSIDER REGENERATING THE MODEL             
-load: ************************************        
-load:                                             
-init_tokenizer: initializing tokenizer for type 2
-load: special tokens cache size = 944
-load: token to piece cache size = 0.3151 MB
-print_info: arch             = phi2
-print_info: vocab_only       = 0
-print_info: n_ctx_train      = 2048
-print_info: n_embd           = 2560
-print_info: n_layer          = 32
-print_info: n_head           = 32
-print_info: n_head_kv        = 32
-print_info: n_rot            = 32
-print_info: n_swa            = 0
-print_info: is_swa_any       = 0
-print_info: n_embd_head_k    = 80
-print_info: n_embd_head_v    = 80
-print_info: n_gqa            = 1
-print_info: n_embd_k_gqa     = 2560
-print_info: n_embd_v_gqa     = 2560
-print_info: f_norm_eps       = 1.0e-05
-print_info: f_norm_rms_eps   = 0.0e+00
-print_info: f_clamp_kqv      = 0.0e+00
-print_info: f_max_alibi_bias = 0.0e+00
-print_info: f_logit_scale    = 0.0e+00
-print_info: f_attn_scale     = 0.0e+00
-print_info: n_ff             = 10240
-print_info: n_expert         = 0
-print_info: n_expert_used    = 0
-print_info: causal attn      = 1
-print_info: pooling type     = 0
-print_info: rope type        = 2
-print_info: rope scaling     = linear
-print_info: freq_base_train  = 10000.0
-print_info: freq_scale_train = 1
-print_info: n_ctx_orig_yarn  = 2048
-print_info: rope_finetuned   = unknown
-print_info: model type       = 3B
-print_info: model params     = 2.78 B
-print_info: general.name     = Phi2
-print_info: vocab type       = BPE
-print_info: n_vocab          = 51200
-print_info: n_merges         = 50000
-print_info: BOS token        = 50256 '<|endoftext|>'
-print_info: EOS token        = 50256 '<|endoftext|>'
-print_info: EOT token        = 50256 '<|endoftext|>'
-print_info: UNK token        = 50256 '<|endoftext|>'
-print_info: LF token         = 198 'Ċ'
-print_info: EOG token        = 50256 '<|endoftext|>'
-print_info: max token length = 256
-load_tensors: loading model tensors, this can take a while... (mmap = true)
-load_tensors: layer   0 assigned to device CPU, is_swa = 0
-load_tensors: layer   1 assigned to device CPU, is_swa = 0
-load_tensors: layer   2 assigned to device CPU, is_swa = 0
-load_tensors: layer   3 assigned to device CPU, is_swa = 0
-load_tensors: layer   4 assigned to device CPU, is_swa = 0
-load_tensors: layer   5 assigned to device CPU, is_swa = 0
-load_tensors: layer   6 assigned to device CPU, is_swa = 0
-load_tensors: layer   7 assigned to device CPU, is_swa = 0
-load_tensors: layer   8 assigned to device CPU, is_swa = 0
-load_tensors: layer   9 assigned to device CPU, is_swa = 0
-load_tensors: layer  10 assigned to device CPU, is_swa = 0
-load_tensors: layer  11 assigned to device CPU, is_swa = 0
-load_tensors: layer  12 assigned to device CPU, is_swa = 0
-load_tensors: layer  13 assigned to device CPU, is_swa = 0
-load_tensors: layer  14 assigned to device CPU, is_swa = 0
-load_tensors: layer  15 assigned to device CPU, is_swa = 0
-load_tensors: layer  16 assigned to device CPU, is_swa = 0
-load_tensors: layer  17 assigned to device CPU, is_swa = 0
-load_tensors: layer  18 assigned to device CPU, is_swa = 0
-load_tensors: layer  19 assigned to device CPU, is_swa = 0
-load_tensors: layer  20 assigned to device CPU, is_swa = 0
-load_tensors: layer  21 assigned to device CPU, is_swa = 0
-load_tensors: layer  22 assigned to device CPU, is_swa = 0
-load_tensors: layer  23 assigned to device CPU, is_swa = 0
-load_tensors: layer  24 assigned to device CPU, is_swa = 0
-load_tensors: layer  25 assigned to device CPU, is_swa = 0
-load_tensors: layer  26 assigned to device CPU, is_swa = 0
-load_tensors: layer  27 assigned to device CPU, is_swa = 0
-load_tensors: layer  28 assigned to device CPU, is_swa = 0
-load_tensors: layer  29 assigned to device CPU, is_swa = 0
-load_tensors: layer  30 assigned to device CPU, is_swa = 0
-load_tensors: layer  31 assigned to device CPU, is_swa = 0
-load_tensors: layer  32 assigned to device CPU, is_swa = 0
-load_tensors: tensor 'token_embd.weight' (q4_K) (and 324 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
-load_tensors:   CPU_Mapped model buffer size =  1704.63 MiB
-....................................................................................
-llama_context: constructing llama_context
-llama_context: n_seq_max     = 1
-llama_context: n_ctx         = 2048
-llama_context: n_ctx_per_seq = 2048
-llama_context: n_batch       = 512
-llama_context: n_ubatch      = 512
-llama_context: causal_attn   = 1
-llama_context: flash_attn    = 0
-llama_context: freq_base     = 10000.0
-llama_context: freq_scale    = 1
-set_abort_callback: call
-llama_context:        CPU  output buffer size =     0.20 MiB
-create_memory: n_ctx = 2048 (padded)
-llama_kv_cache_unified: layer   0: dev = CPU
-llama_kv_cache_unified: layer   1: dev = CPU
-llama_kv_cache_unified: layer   2: dev = CPU
-llama_kv_cache_unified: layer   3: dev = CPU
-llama_kv_cache_unified: layer   4: dev = CPU
-llama_kv_cache_unified: layer   5: dev = CPU
-llama_kv_cache_unified: layer   6: dev = CPU
-llama_kv_cache_unified: layer   7: dev = CPU
-llama_kv_cache_unified: layer   8: dev = CPU
-llama_kv_cache_unified: layer   9: dev = CPU
-llama_kv_cache_unified: layer  10: dev = CPU
-llama_kv_cache_unified: layer  11: dev = CPU
-llama_kv_cache_unified: layer  12: dev = CPU
-llama_kv_cache_unified: layer  13: dev = CPU
-llama_kv_cache_unified: layer  14: dev = CPU
-llama_kv_cache_unified: layer  15: dev = CPU
-llama_kv_cache_unified: layer  16: dev = CPU
-llama_kv_cache_unified: layer  17: dev = CPU
-llama_kv_cache_unified: layer  18: dev = CPU
-llama_kv_cache_unified: layer  19: dev = CPU
-llama_kv_cache_unified: layer  20: dev = CPU
-llama_kv_cache_unified: layer  21: dev = CPU
-llama_kv_cache_unified: layer  22: dev = CPU
-llama_kv_cache_unified: layer  23: dev = CPU
-llama_kv_cache_unified: layer  24: dev = CPU
-llama_kv_cache_unified: layer  25: dev = CPU
-llama_kv_cache_unified: layer  26: dev = CPU
-llama_kv_cache_unified: layer  27: dev = CPU
-llama_kv_cache_unified: layer  28: dev = CPU
-llama_kv_cache_unified: layer  29: dev = CPU
-llama_kv_cache_unified: layer  30: dev = CPU
-llama_kv_cache_unified: layer  31: dev = CPU
-llama_kv_cache_unified:        CPU KV buffer size =   640.00 MiB
-llama_kv_cache_unified: size =  640.00 MiB (  2048 cells,  32 layers,  1 seqs), K (f16):  320.00 MiB, V (f16):  320.00 MiB
-llama_kv_cache_unified: LLAMA_SET_ROWS=0, using old ggml_cpy() method for backwards compatibility
-llama_context: enumerating backends
-llama_context: backend_ptrs.size() = 1
-llama_context: max_nodes = 65536
-llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
-graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
-graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-llama_context:        CPU compute buffer size =   162.01 MiB
-llama_context: graph nodes  = 1257
-llama_context: graph splits = 1
-CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
-Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
-Using fallback chat format: llama-2
-llama_perf_context_print:        load time =     153.88 ms
-llama_perf_context_print: prompt eval time =     153.75 ms /     2 tokens (   76.87 ms per token,    13.01 tokens per second)
-llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:       total time =     154.44 ms /     3 tokens
-INFO:     Started server process [1]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-🧠 Modelo cargado en 3,302 ms (CPU)
-INFO:     127.0.0.1:36930 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:41730 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:37202 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49282 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:39078 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40016 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:53628 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33956 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:46460 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43188 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:54068 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51754 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:54360 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55740 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:45634 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44740 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:46040 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33750 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:52852 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35712 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:56398 - "GET /health HTTP/1.1" 200 OK
+docker compose logs -f llm_docs-mcp
+llm_docs-mcp  | ✅ Qdrant listo.
+llm_docs-mcp  | ✅  Colección creada: munbot_docs
+llm_docs-mcp  | INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+llm_docs-mcp  | INFO:__main__:Cargando y procesando documentos...
+llm_docs-mcp  | INFO:__main__:Generando embeddings para 476 chunks...
+llm_docs-mcp  | /usr/local/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+llm_docs-mcp  |   return forward_call(*args, **kwargs)
+llm_docs-mcp  | INFO:__main__:Subiendo puntos a Qdrant...
+llm_docs-mcp  | INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
+llm_docs-mcp  | INFO:__main__:✅ Indexación completada. 476 puntos subidos a la colección 'munbot_docs'.
+llm_docs-mcp  | 🧠 Modelo cargado en 3,143 ms (CPU)
+llm_docs-mcp  | llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
+llm_docs-mcp  | llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llm_docs-mcp  | llama_model_loader: - kv   0:                       general.architecture str              = phi2
+llm_docs-mcp  | llama_model_loader: - kv   1:                               general.name str              = Phi2
+llm_docs-mcp  | llama_model_loader: - kv   2:                        phi2.context_length u32              = 2048
+llm_docs-mcp  | llama_model_loader: - kv   3:                      phi2.embedding_length u32              = 2560
+llm_docs-mcp  | llama_model_loader: - kv   4:                   phi2.feed_forward_length u32              = 10240
+llm_docs-mcp  | llama_model_loader: - kv   5:                           phi2.block_count u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv   6:                  phi2.attention.head_count u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv   7:               phi2.attention.head_count_kv u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv   8:          phi2.attention.layer_norm_epsilon f32              = 0.000010
+llm_docs-mcp  | llama_model_loader: - kv   9:                  phi2.rope.dimension_count u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv  10:                          general.file_type u32              = 15
+llm_docs-mcp  | llama_model_loader: - kv  11:               tokenizer.ggml.add_bos_token bool             = false
+llm_docs-mcp  | llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = gpt2
+llm_docs-mcp  | llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,51200]   = ["!", "\"", "#", "$", "%", "&", "'", ...
+llm_docs-mcp  | llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr[i32,51200]   = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llm_docs-mcp  | llama_model_loader: - kv  15:                      tokenizer.ggml.merges arr[str,50000]   = ["Ġ t", "Ġ a", "h e", "i n", "r e",...
+llm_docs-mcp  | llama_model_loader: - kv  16:                tokenizer.ggml.bos_token_id u32              = 50256
+llm_docs-mcp  | llama_model_loader: - kv  17:                tokenizer.ggml.eos_token_id u32              = 50256
+llm_docs-mcp  | llama_model_loader: - kv  18:            tokenizer.ggml.unknown_token_id u32              = 50256
+llm_docs-mcp  | llama_model_loader: - kv  19:               general.quantization_version u32              = 2
+llm_docs-mcp  | llama_model_loader: - type  f32:  195 tensors
+llm_docs-mcp  | llama_model_loader: - type q4_K:   81 tensors
+llm_docs-mcp  | llama_model_loader: - type q5_K:   32 tensors
+llm_docs-mcp  | llama_model_loader: - type q6_K:   17 tensors
+llm_docs-mcp  | print_info: file format = GGUF V3 (latest)
+llm_docs-mcp  | print_info: file type   = Q4_K - Medium
+llm_docs-mcp  | print_info: file size   = 1.66 GiB (5.14 BPW) 
+llm_docs-mcp  | load: missing pre-tokenizer type, using: 'default'
+llm_docs-mcp  | load:                                             
+llm_docs-mcp  | load: ************************************        
+llm_docs-mcp  | load: GENERATION QUALITY WILL BE DEGRADED!        
+llm_docs-mcp  | load: CONSIDER REGENERATING THE MODEL             
+llm_docs-mcp  | load: ************************************        
+llm_docs-mcp  | load:                                             
+llm_docs-mcp  | init_tokenizer: initializing tokenizer for type 2
+llm_docs-mcp  | load: special tokens cache size = 944
+llm_docs-mcp  | load: token to piece cache size = 0.3151 MB
+llm_docs-mcp  | print_info: arch             = phi2
+llm_docs-mcp  | print_info: vocab_only       = 0
+llm_docs-mcp  | print_info: n_ctx_train      = 2048
+llm_docs-mcp  | print_info: n_embd           = 2560
+llm_docs-mcp  | print_info: n_layer          = 32
+llm_docs-mcp  | print_info: n_head           = 32
+llm_docs-mcp  | print_info: n_head_kv        = 32
+llm_docs-mcp  | print_info: n_rot            = 32
+llm_docs-mcp  | print_info: n_swa            = 0
+llm_docs-mcp  | print_info: is_swa_any       = 0
+llm_docs-mcp  | print_info: n_embd_head_k    = 80
+llm_docs-mcp  | print_info: n_embd_head_v    = 80
+llm_docs-mcp  | print_info: n_gqa            = 1
+llm_docs-mcp  | print_info: n_embd_k_gqa     = 2560
+llm_docs-mcp  | print_info: n_embd_v_gqa     = 2560
+llm_docs-mcp  | print_info: f_norm_eps       = 1.0e-05
+llm_docs-mcp  | print_info: f_norm_rms_eps   = 0.0e+00
+llm_docs-mcp  | print_info: f_clamp_kqv      = 0.0e+00
+llm_docs-mcp  | print_info: f_max_alibi_bias = 0.0e+00
+llm_docs-mcp  | print_info: f_logit_scale    = 0.0e+00
+llm_docs-mcp  | print_info: f_attn_scale     = 0.0e+00
+llm_docs-mcp  | print_info: n_ff             = 10240
+llm_docs-mcp  | print_info: n_expert         = 0
+llm_docs-mcp  | print_info: n_expert_used    = 0
+llm_docs-mcp  | print_info: causal attn      = 1
+llm_docs-mcp  | print_info: pooling type     = 0
+llm_docs-mcp  | print_info: rope type        = 2
+llm_docs-mcp  | print_info: rope scaling     = linear
+llm_docs-mcp  | print_info: freq_base_train  = 10000.0
+llm_docs-mcp  | print_info: freq_scale_train = 1
+llm_docs-mcp  | print_info: n_ctx_orig_yarn  = 2048
+llm_docs-mcp  | print_info: rope_finetuned   = unknown
+llm_docs-mcp  | print_info: model type       = 3B
+llm_docs-mcp  | print_info: model params     = 2.78 B
+llm_docs-mcp  | print_info: general.name     = Phi2
+llm_docs-mcp  | print_info: vocab type       = BPE
+llm_docs-mcp  | print_info: n_vocab          = 51200
+llm_docs-mcp  | print_info: n_merges         = 50000
+llm_docs-mcp  | print_info: BOS token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: EOS token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: EOT token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: UNK token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: LF token         = 198 'Ċ'
+llm_docs-mcp  | print_info: EOG token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: max token length = 256
+llm_docs-mcp  | load_tensors: loading model tensors, this can take a while... (mmap = true)
+llm_docs-mcp  | load_tensors: layer   0 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   1 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   2 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   3 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   4 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   5 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   6 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   7 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   8 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   9 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  10 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  11 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  12 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  13 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  14 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  15 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  16 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  17 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  18 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  19 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  20 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  21 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  22 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  23 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  24 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  25 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  26 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  27 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  28 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  29 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  30 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  31 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  32 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: tensor 'token_embd.weight' (q4_K) (and 324 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
+llm_docs-mcp  | load_tensors:   CPU_Mapped model buffer size =  1704.63 MiB
+llm_docs-mcp  | ....................................................................................
+llm_docs-mcp  | llama_context: constructing llama_context
+llm_docs-mcp  | llama_context: n_seq_max     = 1
+llm_docs-mcp  | llama_context: n_ctx         = 2048
+llm_docs-mcp  | llama_context: n_ctx_per_seq = 2048
+llm_docs-mcp  | llama_context: n_batch       = 512
+llm_docs-mcp  | llama_context: n_ubatch      = 512
+llm_docs-mcp  | llama_context: causal_attn   = 1
+llm_docs-mcp  | llama_context: flash_attn    = 0
+llm_docs-mcp  | llama_context: freq_base     = 10000.0
+llm_docs-mcp  | llama_context: freq_scale    = 1
+llm_docs-mcp  | set_abort_callback: call
+llm_docs-mcp  | llama_context:        CPU  output buffer size =     0.20 MiB
+llm_docs-mcp  | create_memory: n_ctx = 2048 (padded)
+llm_docs-mcp  | llama_kv_cache_unified: layer   0: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   1: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   2: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   3: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   4: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   5: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   6: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   7: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   8: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   9: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  10: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  11: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  12: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  13: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  14: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  15: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  16: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  17: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  18: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  19: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  20: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  21: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  22: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  23: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  24: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  25: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  26: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  27: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  28: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  29: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  30: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  31: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified:        CPU KV buffer size =   640.00 MiB
+llm_docs-mcp  | llama_kv_cache_unified: size =  640.00 MiB (  2048 cells,  32 layers,  1 seqs), K (f16):  320.00 MiB, V (f16):  320.00 MiB
+llm_docs-mcp  | llama_kv_cache_unified: LLAMA_SET_ROWS=0, using old ggml_cpy() method for backwards compatibility
+llm_docs-mcp  | llama_context: enumerating backends
+llm_docs-mcp  | llama_context: backend_ptrs.size() = 1
+llm_docs-mcp  | llama_context: max_nodes = 65536
+llm_docs-mcp  | llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
+llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+llm_docs-mcp  | llama_context:        CPU compute buffer size =   162.01 MiB
+llm_docs-mcp  | llama_context: graph nodes  = 1257
+llm_docs-mcp  | llama_context: graph splits = 1
+llm_docs-mcp  | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+llm_docs-mcp  | Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
+llm_docs-mcp  | Using fallback chat format: llama-2
+llm_docs-mcp  | llama_perf_context_print:        load time =     138.38 ms
+llm_docs-mcp  | llama_perf_context_print: prompt eval time =     138.25 ms /     2 tokens (   69.12 ms per token,    14.47 tokens per second)
+llm_docs-mcp  | llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
+llm_docs-mcp  | llama_perf_context_print:       total time =     138.86 ms /     3 tokens
+llm_docs-mcp  | llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
+llm_docs-mcp  | llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llm_docs-mcp  | llama_model_loader: - kv   0:                       general.architecture str              = phi2
+llm_docs-mcp  | llama_model_loader: - kv   1:                               general.name str              = Phi2
+llm_docs-mcp  | llama_model_loader: - kv   2:                        phi2.context_length u32              = 2048
+llm_docs-mcp  | llama_model_loader: - kv   3:                      phi2.embedding_length u32              = 2560
+llm_docs-mcp  | llama_model_loader: - kv   4:                   phi2.feed_forward_length u32              = 10240
+llm_docs-mcp  | llama_model_loader: - kv   5:                           phi2.block_count u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv   6:                  phi2.attention.head_count u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv   7:               phi2.attention.head_count_kv u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv   8:          phi2.attention.layer_norm_epsilon f32              = 0.000010
+llm_docs-mcp  | llama_model_loader: - kv   9:                  phi2.rope.dimension_count u32              = 32
+llm_docs-mcp  | llama_model_loader: - kv  10:                          general.file_type u32              = 15
+llm_docs-mcp  | llama_model_loader: - kv  11:               tokenizer.ggml.add_bos_token bool             = false
+llm_docs-mcp  | llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = gpt2
+llm_docs-mcp  | llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,51200]   = ["!", "\"", "#", "$", "%", "&", "'", ...
+llm_docs-mcp  | llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr[i32,51200]   = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llm_docs-mcp  | llama_model_loader: - kv  15:                      tokenizer.ggml.merges arr[str,50000]   = ["Ġ t", "Ġ a", "h e", "i n", "r e",...
+llm_docs-mcp  | llama_model_loader: - kv  16:                tokenizer.ggml.bos_token_id u32              = 50256
+llm_docs-mcp  | llama_model_loader: - kv  17:                tokenizer.ggml.eos_token_id u32              = 50256
+llm_docs-mcp  | llama_model_loader: - kv  18:            tokenizer.ggml.unknown_token_id u32              = 50256
+llm_docs-mcp  | llama_model_loader: - kv  19:               general.quantization_version u32              = 2
+llm_docs-mcp  | llama_model_loader: - type  f32:  195 tensors
+llm_docs-mcp  | llama_model_loader: - type q4_K:   81 tensors
+llm_docs-mcp  | llama_model_loader: - type q5_K:   32 tensors
+llm_docs-mcp  | llama_model_loader: - type q6_K:   17 tensors
+llm_docs-mcp  | print_info: file format = GGUF V3 (latest)
+llm_docs-mcp  | print_info: file type   = Q4_K - Medium
+llm_docs-mcp  | print_info: file size   = 1.66 GiB (5.14 BPW) 
+llm_docs-mcp  | load: missing pre-tokenizer type, using: 'default'
+llm_docs-mcp  | load:                                             
+llm_docs-mcp  | load: ************************************        
+llm_docs-mcp  | load: GENERATION QUALITY WILL BE DEGRADED!        
+llm_docs-mcp  | load: CONSIDER REGENERATING THE MODEL             
+llm_docs-mcp  | load: ************************************        
+llm_docs-mcp  | load:                                             
+llm_docs-mcp  | init_tokenizer: initializing tokenizer for type 2
+llm_docs-mcp  | load: special tokens cache size = 944
+llm_docs-mcp  | load: token to piece cache size = 0.3151 MB
+llm_docs-mcp  | print_info: arch             = phi2
+llm_docs-mcp  | print_info: vocab_only       = 0
+llm_docs-mcp  | print_info: n_ctx_train      = 2048
+llm_docs-mcp  | print_info: n_embd           = 2560
+llm_docs-mcp  | print_info: n_layer          = 32
+llm_docs-mcp  | print_info: n_head           = 32
+llm_docs-mcp  | print_info: n_head_kv        = 32
+llm_docs-mcp  | print_info: n_rot            = 32
+llm_docs-mcp  | print_info: n_swa            = 0
+llm_docs-mcp  | print_info: is_swa_any       = 0
+llm_docs-mcp  | print_info: n_embd_head_k    = 80
+llm_docs-mcp  | print_info: n_embd_head_v    = 80
+llm_docs-mcp  | print_info: n_gqa            = 1
+llm_docs-mcp  | print_info: n_embd_k_gqa     = 2560
+llm_docs-mcp  | print_info: n_embd_v_gqa     = 2560
+llm_docs-mcp  | print_info: f_norm_eps       = 1.0e-05
+llm_docs-mcp  | print_info: f_norm_rms_eps   = 0.0e+00
+llm_docs-mcp  | print_info: f_clamp_kqv      = 0.0e+00
+llm_docs-mcp  | print_info: f_max_alibi_bias = 0.0e+00
+llm_docs-mcp  | print_info: f_logit_scale    = 0.0e+00
+llm_docs-mcp  | print_info: f_attn_scale     = 0.0e+00
+llm_docs-mcp  | print_info: n_ff             = 10240
+llm_docs-mcp  | print_info: n_expert         = 0
+llm_docs-mcp  | print_info: n_expert_used    = 0
+llm_docs-mcp  | print_info: causal attn      = 1
+llm_docs-mcp  | print_info: pooling type     = 0
+llm_docs-mcp  | print_info: rope type        = 2
+llm_docs-mcp  | print_info: rope scaling     = linear
+llm_docs-mcp  | print_info: freq_base_train  = 10000.0
+llm_docs-mcp  | print_info: freq_scale_train = 1
+llm_docs-mcp  | print_info: n_ctx_orig_yarn  = 2048
+llm_docs-mcp  | print_info: rope_finetuned   = unknown
+llm_docs-mcp  | print_info: model type       = 3B
+llm_docs-mcp  | print_info: model params     = 2.78 B
+llm_docs-mcp  | print_info: general.name     = Phi2
+llm_docs-mcp  | print_info: vocab type       = BPE
+llm_docs-mcp  | print_info: n_vocab          = 51200
+llm_docs-mcp  | print_info: n_merges         = 50000
+llm_docs-mcp  | print_info: BOS token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: EOS token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: EOT token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: UNK token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: LF token         = 198 'Ċ'
+llm_docs-mcp  | print_info: EOG token        = 50256 '<|endoftext|>'
+llm_docs-mcp  | print_info: max token length = 256
+llm_docs-mcp  | load_tensors: loading model tensors, this can take a while... (mmap = true)
+llm_docs-mcp  | load_tensors: layer   0 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   1 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   2 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   3 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   4 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   5 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   6 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   7 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   8 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer   9 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  10 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  11 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  12 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  13 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  14 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  15 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  16 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  17 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  18 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  19 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  20 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  21 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  22 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  23 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  24 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  25 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  26 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  27 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  28 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  29 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  30 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  31 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: layer  32 assigned to device CPU, is_swa = 0
+llm_docs-mcp  | load_tensors: tensor 'token_embd.weight' (q4_K) (and 324 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
+llm_docs-mcp  | load_tensors:   CPU_Mapped model buffer size =  1704.63 MiB
+llm_docs-mcp  | ....................................................................................
+llm_docs-mcp  | llama_context: constructing llama_context
+llm_docs-mcp  | llama_context: n_seq_max     = 1
+llm_docs-mcp  | llama_context: n_ctx         = 2048
+llm_docs-mcp  | llama_context: n_ctx_per_seq = 2048
+llm_docs-mcp  | llama_context: n_batch       = 512
+llm_docs-mcp  | llama_context: n_ubatch      = 512
+llm_docs-mcp  | llama_context: causal_attn   = 1
+llm_docs-mcp  | llama_context: flash_attn    = 0
+llm_docs-mcp  | llama_context: freq_base     = 10000.0
+llm_docs-mcp  | llama_context: freq_scale    = 1
+llm_docs-mcp  | set_abort_callback: call
+llm_docs-mcp  | llama_context:        CPU  output buffer size =     0.20 MiB
+llm_docs-mcp  | create_memory: n_ctx = 2048 (padded)
+llm_docs-mcp  | llama_kv_cache_unified: layer   0: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   1: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   2: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   3: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   4: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   5: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   6: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   7: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   8: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer   9: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  10: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  11: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  12: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  13: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  14: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  15: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  16: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  17: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  18: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  19: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  20: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  21: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  22: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  23: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  24: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  25: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  26: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  27: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  28: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  29: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  30: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified: layer  31: dev = CPU
+llm_docs-mcp  | llama_kv_cache_unified:        CPU KV buffer size =   640.00 MiB
+llm_docs-mcp  | llama_kv_cache_unified: size =  640.00 MiB (  2048 cells,  32 layers,  1 seqs), K (f16):  320.00 MiB, V (f16):  320.00 MiB
+llm_docs-mcp  | llama_kv_cache_unified: LLAMA_SET_ROWS=0, using old ggml_cpy() method for backwards compatibility
+llm_docs-mcp  | llama_context: enumerating backends
+llm_docs-mcp  | llama_context: backend_ptrs.size() = 1
+llm_docs-mcp  | llama_context: max_nodes = 65536
+llm_docs-mcp  | llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
+llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+llm_docs-mcp  | llama_context:        CPU compute buffer size =   162.01 MiB
+llm_docs-mcp  | llama_context: graph nodes  = 1257
+llm_docs-mcp  | llama_context: graph splits = 1
+llm_docs-mcp  | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+llm_docs-mcp  | Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
+llm_docs-mcp  | Using fallback chat format: llama-2
+llm_docs-mcp  | llama_perf_context_print:        load time =     153.17 ms
+llm_docs-mcp  | llama_perf_context_print: prompt eval time =     153.00 ms /     2 tokens (   76.50 ms per token,    13.07 tokens per second)
+llm_docs-mcp  | llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
+llm_docs-mcp  | llama_perf_context_print:       total time =     153.69 ms /     3 tokens
+llm_docs-mcp  | INFO:     Started server process [1]
+llm_docs-mcp  | INFO:     Waiting for application startup.
+llm_docs-mcp  | INFO:     Application startup complete.
+llm_docs-mcp  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+llm_docs-mcp  | 🧠 Modelo cargado en 3,312 ms (CPU)
+llm_docs-mcp  | INFO:     127.0.0.1:33926 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41344 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:60754 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55462 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46944 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33698 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:53830 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:53434 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38182 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44876 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59932 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33086 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:33206 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48752 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:42192 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:37782 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:39574 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:41968 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46950 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:35572 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:45832 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33106 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:57132 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36990 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36038 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36404 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:35072 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:37228 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41374 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:46348 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41664 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33564 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36794 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43922 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44224 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43052 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:33660 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49992 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36196 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48984 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:42742 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:41840 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:48932 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36178 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:49104 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:38014 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:48720 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44358 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59374 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45828 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:42380 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43444 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:40066 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:32810 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:39644 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51382 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36332 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:39916 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58378 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:39300 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44370 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:57328 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52406 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43974 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56380 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:37012 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36398 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:39316 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52122 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:56034 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58410 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:50064 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:48828 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:37416 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38074 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44952 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41258 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:52082 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51816 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:47082 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58600 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:52258 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:35540 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:56820 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36252 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:40008 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:47644 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:57990 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59478 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:53412 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:49952 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48074 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:33086 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55512 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:48334 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:34826 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38042 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:50224 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:55834 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:40698 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:35328 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55400 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44544 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:34108 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44398 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55326 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:45112 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:35300 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59626 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:56310 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41230 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55602 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:45224 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:41584 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59874 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44008 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52550 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49524 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:50468 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51736 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:32902 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51054 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41748 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44966 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:33968 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:41586 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41268 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55940 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:60260 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43990 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46118 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:41642 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36986 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:53402 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:37098 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:40964 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59154 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51860 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41334 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44040 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:39912 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:47804 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38516 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:60464 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:39972 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36970 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:34732 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44722 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46248 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49392 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:54450 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49234 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38020 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:47980 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38190 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33730 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52946 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48862 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51572 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:57634 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:45944 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49438 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59696 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:52050 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:54518 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:40358 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46874 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:37914 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51684 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43256 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51928 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:60794 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:45788 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:54946 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51546 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:42402 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56862 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49638 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:55282 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:32910 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44850 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:56744 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56552 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:57816 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46802 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43904 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38818 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:53348 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51016 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:47968 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:33496 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:42478 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59764 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:53098 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:34512 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:50952 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51372 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45510 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46234 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55166 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58420 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:34828 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46194 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48254 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:40118 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:47552 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:47686 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51128 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:38408 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43110 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59120 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:58542 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:48366 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:39554 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:40216 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:42182 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:35526 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45122 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59716 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:35310 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:55096 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:50048 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58090 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:38910 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:49592 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:53154 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:55304 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44926 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56042 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:58548 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:50408 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49244 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:42302 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48390 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36138 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:38822 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:50922 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:46560 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:47634 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33772 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:32960 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:37212 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56442 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:54104 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46512 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:42080 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44330 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:52082 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59370 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49596 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:57444 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:46450 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36156 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55560 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59450 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:42172 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:60340 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:46708 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:59370 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51144 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:40006 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33114 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:47744 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:60054 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:48138 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48932 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:45914 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43670 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41120 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45770 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:43018 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:56134 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:32904 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:41178 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:32876 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:40720 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:54418 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49206 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:50120 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33506 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:49896 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:57510 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52794 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:42112 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52910 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:47728 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:50530 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36386 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:45096 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:35820 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56238 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43310 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41784 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:46810 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58040 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:54448 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56296 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44438 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:33884 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49542 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:56490 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:53076 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:39164 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | llama_perf_context_print:        load time =     153.17 ms
+llm_docs-mcp  | llama_perf_context_print: prompt eval time =    7538.36 ms /   130 tokens (   57.99 ms per token,    17.25 tokens per second)
+llm_docs-mcp  | llama_perf_context_print:        eval time =   13588.74 ms /   149 runs   (   91.20 ms per token,    10.96 tokens per second)
+llm_docs-mcp  | llama_perf_context_print:       total time =   21190.28 ms /   279 tokens
+llm_docs-mcp  | INFO:     172.18.0.10:39170 - "POST /tools/classify_intent_llm HTTP/1.1" 200 OK
+llm_docs-mcp  | Llama.generate: 129 prefix-match hit, remaining 1 prompt tokens to eval
+llm_docs-mcp  | llama_perf_context_print:        load time =     153.17 ms
+llm_docs-mcp  | llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llm_docs-mcp  | llama_perf_context_print:        eval time =   13559.48 ms /   150 runs   (   90.40 ms per token,    11.06 tokens per second)
+llm_docs-mcp  | llama_perf_context_print:       total time =   13621.92 ms /   151 tokens
+llm_docs-mcp  | INFO:     172.18.0.10:47974 - "POST /tools/classify_intent_llm HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48100 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44156 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33772 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:34906 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:34286 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:54188 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49546 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52816 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43440 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:57402 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:38488 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52922 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:57252 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:50600 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45730 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:51286 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:59068 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:36122 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51680 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:47426 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:55088 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:60334 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:34604 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:55126 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:35162 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58094 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45396 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:52278 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36504 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46928 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:54158 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41242 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:40136 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:48672 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51088 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:39050 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48012 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:32880 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:60836 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:44924 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33058 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:42676 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:60510 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46384 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:46472 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58996 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:57312 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:49254 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:40722 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:54470 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48654 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:46038 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33698 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:43556 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:51612 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:53096 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45880 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58956 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:48956 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58624 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36670 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:53204 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49586 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:33052 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45200 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41232 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:42878 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:41108 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:44270 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:40588 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:36760 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:57212 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:49074 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:39102 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:33238 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:58826 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:60424 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:40768 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43076 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:43090 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:45454 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:34238 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     127.0.0.1:43936 - "GET /health HTTP/1.1" 200 OK
+llm_docs-mcp  | INFO:     172.18.0.10:49848 - "GET /health HTTP/1.1" 200 OK
