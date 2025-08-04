@@ -61,6 +61,11 @@ from chilean_rut import is_valid, format_rut
 from utils.phone_utils import validar_telefono_movil
 
 from utils.text import normalize_text
+try:
+    from utils.query_rewriter import rewrite_query
+except Exception:
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
+    from query_rewriter import rewrite_query
 
 
 
@@ -155,6 +160,11 @@ def load_document_topics_from_files(docs_path: str) -> Dict[str, str]:
                         topic_map[alias] = filename
         except (json.JSONDecodeError, IOError) as e:
             logging.warning(f"Could not load or parse {filename}: {e}")
+    # Reglas adicionales específicas
+    topic_map.update({
+        "permiso aterrizaje": "RAG-doc_tramites.json",
+        "aterrizaje": "RAG-doc_tramites.json",
+    })
     return topic_map
 
 DOCS_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp', 'documents')
@@ -1499,14 +1509,21 @@ def orchestrate(
     
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
     # Primero intento semántico, si no, por palabra clave.
-    document_topic = semantic_router.get_document_topic(user_input, threshold=0.6)
+    document_topic = semantic_router.get_document_topic(user_input, threshold=0.5)
     if not document_topic:
         document_topic = document_router.get_document_topic(user_input)
-    
+
     if document_topic:
-        logger.info(f"Consulta enrutada al documento '{document_topic}' por tema.", extra={"trace_id": trace_id})
-        # Guardamos el documento en el contexto para que el flujo RAG lo utilice.
-        context_manager.update_context_data(sid, {"selected_document": document_topic})
+        logger.info(
+            f"Consulta enrutada al documento '{document_topic}' por tema.",
+            extra={"trace_id": trace_id},
+        )
+        norm_inp = normalize_text(user_input)
+        if document_topic == "RAG-doc_tramites.json" and "permiso" in norm_inp and "aterrizaje" in norm_inp:
+            context_manager.update_context_data(sid, {"selected_procedure_id": "PAT-018"})
+        if not is_generic_doc_query(user_input) and not context_manager.get_selected_document(sid):
+            # Guardamos el documento solo si la consulta es específica y no había uno previo
+            context_manager.update_context_data(sid, {"selected_document": document_topic})
 
     user_norm = normalize_text(user_input)
 
@@ -1769,10 +1786,10 @@ def orchestrate(
             logger.info(
                 f"Intent detected as doc-buscar_fragmento_documento. Routing to doc-generar_respuesta_llm with query: {user_input}"
             )
-        history = context_manager.get_history(session_id)
-        selected = context_manager.get_selected_document(session_id)
+        history = context_manager.get_history(sid)
+        selected = context_manager.get_selected_document(sid)
         params = {}
-        ctx_data = context_manager.get_context(session_id)
+        ctx_data = context_manager.get_context(sid)
         if ctx_data.get("selected_procedure_id"):
             params["procedure_id"] = ctx_data.get("selected_procedure_id")
         if ctx_data.get("selected_department_id"):
@@ -1782,16 +1799,16 @@ def orchestrate(
         if is_generic_doc_query(user_input) and not selected:
             doc_name = selected or extract_document_name(user_input)
             if doc_name:
-                context_manager.set_selected_document(session_id, doc_name)
-            if doc_name and is_full_info_request(user_input):
+                context_manager.set_selected_document(sid, doc_name)
+            if doc_name and selected and is_full_info_request(user_input):
                 summary = resumir_documento(doc_name)
                 if summary:
-                    context_manager.update_context(session_id, user_input, summary)
+                    context_manager.update_context(sid, user_input, summary)
                     return {"respuesta": summary, "session_id": sid}
             doc_ref = doc_name or "el documento"
             msg = (f"¿Qué información específica deseas sobre {doc_ref}? "
                    "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia.")
-            context_manager.update_context(session_id, user_input, msg)
+            context_manager.update_context(sid, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
         # En consultas genéricas sin doc seleccionado, llamar igualmente a RAG
         # para intentar recuperar contexto y evitar bucles de aclaración.
@@ -1805,7 +1822,7 @@ def orchestrate(
         latency = (time.perf_counter() - start_time) * 1000
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
-            context_manager.clear_context_field(session_id, "doc_actual")
+            context_manager.clear_context_field(sid, "doc_actual")
             return {"respuesta": err["texto"], "session_id": sid}
         answer = (
             service_resp.get("respuesta")
@@ -1817,7 +1834,7 @@ def orchestrate(
             "Respuesta generada",
             extra={
                 "trace_id": trace_id,
-                "session_id": session_id,
+                "session_id": sid,
                 "intent": "doc-generar_respuesta_llm",
                 "latency_ms": latency,
                 "fragments": references,
@@ -1831,25 +1848,25 @@ def orchestrate(
             or service_resp.get("hits") == []
         )
         if no_results:
-            context_manager.increment_fallback_count(session_id)
+            context_manager.increment_fallback_count(sid)
             FALLBACK_COUNTER.inc()
-            fallback_count = context_manager.get_fallback_count(session_id)
+            fallback_count = context_manager.get_fallback_count(sid)
             if fallback_count >= 3:
                 answer = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
-                registrar_evento_humano(session_id, user_input, trace_id=session_id)
-                logger.info("Escalamiento a humano", extra={"trace_id": session_id})
+                registrar_evento_humano(sid, user_input, trace_id=sid)
+                logger.info("Escalamiento a humano", extra={"trace_id": sid})
                 HUMAN_ESCALATION_COUNTER.inc()
-                context_manager.update_context(session_id, user_input, answer)
-                return {"respuesta": answer, "session_id": session_id, "escalado": True}
+                context_manager.update_context(sid, user_input, answer)
+                return {"respuesta": answer, "session_id": sid, "escalado": True}
             elif fallback_count == 2:
                 answer = (
                     "Aún no logro entender. Puedo ayudarte con trámites, horarios, reclamos o certificados… ¿prefieres que siga o te conecto a un agente?"
                 )
             else:
                 answer = "No encontré información precisa. ¿Podrías darme más detalles o especificar el trámite?"
-            context_manager.update_context(session_id, user_input, answer)
-            context_manager.clear_context_field(session_id, "doc_actual")
-            return {"respuesta": answer, "session_id": session_id}
+            context_manager.update_context(sid, user_input, answer)
+            context_manager.clear_context_field(sid, "doc_actual")
+            return {"respuesta": answer, "session_id": sid}
         else:
             answer += "\n¿Te fue útil mi respuesta? (Sí/No)"
             context_manager.set_feedback_pending(session_id, None)
