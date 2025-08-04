@@ -28,7 +28,7 @@ class DepartmentRouter:
             departments: List[Dict[str, Any]] = json.load(f)
 
         for dept in departments:
-            dept_id = dept.get("id")
+            dept_id = dept.get("id_chunk") or dept.get("id")
             if not dept_id:
                 continue
             for alias in dept.get("alias", []):
