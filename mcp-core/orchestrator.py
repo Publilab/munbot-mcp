@@ -1511,7 +1511,11 @@ def orchestrate(
     user_norm = normalize_text(user_input)
 
     # --- Verificación de caché de respuestas frecuentes ---
-    cache_key = f"faq_cache:{user_norm}"
+    ctx_cache = context_manager.get_context(sid)
+    cache_doc = ctx_cache.get("selected_document", "")
+    cache_proc = ctx_cache.get("selected_procedure_id", "")
+    cache_dept = ctx_cache.get("selected_department_id", "")
+    cache_key = f"faq_cache:{cache_doc}:{cache_proc}:{cache_dept}:{user_norm}"
     try:
         cached_response_str = redis_client.get(cache_key)
         if cached_response_str:
@@ -1740,27 +1744,8 @@ def orchestrate(
     context_manager.set_last_sentiment(session_id, sentiment)
     # Lógica de fallback y escalación simplificada
     if confidence < 0.6 or sentiment in ["very_negative", "negative"]:
-        context_manager.increment_fallback_count(session_id)
-        FALLBACK_COUNTER.inc()
-        fallback_count = context_manager.get_fallback_count(session_id)
-        if ctx_data.get("selected_document"):
-            params["documento"] = ctx_data.get("selected_document")
-        if fallback_count >= 3 or sentiment == "very_negative":
-            fallback_resp = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
-            registrar_evento_humano(session_id, user_input, trace_id=session_id)
-            logger.info("Escalamiento a humano", extra={"trace_id": session_id})
-            HUMAN_ESCALATION_COUNTER.inc()
-            context_manager.update_context(session_id, user_input, fallback_resp)
-            return {"respuesta": fallback_resp, "session_id": session_id, "escalado": True}
-        elif fallback_count == 2:
-            fallback_resp = (
-                "Aún no logro entender. Puedo ayudarte con trámites, horarios, reclamos o certificados… ¿prefieres que siga o te conecto a un agente?"
-            )
-        else:
-            fallback_resp = "No encontré información precisa. ¿Podrías darme más detalles o especificar el trámite?"
-        context_manager.update_context(session_id, user_input, fallback_resp)
-        context_manager.clear_context_field(session_id, "doc_actual")
-        return {"respuesta": fallback_resp, "session_id": session_id}
+        # Simplificar: delegar al flujo 'unknown/informacion_general' más abajo
+        pass
     else:
         context_manager.reset_fallback_count(session_id)
 
@@ -1808,6 +1793,9 @@ def orchestrate(
                    "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia.")
             context_manager.update_context(session_id, user_input, msg)
             return {"respuesta": msg, "session_id": sid}
+        # En consultas genéricas sin doc seleccionado, llamar igualmente a RAG
+        # para intentar recuperar contexto y evitar bucles de aclaración.
+        # Si falla, el propio microservicio devuelve no_results.
 
         if selected:
             params["documento"] = selected
@@ -1870,21 +1858,26 @@ def orchestrate(
             resp = {"respuesta": answer, "session_id": session_id}
             if references:
                 resp["referencias"] = references
-            
-            # Guardar en caché la respuesta exitosa
-        procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
-        if procedure_id_ctx:
-            params["procedure_id"] = procedure_id_ctx
-        try:
-            redis_client.set(cache_key, json.dumps(resp), ex=3600)  # Cache por 1 hora
-            logger.info(
-                f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id}
-            )
-        except Exception as e:
-            logger.warning(
-                f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id}
-            )
-        return resp
+
+            # Guardar en caché la respuesta exitosa con clave que incluya contexto
+            procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
+            department_id_ctx = context_manager.get_context(sid).get("selected_department_id")
+            cache_ctx = {
+                "doc": selected or "",
+                "proc": procedure_id_ctx or "",
+                "dept": department_id_ctx or "",
+            }
+            cache_key = f"faq_cache:{cache_ctx['doc']}:{cache_ctx['proc']}:{cache_ctx['dept']}:{user_norm}"
+            try:
+                redis_client.set(cache_key, json.dumps(resp), ex=3600)  # Cache por 1 hora
+                logger.info(
+                    f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id}
+                )
+            except Exception as e:
+                logger.warning(
+                    f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id}
+                )
+            return resp
 
     if tool in ["unknown", "informacion_general", "otra"]:
         history = context_manager.get_history(session_id)
@@ -1943,7 +1936,15 @@ def orchestrate(
             if references:
                 resp["referencias"] = references
 
-            # Guardar en caché la respuesta exitosa
+            # Guardar en caché la respuesta exitosa con clave que incluya contexto
+            procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
+            department_id_ctx = context_manager.get_context(sid).get("selected_department_id")
+            cache_ctx = {
+                "doc": selected or "",
+                "proc": procedure_id_ctx or "",
+                "dept": department_id_ctx or "",
+            }
+            cache_key = f"faq_cache:{cache_ctx['doc']}:{cache_ctx['proc']}:{cache_ctx['dept']}:{user_norm}"
             try:
                 redis_client.set(cache_key, json.dumps(resp), ex=3600) # Cache por 1 hora
                 logger.info(f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id})

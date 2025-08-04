@@ -61,7 +61,7 @@ app.add_middleware(
 security = HTTPBasic()
 
 # --- Lista de IPs/Redes permitidas (con soporte para CIDR) ---
-ALLOWED_IPS_STR = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16")
+ALLOWED_IPS_STR = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16,testclient")
 ALLOWED_NETWORKS = []
 ALLOWED_HOSTS = []
 for token in ALLOWED_IPS_STR.split(","):
@@ -76,7 +76,7 @@ for token in ALLOWED_IPS_STR.split(","):
         )
 
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
-LLM_DOCS_MCP_PASSWORD = os.getenv(" LLM_DOCS_MCP_PASSWORD")
+LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Permitir acceso sin restricciones a endpoints públicos como healthcheck
@@ -101,7 +101,7 @@ app.add_middleware(IPWhitelistMiddleware)
 def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
     if LLM_DOCS_MCP_USER and credentials.username != LLM_DOCS_MCP_USER:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    if  LLM_DOCS_MCP_PASSWORD and credentials.password !=  LLM_DOCS_MCP_PASSWORD:
+    if LLM_DOCS_MCP_PASSWORD and credentials.password != LLM_DOCS_MCP_PASSWORD:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
     return credentials
 
@@ -124,6 +124,7 @@ logger.addHandler(log_handler)
 root_logger = logging.getLogger()
 root_logger.setLevel(logging.INFO)
 root_logger.addHandler(stream_handler)
+root_logger.addHandler(log_handler)
 
 # ==== Prometheus metrics ====
 PROM_REGISTRY = CollectorRegistry()
@@ -224,7 +225,8 @@ set_llm_client(llama)
 
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local, usando la configuración del entorno."""
-    return llama.generate(prompt, max_tokens=LLM_MAX_NEW_TOKENS, temperature=0.6, top_p=0.95)
+    max_new = int(os.getenv("LLM_MAX_NEW_TOKENS", LLM_MAX_NEW_TOKENS))
+    return llama.generate(prompt, max_tokens=min(max_new, 96), temperature=0.3, top_p=0.9)
 
 
 # --- Nueva función de auditoría para RAG ---
@@ -335,7 +337,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     # 3.1) Evaluar la similitud del mejor resultado
     score = getattr(hits[0], "score", 0.0) if hits else 0.0
 
-    if not hits or score < QDRANT_SIMILARITY_THRESHOLD:
+    if not hits or score < float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", QDRANT_SIMILARITY_THRESHOLD)):
         logger.info(
             f"Insufficient similarity (score={score}) – fallback triggered",
             extra={"trace_id": trace_id},
@@ -352,7 +354,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     referencias = []
     for h in hits:
         # Opcional: filtrar también los resultados secundarios por score
-        if getattr(h, "score", 1.0) < QDRANT_SIMILARITY_THRESHOLD:
+        if getattr(h, "score", 1.0) < float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", QDRANT_SIMILARITY_THRESHOLD)):
             continue
         payload = getattr(h, "payload", {}) or {}
         texto = payload.get("texto") or payload.get("text")
