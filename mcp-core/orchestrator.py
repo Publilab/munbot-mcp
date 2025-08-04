@@ -21,6 +21,7 @@ import threading
 import time
 import concurrent.futures
 from context_manager import ConversationalContextManager
+from utils.query_rewriter import rewrite_query
 from prometheus_client import (
     Counter,
     CollectorRegistry,
