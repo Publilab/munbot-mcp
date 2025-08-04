@@ -292,7 +292,7 @@ def _clean_output(text: str) -> str:
         text = text[last_inst_pos + len("[/INST]"):]
 
     # Limpiezas adicionales por si acaso.
-    text = re.sub(r"Fuente[s]?:.*", "", text, flags=re.IGNORECASE | re.DOTALL)
+    text = re.sub(r"(?im)^\s*Fuente[s]?:.*$", "", text)
     return text.strip().replace("<s>", "").replace("</s>", "")
 
 
@@ -353,11 +353,14 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         hits = []
 
     # 3.1) Evaluar la similitud del mejor resultado
+    tokens = pregunta.split()
+    base_thr = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5))
+    threshold = 0.45 if len(tokens) <= 3 else base_thr
     score = getattr(hits[0], "score", 0.0) if hits else 0.0
 
-    if not hits or score < float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5)):
+    if not hits or score < threshold:
         logger.info(
-            f"Insufficient similarity (score={score}) – fallback triggered",
+            f"Insufficient similarity (score={score}, threshold={threshold}) – fallback triggered",
             extra={"trace_id": trace_id},
         )
         FALLBACK_COUNTER.inc()
@@ -367,14 +370,19 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             "no_results": True,
         }
 
-    # Referencias y extracción directa para preguntas de contacto
+    # 4) Extraer fragmentos y referencias sin filtrar por score
+    fragments = []
     referencias = []
     for h in hits:
         payload = getattr(h, "payload", {}) or {}
+        texto = payload.get("texto") or payload.get("text")
         fuente = payload.get("fuente") or payload.get("doc")
+        if texto:
+            fragments.append(texto)
         if fuente:
             referencias.append(fuente)
 
+    # Consultas de contacto directas
     question_l = pregunta.lower()
     if department_id:
         if any(k in question_l for k in ["correo", "mail", "email"]):
@@ -390,14 +398,6 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             if val:
                 return {"respuesta": val, "referencias": list(set(referencias)), "no_results": False}
 
-    # 4) Construir contexto a partir de los fragmentos recuperados
-    fragments = []
-    for h in hits:
-        payload = getattr(h, "payload", {}) or {}
-        texto = payload.get("texto") or payload.get("text")
-        if texto:
-            fragments.append(texto)
-
     # Si no se encontraron fragmentos
     if not fragments:
         FALLBACK_COUNTER.inc()
@@ -407,6 +407,17 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             "no_results": True,
         }
 
+    if len(fragments) == 1 and len(fragments[0]) < 80:
+        logger.info("Very short context; asking user to precisar", extra={"trace_id": trace_id})
+        return {
+            "respuesta": "Tengo muy poca información relevante. ¿Podrías detallar qué parte te interesa (requisitos, horario, dirección, correo, utilidad o vigencia)?",
+            "referencias": list(set(referencias)),
+            "no_results": False,
+        }
+
+    max_frags = 5
+    max_chars = 1000
+    fragments = [f[:max_chars] for f in fragments[:max_frags]]
     contexto = "\n".join(fragments)
     # Prompt mejorado con roles claros para el LLM
     # Se instruye parafrasear, usar un tono conversacional y evitar listas.
