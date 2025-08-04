@@ -1,6 +1,8 @@
 import os
 import sys
 import glob
+from procedure_router import ProcedureRouter
+from faq_matcher import FAQMatcher
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import json
 import requests
@@ -24,30 +26,10 @@ from prometheus_client import (
     CollectorRegistry,
     generate_latest,
     CONTENT_TYPE_LATEST,
-        import logging
-        try:
-            # ...existing code...
-            response = requests.post(endpoint_url, json=payload, timeout=timeout)
-            logging.warning(f"[orchestrator] HTTP status: {response.status_code}")
-            logging.warning(f"[orchestrator] HTTP response text: {response.text}")
-            if response.status_code == 200:
-                try:
-                    data = response.json()
-                    logging.warning(f"[orchestrator] HTTP response JSON: {data}")
-                except Exception as json_exc:
-                    logging.error(f"[orchestrator] JSON decode error: {json_exc}")
-                    return "No se recibió respuesta válida del MCP."
-                # ...existing code...
-                result = data.get("respuesta", "No se recibió respuesta válida del MCP.")
-                logging.warning(f"[orchestrator] Valor retornado por handler: {result}")
-                return result
-            else:
-                logging.error(f"[orchestrator] HTTP error status: {response.status_code}")
-                return "No se recibió respuesta válida del MCP."
-        except Exception as e:
-            logging.error(f"[orchestrator] Excepción capturada: {e}", exc_info=True)
-            return "No se recibió respuesta válida del MCP."
-    from classification_utils import classify_reclamo_response
+)
+from department_router import DepartmentRouter
+from document_router import DocumentRouter
+from document_router import SemanticDocumentRouter
 try:
     from utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
@@ -77,7 +59,8 @@ from utils.datetime_utils import (
 from datetime import datetime, date
 from chilean_rut import is_valid, format_rut
 from utils.phone_utils import validar_telefono_movil
-from utils.query_rewriter import rewrite_query
+
+from utils.text import normalize_text
 
 
 

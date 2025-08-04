@@ -1,492 +1,343 @@
 [
-    {
-        "id": "AI-001-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de coordinacion regional",
-        "ministerio": "asuntos_internos",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Coordinación Regional — encargada: Zara Antilles. Dirección: Edificio Consistorial Curoscant, nivel 1313. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-482716592041. Correo: coordinacion.regional@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "coordinacion regional",
-            "departamento de cordinacion regional",
-            "departamento de coordinacion regional",
-            "departamento de cordinacion",
-            "depto de coordinacion regional",
-            "depto de cordinacion",
-            "depto de cordinacion regional"
-        ]
-    },
-    {
-        "id": "AI-002-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de registros ciudadanos",
-        "ministerio": "asuntos internos",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Registro de Ciudadanos — encargada: Zara Antilles. Dirección: Edificio Consistorial Curoscant, nivel 2412. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-953827104658. Correo: registro.ciudadanos@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "registro ciudadanos",
-            "departamento registro ciudadanos",
-            "departamento de registro ciudadanos",
-            "depto registro ciudadanos",
-            "depto de registro ciudadanos",
-            "departamento de registros ciudadanos",
-            "depto de registros ciudadanos"
-        ]
-    },
-    {
-        "id": "CE-101-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de regulacion comercial",
-        "ministerio": "comercio y economia galactica",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Regulación Comercial — encargado: Admiral Ackbar. Dirección: Torre de Comercio, sector E-5377. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-374829105672. Correo: regulacion.comercial@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "regulacion comercial",
-            "departamento de regulacion comercial",
-            "departamento de comercio",
-            "depto de comercio",
-            "depto de regulacion comercial",
-            "departamento de regulaciones comerciales",
-            "depto de regulaciones comerciales"
-        ]
-    },
-    {
-        "id": "CE-102-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de desarrollo economico",
-        "ministerio": "comercio y economia galactica",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Desarrollo Económico — encargado: Admiral Ackbar. Dirección: Fortaleza Ciudad Nube, sector C-981. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-482716592041. Correo: desarrollo.economico@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "desarrollo economico",
-            "departamento de desarrollo economico",
-            "depto de desarrollo economico"
-        ]
-    },
-    {
-        "id": "DG-201-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de estrategia militar",
-        "ministerio": "defensa galactica",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Estrategia Militar — encargado: General Kenobi. Dirección: Cuartel General de la Defensa, sector B-456. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-123456789012. Correo: estrategia.militar@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "estrategia militar",
-            "departameto de estrategia militar",
-            "depto de estrategia militar"
-        ]
-    },
-    {
-        "id": "DG-202-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de logistica y abastecimiento",
-        "ministerio": "defensa_galactica",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Logística y Abastecimiento — encargado: Bail Organa. Dirección: Cuartel General de la Defensa, sector B-501. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-987654321098. Correo: logistica.abastecimiento@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "logistica y abastecimiento",
-            "departamento de logistica y abastecimiento",
-            "depto de logistica y abastecimiento"
-        ]
-    },
-    {
-        "id": "EI-301-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de educacion primaria y secundaria",
-        "ministerio": "educacion e instruccion",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Educación Primaria y Secundaria — encargada: Jocasta Nu. Dirección: Torre Academia Jedi, nivel 3B120. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: educacion@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "educacion primaria y secundaria",
-            "departamento de educacion primaria y secundaria",
-            "depto de educacion primaria y secundaria",
-            "depto de educacion primaria",
-            "depto de educacion secundaria",
-            "departamento de educacion",
-            "departamento de educacion primaria",
-            "departamento de educacion secundaria",
-            "depto de educacion"
-        ]
-    },
-    {
-        "id": "EI-302-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de preservacion cultural",
-        "ministerio": "educacion e instruccion",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Preservación Cultural — encargada: Jocasta Nu. Dirección: Palacio de la Cultura, sector Central. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: preservacion.cultural@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "preservacion cultural",
-            "departamento de preservacion cultural",
-            "depto de preservacion cultural"
-        ]
-    },
-    {
-        "id": "EC-401-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de misiones y exploracion",
-        "ministerio": "exploracion y colonizacion",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Misiones de Exploración — encargada: Hera Syndulla. Dirección: Edificio Exploración Galáctica, sector D-789, ala B. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-564738291056. Correo: misiones.exploracion@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "misiones y exploracion",
-            "departamento de misiones y exploracion",
-            "depto de misiones y exploracion",
-            "departamento de misiones",
-            "depto de misiones",
-            "departamento de exploracion",
-            "depto de exploracion",
-            "departamento de exploracion y misiones",
-            "depto de exploracion y misiones"
-        ]
-    },
-    {
-        "id": "EC-402-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de asentamientos coloniales",
-        "ministerio": "exploracion_colonizacion",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Asentamientos Coloniales y Desarrollo Inmobiliario — encargado: Mace Windu. Dirección: Edificio Exploración Galáctica, sector D-789, ala B. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-564738291056. Correo: asentamientos.coloniales@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "asentamientos coloniales",
-            "departamento de asentamientos coloniales",
-            "depto de asentamientos coloniales",
-            "departamento de asentamientos",
-            "depto de asentamientos",
-            "depto de asentamientos"
-        ]
-    },
-    {
-        "id": "JO-501",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de administración de justicia",
-        "ministerio": "justicia y orden publico",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Administración de Justicia — encargado: Mace Windu. Dirección: Palacio de Justicia, Sector A-123. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: administracion.justicia@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "Direccion": "Palacio de Justicia. Sector A-123",
-        "alias": [
-            "administracion justicia",
-            "departamento de administracion de justicia",
-            "depto de administracion de justicia",
-            "depto de justicia",
-            "departamento de justicia"
-        ]
-    },
-    {
-        "id": "JO-502-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de seguridad publica",
-        "ministerio": "justicia y orden publico",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Seguridad Pública — encargado: Mace Windu. Dirección: Edificio Consistorial Coruscant, Oficina Central de Seguridad, nivel 212. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: seguridad.publica@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "seguridad publica",
-            "departamento de seguridad publica",
-            "depto de seguridad publica",
-            "departamento de seguridad",
-            "depto de seguridad"
-        ]
-    },
-    {
-        "id": "RI-601-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de embajadas y misiones diplomaticas",
-        "ministerio": "relaciones internacionales",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Embajadas y Misiones Diplomáticas — encargada: Mon Mothma. Dirección: Palacio de la Cancillería, nivel 1832. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: embajadas.misiones@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "embajadas y misiones",
-            "departamento de embajadas y misiones",
-            "depto de embajadas y misiones",
-            "depto de embajadas",
-            "depto de misiones",
-            "departamento de embajadas",
-            "departamento de misiones"
-        ]
-    },
-    {
-        "id": "RI-602-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de cooperacion intergalactica",
-        "ministerio": "relaciones internacionales",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Cooperación Intergaláctica — encargada: Mon Mothma. Dirección: Palacio de la Cancillería, nivel 1832. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: cooperacion.intergalactica@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "cooperacion intergalactica",
-            "departamento de cooperacion intergalactica",
-            "depto de cooperacion intergalactica",
-            "departamento de cooperacion",
-            "depto de cooperacion",
-            "departamento de coperacion intergalactica",
-            "depto de coperacion intergalactica"
-        ]
-    },
-    {
-        "id": "SB-701-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de salud publica",
-        "ministerio": "salud y bienestar",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Salud Pública — encargado: Bail Organa. Dirección: Sede Federal de la Salud Intergaláctica, nivel 1. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: salud.publica@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "salud publica",
-            "departamento de salud publica",
-            "depto de salud publica",
-            "departamento de salud",
-            "depto de salud"
-        ]
-    },
-    {
-        "id": "SB-702-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de bienestar social",
-        "ministerio": "salud y bienestar",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Bienestar Social — encargado: Bail Organa. Dirección: Sede Federal de la Salud Intergaláctica, nivel 2. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: bienestar.social@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "bienestar social",
-            "departamento de bienestar social",
-            "depto de bienestar social",
-            "departamento de bienestar",
-            "depto de bienestar"
-        ]
-    },
-    {
-        "id": "TC-801-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de investigacion cientifica",
-        "ministerio": "tecnologia y ciencia",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Investigación Científica — encargado: Galen Erso. Dirección: Torre Holística de la Ciencia, piso 1, ala A. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: investigacion.cientifica@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "investigacion cientifica",
-            "departamento de investigacion cientifica",
-            "depto de investigacion cientifica",
-            "departamento de investigacion",
-            "depto de investigacion"
-        ]
-    },
-    {
-        "id": "TC-802-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de desarrollo tecnologico",
-        "ministerio": "tecnologia y ciencia",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Desarrollo Tecnológico — encargado: Galen Erso. Dirección: Torre Holística de la Ciencia, piso 1, ala B. Horario: lunes a viernes, 08:00–17:00. Teléfono: COM-203948576194. Correo: desarrollo.tecnologico@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:00",
-        "horario_fin": "17:00",
-        "alias": [
-            "desarrollo tecnologico",
-            "departamento de desarrollo tecnologico",
-            "depto de desarrollo tecnologico"
-        ]
-    },
-    {
-        "id": "TC-901-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de transporte interestelar",
-        "ministerio": "transporte y comunicaciones",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Transporte Interestelar — encargado: Qui-Gon Jinn. Dirección: Edificio Consistorial Coruscant, nivel 5143. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: transporte.interestelar@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "transporte interestelar",
-            "departamento de transporte interestelar",
-            "depto de transporte interestelar",
-            "departamento de transporte",
-            "depto de transporte"
-        ]
-    },
-    {
-        "id": "TC-902-contacto",
-        "doc": "Directorio Departamental Curoscant",
-        "departamento": "departamento de comunicaciones galacticas",
-        "ministerio": "transporte y comunicaciones",
-        "tipo_fragmento": "contacto",
-        "texto": "Departamento de Comunicaciones Galácticas — encargado: Bail Organa. Dirección: Edificio Consistorial Coruscant, nivel 5143. Horario: lunes a viernes, 08:30–13:00. Teléfono: COM-203948576194. Correo: comunicaciones.galacticas@coruscant.sw.",
-        "dias_atencion": [
-            "lunes",
-            "martes",
-            "miércoles",
-            "jueves",
-            "viernes"
-        ],
-        "horario_inicio": "08:30",
-        "horario_fin": "13:00",
-        "alias": [
-            "comunicaciones galacticas",
-            "departamento de comunicaciones galacticas",
-            "depto de comunicaciones galacticas",
-            "departamento de comunicaciones",
-            "depto de comunicaciones"
-        ]
-    }
+  {
+    "id": "AI-001",
+    "id_chunk": "AI-001-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "coordinacion_regional",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de coordinacion regional",
+    "texto": [
+      "Encargada : Zara Antilles. Dirección : Edificio Consistorial (nivel 1313). Horario : lun-vie 08:30-13:00. Tel : COM-482716592041. Correo : coordinacion.regional@coruscant.sw."
+    ],
+    "alias": [
+      "coordinacion regional",
+      "departamento de coordinacion regional",
+      "depto de coordinacion regional"
+    ],
+    "tags": ["asuntos internos", "contacto"]
+  },
+  {
+    "id": "AI-002",
+    "id_chunk": "AI-002-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "registro_ciudadanos",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de registro de ciudadanos",
+    "texto": [
+      "Encargada : Zara Antilles. Dirección : Edificio Consistorial (nivel 2412). Horario : lun-vie 08:30-13:00. Tel : COM-953827104658. Correo : registro.ciudadanos@coruscant.sw."
+    ],
+    "alias": [
+      "registro ciudadanos",
+      "departamento de registro ciudadanos",
+      "depto de registro ciudadanos",
+      "departamento de registros ciudadanos"
+    ],
+    "tags": ["asuntos internos", "contacto"]
+  },
+  {
+    "id": "CE-101",
+    "id_chunk": "CE-101-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "regulacion_comercial",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de regulacion comercial",
+    "texto": [
+      "Encargado : Admiral Ackbar. Dirección : Torre de Comercio (sector E-5377). Horario : lun-vie 08:30-13:00. Tel : COM-374829105672. Correo : regulacion.comercial@coruscant.sw."
+    ],
+    "alias": [
+      "regulacion comercial",
+      "departamento de regulacion comercial",
+      "depto de regulacion comercial"
+    ],
+    "tags": ["comercio economia", "contacto"]
+  },
+  {
+    "id": "CE-102",
+    "id_chunk": "CE-102-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "desarrollo_economico",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de desarrollo economico",
+    "texto": [
+      "Encargado : Admiral Ackbar. Dirección : Fortaleza Ciudad Nube (sector C-981). Horario : lun-vie 08:30-13:00. Tel : COM-482716592041. Correo : desarrollo.economico@coruscant.sw."
+    ],
+    "alias": [
+      "desarrollo economico",
+      "departamento de desarrollo economico",
+      "depto de desarrollo economico"
+    ],
+    "tags": ["comercio economia", "contacto"]
+  },
+  {
+    "id": "DG-201",
+    "id_chunk": "DG-201-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "estrategia_militar",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de estrategia militar",
+    "texto": [
+      "Encargado : General Kenobi. Dirección : Cuartel de la Defensa (sector B-456). Horario : lun-vie 08:30-13:00. Tel : COM-123456789012. Correo : estrategia.militar@coruscant.sw."
+    ],
+    "alias": [
+      "estrategia militar",
+      "departamento de estrategia militar",
+      "depto de estrategia militar"
+    ],
+    "tags": ["defensa galactica", "contacto"]
+  },
+  {
+    "id": "DG-202",
+    "id_chunk": "DG-202-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "logistica_abastecimiento",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de logistica y abastecimiento",
+    "texto": [
+      "Encargado : Bail Organa. Dirección : Cuartel de la Defensa (sector B-501). Horario : lun-vie 08:30-13:00. Tel : COM-987654321098. Correo : logistica.abastecimiento@coruscant.sw."
+    ],
+    "alias": [
+      "logistica y abastecimiento",
+      "departamento de logistica y abastecimiento",
+      "depto de logistica y abastecimiento"
+    ],
+    "tags": ["defensa galactica", "contacto"]
+  },
+  {
+    "id": "EI-301",
+    "id_chunk": "EI-301-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "educacion_primaria_secundaria",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de educacion primaria y secundaria",
+    "texto": [
+      "Encargada : Jocasta Nu. Dirección : Torre Academia Jedi (nivel 3B120). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : educacion@coruscant.sw."
+    ],
+    "alias": [
+      "educacion primaria y secundaria",
+      "departamento de educacion primaria y secundaria",
+      "depto de educacion"
+    ],
+    "tags": ["educacion instruccion", "contacto"]
+  },
+  {
+    "id": "EI-302",
+    "id_chunk": "EI-302-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "preservacion_cultural",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de preservacion cultural",
+    "texto": [
+      "Encargada : Jocasta Nu. Dirección : Palacio de la Cultura (sector Central). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : preservacion.cultural@coruscant.sw."
+    ],
+    "alias": [
+      "preservacion cultural",
+      "departamento de preservacion cultural",
+      "depto de preservacion cultural"
+    ],
+    "tags": ["educacion instruccion", "contacto"]
+  },
+  {
+    "id": "EC-401",
+    "id_chunk": "EC-401-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "misiones_exploracion",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de misiones y exploracion",
+    "texto": [
+      "Encargada : Hera Syndulla. Dirección : Edificio Exploración Galáctica (sector D-789, ala B). Horario : lun-vie 08:30-13:00. Tel : COM-564738291056. Correo : misiones.exploracion@coruscant.sw."
+    ],
+    "alias": [
+      "misiones y exploracion",
+      "departamento de misiones y exploracion",
+      "depto de misiones y exploracion"
+    ],
+    "tags": ["exploracion colonizacion", "contacto"]
+  },
+  {
+    "id": "EC-402",
+    "id_chunk": "EC-402-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "asentamientos_coloniales",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de asentamientos coloniales",
+    "texto": [
+      "Encargado : Mace Windu. Dirección : Edificio Exploración Galáctica (sector D-789, ala B). Horario : lun-vie 08:30-13:00. Tel : COM-564738291056. Correo : asentamientos.coloniales@coruscant.sw."
+    ],
+    "alias": [
+      "asentamientos coloniales",
+      "departamento de asentamientos coloniales",
+      "depto de asentamientos coloniales"
+    ],
+    "tags": ["exploracion colonizacion", "contacto"]
+  },
+  {
+    "id": "JO-501",
+    "id_chunk": "JO-501",
+    "doc": "directorio_departamental",
+    "seccion": "administracion_justicia",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de administracion de justicia",
+    "texto": [
+      "Encargado : Mace Windu. Dirección : Palacio de Justicia (Sector A-123). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : administracion.justicia@coruscant.sw."
+    ],
+    "alias": [
+      "administracion justicia",
+      "departamento de administracion de justicia",
+      "depto de justicia"
+    ],
+    "tags": ["justicia orden publico", "contacto"]
+  },
+  {
+    "id": "JO-502",
+    "id_chunk": "JO-502-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "seguridad_publica",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de seguridad publica",
+    "texto": [
+      "Encargado : Mace Windu. Dirección : Edificio Consistorial (Oficina Central de Seguridad, nivel 212). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : seguridad.publica@coruscant.sw."
+    ],
+    "alias": [
+      "seguridad publica",
+      "departamento de seguridad publica",
+      "depto de seguridad"
+    ],
+    "tags": ["justicia orden publico", "contacto"]
+  },
+  {
+    "id": "RI-601",
+    "id_chunk": "RI-601-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "embajadas_misiones",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de embajadas y misiones diplomaticas",
+    "texto": [
+      "Encargada : Mon Mothma. Dirección : Palacio de la Cancillería (nivel 1832). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : embajadas.misiones@coruscant.sw."
+    ],
+    "alias": [
+      "embajadas y misiones",
+      "departamento de embajadas y misiones",
+      "depto de embajadas"
+    ],
+    "tags": ["relaciones internacionales", "contacto"]
+  },
+  {
+    "id": "RI-602",
+    "id_chunk": "RI-602-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "cooperacion_intergalactica",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de cooperacion intergalactica",
+    "texto": [
+      "Encargada : Mon Mothma. Dirección : Palacio de la Cancillería (nivel 1832). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : cooperacion.intergalactica@coruscant.sw."
+    ],
+    "alias": [
+      "cooperacion intergalactica",
+      "departamento de cooperacion intergalactica",
+      "depto de cooperacion"
+    ],
+    "tags": ["relaciones internacionales", "contacto"]
+  },
+  {
+    "id": "SB-701",
+    "id_chunk": "SB-701-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "salud_publica",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de salud publica",
+    "texto": [
+      "Encargado : Bail Organa. Dirección : Sede Federal de la Salud Intergaláctica (nivel 1). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : salud.publica@coruscant.sw."
+    ],
+    "alias": [
+      "salud publica",
+      "departamento de salud publica",
+      "depto de salud"
+    ],
+    "tags": ["salud bienestar", "contacto"]
+  },
+  {
+    "id": "SB-702",
+    "id_chunk": "SB-702-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "bienestar_social",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de bienestar social",
+    "texto": [
+      "Encargado : Bail Organa. Dirección : Sede Federal de la Salud Intergaláctica (nivel 2). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : bienestar.social@coruscant.sw."
+    ],
+    "alias": [
+      "bienestar social",
+      "departamento de bienestar social",
+      "depto de bienestar"
+    ],
+    "tags": ["salud bienestar", "contacto"]
+  },
+  {
+    "id": "TC-801",
+    "id_chunk": "TC-801-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "investigacion_cientifica",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de investigacion cientifica",
+    "texto": [
+      "Encargado : Galen Erso. Dirección : Torre Holística de la Ciencia (piso 1, ala A). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : investigacion.cientifica@coruscant.sw."
+    ],
+    "alias": [
+      "investigacion cientifica",
+      "departamento de investigacion cientifica",
+      "depto de investigacion"
+    ],
+    "tags": ["tecnologia ciencia", "contacto"]
+  },
+  {
+    "id": "TC-802",
+    "id_chunk": "TC-802-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "desarrollo_tecnologico",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de desarrollo tecnologico",
+    "texto": [
+      "Encargado : Galen Erso. Dirección : Torre Holística de la Ciencia (piso 1, ala B). Horario : lun-vie 08:00-17:00. Tel : COM-203948576194. Correo : desarrollo.tecnologico@coruscant.sw."
+    ],
+    "alias": [
+      "desarrollo tecnologico",
+      "departamento de desarrollo tecnologico",
+      "depto de desarrollo tecnologico"
+    ],
+    "tags": ["tecnologia ciencia", "contacto"]
+  },
+  {
+    "id": "TC-901",
+    "id_chunk": "TC-901-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "transporte_interestelar",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de transporte interestelar",
+    "texto": [
+      "Encargado : Qui-Gon Jinn. Dirección : Edificio Consistorial (nivel 5143). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : transporte.interestelar@coruscant.sw."
+    ],
+    "alias": [
+      "transporte interestelar",
+      "departamento de transporte interestelar",
+      "depto de transporte interestelar"
+    ],
+    "tags": ["transporte comunicaciones", "contacto"]
+  },
+  {
+    "id": "TC-902",
+    "id_chunk": "TC-902-contacto",
+    "doc": "directorio_departamental",
+    "seccion": "comunicaciones_galacticas",
+    "tipo_fragmento": "contacto",
+    "titulo": "departamento de comunicaciones galacticas",
+    "texto": [
+      "Encargado : Bail Organa. Dirección : Edificio Consistorial (nivel 5143). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : comunicaciones.galacticas@coruscant.sw."
+    ],
+    "alias": [
+      "comunicaciones galacticas",
+      "departamento de comunicaciones galacticas",
+      "depto de comunicaciones"
+    ],
+    "tags": ["transporte comunicaciones", "contacto"]
+  }
 ]

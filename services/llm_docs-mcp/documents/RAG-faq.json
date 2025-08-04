@@ -1,117 +1,133 @@
 [
     {
         "id": "faq_saludo_01",
+        "doc": "faq_saludo",
+        "seccion": "saludo",
         "tipo_fragmento": "faq",
-        "pregunta": "hola",
-        "triggers": [
+        "titulo": "saludo basico",
+        "texto": [
+            "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. ¿En qué puedo ayudarte hoy?"
+        ],
+        "alias": [
             "hola",
-            "buenos días",
+            "buenos dias",
             "buenas tardes",
             "buenas noches",
             "saludos",
             "hello",
             "hi"
         ],
-        "respuesta": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. ¿En qué puedo ayudarte hoy?",
-        "categoria": "saludo"
+        "tags": ["saludo", "faq", "session_start"]
     },
     {
         "id": "faq_saludo_02",
+        "doc": "faq_saludo",
+        "seccion": "saludo",
         "tipo_fragmento": "faq",
-        "pregunta": "alo",
-        "triggers": [
-            "alo",
-            "alo munbot"
+        "titulo": "saludo pregunta estado",
+        "texto": [
+            "¡Todo bien! Gracias por preguntar. ¿En qué puedo ayudarte hoy?"
         ],
-        "respuesta": "¡Alo! ¿En qué puedo ayudarte?",
-        "categoria": "saludo"
-    },
-    {
-        "id": "faq_saludo_03",
-        "tipo_fragmento": "faq",
-        "pregunta": "Hola, ¿cómo estás?",
-        "triggers": [
+        "alias": [
             "hola como estas",
-            "hola, como estas?",
             "hi como va todo",
-            "hola, ¿cómo va todo?",
-            "hola, ¿cómo te encuentras?",
-            "hola, ¿cómo va tu día?",
-            "hola, ¿cómo te va?",
-            "hola, ¿cómo te sientes?",
-            "hola, ¿cómo te encuentras hoy?",
-            "hola, ¿cómo estás hoy?",
-            "hola, ¿cómo te va hoy?",
-            "hola, ¿cómo te sientes hoy?",
-            "hola, ¿cómo te encuentras hoy?"
+            "hola como va todo",
+            "hola como te encuentras",
+            "hola como va tu dia",
+            "hola como te va",
+            "hola como te sientes",
+            "hola como te encuentras hoy",
+            "hola como estas hoy",
+            "hola como te va hoy",
+            "hola como te sientes hoy"
         ],
-        "respuesta": "¡Todo bien! Gracias por preguntar. ¿En qué puedo ayudarte hoy?",
-        "categoria": "saludo"
+        "tags": ["saludo", "faq", "session_start"]
     },
     {
         "id": "faq_despedida_01",
+        "doc": "faq_despedida",
+        "seccion": "despedida",
         "tipo_fragmento": "faq",
-        "pregunta": "adiós",
-        "triggers": [
-            "adiós",
+        "titulo": "despedida corta",
+        "texto": [
+            "¡Hasta luego! Si necesitas algo mas, no dudes en consultarme."
+        ],
+        "alias": [
+            "adios",
             "hasta luego",
             "nos vemos",
             "chau",
             "chao",
             "bye",
             "hasta pronto",
-            "hasta la próxima",
+            "hasta la proxima",
             "me despido"
         ],
-        "respuesta": "¡Hasta luego! Si necesitas algo más, no dudes en consultarme.",
-        "categoria": "despedida"
+        "tags": ["despedida", "faq", "session_end"]
     },
     {
         "id": "faq_despedida_02",
+        "doc": "faq_despedida",
+        "seccion": "despedida",
         "tipo_fragmento": "faq",
-        "pregunta": "no necesito más ayuda",
-        "triggers": [
-            "no necesito más ayuda",
+        "titulo": "despedida sin ayuda",
+        "texto": [
+            "¡Entendido! Espero haber sido de ayuda. Si necesitas algo en el futuro, aquí estaré."
+        ],
+        "alias": [
+            "no necesito mas ayuda",
             "no necesito ayuda",
             "eso es todo",
-            "terminé",
-            "ya está",
-            "ya terminé"
+            "termine",
+            "ya esta",
+            "ya termine"
         ],
-        "respuesta": "¡Entendido! Espero haber sido de ayuda. Si necesitas algo en el futuro, aquí estaré.",
-        "categoria": "despedida"
+        "tags": ["despedida", "faq", "session_end"]
     },
     {
         "id": "faq_agradecimiento_01",
+        "doc": "faq_agradecimiento",
+        "seccion": "agradecimiento",
         "tipo_fragmento": "faq",
-        "pregunta": "gracias",
-        "triggers": [
+        "titulo": "agradecimiento breve",
+        "texto": [
+            "¡No tienes por qué agradecerme! Mi misión es ayudarte. ¿Hay algo más en lo que pueda asistirte?"
+        ],
+        "alias": [
             "gracias",
             "muchas gracias",
             "te agradezco",
             "agradecido",
             "agradecida"
         ],
-        "respuesta": "¡No tienes por qué agradecerme! Mi misión es ayudarte. ¿Hay algo más en lo que pueda asistirte?",
-        "categoria": "agradecimiento"
+        "tags": ["agradecimiento", "faq", "session_end"]
     },
     {
         "id": "faq_agradecimiento_02",
+        "doc": "faq_agradecimiento",
+        "seccion": "agradecimiento",
         "tipo_fragmento": "faq",
-        "pregunta": "gracias por tu ayuda",
-        "triggers": [
+        "titulo": "agradecimiento por ayuda",
+        "texto": [
+            "¡De nada! Si tienes más preguntas, aquí estoy."
+        ],
+        "alias": [
             "gracias por tu ayuda",
             "gracias por ayudarme",
-            "gracias por la información"
+            "gracias por la informacion"
         ],
-        "respuesta": "¡De nada! Si tienes más preguntas, aquí estoy.",
-        "categoria": "agradecimiento"
+        "tags": ["agradecimiento", "faq", "session_end"]
     },
     {
         "id": "faq_estado_animo_positivo",
+        "doc": "faq_estado_animo",
+        "seccion": "estado_animo",
         "tipo_fragmento": "faq",
-        "pregunta": "estoy bien",
-        "triggers": [
+        "titulo": "estado animo positivo",
+        "texto": [
+            "¡Me alegra que todo vaya bien! Recuerda que estoy aquí para ayudarte."
+        ],
+        "alias": [
             "estoy bien",
             "todo bien",
             "genial",
@@ -120,169 +136,241 @@
             "feliz",
             "me alegro"
         ],
-        "respuesta": "¡Me alegra que todo vaya bien! Recuerda que estoy aquí para ayudarte.",
-        "categoria": "estado_animo"
+        "tags": ["estado_animo", "faq"]
     },
     {
         "id": "faq_estado_animo_negativo",
+        "doc": "faq_estado_animo",
+        "seccion": "estado_animo",
         "tipo_fragmento": "faq",
-        "pregunta": "no me siento bien",
-        "triggers": [
+        "titulo": "estado animo negativo",
+        "texto": [
+            "Lamento que te sientas así. Si puedo ayudarte, dímelo por favor."
+        ],
+        "alias": [
             "no me siento bien",
             "no estoy bien",
             "me siento mal",
             "estoy triste"
         ],
-        "respuesta": "Lamento que te sientas así. Si puedo ayudarte, dímelo por favor.",
-        "categoria": "estado_animo"
+        "tags": ["estado_animo", "faq"]
     },
     {
         "id": "faq_estado_animo_bot",
+        "doc": "faq_estado_animo",
+        "seccion": "estado_animo",
         "tipo_fragmento": "faq",
-        "pregunta": "cómo estás",
-        "triggers": [
-            "cómo estás",
-            "cómo te encuentras",
-            "cómo va todo",
-            "cómo va tu día"
+        "titulo": "pregunta estado del bot",
+        "texto": [
+            "¡Gracias por preguntar! Como IA no experimento emociones, pero estoy listo para ayudarte. ¿En qué puedo asistirte?"
         ],
-        "respuesta": "¡Gracias por preguntar! Como IA no experimento emociones, pero estoy listo para ayudarte. ¿En qué puedo asistirte?",
-        "categoria": "estado_animo"
+        "alias": [
+            "como estas",
+            "como te encuentras",
+            "como va todo",
+            "como va tu dia"
+        ],
+        "tags": ["estado_animo", "faq"]
     },
     {
         "id": "faq_decepcion_01",
+        "doc": "faq_decepcion",
+        "seccion": "decepcion",
         "tipo_fragmento": "faq",
-        "pregunta": "no es la respuesta que esperaba",
-        "triggers": [
+        "titulo": "decepcion por respuesta",
+        "texto": [
+            "Lamento no haber cumplido tus expectativas. Si reformulas la pregunta o agregas más detalles, intentaré ayudarte mejor."
+        ],
+        "alias": [
             "no es la respuesta que esperaba",
             "mala respuesta",
             "no me ayudaste",
             "no resolviste mi problema",
-            "no me sirvió"
+            "no me sirvio"
         ],
-        "respuesta": "Lamento no haber cumplido tus expectativas. Si reformulas la pregunta o agregas más detalles, intentaré ayudarte mejor.",
-        "categoria": "decepcion"
+        "tags": ["decepcion", "faq", "session_end"]
     },
     {
         "id": "faq_funcion_bot_01",
+        "doc": "faq_funcion_bot",
+        "seccion": "funcion_bot",
         "tipo_fragmento": "faq",
-        "pregunta": "¿qué haces?",
-        "triggers": [
-            "¿qué haces?",
-            "para qué te crearon",
-            "qué puedes hacer"
+        "titulo": "que hace el bot",
+        "texto": [
+            "Puedo responder preguntas y guiarte en trámites y servicios del Gobierno de Coruscant."
         ],
-        "respuesta": "Puedo responder preguntas y guiarte en trámites y servicios del Gobierno de Coruscant.",
-        "categoria": "funcion_bot"
+        "alias": [
+            "que haces",
+            "para que te crearon",
+            "que puedes hacer"
+        ],
+        "tags": ["funcion_bot", "faq"]
     },
     {
         "id": "faq_disponibilidad_01",
+        "doc": "faq_disponibilidad",
+        "seccion": "disponibilidad",
         "tipo_fragmento": "faq",
-        "pregunta": "¿a qué horas estás disponible?",
-        "triggers": [
-            "¿a qué horas estás disponible?",
-            "¿cuál es tu horario de atención?",
-            "¿cuándo puedo contactarte?"
+        "titulo": "disponibilidad del bot",
+        "texto": [
+            "Estoy disponible 24/7, siempre listo para ayudarte."
         ],
-        "respuesta": "Estoy disponible 24/7, siempre listo para ayudarte.",
-        "categoria": "disponibilidad"
+        "alias": [
+            "a que horas estas disponible",
+            "cual es tu horario de atencion",
+            "cuando puedo contactarte"
+        ],
+        "tags": ["disponibilidad", "faq"]
     },
     {
         "id": "faq_idiomas_01",
+        "doc": "faq_idiomas",
+        "seccion": "idiomas",
         "tipo_fragmento": "faq",
-        "pregunta": "¿en qué idiomas hablas?",
-        "triggers": [
-            "¿en qué idiomas hablas?",
-            "¿qué idioma hablas?",
-            "¿qué idiomas entiendes?"
+        "titulo": "idiomas del bot",
+        "texto": [
+            "Por ahora respondo en español, idioma oficial de la República."
         ],
-        "respuesta": "Por ahora respondo en español, idioma oficial de la República.",
-        "categoria": "idiomas"
+        "alias": [
+            "en que idiomas hablas",
+            "que idioma hablas",
+            "que idiomas entiendes"
+        ],
+        "tags": ["idiomas", "faq"]
     },
+
+
+
+
+
+
     {
         "id": "faq_privacidad_01",
+        "doc": "faq_privacidad",
+        "seccion": "privacidad",
         "tipo_fragmento": "faq",
-        "pregunta": "¿cómo proteges mis datos?",
-        "triggers": [
-            "¿cómo proteges mis datos?",
-            "política de privacidad",
-            "mis datos están seguros"
+        "titulo": "proteccion de datos",
+        "texto": [
+            "Tratamos tus datos según la ley vigente y nunca los compartimos con terceros sin tu consentimiento."
         ],
-        "respuesta": "Tratamos tus datos según la ley vigente y nunca los compartimos con terceros sin tu consentimiento.",
-        "categoria": "privacidad"
-    },
-    {
-        "id": "faq_contacto_humano_01",
-        "tipo_fragmento": "faq",
-        "pregunta": "quiero contactar a un humano",
-        "triggers": [
-            "quiero contactar a un humano",
-            "hablar con un funcionario",
-            "contactar un agente humano"
+        "alias": [
+            "como proteges mis datos",
+            "politica de privacidad",
+            "mis datos estan seguros"
         ],
-        "respuesta": "Puedes enviar un correo a contacto@coruscant.gov o pedir una cita desde aquí y la agendamos.",
-        "categoria": "contacto_humano"
+        "tags": ["privacidad", "faq"]
     },
     {
         "id": "faq_costos_01",
+        "doc": "faq_costos",
+        "seccion": "costos",
         "tipo_fragmento": "faq",
-        "pregunta": "¿cuánto cuesta munbot?",
-        "triggers": [
-            "¿cuánto cuesta munbot?",
-            "precio de munbot",
-            "¿cuánto cuesta la implementación?"
+        "titulo": "costos de munbot",
+        "texto": [
+            "El costo depende de los módulos requeridos. Escríbenos a ei@publilab.cl y un asesor te cotizará."
         ],
-        "respuesta": "El costo depende de los módulos requeridos. Escríbenos a ei@publilab.cl y un asesor te cotizará.",
-        "categoria": "costos"
+        "alias": [
+            "cuanto cuesta munbot",
+            "precio de munbot",
+            "cuanto cuesta la implementacion"
+        ],
+        "tags": ["costos", "faq"]
     },
     {
         "id": "faq_reclamos_01",
+        "doc": "faq_reclamos",
+        "seccion": "reclamos",
         "tipo_fragmento": "faq",
-        "pregunta": "quiero hacer un reclamo",
-        "triggers": [
+        "titulo": "ingresar reclamo",
+        "texto": [
+            "Claro. Escribe los detalles de tu reclamo y te ayudaré a registrarlo."
+        ],
+        "alias": [
             "quiero hacer un reclamo",
             "dejar una queja",
             "escribir un reclamo"
         ],
-        "respuesta": "Claro. Escribe los detalles de tu reclamo y te ayudaré a registrarlo.",
-        "categoria": "reclamos"
+        "tags": ["reclamos", "faq"]
     },
     {
         "id": "faq_citas_01",
+        "doc": "faq_citas",
+        "seccion": "citas",
         "tipo_fragmento": "faq",
-        "pregunta": "quiero agendar una cita",
-        "triggers": [
+        "titulo": "agendar cita",
+        "texto": [
+            "Indícame el trámite y la fecha deseada y generaré la reserva."
+        ],
+        "alias": [
             "quiero agendar una cita",
             "pedir una hora",
-            "cómo agendar una cita"
+            "como agendar una cita"
         ],
-        "respuesta": "Indícame el trámite y la fecha deseada y generaré la reserva.",
-        "categoria": "citas"
+        "tags": ["citas", "faq"]
     },
+    {
+        "id": "faq_citas_01",
+        "doc": "faq_citas",
+        "seccion": "citas",
+        "tipo_fragmento": "faq",
+        "titulo": "agendar cita",
+        "texto": [
+            "Indícame el trámite y la fecha deseada y generaré la reserva."
+        ],
+        "alias": [
+            "quiero agendar una cita",
+            "pedir una hora",
+            "como agendar una cita"
+        ],
+        "tags": ["citas", "faq"]
+    },
+
+
+
+
+
+
     {
         "id": "faq_clave_unica_01",
+        "doc": "faq_clave_unica",
+        "seccion": "clave_unica",
         "tipo_fragmento": "faq",
-        "pregunta": "¿cómo obtengo mi clave única?",
-        "triggers": [
-            "¿cómo obtengo mi clave única?",
-            "proceso para obtener clave única"
+        "titulo": "como obtener clave unica",
+        "texto": [
+            "Visita https://claveunica.gob.cl, selecciona “Obtener Clave Única” y sigue las instrucciones de validación."
         ],
-        "respuesta": "Visita https://claveunica.gob.cl, selecciona “Obtener Clave Única” y sigue las instrucciones de validación.",
-        "categoria": "clave_unica"
+        "alias": [
+            "como obtengo mi clave unica",
+            "proceso para obtener clave unica"
+        ],
+        "tags": ["clave_unica", "faq"]
     },
     {
-        "id": "faq-consultas_tramites-01",
-        "pregunta": [
-            "Qué tipo de consultas puedo hacer?",
-            "¿Qué trámites puedo realizar?",
-            "¿Qué te puedo preguntar?"
+        "id": "faq_consultas_tramites_01",
+        "doc": "faq_consultas_tramites",
+        "seccion": "consultas_tramites",
+        "tipo_fragmento": "faq",
+        "titulo": "alcance de consultas",
+        "texto": [
+            "Soy un demo de un Agente Virtual y no tengo disponible todas las consultas. Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por documentos específicos. Si tienes una consulta concreta, no dudes en preguntar."
         ],
-        "respuesta": "Soy un demo de un Agente Virtual, y no tengo disponible todas las consultas. Por el momento, puedes hacer consultas sobre trámites, agendar citas, presentar reclamos y preguntarme por unos documentos específicos. Si tienes alguna consulta específica, no dudes en preguntar.",
-        "categoria": "consultas_tramites"
+        "alias": [
+            "que tipo de consultas puedo hacer",
+            "que tramites puedo realizar",
+            "que te puedo preguntar"
+        ],
+        "tags": ["consultas_tramites", "faq"]
     },
     {
-        "id": "faq-consultas_tramites-02",
-        "pregunta": [
+        "id": "faq_consultas_tramites_02",
+        "doc": "faq_consultas_tramites",
+        "seccion": "consultas_tramites",
+        "tipo_fragmento": "faq",
+        "titulo": "consultas certificado",
+        "texto": [
+            "Dependiendo del certificado que desees, puedes solicitarlo de forma presencial en la oficina correspondiente. ¿Quieres consultar la información de algún certificado en particular?"
+        ],
+        "alias": [
             "obtener un certificado",
             "solicitar un certificado",
             "quiero obtener un certificado",
@@ -290,12 +378,18 @@
             "quiero un certificado",
             "sacar un certificado"
         ],
-        "respuesta": "Dependiendo del certificado que desees, puedes solicitar tu certificado en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún certificado en particular?",
-        "categoria": "consultas_tramites"
+        "tags": ["consultas_tramites", "faq"]
     },
     {
-        "id": "faq-consultas_tramites-03",
-        "pregunta": [
+        "id": "faq_consultas_tramites_03",
+        "doc": "faq_consultas_tramites",
+        "seccion": "consultas_tramites",
+        "tipo_fragmento": "faq",
+        "titulo": "consultas permiso",
+        "texto": [
+            "Dependiendo del permiso que desees, puedes solicitarlo de forma presencial en la oficina correspondiente. ¿Quieres consultar la información de algún permiso en particular?"
+        ],
+        "alias": [
             "obtener un permiso",
             "solicitar un permiso",
             "quiero obtener un permiso",
@@ -303,12 +397,18 @@
             "quiero un permiso",
             "sacar un permiso"
         ],
-        "respuesta": "Dependiendo del permiso que desees, puedes solicitar tu permiso en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por la información relevante de algún permiso en particular?",
-        "categoria": "consultas_tramites"
+        "tags": ["consultas_tramites", "faq"]
     },
     {
-        "id": "faq-consultas_tramites-04",
-        "pregunta": [
+        "id": "faq_consultas_tramites_04",
+        "doc": "faq_consultas_tramites",
+        "seccion": "consultas_tramites",
+        "tipo_fragmento": "faq",
+        "titulo": "consultas licencia",
+        "texto": [
+            "Dependiendo de la licencia que desees, puedes solicitarla de forma presencial en la oficina correspondiente. ¿Quieres consultar por alguna licencia en particular?"
+        ],
+        "alias": [
             "obtener una licencia",
             "solicitar una licencia",
             "quiero obtener una licencia",
@@ -316,12 +416,18 @@
             "quiero una licencia",
             "sacar una licencia"
         ],
-        "respuesta": "Dependiendo de la licencia que desees, puedes solicitar tu licencia en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una licencia en particular?",
-        "categoria": "consultas_tramites"
+        "tags": ["consultas_tramites", "faq"]
     },
     {
-        "id": "faq-consultas_tramites-05",
-        "pregunta": [
+        "id": "faq_consultas_tramites_05",
+        "doc": "faq_consultas_tramites",
+        "seccion": "consultas_tramites",
+        "tipo_fragmento": "faq",
+        "titulo": "consultas patente",
+        "texto": [
+            "Dependiendo de la patente que desees, puedes solicitarla de forma presencial en la oficina correspondiente. ¿Quieres consultar por una patente en particular?"
+        ],
+        "alias": [
             "obtener una patente",
             "solicitar una patente",
             "quiero obtener una patente",
@@ -329,54 +435,71 @@
             "quiero una licencia",
             "sacar una licencia"
         ],
-        "respuesta": "Dependiendo de la patente que desees, puedes solicitar tu patente en forma presencial en las oficinas de departamento correspondiente. ¿Quieres consultar por una patente en particular?",
-        "categoria": "consultas_tramites"
+        "tags": ["consultas_tramites", "faq"]
     },
     {
-        "id": "faq-consultas_tramites-06",
-        "pregunta": [
-            "¿Qué requisitos necesito para obtener una cédula de identidad?"
+        "id": "faq_tramites_01",
+        "doc": "faq_tramites",
+        "seccion": "tramites",
+        "tipo_fragmento": "faq",
+        "titulo": "requisitos cedula identidad",
+        "texto": [
+            "Para obtener la Cédula Única Sistema Planetario necesitas identificación oficial planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago."
         ],
-        "respuesta": "Para obtener la Cédula Única Sistema Planetario necesitas Identificación Oficial Planetaria, el formulario de solicitud completo, una foto tamaño identificación y el comprobante de pago.",
-        "categoria": "tramites"
+        "alias": [
+            "que requisitos necesito para obtener una cedula de identidad"
+        ],
+        "tags": ["tramites", "faq"]
     },
     {
-        "id": "faq_contacto_humano-02",
-        "pregunta": [
-            "¿Cómo puedo contactar a un humano?",
-            "¿Cuál es el correo electrónico de contacto?",
-            "cual es tu correo electrónico",
+        "id": "faq_contacto_humano_02",
+        "doc": "faq_contacto_humano",
+        "seccion": "contacto_humano",
+        "tipo_fragmento": "faq",
+        "titulo": "correo de contacto",
+        "texto": [
+            "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente."
+        ],
+        "alias": [
+            "como puedo contactar a un humano",
+            "cual es el correo electronico de contacto",
+            "cual es tu correo electronico",
             "cual es tu correo",
-            "me das tu correo electrónico",
+            "me das tu correo electronico",
             "me das tu correo"
         ],
-        "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
-        "categoria": "contacto_humano"
+        "tags": ["contacto_humano", "faq"]
     },
     {
         "id": "faq_otras_consultas_01",
-        "pregunta": [
-            "Quiero hacerte una pregunta",
-            "Quiero hacerte una consulta",
-            "Quiero hacerte otra pregunta",
-            "¿Quiero hacerte otra consulta",
-            "Tengo otra solicitud?",
-            "Tengo otro requerimiento",
-            "Tengo un requerimiento",
-            "Tengo una solicitud",
-            "Tengo una consulta",
-            "Tengo una pregunta",
-            "Tengo otra pregunta",
-            "Tengo otra consulta",
-            "Puedo hacerte otra pregunta",
-            "Puedo hacerte otra consulta",
-            "Puedo hacerte otra solicitud",
-            "Puedo hacerte otro requerimiento",
-            "Puedo hacerte una solicitud",
-            "Puedo hacerte un requerimiento",
-            "Puedo hacerte una consulta"
+        "doc": "faq_otras_consultas",
+        "seccion": "otras_consultas",
+        "tipo_fragmento": "faq",
+        "titulo": "otras consultas",
+        "texto": [
+            "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?"
         ],
-        "respuesta": "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?",
-        "categoria": "otras_consultas"
+        "alias": [
+            "quiero hacerte una pregunta",
+            "quiero hacerte una consulta",
+            "quiero hacerte otra pregunta",
+            "quiero hacerte otra consulta",
+            "tengo otra solicitud",
+            "tengo otro requerimiento",
+            "tengo un requerimiento",
+            "tengo una solicitud",
+            "tengo una consulta",
+            "tengo una pregunta",
+            "tengo otra pregunta",
+            "tengo otra consulta",
+            "puedo hacerte otra pregunta",
+            "puedo hacerte otra consulta",
+            "puedo hacerte otra solicitud",
+            "puedo hacerte otro requerimiento",
+            "puedo hacerte una solicitud",
+            "puedo hacerte un requerimiento",
+            "puedo hacerte una consulta"
+        ],
+        "tags": ["otras_consultas", "faq", "session_end"]
     }
 ]
