@@ -7,6 +7,7 @@ import time
 import re
 import ipaddress
 import requests
+from typing import Optional
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,10 +42,9 @@ MODEL_PATH = os.getenv("MODEL_PATH")
 SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.6))
 N_THREADS = int(os.getenv("N_THREADS", 4))
 N_CTX = int(os.getenv("N_CTX", 2048))
-# Nuevo umbral de similitud para Qdrant (por defecto 0.3)
 LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 150))
-
-QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.6))
+# Umbral de similitud para resultados en Qdrant
+QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5))
 # Umbral de alta confianza para los resultados de Qdrant
 HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.6))
 
@@ -296,6 +296,24 @@ def _clean_output(text: str) -> str:
     return text.strip().replace("<s>", "").replace("</s>", "")
 
 
+def _extract_field_from_hits(hits, field: str) -> Optional[str]:
+    """Busca en los payloads un campo específico mediante regex."""
+    patterns = {
+        "correo": r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
+        "direccion": r"(Direcci[oó]n\s*:?\s*[^.]+)",
+        "horario": r"(Horario\s*:?\s*[^.]+)",
+    }
+    pat = patterns.get(field)
+    if not pat:
+        return None
+    for h in hits:
+        payload = getattr(h, "payload", {}) or {}
+        text = payload.get("texto") or payload.get("text") or ""
+        m = re.search(pat, text, flags=re.IGNORECASE)
+        if m:
+            return m.group(0)
+    return None
+
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
 
@@ -337,7 +355,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     # 3.1) Evaluar la similitud del mejor resultado
     score = getattr(hits[0], "score", 0.0) if hits else 0.0
 
-    if not hits or score < float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", QDRANT_SIMILARITY_THRESHOLD)):
+    if not hits or score < float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5)):
         logger.info(
             f"Insufficient similarity (score={score}) – fallback triggered",
             extra={"trace_id": trace_id},
@@ -349,22 +367,38 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             "no_results": True,
         }
 
-    # 4) Construir contexto a partir de los fragmentos recuperados
-    fragments = []
+    # Referencias y extracción directa para preguntas de contacto
     referencias = []
     for h in hits:
-        # Opcional: filtrar también los resultados secundarios por score
-        if getattr(h, "score", 1.0) < float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", QDRANT_SIMILARITY_THRESHOLD)):
-            continue
+        payload = getattr(h, "payload", {}) or {}
+        fuente = payload.get("fuente") or payload.get("doc")
+        if fuente:
+            referencias.append(fuente)
+
+    question_l = pregunta.lower()
+    if department_id:
+        if any(k in question_l for k in ["correo", "mail", "email"]):
+            val = _extract_field_from_hits(hits, "correo")
+            if val:
+                return {"respuesta": val, "referencias": list(set(referencias)), "no_results": False}
+        if "direccion" in question_l or "dirección" in question_l:
+            val = _extract_field_from_hits(hits, "direccion")
+            if val:
+                return {"respuesta": val, "referencias": list(set(referencias)), "no_results": False}
+        if "horario" in question_l:
+            val = _extract_field_from_hits(hits, "horario")
+            if val:
+                return {"respuesta": val, "referencias": list(set(referencias)), "no_results": False}
+
+    # 4) Construir contexto a partir de los fragmentos recuperados
+    fragments = []
+    for h in hits:
         payload = getattr(h, "payload", {}) or {}
         texto = payload.get("texto") or payload.get("text")
-        fuente = payload.get("fuente") or payload.get("doc")
         if texto:
             fragments.append(texto)
-            if fuente:
-                referencias.append(fuente)
 
-    # Si después de filtrar por score no queda nada
+    # Si no se encontraron fragmentos
     if not fragments:
         FALLBACK_COUNTER.inc()
         return {

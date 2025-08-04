@@ -56,6 +56,11 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
                         "texto": metadata_text,
                         "tipo_fragmento": item.get("tipo_fragmento", "general")
                     }
+                    if "id" in item:
+                        metadata["id"] = item["id"]
+                        metadata["id_documento"] = item["id"]
+                    if "id_chunk" in item:
+                        metadata["id_chunk"] = item["id_chunk"]
                     if "articulo" in item:
                         metadata["articulo"] = item["articulo"]
                     if "decreto" in item:
@@ -82,11 +87,12 @@ def load_text_file_chunks(directory: str) -> list[dict]:
         for filename in files:
             if filename.endswith(".txt"):
                 filepath = os.path.join(root, filename)
+                base_id = os.path.splitext(filename)[0]
                 try:
                     with open(filepath, "r", encoding="utf-8") as f:
                         content = f.read()
                     paragraphs = re.split(r'\n\s*\n', content)
-                    for p in paragraphs:
+                    for idx, p in enumerate(paragraphs):
                         clean_p = p.strip()
                         if clean_p:
                             chunks.append({
@@ -94,9 +100,12 @@ def load_text_file_chunks(directory: str) -> list[dict]:
                                 "text": clean_p,
                                 "metadata": {
                                     "fuente": filename,
-                                    "doc": os.path.splitext(filename)[0].replace("_", " "),
+                                    "doc": base_id.replace("_", " "),
                                     "texto": clean_p,
-                                    "tipo_fragmento": "documento_oficial"
+                                    "tipo_fragmento": "documento_oficial",
+                                    "id": base_id,
+                                    "id_documento": base_id,
+                                    "id_chunk": f"{base_id}-{idx}"
                                 }
                             })
                 except Exception as e:
