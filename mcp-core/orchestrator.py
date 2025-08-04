@@ -21,7 +21,6 @@ import threading
 import time
 import concurrent.futures
 from context_manager import ConversationalContextManager
-from utils.query_rewriter import rewrite_query
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -29,7 +28,6 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 from department_router import DepartmentRouter
-from document_router import DocumentRouter
 from document_router import SemanticDocumentRouter
 try:
     from utils.human import registrar_evento_humano
@@ -145,36 +143,71 @@ DEPARTMENTS_FILE_PATH = os.getenv(
 )
 department_router = DepartmentRouter(DEPARTMENTS_FILE_PATH)
 
-def load_document_topics_from_files(docs_path: str) -> Dict[str, str]:
-    """Carga dinámicamente los alias de los documentos RAG para el enrutador."""
-    topic_map = {}
-    json_files = glob.glob(os.path.join(docs_path, "RAG-*.json"))
-    json_files += glob.glob(os.path.join(docs_path, "RAG.*.json"))
+DOCS_DIR = os.getenv(
+    "DOCS_DIR",
+    os.path.join(os.path.dirname(__file__), "..", "services", "llm_docs-mcp", "documents"),
+)
+
+
+def load_document_topics_from_files() -> Dict[str, list[str]]:
+    """Carga alias y tags de los documentos RAG para el enrutamiento."""
+    topic_map: Dict[str, set[str]] = {}
+    json_files = glob.glob(os.path.join(DOCS_DIR, "RAG-*.json"))
+    json_files += glob.glob(os.path.join(DOCS_DIR, "RAG.*.json"))
 
     for file_path in json_files:
         filename = os.path.basename(file_path)
+        aliases: set[str] = set()
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                for item in data:
-                    for alias in item.get("alias", []):
-                        topic_map[alias] = filename
+                if isinstance(data, list):
+                    for item in data:
+                        for a in item.get("alias", []):
+                            aliases.add(a.lower())
+                        for t in item.get("tags", []):
+                            aliases.add(str(t).lower())
         except (json.JSONDecodeError, IOError) as e:
             logging.warning(f"Could not load or parse {filename}: {e}")
-    # Reglas adicionales específicas
-    topic_map.update({
-        "permiso aterrizaje": "RAG-doc_tramites.json",
-        "aterrizaje": "RAG-doc_tramites.json",
-    })
-    return topic_map
+        if aliases:
+            topic_map[filename] = sorted(aliases)
+    return {k: sorted(v) for k, v in topic_map.items()}
 
-DOCS_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp', 'documents')
-DOCUMENT_TOPIC_MAP = load_document_topics_from_files(DOCS_DIR_PATH)
-document_router = DocumentRouter(DOCUMENT_TOPIC_MAP)
+
+DOCUMENT_TOPIC_MAP = load_document_topics_from_files()
 
 # Configuración para el enrutador semántico
 ROUTER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config", "router_config.json")
 semantic_router = SemanticDocumentRouter(ROUTER_CONFIG_PATH)
+
+SPECIFIC_RULES = [
+    (["permiso", "aterrizaje"], "RAG-doc_tramites.json"),
+]
+
+
+def apply_specific_rules(query: str) -> Optional[str]:
+    q = query.lower()
+    for tokens, target in SPECIFIC_RULES:
+        if all(t in q for t in tokens):
+            return target
+    return None
+
+
+def route_document(query: str) -> Optional[str]:
+    doc_sem, score = semantic_router.route(query)
+    thr = float(os.getenv("SEMANTIC_DOC_THRESHOLD", str(semantic_router.threshold)))
+    if doc_sem and score >= thr:
+        return doc_sem
+
+    q = query.lower()
+    best_doc, best_score = None, 0
+    for doc_name, aliases in DOCUMENT_TOPIC_MAP.items():
+        match_count = sum(1 for a in aliases if a in q)
+        if match_count > best_score:
+            best_doc, best_score = doc_name, match_count
+    if best_doc and best_score > 0:
+        return best_doc
+    return None
 
 # == Campos requeridos por tool ==
 REQUIRED_FIELDS = {
@@ -1509,10 +1542,7 @@ def orchestrate(
         context_manager.update_context_data(sid, {"selected_department_id": department_id})
     
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
-    # Primero intento semántico, si no, por palabra clave.
-    document_topic = semantic_router.get_document_topic(user_input, threshold=0.5)
-    if not document_topic:
-        document_topic = document_router.get_document_topic(user_input)
+    document_topic = apply_specific_rules(user_input) or route_document(user_input)
 
     if document_topic:
         logger.info(

@@ -107,6 +107,7 @@ services:
       - ./mcp-core/.env
     environment:
       - REDIS_HOST=redis
+      - DOCS_DIR=/app/documents
     ports:
       - "5000:5000"
     networks:
@@ -115,6 +116,7 @@ services:
       - ./mcp-core/models:/mcp-core/models
       - ./services/scheduler-mcp:/app/scheduler-mcp:ro
       - ./services/llm_docs-mcp:/services/llm_docs-mcp:ro
+      - ./services/llm_docs-mcp/documents:/app/documents:ro
     depends_on:
       redis:
         condition: service_healthy

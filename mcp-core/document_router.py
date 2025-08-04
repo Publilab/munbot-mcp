@@ -1,4 +1,4 @@
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 try:
     from utils.text import normalize_text
@@ -13,28 +13,22 @@ except (ModuleNotFoundError, ImportError):
         return text
 
 class DocumentRouter:
-    """
-    Identifica el documento o tema principal de una consulta de usuario
-    basándose en un mapa de palabras clave.
-    """
-    def __init__(self, topic_map: Dict[str, str]):
-        # Normalizamos las claves del mapa para una comparación robusta
-        self.topic_map = {normalize_text(k): v for k, v in topic_map.items()}
-        # Creamos una lista ordenada por longitud para evitar coincidencias parciales (ej: "patente" vs "patente de alcoholes")
-        self.sorted_keys = sorted(self.topic_map.keys(), key=len, reverse=True)
+    """Identifica el documento principal usando coincidencias por alias."""
+
+    def __init__(self, topic_map: Dict[str, List[str]]):
+        # Normalizamos alias para comparación robusta
+        self.topic_map = {
+            doc: [normalize_text(a) for a in aliases] for doc, aliases in topic_map.items()
+        }
 
     def get_document_topic(self, user_input: str) -> Optional[str]:
-        """
-        Busca una coincidencia de tema en la entrada del usuario.
-        Devuelve el nombre del documento asociado si lo encuentra.
-        """
         normalized_input = normalize_text(user_input)
-
-        for keyword in self.sorted_keys:
-            if keyword in normalized_input:
-                return self.topic_map[keyword]
-        
-        return None
+        best_doc, best_score = None, 0
+        for doc, aliases in self.topic_map.items():
+            score = sum(1 for alias in aliases if alias in normalized_input)
+            if score > best_score:
+                best_doc, best_score = doc, score
+        return best_doc if best_score > 0 else None
 
 import os
 import sys
@@ -55,17 +49,24 @@ class SemanticDocumentRouter:
     """Enrutador de documentos basado en similitud semántica."""
 
     def __init__(self, config_path: str):
-        with open(config_path, 'r', encoding='utf-8') as f:
-            self.config = json.load(f)
-        self.doc_names = list(self.config.keys())
-        descriptions = [d.get('description', '') for d in self.config.values()]
+        with open(config_path, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+        docs = raw.get("documents", [])
+        self.threshold = float(raw.get("semantic_threshold", 0.5))
+        self.doc_names = [d.get("name") for d in docs]
+        descriptions = [d.get("description", "") for d in docs]
         # Precalcular embeddings de las descripciones
         self.description_vectors = embed(descriptions)
 
-    def get_document_topic(self, user_input: str, threshold: float = 0.5) -> Optional[str]:
+    def route(self, user_input: str) -> tuple[Optional[str], float]:
         vec = embed([user_input])[0]
         sims = cosine_similarity([vec], self.description_vectors)[0]
         best_idx = int(np.argmax(sims))
-        if sims[best_idx] >= threshold:
-            return self.doc_names[best_idx]
+        return self.doc_names[best_idx], float(sims[best_idx])
+
+    def get_document_topic(self, user_input: str, threshold: Optional[float] = None) -> Optional[str]:
+        doc, score = self.route(user_input)
+        thr = threshold if threshold is not None else self.threshold
+        if doc and score >= thr:
+            return doc
         return None
