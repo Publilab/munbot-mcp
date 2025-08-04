@@ -51,11 +51,12 @@ def filter_by_procedure_id(procedure_id: Optional[str]) -> Optional[qdrant.Filte
     return qdrant.Filter(should=should, minimum_should_match=1)
 
 def filter_by_department_id(department_id: Optional[str]) -> Optional[qdrant.Filter]:
-    """Crea un filtro de Qdrant para un ID de departamento específico."""
     if not department_id:
         return None
-    should = [
-        qdrant.FieldCondition(key="id", match=qdrant.MatchValue(value=department_id)),
-        qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=department_id)),
-    ]
-    return qdrant.Filter(should=should, minimum_should_match=1)
+    return qdrant.Filter(
+        should=[
+            qdrant.FieldCondition(key="id", match=qdrant.MatchValue(value=department_id)),
+            qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=department_id)),
+        ],
+        minimum_should_match=1,
+    )

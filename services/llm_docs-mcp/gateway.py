@@ -7,7 +7,6 @@ import time
 import re
 import ipaddress
 import requests
-from typing import Optional
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
@@ -295,23 +294,26 @@ def _clean_output(text: str) -> str:
     text = re.sub(r"(?im)^\s*Fuente[s]?:.*$", "", text)
     return text.strip().replace("<s>", "").replace("</s>", "")
 
-
-def _extract_field_from_hits(hits, field: str) -> Optional[str]:
-    """Busca en los payloads un campo específico mediante regex."""
+def _extract_from_text(text: str, kind: str) -> str | None:
     patterns = {
         "correo": r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
         "direccion": r"(Direcci[oó]n\s*:?\s*[^.]+)",
         "horario": r"(Horario\s*:?\s*[^.]+)",
     }
-    pat = patterns.get(field)
+    pat = patterns.get(kind)
     if not pat:
         return None
+    m = re.search(pat, text or "", flags=re.IGNORECASE)
+    return m.group(0) if m else None
+
+
+def _extract_field_from_hits(hits, kind: str) -> str | None:
     for h in hits:
         payload = getattr(h, "payload", {}) or {}
         text = payload.get("texto") or payload.get("text") or ""
-        m = re.search(pat, text, flags=re.IGNORECASE)
-        if m:
-            return m.group(0)
+        val = _extract_from_text(text, kind)
+        if val:
+            return val
     return None
 
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
@@ -370,6 +372,21 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             "no_results": True,
         }
 
+    question_l = pregunta.lower()
+    if department_id:
+        if any(k in question_l for k in ["correo", "mail", "email"]):
+            val = _extract_field_from_hits(hits, "correo")
+            if val:
+                return {"respuesta": val, "referencias": [], "no_results": False}
+        if "direccion" in question_l or "dirección" in question_l:
+            val = _extract_field_from_hits(hits, "direccion")
+            if val:
+                return {"respuesta": val, "referencias": [], "no_results": False}
+        if "horario" in question_l:
+            val = _extract_field_from_hits(hits, "horario")
+            if val:
+                return {"respuesta": val, "referencias": [], "no_results": False}
+
     # 4) Extraer fragmentos y referencias sin filtrar por score
     fragments = []
     referencias = []
@@ -381,22 +398,6 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             fragments.append(texto)
         if fuente:
             referencias.append(fuente)
-
-    # Consultas de contacto directas
-    question_l = pregunta.lower()
-    if department_id:
-        if any(k in question_l for k in ["correo", "mail", "email"]):
-            val = _extract_field_from_hits(hits, "correo")
-            if val:
-                return {"respuesta": val, "referencias": list(set(referencias)), "no_results": False}
-        if "direccion" in question_l or "dirección" in question_l:
-            val = _extract_field_from_hits(hits, "direccion")
-            if val:
-                return {"respuesta": val, "referencias": list(set(referencias)), "no_results": False}
-        if "horario" in question_l:
-            val = _extract_field_from_hits(hits, "horario")
-            if val:
-                return {"respuesta": val, "referencias": list(set(referencias)), "no_results": False}
 
     # Si no se encontraron fragmentos
     if not fragments:
@@ -419,16 +420,28 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     max_chars = 1000
     fragments = [f[:max_chars] for f in fragments[:max_frags]]
     contexto = "\n".join(fragments)
-    # Prompt mejorado con roles claros para el LLM
-    # Se instruye parafrasear, usar un tono conversacional y evitar listas.
+
+    extra_instr = ""
+    if department_id and any(
+        k in question_l for k in ["correo", "mail", "email", "dirección", "direccion", "horario"]
+    ):
+        extra_instr = (
+            "Si el contexto contiene un correo, dirección u horario, respóndelo de forma literal sin reformular "
+            "(por ejemplo, correo@dominio o 'Horario : lun-vie 08:30-13:00').\n"
+        )
+
     prompt = (
-        "<s>[INST] Eres un asistente virtual del Gobierno de Curoscant. Tu tarea es responder la pregunta del usuario basándote únicamente en el CONTEXTO proporcionado. Resume y reescribe la información con tus propias palabras en un solo párrafo conversacional y breve (máximo 120 palabras). No enumeres puntos ni repitas la pregunta. Si el contexto no es suficiente para responder, indica amablemente que no encontraste la información. No inventes nada. [/INST]\n"
+        "<s>[INST] Eres un asistente virtual del Gobierno de Curoscant. Tu tarea es responder la pregunta del usuario "
+        "basándote únicamente en el CONTEXTO proporcionado. Resume y reescribe con tus propias palabras en un solo "
+        "párrafo breve, excepto si se solicita un dato de contacto (correo, dirección u horario): en ese caso, devuelve "
+        "el dato de forma literal. No inventes nada. [/INST]\n"
         "</s><s>[INST] CONTEXTO:\n"
         "---------------------\n"
         f"{contexto}\n"
         "---------------------\n\n"
+        f"{extra_instr}"
         f"PREGUNTA DEL USUARIO: {pregunta}\n\n"
-        "RESPUESTA (en un párrafo breve): [/INST]"
+        "RESPUESTA: [/INST]"
     )
 
     # 5) Generar respuesta con Llama
