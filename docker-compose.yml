@@ -164,6 +164,7 @@ services:
     environment:
       - REDIS_HOST=redis
       - QDRANT_SIMILARITY_THRESHOLD=0.5
+      - LLM_MAX_NEW_TOKENS=150
       # Asegúrate de que esta variable apunte al modelo correcto.
       - MODEL_PATH=models/phi-2.Q4_K_M.gguf
       - LLM_DOCS_MCP_USER=publilab
