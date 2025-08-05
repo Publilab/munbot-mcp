@@ -506,7 +506,7 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         documento = params.get("documento")
         frags = doc_buscar_fragmento_documento(consulta, documento)
         return {"fragmentos": frags}
-    elif tool == "classify_intent_llm":
+    elif tool == "doc-classify_intent_llm":
         texto = params.get("texto", "")
         intent = classify_intent_with_llm(texto, llama)
         return {"intent": intent}
@@ -526,8 +526,8 @@ async def tools_doc_generar_respuesta_llm(params: dict, credentials: HTTPBasicCr
     return generar_respuesta_llm(params, trace_id=trace_id)
 
 
-@app.post("/tools/classify_intent_llm")
-async def tools_classify_intent_llm(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+@app.post("/tools/doc-classify_intent_llm")
+async def tools_doc_classify_intent_llm(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
     texto = params.get("texto", "")
     intent = classify_intent_with_llm(texto, llama)
     return {"intent": intent}
@@ -552,7 +552,7 @@ def list_endpoints():
         "/tools/list",
         "/tools/call",
         "/tools/doc-generar_respuesta_llm",
-        "/tools/classify_intent_llm",
+        "/tools/doc-classify_intent_llm",
         "/doc-generar_respuesta_llm",
         "/doc-buscar_fragmento_documento",
         "/health",
@@ -576,7 +576,7 @@ def root():
             "/tools/list",
             "/tools/call",
             "/tools/doc-generar_respuesta_llm",
-            "/tools/classify_intent_llm",
+            "/tools/doc-classify_intent_llm",
             "/health",
             "/metrics",
             "/doc-buscar_fragmento_documento",
