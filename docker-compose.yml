@@ -158,19 +158,25 @@ services:
       timeout: 10s
       retries: 5
 
-  llm_docs-mcp:
-    build: ./services/llm_docs-mcp
-    container_name: llm_docs-mcp
-    env_file:
-      - ./services/llm_docs-mcp/.env
-    environment:
-      - REDIS_HOST=redis
-      - QDRANT_SIMILARITY_THRESHOLD=0.5
-      - LLM_MAX_NEW_TOKENS=150
-      # Asegúrate de que esta variable apunte al modelo correcto.
-      - MODEL_PATH=models/phi-2.Q4_K_M.gguf
-      - LLM_DOCS_MCP_USER=publilab
-      - LLM_DOCS_MCP_PASSWORD=Publ14b#Mun801
+    llm_docs-mcp:
+      build: ./services/llm_docs-mcp
+      container_name: llm_docs-mcp
+      env_file:
+        - ./services/llm_docs-mcp/.env
+      environment:
+        - QDRANT_HOST=qdrant
+        - QDRANT_PORT=6333
+        - QDRANT_COLLECTION=munbot_docs
+        - EMBEDDINGS_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+        - EMBEDDINGS_DIM=384
+        - DOCS_DIR=/app/documents
+        - REDIS_HOST=redis
+        - QDRANT_SIMILARITY_THRESHOLD=0.5
+        - LLM_MAX_NEW_TOKENS=150
+        # Asegúrate de que esta variable apunte al modelo correcto.
+        - MODEL_PATH=models/phi-2.Q4_K_M.gguf
+        - LLM_DOCS_MCP_USER=publilab
+        - LLM_DOCS_MCP_PASSWORD=Publ14b#Mun801
     depends_on:
       - qdrant
     expose:
@@ -186,8 +192,9 @@ services:
       retries: 3
       # Período de gracia para que el contenedor complete su arranque (indexación, carga de modelos)
       start_period: 300s
-    volumes:
-      - ./services/llm_docs-mcp/models:/models
+      volumes:
+        - ./services/llm_docs-mcp/models:/models
+        - ./services/llm_docs-mcp/documents:/app/documents:ro
 
   scheduler-mcp:
     build: 
