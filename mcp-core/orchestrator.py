@@ -1549,12 +1549,18 @@ def orchestrate(
 
     # --- 0.3 (NUEVO) Enrutamiento por departamento específico ---
     department_id = department_router.get_department_id(user_input)
+    logger.debug(
+        f"DepartmentRouter result: {department_id}", extra={"trace_id": trace_id}
+    )
     if department_id:
         logger.info(
             f"Consulta enrutada al departamento ID '{department_id}' por alias.",
             extra={"trace_id": trace_id},
         )
         context_manager.update_context_data(sid, {"selected_department_id": department_id})
+    else:
+        # Si no se detecta un departamento, nos aseguramos de limpiar el contexto
+        context_manager.clear_context_field(sid, "selected_department_id")
     
     # --- 0.5 (NUEVO) Enrutamiento por tema a documento específico ---
     document_topic = apply_specific_rules(user_input) or route_document(user_input)
