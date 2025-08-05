@@ -21,6 +21,8 @@ from prometheus_client import (
     generate_latest,
     CONTENT_TYPE_LATEST,
 )
+from pydantic import BaseModel
+from typing import List, Optional
 from llama_client import LlamaClient
 from embeddings import embed
 from qdrant_utils import (
@@ -161,6 +163,34 @@ RAG_LATENCY_HISTOGRAM = Histogram(
     buckets=[0.1, 0.5, 1, 2, 5, 10],
     registry=PROM_REGISTRY,
 )
+
+
+class RouteReq(BaseModel):
+    query: str
+    documents: List[dict]
+    threshold: float = 0.5
+
+
+class RouteResp(BaseModel):
+    name: Optional[str]
+    score: float
+
+
+@app.post("/semantic-route", response_model=RouteResp)
+def semantic_route_api(
+    req: RouteReq, credentials: HTTPBasicCredentials = Depends(authenticate)
+):
+    """Enrutador semántico expuesto vía HTTP."""
+    vecs = embed([req.query] + [d.get("description", "") for d in req.documents])
+    qv, desc_vecs = vecs[0], vecs[1:]
+    sims = cosine_similarity([qv], desc_vecs)[0].tolist() if desc_vecs else []
+    if sims:
+        best_idx = max(range(len(sims)), key=lambda i: sims[i])
+        best_score = float(sims[best_idx])
+        if best_score >= req.threshold:
+            return {"name": req.documents[best_idx].get("name"), "score": best_score}
+        return {"name": None, "score": best_score}
+    return {"name": None, "score": 0.0}
 
 # ==== Utilidades ====
 def load_metadata():
