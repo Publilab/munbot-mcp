@@ -374,7 +374,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     # 3) Buscar fragmentos relevantes en Qdrant
     try:
         start_time = time.perf_counter()
-        hits = search_in_qdrant(vector, top_k=3, filtro=filtro)  # Reducido de 5 a 3 para acelerar
+        hits = search_in_qdrant(vector, top_k=5, filtro=filtro)
         RAG_LATENCY_HISTOGRAM.observe(time.perf_counter() - start_time)
         logger.info(
             "Qdrant hits", extra={"trace_id": trace_id, "hits": len(hits)}
