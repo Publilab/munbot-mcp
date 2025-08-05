@@ -477,6 +477,62 @@ def ask_for_clarification(user_input: str) -> Dict[str, Any]:
     }
 
 
+def fallback(msg: str) -> Dict[str, Any]:
+    """Construye una respuesta de fallback estándar."""
+    return {"respuesta": msg, "no_results": True}
+
+
+def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
+    """Normaliza la respuesta del microservicio RAG."""
+    answer = resp.get("respuesta") or resp.get("answer") or resp.get("mensaje", "")
+    formatted: Dict[str, Any] = {"respuesta": answer, "no_results": False}
+    if resp.get("referencias"):
+        formatted["referencias"] = resp["referencias"]
+    return formatted
+
+
+def handle_turn(session_id: str, user_input: str) -> Dict[str, Any]:
+    """Maneja un turno básico consultando el RAG y aplicando fallback controlado."""
+    ctx: Dict[str, Any] = context_manager.get_context(session_id) or {}
+    selected = ctx.get("selected_document")
+    pid = ctx.get("selected_procedure_id")
+    did = ctx.get("selected_department_id")
+
+    generic = is_generic_doc_query(user_input)
+    should_go_rag = bool(selected or pid or did) or not generic
+
+    pregunta = user_input
+    if not should_go_rag:
+        pregunta = rewrite_query(user_input, ctx)
+
+    tool_params: Dict[str, Any] = {"pregunta": pregunta}
+    if selected:
+        tool_params["documento"] = selected
+    if pid:
+        tool_params["procedure_id"] = pid
+    if did:
+        tool_params["department_id"] = did
+
+    logger.debug(
+        f"RAG call params: {tool_params} ctx_keys={list(ctx.keys())}",
+        extra={"trace_id": session_id},
+    )
+
+    try:
+        resp = call_tool_microservice("doc-generar_respuesta_llm", tool_params)
+    except NameError:
+        logger.exception("NameError in orchestrator")
+        return fallback(
+            "Ocurrió un problema al procesar tu consulta. Intenta nuevamente."
+        )
+
+    if not resp:
+        return fallback("Ocurrió un problema al consultar nuestros servicios.")
+    if resp.get("no_results"):
+        return ask_for_clarification(user_input)
+    return format_answer(resp)
+
+
 def resumir_documento(nombre_doc: str) -> Optional[str]:
     """Devuelve un resumen breve con distintos campos del documento."""
     doc = buscar_documento_por_accion(nombre_doc)
@@ -1336,12 +1392,12 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
         }
         logger.info(
             f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}",
-            extra={"trace_id": trace_id},
+            extra={"trace_id": sid},
         )
         response = call_tool_microservice("complaint-registrar_reclamo", params)
         logger.info(
             f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}",
-            extra={"trace_id": trace_id},
+            extra={"trace_id": sid},
         )
         context_manager.clear_complaint_state(sid)
         err = handle_service_error(response, "complaint-registrar_reclamo", sid)
@@ -1987,7 +2043,7 @@ def orchestrate(
             logger.info(
                 f"Intent detected as doc-buscar_fragmento_documento. Routing to doc-generar_respuesta_llm with query: {user_input}"
             )
-        ctx = context_manager.get_context(sid)
+        ctx = context_manager.get_context(sid) or {}
         selected = ctx.get("selected_document")
         procedure_id = ctx.get("selected_procedure_id")
         department_id = ctx.get("selected_department_id")
@@ -2005,23 +2061,23 @@ def orchestrate(
             GENERIC_RAG_COUNTER.inc()
             rewritten = rewrite_query(user_input, ctx)
             logger.debug(f"rewritten_query={rewritten}", extra={"trace_id": trace_id})
-            params = {"pregunta": rewritten}
+            tool_params = {"pregunta": rewritten}
             if procedure_id:
-                params["procedure_id"] = procedure_id
+                tool_params["procedure_id"] = procedure_id
             if department_id:
-                params["department_id"] = department_id
+                tool_params["department_id"] = department_id
         else:
-            params = {"pregunta": user_input}
+            tool_params = {"pregunta": user_input}
             if selected:
-                params["documento"] = selected
+                tool_params["documento"] = selected
             if procedure_id:
-                params["procedure_id"] = procedure_id
+                tool_params["procedure_id"] = procedure_id
             if department_id:
-                params["department_id"] = department_id
+                tool_params["department_id"] = department_id
 
-        logger.debug(f"rag_params={params}", extra={"trace_id": trace_id})
+        logger.debug(f"rag_params={tool_params}", extra={"trace_id": trace_id})
         start_time = time.perf_counter()
-        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
+        service_resp = call_tool_microservice("doc-generar_respuesta_llm", tool_params)
         latency = (time.perf_counter() - start_time) * 1000
         err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
         if err:
@@ -2110,83 +2166,7 @@ def orchestrate(
             return resp
 
     if tool in ["unknown", "informacion_general", "otra"]:
-        ctx_data = context_manager.get_context(session_id)
-        selected = ctx_data.get("selected_document")
-        params = {"pregunta": rewrite_query(user_input, ctx_data)}
-        if selected:
-            params["documento"] = selected
-        if ctx_data.get("selected_procedure_id"):
-            params["procedure_id"] = ctx_data.get("selected_procedure_id")
-        if ctx_data.get("selected_department_id"):
-            params["department_id"] = ctx_data.get("selected_department_id")
-        service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
-        err = handle_service_error(service_resp, "doc-generar_respuesta_llm", sid)
-        if err:
-            context_manager.clear_context_field(session_id, "doc_actual")
-            return {"respuesta": err["texto"], "session_id": sid}
-        ans = (
-            service_resp.get("respuesta")
-            or service_resp.get("answer")
-            or service_resp.get("mensaje")
-        )
-        references = service_resp.get("referencias")
-        no_results = (
-            ans is None
-            or not str(ans).strip()
-            or service_resp.get("no_results")
-            or service_resp.get("hits") == []
-        )
-        if no_results:
-            context_manager.increment_fallback_count(session_id)
-            FALLBACK_COUNTER.inc()
-            fallback_count = context_manager.get_fallback_count(session_id)
-            if fallback_count >= 3:
-                ans = "Lo siento, no puedo ayudarte en esto. Te pasaré con un agente humano."
-                registrar_evento_humano(session_id, user_input, trace_id=session_id)
-                logger.info("Escalamiento a humano", extra={"trace_id": session_id})
-                HUMAN_ESCALATION_COUNTER.inc()
-                context_manager.update_context(session_id, user_input, ans)
-                return {"respuesta": ans, "session_id": session_id, "escalado": True}
-            elif fallback_count == 2:
-                ans = (
-                    "Aún no logro entender. Puedo ayudarte con trámites, horarios, reclamos o certificados… ¿prefieres que siga o te conecto a un agente?"
-                )
-            else:
-                ans = "No encontré información precisa. ¿Podrías darme más detalles o especificar el trámite?"
-            context_manager.update_context(session_id, user_input, ans)
-            context_manager.clear_context_field(session_id, "doc_actual")
-            return {"respuesta": ans, "session_id": session_id}
-        else:
-            ans += "\n¿Te fue útil mi respuesta? (Sí/No)"
-            context_manager.set_feedback_pending(session_id, None)
-            context_manager.update_context(session_id, user_input, ans)
-            context_manager.clear_context_field(session_id, "doc_actual")
-            resp = {"respuesta": ans, "session_id": session_id}
-            if references:
-                resp["referencias"] = references
-
-            ctx_cache = context_manager.get_context(sid) or {}
-            cache_key = make_answer_cache_key(
-                user_query=user_input,
-                selected_document=ctx_cache.get("selected_document"),
-                procedure_id=ctx_cache.get("selected_procedure_id"),
-                department_id=ctx_cache.get("selected_department_id"),
-                locale=ctx_cache.get("locale") or "es-ES",
-                channel=ctx_cache.get("channel"),
-            )
-            if is_cache_eligible(resp, ctx_cache):
-                cache_ttl_seconds = pick_ttl(resp)
-                try:
-                    redis_client.set(cache_key, json.dumps(resp), ex=cache_ttl_seconds)
-                    logger.debug(
-                        f"cache store: {cache_key} ttl={cache_ttl_seconds}", extra={"trace_id": trace_id}
-                    )
-                    CACHE_STORE_COUNTER.inc()
-                except Exception as e:
-                    logger.warning(
-                        f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id}
-                    )
-            return resp
+        return handle_turn(sid, user_input)
 
 
 # === API REST ===
