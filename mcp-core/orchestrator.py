@@ -73,14 +73,19 @@ SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
 # === Configuración ===
 
+LLM_DOCS_MCP_URL = os.getenv(
+    "LLM_DOCS_MCP_URL", "http://llm_docs-mcp:8000/tools/call"
+)
 MICROSERVICES = {
     # == Rutas de los microservicios ==
     "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL"),
     "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL"),
-    "llm_docs-mcp": os.getenv("LLM_DOCS_MCP_URL"),
+    "llm_docs-mcp": LLM_DOCS_MCP_URL,
 }
-# Base URL for llm_docs-mcp without tool path
-LLM_DOCS_BASE = re.sub(r"/tools.*$", "", MICROSERVICES["llm_docs-mcp"] or "http://llm_docs-mcp:8000")
+LLM_DOCS_MCP_HEALTH_URL = os.getenv(
+    "LLM_DOCS_MCP_HEALTH_URL",
+    LLM_DOCS_MCP_URL.replace("/tools/call", "/health"),
+)
 # Credenciales opcionales para microservicios
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
@@ -614,40 +619,46 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
     if tool.startswith("doc-") and LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
     try:
-        # Aumentamos el timeout para las llamadas a servicios de LLM que pueden ser lentas
         timeout = 120 if tool.startswith("doc-") else 30
         resp = requests.post(service_url, json=payload, auth=auth, timeout=timeout)
-        if 200 <= resp.status_code < 300:
-            return resp.json()
-        return {"error": f"Error {resp.status_code}: {resp.text}"}
+        resp.raise_for_status()
+        return resp.json()
+    except requests.Timeout:
+        logger.error(
+            f"Timeout calling {service_url}", extra={"trace_id": trace_id}
+        )
+        return {"error": "timeout"}
+    except requests.HTTPError as e:
+        logger.error(
+            f"HTTP error calling {service_url}: {e} - body={resp.text}",
+            extra={"trace_id": trace_id},
+        )
+        return {"error": f"http_error_{resp.status_code}"}
     except requests.RequestException as e:
-        return {"error": f"Connection error: {e}"}
+        logger.exception(
+            f"Unknown error calling {service_url}", extra={"trace_id": trace_id}
+        )
+        return {"error": f"connection_error: {e}"}
 
 
 def remote_llm_generate(prompt: str, timeout: float = 120.0) -> str:
-    """Generate text using llm_docs-mcp generic endpoint."""
-    auth = None
-    if LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
-        auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
-    url = LLM_DOCS_BASE.rstrip("/") + "/tools/generar_respuesta_llm"
-    # El timeout se aumenta para dar tiempo a la inferencia del modelo
-    resp = requests.post(url, json={"pregunta": prompt}, auth=auth, timeout=timeout)
-    resp.raise_for_status()
-    data = resp.json()
-    if isinstance(data, dict):
-        return data.get("respuesta", "")
-    return str(data)
+    """Generate text using llm_docs-mcp via tools.call."""
+    resp = call_tool_microservice(
+        "doc-generar_respuesta_llm", {"pregunta": prompt}
+    )
+    if resp.get("error"):
+        raise Exception(resp["error"])
+    return resp.get("respuesta", "")
 
 
 def remote_classify_intent(text: str, timeout: float = 120.0) -> str:
     """Clasifica la intención del texto usando llm_docs-mcp."""
-    auth = None
-    if LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
-        auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
-    url = LLM_DOCS_BASE.rstrip("/") + "/tools/classify_intent_llm"
-    resp = requests.post(url, json={"texto": text}, auth=auth, timeout=timeout)
-    resp.raise_for_status()
-    return resp.json().get("intent", "otra")
+    resp = call_tool_microservice(
+        "doc-classify_intent_llm", {"texto": text}
+    )
+    if resp.get("error"):
+        raise Exception(resp["error"])
+    return resp.get("intent", "otra")
 
 
 def handle_service_error(resp: Dict[str, Any], intent: str, trace_id: str | None = None) -> Optional[Dict[str, str]]:
@@ -2059,7 +2070,7 @@ def health():
     except Exception:
         db_ok = False
     try:
-        resp = requests.get(LLM_DOCS_BASE.rstrip("/") + "/health", timeout=5)
+        resp = requests.get(LLM_DOCS_MCP_HEALTH_URL, timeout=5)
         if resp.status_code == 200:
             model_ok = True
     except Exception:
