@@ -456,8 +456,6 @@ def pick_ttl(resp: dict) -> int:
         ]
     ):
         return ANSWER_CACHE_TTL_CONTACT
-    if resp.get("referencias"):
-        return ANSWER_CACHE_TTL_DEFAULT
     return ANSWER_CACHE_TTL_GENERIC
 
 def ask_for_clarification(user_input: str) -> Dict[str, Any]:
@@ -486,8 +484,8 @@ def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
     """Normaliza la respuesta del microservicio RAG."""
     answer = resp.get("respuesta") or resp.get("answer") or resp.get("mensaje", "")
     formatted: Dict[str, Any] = {"respuesta": answer, "no_results": False}
-    if resp.get("referencias"):
-        formatted["referencias"] = resp["referencias"]
+    # if resp.get("referencias"):
+    #     formatted["referencias"] = resp["referencias"]
     return formatted
 
 
