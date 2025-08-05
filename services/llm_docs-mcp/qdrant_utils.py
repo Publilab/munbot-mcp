@@ -48,15 +48,24 @@ def filter_by_procedure_id(procedure_id: Optional[str]) -> Optional[qdrant.Filte
         qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=f"{procedure_id}-penalidad")),
         qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=f"{procedure_id}-vigencia")),
     ]
-    return qdrant.Filter(should=should, minimum_should_match=1)
+    return qdrant.Filter(
+        should=should,
+        min_should=qdrant.MinShould(
+            conditions=should,
+            min_count=1
+        )
+    )
 
 def filter_by_department_id(department_id: Optional[str]) -> Optional[qdrant.Filter]:
     if not department_id:
         return None
+    should_conditions = [
+        qdrant.FieldCondition(key="id", match=qdrant.MatchValue(value=department_id)),
+        qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=department_id)),
+    ]
     return qdrant.Filter(
-        should=[
-            qdrant.FieldCondition(key="id", match=qdrant.MatchValue(value=department_id)),
-            qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=department_id)),
-        ],
-        minimum_should_match=1,
+        min_should=qdrant.MinShould(
+            conditions=should_conditions,
+            min_count=1
+        )
     )

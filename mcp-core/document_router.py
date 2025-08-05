@@ -85,9 +85,12 @@ class SemanticDocumentRouter:
                 "documents": self.docs,
                 "threshold": self.threshold,
             }
+            headers = {
+                "X-API-Key": os.getenv("LLM_DOCS_API_KEY", "")
+            }
             try:
                 r = requests.post(
-                    f"{self.remote_url}/semantic-route", json=payload, timeout=30
+                    f"{self.remote_url}/semantic-route", json=payload, headers=headers, timeout=30
                 )
                 r.raise_for_status()
                 data = r.json()
