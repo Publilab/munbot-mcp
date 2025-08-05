@@ -2,15 +2,15 @@
   "documents": [
     {
       "name": "RAG-doc_tramites.json",
-      "description": "Trámites, permisos, licencias y certificados. Incluye requisitos, dónde obtener, horarios de atención, utilidad, penalidades y vigencias. Ejemplos: permiso de aterrizaje, licencia de piloto, patente comercial."
+      "description": "Trámites, permisos, licencias y certificados: requisitos, dónde obtener, horarios, utilidad, penalidades y vigencia. Incluye 'permiso de aterrizaje', 'licencia de piloto', 'patente comercial'."
     },
     {
       "name": "RAG-depto_info.json",
-      "description": "Directorio de departamentos: información de contacto, correo, dirección y horarios. Ejemplos: departamento de transporte interestelar, salud pública, seguridad pública."
+      "description": "Directorio de departamentos: contacto, correo, dirección, horario. Incluye 'departamento de transporte interestelar', 'salud pública', 'seguridad pública'."
     },
     {
       "name": "RAG-Contrib_Derechos.json",
-      "description": "Contribuciones, derechos y tasas municipales: aseo domiciliario, alumbrado público, permisos y patentes."
+      "description": "Contribuciones y tasas municipales: aseo, alumbrado, patentes."
     },
     {
       "name": "RAG-Medio_Ambiente.json",

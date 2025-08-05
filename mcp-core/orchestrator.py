@@ -86,6 +86,7 @@ LLM_DOCS_MCP_HEALTH_URL = os.getenv(
     "LLM_DOCS_MCP_HEALTH_URL",
     LLM_DOCS_MCP_URL.replace("/tools/call", "/health"),
 )
+LLM_DOCS_BASE = os.getenv("LLM_DOCS_BASE")
 # Credenciales opcionales para microservicios
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
@@ -183,7 +184,7 @@ DOCUMENT_TOPIC_MAP = load_document_topics_from_files()
 
 # Configuración para el enrutador semántico
 ROUTER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config", "router_config.json")
-semantic_router = SemanticDocumentRouter(ROUTER_CONFIG_PATH)
+semantic_router = SemanticDocumentRouter(ROUTER_CONFIG_PATH, remote_url=LLM_DOCS_BASE)
 
 SPECIFIC_RULES = [
     (["permiso", "aterrizaje"], "RAG-doc_tramites.json"),
@@ -198,21 +199,24 @@ def apply_specific_rules(query: str) -> Optional[str]:
     return None
 
 
-def route_document(query: str) -> Optional[str]:
-    doc_sem, score = semantic_router.route(query)
-    thr = float(os.getenv("SEMANTIC_DOC_THRESHOLD", str(semantic_router.threshold)))
-    if doc_sem and score >= thr:
-        return doc_sem
-
-    q = query.lower()
+def route_by_alias(q: str) -> Optional[str]:
     best_doc, best_score = None, 0
     for doc_name, aliases in DOCUMENT_TOPIC_MAP.items():
         match_count = sum(1 for a in aliases if a in q)
         if match_count > best_score:
             best_doc, best_score = doc_name, match_count
-    if best_doc and best_score > 0:
-        return best_doc
-    return None
+    return best_doc if best_score > 0 else None
+
+
+def route_document(query: str) -> Optional[str]:
+    doc = apply_specific_rules(query)
+    if doc:
+        return doc
+    doc_sem, score = semantic_router.route(query)
+    thr = float(os.getenv("SEMANTIC_DOC_THRESHOLD", str(semantic_router.threshold)))
+    if doc_sem and score >= thr:
+        return doc_sem
+    return route_by_alias(query.lower())
 
 # == Campos requeridos por tool ==
 REQUIRED_FIELDS = {
