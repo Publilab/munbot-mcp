@@ -1,10 +1,15 @@
+"""Inicializa la colección en Qdrant si no existe."""
+
+import os
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qdrant
 
-COLLECTION = "munbot_docs"
-VECTOR_SIZE = 384  # MiniLM
+COLLECTION = os.getenv("QDRANT_COLLECTION", "munbot_docs")
+VECTOR_SIZE = int(os.getenv("EMBEDDINGS_DIM", "384"))
+QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
+QDRANT_PORT = int(os.getenv("QDRANT_PORT", "6333"))
 
-client = QdrantClient(host="qdrant", port=6333)
+client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
 existing = [c.name for c in client.get_collections().collections]
 if COLLECTION not in existing:
@@ -17,4 +22,4 @@ if COLLECTION not in existing:
     )
     print(f"✅  Colección creada: {COLLECTION}")
 else:
-    print(f"ℹ️  Colección {COLLECTION} ya existe — sin cambios.") 
+    print(f"ℹ️  Colección {COLLECTION} ya existe — sin cambios.")

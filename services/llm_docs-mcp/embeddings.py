@@ -5,14 +5,26 @@ Produce vectores 384-d normalizados (coseno = dot-product).
 from sentence_transformers import SentenceTransformer
 import torch, time, os
 
-MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-DEVICE = "cpu"                           # forzamos CPU
+# Permite seleccionar el modelo desde variables de entorno para flexibilizar
+# la elección de embeddings sin modificar el código.
+MODEL_NAME = os.getenv(
+    "EMBEDDINGS_MODEL",
+    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+)
+DEVICE = "cpu"  # forzamos CPU
 
 # ============ carga única ============
 _t0 = time.perf_counter()
+
+# Permite especificar caché local de modelos y token de autenticación para
+# repositorios privados de HuggingFace.
+_cache_dir = os.getenv("HF_HOME")
+_hf_token = os.getenv("HF_TOKEN")
 MODEL = SentenceTransformer(
     MODEL_NAME,
     device=DEVICE,
+    cache_folder=_cache_dir,
+    use_auth_token=_hf_token if _hf_token else None,
 )
 MODEL.max_seq_length = 512              # defensivo
 _load_ms = (time.perf_counter() - _t0) * 1_000

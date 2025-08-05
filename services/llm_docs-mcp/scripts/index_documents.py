@@ -7,6 +7,7 @@ import json
 import uuid
 import logging
 import re
+import argparse
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import PointStruct
 from embeddings import embed  # Reutilizamos el helper de embeddings
@@ -14,12 +15,20 @@ from embeddings import embed  # Reutilizamos el helper de embeddings
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# --- Configuración ---
+# --- Configuración por defecto desde variables de entorno ---
 QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
-COLLECTION_NAME = "munbot_docs"
+COLLECTION_NAME = os.getenv("QDRANT_COLLECTION", "munbot_docs")
+DOCS_PATH = os.getenv("DOCS_DIR", "/app/documents")
+EMBEDDINGS_DIM = int(os.getenv("EMBEDDINGS_DIM", 384))
 
-DOCS_PATH = "/app/documents"
+# Permite override mediante argumentos CLI
+parser = argparse.ArgumentParser(description="Indexa documentos RAG en Qdrant")
+parser.add_argument("--docs-dir", default=DOCS_PATH)
+parser.add_argument("--collection", default=COLLECTION_NAME)
+args = parser.parse_args()
+DOCS_PATH = args.docs_dir
+COLLECTION_NAME = args.collection
 
 
 def load_rag_json_chunks(directory: str) -> list[dict]:
@@ -65,6 +74,9 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
                         metadata["articulo"] = item["articulo"]
                     if "decreto" in item:
                         metadata["decreto"] = item["decreto"]
+                    for field in ("correo", "direccion", "horario", "seccion"):
+                        if field in item:
+                            metadata[field] = item[field]
 
                     chunks.append({
                         # Qdrant solo acepta enteros o UUIDs como identificadores.
@@ -143,7 +155,7 @@ def main():
     for chunk, vector in zip(all_chunks, vectors):
         if vector is None or chunk is None:
             continue
-        if len(vector) != 384:
+        if len(vector) != EMBEDDINGS_DIM:
             logger.error(
                 f"Vector con tamaño inesperado ({len(vector)}) para id {chunk['id']}"
             )
