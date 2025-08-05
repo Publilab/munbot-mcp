@@ -7,6 +7,7 @@ import time
 import re
 import ipaddress
 import requests
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,6 +45,9 @@ SIMILARITY_THRESHOLD = float(os.getenv("SIMILARITY_THRESHOLD", 0.6))
 N_THREADS = int(os.getenv("N_THREADS", 4))
 N_CTX = int(os.getenv("N_CTX", 2048))
 LLM_MAX_NEW_TOKENS = int(os.getenv("LLM_MAX_NEW_TOKENS", 150))
+EMBED_TIMEOUT = int(os.getenv("EMBED_TIMEOUT", "20"))
+QDRANT_TIMEOUT = int(os.getenv("QDRANT_TIMEOUT", "10"))
+LLM_GENERATION_TIMEOUT = int(os.getenv("LLM_GENERATION_TIMEOUT", "60"))
 # Umbral de similitud para resultados en Qdrant
 QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5))
 # Umbral de alta confianza para los resultados de Qdrant
@@ -165,6 +169,12 @@ RAG_LATENCY_HISTOGRAM = Histogram(
 )
 
 
+def run_with_timeout(fn, timeout, *args, **kwargs):
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(fn, *args, **kwargs)
+        return future.result(timeout=timeout)
+
+
 class RouteReq(BaseModel):
     query: str
     documents: List[dict]
@@ -255,7 +265,14 @@ set_llm_client(llama)
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando el modelo Llama local, usando la configuración del entorno."""
     max_new = int(os.getenv("LLM_MAX_NEW_TOKENS", LLM_MAX_NEW_TOKENS))
-    return llama.generate(prompt, max_tokens=min(max_new, 96), temperature=0.3, top_p=0.9)
+    return run_with_timeout(
+        llama.generate,
+        LLM_GENERATION_TIMEOUT,
+        prompt,
+        max_tokens=min(max_new, 96),
+        temperature=0.3,
+        top_p=0.9,
+    )
 
 
 # --- Nueva función de auditoría para RAG ---
@@ -357,7 +374,12 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
 
     # 1) Obtener embedding de la pregunta
     logger.info("Generando embeddings", extra={"trace_id": trace_id})
-    vector = embed([pregunta])[0]
+    try:
+        vector = run_with_timeout(embed, EMBED_TIMEOUT, [pregunta])[0]
+    except FuturesTimeoutError:
+        logger.error("Embedding timeout", extra={"trace_id": trace_id})
+        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
+        return {"respuesta": "", "referencias": [], "no_results": True}
 
     # 2) Aplicar filtro por ID de trámite, departamento o documento
     procedure_id = params.get("procedure_id")
@@ -374,11 +396,17 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     # 3) Buscar fragmentos relevantes en Qdrant
     try:
         start_time = time.perf_counter()
-        hits = search_in_qdrant(vector, top_k=5, filtro=filtro)
+        hits = run_with_timeout(
+            search_in_qdrant, QDRANT_TIMEOUT, vector, top_k=5, filtro=filtro
+        )
         RAG_LATENCY_HISTOGRAM.observe(time.perf_counter() - start_time)
         logger.info(
             "Qdrant hits", extra={"trace_id": trace_id, "hits": len(hits)}
         )
+    except FuturesTimeoutError:
+        logger.error("Qdrant search timeout", extra={"trace_id": trace_id})
+        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
+        hits = []
     except Exception as e:
         logger.error(f"Qdrant search failed: {e}", extra={"trace_id": trace_id})
         ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
@@ -475,7 +503,17 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     )
 
     # 5) Generar respuesta con Llama
-    respuesta = generate_response(prompt)
+    try:
+        respuesta = generate_response(prompt)
+    except FuturesTimeoutError:
+        logger.error("LLM generation timeout", extra={"trace_id": trace_id})
+        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
+        FALLBACK_COUNTER.inc()
+        return {
+            "respuesta": "",
+            "referencias": list(set(referencias)),
+            "no_results": True,
+        }
     respuesta = _clean_output(respuesta)
     logger.info(
         "Respuesta generada",

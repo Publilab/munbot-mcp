@@ -96,6 +96,15 @@ LLM_DOCS_BASE = os.getenv("LLM_DOCS_BASE")
 # Credenciales opcionales para microservicios
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
+LLM_DOCS_TIMEOUT = int(os.getenv("LLM_DOCS_TIMEOUT", "120"))
+LLM_DOCS_RETRIES = int(os.getenv("LLM_DOCS_RETRIES", "1"))
+LLM_DOCS_CIRCUIT_THRESHOLD = int(
+    os.getenv("LLM_DOCS_CIRCUIT_THRESHOLD", "5")
+)
+LLM_DOCS_CIRCUIT_COOLDOWN = int(
+    os.getenv("LLM_DOCS_CIRCUIT_COOLDOWN", "60")
+)
+_doc_cb_state = {"fails": 0, "opened_until": 0.0}
 # == Rutas de los archivos ==
 PROMPTS_PATH = os.getenv("PROMPTS_PATH")
 TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
@@ -702,36 +711,85 @@ def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
     return prompt
 
 
+def _cb_allow() -> bool:
+    return time.time() >= _doc_cb_state["opened_until"]
+
+
+def _cb_failure() -> None:
+    st = _doc_cb_state
+    st["fails"] += 1
+    if st["fails"] >= LLM_DOCS_CIRCUIT_THRESHOLD:
+        st["opened_until"] = time.time() + LLM_DOCS_CIRCUIT_COOLDOWN
+
+
+def _cb_success() -> None:
+    st = _doc_cb_state
+    st["fails"] = 0
+    st["opened_until"] = 0.0
+
+
 def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | None = None) -> Dict[str, Any]:
     service_url = route_to_service(tool)
     logger.info(f"intent={tool}, routing to {service_url}")
     payload = {"tool": tool, "params": params}
     if trace_id is not None:
         payload["trace_id"] = trace_id
+    if tool.startswith("doc-") and not _cb_allow():
+        logger.warning("Circuit breaker open", extra={"trace_id": trace_id})
+        return {"error": "circuit_open"}
     auth = None
     if tool.startswith("doc-") and LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
-    try:
-        timeout = 120 if tool.startswith("doc-") else 30
-        resp = requests.post(service_url, json=payload, auth=auth, timeout=timeout)
-        resp.raise_for_status()
-        return resp.json()
-    except requests.Timeout:
-        logger.error(
-            f"Timeout calling {service_url}", extra={"trace_id": trace_id}
-        )
-        return {"error": "timeout"}
-    except requests.HTTPError as e:
-        logger.error(
-            f"HTTP error calling {service_url}: {e} - body={resp.text}",
-            extra={"trace_id": trace_id},
-        )
-        return {"error": f"http_error_{resp.status_code}"}
-    except requests.RequestException as e:
-        logger.exception(
-            f"Unknown error calling {service_url}", extra={"trace_id": trace_id}
-        )
-        return {"error": f"connection_error: {e}"}
+    timeout = LLM_DOCS_TIMEOUT if tool.startswith("doc-") else 30
+    retries = LLM_DOCS_RETRIES if tool.startswith("doc-") else 0
+    for attempt in range(retries + 1):
+        t0 = time.time()
+        try:
+            resp = requests.post(
+                service_url, json=payload, auth=auth, timeout=timeout
+            )
+            if resp.status_code >= 500:
+                raise requests.HTTPError(response=resp)
+            resp.raise_for_status()
+            latency = round((time.time() - t0) * 1000)
+            logger.debug(
+                f"llm_docs-mcp ok tool={tool} ms={latency}",
+                extra={"trace_id": trace_id},
+            )
+            if tool.startswith("doc-"):
+                _cb_success()
+            return resp.json()
+        except (requests.Timeout, requests.ConnectionError) as e:
+            logger.warning(
+                f"llm_docs-mcp transient error attempt={attempt} tool={tool}: {e}",
+                extra={"trace_id": trace_id},
+            )
+            if attempt < retries:
+                time.sleep(0.2 * (2**attempt))
+                continue
+            if tool.startswith("doc-"):
+                _cb_failure()
+            return {"error": "timeout" if isinstance(e, requests.Timeout) else f"connection_error: {e}"}
+        except requests.HTTPError as e:
+            status = e.response.status_code if e.response else 0
+            body = e.response.text if e.response else ""
+            logger.error(
+                f"HTTP error calling {service_url}: {status} - body={body}",
+                extra={"trace_id": trace_id},
+            )
+            if status >= 500 and attempt < retries:
+                time.sleep(0.2 * (2**attempt))
+                continue
+            if tool.startswith("doc-"):
+                _cb_failure()
+            return {"error": f"http_error_{status}"}
+        except Exception as e:
+            logger.exception(
+                f"Unknown error calling {service_url}", extra={"trace_id": trace_id}
+            )
+            if tool.startswith("doc-"):
+                _cb_failure()
+            return {"error": f"unknown_error: {e}"}
 
 
 def remote_llm_generate(prompt: str, timeout: float = 120.0) -> str:
