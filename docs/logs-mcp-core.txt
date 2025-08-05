@@ -5,212 +5,53 @@ docker logs -f mcp-core
 → Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
 → Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
 → Todas las dependencias listas. Iniciando mcp‑core...
-{"timestamp":"2025-08-01T17:29:43.497489Z","level":"WARN","fields":{"message":"Status Code: 504. Retrying...","request_id":""},"filename":"/home/runner/work/xet-core/xet-core/cas_client/src/http_client.rs","line_number":236}
-{"timestamp":"2025-08-01T17:29:43.497535Z","level":"WARN","fields":{"message":"Retry attempt #0. Sleeping 1.108665072s before the next attempt"},"filename":"/root/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-retry-0.7.0/src/middleware.rs","line_number":171}
-/usr/local/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
-  return forward_call(*args, **kwargs)
 INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-{"asctime": "2025-08-01 13:29:47,974", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
-🧠 Modelo cargado en 16,255 ms (CPU)
-INFO:     127.0.0.1:57680 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57906 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34590 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37736 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33760 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43070 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49626 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38350 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54624 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53506 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42420 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52558 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42582 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34026 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39722 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39952 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:32882 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41908 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38296 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49450 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40092 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59030 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38406 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59810 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36806 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53308 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36504 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60624 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39398 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44088 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36474 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46062 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46684 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41986 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55530 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49874 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33698 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33670 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38502 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36134 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34514 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34440 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55292 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49296 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39760 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60420 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36154 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41242 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38906 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35056 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55434 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55498 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40314 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33256 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42958 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48894 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50600 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50366 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41436 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53338 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37810 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57752 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58570 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42340 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47640 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41188 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58250 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35184 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42234 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56766 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39200 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53998 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60230 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43996 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55436 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56304 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47970 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39192 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53900 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33264 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47478 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49082 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39516 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47978 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58230 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57016 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59924 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46606 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35862 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42320 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33556 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45088 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58942 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35132 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48886 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48368 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37688 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56326 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45710 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59844 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45970 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47720 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34356 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45258 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56214 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45472 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51530 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57226 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42286 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56452 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39938 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35242 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49388 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38036 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57004 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51330 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34846 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50024 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57650 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34940 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45460 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42596 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54786 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56540 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53068 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42246 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:32812 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57292 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54020 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58940 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49070 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57190 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33046 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37458 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56100 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53252 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40936 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57576 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33716 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36644 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52960 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50422 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58410 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60934 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58332 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48350 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49038 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50076 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45570 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39666 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60658 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53040 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-08-01 14:45:40,044", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "eef37b81-7464-47cf-8179-bd117118a59d"}
-{"asctime": "2025-08-01 14:45:40,044", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "eef37b81-7464-47cf-8179-bd117118a59d"}
-{"asctime": "2025-08-01 14:45:40,046", "levelname": "ERROR", "name": "munbot", "message": "Tool handler returned None", "trace_id": null}
-{"asctime": "2025-08-01 14:45:40,046", "levelname": "ERROR", "name": "munbot", "message": "Tool handler returned None", "trace_id": null}
-INFO:     172.18.0.11:60152 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48830 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56902 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55130 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57878 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56418 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52472 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60200 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38828 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55006 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53744 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41452 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51924 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54862 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38316 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47626 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41376 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45480 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37318 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57762 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33616 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57666 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45556 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44692 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34370 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48256 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56566 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50212 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49538 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59902 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38866 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56072 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60774 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57256 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34350 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33860 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47734 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53382 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37806 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35546 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56256 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49346 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50564 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-05 11:06:08,646", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+INFO:     127.0.0.1:51890 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49460 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41884 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-05 11:07:25,164", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
+{"asctime": "2025-08-05 11:07:25,164", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=hola doc=None score=0.000", "trace_id": null}
+{"asctime": "2025-08-05 11:07:25,164", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "26534bda-26d4-4577-9527-3db08857ccb3"}
+{"asctime": "2025-08-05 11:07:25,164", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "26534bda-26d4-4577-9527-3db08857ccb3"}
+{"asctime": "2025-08-05 11:07:25,166", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:07:25,166", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:07:45,645", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:57826 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-05 11:07:45,645", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:07:59,124", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
+{"asctime": "2025-08-05 11:07:59,124", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
+INFO:     172.18.0.11:53076 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42546 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-05 11:08:16,062", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-doc_tramites.json' por tema.", "trace_id": "bf29fe1b-7722-4ae8-a7d1-233e4b9c8d3e"}
+{"asctime": "2025-08-05 11:08:16,062", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-doc_tramites.json' por tema.", "trace_id": "bf29fe1b-7722-4ae8-a7d1-233e4b9c8d3e"}
+{"asctime": "2025-08-05 11:08:16,064", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:08:16,064", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:08:37,084", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:08:37,084", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:44566 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-05 11:08:51,213", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
+{"asctime": "2025-08-05 11:08:51,213", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
+{"asctime": "2025-08-05 11:08:51,214", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:08:51,214", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:08:51,551", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
+{"asctime": "2025-08-05 11:08:51,551", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
+{"asctime": "2025-08-05 11:08:51,552", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: http_error_0", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
+{"asctime": "2025-08-05 11:08:51,552", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: http_error_0", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
+INFO:     172.18.0.11:41818 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60020 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54592 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47688 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35044 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50872 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33632 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-05 11:12:12,793", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
+{"asctime": "2025-08-05 11:12:12,793", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=Como estas? doc=None score=0.000", "trace_id": null}
+{"asctime": "2025-08-05 11:12:12,794", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "313fb5ab-3cf3-4a9e-9fd5-6a991e7a7580"}
+{"asctime": "2025-08-05 11:12:12,794", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "313fb5ab-3cf3-4a9e-9fd5-6a991e7a7580"}
+{"asctime": "2025-08-05 11:12:12,795", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-05 11:12:12,795", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:34190 - "GET /health HTTP/1.1" 200 OK
