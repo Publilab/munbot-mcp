@@ -92,7 +92,13 @@ LLM_DOCS_MCP_HEALTH_URL = os.getenv(
     "LLM_DOCS_MCP_HEALTH_URL",
     LLM_DOCS_MCP_URL.replace("/tools/call", "/health"),
 )
-LLM_DOCS_BASE = os.getenv("LLM_DOCS_BASE")
+# Base URL del servicio de documentos. Si la variable de entorno está
+# ausente o vacía, utilizamos la URL del microservicio sin el sufijo
+# "/tools/call". Esto evita caer en el modo local que requiere el
+# módulo de embeddings cuando se desea usar el servicio remoto.
+LLM_DOCS_BASE = os.getenv("LLM_DOCS_BASE") or LLM_DOCS_MCP_URL.replace(
+    "/tools/call", ""
+)
 # Credenciales opcionales para microservicios
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
