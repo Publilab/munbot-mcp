@@ -39,11 +39,6 @@ import numpy as np
 import requests
 from sklearn.metrics.pairwise import cosine_similarity
 
-try:
-    from embeddings import embed as _embed
-except Exception:
-    _embed = None
-
 class SemanticDocumentRouter:
     """Enrutador de documentos basado en similitud semántica."""
 
@@ -56,23 +51,31 @@ class SemanticDocumentRouter:
         self.threshold = float(raw.get("semantic_threshold", 0.5))
         self.doc_names = [d.get("name") for d in self.docs]
         self.remote_url = remote_url
-        if not self.remote_url:
-            if _embed is None:
-                raise ImportError("embeddings module not available")
-            descriptions = [d.get("description", "") for d in self.docs]
-            self.description_vectors = _embed(descriptions)
-            dim = len(self.description_vectors[0]) if self.description_vectors else 0
-            self.logger.debug(
-                "Router config loaded with %d documents (dim=%d)",
-                len(self.doc_names),
-                dim,
-            )
-        else:
+        self._embed = None
+
+        if self.remote_url:
+            # Modo remoto: no se necesita el módulo local de embeddings
             self.description_vectors = None
             self.logger.debug(
                 "Router config loaded with %d documents (remote=%s)",
                 len(self.doc_names),
                 self.remote_url,
+            )
+        else:
+            # Modo local: intenta cargar el módulo de embeddings
+            try:
+                from embeddings import embed as _embed
+            except Exception:
+                raise ImportError("embeddings module not available")
+
+            descriptions = [d.get("description", "") for d in self.docs]
+            self.description_vectors = _embed(descriptions)
+            self._embed = _embed
+            dim = len(self.description_vectors[0]) if self.description_vectors else 0
+            self.logger.debug(
+                "Router config loaded with %d documents (dim=%d)",
+                len(self.doc_names),
+                dim,
             )
 
     def route(self, user_input: str) -> tuple[Optional[str], float]:
@@ -94,7 +97,7 @@ class SemanticDocumentRouter:
                 doc, score = None, 0.0
             self.logger.debug("remote route query=%s doc=%s score=%.3f", user_input, doc, score)
             return doc, score
-        vec = _embed([user_input])[0]
+        vec = self._embed([user_input])[0]
         sims = cosine_similarity([vec], self.description_vectors)[0]
         best_idx = int(np.argmax(sims))
         doc = self.doc_names[best_idx]
