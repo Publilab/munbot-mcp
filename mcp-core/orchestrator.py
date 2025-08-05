@@ -305,6 +305,17 @@ CACHE_HIT_COUNTER = Counter(
     registry=PROM_REGISTRY,
 )
 
+GENERIC_RAG_COUNTER = Counter(
+    "munbot_generic_rag_total",
+    "Consultas genéricas enviadas a RAG sin documento",
+    registry=PROM_REGISTRY,
+)
+GENERIC_RAG_SUCCESS_COUNTER = Counter(
+    "munbot_generic_rag_success_total",
+    "Consultas genéricas con RAG que devolvieron resultados",
+    registry=PROM_REGISTRY,
+)
+
 
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
@@ -328,55 +339,63 @@ FAREWELL_RESPONSE = (
 )
 
 # --- Detección de consultas genéricas sobre documentos ---
-DOC_MENTION_KEYWORDS = [
-    "certificado",
-    "documento",
-    "licencia",
+ANCHORS = [
     "permiso",
+    "licencia",
+    "requisito",
+    "costo",
+    "vigencia",
+    "correo",
+    "mail",
+    "email",
+    "direccion",
+    "dirección",
+    "horario",
+    "departamento de",
     "tramite",
     "trámite",
 ]
 
-DOC_FIELD_KEYWORDS = [
-    "requisito",
-    "requisitos",
-    "horario",
-    "direccion",
-    "dirección",
-    "donde",
-    "dónde",
-    "correo",
-    "mail",
-    "costo",
-    "valor",
-    "utilidad",
-]
 
-
-def extract_document_name(text: str) -> Optional[str]:
-    """Heurística simple para extraer el nombre de un documento."""
-    pattern = (
-        r"(?i)(certificado|licencia|permiso|documento|tr[áa]mite)"
-        r"(?: de| del)?\s+[A-Za-zÁÉÍÓÚÜáéíóúüñÑ ]+"
-    )
-    m = re.search(pattern, text)
-    if m:
-        return m.group(0).strip()
-    return None
-
-
-def is_generic_doc_query(text: str) -> bool:
-    """Determina si la consulta menciona un documento sin detallar campos."""
-    t = normalize_text(text)
-    mentions_doc = any(k in t for k in DOC_MENTION_KEYWORDS)
-    if not mentions_doc:
+def is_generic_doc_query(q: str) -> bool:
+    """Detecta entradas muy vagas o saludos."""
+    ql = q.lower().strip()
+    if len(ql) < 3:
+        return True
+    if any(a in ql for a in ANCHORS):
         return False
-    return not any(k in t for k in DOC_FIELD_KEYWORDS)
+    return ql in {
+        "hola",
+        "buenas",
+        "ayuda",
+        "info",
+        "informacion",
+        "información",
+        "menu",
+        "menú",
+        "dime mas",
+        "dime más",
+        "qué sabes",
+        "que sabes",
+        "listado",
+        "temas",
+    }
 
-def is_full_info_request(text: str) -> bool:
-    """Detecta si el usuario pide toda la información de un documento."""
-    t = normalize_text(text)
-    return "todo" in t or "completa" in t or "toda la informacion" in t
+def ask_for_clarification(user_input: str) -> Dict[str, Any]:
+    """Genera un mensaje de aclaración guiando al usuario a temas disponibles."""
+    opciones = [
+        "Trámites (requisitos, costos, vigencias)",
+        "Directorio de departamentos (correo, dirección, horario)",
+        "Contribuciones y tasas",
+    ]
+    txt = (
+        "¿Qué información específica necesitas? Por ejemplo: requisitos de un trámite, "
+        "correo de un departamento, o costos de contribuciones."
+    )
+    return {
+        "respuesta": f"{txt}\nOpciones: {', '.join(opciones)}",
+        "no_results": True,
+    }
 
 
 def resumir_documento(nombre_doc: str) -> Optional[str]:
@@ -1838,37 +1857,39 @@ def orchestrate(
             logger.info(
                 f"Intent detected as doc-buscar_fragmento_documento. Routing to doc-generar_respuesta_llm with query: {user_input}"
             )
-        history = context_manager.get_history(sid)
-        selected = context_manager.get_selected_document(sid)
-        params = {}
-        ctx_data = context_manager.get_context(sid)
-        if ctx_data.get("selected_procedure_id"):
-            params["procedure_id"] = ctx_data.get("selected_procedure_id")
-        if ctx_data.get("selected_department_id"):
-            params["department_id"] = ctx_data.get("selected_department_id")
+        ctx = context_manager.get_context(sid)
+        selected = ctx.get("selected_document")
+        procedure_id = ctx.get("selected_procedure_id")
+        department_id = ctx.get("selected_department_id")
+        generic = is_generic_doc_query(user_input)
 
-        # FIX: Se corrige la lógica para que use el documento seleccionado por el router
-        if is_generic_doc_query(user_input) and not selected:
-            doc_name = selected or extract_document_name(user_input)
-            if doc_name:
-                context_manager.set_selected_document(sid, doc_name)
-            if doc_name and selected and is_full_info_request(user_input):
-                summary = resumir_documento(doc_name)
-                if summary:
-                    context_manager.update_context(sid, user_input, summary)
-                    return {"respuesta": summary, "session_id": sid}
-            doc_ref = doc_name or "el documento"
-            msg = (f"¿Qué información específica deseas sobre {doc_ref}? "
-                   "Puedes consultar requisitos, dónde tramitarla, horarios, utilidad o vigencia.")
-            context_manager.update_context(sid, user_input, msg)
-            return {"respuesta": msg, "session_id": sid}
-        # En consultas genéricas sin doc seleccionado, llamar igualmente a RAG
-        # para intentar recuperar contexto y evitar bucles de aclaración.
-        # Si falla, el propio microservicio devuelve no_results.
+        logger.debug(
+            f"generic={generic}, selected={selected}, procedure_id={procedure_id}, department_id={department_id}",
+            extra={"trace_id": trace_id},
+        )
 
-        if selected:
-            params["documento"] = selected
-        params["pregunta"] = rewrite_query(history, user_input, selected)
+        def should_go_rag() -> bool:
+            return bool(selected or procedure_id or department_id)
+
+        if generic and not should_go_rag():
+            GENERIC_RAG_COUNTER.inc()
+            rewritten = rewrite_query(user_input, ctx)
+            logger.debug(f"rewritten_query={rewritten}", extra={"trace_id": trace_id})
+            params = {"pregunta": rewritten}
+            if procedure_id:
+                params["procedure_id"] = procedure_id
+            if department_id:
+                params["department_id"] = department_id
+        else:
+            params = {"pregunta": user_input}
+            if selected:
+                params["documento"] = selected
+            if procedure_id:
+                params["procedure_id"] = procedure_id
+            if department_id:
+                params["department_id"] = department_id
+
+        logger.debug(f"rag_params={params}", extra={"trace_id": trace_id})
         start_time = time.perf_counter()
         service_resp = call_tool_microservice("doc-generar_respuesta_llm", params)
         latency = (time.perf_counter() - start_time) * 1000
@@ -1899,6 +1920,13 @@ def orchestrate(
             or service_resp.get("no_results")
             or service_resp.get("hits") == []
         )
+        if generic and not should_go_rag():
+            if not no_results:
+                GENERIC_RAG_SUCCESS_COUNTER.inc()
+            else:
+                msg = ask_for_clarification(user_input)
+                context_manager.update_context(sid, user_input, msg["respuesta"])
+                return {**msg, "session_id": sid}
         if no_results:
             context_manager.increment_fallback_count(sid)
             FALLBACK_COUNTER.inc()
@@ -1949,12 +1977,11 @@ def orchestrate(
             return resp
 
     if tool in ["unknown", "informacion_general", "otra"]:
-        history = context_manager.get_history(session_id)
-        selected = context_manager.get_selected_document(session_id)
-        params = {"pregunta": rewrite_query(history, user_input, selected)}
+        ctx_data = context_manager.get_context(session_id)
+        selected = ctx_data.get("selected_document")
+        params = {"pregunta": rewrite_query(user_input, ctx_data)}
         if selected:
             params["documento"] = selected
-        ctx_data = context_manager.get_context(session_id)
         if ctx_data.get("selected_procedure_id"):
             params["procedure_id"] = ctx_data.get("selected_procedure_id")
         if ctx_data.get("selected_department_id"):
