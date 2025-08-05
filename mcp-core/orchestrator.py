@@ -29,6 +29,12 @@ from prometheus_client import (
 )
 from department_router import DepartmentRouter
 from document_router import SemanticDocumentRouter
+from utils.cache import make_answer_cache_key
+from settings import (
+    ANSWER_CACHE_TTL_CONTACT,
+    ANSWER_CACHE_TTL_DEFAULT,
+    ANSWER_CACHE_TTL_GENERIC,
+)
 try:
     from utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
@@ -305,6 +311,18 @@ CACHE_HIT_COUNTER = Counter(
     registry=PROM_REGISTRY,
 )
 
+CACHE_MISS_COUNTER = Counter(
+    "munbot_cache_miss_total",
+    "Consultas que no se encontraron en el caché",
+    registry=PROM_REGISTRY,
+)
+
+CACHE_STORE_COUNTER = Counter(
+    "munbot_cache_store_total",
+    "Número de respuestas almacenadas en el caché",
+    registry=PROM_REGISTRY,
+)
+
 GENERIC_RAG_COUNTER = Counter(
     "munbot_generic_rag_total",
     "Consultas genéricas enviadas a RAG sin documento",
@@ -380,6 +398,58 @@ def is_generic_doc_query(q: str) -> bool:
         "listado",
         "temas",
     }
+
+
+def is_cache_eligible(resp: dict, ctx: Optional[dict] = None) -> bool:
+    """Determina si una respuesta es apta para ser cacheada."""
+    if not resp or resp.get("no_results") is True:
+        return False
+    text = (resp.get("respuesta") or "").strip().lower()
+    interrogativos = ["¿", "?"]
+    prompts_aclaracion = [
+        "¿qué información específica",
+        "podrías precisar",
+        "necesito más detalles",
+        "indica el trámite",
+        "elige una opción",
+        "te refieres a",
+    ]
+    if any(p in text for p in prompts_aclaracion) or any(ch in text for ch in interrogativos):
+        return False
+    errores = ["ocurrió un problema", "tuvimos un error", "intenta nuevamente", "timeout"]
+    if any(e in text for e in errores):
+        return False
+    if ctx is not None:
+        has_ctx = bool(
+            ctx.get("selected_document")
+            or ctx.get("selected_procedure_id")
+            or ctx.get("selected_department_id")
+        )
+        if not has_ctx and not resp.get("referencias"):
+            return False
+    return True
+
+
+def pick_ttl(resp: dict) -> int:
+    txt = (resp.get("respuesta") or "").lower()
+    if any(
+        k in txt
+        for k in [
+            "@",
+            "correo",
+            "mail",
+            "email",
+            "dirección",
+            "direccion",
+            "horario",
+            "teléfono",
+            "telefono",
+        ]
+    ):
+        return ANSWER_CACHE_TTL_CONTACT
+    if resp.get("referencias"):
+        return ANSWER_CACHE_TTL_DEFAULT
+    return ANSWER_CACHE_TTL_GENERIC
 
 def ask_for_clarification(user_input: str) -> Dict[str, Any]:
     """Genera un mensaje de aclaración guiando al usuario a temas disponibles."""
@@ -1234,7 +1304,7 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
 @audit_step("handle_agenda")
 def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
     fecha, hora = parse_date_time(texto_usuario, trace_id=sid)
-    ctx = context_manager.get_context(sid)
+    ctx = context_manager.get_context(sid) or {}
 
     agenda = ctx.get("agenda", {"fecha": None, "hora": None})
     if fecha:
@@ -1277,7 +1347,7 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
 def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
     """Flujo paso a paso para agendar citas."""
 
-    ctx = context_manager.get_context(sid)
+    ctx = context_manager.get_context(sid) or {}
     pending = ctx.get("pending_field")
     entities = extract_entities_scheduler(user_text, base_dt)
 
@@ -1549,7 +1619,7 @@ def orchestrate(
     trace_id = str(uuid.uuid4())
     context_manager.update_context_data(sid, {"trace_id": trace_id})
 
-    ctx = context_manager.get_context(sid)
+    ctx = context_manager.get_context(sid) or {}
 
     # --- 0. (NUEVO Y PRIORITARIO) Búsqueda en FAQs ---
     faq_response = faq_matcher.match(user_input)
@@ -1596,27 +1666,29 @@ def orchestrate(
             # Guardamos el documento solo si la consulta es específica y no había uno previo
             context_manager.update_context_data(sid, {"selected_document": document_topic})
 
-    user_norm = normalize_text(user_input)
-
     # --- Verificación de caché de respuestas frecuentes ---
-    ctx_cache = context_manager.get_context(sid)
-    cache_doc = ctx_cache.get("selected_document", "")
-    cache_proc = ctx_cache.get("selected_procedure_id", "")
-    cache_dept = ctx_cache.get("selected_department_id", "")
-    cache_key = f"faq_cache:{cache_doc}:{cache_proc}:{cache_dept}:{user_norm}"
+    ctx_cache = context_manager.get_context(sid) or {}
+    cache_key = make_answer_cache_key(
+        user_query=user_input,
+        selected_document=ctx_cache.get("selected_document"),
+        procedure_id=ctx_cache.get("selected_procedure_id"),
+        department_id=ctx_cache.get("selected_department_id"),
+        locale=ctx_cache.get("locale") or "es-ES",
+        channel=ctx_cache.get("channel"),
+    )
     try:
         cached_response_str = redis_client.get(cache_key)
         if cached_response_str:
-            logger.info(f"Cache hit for query: '{user_input}'", extra={"trace_id": trace_id})
+            logger.debug(f"cache hit: {cache_key}")
             CACHE_HIT_COUNTER.inc()
             cached_response = json.loads(cached_response_str)
-            # Actualizar con el ID de sesión actual
-            cached_response['session_id'] = sid
-            # Actualizar el contexto de la conversación con la respuesta cacheada
+            cached_response["session_id"] = sid
             context_manager.update_context(sid, user_input, cached_response.get("respuesta", ""))
-            # Añadir pregunta al historial de la sesión actual
             context_manager.update_context(sid, user_input, cached_response.get("respuesta"))
             return cached_response
+        else:
+            logger.debug(f"cache miss: {cache_key}")
+            CACHE_MISS_COUNTER.inc()
     except Exception as e:
         logger.warning(f"Error al consultar caché de Redis: {e}", extra={"trace_id": trace_id})
 
@@ -1956,24 +2028,27 @@ def orchestrate(
             if references:
                 resp["referencias"] = references
 
-            # Guardar en caché la respuesta exitosa con clave que incluya contexto
-            procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
-            department_id_ctx = context_manager.get_context(sid).get("selected_department_id")
-            cache_ctx = {
-                "doc": selected or "",
-                "proc": procedure_id_ctx or "",
-                "dept": department_id_ctx or "",
-            }
-            cache_key = f"faq_cache:{cache_ctx['doc']}:{cache_ctx['proc']}:{cache_ctx['dept']}:{user_norm}"
-            try:
-                redis_client.set(cache_key, json.dumps(resp), ex=3600)  # Cache por 1 hora
-                logger.info(
-                    f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id}
-                )
-            except Exception as e:
-                logger.warning(
-                    f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id}
-                )
+            ctx_cache = context_manager.get_context(sid) or {}
+            cache_key = make_answer_cache_key(
+                user_query=user_input,
+                selected_document=ctx_cache.get("selected_document"),
+                procedure_id=ctx_cache.get("selected_procedure_id"),
+                department_id=ctx_cache.get("selected_department_id"),
+                locale=ctx_cache.get("locale") or "es-ES",
+                channel=ctx_cache.get("channel"),
+            )
+            if is_cache_eligible(resp, ctx_cache):
+                cache_ttl_seconds = pick_ttl(resp)
+                try:
+                    redis_client.set(cache_key, json.dumps(resp), ex=cache_ttl_seconds)
+                    logger.debug(
+                        f"cache store: {cache_key} ttl={cache_ttl_seconds}", extra={"trace_id": trace_id}
+                    )
+                    CACHE_STORE_COUNTER.inc()
+                except Exception as e:
+                    logger.warning(
+                        f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id}
+                    )
             return resp
 
     if tool in ["unknown", "informacion_general", "otra"]:
@@ -2032,20 +2107,27 @@ def orchestrate(
             if references:
                 resp["referencias"] = references
 
-            # Guardar en caché la respuesta exitosa con clave que incluya contexto
-            procedure_id_ctx = context_manager.get_context(sid).get("selected_procedure_id")
-            department_id_ctx = context_manager.get_context(sid).get("selected_department_id")
-            cache_ctx = {
-                "doc": selected or "",
-                "proc": procedure_id_ctx or "",
-                "dept": department_id_ctx or "",
-            }
-            cache_key = f"faq_cache:{cache_ctx['doc']}:{cache_ctx['proc']}:{cache_ctx['dept']}:{user_norm}"
-            try:
-                redis_client.set(cache_key, json.dumps(resp), ex=3600) # Cache por 1 hora
-                logger.info(f"Respuesta para '{user_input}' guardada en caché.", extra={"trace_id": trace_id})
-            except Exception as e:
-                logger.warning(f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id})
+            ctx_cache = context_manager.get_context(sid) or {}
+            cache_key = make_answer_cache_key(
+                user_query=user_input,
+                selected_document=ctx_cache.get("selected_document"),
+                procedure_id=ctx_cache.get("selected_procedure_id"),
+                department_id=ctx_cache.get("selected_department_id"),
+                locale=ctx_cache.get("locale") or "es-ES",
+                channel=ctx_cache.get("channel"),
+            )
+            if is_cache_eligible(resp, ctx_cache):
+                cache_ttl_seconds = pick_ttl(resp)
+                try:
+                    redis_client.set(cache_key, json.dumps(resp), ex=cache_ttl_seconds)
+                    logger.debug(
+                        f"cache store: {cache_key} ttl={cache_ttl_seconds}", extra={"trace_id": trace_id}
+                    )
+                    CACHE_STORE_COUNTER.inc()
+                except Exception as e:
+                    logger.warning(
+                        f"No se pudo guardar respuesta en caché: {e}", extra={"trace_id": trace_id}
+                    )
             return resp
 
 
