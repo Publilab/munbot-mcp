@@ -721,7 +721,7 @@
         "seccion": "requisitos",
         "tipo_fragmento": "requisito",
         "titulo": "permiso aterrizaje – requisitos",
-        "texto": "Licencia de transporte, identificación planetaria, plan de ruta, formulario completo y evaluación de seguridad de la nave.",
+        "texto": "Licencia de transporte, identificación planetaria, plan de ruta, formulario 77 completo y evaluación de seguridad de la nave.",
         "alias": ["requisitos permiso aterrizaje"],
         "tags": ["aterrizaje", "requisito"]
     },
