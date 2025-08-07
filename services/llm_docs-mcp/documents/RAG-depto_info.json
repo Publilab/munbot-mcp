@@ -1,343 +1,403 @@
 [
-  {
-    "id": "AI-001",
-    "id_chunk": "AI-001-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "coordinacion_regional",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de coordinacion regional",
-    "texto": [
-      "Encargada : Zara Antilles. Dirección : Edificio Consistorial (nivel 1313). Horario : lun-vie 08:30-13:00. Tel : COM-482716592041. Correo : coordinacion.regional@coruscant.sw."
-    ],
-    "alias": [
-      "coordinacion regional",
-      "departamento de coordinacion regional",
-      "depto de coordinacion regional"
-    ],
-    "tags": ["asuntos internos", "contacto"]
-  },
-  {
-    "id": "AI-002",
-    "id_chunk": "AI-002-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "registro_ciudadanos",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de registro de ciudadanos",
-    "texto": [
-      "Encargada : Zara Antilles. Dirección : Edificio Consistorial (nivel 2412). Horario : lun-vie 08:30-13:00. Tel : COM-953827104658. Correo : registro.ciudadanos@coruscant.sw."
-    ],
-    "alias": [
-      "registro ciudadanos",
-      "departamento de registro ciudadanos",
-      "depto de registro ciudadanos",
-      "departamento de registros ciudadanos"
-    ],
-    "tags": ["asuntos internos", "contacto"]
-  },
-  {
-    "id": "CE-101",
-    "id_chunk": "CE-101-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "regulacion_comercial",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de regulacion comercial",
-    "texto": [
-      "Encargado : Admiral Ackbar. Dirección : Torre de Comercio (sector E-5377). Horario : lun-vie 08:30-13:00. Tel : COM-374829105672. Correo : regulacion.comercial@coruscant.sw."
-    ],
-    "alias": [
-      "regulacion comercial",
-      "departamento de regulacion comercial",
-      "depto de regulacion comercial"
-    ],
-    "tags": ["comercio economia", "contacto"]
-  },
-  {
-    "id": "CE-102",
-    "id_chunk": "CE-102-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "desarrollo_economico",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de desarrollo economico",
-    "texto": [
-      "Encargado : Admiral Ackbar. Dirección : Fortaleza Ciudad Nube (sector C-981). Horario : lun-vie 08:30-13:00. Tel : COM-482716592041. Correo : desarrollo.economico@coruscant.sw."
-    ],
-    "alias": [
-      "desarrollo economico",
-      "departamento de desarrollo economico",
-      "depto de desarrollo economico"
-    ],
-    "tags": ["comercio economia", "contacto"]
-  },
-  {
-    "id": "DG-201",
-    "id_chunk": "DG-201-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "estrategia_militar",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de estrategia militar",
-    "texto": [
-      "Encargado : General Kenobi. Dirección : Cuartel de la Defensa (sector B-456). Horario : lun-vie 08:30-13:00. Tel : COM-123456789012. Correo : estrategia.militar@coruscant.sw."
-    ],
-    "alias": [
-      "estrategia militar",
-      "departamento de estrategia militar",
-      "depto de estrategia militar"
-    ],
-    "tags": ["defensa galactica", "contacto"]
-  },
-  {
-    "id": "DG-202",
-    "id_chunk": "DG-202-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "logistica_abastecimiento",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de logistica y abastecimiento",
-    "texto": [
-      "Encargado : Bail Organa. Dirección : Cuartel de la Defensa (sector B-501). Horario : lun-vie 08:30-13:00. Tel : COM-987654321098. Correo : logistica.abastecimiento@coruscant.sw."
-    ],
-    "alias": [
-      "logistica y abastecimiento",
-      "departamento de logistica y abastecimiento",
-      "depto de logistica y abastecimiento"
-    ],
-    "tags": ["defensa galactica", "contacto"]
-  },
-  {
-    "id": "EI-301",
-    "id_chunk": "EI-301-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "educacion_primaria_secundaria",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de educacion primaria y secundaria",
-    "texto": [
-      "Encargada : Jocasta Nu. Dirección : Torre Academia Jedi (nivel 3B120). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : educacion@coruscant.sw."
-    ],
-    "alias": [
-      "educacion primaria y secundaria",
-      "departamento de educacion primaria y secundaria",
-      "depto de educacion"
-    ],
-    "tags": ["educacion instruccion", "contacto"]
-  },
-  {
-    "id": "EI-302",
-    "id_chunk": "EI-302-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "preservacion_cultural",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de preservacion cultural",
-    "texto": [
-      "Encargada : Jocasta Nu. Dirección : Palacio de la Cultura (sector Central). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : preservacion.cultural@coruscant.sw."
-    ],
-    "alias": [
-      "preservacion cultural",
-      "departamento de preservacion cultural",
-      "depto de preservacion cultural"
-    ],
-    "tags": ["educacion instruccion", "contacto"]
-  },
-  {
-    "id": "EC-401",
-    "id_chunk": "EC-401-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "misiones_exploracion",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de misiones y exploracion",
-    "texto": [
-      "Encargada : Hera Syndulla. Dirección : Edificio Exploración Galáctica (sector D-789, ala B). Horario : lun-vie 08:30-13:00. Tel : COM-564738291056. Correo : misiones.exploracion@coruscant.sw."
-    ],
-    "alias": [
-      "misiones y exploracion",
-      "departamento de misiones y exploracion",
-      "depto de misiones y exploracion"
-    ],
-    "tags": ["exploracion colonizacion", "contacto"]
-  },
-  {
-    "id": "EC-402",
-    "id_chunk": "EC-402-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "asentamientos_coloniales",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de asentamientos coloniales",
-    "texto": [
-      "Encargado : Mace Windu. Dirección : Edificio Exploración Galáctica (sector D-789, ala B). Horario : lun-vie 08:30-13:00. Tel : COM-564738291056. Correo : asentamientos.coloniales@coruscant.sw."
-    ],
-    "alias": [
-      "asentamientos coloniales",
-      "departamento de asentamientos coloniales",
-      "depto de asentamientos coloniales"
-    ],
-    "tags": ["exploracion colonizacion", "contacto"]
-  },
-  {
-    "id": "JO-501",
-    "id_chunk": "JO-501",
-    "doc": "directorio_departamental",
-    "seccion": "administracion_justicia",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de administracion de justicia",
-    "texto": [
-      "Encargado : Mace Windu. Dirección : Palacio de Justicia (Sector A-123). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : administracion.justicia@coruscant.sw."
-    ],
-    "alias": [
-      "administracion justicia",
-      "departamento de administracion de justicia",
-      "depto de justicia"
-    ],
-    "tags": ["justicia orden publico", "contacto"]
-  },
-  {
-    "id": "JO-502",
-    "id_chunk": "JO-502-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "seguridad_publica",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de seguridad publica",
-    "texto": [
-      "Encargado : Mace Windu. Dirección : Edificio Consistorial (Oficina Central de Seguridad, nivel 212). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : seguridad.publica@coruscant.sw."
-    ],
-    "alias": [
-      "seguridad publica",
-      "departamento de seguridad publica",
-      "depto de seguridad"
-    ],
-    "tags": ["justicia orden publico", "contacto"]
-  },
-  {
-    "id": "RI-601",
-    "id_chunk": "RI-601-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "embajadas_misiones",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de embajadas y misiones diplomaticas",
-    "texto": [
-      "Encargada : Mon Mothma. Dirección : Palacio de la Cancillería (nivel 1832). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : embajadas.misiones@coruscant.sw."
-    ],
-    "alias": [
-      "embajadas y misiones",
-      "departamento de embajadas y misiones",
-      "depto de embajadas"
-    ],
-    "tags": ["relaciones internacionales", "contacto"]
-  },
-  {
-    "id": "RI-602",
-    "id_chunk": "RI-602-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "cooperacion_intergalactica",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de cooperacion intergalactica",
-    "texto": [
-      "Encargada : Mon Mothma. Dirección : Palacio de la Cancillería (nivel 1832). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : cooperacion.intergalactica@coruscant.sw."
-    ],
-    "alias": [
-      "cooperacion intergalactica",
-      "departamento de cooperacion intergalactica",
-      "depto de cooperacion"
-    ],
-    "tags": ["relaciones internacionales", "contacto"]
-  },
-  {
-    "id": "SB-701",
-    "id_chunk": "SB-701-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "salud_publica",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de salud publica",
-    "texto": [
-      "Encargado : Bail Organa. Dirección : Sede Federal de la Salud Intergaláctica (nivel 1). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : salud.publica@coruscant.sw."
-    ],
-    "alias": [
-      "salud publica",
-      "departamento de salud publica",
-      "depto de salud"
-    ],
-    "tags": ["salud bienestar", "contacto"]
-  },
-  {
-    "id": "SB-702",
-    "id_chunk": "SB-702-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "bienestar_social",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de bienestar social",
-    "texto": [
-      "Encargado : Bail Organa. Dirección : Sede Federal de la Salud Intergaláctica (nivel 2). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : bienestar.social@coruscant.sw."
-    ],
-    "alias": [
-      "bienestar social",
-      "departamento de bienestar social",
-      "depto de bienestar"
-    ],
-    "tags": ["salud bienestar", "contacto"]
-  },
-  {
-    "id": "TC-801",
-    "id_chunk": "TC-801-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "investigacion_cientifica",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de investigacion cientifica",
-    "texto": [
-      "Encargado : Galen Erso. Dirección : Torre Holística de la Ciencia (piso 1, ala A). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : investigacion.cientifica@coruscant.sw."
-    ],
-    "alias": [
-      "investigacion cientifica",
-      "departamento de investigacion cientifica",
-      "depto de investigacion"
-    ],
-    "tags": ["tecnologia ciencia", "contacto"]
-  },
-  {
-    "id": "TC-802",
-    "id_chunk": "TC-802-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "desarrollo_tecnologico",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de desarrollo tecnologico",
-    "texto": [
-      "Encargado : Galen Erso. Dirección : Torre Holística de la Ciencia (piso 1, ala B). Horario : lun-vie 08:00-17:00. Tel : COM-203948576194. Correo : desarrollo.tecnologico@coruscant.sw."
-    ],
-    "alias": [
-      "desarrollo tecnologico",
-      "departamento de desarrollo tecnologico",
-      "depto de desarrollo tecnologico"
-    ],
-    "tags": ["tecnologia ciencia", "contacto"]
-  },
-  {
-    "id": "TC-901",
-    "id_chunk": "TC-901-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "transporte_interestelar",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de transporte interestelar",
-    "texto": [
-      "Encargado : Qui-Gon Jinn. Dirección : Edificio Consistorial (nivel 5143). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : transporte.interestelar@coruscant.sw."
-    ],
-    "alias": [
-      "transporte interestelar",
-      "departamento de transporte interestelar",
-      "depto de transporte interestelar"
-    ],
-    "tags": ["transporte comunicaciones", "contacto"]
-  },
-  {
-    "id": "TC-902",
-    "id_chunk": "TC-902-contacto",
-    "doc": "directorio_departamental",
-    "seccion": "comunicaciones_galacticas",
-    "tipo_fragmento": "contacto",
-    "titulo": "departamento de comunicaciones galacticas",
-    "texto": [
-      "Encargado : Bail Organa. Dirección : Edificio Consistorial (nivel 5143). Horario : lun-vie 08:30-13:00. Tel : COM-203948576194. Correo : comunicaciones.galacticas@coruscant.sw."
-    ],
-    "alias": [
-      "comunicaciones galacticas",
-      "departamento de comunicaciones galacticas",
-      "depto de comunicaciones"
-    ],
-    "tags": ["transporte comunicaciones", "contacto"]
-  }
-]
+     {
+        "department_name": "Departamento de Coordinación Regional",
+        "search_aliases": [
+             "coordinacion regional",
+             "departamento de coordinacion regional",
+             "depto de coordinacion regional"
+         ],
+        "contact_info": {
+            "manager": "Zara Antilles",
+            "address": "Edificio Consistorial (nivel 1313)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-482716592041",
+            "email": "coordinacion.regional@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "AI-001",
+            "category": "Asuntos Internos",
+             "tags": ["asuntos internos", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Registro de Ciudadanos",
+        "search_aliases": [
+             "registro ciudadanos",
+             "departamento de registro ciudadanos",
+             "depto de registro ciudadanos",
+             "departamento de registros ciudadanos"
+         ],
+        "contact_info": {
+            "manager": "Zara Antilles",
+            "address": "Edificio Consistorial (nivel 2412)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-953827104658",
+            "email": "registro.ciudadanos@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "AI-002",
+            "category": "Asuntos Internos",
+             "tags": ["asuntos internos", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Regulación Comercial",
+        "search_aliases": [
+             "regulacion comercial",
+             "departamento de regulacion comercial",
+             "depto de regulacion comercial"
+         ],
+        "contact_info": {
+            "manager": "Admiral Ackbar",
+            "address": "Torre de Comercio (sector E-5377)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-374829105672",
+            "email": "regulacion.comercial@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "CE-101",
+            "category": "Comercio y Economía",
+             "tags": ["comercio economia", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Desarrollo Económico",
+        "search_aliases": [
+             "desarrollo economico",
+             "departamento de desarrollo economico",
+             "depto de desarrollo economico"
+         ],
+        "contact_info": {
+            "manager": "Admiral Ackbar",
+            "address": "Fortaleza Ciudad Nube (sector C-981)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-482716592041",
+            "email": "desarrollo.economico@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "CE-102",
+            "category": "Comercio y Economía",
+             "tags": ["comercio economia", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Estrategia Militar",
+        "search_aliases": [
+             "estrategia militar",
+             "departamento de estrategia militar",
+             "depto de estrategia militar"
+         ],
+        "contact_info": {
+            "manager": "General Kenobi",
+            "address": "Cuartel de la Defensa (sector B-456)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-123456789012",
+            "email": "estrategia.militar@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "DG-201",
+            "category": "Defensa Galáctica",
+             "tags": ["defensa galactica", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Logística y Abastecimiento",
+        "search_aliases": [
+             "logistica y abastecimiento",
+             "departamento de logistica y abastecimiento",
+             "depto de logistica y abastecimiento"
+         ],
+        "contact_info": {
+            "manager": "Bail Organa",
+            "address": "Cuartel de la Defensa (sector B-501)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-987654321098",
+            "email": "logistica.abastecimiento@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "DG-202",
+            "category": "Defensa Galáctica",
+             "tags": ["defensa galactica", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Educación Primaria y Secundaria",
+        "search_aliases": [
+             "educacion primaria y secundaria",
+             "departamento de educacion primaria y secundaria",
+             "depto de educacion"
+         ],
+        "contact_info": {
+            "manager": "Jocasta Nu",
+            "address": "Torre Academia Jedi (nivel 3B120)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "educacion@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "EI-301",
+            "category": "Educación e Instrucción",
+             "tags": ["educacion instruccion", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Preservación Cultural",
+        "search_aliases": [
+             "preservacion cultural",
+             "departamento de preservacion cultural",
+             "depto de preservacion cultural"
+         ],
+        "contact_info": {
+            "manager": "Jocasta Nu",
+            "address": "Palacio de la Cultura (sector Central)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "preservacion.cultural@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "EI-302",
+            "category": "Educación e Instrucción",
+             "tags": ["educacion instruccion", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Misiones y Exploración",
+        "search_aliases": [
+             "misiones y exploracion",
+             "departamento de misiones y exploracion",
+             "depto de misiones y exploracion"
+         ],
+        "contact_info": {
+            "manager": "Hera Syndulla",
+            "address": "Edificio Exploración Galáctica (sector D-789, ala B)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-564738291056",
+            "email": "misiones.exploracion@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "EC-401",
+            "category": "Exploración y Colonización",
+             "tags": ["exploracion colonizacion", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Asentamientos Coloniales",
+        "search_aliases": [
+             "asentamientos coloniales",
+             "departamento de asentamientos coloniales",
+             "depto de asentamientos coloniales"
+         ],
+        "contact_info": {
+            "manager": "Mace Windu",
+            "address": "Edificio Exploración Galáctica (sector D-789, ala B)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-564738291056",
+            "email": "asentamientos.coloniales@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "EC-402",
+            "category": "Exploración y Colonización",
+             "tags": ["exploracion colonizacion", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Administración de Justicia",
+        "search_aliases": [
+             "administracion justicia",
+             "departamento de administracion de justicia",
+             "depto de justicia"
+         ],
+        "contact_info": {
+            "manager": "Mace Windu",
+            "address": "Palacio de Justicia (Sector A-123)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "administracion.justicia@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "JO-501",
+            "category": "Justicia y Orden Público",
+             "tags": ["justicia orden publico", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Seguridad Pública",
+        "search_aliases": [
+             "seguridad publica",
+             "departamento de seguridad publica",
+             "depto de seguridad"
+         ],
+        "contact_info": {
+            "manager": "Mace Windu",
+            "address": "Edificio Consistorial (Oficina Central de Seguridad, nivel 212)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "seguridad.publica@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "JO-502",
+            "category": "Justicia y Orden Público",
+             "tags": ["justicia orden publico", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Embajadas y Misiones Diplomáticas",
+        "search_aliases": [
+             "embajadas y misiones",
+             "departamento de embajadas y misiones",
+             "depto de embajadas"
+         ],
+        "contact_info": {
+            "manager": "Mon Mothma",
+            "address": "Palacio de la Cancillería (nivel 1832)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "embajadas.misiones@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "RI-601",
+            "category": "Relaciones Internacionales",
+             "tags": ["relaciones internacionales", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Cooperación Intergaláctica",
+        "search_aliases": [
+             "cooperacion intergalactica",
+             "departamento de cooperacion intergalactica",
+             "depto de cooperacion"
+         ],
+        "contact_info": {
+            "manager": "Mon Mothma",
+            "address": "Palacio de la Cancillería (nivel 1832)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "cooperacion.intergalactica@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "RI-602",
+            "category": "Relaciones Internacionales",
+             "tags": ["relaciones internacionales", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Salud Pública",
+        "search_aliases": [
+             "salud publica",
+             "departamento de salud publica",
+             "depto de salud"
+         ],
+        "contact_info": {
+            "manager": "Bail Organa",
+            "address": "Sede Federal de la Salud Intergaláctica (nivel 1)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "salud.publica@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "SB-701",
+            "category": "Salud y Bienestar",
+             "tags": ["salud bienestar", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Bienestar Social",
+        "search_aliases": [
+             "bienestar social",
+             "departamento de bienestar social",
+             "depto de bienestar"
+         ],
+        "contact_info": {
+            "manager": "Bail Organa",
+            "address": "Sede Federal de la Salud Intergaláctica (nivel 2)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "bienestar.social@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "SB-702",
+            "category": "Salud y Bienestar",
+             "tags": ["salud bienestar", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Investigación Científica",
+        "search_aliases": [
+             "investigacion cientifica",
+             "departamento de investigacion cientifica",
+             "depto de investigacion"
+         ],
+        "contact_info": {
+            "manager": "Galen Erso",
+            "address": "Torre Holística de la Ciencia (piso 1, ala A)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "investigacion.cientifica@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "TC-801",
+            "category": "Tecnología y Ciencia",
+             "tags": ["tecnologia ciencia", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Desarrollo Tecnológico",
+        "search_aliases": [
+             "desarrollo tecnologico",
+             "departamento de desarrollo tecnologico",
+             "depto de desarrollo tecnologico"
+         ],
+        "contact_info": {
+            "manager": "Galen Erso",
+            "address": "Torre Holística de la Ciencia (piso 1, ala B)",
+            "hours": "lun-vie 08:00-17:00",
+            "phone": "COM-203948576194",
+            "email": "desarrollo.tecnologico@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "TC-802",
+            "category": "Tecnología y Ciencia",
+             "tags": ["tecnologia ciencia", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Transporte Interestelar",
+        "search_aliases": [
+             "transporte interestelar",
+             "departamento de transporte interestelar",
+             "depto de transporte interestelar"
+         ],
+        "contact_info": {
+            "manager": "Qui-Gon Jinn",
+            "address": "Edificio Consistorial (nivel 5143)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "transporte.interestelar@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "TC-901",
+            "category": "Transporte y Comunicaciones",
+             "tags": ["transporte comunicaciones", "contacto"]
+        }
+     },
+     {
+        "department_name": "Departamento de Comunicaciones Galácticas",
+        "search_aliases": [
+             "comunicaciones galacticas",
+             "departamento de comunicaciones galacticas",
+             "depto de comunicaciones"
+         ],
+        "contact_info": {
+            "manager": "Bail Organa",
+            "address": "Edificio Consistorial (nivel 5143)",
+            "hours": "lun-vie 08:30-13:00",
+            "phone": "COM-203948576194",
+            "email": "comunicaciones.galacticas@coruscant.sw"
+        },
+        "metadata": {
+            "department_id": "TC-902",
+            "category": "Transporte y Comunicaciones",
+             "tags": ["transporte comunicaciones", "contacto"]
+         }
+    }
+ ]

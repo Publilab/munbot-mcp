@@ -1,32 +1,68 @@
-[
-    {
-        "id": "COM-001",
-        "doc": "RAG-Horario_Comercio.json",
-        "seccion": "Titulo 1",
-        "tipo_fragmento": "introduccion",
-        "titulo": "horarios comercio – introducción",
-        "texto": "Modifica el decreto 481 para regular horarios y funcionamiento de locales, kioscos, carros, food trucks y ferias libres, además de imponer el uso obligatorio de mascarillas en Curoscant.",
-        "alias": ["decreto horarios comercio"],
-        "tags": ["comercio", "introduccion"]
+ [
+     {
+        "content": [
+            "Modifica el decreto 481 para regular horarios y funcionamiento de locales, kioscos, carros, food trucks y ferias libres, además de imponer el uso obligatorio de mascarillas en Curoscant."
+        ],
+        "metadata": {
+            "chunk_id": "COM-001",
+            "source_doc": "horario_comercio",
+            "title": "Regulación general de horarios de comercio y uso de mascarillas",
+            "tema": "Horarios Comercio",
+            "detalle": "general",
+            "keywords": [
+                "decreto 481",
+                "horarios comercio curoscant",
+                "normativa food trucks",
+                "regulacion ferias libres",
+                "uso obligatorio de mascarillas",
+                "funcionamiento de locales comerciales",
+                "decreto que regula el comercio"
+            ]
+         },
+        "tags": ["comercio", "introduccion", "normativa"]
     },
     {
-        "id": "COM-002",
-        "doc": "RAG-Horario_Comercio.json",
-        "seccion": "Titulo 1",
-        "tipo_fragmento": "descripcion",
-        "titulo": "horarios comercio – cierre",
-        "texto": "Mientras dure el Estado de Excepción, todos los comercios deben cerrar a las 20:00 h; los supermercados, a las 19:00 h (Resolución Exenta 3640/36/1576).",
-        "alias": ["cierre comercio 20:00"],
-        "tags": ["comercio", "cierre"]
+        "content": [
+            "Mientras dure el Estado de Excepción, todos los comercios deben cerrar a las 20:00 h; los supermercados, a las 19:00 h (Resolución Exenta 3640/36/1576)."
+        ],
+        "metadata": {
+            "chunk_id": "COM-002",
+            "source_doc": "horario_comercio",
+            "title": "Horario de cierre de comercios y supermercados",
+            "tema": "Horarios Comercio",
+            "detalle": "cierre_general",
+            "keywords": [
+                "a que hora cierran los negocios",
+                "horario supermercados",
+                "cierre comercio 20:00",
+                "estado de excepcion horarios",
+                "hasta que hora puedo comprar",
+                "resolucion exenta 3640",
+                "horario de cierre por alerta sanitaria"
+            ]
+         },
+        "tags": ["comercio", "cierre", "supermercados", "horario"]
     },
     {
-        "id": "COM-003",
-        "doc": "RAG-Horario_Comercio.json",
-        "seccion": "Titulo 1",
-        "tipo_fragmento": "descripcion",
-        "titulo": "horarios feria libre – funcionamiento",
-        "texto": "La feria libre puede operar de 13:00 a 20:00 h hasta que se levante la Alerta Sanitaria, con opción de prórroga si persisten las circunstancias sanitarias.",
-        "alias": ["horario feria libre"],
-        "tags": ["feria", "horario"]
-    }
-]
+        "content": [
+            "La feria libre puede operar de 13:00 a 20:00 h hasta que se levante la Alerta Sanitaria, con opción de prórroga si persisten las circunstancias sanitarias."
+
+        ],
+        "metadata": {
+            "chunk_id": "COM-003",
+            "source_doc": "horario_comercio",
+            "title": "Horario de funcionamiento de la feria libre",
+            "tema": "Horarios Comercio",
+            "detalle": "feria_libre",
+            "keywords": [
+                "horario feria libre",
+                "a que hora abre la feria",
+                "a que hora cierra la feria",
+                "cuando funciona la feria",
+                "horario por alerta sanitaria",
+                "prorroga horario feria"
+            ]
+        },
+        "tags": ["feria", "horario", "alerta_sanitaria"]
+     }
+ ]

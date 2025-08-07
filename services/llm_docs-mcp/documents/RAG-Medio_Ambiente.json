@@ -1,352 +1,693 @@
 [
     {
-        "id": "MED-001",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 1",
-        "tipo_fragmento": "introduccion",
-        "titulo": "ambiente – introducción",
-        "texto": "Establece normas para proteger el entorno, conservar recursos y fomentar reciclaje, compostaje e iniciativas ciudadanas en Curoscant.",
-        "alias": ["objeto reglamento ambiental"],
-        "tags": ["ambiental", "introduccion"]
+        "content": [
+            "Establece normas para proteger el entorno, conservar recursos y fomentar reciclaje, compostaje e iniciativas ciudadanas en Curoscant."
+        ],
+        "metadata": {
+            "chunk_id": "MED-001",
+            "source_doc": "medio_ambiente",
+            "title": "Introducción al reglamento ambiental",
+            "tema": "Medio Ambiente",
+            "detalle": "introduccion",
+            "keywords": [
+                "objeto reglamento ambiental",
+                "normas medio ambiente",
+                "proteger el entorno",
+                "conservar recursos",
+                "fomentar reciclaje",
+                "iniciativas ciudadanas ambientales"
+            ]
+        },
+        "tags": ["ambiental", "introduccion", "normativa"]
     },
     {
-        "id": "MED-002",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 1",
-        "tipo_fragmento": "definicion",
-        "titulo": "ambiente – ámbito de aplicación",
-        "texto": "Aplica a personas, empresas y dependencias públicas que operen en Curoscant; excluye actividades militares, seguridad, pesca y caza en áreas protegidas.",
-        "alias": ["ámbito de aplicación"],
-        "tags": ["ambiental", "ambito"]
+        "content": [
+            "Aplica a personas, empresas y dependencias públicas que operen en Curoscant; excluye actividades militares, seguridad, pesca y caza en áreas protegidas."
+        ],
+        "metadata": {
+            "chunk_id": "MED-002",
+            "source_doc": "medio_ambiente",
+            "title": "Ámbito de aplicación del reglamento ambiental",
+            "tema": "Medio Ambiente",
+            "detalle": "ambito_aplicacion",
+            "keywords": [
+                "a quien aplica el reglamento ambiental",
+                "empresas y medio ambiente",
+                "actividades excluidas normativa ambiental",
+                "ordenanza ambiental curoscant"
+            ]
+        },
+        "tags": ["ambiental", "ambito", "regulacion"]
     },
     {
-        "id": "MED-003",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "principios",
-        "titulo": "ambiente – principios",
-        "texto": "Basado en precaución, sostenibilidad intergeneracional, responsabilidad del productor, participación ciudadana y equidad; prioriza ecosistemas y salud pública, impulsando educación, cooperación e innovación limpia.",
-        "alias": ["principios ambientales"],
-        "tags": ["ambiental", "principios"]
+        "content": [
+            "Basado en precaución, sostenibilidad intergeneracional, responsabilidad del productor, participación ciudadana y equidad; prioriza ecosistemas y salud pública, impulsando educación, cooperación e innovación limpia."
+        ],
+        "metadata": {
+            "chunk_id": "MED-003",
+            "source_doc": "medio_ambiente",
+            "title": "Principios del reglamento ambiental",
+            "tema": "Medio Ambiente",
+            "detalle": "principios",
+            "keywords": [
+                "principios ambientales",
+                "sostenibilidad intergeneracional",
+                "responsabilidad del productor",
+                "participacion ciudadana ambiental",
+                "equidad ambiental"
+            ]
+        },
+        "tags": ["ambiental", "principios", "sostenibilidad"]
     },
     {
-        "id": "MED-004",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – calidad del aire",
-        "texto": "Impone controles de emisiones a industrias y transporte, exige planes de mitigación, monitoreo periódico e incentivos para tecnologías limpias.",
-        "alias": ["calidad aire"],
-        "tags": ["ambiental", "aire"]
-    },  
-    {
-        "id": "MED-005",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – gestión de residuos sólidos",
-        "texto": "Obliga a separar residuos (orgánicos, reciclables, no valorizables), controlar peligrosos y prohibe incineración sin permiso; incluye inspecciones y educación ambiental.",
-        "alias": ["residuos sólidos"],
-        "tags": ["ambiental", "residuos"]
+        "content": [
+            "Impone controles de emisiones a industrias y transporte, exige planes de mitigación, monitoreo periódico e incentivos para tecnologías limpias."
+        ],
+        "metadata": {
+            "chunk_id": "MED-004",
+            "source_doc": "medio_ambiente",
+            "title": "Normas sobre la calidad del aire",
+            "tema": "Medio Ambiente",
+            "detalle": "calidad_aire",
+            "keywords": [
+                "calidad del aire",
+                "control de emisiones",
+                "planes de mitigacion ambiental",
+                "monitoreo de aire",
+                "incentivos tecnologias limpias"
+            ]
+        },
+        "tags": ["ambiental", "aire", "contaminacion", "emisiones"]
     },
     {
-        "id": "MED-006",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "prohibicion",
-        "titulo": "ambiente – prohibición de vertidos",
-        "texto": "Prohíbe verter residuos en espacios públicos y cuerpos de agua; exige planes de tratamiento, fiscalización y campañas de limpieza.",
-        "alias": ["prohibición vertidos"],
-        "tags": ["ambiental", "vertidos"]
+        "content": [
+            "Obliga a separar residuos (orgánicos, reciclables, no valorizables), controlar peligrosos y prohibe incineración sin permiso; incluye inspecciones y educación ambiental."
+        ],
+        "metadata": {
+            "chunk_id": "MED-005",
+            "source_doc": "medio_ambiente",
+            "title": "Gestión de residuos sólidos",
+            "tema": "Medio Ambiente",
+            "detalle": "residuos_solidos",
+            "keywords": [
+                "gestion de residuos solidos",
+                "separar basura",
+                "residuos organicos",
+                "residuos reciclables",
+                "control residuos peligrosos",
+                "prohibicion incineracion"
+            ]
+        },
+        "tags": ["ambiental", "residuos", "reciclaje", "basura"]
     },
     {
-        "id": "MED-007",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – reciclaje obligatorio",
-        "texto": "Residencias, empresas y edificios públicos deben separar reciclables; recicladores reportan volúmenes y se instalan puntos de acopio con incentivos a buenas prácticas.",
-        "alias": ["reciclaje obligatorio"],
-        "tags": ["ambiental", "reciclaje"]
+        "content": [
+            "Prohíbe verter residuos en espacios públicos y cuerpos de agua; exige planes de tratamiento, fiscalización y campañas de limpieza."
+        ],
+        "metadata": {
+            "chunk_id": "MED-006",
+            "source_doc": "medio_ambiente",
+            "title": "Prohibición de vertidos de residuos",
+            "tema": "Medio Ambiente",
+            "detalle": "prohibicion_vertidos",
+            "keywords": [
+                "prohibicion de vertidos",
+                "no botar basura en la calle",
+                "contaminacion de rios y lagos",
+                "planes de tratamiento de aguas",
+                "campañas de limpieza"
+            ]
+        },
+        "tags": ["ambiental", "vertidos", "prohibicion", "contaminacion"]
     },
     {
-        "id": "MED-008",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – compostaje comunitario",
-        "texto": "Fomenta huertos y puntos de compostaje con apoyo técnico, inspecciones, sanciones e incentivos a empresas que gestionen orgánicos.",
-        "alias": ["compostaje comunitario"],
-        "tags": ["ambiental", "compostaje"]
+        "content": [
+            "Residencias, empresas y edificios públicos deben separar reciclables; recicladores reportan volúmenes y se instalan puntos de acopio con incentivos a buenas prácticas."
+        ],
+        "metadata": {
+            "chunk_id": "MED-007",
+            "source_doc": "medio_ambiente",
+            "title": "Obligatoriedad del reciclaje",
+            "tema": "Medio Ambiente",
+            "detalle": "reciclaje_obligatorio",
+            "keywords": [
+                "reciclaje obligatorio",
+                "es obligacion reciclar",
+                "separar reciclables",
+                "puntos de acopio",
+                "incentivos por reciclar"
+            ]
+        },
+        "tags": ["ambiental", "reciclaje", "obligacion", "residuos"]
     },
     {
-        "id": "MED-009",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – responsabilidad del productor",
-        "texto": "Obliga a proveedores a financiar sistemas de devolución de envases y productos, con planes de gestión, inspecciones e incentivos a la economía circular.",
-        "alias": ["responsabilidad productor"],
-        "tags": ["ambiental", "productor"]
+        "content": [
+            "Fomenta huertos y puntos de compostaje con apoyo técnico, inspecciones, sanciones e incentivos a empresas que gestionen orgánicos."
+        ],
+        "metadata": {
+            "chunk_id": "MED-008",
+            "source_doc": "medio_ambiente",
+            "title": "Fomento al compostaje comunitario",
+            "tema": "Medio Ambiente",
+            "detalle": "compostaje_comunitario",
+            "keywords": [
+                "compostaje comunitario",
+                "puntos de compostaje",
+                "gestion de residuos organicos",
+                "apoyo tecnico para compostar",
+                "incentivos compostaje"
+            ]
+        },
+        "tags": ["ambiental", "compostaje", "residuos_organicos", "huertos"]
     },
     {
-        "id": "MED-010",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – reducción de plásticos de un solo uso",
-        "texto": "Prohíbe plásticos desechables en eventos y comercio; exige planes de reducción, inspecciones y alternativas reutilizables con incentivos a empresas.",
-        "alias": ["reducción plásticos"],
-        "tags": ["ambiental", "plásticos"]
+        "content": [
+            "Obliga a proveedores a financiar sistemas de devolución de envases y productos, con planes de gestión, inspecciones e incentivos a la economía circular."
+        ],
+        "metadata": {
+            "chunk_id": "MED-009",
+            "source_doc": "medio_ambiente",
+            "title": "Responsabilidad extendida del productor",
+            "tema": "Medio Ambiente",
+            "detalle": "responsabilidad_productor",
+            "keywords": [
+                "responsabilidad del productor",
+                "ley rep",
+                "devolucion de envases",
+                "economia circular",
+                "planes de gestion de productos"
+            ]
+        },
+        "tags": ["ambiental", "productor", "reciclaje", "economia_circular"]
     },
     {
-        "id": "MED-011",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – protección de recursos hídricos",
-        "texto": "Prohíbe contaminar ríos, lagos y drenajes; exige planes de tratamiento, monitoreo y educación sobre cuidado del agua, con sanciones por incumplimiento.",
-        "alias": ["proteccion recursos hidricos"],
-        "tags": ["ambiental", "hidricos"]
+        "content": [
+            "Prohíbe plásticos desechables en eventos y comercio; exige planes de reducción, inspecciones y alternativas reutilizables con incentivos a empresas."
+        ],
+        "metadata": {
+            "chunk_id": "MED-010",
+            "source_doc": "medio_ambiente",
+            "title": "Reducción de plásticos de un solo uso",
+            "tema": "Medio Ambiente",
+            "detalle": "reduccion_plasticos",
+            "keywords": [
+                "reduccion de plasticos",
+                "plasticos de un solo uso",
+                "prohibicion de bombillas",
+                "alternativas reutilizables",
+                "incentivos reduccion plastico"
+            ]
+        },
+        "tags": ["ambiental", "plasticos", "prohibicion", "contaminacion"]
     },
     {
-        "id": "MED-012",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – contaminación lumínica",
-        "texto": "Regula niveles y orientación de luz artificial para proteger ecosistemas nocturnos; impone eficiencia energética, inspecciones y sanciones.",
-        "alias": ["contaminacion luminica"],
-        "tags": ["ambiental", "luminica"]
+        "content": [
+            "Prohíbe contaminar ríos, lagos y drenajes; exige planes de tratamiento, monitoreo y educación sobre cuidado del agua, con sanciones por incumplimiento."
+        ],
+        "metadata": {
+            "chunk_id": "MED-011",
+            "source_doc": "medio_ambiente",
+            "title": "Protección de recursos hídricos",
+            "tema": "Medio Ambiente",
+            "detalle": "proteccion_recursos_hidricos",
+            "keywords": [
+                "proteccion de recursos hidricos",
+                "no contaminar el agua",
+                "cuidado de rios y lagos",
+                "monitoreo de la calidad del agua",
+                "sanciones por contaminar agua"
+            ]
+        },
+        "tags": ["ambiental", "agua", "hidricos", "contaminacion"]
     },
     {
-        "id": "MED-013",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – contaminación acústica",
-        "texto": "Limita niveles de ruido por zonas y horarios; actividades ruidosas deben mitigar sonido bajo fiscalización y posibles sanciones.",
-        "alias": ["contaminacion acustica"],
-        "tags": ["ambiental", "acustica"]
+        "content": [
+            "Regula niveles y orientación de luz artificial para proteger ecosistemas nocturnos; impone eficiencia energética, inspecciones y sanciones."
+        ],
+        "metadata": {
+            "chunk_id": "MED-012",
+            "source_doc": "medio_ambiente",
+            "title": "Regulación de la contaminación lumínica",
+            "tema": "Medio Ambiente",
+            "detalle": "contaminacion_luminica",
+            "keywords": [
+                "contaminacion luminica",
+                "luz artificial de noche",
+                "proteger cielo nocturno",
+                "eficiencia energetica en iluminacion",
+                "sanciones por contaminacion luminica"
+            ]
+        },
+        "tags": ["ambiental", "luminica", "contaminacion", "energia"]
     },
     {
-        "id": "MED-014",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – energías renovables",
-        "texto": "Nuevas edificaciones deberán cubrir 30 % de su energía con fuentes renovables en cinco años; exige planes de transición y fiscalización.",
-        "alias": ["energias renovables"],
-        "tags": ["ambiental", "renovables"]
+        "content": [
+            "Limita niveles de ruido por zonas y horarios; actividades ruidosas deben mitigar sonido bajo fiscalización y posibles sanciones."
+        ],
+        "metadata": {
+            "chunk_id": "MED-013",
+            "source_doc": "medio_ambiente",
+            "title": "Control de la contaminación acústica",
+            "tema": "Medio Ambiente",
+            "detalle": "contaminacion_acustica",
+            "keywords": [
+                "contaminacion acustica",
+                "limites de ruido",
+                "horarios para hacer ruido",
+                "mitigacion de sonido",
+                "sanciones por ruido excesivo"
+            ]
+        },
+        "tags": ["ambiental", "acustica", "ruido", "contaminacion"]
     },
     {
-        "id": "MED-015",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – protección de áreas verdes",
-        "texto": "Parques y corredores biológicos quedan protegidos; la tala de nativas requiere permiso y se promueven reforestación y restauración urbana.",
-        "alias": ["proteccion areas verdes"],
-        "tags": ["ambiental", "areas_verdes"]
+        "content": [
+            "Nuevas edificaciones deberán cubrir 30 % de su energía con fuentes renovables en cinco años; exige planes de transición y fiscalización."
+        ],
+        "metadata": {
+            "chunk_id": "MED-014",
+            "source_doc": "medio_ambiente",
+            "title": "Fomento de energías renovables",
+            "tema": "Medio Ambiente",
+            "detalle": "energias_renovables",
+            "keywords": [
+                "energias renovables",
+                "paneles solares en edificios",
+                "energia eolica",
+                "planes de transicion energetica",
+                "edificios sustentables"
+            ]
+        },
+        "tags": ["ambiental", "renovables", "energia", "sostenibilidad"]
     },
     {
-        "id": "MED-016",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – fomento de iniciativas ciudadanas",
-        "texto": "Otorga incentivos y reconocimiento a proyectos ambientales comunitarios; empresas deben presentar planes sostenibles y se refuerza la educación cívica verde.",
-        "alias": ["iniciativas ciudadanas"],
-        "tags": ["ambiental", "iniciativas"]
+        "content": [
+            "Parques y corredores biológicos quedan protegidos; la tala de nativas requiere permiso y se promueven reforestación y restauración urbana."
+        ],
+        "metadata": {
+            "chunk_id": "MED-015",
+            "source_doc": "medio_ambiente",
+            "title": "Protección de áreas verdes y biodiversidad",
+            "tema": "Medio Ambiente",
+            "detalle": "proteccion_areas_verdes",
+            "keywords": [
+                "proteccion de areas verdes",
+                "parques protegidos",
+                "corredores biologicos",
+                "prohibido talar arboles nativos",
+                "reforestacion urbana"
+            ]
+        },
+        "tags": ["ambiental", "areas_verdes", "biodiversidad", "reforestacion"]
     },
     {
-        "id": "MED-017",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – educación ambiental",
-        "texto": "Impulsa campañas, talleres y programas escolares sobre sostenibilidad, reciclaje y cambio climático, con alianzas público-privadas y reporte de resultados.",
-        "alias": ["educacion ambiental"],
-        "tags": ["ambiental", "educacion"]
+        "content": [
+            "Otorga incentivos y reconocimiento a proyectos ambientales comunitarios; empresas deben presentar planes sostenibles y se refuerza la educación cívica verde."
+        ],
+        "metadata": {
+            "chunk_id": "MED-016",
+            "source_doc": "medio_ambiente",
+            "title": "Fomento de iniciativas ciudadanas ambientales",
+            "tema": "Medio Ambiente",
+            "detalle": "iniciativas_ciudadanas",
+            "keywords": [
+                "iniciativas ciudadanas ambientales",
+                "proyectos comunitarios verdes",
+                "incentivos a la sostenibilidad",
+                "educacion civica verde",
+                "planes de sostenibilidad empresarial"
+            ]
+        },
+        "tags": ["ambiental", "iniciativas", "comunidad", "sostenibilidad"]
     },
     {
-        "id": "MED-018",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "fiscalizacion",
-        "titulo": "ambiente – fiscalización ambiental",
-        "texto": "La autoridad realiza inspecciones y aplica sanciones proporcionales; se habilitan denuncias ciudadanas y se exige reporte periódico empresarial.",
-        "alias": ["fiscalizacion ambiental"],
-        "tags": ["ambiental", "fiscalizacion"]
+        "content": [
+            "Impulsa campañas, talleres y programas escolares sobre sostenibilidad, reciclaje y cambio climático, con alianzas público-privadas y reporte de resultados."
+        ],
+        "metadata": {
+            "chunk_id": "MED-017",
+            "source_doc": "medio_ambiente",
+            "title": "Programas de educación ambiental",
+            "tema": "Medio Ambiente",
+            "detalle": "educacion_ambiental",
+            "keywords": [
+                "educacion ambiental",
+                "talleres de reciclaje",
+                "programas escolares de sostenibilidad",
+                "campañas sobre cambio climatico",
+                "alianzas publico-privadas por el medio ambiente"
+            ]
+        },
+        "tags": ["ambiental", "educacion", "sostenibilidad", "reciclaje"]
     },
     {
-        "id": "MED-019",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – consejos ambientales comunitarios",
-        "texto": "Crea consejos locales con representantes ciudadanos, sociales y empresariales para proponer proyectos y participar en decisiones ambientales.",
-        "alias": ["consejos ambientales"],
-        "tags": ["ambiental", "consejos"]
+        "content": [
+            "La autoridad realiza inspecciones y aplica sanciones proporcionales; se habilitan denuncias ciudadanas y se exige reporte periódico empresarial."
+        ],
+        "metadata": {
+            "chunk_id": "MED-018",
+            "source_doc": "medio_ambiente",
+            "title": "Fiscalización y sanciones ambientales",
+            "tema": "Medio Ambiente",
+            "detalle": "fiscalizacion_ambiental",
+            "keywords": [
+                "fiscalizacion ambiental",
+                "inspecciones ambientales",
+                "sanciones por contaminar",
+                "denuncias ciudadanas por medio ambiente",
+                "reporte de sostenibilidad empresarial"
+            ]
+        },
+        "tags": ["ambiental", "fiscalizacion", "sanciones", "denuncias"]
     },
     {
-        "id": "MED-020",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "obligacion",
-        "titulo": "ambiente – transparencia ambiental",
-        "texto": "Exige informe anual con resultados, indicadores y sanciones; garantiza acceso ciudadano a la información y promueve participación en su elaboración.",
-        "alias": ["transparencia ambiental"],
-        "tags": ["ambiental", "transparencia"]
+        "content": [
+            "Crea consejos locales con representantes ciudadanos, sociales y empresariales para proponer proyectos y participar en decisiones ambientales."
+        ],
+        "metadata": {
+            "chunk_id": "MED-019",
+            "source_doc": "medio_ambiente",
+            "title": "Creación de consejos ambientales comunitarios",
+            "tema": "Medio Ambiente",
+            "detalle": "consejos_ambientales",
+            "keywords": [
+                "consejos ambientales comunitarios",
+                "participacion ciudadana en decisiones ambientales",
+                "representantes sociales y empresariales",
+                "proponer proyectos ambientales"
+            ]
+        },
+        "tags": ["ambiental", "consejos", "comunidad", "participacion"]
     },
     {
-        "id": "MED-021",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – cooperación interinstitucional",
-        "texto": "Facilita convenios con universidades, ONG y empresas para investigar, desarrollar e implementar tecnologías limpias; forma profesionales y reporta resultados con transparencia.",
-        "alias": ["cooperacion interinstitucional"],
-        "tags": ["ambiental", "cooperacion"]
+        "content": [
+            "Exige informe anual con resultados, indicadores y sanciones; garantiza acceso ciudadano a la información y promueve participación en su elaboración."
+        ],
+        "metadata": {
+            "chunk_id": "MED-020",
+            "source_doc": "medio_ambiente",
+            "title": "Transparencia y acceso a la información ambiental",
+            "tema": "Medio Ambiente",
+            "detalle": "transparencia_ambiental",
+            "keywords": [
+                "transparencia ambiental",
+                "informe anual de medio ambiente",
+                "acceso a la informacion ambiental",
+                "indicadores de sostenibilidad",
+                "participacion ciudadana en informes"
+            ]
+        },
+        "tags": ["ambiental", "transparencia", "informacion", "participacion"]
     },
     {
-        "id": "MED-022",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – revisión trienal",
-        "texto": "El reglamento se actualiza cada 3 años mediante consultas públicas, talleres y participación comunitaria, divulgando modificaciones y logros.",
-        "alias": ["revision trienal"],
-        "tags": ["ambiental", "revision"]
+        "content": [
+            "Facilita convenios con universidades, ONG y empresas para investigar, desarrollar e implementar tecnologías limpias; forma profesionales y reporta resultados con transparencia."
+        ],
+        "metadata": {
+            "chunk_id": "MED-021",
+            "source_doc": "medio_ambiente",
+            "title": "Cooperación interinstitucional para el medio ambiente",
+            "tema": "Medio Ambiente",
+            "detalle": "cooperacion_interinstitucional",
+            "keywords": [
+                "cooperacion interinstitucional",
+                "convenios con universidades",
+                "alianzas con ong ambientales",
+                "desarrollo de tecnologias limpias",
+                "formacion de profesionales ambientales"
+            ]
+        },
+        "tags": ["ambiental", "cooperacion", "tecnologia", "investigacion"]
     },
     {
-        "id": "MED-023",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – voluntariado ambiental",
-        "texto": "Crea programas de limpieza, reforestación y monitoreo ecológico con capacitación y alianzas público-privadas; publica actividades y logros.",
-        "alias": ["voluntariado ambiental"],
-        "tags": ["ambiental", "voluntariado"]
+        "content": [
+            "El reglamento se actualiza cada 3 años mediante consultas públicas, talleres y participación comunitaria, divulgando modificaciones y logros."
+        ],
+        "metadata": {
+            "chunk_id": "MED-022",
+            "source_doc": "medio_ambiente",
+            "title": "Revisión y actualización del reglamento",
+            "tema": "Medio Ambiente",
+            "detalle": "revision_trienal",
+            "keywords": [
+                "revision trienal del reglamento",
+                "actualizacion de la normativa ambiental",
+                "consultas publicas ambientales",
+                "participacion comunitaria en normas"
+            ]
+        },
+        "tags": ["ambiental", "revision", "actualizacion", "normativa"]
     },
     {
-        "id": "MED-024",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – incentivos económicos",
-        "texto": "Otorga subvenciones y beneficios tributarios a iniciativas verdes comunitarias con evaluación, seguimiento y rendición pública de cuentas.",
-        "alias": ["incentivos economicos"],
-        "tags": ["ambiental", "incentivos"]
+        "content": [
+            "Crea programas de limpieza, reforestación y monitoreo ecológico con capacitación y alianzas público-privadas; publica actividades y logros."
+        ],
+        "metadata": {
+            "chunk_id": "MED-023",
+            "source_doc": "medio_ambiente",
+            "title": "Programas de voluntariado ambiental",
+            "tema": "Medio Ambiente",
+            "detalle": "voluntariado_ambiental",
+            "keywords": [
+                "voluntariado ambiental",
+                "programas de limpieza",
+                "reforestacion comunitaria",
+                "monitoreo ecologico ciudadano",
+                "ser voluntario por el medio ambiente"
+            ]
+        },
+        "tags": ["ambiental", "voluntariado", "comunidad", "reforestacion"]
     },
     {
-        "id": "MED-025",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – huertos urbanos",
-        "texto": "Impulsa huertos en espacios públicos con apoyo técnico, educación ambiental y reportes de actividades y resultados.",
-        "alias": ["huertos urbanos"],
-        "tags": ["ambiental", "huertos"]
+        "content": [
+            "Otorga subvenciones y beneficios tributarios a iniciativas verdes comunitarias con evaluación, seguimiento y rendición pública de cuentas."
+        ],
+        "metadata": {
+            "chunk_id": "MED-024",
+            "source_doc": "medio_ambiente",
+            "title": "Incentivos económicos para iniciativas verdes",
+            "tema": "Medio Ambiente",
+            "detalle": "incentivos_economicos",
+            "keywords": [
+                "incentivos economicos verdes",
+                "subvenciones para proyectos ambientales",
+                "beneficios tributarios por sostenibilidad",
+                "financiamiento de iniciativas comunitarias"
+            ]
+        },
+        "tags": ["ambiental", "incentivos", "economia", "sostenibilidad"]
     },
     {
-        "id": "MED-026",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – movilidad sustentable",
-        "texto": "Promueve transporte público, ciclismo y caminata mediante infraestructura segura y planes empresariales, con evaluación y transparencia.",
-        "alias": ["movilidad sustentable"],
-        "tags": ["ambiental", "movilidad"]
+        "content": [
+            "Impulsa huertos en espacios públicos con apoyo técnico, educación ambiental y reportes de actividades y resultados."
+        ],
+        "metadata": {
+            "chunk_id": "MED-025",
+            "source_doc": "medio_ambiente",
+            "title": "Fomento de huertos urbanos",
+            "tema": "Medio Ambiente",
+            "detalle": "huertos_urbanos",
+            "keywords": [
+                "huertos urbanos",
+                "agricultura en la ciudad",
+                "apoyo tecnico para huertos",
+                "huertos en espacios publicos",
+                "educacion ambiental sobre huertos"
+            ]
+        },
+        "tags": ["ambiental", "huertos", "comunidad", "sostenibilidad"]
     },
     {
-        "id": "MED-027",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "gestion",
-        "titulo": "ambiente – gestión de demolición",
-        "texto": "Exige separar escombros para reciclaje o reutilización con trazabilidad, planes empresariales y reportes de volúmenes procesados.",
-        "alias": ["demolicion"],
-        "tags": ["ambiental", "demolicion"]
+        "content": [
+            "Promueve transporte público, ciclismo y caminata mediante infraestructura segura y planes empresariales, con evaluación y transparencia."
+        ],
+        "metadata": {
+            "chunk_id": "MED-026",
+            "source_doc": "medio_ambiente",
+            "title": "Promoción de la movilidad sustentable",
+            "tema": "Medio Ambiente",
+            "detalle": "movilidad_sustentable",
+            "keywords": [
+                "movilidad sustentable",
+                "fomento del transporte publico",
+                "infraestructura para bicicletas",
+                "promocion de la caminata",
+                "planes de movilidad empresarial"
+            ]
+        },
+        "tags": ["ambiental", "movilidad", "transporte", "sostenibilidad"]
     },
     {
-        "id": "MED-028",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – construcción ecológica",
-        "texto": "Nuevas edificaciones deben ser eficientes y usar materiales sostenibles; incluye seguimiento oficial y divulgación de avances.",
-        "alias": ["construccion ecologica"],
-        "tags": ["ambiental", "construccion"]
+        "content": [
+            "Exige separar escombros para reciclaje o reutilización con trazabilidad, planes empresariales y reportes de volúmenes procesados."
+        ],
+        "metadata": {
+            "chunk_id": "MED-027",
+            "source_doc": "medio_ambiente",
+            "title": "Gestión de residuos de demolición",
+            "tema": "Medio Ambiente",
+            "detalle": "gestion_demolicion",
+            "keywords": [
+                "gestion de demolicion",
+                "reciclaje de escombros",
+                "reutilizacion de materiales de construccion",
+                "trazabilidad de residuos de construccion"
+            ]
+        },
+        "tags": ["ambiental", "demolicion", "residuos", "reciclaje"]
     },
     {
-        "id": "MED-029",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – espacios junto a ecosistemas",
-        "texto": "Construcciones cercanas a áreas naturales deben incorporar barreras de protección y amortiguación, con control y rendición pública.",
-        "alias": ["espacios pegados"],
-        "tags": ["ambiental", "ecosistemas"]
+        "content": [
+            "Nuevas edificaciones deben ser eficientes y usar materiales sostenibles; incluye seguimiento oficial y divulgación de avances."
+        ],
+        "metadata": {
+            "chunk_id": "MED-028",
+            "source_doc": "medio_ambiente",
+            "title": "Normas para la construcción ecológica",
+            "tema": "Medio Ambiente",
+            "detalle": "construccion_ecologica",
+            "keywords": [
+                "construccion ecologica",
+                "edificios eficientes",
+                "materiales de construccion sostenibles",
+                "certificacion de edificios verdes"
+            ]
+        },
+        "tags": ["ambiental", "construccion", "sostenibilidad", "energia"]
     },
     {
-        "id": "MED-030",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – protección de fauna urbana",
-        "texto": "Prohíbe cebos tóxicos y fomenta la coexistencia con especies urbanas mediante planes de gestión y programas educativos.",
-        "alias": ["fauna urbana"],
-        "tags": ["ambiental", "fauna"]
+        "content": [
+            "Construcciones cercanas a áreas naturales deben incorporar barreras de protección y amortiguación, con control y rendición pública."
+        ],
+        "metadata": {
+            "chunk_id": "MED-029",
+            "source_doc": "medio_ambiente",
+            "title": "Protección de ecosistemas en zonas de construcción",
+            "tema": "Medio Ambiente",
+            "detalle": "proteccion_ecosistemas",
+            "keywords": [
+                "construccion cerca de areas naturales",
+                "barreras de proteccion ambiental",
+                "zonas de amortiguacion ecologica",
+                "control de impacto ambiental en construccion"
+            ]
+        },
+        "tags": ["ambiental", "ecosistemas", "construccion", "proteccion"]
     },
     {
-        "id": "MED-031",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "control",
-        "titulo": "ambiente – control de plagas",
-        "texto": "Implanta control integrado con técnicas ecológicas, planes empresariales, educación pública y transparencia de resultados.",
-        "alias": ["control de plagas"],
-        "tags": ["ambiental", "plagas"]
+        "content": [
+            "Prohíbe cebos tóxicos y fomenta la coexistencia con especies urbanas mediante planes de gestión y programas educativos."
+        ],
+        "metadata": {
+            "chunk_id": "MED-030",
+            "source_doc": "medio_ambiente",
+            "title": "Protección de la fauna urbana",
+            "tema": "Medio Ambiente",
+            "detalle": "proteccion_fauna_urbana",
+            "keywords": [
+                "proteccion de fauna urbana",
+                "prohibicion de cebos toxicos",
+                "coexistencia con animales urbanos",
+                "planes de gestion de fauna",
+                "educacion sobre fauna local"
+            ]
+        },
+        "tags": ["ambiental", "fauna", "proteccion", "animales"]
     },
     {
-        "id": "MED-032",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – gestión de áreas protegidas",
-        "texto": "Define áreas protegidas con criterios ecológicos y culturales; actividades deben respetar normas de conservación y reportar avances.",
-        "alias": ["areas protegidas"],
-        "tags": ["ambiental", "areas_protegidas"]
+        "content": [
+            "Implanta control integrado con técnicas ecológicas, planes empresariales, educación pública y transparencia de resultados."
+        ],
+        "metadata": {
+            "chunk_id": "MED-031",
+            "source_doc": "medio_ambiente",
+            "title": "Control de plagas con enfoque ecológico",
+            "tema": "Medio Ambiente",
+            "detalle": "control_de_plagas",
+            "keywords": [
+                "control de plagas ecologico",
+                "manejo integrado de plagas",
+                "tecnicas de control de plagas sin quimicos",
+                "educacion sobre control de plagas"
+            ]
+        },
+        "tags": ["ambiental", "plagas", "control", "ecologico"]
     },
     {
-        "id": "MED-033",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "educacion",
-        "titulo": "ambiente – educación continua",
-        "texto": "Ofrece capacitaciones periódicas a funcionarios, comerciantes y vecinos sobre el reglamento, con seguimiento y publicación de resultados.",
-        "alias": ["educacion continua"],
-        "tags": ["ambiental", "capacitacion"]
+        "content": [
+            "Define áreas protegidas con criterios ecológicos y culturales; actividades deben respetar normas de conservación y reportar avances."
+        ],
+        "metadata": {
+            "chunk_id": "MED-032",
+            "source_doc": "medio_ambiente",
+            "title": "Gestión de áreas protegidas",
+            "tema": "Medio Ambiente",
+            "detalle": "gestion_areas_protegidas",
+            "keywords": [
+                "gestion de areas protegidas",
+                "criterios para definir areas protegidas",
+                "normas de conservacion",
+                "actividades permitidas en areas protegidas"
+            ]
+        },
+        "tags": ["ambiental", "areas_protegidas", "conservacion", "ecologia"]
     },
     {
-        "id": "MED-034",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "descripcion",
-        "titulo": "ambiente – sostenibilidad económica",
-        "texto": "Impulsa economía circular y modelos empresariales verdes que integren producción y reciclaje, con planes y monitoreo oficial.",
-        "alias": ["sostenibilidad economica"],
-        "tags": ["ambiental", "sostenibilidad"]
+        "content": [
+            "Ofrece capacitaciones periódicas a funcionarios, comerciantes y vecinos sobre el reglamento, con seguimiento y publicación de resultados."
+        ],
+        "metadata": {
+            "chunk_id": "MED-033",
+            "source_doc": "medio_ambiente",
+            "title": "Educación continua sobre el reglamento ambiental",
+            "tema": "Medio Ambiente",
+            "detalle": "educacion_continua",
+            "keywords": [
+                "educacion continua ambiental",
+                "capacitaciones sobre reglamento ambiental",
+                "formacion a funcionarios y comerciantes",
+                "difusion de la normativa ambiental"
+            ]
+        },
+        "tags": ["ambiental", "educacion", "capacitacion", "normativa"]
     },
     {
-        "id": "MED-035",
-        "doc": "RAG-Medio_Ambiente.json",
-        "seccion": "Titulo 2",
-        "tipo_fragmento": "duracion",
-        "titulo": "ambiente – vigencia y derogación",
-        "texto": "Rige al día siguiente de su publicación, deroga normas incompatibles y prevé revisiones periódicas con amplia difusión pública.",
-        "alias": ["vigencia y derogacion"],
-        "tags": ["ambiental", "vigencia"]
+        "content": [
+            "Impulsa economía circular y modelos empresariales verdes que integren producción y reciclaje, con planes y monitoreo oficial."
+        ],
+        "metadata": {
+            "chunk_id": "MED-034",
+            "source_doc": "medio_ambiente",
+            "title": "Fomento de la sostenibilidad económica",
+            "tema": "Medio Ambiente",
+            "detalle": "sostenibilidad_economica",
+            "keywords": [
+                "sostenibilidad economica",
+                "economia circular",
+                "modelos de negocio verdes",
+                "integracion de produccion y reciclaje",
+                "monitoreo de sostenibilidad empresarial"
+            ]
+        },
+        "tags": ["ambiental", "sostenibilidad", "economia", "reciclaje"]
+    },
+    {
+        "content": [
+            "Rige al día siguiente de su publicación, deroga normas incompatibles y prevé revisiones periódicas con amplia difusión pública."
+        ],
+        "metadata": {
+            "chunk_id": "MED-035",
+            "source_doc": "medio_ambiente",
+            "title": "Vigencia y derogación del reglamento",
+            "tema": "Medio Ambiente",
+            "detalle": "vigencia_y_derogacion",
+            "keywords": [
+                "vigencia del reglamento ambiental",
+                "cuando entra en vigor la norma",
+                "derogacion de normas ambientales",
+                "revisiones periodicas del reglamento"
+            ]
+        },
+        "tags": ["ambiental", "vigencia", "derogacion", "normativa"]
     }
 ]

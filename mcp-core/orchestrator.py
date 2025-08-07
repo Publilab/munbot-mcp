@@ -1761,21 +1761,21 @@ def orchestrate(
         return {"respuesta": FAREWELL_RESPONSE, "session_id": sid}
 
     # --- Flujo de Consulta de Documentos (RAG) ---
-    if intent == "consulta_documento":
+    if intent == "ask_document":
         # Aquí iría la lógica para el RAG, que puede ser compleja.
         # Por ahora, llamamos a un manejador específico.
         return handle_document_query(sid, user_input, entities)
 
     # --- Flujo de Agendamiento de Citas ---
-    if intent in ["iniciar_agendamiento", "continuar_agendamiento"]:
+    if intent in ["init_scheduler", "cont_scheduler"]:
         context_manager.set_current_flow(sid, "scheduler")
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
         return format_response(result, sid, trace_id=sid)
 
     # --- Flujo de Registro de Reclamos ---
-    if intent in ["iniciar_reclamo", "continuar_reclamo"]:
+    if intent in ["init_complaint", "cont_complaint"]:
         # Lógica para iniciar o continuar el flujo de reclamos
-        if intent == "iniciar_reclamo":
+        if intent == "init_complaint":
             context_manager.set_pending_confirmation(sid, True)
             context_manager.set_current_flow(sid, "reclamo")
             privacy_msg = (
@@ -1787,7 +1787,7 @@ def orchestrate(
             context_manager.update_context(sid, user_input, privacy_msg)
             context_manager.update_context(sid, "", question_msg)
             return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
-        else: # continuar_reclamo
+        else: # cont_complaint
             # Aquí se manejarían los pasos intermedios del reclamo
             resp = _handle_slot_filling(user_input, sid, ctx)
             if resp:
