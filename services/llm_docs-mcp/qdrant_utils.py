@@ -48,13 +48,7 @@ def filter_by_procedure_id(procedure_id: Optional[str]) -> Optional[qdrant.Filte
         qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=f"{procedure_id}-penalidad")),
         qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=f"{procedure_id}-vigencia")),
     ]
-    return qdrant.Filter(
-        should=should,
-        min_should=qdrant.MinShould(
-            conditions=should,
-            min_count=1
-        )
-    )
+    return qdrant.Filter(should=should)
 
 def filter_by_department_id(department_id: Optional[str]) -> Optional[qdrant.Filter]:
     if not department_id:
@@ -63,12 +57,7 @@ def filter_by_department_id(department_id: Optional[str]) -> Optional[qdrant.Fil
         qdrant.FieldCondition(key="id", match=qdrant.MatchValue(value=department_id)),
         qdrant.FieldCondition(key="id_chunk", match=qdrant.MatchValue(value=department_id)),
     ]
-    return qdrant.Filter(
-        min_should=qdrant.MinShould(
-            conditions=should_conditions,
-            min_count=1
-        )
-    )
+    return qdrant.Filter(should=should_conditions)
 
 def filter_by_domain(domains: Optional[list[str]]) -> Optional[qdrant.Filter]:
     """Crea un filtro de Qdrant para una lista de dominios."""
