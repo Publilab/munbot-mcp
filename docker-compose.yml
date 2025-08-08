@@ -108,6 +108,7 @@ services:
     environment:
       - REDIS_HOST=redis
       - DOCS_DIR=/app/documents
+      - LLM_DOCS_API_KEY=un-valor-secreto-muy-seguro
     ports:
       - "5000:5000"
     networks:
@@ -177,6 +178,7 @@ services:
       - MODEL_PATH=models/phi-2.Q4_K_M.gguf
       - LLM_DOCS_MCP_USER=publilab
       - LLM_DOCS_MCP_PASSWORD=Publ14b#Mun801
+      - LLM_DOCS_API_KEY=un-valor-secreto-muy-seguro
     depends_on:
       - qdrant
     expose:
