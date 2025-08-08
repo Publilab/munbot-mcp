@@ -22,7 +22,7 @@ from prometheus_client import (
     generate_latest,
     CONTENT_TYPE_LATEST,
 )
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from typing import List, Optional
 from llama_client import LlamaClient
 from embeddings import embed
@@ -542,54 +542,71 @@ def tools_list():
 
 @app.post("/tools/call")
 async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depends(authenticate)):
-    req = await request.json()
-    trace_id = req.get("trace_id", "unknown")
-    tool = req.get("tool")
-    REQUEST_COUNTER.labels(intent=tool).inc()
-    params = req.get("params", {})
-    faq_context = params.get("faq_context")
-    if tool == "buscar_documento_por_tag":
-        pregunta = params["pregunta"]
-        language = params.get("language", "es")
-        metadata = load_metadata()
-        all_tags = set(tag for doc in metadata.values() for tag in doc.get("tags", []))
-        tags_encontrados = extraer_tags_pregunta(pregunta, all_tags)
-        docs_filtrados = buscar_documentos_por_tags(tags_encontrados, metadata)
-        texto, docname = buscar_similitud_en_documentos(pregunta, docs_filtrados)
-        if texto:
-            logger.info(
-                f"Respuesta encontrada en documento: {docname}",
-                extra={"trace_id": trace_id},
-            )
-            return texto  # Solo el texto
-        # Fallback LLM
-        respuesta = generate_response(pregunta)
-        respuesta = _clean_output(respuesta)
-        FALLBACK_COUNTER.inc()
-        logger.info("Respuesta generada por Llama (fallback MCP)", extra={"trace_id": trace_id})
-        return respuesta  # Solo el texto
-    elif tool == "generar_respuesta_llm":
-        pregunta = params["pregunta"]
-        language = params.get("language", "es")
-        respuesta = generate_response(pregunta)
-        respuesta = _clean_output(respuesta)
-        logger.info("Respuesta generada por Llama (tool directo MCP)", extra={"trace_id": trace_id})
-        return respuesta  # Solo el texto
-    elif tool == "doc-generar_respuesta_llm":
-        respuesta = generar_respuesta_llm(params, trace_id=trace_id)
-        logger.info("Respuesta generada por Llama con RAG", extra={"trace_id": trace_id})
-        return respuesta
-    elif tool == "doc-buscar_fragmento_documento":
-        consulta = params.get("consulta", "")
-        documento = params.get("documento")
-        frags = doc_buscar_fragmento_documento(consulta, documento)
-        return {"fragmentos": frags}
-    elif tool == "doc-classify_intent_llm":
-        texto = params.get("texto", "")
-        intent = classify_intent_with_llm(texto, llama)
-        return {"intent": intent}
-    else:
-        raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
+    trace_id = "unknown"
+    try:
+        req = await request.json()
+        trace_id = req.get("trace_id", "unknown")
+        tool = req.get("tool")
+        REQUEST_COUNTER.labels(intent=tool).inc()
+        params = req.get("params", {})
+        faq_context = params.get("faq_context")
+        if tool == "buscar_documento_por_tag":
+            pregunta = params["pregunta"]
+            language = params.get("language", "es")
+            metadata = load_metadata()
+            all_tags = set(tag for doc in metadata.values() for tag in doc.get("tags", []))
+            tags_encontrados = extraer_tags_pregunta(pregunta, all_tags)
+            docs_filtrados = buscar_documentos_por_tags(tags_encontrados, metadata)
+            texto, docname = buscar_similitud_en_documentos(pregunta, docs_filtrados)
+            if texto:
+                logger.info(
+                    f"Respuesta encontrada en documento: {docname}",
+                    extra={"trace_id": trace_id},
+                )
+                return texto  # Solo el texto
+            # Fallback LLM
+            respuesta = generate_response(pregunta)
+            respuesta = _clean_output(respuesta)
+            FALLBACK_COUNTER.inc()
+            logger.info("Respuesta generada por Llama (fallback MCP)", extra={"trace_id": trace_id})
+            return respuesta  # Solo el texto
+        elif tool == "generar_respuesta_llm":
+            pregunta = params["pregunta"]
+            language = params.get("language", "es")
+            respuesta = generate_response(pregunta)
+            respuesta = _clean_output(respuesta)
+            logger.info("Respuesta generada por Llama (tool directo MCP)", extra={"trace_id": trace_id})
+            return respuesta  # Solo el texto
+        elif tool == "doc-generar_respuesta_llm":
+            respuesta = generar_respuesta_llm(params, trace_id=trace_id)
+            logger.info("Respuesta generada por Llama con RAG", extra={"trace_id": trace_id})
+            return respuesta
+        elif tool == "doc-buscar_fragmento_documento":
+            consulta = params.get("consulta", "")
+            documento = params.get("documento")
+            frags = doc_buscar_fragmento_documento(consulta, documento)
+            return {"fragmentos": frags}
+        elif tool == "doc-classify_intent_llm":
+            texto = params.get("texto", "")
+            intent = classify_intent_with_llm(texto, llama)
+            return {"intent": intent}
+        else:
+            raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
+    except ValidationError as ve:
+        logger.exception("Validation error in tools_call", extra={"trace_id": trace_id})
+        return JSONResponse(
+            status_code=422,
+            content={"error": "Error de validación", "detail": str(ve)},
+        )
+    except HTTPException:
+        # Dejar que FastAPI maneje HTTPException normalmente
+        raise
+    except Exception as e:
+        logger.exception("Unexpected error in tools_call", extra={"trace_id": trace_id})
+        return JSONResponse(
+            status_code=500,
+            content={"error": "Error al procesar la herramienta", "detail": str(e)},
+        )
 
 @app.post("/doc-generar_respuesta_llm")
 async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
