@@ -69,3 +69,14 @@ def filter_by_department_id(department_id: Optional[str]) -> Optional[qdrant.Fil
             min_count=1
         )
     )
+
+def filter_by_domain(domains: Optional[list[str]]) -> Optional[qdrant.Filter]:
+    """Crea un filtro de Qdrant para una lista de dominios."""
+    if not domains:
+        return None
+    return qdrant.Filter(must=[
+        qdrant.FieldCondition(
+            key="domain",
+            match=qdrant.MatchAny(any=domains)
+        )
+    ])

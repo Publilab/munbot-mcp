@@ -6,10 +6,15 @@ import types
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, os.path.join(str(ROOT), "..", "services"))
 
-# Stub scheduler service to allow orchestrator import during tests
-os.makedirs("/app/scheduler-mcp", exist_ok=True)
-with open("/app/scheduler-mcp/service.py", "w", encoding="utf-8") as f:
+import tempfile
+
+# Create a temporary directory for the stubbed service
+temp_dir = tempfile.TemporaryDirectory()
+app_dir = os.path.join(temp_dir.name, "app", "scheduler-mcp")
+os.makedirs(app_dir, exist_ok=True)
+with open(os.path.join(app_dir, "service.py"), "w", encoding="utf-8") as f:
     f.write("def select_exact_block(*args, **kwargs):\n    return None\n")
 
 # Stub document_router to avoid heavy dependencies during import

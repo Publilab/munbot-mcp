@@ -2,8 +2,7 @@ import os
 import sys
 import glob
 from intent_classifier import classify_intent_and_entities
-from procedure_router import ProcedureRouter
-from faq_matcher import FAQMatcher
+
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import json
 import requests
@@ -28,8 +27,7 @@ from prometheus_client import (
     generate_latest,
     CONTENT_TYPE_LATEST,
 )
-from department_router import DepartmentRouter
-from document_router import SemanticDocumentRouter
+
 from utils.cache import make_answer_cache_key
 from settings import (
     ANSWER_CACHE_TTL_CONTACT,
@@ -63,15 +61,11 @@ from utils.datetime_utils import (
     compute_last_business_day,
 )
 from datetime import datetime, date
-from chilean_rut import is_valid, format_rut
+
 from utils.phone_utils import validar_telefono_movil
 
 from utils.text import normalize_text
-try:
-    from utils.query_rewriter import rewrite_query
-except Exception:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
-    from query_rewriter import rewrite_query
+
 
 
 
@@ -129,116 +123,7 @@ REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
 
-# == Configuración del FAQ Matcher ==
-FAQ_FILE_PATH = os.getenv(
-    "FAQ_FILE_PATH", 
-    os.path.join(
-        os.path.dirname(__file__), 
-        '..', 
-        'services', 
-        'llm_docs-mcp', 
-        'documents', 
-        'RAG-faq.json'
-    ),
-)
-faq_matcher = FAQMatcher(FAQ_FILE_PATH)
 
-# == Configuración del Procedure Router (Trámites) ==
-PROCEDURES_FILE_PATH = os.getenv(
-    "PROCEDURES_FILE_PATH", 
-    os.path.join(
-        os.path.dirname(__file__),
-        '..', 
-        'services', 
-        'llm_docs-mcp', 
-        'documents', 
-        'RAG-doc_tramites.json'
-    ),
-)
-procedure_router = ProcedureRouter(PROCEDURES_FILE_PATH)
-
-# == Configuración del Department Router (Departamentos) ==
-DEPARTMENTS_FILE_PATH = os.getenv(
-    "DEPARTMENTS_FILE_PATH",
-    os.path.join(
-        os.path.dirname(__file__),
-        "..",
-        "services",
-        "llm_docs-mcp",
-        "documents",
-        "RAG-depto_info.json",
-    ),
-)
-department_router = DepartmentRouter(DEPARTMENTS_FILE_PATH)
-
-DOCS_DIR = os.getenv(
-    "DOCS_DIR",
-    os.path.join(os.path.dirname(__file__), "..", "services", "llm_docs-mcp", "documents"),
-)
-
-
-def load_document_topics_from_files() -> Dict[str, list[str]]:
-    """Carga alias y tags de los documentos RAG para el enrutamiento."""
-    topic_map: Dict[str, set[str]] = {}
-    json_files = glob.glob(os.path.join(DOCS_DIR, "RAG-*.json"))
-    json_files += glob.glob(os.path.join(DOCS_DIR, "RAG.*.json"))
-
-    for file_path in json_files:
-        filename = os.path.basename(file_path)
-        aliases: set[str] = set()
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                if isinstance(data, list):
-                    for item in data:
-                        for a in item.get("alias", []):
-                            aliases.add(a.lower())
-                        for t in item.get("tags", []):
-                            aliases.add(str(t).lower())
-        except (json.JSONDecodeError, IOError) as e:
-            logging.warning(f"Could not load or parse {filename}: {e}")
-        if aliases:
-            topic_map[filename] = sorted(aliases)
-    return {k: sorted(v) for k, v in topic_map.items()}
-
-
-DOCUMENT_TOPIC_MAP = load_document_topics_from_files()
-
-# Configuración para el enrutador semántico
-ROUTER_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config", "router_config.json")
-semantic_router = SemanticDocumentRouter(ROUTER_CONFIG_PATH, remote_url=LLM_DOCS_BASE)
-
-SPECIFIC_RULES = [
-    (["permiso", "aterrizaje"], "RAG-doc_tramites.json"),
-]
-
-
-def apply_specific_rules(query: str) -> Optional[str]:
-    q = query.lower()
-    for tokens, target in SPECIFIC_RULES:
-        if all(t in q for t in tokens):
-            return target
-    return None
-
-
-def route_by_alias(q: str) -> Optional[str]:
-    best_doc, best_score = None, 0
-    for doc_name, aliases in DOCUMENT_TOPIC_MAP.items():
-        match_count = sum(1 for a in aliases if a in q)
-        if match_count > best_score:
-            best_doc, best_score = doc_name, match_count
-    return best_doc if best_score > 0 else None
-
-
-def route_document(query: str) -> Optional[str]:
-    doc = apply_specific_rules(query)
-    if doc:
-        return doc
-    doc_sem, score = semantic_router.route(query)
-    thr = float(os.getenv("SEMANTIC_DOC_THRESHOLD", str(semantic_router.threshold)))
-    if doc_sem and score >= thr:
-        return doc_sem
-    return route_by_alias(query.lower())
 
 # == Campos requeridos por tool ==
 REQUIRED_FIELDS = {
@@ -372,48 +257,7 @@ FAREWELL_RESPONSE = (
     "inicia una nueva conversación."
 )
 
-# --- Detección de consultas genéricas sobre documentos ---
-ANCHORS = [
-    "permiso",
-    "licencia",
-    "requisito",
-    "costo",
-    "vigencia",
-    "correo",
-    "mail",
-    "email",
-    "direccion",
-    "dirección",
-    "horario",
-    "departamento de",
-    "tramite",
-    "trámite",
-]
 
-
-def is_generic_doc_query(q: str) -> bool:
-    """Detecta entradas muy vagas o saludos."""
-    ql = q.lower().strip()
-    if len(ql) < 3:
-        return True
-    if any(a in ql for a in ANCHORS):
-        return False
-    return ql in {
-        "hola",
-        "buenas",
-        "ayuda",
-        "info",
-        "informacion",
-        "información",
-        "menu",
-        "menú",
-        "dime mas",
-        "dime más",
-        "qué sabes",
-        "que sabes",
-        "listado",
-        "temas",
-    }
 
 
 def is_cache_eligible(resp: dict, ctx: Optional[dict] = None) -> bool:
@@ -465,21 +309,7 @@ def pick_ttl(resp: dict) -> int:
         return ANSWER_CACHE_TTL_CONTACT
     return ANSWER_CACHE_TTL_GENERIC
 
-def ask_for_clarification(user_input: str) -> Dict[str, Any]:
-    """Genera un mensaje de aclaración guiando al usuario a temas disponibles."""
-    opciones = [
-        "Trámites (requisitos, costos, vigencias)",
-        "Directorio de departamentos (correo, dirección, horario)",
-        "Contribuciones y tasas",
-    ]
-    txt = (
-        "¿Qué información específica necesitas? Por ejemplo: requisitos de un trámite, "
-        "correo de un departamento, o costos de contribuciones."
-    )
-    return {
-        "respuesta": f"{txt}\nOpciones: {', '.join(opciones)}",
-        "no_results": True,
-    }
+
 
 
 def fallback(msg: str) -> Dict[str, Any]:
@@ -496,80 +326,10 @@ def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
     return formatted
 
 
-def handle_turn(session_id: str, user_input: str) -> Dict[str, Any]:
-    """Maneja un turno básico consultando el RAG y aplicando fallback controlado."""
-    ctx: Dict[str, Any] = context_manager.get_context(session_id) or {}
-    selected = ctx.get("selected_document")
-    pid = ctx.get("selected_procedure_id")
-    did = ctx.get("selected_department_id")
-
-    generic = is_generic_doc_query(user_input)
-    should_go_rag = bool(selected or pid or did) or not generic
-
-    pregunta = user_input
-    if not should_go_rag:
-        pregunta = rewrite_query(user_input, ctx)
-
-    tool_params: Dict[str, Any] = {"pregunta": pregunta}
-    if selected:
-        tool_params["documento"] = selected
-    if pid:
-        tool_params["procedure_id"] = pid
-    if did:
-        tool_params["department_id"] = did
-
-    logger.debug(
-        f"RAG call params: {tool_params} ctx_keys={list(ctx.keys())}",
-        extra={"trace_id": session_id},
-    )
-
-    try:
-        resp = call_tool_microservice("doc-generar_respuesta_llm", tool_params)
-    except NameError:
-        logger.exception("NameError in orchestrator")
-        return fallback(
-            "Ocurrió un problema al procesar tu consulta. Intenta nuevamente."
-        )
-
-    if not resp:
-        return fallback("Ocurrió un problema al consultar nuestros servicios.")
-    if resp.get("no_results"):
-        return ask_for_clarification(user_input)
-    return format_answer(resp)
 
 
-def resumir_documento(nombre_doc: str) -> Optional[str]:
-    """Devuelve un resumen breve con distintos campos del documento."""
-    doc = buscar_documento_por_accion(nombre_doc)
-    if not doc:
-        return None
-    partes: List[str] = []
-    if doc.get("requisitos"):
-        partes.append("Requisitos: " + ", ".join(doc["requisitos"]))
-    oficinas = buscar_oficina_documento(doc["id_documento"])
-    if oficinas and oficinas.get("oficinas"):
-        of = oficinas["oficinas"][0]
-        detalles = []
-        if of.get("direccion"):
-            detalles.append(of["direccion"])
-        if of.get("horario"):
-            detalles.append(f"Horario: {of['horario']}")
-        if of.get("correo"):
-            detalles.append(f"Correo: {of['correo']}")
-        if detalles:
-            partes.append("Dónde tramitar: " + ", ".join(detalles))
-    labels = {
-        "utilidad": "Utilidad",
-        "tiempo_validez": "Vigencia",
-        "costo": "Costo",
-        "penalidad": "Penalidad",
-        "notas": "Notas",
-    }
-    for campo, label in labels.items():
-        info = buscar_info_documento_campo(doc["id_documento"], campo)
-        if info and info.get("valor"):
-            partes.append(f"{label}: {info['valor']}")
-    return "\n".join(partes) if partes else None
+
+
 
 
 
@@ -863,14 +623,7 @@ def remote_llm_generate(prompt: str, timeout: float = 120.0) -> str:
     return resp.get("respuesta", "")
 
 
-def remote_classify_intent(text: str, timeout: float = 120.0) -> str:
-    """Clasifica la intención del texto usando llm_docs-mcp."""
-    resp = call_tool_microservice(
-        "doc-classify_intent_llm", {"texto": text}
-    )
-    if resp.get("error"):
-        raise Exception(resp["error"])
-    return resp.get("intent", "otra")
+
 
 
 def handle_service_error(resp: Dict[str, Any], intent: str, trace_id: str | None = None) -> Optional[Dict[str, str]]:
@@ -915,51 +668,11 @@ def infer_intent_with_llm(prompt):
     return remote_llm_generate(prompt)
 
 
-def handle_confirmation(session_id: str) -> str:
-    """Continúa el flujo activo tras recibir una confirmación genérica."""
-    flow = context_manager.get_current_flow(session_id)
-    if flow == "documento":
-        doc = context_manager.get_selected_document(session_id)
-        if doc:
-            return (
-                f"¿Qué te interesa saber del {doc}? Puedes preguntar requisitos, horario, correo o dirección."
-            )
-    context_manager.clear_pending_confirmation(session_id)
-    return "Entendido. ¿En qué más puedo ayudarte?"
 
 
 
-def detect_intent_fallback(text: str) -> str:
-    """Clasificador heurístico simple para casos de emergencia."""
-    text = text.lower()
-
-    if "certificado" in text or "documento" in text or any(
-        x in text for x in ["licencia", "permiso", "mail", "correo", "informacion", "horario", "costo"]
-    ):
-        return "doc-generar_respuesta_llm"
-    if "reclamo" in text or "denuncia" in text:
-        return "complaint-registrar_reclamo"
-    if "cita" in text or "hora" in text or "turno" in text:
-        return "scheduler-appointment_create"
-    if any(x in text for x in ["hola", "buenas", "saludos"]):
-        return "saludo"
-    if any(x in text for x in ["gracias", "chao", "nos vemos", "adiós"]):
-        return "despedida"
-    return "informacion_general"
 
 
-def detect_intent(text: str, testing: bool = False) -> str:
-    """Única función de detección de intención."""
-    try:
-        if testing:
-            return detect_intent_fallback(text)
-        intent = remote_classify_intent(text)
-        if intent == "otra":
-            return detect_intent_fallback(text)
-        return intent
-    except Exception as e:
-        logger.warning(f"[INTENT] Fallback por error en LLM: {e}")
-        return detect_intent_fallback(text)
 
 
 
@@ -989,132 +702,7 @@ def get_db():
     )
 
 
-def buscar_documento_por_accion(accion: str):
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute(
-        "SELECT * FROM documentos WHERE LOWER(nombre) LIKE %s OR LOWER(descripcion) LIKE %s LIMIT 1",
-        (f"%{accion.lower()}%", f"%{accion.lower()}%"),
-    )
-    doc = cur.fetchone()
-    if not doc:
-        conn.close()
-        return None
-    cur.execute(
-        "SELECT requisito FROM documento_requisitos WHERE documento_id=%s", (doc["id"],)
-    )
-    requisitos = [r["requisito"] for r in cur.fetchall()]
-    conn.close()
-    return {
-        "id_documento": doc["id_documento"],
-        "nombre": doc["nombre"],
-        "requisitos": requisitos,
-    }
 
-
-def buscar_oficina_documento(id_documento: str):
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-    doc = cur.fetchone()
-    if not doc:
-        conn.close()
-        return None
-    cur.execute(
-        "SELECT nombre, direccion, horario, correo, holocom FROM documento_oficinas WHERE documento_id=%s",
-        (doc["id"],),
-    )
-    oficinas = cur.fetchall()
-    conn.close()
-    return {"oficinas": oficinas}
-
-
-def buscar_info_documento_campo(clave: str, campo: str):
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute(
-        "SELECT id FROM documentos WHERE id_documento=%s OR LOWER(nombre) LIKE %s",
-        (clave, f"%{clave.lower()}%"),
-    )
-    doc = cur.fetchone()
-    if not doc:
-        conn.close()
-        return None
-    doc_id = doc["id"]
-    valor = None
-    if campo == "requisitos":
-        cur.execute(
-            "SELECT requisito FROM documento_requisitos WHERE documento_id=%s",
-            (doc_id,),
-        )
-        valor = ", ".join([r["requisito"] for r in cur.fetchall()])
-    elif campo == "horario":
-        cur.execute(
-            "SELECT horario FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
-            (doc_id,),
-        )
-        r = cur.fetchone()
-        valor = r["horario"] if r else None
-    elif campo == "direccion":
-        cur.execute(
-            "SELECT direccion FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
-            (doc_id,),
-        )
-        r = cur.fetchone()
-        valor = r["direccion"] if r else None
-    elif campo == "correo":
-        cur.execute(
-            "SELECT correo FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
-            (doc_id,),
-        )
-        r = cur.fetchone()
-        valor = r["correo"] if r else None
-    elif campo == "holocom":
-        cur.execute(
-            "SELECT holocom FROM documento_oficinas WHERE documento_id=%s LIMIT 1",
-            (doc_id,),
-        )
-        r = cur.fetchone()
-        valor = r["holocom"] if r else None
-    elif campo == "tiempo_validez":
-        cur.execute(
-            "SELECT duracion FROM documento_duracion WHERE documento_id=%s LIMIT 1",
-            (doc_id,),
-        )
-        r = cur.fetchone()
-        valor = r["duracion"] if r else None
-    elif campo == "penalidad":
-        cur.execute(
-            "SELECT sancion FROM documento_sanciones WHERE documento_id=%s LIMIT 1",
-            (doc_id,),
-        )
-        r = cur.fetchone()
-        valor = r["sancion"] if r else None
-    elif campo == "notas":
-        cur.execute(
-            "SELECT nota FROM documento_notas WHERE documento_id=%s LIMIT 1", (doc_id,)
-        )
-        r = cur.fetchone()
-        valor = r["nota"] if r else None
-    conn.close()
-    return {"valor": valor} if valor else None
-
-
-def buscar_listar_documentos(clase: str = None, aplica_a: str = None):
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    query = "SELECT id_documento, nombre FROM documentos WHERE 1=1"
-    params = []
-    if clase:
-        query += " AND clase=%s"
-        params.append(clase)
-    if aplica_a:
-        query += " AND aplica_a=%s"
-        params.append(aplica_a)
-    cur.execute(query, tuple(params))
-    docs = cur.fetchall()
-    conn.close()
-    return {"documentos": docs}
 
 
 # === Orquestador principal ===
@@ -1797,11 +1385,28 @@ def orchestrate(
     return handle_fallback(sid, user_input)
 
 
-def handle_document_query(session_id: str, user_input: str, entities: Dict[str, Any]) -> Dict[str, Any]:
-    """Maneja la lógica de consulta de documentos (RAG)."""
-    # Lógica de búsqueda en FAQ, enrutamiento, caché, etc.
-    # ... (Aquí se puede mover la lógica relevante que estaba en el orchestrate original)
-    return {"respuesta": "Función de consulta de documentos en desarrollo.", "session_id": session_id}
+def handle_document_query(session_id: str, user_input: str, entities: Dict[str, Any], dominios: list[str]) -> Dict[str, Any]:
+    """Maneja la lógica de consulta de documentos (RAG) llamando al servicio centralizado."""
+    
+    # Extraer hints de las entidades para enviar al servicio RAG
+    tool_params = {
+        "pregunta": user_input,
+        "tema_especifico": entities.get("tema_especifico"),
+        "tramite": entities.get("tramite"),
+        "departamento": entities.get("departamento"),
+        "dominios": dominios,
+    }
+
+    # Llamar al microservicio llm_docs-mcp
+    response = call_tool_microservice("doc-generar_respuesta_llm", tool_params, trace_id=session_id)
+
+    # Manejar errores del servicio
+    error_response = handle_service_error(response, "doc-generar_respuesta_llm", trace_id=session_id)
+    if error_response:
+        return {"respuesta": error_response["texto"], "session_id": session_id}
+
+    # Formatear y devolver la respuesta exitosa
+    return {"respuesta": response.get("respuesta", "No se encontró una respuesta."), "session_id": session_id}
 
 def handle_fallback(session_id: str, user_input: str) -> Dict[str, Any]:
     """Maneja los casos en que la intención no es clara."""
@@ -1891,112 +1496,7 @@ def metrics():
     return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
 
 
-# === Endpoints de administración de documentos ===
 
-
-@app.post("/admin/documento")
-def admin_create_documento(data: dict = Body(...)):
-    """Crear un documento oficial."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute(
-        """
-        INSERT INTO documentos (id_documento, nombre, clase, aplica_a, descripcion)
-        VALUES (%s, %s, %s, %s, %s)
-        RETURNING *
-        """,
-        (
-            data["id_documento"],
-            data["nombre"],
-            data.get("clase"),
-            data.get("aplica_a"),
-            data.get("descripcion"),
-        ),
-    )
-    doc = cur.fetchone()
-    conn.commit()
-    conn.close()
-    return doc
-
-
-@app.post("/admin/documento/{id_documento}/requisito")
-def admin_add_requisito(id_documento: str, data: dict = Body(...)):
-    """Agregar un requisito a un documento."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-    doc = cur.fetchone()
-    if not doc:
-        conn.close()
-        return {"error": "Documento no encontrado"}
-    cur.execute(
-        "INSERT INTO documento_requisitos (documento_id, requisito) VALUES (%s, %s) RETURNING *",
-        (doc["id"], data["requisito"]),
-    )
-    req = cur.fetchone()
-    conn.commit()
-    conn.close()
-    return req
-
-
-@app.post("/admin/documento/{id_documento}/duracion")
-def admin_add_duracion(id_documento: str, data: dict = Body(...)):
-    """Agregar duración/validez a un documento."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-    doc = cur.fetchone()
-    if not doc:
-        conn.close()
-        return {"error": "Documento no encontrado"}
-    cur.execute(
-        "INSERT INTO documento_duracion (documento_id, duracion) VALUES (%s, %s) RETURNING *",
-        (doc["id"], data["duracion"]),
-    )
-    dur = cur.fetchone()
-    conn.commit()
-    conn.close()
-    return dur
-
-
-@app.post("/admin/documento/{id_documento}/sancion")
-def admin_add_sancion(id_documento: str, data: dict = Body(...)):
-    """Agregar sanción a un documento."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-    doc = cur.fetchone()
-    if not doc:
-        conn.close()
-        return {"error": "Documento no encontrado"}
-    cur.execute(
-        "INSERT INTO documento_sanciones (documento_id, sancion) VALUES (%s, %s) RETURNING *",
-        (doc["id"], data["sancion"]),
-    )
-    sanc = cur.fetchone()
-    conn.commit()
-    conn.close()
-    return sanc
-
-
-@app.post("/admin/documento/{id_documento}/nota")
-def admin_add_nota(id_documento: str, data: dict = Body(...)):
-    """Agregar nota a un documento."""
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT id FROM documentos WHERE id_documento=%s", (id_documento,))
-    doc = cur.fetchone()
-    if not doc:
-        conn.close()
-        return {"error": "Documento no encontrado"}
-    cur.execute(
-        "INSERT INTO documento_notas (documento_id, nota) VALUES (%s, %s) RETURNING *",
-        (doc["id"], data["nota"]),
-    )
-    nota = cur.fetchone()
-    conn.commit()
-    conn.close()
-    return nota
 
 
 # === CLI para pruebas ===
