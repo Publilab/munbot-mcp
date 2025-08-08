@@ -161,7 +161,9 @@ services:
       retries: 5
 
   llm_docs-mcp:
-    build: ./services/llm_docs-mcp
+    build:
+      context: .
+      dockerfile: services/llm_docs-mcp/Dockerfile
     container_name: llm_docs-mcp
     env_file:
       - ./services/llm_docs-mcp/.env

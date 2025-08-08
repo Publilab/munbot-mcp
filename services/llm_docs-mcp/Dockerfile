@@ -31,9 +31,9 @@ RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTr
 COPY . .
 
 # asumiendo que en tu repo tienes ../mcp-core/prompts y ../mcp-core/tool_schemas
-COPY prompts/ ./prompts
+COPY mcp-core/prompts/ ./prompts
 COPY models/ ./models
-COPY tool_schemas/ /app/tool_schemas
+COPY mcp-core/tool_schemas/ /app/tool_schemas
 
 ENV PROMPTS_PATH=/app/prompts
 ENV TOOLS_PATH=/app/tool_schemas
