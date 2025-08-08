@@ -63,7 +63,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # Seguridad básica HTTP/IP
-security = HTTPBasic()
+security = HTTPBasic(auto_error=False)
 
 # --- Lista de IPs/Redes permitidas (con soporte para CIDR) ---
 ALLOWED_IPS_STR = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16,testclient")
@@ -82,6 +82,8 @@ for token in ALLOWED_IPS_STR.split(","):
 
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
+API_KEY_NAME = "X-API-KEY"
+LLM_DOCS_API_KEY = os.getenv("LLM_DOCS_API_KEY")
 class IPWhitelistMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Permitir acceso sin restricciones a endpoints públicos como healthcheck
@@ -103,12 +105,20 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
                 return JSONResponse(status_code=403, content={"detail": "IP no autorizada"})
         return await call_next(request)
 app.add_middleware(IPWhitelistMiddleware)
-def authenticate(credentials: HTTPBasicCredentials = Depends(security)):
-    if LLM_DOCS_MCP_USER and credentials.username != LLM_DOCS_MCP_USER:
-        raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    if LLM_DOCS_MCP_PASSWORD and credentials.password != LLM_DOCS_MCP_PASSWORD:
-        raise HTTPException(status_code=401, detail="Credenciales inválidas")
-    return credentials
+
+
+def authenticate(
+    request: Request, credentials: Optional[HTTPBasicCredentials] = Depends(security)
+):
+    api_key = request.headers.get(API_KEY_NAME)
+    if LLM_DOCS_API_KEY and api_key == LLM_DOCS_API_KEY:
+        return True
+    if credentials and (
+        (not LLM_DOCS_MCP_USER or credentials.username == LLM_DOCS_MCP_USER)
+        and (not LLM_DOCS_MCP_PASSWORD or credentials.password == LLM_DOCS_MCP_PASSWORD)
+    ):
+        return True
+    raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
 # ==== Logging estructurado ====
 log_path = os.getenv("LOG_PATH", "gateway.log")

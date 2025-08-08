@@ -97,6 +97,7 @@ LLM_DOCS_BASE = os.getenv("LLM_DOCS_BASE") or LLM_DOCS_MCP_URL.replace(
 # Credenciales opcionales para microservicios
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
+LLM_DOCS_API_KEY = os.getenv("LLM_DOCS_API_KEY")
 LLM_DOCS_TIMEOUT = int(os.getenv("LLM_DOCS_TIMEOUT", "120"))
 LLM_DOCS_RETRIES = int(os.getenv("LLM_DOCS_RETRIES", "1"))
 LLM_DOCS_CIRCUIT_THRESHOLD = int(
@@ -559,15 +560,22 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
         logger.warning("Circuit breaker open", extra={"trace_id": trace_id})
         return {"error": "circuit_open"}
     auth = None
+    headers: dict[str, str] | None = None
     if tool.startswith("doc-") and LLM_DOCS_MCP_USER and LLM_DOCS_MCP_PASSWORD:
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
+    if tool.startswith("doc-") and LLM_DOCS_API_KEY:
+        headers = {"X-API-KEY": LLM_DOCS_API_KEY}
     timeout = LLM_DOCS_TIMEOUT if tool.startswith("doc-") else 30
     retries = LLM_DOCS_RETRIES if tool.startswith("doc-") else 0
     for attempt in range(retries + 1):
         t0 = time.time()
         try:
             resp = requests.post(
-                service_url, json=payload, auth=auth, timeout=timeout
+                service_url,
+                json=payload,
+                auth=auth,
+                headers=headers,
+                timeout=timeout,
             )
             if resp.status_code >= 500:
                 raise requests.HTTPError(response=resp)
