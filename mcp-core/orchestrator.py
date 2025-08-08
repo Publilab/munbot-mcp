@@ -1333,6 +1333,7 @@ def orchestrate(
     classification = classify_intent_and_entities(user_input, sid)
     intent = classification.get("intencion", "no_entendido")
     entities = classification.get("entidades", {})
+    dominios = classification.get("dominios", [])
 
     logger.info(f"[INTENT] Intención clasificada: {intent}", extra={"trace_id": sid})
     REQUEST_COUNTER.labels(intent=intent).inc()
@@ -1352,7 +1353,7 @@ def orchestrate(
     if intent == "ask_document":
         # Aquí iría la lógica para el RAG, que puede ser compleja.
         # Por ahora, llamamos a un manejador específico.
-        return handle_document_query(sid, user_input, entities)
+        return handle_document_query(sid, user_input, entities, dominios)
 
     # --- Flujo de Agendamiento de Citas ---
     if intent in ["init_scheduler", "cont_scheduler"]:

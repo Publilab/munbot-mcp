@@ -155,8 +155,14 @@ def obtener_fragmentos(
     initial_results = search_in_qdrant(vec, top_k=k * 3, filtro=filtro_final)
     RAG_QDRANT_LATENCY.observe(time.time() - start_time)
     
-    # ... (formateo de resultados)
-    
+    resultados_formatados = []
+    if initial_results:
+        for res in initial_results:
+            if hasattr(res, 'payload') and 'parrafo' in res.payload:
+                # Aseguramos que el score exista, si no, lo ponemos a 0
+                res.payload['score'] = res.score if hasattr(res, 'score') else 0
+                resultados_formatados.append(res.payload)
+
     start_time = time.time()
     reranked_results = rerank_results(rewritten_query, resultados_formatados)
     RAG_RERANK_LATENCY.observe(time.time() - start_time)
@@ -182,9 +188,32 @@ def generar_respuesta(
     departamento: str | None = None,
     dominios: list[str] | None = None,
 ):
-    # ... (lógica de planificación y obtención de fragmentos)
+    # 1. Crear un plan si es necesario
+    plan = crear_plan(pregunta, dominios)
+    if not plan:
+        plan = [pregunta]  # Si no hay plan, el plan es la propia pregunta
 
-    contexto = "\n".join(f["parrafo"] for f in fragmentos)
+    # 2. Obtener y consolidar fragmentos para todo el plan
+    todos_fragmentos = []
+    for paso in plan:
+        fragmentos_paso = obtener_fragmentos(
+            consulta=paso, 
+            k=k, 
+            tema_especifico=tema_especifico, 
+            tramite=tramite, 
+            departamento=departamento, 
+            dominios=dominios
+        )
+        todos_fragmentos.extend(fragmentos_paso)
+
+    # Eliminar duplicados basados en el contenido del párrafo
+    fragmentos_unicos = list({f['parrafo']: f for f in todos_fragmentos}.values())
+
+    if not fragmentos_unicos:
+        return {"respuesta": "No encontré información relevante para tu consulta.", "fuentes": []}
+
+    # 3. Generar respuesta con el contexto consolidado
+    contexto = "\n".join(f["parrafo"] for f in fragmentos_unicos)
     prompt_template = load_prompt("doc-generar_respuesta_llm.txt")
     prompt = prompt_template.replace("{{contexto}}", contexto).replace("{{pregunta}}", pregunta)
     
@@ -192,7 +221,14 @@ def generar_respuesta(
     respuesta_texto = llama.generate(prompt)
     RAG_LLM_LATENCY.observe(time.time() - start_time)
     
-    # ... (resto de la lógica de generación y verificación)
+    # 4. Verificar atribución y devolver la respuesta
+    if verificar_atribucion(respuesta_texto, contexto):
+        return {"respuesta": respuesta_texto, "fuentes": fragmentos_unicos}
+    else:
+        return {
+            "respuesta": "Encontré información que podría ser relevante, pero no pude construir una respuesta directa. Te sugiero revisar las fuentes.",
+            "fuentes": fragmentos_unicos
+        }
 
 # === API simplificada utilizada por algunos servicios ===
 def doc_buscar_fragmento_documento(

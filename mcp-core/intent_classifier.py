@@ -5,7 +5,7 @@ from typing import Dict
 # Asumimos que hay un cliente LLM disponible para hacer la llamada.
 # Esta es una implementación de ejemplo y puede necesitar ser adaptada
 # al cliente LLM real que se esté utilizando (por ejemplo, llama_client.py).
-from services.llm_docs_mcp.llama_client import LlamaClient
+from services.llm_docs-mcp.llama_client import LlamaClient
 
 
 def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
@@ -18,7 +18,7 @@ def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
         session_id: El ID de la sesión actual para mantener el contexto.
 
     Returns:
-        Un diccionario con la "intencion" y las "entidades" clasificadas.
+        Un diccionario con la "intencion", "entidades" y "dominios" clasificadas.
         En caso de error, devuelve una intención de "no_entendido".
     """
     try:
@@ -43,6 +43,9 @@ def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
 
         # Validar que la respuesta contiene las claves esperadas
         if "intencion" in response_json and "entidades" in response_json:
+            # El dominio es opcional, pero si no está, lo inicializamos como lista vacía
+            if "dominios" not in response_json:
+                response_json["dominios"] = []
             return response_json
         else:
             # Si el JSON no tiene el formato esperado, se considera un error
@@ -53,5 +56,6 @@ def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
         print(f"Error al clasificar la intención: {e}")
         return {
             "intencion": "no_entendido",
-            "entidades": {}
+            "entidades": {},
+            "dominios": [],
         }
