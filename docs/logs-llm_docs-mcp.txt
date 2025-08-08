@@ -3,13 +3,11 @@ docker logs -f llm_docs-mcp
 ✅  Colección creada: munbot_docs
 INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
 INFO:__main__:Cargando y procesando documentos...
-INFO:__main__:Generando embeddings para 474 chunks...
-/usr/local/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
-  return forward_call(*args, **kwargs)
+INFO:__main__:Generando embeddings para 199 chunks...
 INFO:__main__:Subiendo puntos a Qdrant...
 INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
-INFO:__main__:✅ Indexación completada. 474 puntos subidos a la colección 'munbot_docs'.
-🧠 Modelo cargado en 3,128 ms (CPU)
+INFO:__main__:✅ Indexación completada. 199 puntos subidos a la colección 'munbot_docs'.
+🧠 Modelo cargado en 2,859 ms (CPU)
 llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
 llama_model_loader: - kv   0:                       general.architecture str              = phi2
@@ -192,10 +190,10 @@ llama_context: graph splits = 1
 CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
 Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
 Using fallback chat format: llama-2
-llama_perf_context_print:        load time =     138.00 ms
-llama_perf_context_print: prompt eval time =     137.86 ms /     2 tokens (   68.93 ms per token,    14.51 tokens per second)
+llama_perf_context_print:        load time =     138.33 ms
+llama_perf_context_print: prompt eval time =     138.20 ms /     2 tokens (   69.10 ms per token,    14.47 tokens per second)
 llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:       total time =     138.52 ms /     3 tokens
+llama_perf_context_print:       total time =     138.87 ms /     3 tokens
 llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
 llama_model_loader: - kv   0:                       general.architecture str              = phi2
@@ -378,248 +376,91 @@ llama_context: graph splits = 1
 CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
 Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
 Using fallback chat format: llama-2
-llama_perf_context_print:        load time =     146.41 ms
-llama_perf_context_print: prompt eval time =     146.25 ms /     2 tokens (   73.13 ms per token,    13.67 tokens per second)
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =     134.67 ms /     2 tokens (   67.33 ms per token,    14.85 tokens per second)
 llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:       total time =     146.92 ms /     3 tokens
+llama_perf_context_print:       total time =     135.25 ms /     3 tokens
 INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-🧠 Modelo cargado en 3,382 ms (CPU)
-INFO:     127.0.0.1:52828 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:33906 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:33920 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54908 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:58214 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54032 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:41174 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:41342 - "POST /semantic-route HTTP/1.1" 401 Unauthorized
-llama_perf_context_print:        load time =     146.41 ms
-llama_perf_context_print: prompt eval time =    6975.49 ms /   130 tokens (   53.66 ms per token,    18.64 tokens per second)
-llama_perf_context_print:        eval time =   13432.10 ms /   149 runs   (   90.15 ms per token,    11.09 tokens per second)
-llama_perf_context_print:       total time =   20470.46 ms /   279 tokens
-INFO:     172.18.0.10:41356 - "POST /tools/call HTTP/1.1" 200 OK
-INFO:     172.18.0.10:48838 - "GET /health HTTP/1.1" 200 OK
+🧠 Modelo cargado en 2,126 ms (CPU)
+INFO:     127.0.0.1:46156 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:59934 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:59936 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55068 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:39522 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57802 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:57856 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37752 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:60014 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36746 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:55052 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57010 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:34876 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56322 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:43434 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37644 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:38376 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39032 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:35078 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:60830 - "POST /semantic-route HTTP/1.1" 401 Unauthorized
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =    6927.52 ms /   130 tokens (   53.29 ms per token,    18.77 tokens per second)
+llama_perf_context_print:        eval time =   13579.68 ms /   149 runs   (   91.14 ms per token,    10.97 tokens per second)
+llama_perf_context_print:       total time =   20570.51 ms /   279 tokens
+INFO:     172.18.0.10:60842 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45370 - "GET /health HTTP/1.1" 200 OK
 Llama.generate: 129 prefix-match hit, remaining 1 prompt tokens to eval
-llama_perf_context_print:        load time =     146.41 ms
+llama_perf_context_print:        load time =     134.80 ms
 llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:        eval time =   13409.94 ms /   150 runs   (   89.40 ms per token,    11.19 tokens per second)
-llama_perf_context_print:       total time =   13473.21 ms /   151 tokens
-INFO:     172.18.0.10:48852 - "POST /tools/call HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40570 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:48816 - "GET /health HTTP/1.1" 200 OK
-Llama.generate: 10 prefix-match hit, remaining 137 prompt tokens to eval
-llama_perf_context_print:        load time =     146.41 ms
-llama_perf_context_print: prompt eval time =    7364.03 ms /   137 tokens (   53.75 ms per token,    18.60 tokens per second)
-llama_perf_context_print:        eval time =   13585.63 ms /   149 runs   (   91.18 ms per token,    10.97 tokens per second)
-llama_perf_context_print:       total time =   21013.35 ms /   286 tokens
-INFO:     172.18.0.10:48830 - "POST /tools/call HTTP/1.1" 200 OK
-Llama.generate: 146 prefix-match hit, remaining 1 prompt tokens to eval
-llama_perf_context_print:        load time =     146.41 ms
-llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:        eval time =   14059.82 ms /   150 runs   (   93.73 ms per token,    10.67 tokens per second)
-llama_perf_context_print:       total time =   14122.65 ms /   151 tokens
-INFO:     172.18.0.10:33700 - "POST /tools/call HTTP/1.1" 200 OK
-{"asctime": "2025-08-05 11:08:51,218", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
-{"asctime": "2025-08-05 11:08:51,218", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
-/usr/local/lib/python3.11/site-packages/torch/nn/modules/module.py:1762: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
-  return forward_call(*args, **kwargs)
-INFO:     172.18.0.10:35832 - "POST /tools/call HTTP/1.1" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-  + Exception Group Traceback (most recent call last):
-  |   File "/usr/local/lib/python3.11/site-packages/starlette/_utils.py", line 77, in collapse_excgroups
-  |     yield
-  |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 183, in __call__
-  |     async with anyio.create_task_group() as task_group:
-  |   File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
-  |     raise BaseExceptionGroup(
-  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
-  +-+---------------- 1 ----------------
-    | Traceback (most recent call last):
-    |   File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
-    |     result = await app(  # type: ignore[func-returns-value]
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    |     return await self.app(scope, receive, send)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
-    |     await super().__call__(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    |     raise exc
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    |     await self.app(scope, receive, _send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 182, in __call__
-    |     with recv_stream, send_stream, collapse_excgroups():
-    |   File "/usr/local/lib/python3.11/contextlib.py", line 158, in __exit__
-    |     self.gen.throw(typ, value, traceback)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
-    |     raise exc
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 184, in __call__
-    |     response = await self.dispatch_func(request, call_next)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/app/gateway.py", line 104, in dispatch
-    |     return await call_next(request)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
-    |     raise app_exc
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
-    |     await self.app(scope, receive_or_disconnect, send_no_error)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/cors.py", line 85, in __call__
-    |     await self.app(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
-    |     await route.handle(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
-    |     await self.app(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
-    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
-    |     response = await f(request)
-    |                ^^^^^^^^^^^^^^^^
-    |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
-    |     raw_response = await run_endpoint_function(
-    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
-    |     return await dependant.call(**values)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/app/gateway.py", line 569, in tools_call
-    |     respuesta = generar_respuesta_llm(params, trace_id=trace_id)
-    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/app/gateway.py", line 390, in generar_respuesta_llm
-    |     filtro = filter_by_procedure_id(procedure_id)
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/app/qdrant_utils.py", line 51, in filter_by_procedure_id
-    |     return qdrant.Filter(should=should, minimum_should_match=1)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
-    |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
-    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    | pydantic_core._pydantic_core.ValidationError: 1 validation error for Filter
-    | minimum_should_match
-    |   Extra inputs are not permitted [type=extra_forbidden, input_value=1, input_type=int]
-    |     For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
-    +------------------------------------
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
-    await super().__call__(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    raise exc
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 182, in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-  File "/usr/local/lib/python3.11/contextlib.py", line 158, in __exit__
-    self.gen.throw(typ, value, traceback)
-  File "/usr/local/lib/python3.11/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
-    raise exc
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 184, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/app/gateway.py", line 104, in dispatch
-    return await call_next(request)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
-    raise app_exc
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/cors.py", line 85, in __call__
-    await self.app(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/app/gateway.py", line 569, in tools_call
-    respuesta = generar_respuesta_llm(params, trace_id=trace_id)
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/app/gateway.py", line 390, in generar_respuesta_llm
-    filtro = filter_by_procedure_id(procedure_id)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/app/qdrant_utils.py", line 51, in filter_by_procedure_id
-    return qdrant.Filter(should=should, minimum_should_match=1)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
-    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-pydantic_core._pydantic_core.ValidationError: 1 validation error for Filter
-minimum_should_match
-  Extra inputs are not permitted [type=extra_forbidden, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
-INFO:     127.0.0.1:51620 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:46848 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49320 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:55460 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39916 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:49822 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43080 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:38844 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44656 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:46276 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60996 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:60026 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:34184 - "POST /semantic-route HTTP/1.1" 401 Unauthorized
+llama_perf_context_print:        eval time =   13279.05 ms /   150 runs   (   88.53 ms per token,    11.30 tokens per second)
+llama_perf_context_print:       total time =   13339.92 ms /   151 tokens
+INFO:     172.18.0.10:37384 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33428 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:53668 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:53678 - "POST /semantic-route HTTP/1.1" 401 Unauthorized
 Llama.generate: 10 prefix-match hit, remaining 122 prompt tokens to eval
-llama_perf_context_print:        load time =     146.41 ms
-llama_perf_context_print: prompt eval time =    6555.36 ms /   122 tokens (   53.73 ms per token,    18.61 tokens per second)
-llama_perf_context_print:        eval time =   13489.89 ms /   149 runs   (   90.54 ms per token,    11.05 tokens per second)
-llama_perf_context_print:       total time =   20108.79 ms /   271 tokens
-INFO:     172.18.0.10:34192 - "POST /tools/call HTTP/1.1" 200 OK
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =    6489.09 ms /   122 tokens (   53.19 ms per token,    18.80 tokens per second)
+llama_perf_context_print:        eval time =   15599.85 ms /   149 runs   (  104.70 ms per token,     9.55 tokens per second)
+llama_perf_context_print:       total time =   22150.08 ms /   271 tokens
+INFO:     172.18.0.10:53692 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54482 - "GET /health HTTP/1.1" 200 OK
 Llama.generate: 131 prefix-match hit, remaining 1 prompt tokens to eval
-llama_perf_context_print:        load time =     146.41 ms
+llama_perf_context_print:        load time =     134.80 ms
 llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:        eval time =   13395.28 ms /   150 runs   (   89.30 ms per token,    11.20 tokens per second)
-llama_perf_context_print:       total time =   13458.31 ms /   151 tokens
-INFO:     172.18.0.10:49388 - "POST /tools/call HTTP/1.1" 200 OK
-{"asctime": "2025-08-05 11:12:46,378", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
-{"asctime": "2025-08-05 11:12:46,378", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
-INFO:     172.18.0.10:52324 - "POST /tools/call HTTP/1.1" 500 Internal Server Error
+llama_perf_context_print:        eval time =   14018.06 ms /   150 runs   (   93.45 ms per token,    10.70 tokens per second)
+llama_perf_context_print:       total time =   14079.30 ms /   151 tokens
+INFO:     172.18.0.10:37798 - "POST /tools/call HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 10:58:36,655", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
+{"asctime": "2025-08-08 10:58:36,655", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
+{"asctime": "2025-08-08 10:58:36,688", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/search \"HTTP/1.1 200 OK\"", "trace_id": null}
+{"asctime": "2025-08-08 10:58:36,690", "levelname": "INFO", "name": "munbot", "message": "Qdrant hits", "trace_id": "unknown", "hits": 5}
+{"asctime": "2025-08-08 10:58:36,690", "levelname": "INFO", "name": "munbot", "message": "Qdrant hits", "trace_id": "unknown", "hits": 5}
+{"asctime": "2025-08-08 10:58:36,690", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada por Llama con RAG", "trace_id": "unknown"}
+{"asctime": "2025-08-08 10:58:36,690", "levelname": "INFO", "name": "munbot", "message": "Respuesta generada por Llama con RAG", "trace_id": "unknown"}
+INFO:     172.18.0.10:47402 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58938 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:40592 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52494 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:39178 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55892 - "GET /health HTTP/1.1" 200 OK
+Llama.generate: 10 prefix-match hit, remaining 135 prompt tokens to eval
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =    7271.83 ms /   135 tokens (   53.87 ms per token,    18.56 tokens per second)
+llama_perf_context_print:        eval time =   13853.49 ms /   149 runs   (   92.98 ms per token,    10.76 tokens per second)
+llama_perf_context_print:       total time =   21191.35 ms /   284 tokens
+INFO:     172.18.0.10:39022 - "POST /tools/call HTTP/1.1" 200 OK
+Llama.generate: 144 prefix-match hit, remaining 1 prompt tokens to eval
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_perf_context_print:        eval time =   14393.92 ms /   150 runs   (   95.96 ms per token,    10.42 tokens per second)
+llama_perf_context_print:       total time =   14460.10 ms /   151 tokens
+INFO:     172.18.0.10:45736 - "POST /tools/call HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 11:00:34,057", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
+{"asctime": "2025-08-08 11:00:34,057", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
+INFO:     172.18.0.10:36634 - "POST /tools/call HTTP/1.1" 500 Internal Server Error
 ERROR:    Exception in ASGI application
   + Exception Group Traceback (most recent call last):
   |   File "/usr/local/lib/python3.11/site-packages/starlette/_utils.py", line 77, in collapse_excgroups
@@ -696,16 +537,10 @@ ERROR:    Exception in ASGI application
     |   File "/app/gateway.py", line 390, in generar_respuesta_llm
     |     filtro = filter_by_procedure_id(procedure_id)
     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/app/qdrant_utils.py", line 51, in filter_by_procedure_id
-    |     return qdrant.Filter(should=should, minimum_should_match=1)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
-    |     validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
-    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    | pydantic_core._pydantic_core.ValidationError: 1 validation error for Filter
-    | minimum_should_match
-    |   Extra inputs are not permitted [type=extra_forbidden, input_value=1, input_type=int]
-    |     For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
+    |   File "/app/qdrant_utils.py", line 53, in filter_by_procedure_id
+    |     min_should=qdrant.MinShould(
+    |                ^^^^^^^^^^^^^^^^
+    | AttributeError: module 'qdrant_client.http.models.models' has no attribute 'MinShould'
     +------------------------------------
 
 During handling of the above exception, another exception occurred:
@@ -776,23 +611,216 @@ Traceback (most recent call last):
   File "/app/gateway.py", line 390, in generar_respuesta_llm
     filtro = filter_by_procedure_id(procedure_id)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/app/qdrant_utils.py", line 51, in filter_by_procedure_id
-    return qdrant.Filter(should=should, minimum_should_match=1)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
-    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-pydantic_core._pydantic_core.ValidationError: 1 validation error for Filter
-minimum_should_match
-  Extra inputs are not permitted [type=extra_forbidden, input_value=1, input_type=int]
-    For further information visit https://errors.pydantic.dev/2.11/v/extra_forbidden
-INFO:     127.0.0.1:56280 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:49108 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33564 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:49000 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59448 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:41448 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35168 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:33278 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34178 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51070 - "GET /health HTTP/1.1" 200 OK
+  File "/app/qdrant_utils.py", line 53, in filter_by_procedure_id
+    min_should=qdrant.MinShould(
+               ^^^^^^^^^^^^^^^^
+AttributeError: module 'qdrant_client.http.models.models' has no attribute 'MinShould'
+INFO:     172.18.0.10:57364 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60480 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:34750 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38878 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:35456 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45646 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:36160 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47828 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:33654 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49490 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:46538 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48308 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:49366 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:49382 - "POST /semantic-route HTTP/1.1" 401 Unauthorized
+Llama.generate: 10 prefix-match hit, remaining 124 prompt tokens to eval
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =    6627.38 ms /   124 tokens (   53.45 ms per token,    18.71 tokens per second)
+llama_perf_context_print:        eval time =   13447.03 ms /   149 runs   (   90.25 ms per token,    11.08 tokens per second)
+llama_perf_context_print:       total time =   20136.28 ms /   273 tokens
+INFO:     172.18.0.10:49396 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33914 - "GET /health HTTP/1.1" 200 OK
+Llama.generate: 133 prefix-match hit, remaining 1 prompt tokens to eval
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_perf_context_print:        eval time =   13561.56 ms /   150 runs   (   90.41 ms per token,    11.06 tokens per second)
+llama_perf_context_print:       total time =   13623.91 ms /   151 tokens
+INFO:     172.18.0.10:54108 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57114 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:40178 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44862 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:34998 - "POST /semantic-route HTTP/1.1" 401 Unauthorized
+Llama.generate: 10 prefix-match hit, remaining 120 prompt tokens to eval
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =    6419.75 ms /   120 tokens (   53.50 ms per token,    18.69 tokens per second)
+llama_perf_context_print:        eval time =   13230.60 ms /   149 runs   (   88.80 ms per token,    11.26 tokens per second)
+llama_perf_context_print:       total time =   19713.13 ms /   269 tokens
+INFO:     172.18.0.10:35002 - "POST /tools/call HTTP/1.1" 200 OK
+Llama.generate: 129 prefix-match hit, remaining 1 prompt tokens to eval
+llama_perf_context_print:        load time =     134.80 ms
+llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_perf_context_print:        eval time =   13465.34 ms /   150 runs   (   89.77 ms per token,    11.14 tokens per second)
+llama_perf_context_print:       total time =   13526.99 ms /   151 tokens
+INFO:     172.18.0.10:40314 - "POST /tools/call HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 11:05:43,808", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
+{"asctime": "2025-08-08 11:05:43,808", "levelname": "INFO", "name": "munbot", "message": "Generando embeddings", "trace_id": "unknown"}
+INFO:     172.18.0.10:60266 - "POST /tools/call HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+  + Exception Group Traceback (most recent call last):
+  |   File "/usr/local/lib/python3.11/site-packages/starlette/_utils.py", line 77, in collapse_excgroups
+  |     yield
+  |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 183, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |   File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    |     result = await app(  # type: ignore[func-returns-value]
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    |     return await self.app(scope, receive, send)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    |     await super().__call__(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    |     raise exc
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 182, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |   File "/usr/local/lib/python3.11/contextlib.py", line 158, in __exit__
+    |     self.gen.throw(typ, value, traceback)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
+    |     raise exc
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 184, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/gateway.py", line 104, in dispatch
+    |     return await call_next(request)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    |     raise app_exc
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    |     await route.handle(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    |     await self.app(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    |     raw_response = await run_endpoint_function(
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    |     return await dependant.call(**values)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/gateway.py", line 569, in tools_call
+    |     respuesta = generar_respuesta_llm(params, trace_id=trace_id)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/gateway.py", line 390, in generar_respuesta_llm
+    |     filtro = filter_by_procedure_id(procedure_id)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/app/qdrant_utils.py", line 53, in filter_by_procedure_id
+    |     min_should=qdrant.MinShould(
+    |                ^^^^^^^^^^^^^^^^
+    | AttributeError: module 'qdrant_client.http.models.models' has no attribute 'MinShould'
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 182, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "/usr/local/lib/python3.11/contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_utils.py", line 83, in collapse_excgroups
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 184, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/gateway.py", line 104, in dispatch
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/gateway.py", line 569, in tools_call
+    respuesta = generar_respuesta_llm(params, trace_id=trace_id)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/gateway.py", line 390, in generar_respuesta_llm
+    filtro = filter_by_procedure_id(procedure_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/qdrant_utils.py", line 53, in filter_by_procedure_id
+    min_should=qdrant.MinShould(
+               ^^^^^^^^^^^^^^^^
+AttributeError: module 'qdrant_client.http.models.models' has no attribute 'MinShould'
+INFO:     172.18.0.10:39992 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57200 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:37462 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51642 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:49186 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46006 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:59998 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46826 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:60362 - "GET /health HTTP/1.1" 200 OK

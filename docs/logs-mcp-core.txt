@@ -1,4 +1,4 @@
-docker logs -f mcp-core
+docker logs -f mcp-core 
 → Esperando a Redis en redis:6379...
 → Esperando a Postgres en postgres:5432...
 → Esperando a Qdrant en qdrant:6333...
@@ -9,49 +9,91 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-{"asctime": "2025-08-05 11:06:08,646", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
-INFO:     127.0.0.1:51890 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49460 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41884 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-08-05 11:07:25,164", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
-{"asctime": "2025-08-05 11:07:25,164", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=hola doc=None score=0.000", "trace_id": null}
-{"asctime": "2025-08-05 11:07:25,164", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "26534bda-26d4-4577-9527-3db08857ccb3"}
-{"asctime": "2025-08-05 11:07:25,164", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "26534bda-26d4-4577-9527-3db08857ccb3"}
-{"asctime": "2025-08-05 11:07:25,166", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:07:25,166", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:07:45,645", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-INFO:     127.0.0.1:57826 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-08-05 11:07:45,645", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:07:59,124", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
-{"asctime": "2025-08-05 11:07:59,124", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
-INFO:     172.18.0.11:53076 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42546 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-08-05 11:08:16,062", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-doc_tramites.json' por tema.", "trace_id": "bf29fe1b-7722-4ae8-a7d1-233e4b9c8d3e"}
-{"asctime": "2025-08-05 11:08:16,062", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-doc_tramites.json' por tema.", "trace_id": "bf29fe1b-7722-4ae8-a7d1-233e4b9c8d3e"}
-{"asctime": "2025-08-05 11:08:16,064", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:08:16,064", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:08:37,084", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:08:37,084", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-INFO:     127.0.0.1:44566 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-08-05 11:08:51,213", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
-{"asctime": "2025-08-05 11:08:51,213", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
-{"asctime": "2025-08-05 11:08:51,214", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:08:51,214", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:08:51,551", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
-{"asctime": "2025-08-05 11:08:51,551", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
-{"asctime": "2025-08-05 11:08:51,552", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: http_error_0", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
-{"asctime": "2025-08-05 11:08:51,552", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: http_error_0", "trace_id": "bab4733e-60d6-455f-a4cb-06f66109e22d"}
-INFO:     172.18.0.11:41818 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60020 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54592 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47688 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35044 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50872 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33632 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-08-05 11:12:12,793", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
-{"asctime": "2025-08-05 11:12:12,793", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=Como estas? doc=None score=0.000", "trace_id": null}
-{"asctime": "2025-08-05 11:12:12,794", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "313fb5ab-3cf3-4a9e-9fd5-6a991e7a7580"}
-{"asctime": "2025-08-05 11:12:12,794", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-faq.json' por tema.", "trace_id": "313fb5ab-3cf3-4a9e-9fd5-6a991e7a7580"}
-{"asctime": "2025-08-05 11:12:12,795", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-{"asctime": "2025-08-05 11:12:12,795", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
-INFO:     127.0.0.1:34190 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 10:52:49,471", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+INFO:     127.0.0.1:55782 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43540 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43546 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37716 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35090 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49952 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33576 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40252 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56618 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 10:57:00,462", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
+{"asctime": "2025-08-08 10:57:00,462", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=Hola doc=None score=0.000", "trace_id": null}
+{"asctime": "2025-08-08 10:57:00,464", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:57:00,464", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:57:21,041", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:57:21,041", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:59288 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 10:57:34,387", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 10:57:34,387", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+INFO:     172.18.0.11:49688 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42596 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 10:58:00,411", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
+{"asctime": "2025-08-08 10:58:00,411", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=como estas? doc=None score=0.000", "trace_id": null}
+{"asctime": "2025-08-08 10:58:00,412", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:58:00,412", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:58:22,567", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:58:22,567", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:43122 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 10:58:36,652", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 10:58:36,652", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 10:58:36,653", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:58:36,653", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     172.18.0.11:41896 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34366 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40654 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 10:59:58,387", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-doc_tramites.json' por tema.", "trace_id": "1dd469cd-53f5-45dd-b761-f3160e79da58"}
+{"asctime": "2025-08-08 10:59:58,387", "levelname": "INFO", "name": "munbot", "message": "Consulta enrutada al documento 'RAG-doc_tramites.json' por tema.", "trace_id": "1dd469cd-53f5-45dd-b761-f3160e79da58"}
+{"asctime": "2025-08-08 10:59:58,389", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 10:59:58,389", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:59072 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 11:00:19,587", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:00:19,587", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:00:34,052", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 11:00:34,052", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: doc-generar_respuesta_llm", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 11:00:34,054", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:00:34,054", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:00:34,119", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
+{"asctime": "2025-08-08 11:00:34,119", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
+{"asctime": "2025-08-08 11:00:34,119", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: http_error_0", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 11:00:34,119", "levelname": "ERROR", "name": "munbot", "message": "Microservice error: http_error_0", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+INFO:     172.18.0.11:39808 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50714 - "GET /health HTTP/1.1" 200 OK
+xINFO:     127.0.0.1:37404 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42030 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34310 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47576 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50642 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45402 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 11:03:40,023", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
+{"asctime": "2025-08-08 11:03:40,024", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=hola como estas doc=None score=0.000", "trace_id": null}
+{"asctime": "2025-08-08 11:03:40,025", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:03:40,025", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:04:00,168", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:04:00,168", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:33140 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 11:04:13,798", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 11:04:13,798", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: saludo", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+INFO:     172.18.0.11:48702 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52884 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 11:05:10,551", "levelname": "WARNING", "name": "document_router", "message": "Remote routing failed: 401 Client Error: Unauthorized for url: http://llm_docs-mcp:8000/semantic-route", "trace_id": null}
+{"asctime": "2025-08-08 11:05:10,552", "levelname": "DEBUG", "name": "document_router", "message": "remote route query=adios doc=None score=0.000", "trace_id": null}
+{"asctime": "2025-08-08 11:05:10,553", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:05:10,553", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+INFO:     127.0.0.1:54496 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-08 11:05:30,272", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:05:30,272", "levelname": "INFO", "name": "munbot", "message": "intent=doc-classify_intent_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:05:43,804", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 11:05:43,804", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n detectada: informacion_general", "trace_id": "d2baf4db-31cd-4884-9e39-ab48048c8494"}
+{"asctime": "2025-08-08 11:05:43,805", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:05:43,805", "levelname": "INFO", "name": "munbot", "message": "intent=doc-generar_respuesta_llm, routing to http://llm_docs-mcp:8000/tools/call", "trace_id": null}
+{"asctime": "2025-08-08 11:05:43,835", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
+{"asctime": "2025-08-08 11:05:43,835", "levelname": "ERROR", "name": "munbot", "message": "HTTP error calling http://llm_docs-mcp:8000/tools/call: 0 - body=", "trace_id": null}
+INFO:     172.18.0.11:38312 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56310 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40812 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49264 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47428 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41244 - "GET /health HTTP/1.1" 200 OK
