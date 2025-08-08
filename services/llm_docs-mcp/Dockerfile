@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY services/llm_docs-mcp/requirements.txt .
 RUN pip install -U pip --no-cache-dir
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 # Instala dependencias, incluyendo llama-cpp-python para GGUF
@@ -28,11 +28,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('${EMBEDDING_MODEL_NAME}', device='cpu')"
 
 # Copia código y scripts (una sola instrucción)
-COPY . .
+COPY services/llm_docs-mcp/ ./
 
 # asumiendo que en tu repo tienes ../mcp-core/prompts y ../mcp-core/tool_schemas
 COPY mcp-core/prompts/ ./prompts
-COPY models/ ./models
+COPY services/llm_docs-mcp/models/ ./models
 COPY mcp-core/tool_schemas/ /app/tool_schemas
 
 ENV PROMPTS_PATH=/app/prompts
