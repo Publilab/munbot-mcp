@@ -69,3 +69,25 @@ def filter_by_domain(domains: Optional[list[str]]) -> Optional[qdrant.Filter]:
             match=qdrant.MatchAny(any=domains)
         )
     ])
+
+def combine_filters(*filters: Optional[qdrant.Filter]) -> Optional[qdrant.Filter]:
+    """Combina múltiples filtros de Qdrant en un solo filtro 'must'."""
+    valid_filters = [f for f in filters if f is not None]
+    if not valid_filters:
+        return None
+    
+    must_conditions = []
+    for f in valid_filters:
+        if f.must:
+            must_conditions.extend(f.must)
+        if f.should:
+            # Si un filtro tiene 'should', lo envolvemos en un 'must' para que se cumpla
+            must_conditions.append(qdrant.Filter(should=f.should))
+        if f.must_not:
+            # Si un filtro tiene 'must_not', lo envolvemos en un 'must' para que se cumpla
+            must_conditions.append(qdrant.Filter(must_not=f.must_not))
+
+    if not must_conditions:
+        return None
+    
+    return qdrant.Filter(must=must_conditions)

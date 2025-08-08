@@ -14,3 +14,4 @@ sentence-transformers==2.7.0
 qdrant-client==1.7.0
 # torch se instala por separado en el Dockerfile.
 
+redis
