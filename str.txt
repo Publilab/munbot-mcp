@@ -8,6 +8,7 @@
 │   └── init-postgres.sql
 ├── docker-compose.yml
 ├── docs
+│   ├── 100.409-MEJORAS RAG.md
 │   ├── FLOW-COMPLAINTS-MCP.drawio
 │   ├── FLOW-COMPLAINTS-MCP.png
 │   ├── FLOW-SCHEDULER-MCP.drawio
@@ -5138,6 +5139,7 @@
 ├── llama_cpp
 │   └── __init__.py
 ├── llama_runner.py
+├── logs
 ├── mcp-core
 │   ├── .env
 │   ├── .env.sample
@@ -5149,28 +5151,15 @@
 │   ├── context_manager.py
 │   ├── databases
 │   │   ├── .env
-│   │   ├── documento_requisito.json
-│   │   ├── faq_respuestas.json
-│   │   ├── missed_questions.csv
-│   │   └── oficina_info.json
-│   ├── department_router.py
+│   │   └── missed_questions.csv
 │   ├── document_router.py
-│   ├── faq_matcher.py
+│   ├── intent_classifier.py
 │   ├── orchestrator.py
-│   ├── procedure_router.py
 │   ├── prompts
-│   │   ├── Icon\015
-│   │   ├── README.md
+│   │   ├── classify-main_intent.txt
 │   │   ├── complaint-registrar_reclamo.txt
-│   │   ├── doc-buscar_fragmento_documento.txt
+│   │   ├── doc-create_plan.txt
 │   │   ├── doc-generar_respuesta_llm.txt
-│   │   ├── doc-info_documento.txt
-│   │   ├── doc-listar_documentos_oficiales.txt
-│   │   ├── info-documento_por_accion.txt
-│   │   ├── info-listar_documentos.txt
-│   │   ├── info-oficina_documento.txt
-│   │   ├── info-preguntar_documento.txt
-│   │   ├── info-respuesta_faq.txt
 │   │   ├── scheduler-appointment_create.txt
 │   │   ├── scheduler-cancelar_hora.txt
 │   │   ├── scheduler-confirmar_hora.txt
@@ -5178,26 +5167,15 @@
 │   │   └── scheduler-reservar_hora.txt
 │   ├── requirements.txt
 │   ├── settings.py
-│   ├── src
-│   │   └── orchestrator.py
 │   ├── tests
+│   │   ├── __pycache__
+│   │   │   ├── test_cache_keys.cpython-312-pytest-8.4.1.pyc
+│   │   │   └── test_fallback_block.cpython-312-pytest-8.4.1.pyc
 │   │   ├── test_cache_keys.py
-│   │   ├── test_department_router.py
-│   │   ├── test_fallback_block.py
-│   │   └── test_query_utils.py
+│   │   └── test_fallback_block.py
 │   ├── tool_schemas
-│   │   ├── Icon\015
-│   │   ├── README.md
 │   │   ├── complaint-registrar_reclamo.json
-│   │   ├── doc-buscar_fragmento_documento.json
 │   │   ├── doc-generar_respuesta_llm.json
-│   │   ├── doc-info_documento.json
-│   │   ├── doc-listar_documentos_oficiales.json
-│   │   ├── info-documento_por_accion.json
-│   │   ├── info-listar_documentos.json
-│   │   ├── info-oficina_documento.json
-│   │   ├── info-preguntar_documento.json
-│   │   ├── info-respuesta_faq.json
 │   │   ├── scheduler-appointment_create.json
 │   │   ├── scheduler-cancelar_hora.json
 │   │   ├── scheduler-confirmar_hora.json
@@ -5205,13 +5183,15 @@
 │   │   └── scheduler-reservar_hora.json
 │   ├── utils
 │   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── cache.cpython-312.pyc
 │   │   ├── audit.py
 │   │   ├── cache.py
 │   │   ├── datetime_utils.py
 │   │   ├── human.py
 │   │   ├── parser.py
 │   │   ├── phone_utils.py
-│   │   ├── query_rewriter.py
 │   │   └── text.py
 │   └── wait-for-deps.sh
 ├── monitoring
@@ -5250,6 +5230,7 @@
 │       └── scheduler-mcp
 │           └── .env
 ├── services
+│   ├── __init__.py
 │   ├── complaints-mcp
 │   │   ├── .env
 │   │   ├── Dockerfile
@@ -5282,24 +5263,13 @@
 │   │   ├── automatizar_actualizacion.sh
 │   │   ├── config.env.example
 │   │   ├── documents
-│   │   │   ├── Originales
-│   │   │   │   ├── MAN-Ayudas Sociales.txt
-│   │   │   │   ├── ORD-Funcionamiento del Comercio.txt
-│   │   │   │   ├── ORD-Medio Ambiente.txt
-│   │   │   │   ├── ORD-Patente de Alcoholes.txt
-│   │   │   │   ├── ORD-Transporte Basura Desecho.txt
-│   │   │   │   ├── documento_requisito.json
-│   │   │   │   ├── faq_respuestas.json
-│   │   │   │   └── oficina_info.json
 │   │   │   ├── RAG-Ayudas_Sociales.json
 │   │   │   ├── RAG-Contrib_Derechos.json
 │   │   │   ├── RAG-Horario_Comercio.json
 │   │   │   ├── RAG-Medio_Ambiente.json
-│   │   │   ├── RAG-Ordenanza_Residencia.json
 │   │   │   ├── RAG-depto_info.json
 │   │   │   ├── RAG-doc_tramites.json
 │   │   │   ├── RAG-faq.json
-│   │   │   ├── RAG.Seguridad_Publica.json
 │   │   │   └── metadata.json
 │   │   ├── embeddings.py
 │   │   ├── entrypoint.sh
@@ -5311,24 +5281,6 @@
 │   │   ├── models
 │   │   │   └── phi-2.Q4_K_M.gguf
 │   │   ├── process_documents.py
-│   │   ├── prompts
-│   │   │   ├── Icon\015
-│   │   │   ├── README.md
-│   │   │   ├── complaint-registrar_reclamo.txt
-│   │   │   ├── doc-buscar_fragmento_documento.txt
-│   │   │   ├── doc-generar_respuesta_llm.txt
-│   │   │   ├── doc-info_documento.txt
-│   │   │   ├── doc-listar_documentos_oficiales.txt
-│   │   │   ├── info-documento_por_accion.txt
-│   │   │   ├── info-listar_documentos.txt
-│   │   │   ├── info-oficina_documento.txt
-│   │   │   ├── info-preguntar_documento.txt
-│   │   │   ├── info-respuesta_faq.txt
-│   │   │   ├── scheduler-appointment_create.txt
-│   │   │   ├── scheduler-cancelar_hora.txt
-│   │   │   ├── scheduler-confirmar_hora.txt
-│   │   │   ├── scheduler-listar_horas_disponibles.txt
-│   │   │   └── scheduler-reservar_hora.txt
 │   │   ├── qdrant_helpers.py
 │   │   ├── qdrant_utils.py
 │   │   ├── rag.py
@@ -5336,25 +5288,7 @@
 │   │   ├── scripts
 │   │   │   ├── index_documents.py
 │   │   │   └── init_qdrant.py
-│   │   ├── test_tools.py
-│   │   └── tool_schemas
-│   │       ├── Icon\015
-│   │       ├── README.md
-│   │       ├── complaint-registrar_reclamo.json
-│   │       ├── doc-buscar_fragmento_documento.json
-│   │       ├── doc-generar_respuesta_llm.json
-│   │       ├── doc-info_documento.json
-│   │       ├── doc-listar_documentos_oficiales.json
-│   │       ├── info-documento_por_accion.json
-│   │       ├── info-listar_documentos.json
-│   │       ├── info-oficina_documento.json
-│   │       ├── info-preguntar_documento.json
-│   │       ├── info-respuesta_faq.json
-│   │       ├── scheduler-appointment_create.json
-│   │       ├── scheduler-cancelar_hora.json
-│   │       ├── scheduler-confirmar_hora.json
-│   │       ├── scheduler-listar_horas_disponibles.json
-│   │       └── scheduler-reservar_hora.json
+│   │   └── test_tools.py
 │   └── scheduler-mcp
 │       ├── .env
 │       ├── Dockerfile
@@ -5405,4 +5339,4 @@
 │   └── test_tools_call_reservar.py
 └── utils
 
-1513 directories, 7839 files
+1515 directories, 7965 files
