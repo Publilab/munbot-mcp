@@ -1,17 +1,10 @@
 import json
 import os
 from typing import Dict
+import logging
 
-# Asumimos que hay un cliente LLM disponible para hacer la llamada.
-# Esta es una implementación de ejemplo y puede necesitar ser adaptada
-# al cliente LLM real que se esté utilizando (por ejemplo, llama_client.py).
-import sys
-from importlib import import_module
-
-from clients.llm_docs import client as llama_client
-
-llm_module = import_module("services.llm_docs-mcp.llama_client".replace("-", "_"))
-LlamaClient = llm_module.LlamaClient
+# Use a relative import for the client that calls the llm_docs service
+from .clients.llm_docs import client as llama_client
 
 
 def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
@@ -38,14 +31,10 @@ def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
         prompt = prompt_template.replace('{{AQUÍ VA LA CONSULTA DEL USUARIO}}', user_input)
 
         # --- Llamada al LLM ---
-        # Esta parte necesita ser adaptada al cliente LLM específico.
-        # Asumimos que tenemos una clase LlamaClient que puede hacer la llamada.
-        llama_client = LlamaClient()
-        llm_response = llama_client.generate_text(prompt, session_id)
-
-        # El LLM debería devolver una cadena JSON, la parseamos
-        # Es importante manejar el caso en que la respuesta no sea un JSON válido
-        response_json = json.loads(llm_response)
+        # Use the imported client to make the call to the llm_docs service.
+        # The client's `generate` method calls the `/generate` endpoint and
+        # returns the parsed JSON dictionary.
+        response_json = llama_client.generate(prompt, trace_id=session_id)
 
         # Validar que la respuesta contiene las claves esperadas
         if "intencion" in response_json and "entidades" in response_json:
@@ -58,8 +47,7 @@ def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
             raise ValueError("El JSON de respuesta del LLM no tiene el formato esperado.")
 
     except (json.JSONDecodeError, ValueError, Exception) as e:
-        # Loggear el error sería una buena práctica aquí
-        print(f"Error al clasificar la intención: {e}")
+        logging.error(f"Error al clasificar la intención para sesión {session_id}: {e}", exc_info=True)
         return {
             "intencion": "no_entendido",
             "entidades": {},

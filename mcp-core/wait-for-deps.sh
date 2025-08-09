@@ -28,4 +28,4 @@ echo "→ Esperando al endpoint de salud de llm_docs-mcp en $LLM_DOCS_HEALTH_URL
 until curl -sf "$LLM_DOCS_HEALTH_URL" >/dev/null 2>&1; do sleep 2; done
 
 echo "→ Todas las dependencias listas. Iniciando mcp‑core..."
-exec uvicorn orchestrator:app --host 0.0.0.0 --port 5000
+exec "$@"

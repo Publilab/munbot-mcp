@@ -1,9 +1,7 @@
 import os
 import sys
 import glob
-from intent_classifier import classify_intent_and_entities
-
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+from .intent_classifier import classify_intent_and_entities
 import json
 import requests
 from requests.auth import HTTPBasicAuth
@@ -20,7 +18,7 @@ import uuid
 import threading
 import time
 import concurrent.futures
-from context_manager import ConversationalContextManager
+from .context_manager import ConversationalContextManager
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -28,43 +26,30 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 
-from utils.cache import make_answer_cache_key
-from settings import (
+from .utils.cache import make_answer_cache_key
+from .settings import (
     ANSWER_CACHE_TTL_CONTACT,
     ANSWER_CACHE_TTL_DEFAULT,
     ANSWER_CACHE_TTL_GENERIC,
 )
 try:
-    from utils.human import registrar_evento_humano
+    from .utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
     def registrar_evento_humano(session_id: str, pregunta: str, trace_id: str | None = None) -> None:
         pass
-try:
-    from utils.parser import parse_date_time
-except ModuleNotFoundError:
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ''))
-    import importlib
-    if 'utils' in sys.modules:
-        del sys.modules['utils']
-    parse_date_time = importlib.import_module('utils.parser').parse_date_time
-import importlib.util
-service_path = '/app/scheduler-mcp/service.py'
-_spec = importlib.util.spec_from_file_location('scheduler_service', service_path)
-_svc = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(_svc)
-select_exact_block = _svc.select_exact_block
-from utils.audit import audit_step
+from .utils.parser import parse_date_time
+from .utils.audit import audit_step
 from zoneinfo import ZoneInfo
-from utils.datetime_utils import (
+from .utils.datetime_utils import (
     parse_nl_datetime,
     compute_relative_date,
     compute_last_business_day,
 )
 from datetime import datetime, date
 
-from utils.phone_utils import validar_telefono_movil
+from .utils.phone_utils import validar_telefono_movil
 
-from utils.text import normalize_text
+from .utils.text import normalize_text
 
 
 
