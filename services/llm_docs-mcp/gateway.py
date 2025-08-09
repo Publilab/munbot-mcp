@@ -125,7 +125,19 @@ log_path = os.getenv("LOG_PATH", "gateway.log")
 from logging.handlers import RotatingFileHandler
 from pythonjsonlogger import jsonlogger
 
-log_handler = RotatingFileHandler(log_path, maxBytes=2*1024*1024, backupCount=5)
+# Permitir que LOG_PATH apunte a un directorio o a un archivo
+if os.path.isdir(log_path):
+    os.makedirs(log_path, exist_ok=True)
+    log_file_path = os.path.join(log_path, "gateway.log")
+else:
+    log_dir = os.path.dirname(log_path)
+    if log_dir:
+        os.makedirs(log_dir, exist_ok=True)
+    log_file_path = log_path
+
+log_handler = RotatingFileHandler(
+    log_file_path, maxBytes=2 * 1024 * 1024, backupCount=5
+)
 
 logger = logging.getLogger("munbot")
 logger.setLevel(logging.INFO)
