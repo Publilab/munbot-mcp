@@ -32,7 +32,7 @@ from qdrant_utils import (
     filter_by_procedure_id,
     filter_by_department_id,
 )
-from rag import doc_buscar_fragmento_documento
+import rag
 from intent_classifier import classify_intent_with_llm, set_llm_client
 
 # ==== Configuración ====
@@ -584,7 +584,7 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
         elif tool == "doc-buscar_fragmento_documento":
             consulta = params.get("consulta", "")
             documento = params.get("documento")
-            frags = doc_buscar_fragmento_documento(consulta, documento)
+            frags = rag.doc_buscar_fragmento_documento(consulta, documento)
             return {"fragmentos": frags}
         elif tool == "doc-classify_intent_llm":
             texto = params.get("texto", "")
@@ -633,7 +633,7 @@ async def doc_buscar_fragmento_documento_endpoint(params: dict, credentials: HTT
     trace_id = params.get("trace_id", "unknown")
     consulta = params.get("consulta", "")
     documento = params.get("documento")
-    frags = doc_buscar_fragmento_documento(consulta, documento)
+    frags = rag.doc_buscar_fragmento_documento(consulta, documento)
     logger.info("Fragmentos buscados", extra={"trace_id": trace_id})
     return {"fragmentos": frags}
 
