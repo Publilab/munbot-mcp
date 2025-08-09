@@ -6,13 +6,14 @@ from typing import Dict
 # Esta es una implementación de ejemplo y puede necesitar ser adaptada
 # al cliente LLM real que se esté utilizando (por ejemplo, llama_client.py).
 import sys
-import os
+from importlib import import_module
 
 # Añadir el directorio 'services' al sys.path para permitir la importación
 # de módulos como 'llm_docs-mcp'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'services')))
 
-from llm_docs_mcp.llama_client import LlamaClient
+llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
+LlamaClient = llm_module.LlamaClient
 
 
 def classify_intent_and_entities(user_input: str, session_id: str) -> Dict:
