@@ -106,17 +106,18 @@ services:
     env_file:
       - ./mcp-core/.env
     environment:
+      - PYTHONPATH=/app
       - REDIS_HOST=redis
       - DOCS_DIR=/app/documents
       - HUMAN_ESCALATION_LOG=/app/human_escalations.log
+      - LLM_DOCS_BASE_URL=http://llm_docs-mcp:8000
     ports:
       - "5000:5000"
     networks:
       - munbot-net
     volumes:
       - ./mcp-core/models:/mcp-core/models
-      - ./services/scheduler-mcp:/app/scheduler-mcp:ro
-      - ./services/llm_docs-mcp:/services/llm_docs-mcp:ro
+      - ./services:/app/services:ro
       - ./services/llm_docs-mcp/documents:/app/documents:ro
       - ./logs/human_escalations.log:/app/human_escalations.log
     depends_on:

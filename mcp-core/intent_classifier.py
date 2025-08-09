@@ -8,11 +8,9 @@ from typing import Dict
 import sys
 from importlib import import_module
 
-# Añadir el directorio 'services' al sys.path para permitir la importación
-# de módulos como 'llm_docs-mcp'
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'services')))
+from clients.llm_docs import client as llama_client
 
-llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
+llm_module = import_module("services.llm_docs-mcp.llama_client".replace("-", "_"))
 LlamaClient = llm_module.LlamaClient
 
 

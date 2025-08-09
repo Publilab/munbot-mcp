@@ -18,10 +18,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ───────────────────────────────
 # 2) Dependencias Python
 # ───────────────────────────────
+ENV PYTHONUNBUFFERED=1 PYTHONPATH=/app
 WORKDIR /app
 
 #   Copiamos sólo requirements para aprovechar la cache
-COPY mcp-core/requirements.txt ./requirements.txt
+COPY mcp-core/requirements.txt /app/requirements.txt
 RUN pip install --upgrade pip setuptools wheel \
  && pip install torch --index-url https://download.pytorch.org/whl/cpu \
  && pip install --no-cache-dir -r requirements.txt
@@ -29,14 +30,10 @@ RUN pip install --upgrade pip setuptools wheel \
 # ───────────────────────────────
 # 3) Código de la aplicación
 # ───────────────────────────────
-#   Copiamos de una sola vez los directorios que necesitamos
-COPY mcp-core/ ./
-COPY databases/ ./databases/
-COPY mcp-core/utils/ ./utils/
-COPY tests/ ./tests/
+COPY . /app/
 
-RUN chmod +x wait-for-deps.sh
-ENTRYPOINT ["./wait-for-deps.sh"]
+RUN chmod +x /app/mcp-core/wait-for-deps.sh
+ENTRYPOINT ["/app/mcp-core/wait-for-deps.sh"]
 
 # ───────────────────────────────
 # 4) Variables de entorno y puertos
@@ -49,4 +46,4 @@ EXPOSE 5000
 # ───────────────────────────────
 # 5) Comando de arranque
 # ───────────────────────────────
-CMD ["uvicorn", "orchestrator:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["uvicorn", "mcp-core.orchestrator:app", "--host", "0.0.0.0", "--port", "5000"]
