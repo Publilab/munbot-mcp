@@ -18,6 +18,8 @@ RUN apt-get update && \
 
 WORKDIR /app
 
+RUN mkdir -p /app/logs
+
 COPY services/llm_docs-mcp/requirements.txt .
 RUN pip install -U pip --no-cache-dir
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
