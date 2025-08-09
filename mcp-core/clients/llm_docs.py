@@ -20,9 +20,14 @@ class LlmDocsClient:
         r.raise_for_status()
         return r.json()
 
-    def generate(self, prompt: str, **params) -> dict:
-        payload = {"prompt": prompt} | params
-        r = httpx.post(f"{self.base_url}/generate", json=payload, timeout=self.timeout)
+    def generate(self, prompt: str, **kwargs) -> dict:
+        # El endpoint espera 'pregunta' en lugar de 'prompt'
+        payload = {"pregunta": prompt}
+        
+        # Añadir cualquier otro parámetro que venga en kwargs
+        payload.update(kwargs)
+        
+        r = httpx.post(f"{self.base_url}/generar_respuesta_llm", json=payload, timeout=self.timeout)
         r.raise_for_status()
         return r.json()
 
