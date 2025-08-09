@@ -122,13 +122,17 @@ def authenticate(
         return True
     raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
-# ==== Logging estructurado ====
+# ==== Logging estructurado (parche robusto) ====
 LOG_DIR = os.getenv("LOG_DIR", "/app/logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 
-# Nombre de archivo por servicio para que no se pisen entre microservicios
 DEFAULT_LOG_FILE = "llm_docs_gateway.log"
-log_path = os.getenv("LOG_PATH", os.path.join(LOG_DIR, DEFAULT_LOG_FILE))
+_env_path = os.getenv("LOG_PATH")  # puede ser archivo o directorio
+log_path = _env_path if _env_path else os.path.join(LOG_DIR, DEFAULT_LOG_FILE)
+
+# Si LOG_PATH es un directorio, escribir el archivo adentro
+if os.path.isdir(log_path):
+    log_path = os.path.join(log_path, DEFAULT_LOG_FILE)
 
 logger = logging.getLogger("munbot")
 logger.setLevel(logging.INFO)
@@ -138,32 +142,20 @@ formatter = jsonlogger.JsonFormatter('%(asctime)s %(levelname)s %(name)s %(messa
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
-# Intentar crear file handler robustamente
+file_handler = None
 try:
-    # Si por error log_path es un directorio, esto lanzará IsADirectoryError
     file_handler = RotatingFileHandler(log_path, maxBytes=2*1024*1024, backupCount=5)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
-except IsADirectoryError:
-    # Reintentar usando un archivo dentro de LOG_DIR
-    safe_path = os.path.join(LOG_DIR, DEFAULT_LOG_FILE)
-    file_handler = RotatingFileHandler(safe_path, maxBytes=2*1024*1024, backupCount=5)
-    file_handler.setFormatter(formatter)
-    logger.warning(f"LOG_PATH apuntaba a un directorio. Usando {safe_path} en su lugar.")
-    logger.addHandler(file_handler)
 except Exception as e:
-    # Si no se puede abrir archivo, seguir solo con stdout para no abortar el servicio
-    logger.warning(f"No se pudo abrir archivo de log ({e}). Continuando solo con stdout.")
+    logger.warning(f"No se pudo abrir archivo de log en '{log_path}' ({e}). Continuando solo con stdout.")
 
-# Opcional: alinear root logger
 root_logger = logging.getLogger()
 root_logger.setLevel(logging.INFO)
-root_logger.handlers = []  # evita duplicados
+root_logger.handlers = []
 root_logger.addHandler(stream_handler)
-try:
+if file_handler:
     root_logger.addHandler(file_handler)
-except NameError:
-    pass
 
 # ==== Prometheus metrics ====
 PROM_REGISTRY = CollectorRegistry()
