@@ -110,7 +110,10 @@ services:
       - REDIS_HOST=redis
       - DOCS_DIR=/app/documents
       - HUMAN_ESCALATION_LOG=/app/human_escalations.log
-      - LLM_DOCS_BASE_URL=http://llm_docs-mcp:8000
+      - LLM_DOCS_MCP_URL=http://llm_docs-mcp:8000/tools/call
+      - LLM_DOCS_API_KEY=${LLM_DOCS_API_KEY:-}
+      - LLM_DOCS_MCP_USER=${LLM_DOCS_MCP_USER:-}
+      - LLM_DOCS_MCP_PASSWORD=${LLM_DOCS_MCP_PASSWORD:-}
     ports:
       - "5000:5000"
     networks:
@@ -178,10 +181,13 @@ services:
       - REDIS_HOST=redis
       - QDRANT_SIMILARITY_THRESHOLD=0.5
       - LLM_MAX_NEW_TOKENS=150
-      # Asegúrate de que esta variable apunte al modelo correcto.
-      - MODEL_PATH=models/phi-2.Q4_K_M.gguf
-      - LLM_DOCS_MCP_USER=publilab
-      - LLM_DOCS_MCP_PASSWORD=Publ14b#Mun801
+      - MODEL_PATH=/models/tu_modelo.gguf # o nombre HF para transformers
+      - N_THREADS=4
+      - N_CTX=2048
+      - ALLOWED_IPS=127.0.0.1,172.18.0.0/16
+      - LLM_DOCS_API_KEY=${LLM_DOCS_API_KEY:-}
+      - LLM_DOCS_MCP_USER=${LLM_DOCS_MCP_USER:-}
+      - LLM_DOCS_MCP_PASSWORD=${LLM_DOCS_MCP_PASSWORD:-}
       - LOG_DIR=/app/logs
       - LOG_PATH=/app/logs/llm_docs_gateway.log
     depends_on:
