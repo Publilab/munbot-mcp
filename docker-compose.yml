@@ -181,7 +181,7 @@ services:
       - REDIS_HOST=redis
       - QDRANT_SIMILARITY_THRESHOLD=0.5
       - LLM_MAX_NEW_TOKENS=150
-      - MODEL_PATH=/models/tu_modelo.gguf # o nombre HF para transformers
+      - MODEL_PATH=/app/models/phi-2.Q4_K_M.gguf # o nombre HF para transformers
       - N_THREADS=4
       - N_CTX=2048
       - ALLOWED_IPS=127.0.0.1,172.18.0.0/16
@@ -206,7 +206,7 @@ services:
       # Período de gracia para que el contenedor complete su arranque (indexación, carga de modelos)
       start_period: 300s
     volumes:
-      - ./services/llm_docs-mcp/models:/models
+      
       - ./services/llm_docs-mcp/documents:/app/documents:ro
       - ./logs:/app/logs
 
