@@ -2,6 +2,7 @@ import os
 import json
 import glob
 import logging
+from logging.handlers import RotatingFileHandler
 import traceback
 import time
 import re
@@ -34,6 +35,7 @@ from qdrant_utils import (
 )
 import rag
 from intent_classifier import classify_intent_with_llm, set_llm_client
+from pythonjsonlogger import jsonlogger
 
 # ==== Configuración ====
 DOCUMENTS_PATH = os.getenv("DOCUMENTS_PATH")
@@ -121,37 +123,47 @@ def authenticate(
     raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
 # ==== Logging estructurado ====
-log_path = os.getenv("LOG_PATH", "gateway.log")
-from logging.handlers import RotatingFileHandler
-from pythonjsonlogger import jsonlogger
+LOG_DIR = os.getenv("LOG_DIR", "/app/logs")
+os.makedirs(LOG_DIR, exist_ok=True)
 
-# Permitir que LOG_PATH apunte a un directorio o a un archivo
-if os.path.isdir(log_path):
-    os.makedirs(log_path, exist_ok=True)
-    log_file_path = os.path.join(log_path, "gateway.log")
-else:
-    log_dir = os.path.dirname(log_path)
-    if log_dir:
-        os.makedirs(log_dir, exist_ok=True)
-    log_file_path = log_path
-
-log_handler = RotatingFileHandler(
-    log_file_path, maxBytes=2 * 1024 * 1024, backupCount=5
-)
+# Nombre de archivo por servicio para que no se pisen entre microservicios
+DEFAULT_LOG_FILE = "llm_docs_gateway.log"
+log_path = os.getenv("LOG_PATH", os.path.join(LOG_DIR, DEFAULT_LOG_FILE))
 
 logger = logging.getLogger("munbot")
 logger.setLevel(logging.INFO)
+
 stream_handler = logging.StreamHandler()
-formatter = jsonlogger.JsonFormatter(
-    '%(asctime)s %(levelname)s %(name)s %(message)s %(trace_id)s'
-)
+formatter = jsonlogger.JsonFormatter('%(asctime)s %(levelname)s %(name)s %(message)s %(trace_id)s')
 stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
-logger.addHandler(log_handler)
+
+# Intentar crear file handler robustamente
+try:
+    # Si por error log_path es un directorio, esto lanzará IsADirectoryError
+    file_handler = RotatingFileHandler(log_path, maxBytes=2*1024*1024, backupCount=5)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+except IsADirectoryError:
+    # Reintentar usando un archivo dentro de LOG_DIR
+    safe_path = os.path.join(LOG_DIR, DEFAULT_LOG_FILE)
+    file_handler = RotatingFileHandler(safe_path, maxBytes=2*1024*1024, backupCount=5)
+    file_handler.setFormatter(formatter)
+    logger.warning(f"LOG_PATH apuntaba a un directorio. Usando {safe_path} en su lugar.")
+    logger.addHandler(file_handler)
+except Exception as e:
+    # Si no se puede abrir archivo, seguir solo con stdout para no abortar el servicio
+    logger.warning(f"No se pudo abrir archivo de log ({e}). Continuando solo con stdout.")
+
+# Opcional: alinear root logger
 root_logger = logging.getLogger()
 root_logger.setLevel(logging.INFO)
+root_logger.handlers = []  # evita duplicados
 root_logger.addHandler(stream_handler)
-root_logger.addHandler(log_handler)
+try:
+    root_logger.addHandler(file_handler)
+except NameError:
+    pass
 
 # ==== Prometheus metrics ====
 PROM_REGISTRY = CollectorRegistry()
