@@ -1,34 +1,59 @@
-# /app/clients/llm_docs.py
+# mcp-core/clients/llm_docs.py
 import os
 import httpx
+from typing import Optional
 
-BASE_URL = os.getenv("LLM_DOCS_BASE_URL", "http://llm_docs-mcp:8000")
+# Usa la misma URL que el orquestador (por defecto: http://llm_docs-mcp:8000/tools/call)
+BASE_URL = (
+    os.getenv("LLM_DOCS_MCP_URL")
+    or os.getenv("LLM_DOCS_BASE_URL")  # compatibilidad antigua
+    or "http://llm_docs-mcp:8000/tools/call"
+)
+
+API_KEY = os.getenv("LLM_DOCS_API_KEY")
+USER = os.getenv("LLM_DOCS_MCP_USER")
+PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
+
 
 class LlmDocsClient:
-    def __init__(self, base_url: str = BASE_URL, timeout: float = 10.0):
+    def __init__(self, base_url: str = BASE_URL, timeout: float = 30.0):
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
 
-    def health(self) -> dict:
-        r = httpx.get(f"{self.base_url}/health", timeout=self.timeout)
+    def _headers(self) -> dict:
+        h = {}
+        if API_KEY:
+            h["X-API-KEY"] = API_KEY
+        return h
+
+    def _auth(self):
+        if USER and PASSWORD:
+            return (USER, PASSWORD)
+        return None
+
+    def tools_call(self, tool: str, params: dict, trace_id: Optional[str] = None) -> dict:
+        payload = {"tool": tool, "params": params}
+        if trace_id:
+            payload["trace_id"] = trace_id
+        r = httpx.post(
+            self.base_url,
+            json=payload,
+            headers=self._headers(),
+            auth=self._auth(),
+            timeout=self.timeout,
+        )
         r.raise_for_status()
         return r.json()
 
-    # Ajusta a tus endpoints reales:
-    def embed(self, texts: list[str]) -> dict:
-        r = httpx.post(f"{self.base_url}/embed", json={"texts": texts}, timeout=self.timeout)
-        r.raise_for_status()
-        return r.json()
+    # --- Alto nivel ---
+    def classify_intent(self, texto: str, trace_id: Optional[str] = None) -> str:
+        resp = self.tools_call("doc-classify_intent_llm", {"texto": texto}, trace_id)
+        return (resp.get("intent") or "").strip()
 
-    def generate(self, prompt: str, **kwargs) -> dict:
-        # El endpoint espera 'pregunta' en lugar de 'prompt'
-        payload = {"pregunta": prompt}
-        
-        # Añadir cualquier otro parámetro que venga en kwargs
-        payload.update(kwargs)
-        
-        r = httpx.post(f"{self.base_url}/generar_respuesta_llm", json=payload, timeout=self.timeout)
-        r.raise_for_status()
-        return r.json()
+    def doc_generar_respuesta_llm(self, pregunta: str, trace_id: Optional[str] = None, **kwargs) -> dict:
+        params = {"pregunta": pregunta} | kwargs
+        return self.tools_call("doc-generar_respuesta_llm", params, trace_id)
+
 
 client = LlmDocsClient()
+
