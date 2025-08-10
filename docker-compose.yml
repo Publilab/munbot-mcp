@@ -110,6 +110,8 @@ services:
       - REDIS_HOST=redis
       - DOCS_DIR=/app/documents
       - HUMAN_ESCALATION_LOG=/app/human_escalations.log
+      - PROMPTS_PATH=/app/mcp-core/prompts
+      - TOOL_SCHEMAS_PATH=/app/mcp-core/tool_schemas
       - LLM_DOCS_MCP_URL=http://llm_docs-mcp:8000/tools/call
       - LLM_DOCS_API_KEY=${LLM_DOCS_API_KEY:-}
       - LLM_DOCS_MCP_USER=${LLM_DOCS_MCP_USER:-}
