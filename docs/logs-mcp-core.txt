@@ -1,562 +1,126 @@
-docker logs mcp-core
+docker logs -f mcp-core
 → Esperando a Redis en redis:6379...
 → Esperando a Postgres en postgres:5432...
 → Esperando a Qdrant en qdrant:6333...
 → Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
 → Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
 → Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
-→ Esperando a Redis en redis:6379...
-→ Esperando a Postgres en postgres:5432...
-→ Esperando a Qdrant en qdrant:6333...
-→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-→ Todas las dependencias listas. Iniciando mcp‑core...
-Traceback (most recent call last):
-  File "/usr/local/bin/uvicorn", line 7, in <module>
-    sys.exit(main())
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1442, in __call__
-    return self.main(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1363, in main
-    rv = self.invoke(ctx)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 1226, in invoke
-    return ctx.invoke(self.callback, **ctx.params)
-  File "/usr/local/lib/python3.10/site-packages/click/core.py", line 794, in invoke
-    return callback(*args, **kwargs)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 413, in main
-    run(
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/main.py", line 580, in run
-    server.run()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 67, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/usr/local/lib/python3.10/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 71, in serve
-    await self._serve(sockets)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/server.py", line 78, in _serve
-    config.load()
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/config.py", line 436, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 22, in import_from_string
-    raise exc from None
-  File "/usr/local/lib/python3.10/site-packages/uvicorn/importer.py", line 19, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 883, in exec_module
-  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
-  File "/app/orchestrator.py", line 4, in <module>
-    from intent_classifier import classify_intent_and_entities
-  File "/app/intent_classifier.py", line 15, in <module>
-    llm_module = import_module("llm_docs-mcp.llama_client".replace("-", "_"))
-  File "/usr/local/lib/python3.10/importlib/__init__.py", line 126, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-ModuleNotFoundError: No module named 'llm_docs_mcp'
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+{"asctime": "2025-08-10 11:36:41,552", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+INFO:     127.0.0.1:58142 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36846 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49106 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49362 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39312 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36016 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57376 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34908 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36008 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37408 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49714 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55196 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49726 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54132 - "GET /health HTTP/1.1" 200 OK
+Error al clasificar la intención para sesión 7c33d3a6-e905-49fc-81c3-b288380adb45: 'LlmDocsClient' object has no attribute 'generate'
+{"asctime": "2025-08-10 11:43:16,568", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
+{"asctime": "2025-08-10 11:43:16,568", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
+INFO:     172.18.0.11:60392 - "POST /orchestrate HTTP/1.1" 200 OK
+Error al clasificar la intención para sesión 7c33d3a6-e905-49fc-81c3-b288380adb45: 'LlmDocsClient' object has no attribute 'generate'
+{"asctime": "2025-08-10 11:43:23,701", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
+{"asctime": "2025-08-10 11:43:23,701", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
+INFO:     172.18.0.11:60396 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35206 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51288 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48952 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53998 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41926 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42734 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45164 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52196 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40512 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51074 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50264 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48788 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47968 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33576 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50810 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46892 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51806 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41516 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60232 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35828 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36392 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42396 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47544 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36726 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56578 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57034 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52908 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59438 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58996 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47942 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60416 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37838 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36336 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41468 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59494 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52296 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54390 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40262 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38260 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53222 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59622 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50760 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46860 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45336 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54566 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53278 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38532 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42822 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36548 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45494 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49130 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54328 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47066 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48584 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54636 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58474 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34100 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33642 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37394 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54684 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38088 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49426 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55772 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57246 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45376 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44408 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59904 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41680 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47510 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60916 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47966 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53416 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39420 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37394 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57644 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55778 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41718 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38620 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37606 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34630 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38974 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58756 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35624 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35392 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34938 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51678 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60612 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32840 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54834 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48794 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55984 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48114 - "GET /health HTTP/1.1" 200 OK

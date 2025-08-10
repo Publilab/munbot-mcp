@@ -1,7 +1,4 @@
 .
-├── app.py
-├── compose
-│   └── .env
 ├── databases
 │   ├── .env
 │   ├── init-appointments.sql
@@ -5145,7 +5142,10 @@
 │   ├── .env.sample
 │   ├── Dockerfile
 │   ├── README.md
+│   ├── __init__.py
 │   ├── classification_utils.py
+│   ├── clients
+│   │   └── llm_docs.py
 │   ├── config
 │   │   └── router_config.json
 │   ├── context_manager.py
@@ -5339,4 +5339,4 @@
 │   └── test_tools_call_reservar.py
 └── utils
 
-1515 directories, 7965 files
+1525 directories, 8030 files
