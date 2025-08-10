@@ -20,7 +20,17 @@ QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
 COLLECTION_NAME = os.getenv("QDRANT_COLLECTION", "munbot_docs")
 DOCS_PATH = os.getenv("DOCS_DIR", "/app/documents")
-EMBEDDINGS_DIM = int(os.getenv("EMBEDDINGS_DIM", 384))
+
+
+def _get_dim() -> int:
+    raw = os.getenv("EMBEDDINGS_DIM")
+    try:
+        return int(raw) if raw and raw.strip().isdigit() else 384
+    except Exception:
+        return 384
+
+
+EMBEDDINGS_DIM = _get_dim()
 
 # Permite override mediante argumentos CLI
 parser = argparse.ArgumentParser(description="Indexa documentos RAG en Qdrant")

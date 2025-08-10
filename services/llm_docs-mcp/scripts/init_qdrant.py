@@ -5,7 +5,17 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models as qdrant
 
 COLLECTION = os.getenv("QDRANT_COLLECTION", "munbot_docs")
-VECTOR_SIZE = int(os.getenv("EMBEDDINGS_DIM", "384"))
+
+
+def _get_dim() -> int:
+    raw = os.getenv("EMBEDDINGS_DIM")
+    try:
+        return int(raw) if raw and raw.strip().isdigit() else 384
+    except Exception:
+        return 384
+
+
+VECTOR_SIZE = _get_dim()
 QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT", "6333"))
 
