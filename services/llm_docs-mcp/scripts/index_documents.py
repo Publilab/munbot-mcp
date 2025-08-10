@@ -22,15 +22,15 @@ COLLECTION_NAME = os.getenv("QDRANT_COLLECTION", "munbot_docs")
 DOCS_PATH = os.getenv("DOCS_DIR", "/app/documents")
 
 
-def _get_dim() -> int:
+def _get_embeddings_dim(default: int = 384) -> int:
     raw = os.getenv("EMBEDDINGS_DIM")
     try:
-        return int(raw) if raw and raw.strip().isdigit() else 384
+        return int(raw) if raw and raw.strip().isdigit() else default
     except Exception:
-        return 384
+        return default
 
 
-EMBEDDINGS_DIM = _get_dim()
+EMBEDDINGS_DIM = _get_embeddings_dim()
 
 # Permite override mediante argumentos CLI
 parser = argparse.ArgumentParser(description="Indexa documentos RAG en Qdrant")
