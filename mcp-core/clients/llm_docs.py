@@ -46,9 +46,12 @@ class LlmDocsClient:
         return r.json()
 
     # --- Alto nivel ---
-    def classify_intent(self, texto: str, trace_id: Optional[str] = None) -> str:
+    def classify_intent(self, texto: str, trace_id: Optional[str] = None) -> dict:
+        """Clasifica la intención y devuelve un dict con intent y entities."""
         resp = self.tools_call("doc-classify_intent_llm", {"texto": texto}, trace_id)
-        return (resp.get("intent") or "").strip()
+        intent = (resp.get("intent") or "").strip()
+        entities = resp.get("entities") or {}
+        return {"intent": intent, "entities": entities}
 
     def doc_generar_respuesta_llm(self, pregunta: str, trace_id: Optional[str] = None, **kwargs) -> dict:
         params = {"pregunta": pregunta} | kwargs
