@@ -26,7 +26,9 @@ redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=Tr
 
 # --- Rutas y Carga de Datos ---
 DOCUMENTS_PATH = os.path.join(os.path.dirname(__file__), 'documents')
-PROMPTS_PATH = os.path.join(os.path.dirname(__file__), '..", "mcp-core", "prompts')
+PROMPTS_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..', 'mcp-core', 'prompts')
+)
 KNOWLEDGE_BASE = []
 
 def load_knowledge_base():
