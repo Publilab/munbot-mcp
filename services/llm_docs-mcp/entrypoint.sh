@@ -13,7 +13,7 @@ if [ "${AUTO_INDEX:-0}" = "1" ]; then
   python /app/services/llm_docs-mcp/scripts/init_qdrant.py
   python /app/services/llm_docs-mcp/scripts/index_documents.py \
     --collection "${COLLECTION:-munbot_docs}" \
-    --src "${DOCS_DIR:-/app/services/llm_docs-mcp/documents}"
+    --docs-dir "${DOCS_DIR:-/app/services/llm_docs-mcp/documents}"
   echo "✅ Indexing complete."
 fi
 
