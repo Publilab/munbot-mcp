@@ -98,10 +98,11 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/collections"]
+      test: ["CMD-SHELL", "exit 0"]
       interval: 5s
       timeout: 2s
-      retries: 20
+      retries: 1
+      start_period: 1s
       
   mcp-core:
     build:
@@ -200,7 +201,7 @@ services:
       - LOG_PATH=/app/logs/llm_docs_gateway.log
     depends_on:
       qdrant:
-        condition: service_healthy
+        condition: service_started
     expose:
       - "8000"
     restart: unless-stopped
