@@ -11,10 +11,16 @@
             "hi"
         ],
         "answer": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. ¿En qué puedo ayudarte hoy?",
+        "answer_variants": [
+            "¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?",
+            "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy",
+            "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?"
+        ],
         "metadata": {
             "faq_id": "faq_saludo_01",
             "category": "saludo",
-            "tags": ["saludo", "faq", "session_start"]
+            "tags": ["saludo", "faq", "session_start"],
+            "priority": 1
         }
     },
     {
@@ -33,10 +39,16 @@
             "hola como te sientes hoy"
         ],
         "answer": "¡Todo bien! Gracias por preguntar. ¿En qué puedo ayudarte hoy?",
-        "metadata": {
+        "answer_variants": [
+            "Todo perfecto y listo para que me digas en que puedo ayudarte",
+            "Yo muy bien. Espero que tú también lo estes y ahora estoy listo para responder lo que me consultes",
+            "A pesar de ser un Chatbot podría decir que estoy bien, por lo que estoy dispuesto a ayudarte en lo que necesites"
+            ],
+            "metadata": {
             "faq_id": "faq_saludo_02",
             "category": "saludo",
-            "tags": ["saludo", "faq", "session_start"]
+            "tags": ["saludo", "pregunta_estado", "faq", "session_start"],
+            "priority": 2
         }
     },
     {

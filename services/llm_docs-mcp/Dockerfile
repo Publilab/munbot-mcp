@@ -5,7 +5,7 @@ ENV TZ=America/Santiago     TOKENIZERS_PARALLELISM=false     OMP_NUM_THREADS=4  
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime  && echo ${TZ} > /etc/timezone
 
 # build-essential es necesario para compilar algunas dependencias como llama-cpp-python
-RUN apt-get update &&     apt-get install -y --no-install-recommends         build-essential libopenblas0 netcat-traditional &&     rm -rf /var/lib/apt/lists/*
+RUN apt-get update &&     apt-get install -y --no-install-recommends         build-essential libopenblas0 curl &&     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
