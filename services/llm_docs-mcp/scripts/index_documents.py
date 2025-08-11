@@ -34,7 +34,8 @@ EMBEDDINGS_DIM = _get_embeddings_dim()
 
 # Permite override mediante argumentos CLI
 parser = argparse.ArgumentParser(description="Indexa documentos RAG en Qdrant")
-parser.add_argument("--docs-dir", default=DOCS_PATH)
+# Mantener compatibilidad con versiones previas que usaban --src
+parser.add_argument("--docs-dir", "--src", dest="docs_dir", default=DOCS_PATH)
 parser.add_argument("--collection", default=COLLECTION_NAME)
 args = parser.parse_args()
 DOCS_PATH = args.docs_dir
