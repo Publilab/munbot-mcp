@@ -9,118 +9,150 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-{"asctime": "2025-08-10 11:36:41,552", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
-INFO:     127.0.0.1:58142 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36846 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49106 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49362 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39312 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36016 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57376 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34908 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36008 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37408 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49714 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55196 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49726 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54132 - "GET /health HTTP/1.1" 200 OK
-Error al clasificar la intención para sesión 7c33d3a6-e905-49fc-81c3-b288380adb45: 'LlmDocsClient' object has no attribute 'generate'
-{"asctime": "2025-08-10 11:43:16,568", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
-{"asctime": "2025-08-10 11:43:16,568", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
-INFO:     172.18.0.11:60392 - "POST /orchestrate HTTP/1.1" 200 OK
-Error al clasificar la intención para sesión 7c33d3a6-e905-49fc-81c3-b288380adb45: 'LlmDocsClient' object has no attribute 'generate'
-{"asctime": "2025-08-10 11:43:23,701", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
-{"asctime": "2025-08-10 11:43:23,701", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "7c33d3a6-e905-49fc-81c3-b288380adb45"}
-INFO:     172.18.0.11:60396 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35206 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51288 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48952 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53998 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41926 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42734 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45164 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52196 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40512 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51074 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50264 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48788 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47968 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33576 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50810 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46892 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51806 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41516 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60232 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35828 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36392 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42396 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47544 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36726 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56578 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57034 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52908 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59438 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58996 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47942 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60416 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37838 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36336 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41468 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59494 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52296 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54390 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40262 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38260 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53222 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59622 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50760 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46860 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45336 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54566 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53278 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38532 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42822 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36548 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45494 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49130 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54328 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47066 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48584 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54636 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58474 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34100 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:33642 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37394 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54684 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38088 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49426 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55772 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57246 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45376 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:44408 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59904 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41680 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47510 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60916 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47966 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53416 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39420 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37394 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57644 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55778 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41718 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38620 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37606 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34630 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38974 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58756 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35624 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:35392 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34938 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51678 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60612 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:32840 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:54834 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48794 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55984 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48114 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-10 16:24:51,478", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+INFO:     127.0.0.1:37996 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49272 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53136 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49808 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60044 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41552 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38962 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59974 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45802 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51528 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52798 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47420 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41526 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41964 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52342 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54306 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60926 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50220 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35594 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47514 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59934 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34602 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52796 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53522 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36820 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34522 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48886 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44674 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38158 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49368 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42700 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39932 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48648 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54308 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52144 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59902 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41062 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58904 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53830 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55344 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36598 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36102 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59008 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60240 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39090 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33690 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47026 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49330 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56470 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58326 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48318 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58498 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46008 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47276 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42238 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48280 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37290 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33972 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40824 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43272 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42940 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45428 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58878 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46588 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60442 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60870 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32888 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46040 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50388 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45272 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37470 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39364 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47624 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58966 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50300 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40536 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56666 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48508 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39398 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58986 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48832 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58184 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33980 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46582 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42872 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53738 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41384 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48744 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41412 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38454 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44874 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57632 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37814 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34744 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55312 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59284 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42280 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55688 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42034 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34668 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53906 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54002 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59094 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36564 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41604 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43770 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51850 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58552 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59066 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55798 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40966 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33008 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41378 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-10 17:21:46,391", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:21:46,391", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:21:46,391", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:21:46,391", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+INFO:     172.18.0.11:46696 - "POST /orchestrate HTTP/1.1" 200 OK
+{"asctime": "2025-08-10 17:21:57,186", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 401 Unauthorized\"", "trace_id": null}
+{"asctime": "2025-08-10 17:21:57,187", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
+{"asctime": "2025-08-10 17:21:57,187", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
+{"asctime": "2025-08-10 17:21:57,188", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:21:57,188", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+INFO:     172.18.0.11:47874 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50692 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58220 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-10 17:22:52,042", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:22:52,042", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:22:52,042", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:22:52,042", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+INFO:     172.18.0.11:51332 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53176 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-10 17:23:06,316", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 401 Unauthorized\"", "trace_id": null}
+{"asctime": "2025-08-10 17:23:06,319", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
+{"asctime": "2025-08-10 17:23:06,319", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
+{"asctime": "2025-08-10 17:23:06,320", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:23:06,320", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+INFO:     172.18.0.11:33948 - "POST /orchestrate HTTP/1.1" 200 OK
+{"asctime": "2025-08-10 17:23:23,237", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 401 Unauthorized\"", "trace_id": null}
+{"asctime": "2025-08-10 17:23:23,238", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
+{"asctime": "2025-08-10 17:23:23,238", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
+{"asctime": "2025-08-10 17:23:23,238", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+{"asctime": "2025-08-10 17:23:23,238", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "f6bf84dc-39a8-4f38-8a34-9d68644ff79c"}
+INFO:     172.18.0.11:56990 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42134 - "GET /health HTTP/1.1" 200 OK

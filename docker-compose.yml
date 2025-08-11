@@ -97,6 +97,11 @@ services:
       - munbot-net
     volumes:
       - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/collections"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
       
   mcp-core:
     build:
@@ -174,11 +179,12 @@ services:
     env_file:
       - ./services/llm_docs-mcp/.env
     environment:
+      - AUTO_INDEX=1
+      - COLLECTION=munbot_docs
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
-      - QDRANT_COLLECTION=munbot_docs
-      - EMBEDDINGS_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
       - EMBEDDINGS_DIM=384
+      - EMBEDDINGS_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
       - DOCS_DIR=/app/documents
       - REDIS_HOST=redis
       - QDRANT_SIMILARITY_THRESHOLD=0.5
@@ -193,15 +199,15 @@ services:
       - LOG_DIR=/app/logs
       - LOG_PATH=/app/logs/llm_docs_gateway.log
     depends_on:
-      - qdrant
+      qdrant:
+        condition: service_healthy
     expose:
       - "8000"
     restart: unless-stopped
     networks:
       - munbot-net
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request,sys; 
-            sys.exit(urllib.request.urlopen('http://localhost:8000/health').getcode()!=200)"]
+      test: ["CMD", "python", "-c", "import urllib.request,sys;             sys.exit(urllib.request.urlopen('http://localhost:8000/health').getcode()!=200)"]
       interval: 30s
       timeout: 5s
       retries: 3

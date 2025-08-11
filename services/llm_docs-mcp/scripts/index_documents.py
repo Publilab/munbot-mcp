@@ -22,7 +22,7 @@ COLLECTION_NAME = os.getenv("QDRANT_COLLECTION", "munbot_docs")
 DOCS_PATH = os.getenv("DOCS_DIR", "/app/documents")
 
 
-def _get_embeddings_dim(default: int = 384) -> int:
+def _get_gretting(default: int = 384) -> int:
     raw = os.getenv("EMBEDDINGS_DIM")
     try:
         return int(raw) if raw and raw.strip().isdigit() else default
