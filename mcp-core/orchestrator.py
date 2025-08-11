@@ -1,6 +1,7 @@
 import os
 import sys
 import glob
+import random
 from .intent_classifier import classify_intent_and_entities
 import json
 import requests
@@ -234,7 +235,7 @@ def tokenize(text: str) -> list[str]:
 
 # Respuestas base para saludos y despedidas
 GREETING_RESPONSE = (
-    "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Curoscant. "
+    "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. "
     "¿En qué puedo ayudarte hoy?"
 )
 
@@ -242,6 +243,34 @@ FAREWELL_RESPONSE = (
     "¡Hasta luego! Tu sesión ha terminado. Si necesitas algo más, "
     "inicia una nueva conversación."
 )
+
+# --- Variación de respuestas FAQ ---
+_RND = random.Random(os.getenv("ANSWER_SEED", "munbot"))
+
+
+def pick_answer_from_payload(payload: dict) -> str:
+    """Selecciona una variante de respuesta si está disponible."""
+    variants = payload.get("answer_variants")
+    if isinstance(variants, list) and variants:
+        return _RND.choice(variants)
+    return (
+        payload.get("respuesta")
+        or payload.get("answer")
+        or payload.get("mensaje")
+        or ""
+    )
+
+
+def _sort_candidates(cands: list[dict]) -> list[dict]:
+    """Ordena candidatos por prioridad y otros metadatos."""
+    def key(c):
+        meta = c.get("metadata") or {}
+        prio = meta.get("priority", 0)
+        matched_len = max((len(s) for s in c.get("_matched_patterns", [])), default=0)
+        score = c.get("_score", 0.0)
+        return (prio, matched_len, score)
+
+    return sorted(cands, key=key, reverse=True)
 
 
 
@@ -1397,9 +1426,27 @@ def handle_document_query(session_id: str, user_input: str, entities: Dict[str, 
     error_response = handle_service_error(response, "doc-generar_respuesta_llm", trace_id=session_id)
     if error_response:
         return {"respuesta": error_response["texto"], "session_id": session_id}
+    # 1) Si llm_docs devuelve un ítem enriquecido (opcional futuro)
+    item = response.get("item") or {}
+    if item:
+        texto = pick_answer_from_payload(item)
+        meta = item.get("metadata") or {}
+        tags = set((meta.get("tags") or []))
+        if "session_end" in tags:
+            context_manager.clear_context(session_id)
+            delete_session(session_id)
+        return {
+            "respuesta": texto or response.get("respuesta", "No se encontró una respuesta."),
+            "session_id": session_id,
+        }
 
-    # Formatear y devolver la respuesta exitosa
-    return {"respuesta": response.get("respuesta", "No se encontró una respuesta."), "session_id": session_id}
+    cands = response.get("candidates")
+    if isinstance(cands, list) and cands:
+        top = _sort_candidates(cands)[0]
+        return {"respuesta": pick_answer_from_payload(top), "session_id": session_id}
+
+    texto = pick_answer_from_payload(response)
+    return {"respuesta": texto or "No se encontró una respuesta.", "session_id": session_id}
 
 def handle_fallback(session_id: str, user_input: str) -> Dict[str, Any]:
     """Maneja los casos en que la intención no es clara."""
