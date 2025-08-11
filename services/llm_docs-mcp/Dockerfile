@@ -39,5 +39,7 @@ ENV TOOLS_PATH=/app/tool_schemas
 # Asegurar permisos
 RUN chmod +x /app/services/llm_docs-mcp/entrypoint.sh
 
+WORKDIR /app/services/llm_docs-mcp
+
 EXPOSE 8000
 ENTRYPOINT ["/app/services/llm_docs-mcp/entrypoint.sh"]
