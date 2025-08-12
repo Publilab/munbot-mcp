@@ -72,7 +72,7 @@ def rerank_results(query: str, results: list[dict]) -> list[dict]:
     """Reordena los resultados de la búsqueda usando un CrossEncoder."""
     if not results:
         return []
-    pairs = [(query, r['parrafo']) for r in results]
+    pairs = [(query, r['texto']) for r in results]
     scores = rerank_model.predict(pairs)
     for r, score in zip(results, scores):
         r['rerank_score'] = score
@@ -118,7 +118,7 @@ def obtener_fragmentos(
     resultados_formatados = []
     if initial_results:
         for res in initial_results:
-            if hasattr(res, 'payload') and 'parrafo' in res.payload:
+            if hasattr(res, 'payload') and 'texto' in res.payload:
                 # Aseguramos que el score siempre esté presente
                 payload = res.payload.copy()
                 payload['score'] = res.score if hasattr(res, 'score') else 0.0
@@ -166,13 +166,13 @@ def generar_respuesta(
         fragmentos.extend(fragmentos_paso)
 
     # Eliminar duplicados y mantener el orden
-    fragmentos_unicos = list({f['parrafo']: f for f in fragmentos}.values())
+    fragmentos_unicos = list({f['texto']: f for f in fragmentos}.values())
 
     if not fragmentos_unicos:
         return {"respuesta": "No encontré información relevante para tu consulta.", "fuentes": [], "error": None}
 
     # 3. Generación de Respuesta
-    contexto = "\n".join(f["parrafo"] for f in fragmentos_unicos)
+    contexto = "\n".join(f["texto"] for f in fragmentos_unicos)
     prompt_template = load_prompt("doc-generar_respuesta_llm.txt")
     prompt = prompt_template.replace("{{contexto}}", contexto).replace("{{pregunta}}", pregunta)
     
