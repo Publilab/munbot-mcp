@@ -11,7 +11,7 @@ class LlamaClient:
         self.model_path = (
             model_path
             or os.getenv("MODEL_PATH")
-            or os.getenv("LLAMA_MODEL_PATH", "/app/models/phi-2.Q4_K_M.gguf")
+            or os.getenv("LLAMA_MODEL_PATH", "/app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf")
         )
         self.n_ctx = int(os.getenv("N_CTX", n_ctx))
         self.n_threads = int(os.getenv("N_THREADS", n_threads))

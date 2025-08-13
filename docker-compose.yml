@@ -188,9 +188,9 @@ services:
       - EMBEDDINGS_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
       - DOCS_DIR=/app/documents
       - REDIS_HOST=redis
-      - QDRANT_SIMILARITY_THRESHOLD=0.5
-      - LLM_MAX_NEW_TOKENS=150
-      - MODEL_PATH=/app/models/phi-2.Q4_K_M.gguf # o nombre HF para transformers
+      - QDRANT_SIMILARITY_THRESHOLD=0.3
+      - LLM_MAX_NEW_TOKENS=200
+      - MODEL_PATH=/app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf # o nombre HF para transformers
       - N_THREADS=4
       - N_CTX=2048
       - ALLOWED_IPS=127.0.0.1,172.18.0.0/16

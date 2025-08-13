@@ -1,483 +1,370 @@
- [
-     {
-        "content": [
-            "Regula la entrega de ayudas sociales y económicas a vecinos y, causales de negación y las bases legales para su ejecución."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-001",
-            "source_doc": "ayudas_sociales",
-            "title": "manual de procedimientos para ayudas sociales",
-            "tema": "Ayudas Sociales",
-            "detalle": "general",
-            "keywords": [
-                 "ayudas economicas vulnerables",
-                 "bases legales ayuda social",                 
-                 "quienes son los beneficiarios de las ayudas",
-                 "regulacion ayudas sociales"
-                ]
-            },
-        "tags": [ "generalidades", "ayudas_sociales"]
-    },     
-    {
-        "content": [
-            "Se entenderá como Ayuda Social aquella que consiste en la asistencia directa y específica dirigida a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarle los medios indispensables para su bienestar."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-002",
-            "source_doc": "ayudas_sociales",
-            "title": "definicion de ayuda social",
-            "tema": "Ayudas Sociales",
-            "detalle": "definicion",
-            "keywords": [
-                 "definicion de ayuda social",
-                 "que alcance tiene la asistencia a grupos familiares",
-                 "que alcance tiene la asistencia directa",
-                 "como se define ayuda social en la norma",
-                 "como se identifica una necesidad puntual",
-                 "para que sirve la ayuda social"
-                ]
-            },
-        "tags": ["generalidades", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "El Gobierno de Curoscant podrá otorgar beneficios por concepto de Ayuda Social, tanto en dinero como en bienes y servicios. Las ayudas sociales son de carácter excepcional, transitorio y complementario, y se otorgarán a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarles los medios indispensables para su bienestar. Las ayudas sociales no constituyen un derecho adquirido ni una obligación del Gobierno de Curoscant, sino que son una medida de apoyo a las personas y familias en situación de vulnerabilidad."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-003",
-            "source_doc": "ayudas_sociales",
-            "title": "caracteristicas de la ayuda social",
-            "tema": "Ayudas Sociales",
-            "detalle": "caracteristicas",
-            "keywords": [
-                 "como asegura la ayuda social los medios indispensables",
-                 "como beneficia la ayuda social a personas vulnerables",
-                 "como define la norma la medida de apoyo social",
-                 "que requisitos se exigen para otorgar ayuda social",
-                 "que tipos ayudas sociales",
-                 "tipos ayudas sociales"
-                ]
-            },
-        "tags": ["generalidades", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Son beneficiarios todos los habitantes y familias de Curoscant en alguno de estos estados individuales: a) Indigencia (carencia absoluta de medios para subsistir), b) Pertenencia al 40 % de menores ingresos o vulnerabilidad según Registro Imperial de Ciudadanos (RIC), c) Estado de necesidad manifiesta acreditado por Asistente Social, d) Personas o familias afectadas por siniestros o catástrofes naturales. Tendrán prioridad adultos mayores, mujeres jefas de hogar, madres solteras, adolescentes embarazadas, niños/as, jóvenes, personas con discapacidad y pueblos originarios."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-004",
-            "source_doc": "ayudas_sociales",
-            "title": "quienes pueden recibir ayudas sociales",
-            "tema": "Ayudas Sociales",
-            "detalle": "beneficiarios",
-            "keywords": [
-                 "acreditacion estado apto para recibir la ayuda social",
-                 "ayuda personas vulnerables",
-                 "beneficiarios ayudas sociales",
-                 "registro imperial de ciudadanos",
-                 "requisitos indigencia para ayuda social",
-                 "vulnerabilidad segun ric"
-                ]
-            },
-        "tags": ["usuarios_beneficiarios", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Independiente de lo señalado en el artículo precedente, la asignación de recursos de este Municipio privilegiará a los grupos definidos como prioritarios, vale decir personas Adultos Mayores, Mujeres Jefas de Hogar, madres solteras, adolescentes embarazadas, Niños/as y Jóvenes, personas en situación de Discapacidad y Pueblos Originarios que se encuentren en los estados señalados en el artículo seis."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-005",
-            "source_doc": "ayudas_sociales",
-            "title": "prioridad de las ayudas sociales",
-            "tema": "Ayudas Sociales",
-            "detalle": "grupos_prioritarios",
-            "keywords": [
-                 "asignacion de recursos grupos prioritarios",
-                 "beneficios grupos priorizados",
-                 "clasificacion ayudas sociales",
-                 "prioridad adultos mayores",
-                 "prioridad mujeres jefas de hogar",
-                 "tipos de ayudas sociales"
-                ]
-            },
-        "tags": ["usuarios_beneficiarios", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Las ayudas sociales se clasifican en: 1) Alimentos: Bolsa de alimentos. 2) Servicios funerarios: aporte para cementerio o servicios funerarios. 3) Prestación de salud: atención médica, exámenes, medicamentos, lentes ópticos, ayudas técnicas. 4) Prestación de pasajes: traslados por motivos médicos, legales o sociales. 5) Prestación de vivienda: materiales de construcción. 6) Otros: pañales, vestuario, suplemento alimenticio, útiles escolares, pago de servicios, agua en camión aljibe, entrega de estanque."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-006",
-            "source_doc": "ayudas_sociales",
-            "title": "clasificacion de ayudas sociales",
-            "tema": "Ayudas Sociales",
-            "detalle": "tipos_de_ayuda",
-            "keywords": [
-                 "ayuda alimentos funerarios salud",
-                 "ayuda utiles escolares",
-                 "beneficios adicionales sociales",
-                 "materiales de construccion ayuda social",
-                 "prestacion pasajes vivienda",
-                 "tipos de ayudas sociales"
-                ]
-            },
-        "tags": ["beneficios_otorgados", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Ayuda Social – Bolsa de alimentos: Entrega de alimentos a familias indigentes, en estado de necesidad manifiesta o en el 40 % de menores ingresos según el RIC. Si no cumplen el 40 %, pueden acreditar necesidad ante la Asistente Social. Procedimiento: 1) Solicitud de alimentos ingresada por oficina de partes o ante Asistente Social; 2) Cartola del Registro Social de Hogares (RSH); 3) Certificado Social que acredite situación; 4) Firma de recepción (recibo de especies). La ayuda se entrega directamente al solicitante."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-007",
-            "source_doc": "ayudas_sociales",
-            "title": "bolsa de alimentos",
-            "tema": "Ayudas Sociales",
-            "detalle": "bolsa_alimentos",
-            "keywords": [
-                 "a quien beneficia la bolsa de alimentos",
-                 "ayuda alimentaria indigentes",
-                 "asistente social alimentos",
-                 "entrega directa alimentos",
-                 "procedimiento caja de mercaderia",
-                 "requisitos bolsa alimentos"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Ayuda Social – Aporte funerario y cementerio: aporte económico para gastos de cementerio o servicios funerarios cuando no existe beneficio de cuota mortuoria. El Municipio dispone de nichos en préstamo por hasta seis meses. Procedimiento: 1) Solicitud ingresada por oficina de partes o ante Asistente Social; 2) Informe Social (verificación de cuota mortuoria); 3) Certificado de defunción; 4) Entrega directa al familiar responsable; 5) Rendición de comprobante de pago."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-008",
-            "source_doc": "ayudas_sociales",
-            "title": "aporte funerario y cementerio",
-            "tema": "Ayudas Sociales",
-            "detalle": "aporte_funerario",
-            "keywords": [
-                 "aporte funerario curoscant",
-                 "ayuda cementerio",
-                 "certificado de defuncion ayuda",
-                 "que es la cuota mortuoria",
-                 "requisitos aporte funerario",
-                 "solicitud aporte funerario"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "El monto de ayudas de alimentos y funerarias será definido por evaluación social del Departamento de Bienestar Social. El profesional responsable determinará el monto según los criterios establecidos en los artículos 9 y 10."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-009",
-            "source_doc": "ayudas_sociales",
-            "title": "monto de ayudas",
-            "tema": "Ayudas Sociales",
-            "detalle": "montos",
-            "keywords": [
-                 "bienestar social evaluacion",
-                 "definicion monto alimentos",
-                 "evaluacion social curoscant",
-                 "monto ayuda funeraria",
-                 "que criterios usa la evaluacion social",
-                 "que determina el monto asignado"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Se otorgan ayudas para atenciones médicas, exámenes, operaciones, medicamentos, audífonos, lentes ópticos y otras ayudas técnicas a quienes no puedan resolver su situación en la red de salud pública. El procedimiento: a) Solicitud por oficina de partes o ante el Departamento Social; b) Certificado médico con diagnóstico; c) Presupuesto/cotización de la institución de salud; d) Informe Social que acredite que la red pública no cubre la prestación; e) Receta, si corresponde; f) Visita y tramitación por la Asistente Social."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-010",
-            "source_doc": "ayudas_sociales",
-            "title": "ayudas de salud y ayudas tecnicas",
-            "tema": "Ayudas Sociales",
-            "detalle": "ayudas_salud_tecnicas",
-            "keywords": [
-                 "ayudas salud curoscant",
-                 "atenciones medicas ayudas",
-                 "medicamentos ayudas sociales",
-                 "que audifonos financia la ayuda",
-                 "que lentes opticos cubre la ayuda",
-                 "como ingresar solicitud atencion salud"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Aporte para pago de pasajes a usuarios que deban viajar fuera del sector planetario para controles médicos, tribunales, centros de rehabilitación u otros. Requisitos: derivación médica u orden de exámenes, comprobante de citación y documentos que acrediten citación a tribunales o centros de rehabilitación, según corresponda."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-011",
-            "source_doc": "ayudas_sociales",
-            "title": "aporte en pasajes (requisitos generales)",
-            "tema": "Ayudas Sociales",
-            "detalle": "aporte_pasajes",
-            "keywords": [
-                 "aporte pasajes curoscant",
-                 "ayuda pasajes medicos",
-                 "requisitos aporte pasajes",
-                 "que cubre prestacion pasajes",
-                 "quien puede recibir aporte pasajes",
-                 "destinos fuera del sector planetario"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Se entregará pasaje al beneficiario que requiere la hora y, en casos justificados, al acompañante según grado de dependencia y situación socioeconómica, siempre que el servicio de salud no aporte. Se prioriza a la persona afectada y luego al acompañante."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-012",
-            "source_doc": "ayudas_sociales",
-            "title": "prioridad y alcance del aporte en pasajes",
-            "tema": "Ayudas Sociales",
-            "detalle": "prioridad_pasajes",
-            "keywords": [
-                 "quien recibe el pasaje",
-                 "pasaje acompañante justificado",
-                 "grado de dependencia pasajes",
-                 "asistente social pasajes",
-                 "beneficiario que requiere la hora",
-                 "que significa servicio de salud no aporta"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Entrega de materiales de construcción para mejoramiento de vivienda, solo en caso de deterioro visible o hacinamiento."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-013",
-            "source_doc": "ayudas_sociales",
-            "title": "aporte en materiales de construccion",
-            "tema": "Ayudas Sociales",
-            "detalle": "materiales_construccion",
-            "keywords": [
-                 "aporte materiales construccion",
-                 "mejoramiento vivienda curoscant",
-                 "requisitos aporte vivienda",
-                 "ayuda construccion social",
-                 "asistente social vivienda",
-                 "materiales construccion gobierno"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [ 
-            "Máximo 2 paquetes mensuales. Para adultos mayores postrados (según lista MINSAL y evaluación profesional) y para niños menores de 2 años solo durante hospitalización, con documento que acredite el estado."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-014",
-            "source_doc": "ayudas_sociales",
-            "title": "ayuda en pañales",
-            "tema": "Ayudas Sociales",
-            "detalle": "pañales",
-            "keywords": [
-                 "ayuda pañales curoscant",
-                 "pañales adultos mayores",
-                 "pañales niños hospitalizados",
-                 "hospitalizacion niños menores 2 años",
-                 "documento hospitalizacion pañales",
-                 "lista ministerio de salud postrados"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Aporte para vestuario básico a niños menores de 12 años de familias vulnerables y a adultos mayores. Monto máximo: 2 U.T.M."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-015",
-            "source_doc": "ayudas_sociales",
-            "title": "ayuda en vestuario",
-            "tema": "Ayudas Sociales",
-            "detalle": "vestuario",
-            "keywords": [
-                 "ayuda vestuario curoscant",
-                 "vestuario infantil social",
-                 "vestuario adulto mayor",
-                 "que cubre vestuario basico",
-                 "niños menores de 12 años",
-                 "valor utm vestuario"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Entrega de suplemento alimenticio a personas que no puedan resolver su situación a través de la red de salud pública. Procedimiento: solicitud, certificado/diagnóstico médico, receta, informe social y cotización del suplemento."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-016",
-            "source_doc": "ayudas_sociales",
-            "title": "suplemento alimenticio",
-            "tema": "Ayudas Sociales",
-            "detalle": "suplemento_alimenticio",
-            "keywords": [
-                 "suplemento alimenticio curoscant",
-                 "ayuda suplemento salud",
-                 "requisitos suplemento alimenticio",
-                 "cotizacion suplemento alimenticio",
-                 "informe social suplemento",
-                 "red publica no cubre suplemento"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [ 
-            "Entrega de agua a personas vulnerables con residencia mínima de 18 meses y vulnerabilidad según RIC. Se requiere estanque propio en buen estado."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-017",
-            "source_doc": "ayudas_sociales",
-            "title": "entrega de agua en camion aljibe",
-            "tema": "Ayudas Sociales",
-            "detalle": "agua_camion_aljibe",
-            "keywords": [
-                 "entrega agua camion aljibe",
-                 "ayuda agua curoscant",
-                 "residencia minima 18 meses",
-                 "solicitud agua aljibe",
-                 "beneficiarios entrega agua",
-                 "documentos residencia agua"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Entrega de estanque a personas sin otro estanque, con residencia mínima de 2 años y vulnerabilidad según RIC. Evaluación y coordinación a cargo del Departamento de Bienestar Social."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-018",
-            "source_doc": "ayudas_sociales",
-            "title": "entrega de estanque de agua",
-            "tema": "Ayudas Sociales",
-            "detalle": "entrega_estanque",
-            "keywords": [
-                 "entrega estanque agua",
-                 "ayuda estanque curoscant",
-                 "residencia minima 2 años",
-                 "departamento bienestar social estanque",
-                 "requisitos entrega estanque",
-                 "evaluacion social estanque"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [ 
-            "Todas las ayudas se solicitan por oficina de partes o Departamento Bienestar Social. Se verifica la situación mediante entrevista y visita domiciliaria, se emite informe social y se solicita aprobación al Jefe de Gobierno. Tras la autorización y validación presupuestaria, el solicitante retira el beneficio en Tesorería con su cédula. Cada ayuda debe rendirse antes de solicitar otra. Plazo promedio: 7 días hábiles."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-019",
-            "source_doc": "ayudas_sociales",
-            "title": "procedimiento general de solicitud y entrega",
-            "tema": "Ayudas Sociales",
-            "detalle": "procedimiento_general",
-            "keywords": [
-                 "procedimiento solicitud ayuda",
-                 "entrega ayudas sociales",
-                 "informe social curoscant",
-                 "visita domiciliaria ayuda",
-                 "validacion presupuestaria",
-                 "oficina de partes solicitud ayuda"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Se negará el beneficio si: a) No pertenecer a la comuna o no tener RIC y/o menos de un año de residencia; b) Vender, regalar o no utilizar la ayuda; c) Falsear u omitir información; d) No participar activamente en la solución del problema; e) Otras incompatibilidades legales."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-020",
-            "source_doc": "ayudas_sociales",
-            "title": "causales de negacion del beneficio",
-            "tema": "Ayudas Sociales",
-            "detalle": "causales_negacion",
-            "keywords": [
-                 "causales negacion ayuda",
-                 "rechazo solicitud social",
-                 "falsificacion informacion ayuda",
-                 "menos de un año de residencia",
-                 "participacion activa solucion problema",
-                 "motivos negacion beneficio"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [ 
-            "Toda ayuda entregada debe rendirse con comprobantes, facturas, boletas o documentación respaldatoria. El incumplimiento impide nuevas solicitudes hasta regularizar la situación. El Departamento de Bienestar Social lleva registro y control de todas las ayudas sociales otorgadas."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-021",
-            "source_doc": "ayudas_sociales",
-            "title": "rendicion y control de ayudas",
-            "tema": "Ayudas Sociales",
-            "detalle": "rendicion_y_control",
-            "keywords": [
-                 "rendicion ayudas sociales",
-                 "control ayudas curoscant",
-                 "documentacion respaldatoria ayuda",
-                 "regularizar situacion de rendicion",
-                 "plazos para rendir la ayuda",
-                 "comprobantes aceptados rendicion"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [ 
-            "El Jefe de Gobierno y el Departamento de Bienestar Social están facultados para supervisar y fiscalizar el cumplimiento de los procedimientos y requisitos en la entrega de ayudas sociales. Cualquier irregularidad detectada será informada y sancionada según la normativa vigente."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-022",
-            "source_doc": "ayudas_sociales",
-            "title": "supervision y fiscalizacion",
-            "tema": "Ayudas Sociales",
-            "detalle": "fiscalizacion",
-            "keywords": [
-                 "supervision ayudas sociales",
-                 "fiscalizacion curoscant",
-                 "cumplimiento procedimientos ayuda",
-                 "rol departamento bienestar social",
-                 "informar irregularidad ayuda social",
-                 "sancionar irregularidades ayudas"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
-    },
-    {
-        "content": [
-            "Las solicitudes deben ser fundadas y los antecedentes presentados serán revisados por el equipo profesional del Gobierno de Curoscant. La falsificación de antecedentes o entrega de información incompleta puede ser causal de negación o anulación del beneficio."
-            ],
-        "metadata": {
-            "chunk_id": "ASOC-023",
-            "source_doc": "ayudas_sociales",
-            "title": "observaciones generales",
-            "tema": "Ayudas Sociales",
-            "detalle": "observaciones",
-            "keywords": [
-                 "observaciones ayudas sociales",
-                 "antecedentes solicitud ayuda",
-                 "falsificacion antecedentes ayuda",
-                 "consecuencias de falsificar informacion",
-                 "equipo profesional revisa solicitudes",
-                 "criterios revision antecedentes"
-                ]
-            },
-        "tags": ["descripcion_y_procedimiento", "ayudas_sociales"]
+[
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Regula la entrega de ayudas sociales y económicas a vecinos y, causales de negación y las bases legales para su ejecución.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-001",
+    "tags": ["documento", "generalidades", "ayudas_sociales"],
+    "alias": ["ayudas economicas vulnerables", "bases legales ayuda social", "quienes son los beneficiarios de las ayudas", "regulacion ayudas sociales"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "general",
+      "id": "ASOC-001",
+      "id_chunk": "ASOC-001",
+      "title": "manual de procedimientos para ayudas sociales",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
     }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Se entenderá como Ayuda Social aquella que consiste en la asistencia directa y específica dirigida a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarle los medios indispensables para su bienestar.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-002",
+    "tags": ["documento", "generalidades", "ayudas_sociales"],
+    "alias": ["definicion de ayuda social", "que alcance tiene la asistencia a grupos familiares", "que alcance tiene la asistencia directa", "como se define ayuda social en la norma", "como se identifica una necesidad puntual", "para que sirve la ayuda social"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "definicion",
+      "id": "ASOC-002",
+      "id_chunk": "ASOC-002",
+      "title": "definicion de ayuda social",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "El Gobierno de Curoscant podrá otorgar beneficios por concepto de Ayuda Social, tanto en dinero como en bienes y servicios. Las ayudas sociales son de carácter excepcional, transitorio y complementario, y se otorgarán a personas y/o grupos familiares que presenten problemas o carencias puntuales, cuya finalidad es asegurarles los medios indispensables para su bienestar. Las ayudas sociales no constituyen un derecho adquirido ni una obligación del Gobierno de Curoscant, sino que son una medida de apoyo a las personas y familias en situación de vulnerabilidad.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-003",
+    "tags": ["documento", "generalidades", "ayudas_sociales"],
+    "alias": ["como asegura la ayuda social los medios indispensables", "como beneficia la ayuda social a personas vulnerables", "como define la norma la medida de apoyo social", "que requisitos se exigen para otorgar ayuda social", "que tipos ayudas sociales", "tipos ayudas sociales"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "caracteristicas",
+      "id": "ASOC-003",
+      "id_chunk": "ASOC-003",
+      "title": "caracteristicas de la ayuda social",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Son beneficiarios todos los habitantes y familias de Curoscant en alguno de estos estados individuales: a) Indigencia (carencia absoluta de medios para subsistir), b) Pertenencia al 40 % de menores ingresos o vulnerabilidad según Registro Imperial de Ciudadanos (RIC), c) Estado de necesidad manifiesta acreditado por Asistente Social, d) Personas o familias afectadas por siniestros o catástrofes naturales. Tendrán prioridad adultos mayores, mujeres jefas de hogar, madres solteras, adolescentes embarazadas, niños/as, jóvenes, personas con discapacidad y pueblos originarios.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-004",
+    "tags": ["documento", "usuarios_beneficiarios", "ayudas_sociales"],
+    "alias": ["acreditacion estado apto para recibir la ayuda social", "ayuda personas vulnerables", "beneficiarios ayudas sociales", "registro imperial de ciudadanos", "requisitos indigencia para ayuda social", "vulnerabilidad segun ric"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "beneficiarios",
+      "id": "ASOC-004",
+      "id_chunk": "ASOC-004",
+      "title": "quienes pueden recibir ayudas sociales",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Independiente de lo señalado en el artículo precedente, la asignación de recursos de este Municipio privilegiará a los grupos definidos como prioritarios, vale decir personas Adultos Mayores, Mujeres Jefas de Hogar, madres solteras, adolescentes embarazadas, Niños/as y Jóvenes, personas en situación de Discapacidad y Pueblos Originarios que se encuentren en los estados señalados en el artículo seis.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-005",
+    "tags": ["documento", "usuarios_beneficiarios", "ayudas_sociales"],
+    "alias": ["asignacion de recursos grupos prioritarios", "beneficios grupos priorizados", "clasificacion ayudas sociales", "prioridad adultos mayores", "prioridad mujeres jefas de hogar", "tipos de ayudas sociales"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "grupos_prioritarios",
+      "id": "ASOC-005",
+      "id_chunk": "ASOC-005",
+      "title": "prioridad de las ayudas sociales",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Las ayudas sociales se clasifican en: 1) Alimentos: Bolsa de alimentos. 2) Servicios funerarios: aporte para cementerio o servicios funerarios. 3) Prestación de salud: atención médica, exámenes, medicamentos, lentes ópticos, ayudas técnicas. 4) Prestación de pasajes: traslados por motivos médicos, legales o sociales. 5) Prestación de vivienda: materiales de construcción. 6) Otros: pañales, vestuario, suplemento alimenticio, útiles escolares, pago de servicios, agua en camión aljibe, entrega de estanque.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-006",
+    "tags": ["documento", "beneficios_otorgados", "ayudas_sociales"],
+    "alias": ["ayuda alimentos funerarios salud", "ayuda utiles escolares", "beneficios adicionales sociales", "materiales de construccion ayuda social", "prestacion pasajes vivienda", "tipos de ayudas sociales"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "tipos_de_ayuda",
+      "id": "ASOC-006",
+      "id_chunk": "ASOC-006",
+      "title": "clasificacion de ayudas sociales",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Ayuda Social – Bolsa de alimentos: Entrega de alimentos a familias indigentes, en estado de necesidad manifiesta o en el 40 % de menores ingresos según el RIC. Si no cumplen el 40 %, pueden acreditar necesidad ante la Asistente Social. Procedimiento: 1) Solicitud de alimentos ingresada por oficina de partes o ante Asistente Social; 2) Cartola del Registro Social de Hogares (RSH); 3) Certificado Social que acredite situación; 4) Firma de recepción (recibo de especies). La ayuda se entrega directamente al solicitante.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-007",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["a quien beneficia la bolsa de alimentos", "ayuda alimentaria indigentes", "asistente social alimentos", "entrega directa alimentos", "procedimiento caja de mercaderia", "requisitos bolsa alimentos"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "bolsa_alimentos",
+      "id": "ASOC-007",
+      "id_chunk": "ASOC-007",
+      "title": "bolsa de alimentos",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Ayuda Social – Aporte funerario y cementerio: aporte económico para gastos de cementerio o servicios funerarios cuando no existe beneficio de cuota mortuoria. El Municipio dispone de nichos en préstamo por hasta seis meses. Procedimiento: 1) Solicitud ingresada por oficina de partes o ante Asistente Social; 2) Informe Social (verificación de cuota mortuoria); 3) Certificado de defunción; 4) Entrega directa al familiar responsable; 5) Rendición de comprobante de pago.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-008",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["aporte funerario curoscant", "ayuda cementerio", "certificado de defuncion ayuda", "que es la cuota mortuoria", "requisitos aporte funerario", "solicitud aporte funerario"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "aporte_funerario",
+      "id": "ASOC-008",
+      "id_chunk": "ASOC-008",
+      "title": "aporte funerario y cementerio",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "El monto de ayudas de alimentos y funerarias será definido por evaluación social del Departamento de Bienestar Social. El profesional responsable determinará el monto según los criterios establecidos en los artículos 9 y 10.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-009",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["bienestar social evaluacion", "definicion monto alimentos", "evaluacion social curoscant", "monto ayuda funeraria", "que criterios usa la evaluacion social", "que determina el monto asignado"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "montos",
+      "id": "ASOC-009",
+      "id_chunk": "ASOC-009",
+      "title": "monto de ayudas",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Se otorgan ayudas para atenciones médicas, exámenes, operaciones, medicamentos, audífonos, lentes ópticos y otras ayudas técnicas a quienes no puedan resolver su situación en la red de salud pública. El procedimiento: a) Solicitud por oficina de partes o ante el Departamento Social; b) Certificado médico con diagnóstico; c) Presupuesto/cotización de la institución de salud; d) Informe Social que acredite que la red pública no cubre la prestación; e) Receta, si corresponde; f) Visita y tramitación por la Asistente Social.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-010",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["ayudas salud curoscant", "atenciones medicas ayudas", "medicamentos ayudas sociales", "que audifonos financia la ayuda", "que lentes opticos cubre la ayuda", "como ingresar solicitud atencion salud"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "ayudas_salud_tecnicas",
+      "id": "ASOC-010",
+      "id_chunk": "ASOC-010",
+      "title": "ayudas de salud y ayudas tecnicas",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Aporte para pago de pasajes a usuarios que deban viajar fuera del sector planetario para controles médicos, tribunales, centros de rehabilitación u otros. Requisitos: derivación médica u orden de exámenes, comprobante de citación y documentos que acrediten citación a tribunales o centros de rehabilitación, según corresponda.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-011",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["aporte pasajes curoscant", "ayuda pasajes medicos", "requisitos aporte pasajes", "que cubre prestacion pasajes", "quien puede recibir aporte pasajes", "destinos fuera del sector planetario"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "aporte_pasajes",
+      "id": "ASOC-011",
+      "id_chunk": "ASOC-011",
+      "title": "aporte en pasajes (requisitos generales)",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Se entregará pasaje al beneficiario que requiere la hora y, en casos justificados, al acompañante según grado de dependencia y situación socioeconómica, siempre que el servicio de salud no aporte. Se prioriza a la persona afectada y luego al acompañante.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-012",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["quien recibe el pasaje", "pasaje acompañante justificado", "grado de dependencia pasajes", "asistente social pasajes", "beneficiario que requiere la hora", "que significa servicio de salud no aporta"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "prioridad_pasajes",
+      "id": "ASOC-012",
+      "id_chunk": "ASOC-012",
+      "title": "prioridad y alcance del aporte en pasajes",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Entrega de materiales de construcción para mejoramiento de vivienda, solo en caso de deterioro visible o hacinamiento.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-013",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["aporte materiales construccion", "mejoramiento vivienda curoscant", "requisitos aporte vivienda", "ayuda construccion social", "asistente social vivienda", "materiales construccion gobierno"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "materiales_construccion",
+      "id": "ASOC-013",
+      "id_chunk": "ASOC-013",
+      "title": "aporte en materiales de construccion",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Máximo 2 paquetes mensuales. Para adultos mayores postrados (según lista MINSAL y evaluación profesional) y para niños menores de 2 años solo durante hospitalización, con documento que acredite el estado.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-014",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["ayuda pañales curoscant", "pañales adultos mayores", "pañales niños hospitalizados", "hospitalizacion niños menores 2 años", "documento hospitalizacion pañales", "lista ministerio de salud postrados"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "pañales",
+      "id": "ASOC-014",
+      "id_chunk": "ASOC-014",
+      "title": "ayuda en pañales",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Aporte para vestuario básico a niños menores de 12 años de familias vulnerables y a adultos mayores. Monto máximo: 2 U.T.M.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-015",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["ayuda vestuario curoscant", "vestuario infantil social", "vestuario adulto mayor", "que cubre vestuario basico", "niños menores de 12 años", "valor utm vestuario"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "vestuario",
+      "id": "ASOC-015",
+      "id_chunk": "ASOC-015",
+      "title": "ayuda en vestuario",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Entrega de suplemento alimenticio a personas que no puedan resolver su situación a través de la red de salud pública. Procedimiento: solicitud, certificado/diagnóstico médico, receta, informe social y cotización del suplemento.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-016",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["suplemento alimenticio curoscant", "ayuda suplemento salud", "requisitos suplemento alimenticio", "cotizacion suplemento alimenticio", "informe social suplemento", "red publica no cubre suplemento"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "suplemento_alimenticio",
+      "id": "ASOC-016",
+      "id_chunk": "ASOC-016",
+      "title": "suplemento alimenticio",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Entrega de agua a personas vulnerables con residencia mínima de 18 meses y vulnerabilidad según RIC. Se requiere estanque propio en buen estado.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-017",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["entrega agua camion aljibe", "ayuda agua curoscant", "residencia minima 18 meses", "solicitud agua aljibe", "beneficiarios entrega agua", "documentos residencia agua"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "agua_camion_aljibe",
+      "id": "ASOC-017",
+      "id_chunk": "ASOC-017",
+      "title": "entrega de agua en camion aljibe",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Entrega de estanque a personas sin otro estanque, con residencia mínima de 2 años y vulnerabilidad según RIC. Evaluación y coordinación a cargo del Departamento de Bienestar Social.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-018",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["entrega estanque agua", "ayuda estanque curoscant", "residencia minima 2 años", "departamento bienestar social estanque", "requisitos entrega estanque", "evaluacion social estanque"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "entrega_estanque",
+      "id": "ASOC-018",
+      "id_chunk": "ASOC-018",
+      "title": "entrega de estanque de agua",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Todas las ayudas se solicitan por oficina de partes o Departamento Bienestar Social. Se verifica la situación mediante entrevista y visita domiciliaria, se emite informe social y se solicita aprobación al Jefe de Gobierno. Tras la autorización y validación presupuestaria, el solicitante retira el beneficio en Tesorería con su cédula. Cada ayuda debe rendirse antes de solicitar otra. Plazo promedio: 7 días hábiles.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-019",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["procedimiento solicitud ayuda", "entrega ayudas sociales", "informe social curoscant", "visita domiciliaria ayuda", "validacion presupuestaria", "oficina de partes solicitud ayuda"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "procedimiento_general",
+      "id": "ASOC-019",
+      "id_chunk": "ASOC-019",
+      "title": "procedimiento general de solicitud y entrega",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Se negará el beneficio si: a) No pertenecer a la comuna o no tener RIC y/o menos de un año de residencia; b) Vender, regalar o no utilizar la ayuda; c) Falsear u omitir información; d) No participar activamente en la solución del problema; e) Otras incompatibilidades legales.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-020",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["causales negacion ayuda", "rechazo solicitud social", "falsificacion informacion ayuda", "menos de un año de residencia", "participacion activa solucion problema", "motivos negacion beneficio"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "causales_negacion",
+      "id": "ASOC-020",
+      "id_chunk": "ASOC-020",
+      "title": "causales de negacion del beneficio",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Toda ayuda entregada debe rendirse con comprobantes, facturas, boletas o documentación respaldatoria. El incumplimiento impide nuevas solicitudes hasta regularizar la situación. El Departamento de Bienestar Social lleva registro y control de todas las ayudas sociales otorgadas.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-021",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["rendicion ayudas sociales", "control ayudas curoscant", "documentacion respaldatoria ayuda", "regularizar situacion de rendicion", "plazos para rendir la ayuda", "comprobantes aceptados rendicion"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "rendicion_y_control",
+      "id": "ASOC-021",
+      "id_chunk": "ASOC-021",
+      "title": "rendicion y control de ayudas",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "El Jefe de Gobierno y el Departamento de Bienestar Social están facultados para supervisar y fiscalizar el cumplimiento de los procedimientos y requisitos en la entrega de ayudas sociales. Cualquier irregularidad detectada será informada y sancionada según la normativa vigente.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-022",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["supervision ayudas sociales", "fiscalizacion curoscant", "cumplimiento procedimientos ayuda", "rol departamento bienestar social", "informar irregularidad ayuda social", "sancionar irregularidades ayudas"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "fiscalizacion",
+      "id": "ASOC-022",
+      "id_chunk": "ASOC-022",
+      "title": "supervision y fiscalizacion",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  },
+  {
+    "doc": "ayudas_sociales",
+    "texto": "Las solicitudes deben ser fundadas y los antecedentes presentados serán revisados por el equipo profesional del Gobierno de Curoscant. La falsificación de antecedentes o entrega de información incompleta puede ser causal de negación o anulación del beneficio.",
+    "fuente": "RAG-Ayudas_Sociales.json#ASOC-023",
+    "tags": ["documento", "descripcion_y_procedimiento", "ayudas_sociales"],
+    "alias": ["observaciones ayudas sociales", "antecedentes solicitud ayuda", "falsificacion antecedentes ayuda", "consecuencias de falsificar informacion", "equipo profesional revisa solicitudes", "criterios revision antecedentes"],
+    "metadata": {
+      "category": "documento",
+      "subcategory": "observaciones",
+      "id": "ASOC-023",
+      "id_chunk": "ASOC-023",
+      "title": "observaciones generales",
+      "tema": "Ayudas Sociales",
+      "source_doc": "ayudas_sociales"
+    }
+  }
 ]

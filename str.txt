@@ -5279,7 +5279,7 @@
 │   │   ├── llama_cpp -> ../../llama_cpp\012
 │   │   ├── llama_runner.py
 │   │   ├── models
-│   │   │   └── phi-2.Q4_K_M.gguf
+│   │   │   └── Qwen2.5-3B-Instruct-Q4_K_L.gguf
 │   │   ├── process_documents.py
 │   │   ├── qdrant_helpers.py
 │   │   ├── qdrant_utils.py

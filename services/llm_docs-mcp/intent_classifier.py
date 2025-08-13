@@ -1,48 +1,51 @@
+# services/llm_docs-mcp/intent_classifier.py
+from __future__ import annotations
+import os
+from typing import Optional, Dict, Any
 from llama_client import LlamaClient
+from intent_engine import classify_intent_payload  # ← usar el engine
 
-_shared_llm: LlamaClient | None = None
+_VALID = {"faq","documento","agenda","reclamo","tramite","n/a"}
 
-
+_SHARED: Optional[LlamaClient] = None
 def set_llm_client(client: LlamaClient) -> None:
-    global _shared_llm
-    _shared_llm = client
+    global _SHARED; _SHARED = client
 
+def _llm() -> LlamaClient:
+    return _SHARED or LlamaClient()
 
-def _get_llm() -> LlamaClient:
-    global _shared_llm
-    if _shared_llm is None:
-        _shared_llm = LlamaClient()
-    return _shared_llm
+# Modo de compatibilidad: "flat" → devuelve string (lo que espera el gateway/orchestrator hoy)
+# "rich" → devuelve dict completo del engine (recomendado a futuro)
+_MODE = os.getenv("INTENT_OUTPUT_MODE", "flat").lower()
 
-VALID_INTENTS = [
-    "doc-generar_respuesta_llm",
-    "scheduler-appointment_create",
-    "complaint-registrar_reclamo",
-    "informacion_general",
-    "saludo",
-    "despedida",
-    "otra",
-]
+def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None):
+    text = (user_input or "").strip()
+    if not text:
+        return "n/a" if _MODE == "flat" else {"intent":"n/a"}
 
+    # 1) IntentEngine primero
+    rich = classify_intent_payload(text)
 
-def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None) -> str:
-    prompt = f"""
-El usuario dijo: \"{user_input}\".
-¿Cuál es su intención principal?
-Opciones:
-A) doc-generar_respuesta_llm
-B) scheduler-appointment_create
-C) complaint-registrar_reclamo
-D) informacion_general
-E) saludo
-F) despedida
-G) otra
+    # 2) Si el engine no está seguro, pedir sólo el top-intent al LLM como desempate
+    if rich.get("intent") == "n/a":
+        client = llm or _llm()
+        prompt = (
+            "Clasifica la consulta en una sola categoría: faq, documento, agenda, reclamo, tramite, n/a.\n"
+            "Responde SOLO con una de esas palabras.\n"
+            f"Consulta: {text}\n"
+            "Etiqueta:"
+        )
+        guess = (client.generate(prompt, temperature=0) or "").strip().lower()
+        if guess in _VALID:
+            rich["intent"] = guess
 
-Responde solo con el código de la intención (por ejemplo: doc-generar_respuesta_llm).
-"""
-    client = llm or _get_llm()
-    response_text = client.generate(prompt, temperature=0)
-    intent = response_text.strip()
-    if intent not in VALID_INTENTS:
-        return "otra"
-    return intent
+    # 3) Salida compatible por modo
+    if _MODE == "flat":
+        # Compatibilidad: si es FAQ con sub-intento de saludo/despedida, puedes optar
+        # por devolver el sub-intento directo para no romper flujos antiguos.
+        sub = (rich.get("sub_intent") or "").lower()
+        if rich["intent"] == "faq" and sub in {"saludo","despedida","agradecimiento"}:
+            return sub
+        return rich["intent"]
+    else:
+        return rich
