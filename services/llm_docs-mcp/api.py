@@ -5,9 +5,20 @@ from .rag import (
     doc_generar_respuesta_llm,
     doc_generar_respuesta_llm_with_sources,
 )
+from .intent_classifier import classify_main_intent
 from typing import Optional
 
 router = APIRouter()
+
+
+@router.post("/classify_intent")
+async def classify_intent_endpoint(payload: dict = Body(...)):
+    user_input = payload.get("user_input")
+    output_mode = payload.get("output_mode")
+    if not user_input:
+        return {"error": "El campo 'user_input' es obligatorio."}
+    return classify_main_intent(user_input, output_mode=output_mode)
+
 
 
 @router.post("/generar_respuesta_llm")

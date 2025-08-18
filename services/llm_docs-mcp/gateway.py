@@ -10,7 +10,6 @@ import ipaddress
 import requests
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse
@@ -64,8 +63,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Seguridad básica HTTP/IP
-security = HTTPBasic(auto_error=False)
 
 # --- Lista de IPs/Redes permitidas (con soporte para CIDR) ---
 ALLOWED_IPS_STR = os.getenv("ALLOWED_IPS", "127.0.0.1,172.18.0.0/16,testclient")
@@ -109,16 +106,9 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
 app.add_middleware(IPWhitelistMiddleware)
 
 
-def authenticate(
-    request: Request, credentials: Optional[HTTPBasicCredentials] = Depends(security)
-):
+def authenticate(request: Request):
     api_key = request.headers.get(API_KEY_NAME)
     if LLM_DOCS_API_KEY and api_key == LLM_DOCS_API_KEY:
-        return True
-    if credentials and (
-        (not LLM_DOCS_MCP_USER or credentials.username == LLM_DOCS_MCP_USER)
-        and (not LLM_DOCS_MCP_PASSWORD or credentials.password == LLM_DOCS_MCP_PASSWORD)
-    ):
         return True
     raise HTTPException(status_code=401, detail="Credenciales inválidas")
 
@@ -212,9 +202,9 @@ class RouteResp(BaseModel):
     score: float
 
 
-@app.post("/semantic-route", response_model=RouteResp)
+@app.post("/semantic-route", response_model=RouteResp, dependencies=[Depends(authenticate)])
 def semantic_route_api(
-    req: RouteReq, credentials: HTTPBasicCredentials = Depends(authenticate)
+    req: RouteReq
 ):
     """Enrutador semántico expuesto vía HTTP."""
     vecs = embed([req.query] + [d.get("description", "") for d in req.documents])
@@ -556,8 +546,8 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
 def tools_list():
     return {"tools": get_tools()}
 
-@app.post("/tools/call")
-async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depends(authenticate)):
+@app.post("/tools/call", dependencies=[Depends(authenticate)])
+async def tools_call(request: Request):
     trace_id = "unknown"
     try:
         req = await request.json()
@@ -598,9 +588,10 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
             logger.info("Respuesta generada por Llama con RAG", extra={"trace_id": trace_id})
             return respuesta
         elif tool == "doc-buscar_fragmento_documento":
-            consulta = params.get("consulta", "")
+            consulta = params.get("texto", params.get("consulta", ""))
             documento = params.get("documento")
-            frags = rag.doc_buscar_fragmento_documento(consulta, documento)
+            top_k = params.get("top_k", 3)
+            frags = rag.obtener_fragmentos(consulta=consulta, tema_especifico=documento, k=top_k)
             return {"fragmentos": frags}
         elif tool == "doc-classify_intent_llm":
             texto = params.get("texto", "")
@@ -624,32 +615,33 @@ async def tools_call(request: Request, credentials: HTTPBasicCredentials = Depen
             content={"error": "Error al procesar la herramienta", "detail": str(e)},
         )
 
-@app.post("/doc-generar_respuesta_llm")
-async def doc_generar_respuesta_llm_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+@app.post("/doc-generar_respuesta_llm", dependencies=[Depends(authenticate)])
+async def doc_generar_respuesta_llm_endpoint(params: dict):
     """Endpoint directo que combina búsqueda y generación."""
     trace_id = params.get("trace_id", "unknown")
     return generar_respuesta_llm(params, trace_id=trace_id)
 
 
-@app.post("/tools/doc-generar_respuesta_llm")
-async def tools_doc_generar_respuesta_llm(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+@app.post("/tools/doc-generar_respuesta_llm", dependencies=[Depends(authenticate)])
+async def tools_doc_generar_respuesta_llm(params: dict):
     trace_id = params.get("trace_id", "unknown")
     return generar_respuesta_llm(params, trace_id=trace_id)
 
 
-@app.post("/tools/doc-classify_intent_llm")
-async def tools_doc_classify_intent_llm(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+@app.post("/tools/doc-classify_intent_llm", dependencies=[Depends(authenticate)])
+async def tools_doc_classify_intent_llm(params: dict):
     texto = params.get("texto", "")
     intent = classify_intent_with_llm(texto, llama)
     return {"intent": intent}
 
 
-@app.post("/doc-buscar_fragmento_documento")
-async def doc_buscar_fragmento_documento_endpoint(params: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+@app.post("/doc-buscar_fragmento_documento", dependencies=[Depends(authenticate)])
+async def doc_buscar_fragmento_documento_endpoint(params: dict):
     trace_id = params.get("trace_id", "unknown")
     consulta = params.get("consulta", "")
     documento = params.get("documento")
-    frags = rag.doc_buscar_fragmento_documento(consulta, documento)
+    top_k = params.get("top_k", 3)
+    frags = rag.obtener_fragmentos(consulta=consulta, tema_especifico=documento, k=top_k)
     logger.info("Fragmentos buscados", extra={"trace_id": trace_id})
     return {"fragmentos": frags}
 
@@ -675,8 +667,8 @@ def list_endpoints():
 def metrics():
     return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
 
-@app.post("/process")
-def process(data: dict, credentials: HTTPBasicCredentials = Depends(authenticate)):
+@app.post("/process", dependencies=[Depends(authenticate)])
+def process(data: dict):
     return {"respuesta": "ok"}
 
 @app.get("/")

@@ -1,8 +1,6 @@
 import os
 import sys
-import glob
 import random
-from .intent_classifier import classify_intent_and_entities
 import json
 import requests
 from requests.auth import HTTPBasicAuth
@@ -53,8 +51,6 @@ from .utils.phone_utils import validar_telefono_movil
 from .utils.text import normalize_text
 
 
-
-
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
 
@@ -74,7 +70,7 @@ LLM_DOCS_MCP_HEALTH_URL = os.getenv(
     LLM_DOCS_MCP_URL.replace("/tools/call", "/health"),
 )
 # Base URL del servicio de documentos. Si la variable de entorno está
-# ausente o vacía, utilizamos la URL del microservicio sin el sufijo
+# ausente o vacía, utilizamos la URL del micro servicio sin el sufijo
 # "/tools/call". Esto evita caer en el modo local que requiere el
 # módulo de embeddings cuando se desea usar el servicio remoto.
 LLM_DOCS_BASE = os.getenv("LLM_DOCS_BASE") or LLM_DOCS_MCP_URL.replace(
@@ -274,7 +270,6 @@ def _sort_candidates(cands: list[dict]) -> list[dict]:
 
 
 
-
 def is_cache_eligible(resp: dict, ctx: Optional[dict] = None) -> bool:
     """Determina si una respuesta es apta para ser cacheada."""
     if not resp or resp.get("no_results") is True:
@@ -304,7 +299,6 @@ def is_cache_eligible(resp: dict, ctx: Optional[dict] = None) -> bool:
             return False
     return True
 
-
 def pick_ttl(resp: dict) -> int:
     txt = (resp.get("respuesta") or "").lower()
     if any(
@@ -326,11 +320,9 @@ def pick_ttl(resp: dict) -> int:
 
 
 
-
 def fallback(msg: str) -> Dict[str, Any]:
     """Construye una respuesta de fallback estándar."""
     return {"respuesta": msg, "no_results": True}
-
 
 def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
     """Normaliza la respuesta del microservicio RAG."""
@@ -339,10 +331,6 @@ def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
     # if resp.get("referencias"):
     #     formatted["referencias"] = resp["referencias"]
     return formatted
-
-
-
-
 
 
 
@@ -532,13 +520,11 @@ def route_to_service(tool: str) -> str:
         return MICROSERVICES["scheduler-mcp"]
     raise Exception(f"No se encuentra microservicio para tool {tool}")
 
-
 def validate_against_schema(data: Dict[str, Any], schema: Dict[str, Any]) -> bool:
     for req in schema.get("input_schema", {}).get("required", []):
         if req not in data:
             return False
     return True
-
 
 def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
     prompt = prompt_template
@@ -550,19 +536,16 @@ def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
 def _cb_allow() -> bool:
     return time.time() >= _doc_cb_state["opened_until"]
 
-
 def _cb_failure() -> None:
     st = _doc_cb_state
     st["fails"] += 1
     if st["fails"] >= LLM_DOCS_CIRCUIT_THRESHOLD:
         st["opened_until"] = time.time() + LLM_DOCS_CIRCUIT_COOLDOWN
 
-
 def _cb_success() -> None:
     st = _doc_cb_state
     st["fails"] = 0
     st["opened_until"] = 0.0
-
 
 def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | None = None) -> Dict[str, Any]:
     service_url = route_to_service(tool)
@@ -647,7 +630,6 @@ def remote_llm_generate(prompt: str, timeout: float = 120.0) -> str:
 
 
 
-
 def handle_service_error(resp: Dict[str, Any], intent: str, trace_id: str | None = None) -> Optional[Dict[str, str]]:
     """Check microservice response and return friendly message on error."""
     if resp.get("error"):
@@ -657,7 +639,6 @@ def handle_service_error(resp: Dict[str, Any], intent: str, trace_id: str | None
         ERROR_COUNTER.labels(intent=intent).inc()
         return {"texto": "Ocurrió un problema al consultar nuestros servicios. Por favor, intenta más tarde."}
     return None
-
 
 def call_scheduler_endpoint(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
     """Call a direct REST endpoint on the scheduler microservice."""
@@ -673,6 +654,18 @@ def call_scheduler_endpoint(endpoint: str, params: Dict[str, Any]) -> Dict[str, 
     except requests.RequestException as e:
         return {"error": f"Connection error: {e}"}
 
+def classify_intent_remotely(user_input: str) -> Dict[str, Any]:
+    """Calls the centralized intent classification service."""
+    base = LLM_DOCS_BASE
+    url = f"{base.rstrip('/')}/classify_intent"
+    try:
+        resp = requests.post(url, json={"user_input": user_input, "output_mode": "rich"}, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
+    except requests.RequestException as e:
+        logger.error(f"Error calling intent classifier: {e}")
+        return {"intent": "n/a", "error": str(e)}
+
 
 # === Utilidades de generación con el LLM ===
 
@@ -680,19 +673,12 @@ def find_next_available_slot():
     """Return next available appointment slot (placeholder)."""
     # TODO: implement search in scheduler service
     pass
-
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando llm_docs-mcp."""
     return remote_llm_generate(prompt)
 
-
 def infer_intent_with_llm(prompt):
     return remote_llm_generate(prompt)
-
-
-
-
-
 
 
 
@@ -706,7 +692,7 @@ def registrar_feedback_usuario(
         conn = get_db()
         with conn.cursor() as cur:
             cur.execute(
-                """
+                f"""
                 INSERT INTO feedback_usuario (pregunta_id, feedback_texto, usuario_id)
                 VALUES (%s, %s, %s)
                 """,
@@ -717,12 +703,10 @@ def registrar_feedback_usuario(
     except Exception as e:
         logging.warning(f"No se pudo registrar feedback de usuario: {e}")
 
-
 def get_db():
     return psycopg2.connect(
         host=DB_HOST, port=DB_PORT, dbname=DB_NAME, user=DB_USER, password=DB_PASS
     )
-
 
 
 
@@ -770,7 +754,6 @@ def extract_entities_complaint(text: str) -> dict:
         "departamento": departamento,
     }
 
-
 def extract_entities_scheduler(text: str, base_dt: datetime) -> dict:
     # Heurística simple para agendamiento
     nombre = None
@@ -817,11 +800,9 @@ def extract_entities_scheduler(text: str, base_dt: datetime) -> dict:
         "motiv": motiv,
     }
 
-
 def extract_entities_llm_docs(text: str) -> dict:
     # Para llm_docs-mcp, normalmente solo se requiere la pregunta
     return {"pregunta": text}
-
 
 def save_conversation_to_postgres(session_id, session_data):
     try:
@@ -848,23 +829,19 @@ def save_conversation_to_postgres(session_id, session_data):
     except Exception as e:
         logging.error(f"Error guardando historial en PostgreSQL: {e}")
 
-
 def get_session(session_id):
     session_data = redis_client.get(f"session:{session_id}")
     if session_data:
         return json.loads(session_data)
     return {}
 
-
 def save_session(session_id, data):
     redis_client.set(
         f"session:{session_id}", json.dumps(data), ex=3600 * 24 * 7
     )  # 1 semana de expiración
 
-
 def delete_session(session_id):
     redis_client.delete(f"session:{session_id}")
-
 
 def migrate_sessions_to_postgres():
     for key in redis_client.scan_iter():
@@ -875,7 +852,6 @@ def migrate_sessions_to_postgres():
             delete_session(session_id)
     logging.info("Migración de sesiones de Redis a PostgreSQL completada.")
 
-
 def periodic_migration():
     while True:
         migrate_sessions_to_postgres()
@@ -885,7 +861,6 @@ def periodic_migration():
 # Lanzar el thread de migración periódica (omitable en tests)
 if os.getenv("DISABLE_PERIODIC_MIGRATION") != "1":
     threading.Thread(target=periodic_migration, daemon=True).start()
-
 
 def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Procesa el flujo de registro de reclamos cuando hay campos pendientes."""
@@ -1071,7 +1046,6 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
         msg = "No hay horas disponibles para esa fecha y hora."
     context_manager.update_context(sid, texto_usuario, msg)
     return {"answer": msg, "finish": True}
-
 
 def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
     """Flujo paso a paso para agendar citas."""
@@ -1338,7 +1312,6 @@ TOOL_HANDLERS = {
     "scheduler-appointment_create": _handle_scheduler_flow,
 }
 
-
 def orchestrate(
     user_input: str,
     extra_context: Optional[Dict[str, Any]] = None,
@@ -1351,11 +1324,26 @@ def orchestrate(
 
     ctx = context_manager.get_context(sid) or {}
 
-    # --- 1. CLASIFICACIÓN DE INTENCIÓN --- 
-    classification = classify_intent_and_entities(user_input, sid)
-    intent = classification.get("intencion", "no_entendido")
-    entities = classification.get("entidades", {})
-    dominios = classification.get("dominios", []) # Extraer dominios
+    # --- 1. CLASIFICACIÓN DE INTENCIÓN ---
+    classification = classify_intent_remotely(user_input)
+    
+    # Mapeo de intenciones nuevas a viejas para compatibilidad
+    intent_map = {
+        "faq": "ask_document",
+        "documento": "ask_document",
+        "tramite": "ask_document",
+        "agenda": "init_scheduler",
+        "reclamo": "init_complaint",
+        "saludo": "saludo",
+        "despedida": "despedida",
+    }
+    intent = intent_map.get(classification.get("intent"), "n/a")
+
+    entities = {
+        "tema_especifico": classification.get("slot"),
+        "tramite": classification.get("doc"),
+    }
+    dominios = []  # dominios ya no se usa en el nuevo clasificador
 
     logger.info(f"[INTENT] Intención clasificada: {intent}", extra={"trace_id": sid})
     REQUEST_COUNTER.labels(intent=intent).inc()
@@ -1405,7 +1393,6 @@ def orchestrate(
 
     # --- Manejo de Casos No Entendidos o Fallback ---
     return handle_fallback(sid, user_input)
-
 
 def handle_document_query(session_id: str, user_input: str, entities: Dict[str, Any], dominios: list[str]) -> Dict[str, Any]:
     """Maneja la lógica de consulta de documentos (RAG) llamando al servicio centralizado."""
@@ -1487,7 +1474,8 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
             ]
         elif result.get("respuesta"):
             result["respuesta"] = adapt_markdown_for_channel(
-                result["respuesta"], input.channel
+                result["respuesta"],
+                input.channel,
             )
         return result
     except Exception as e:
@@ -1534,7 +1522,6 @@ def root():
 @app.get("/metrics")
 def metrics():
     return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
-
 
 
 
@@ -1589,7 +1576,6 @@ def validar_y_formatear_rut(rut: str) -> str:
         return None
     return rut
 
-
 def es_email_valido(email: str) -> bool:
     """Valida el formato de un correo usando email.utils.parseaddr."""
     if not email:
@@ -1601,7 +1587,6 @@ def es_email_valido(email: str) -> bool:
     # comprueba que la parte de dominio tenga al menos un punto
     dominio = addr.split('@', 1)[1]
     return '.' in dominio
-
 
 def validar_telefono_movil(numero: str) -> Optional[str]:
     """Valida un número de teléfono chileno. Acepta solo formato internacional +569XXXXXXXX."""

@@ -1,51 +1,100 @@
 # services/llm_docs-mcp/intent_classifier.py
+"""
+Módulo unificado para la clasificación de intenciones.
+
+Este módulo centraliza toda la lógica para determinar la intención del usuario,
+utilizando un `IntentEngine` basado en datos y un LLM como fallback. Reemplaza
+implementaciones anteriores y elimina la duplicación de criterios.
+
+Funciones principales:
+- `classify_main_intent`: Clasifica la intención principal de una consulta.
+- `classify_reclamo_response`: Clasifica respuestas afirmativas/negativas en flujos específicos.
+"""
 from __future__ import annotations
 import os
 from typing import Optional, Dict, Any
 from llama_client import LlamaClient
-from intent_engine import classify_intent_payload  # ← usar el engine
+from intent_engine import classify_intent_payload
 
-_VALID = {"faq","documento","agenda","reclamo","tramite","n/a"}
+_VALID_INTENTS = {"faq", "documento", "agenda", "reclamo", "tramite", "n/a"}
+_INTENT_OUTPUT_MODE = os.getenv("INTENT_OUTPUT_MODE", "rich")
 
-_SHARED: Optional[LlamaClient] = None
+_SLOT_MAP = {
+    "horario": "horario_atencion",
+    "vigencia": "tiempo_validez",
+}
+
+_SHARED_LLM_CLIENT: Optional[LlamaClient] = None
+
 def set_llm_client(client: LlamaClient) -> None:
-    global _SHARED; _SHARED = client
+    """Establece un cliente LLM compartido para ser reutilizado."""
+    global _SHARED_LLM_CLIENT
+    _SHARED_LLM_CLIENT = client
 
-def _llm() -> LlamaClient:
-    return _SHARED or LlamaClient()
+def _get_llm_client() -> LlamaClient:
+    """Obtiene el cliente LLM compartido o crea uno nuevo si no existe."""
+    return _SHARED_LLM_CLIENT or LlamaClient()
 
-# Modo de compatibilidad: "flat" → devuelve string (lo que espera el gateway/orchestrator hoy)
-# "rich" → devuelve dict completo del engine (recomendado a futuro)
-_MODE = os.getenv("INTENT_OUTPUT_MODE", "flat").lower()
+def classify_main_intent(user_input: str, llm: LlamaClient | None = None, output_mode: str | None = None) -> Dict[str, Any]:
+    """
+    Clasifica la intención principal del usuario usando el IntentEngine y un LLM como fallback.
 
-def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None):
+    Args:
+        user_input: El texto ingresado por el usuario.
+        llm: Un cliente Llama opcional. Si no se provee, se usará el cliente compartido.
+        output_mode: 'rich' o 'flat'. Si se provee, sobreescribe la variable de entorno.
+
+    Returns:
+        Un diccionario con la intención y detalles adicionales.
+        Ej: {"intent": "agenda", "sub_intent": "reservar", ...}
+    """
     text = (user_input or "").strip()
     if not text:
-        return "n/a" if _MODE == "flat" else {"intent":"n/a"}
+        return {"intent": "n/a"}
 
-    # 1) IntentEngine primero
-    rich = classify_intent_payload(text)
+    # 1. Clasificación primaria con el IntentEngine
+    rich_result = classify_intent_payload(text)
 
-    # 2) Si el engine no está seguro, pedir sólo el top-intent al LLM como desempate
-    if rich.get("intent") == "n/a":
-        client = llm or _llm()
+    # 2. Si el engine no está seguro, usar LLM como desambiguador
+    if rich_result.get("intent") == "n/a":
+        client = llm or _get_llm_client()
         prompt = (
             "Clasifica la consulta en una sola categoría: faq, documento, agenda, reclamo, tramite, n/a.\n"
             "Responde SOLO con una de esas palabras.\n"
             f"Consulta: {text}\n"
             "Etiqueta:"
         )
-        guess = (client.generate(prompt, temperature=0) or "").strip().lower()
-        if guess in _VALID:
-            rich["intent"] = guess
+        llm_guess = (client.generate(prompt, temperature=0) or "").strip().lower()
+        if llm_guess in _VALID_INTENTS:
+            rich_result["intent"] = llm_guess
 
-    # 3) Salida compatible por modo
-    if _MODE == "flat":
-        # Compatibilidad: si es FAQ con sub-intento de saludo/despedida, puedes optar
-        # por devolver el sub-intento directo para no romper flujos antiguos.
-        sub = (rich.get("sub_intent") or "").lower()
-        if rich["intent"] == "faq" and sub in {"saludo","despedida","agradecimiento"}:
-            return sub
-        return rich["intent"]
-    else:
-        return rich
+    # 3. Normalizar slots para consistencia
+    slot = rich_result.get("slot")
+    if slot in _SLOT_MAP:
+        rich_result["slot"] = _SLOT_MAP[slot]
+
+    # 4. Adaptar salida según el modo
+    mode = output_mode or _INTENT_OUTPUT_MODE
+    if mode == 'flat':
+        return {"intent": rich_result.get("intent")}
+    
+    return rich_result
+
+def classify_reclamo_response(text: str) -> str:
+    """
+    Clasifica una respuesta dentro de un flujo de reclamo como afirmativa, negativa o pregunta.
+
+    Args:
+        text: El texto de la respuesta del usuario.
+
+    Returns:
+        'affirmative', 'negative', 'question', o 'unknown'.
+    """
+    t = text.lower().strip()
+    if any(word in t for word in ['?', 'saber']):
+        return 'question'
+    if t.startswith('si') or t.startswith('sí') or ' sí' in t:
+        return 'affirmative'
+    if t.startswith('no') or ' no' in t:
+        return 'negative'
+    return 'unknown'
