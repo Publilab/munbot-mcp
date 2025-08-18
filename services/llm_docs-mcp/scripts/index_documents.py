@@ -5,12 +5,28 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import json
 import uuid
+import hashlib
 import logging
 import re
 import argparse
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import PointStruct
 from embeddings import embed  # Reutilizamos el helper de embeddings
+
+
+def _norm_text(s: str) -> str:
+    """Normaliza texto para hashing: recorta, colapsa espacios y quita líneas ruidosas vacías."""
+    if not s:
+        return ""
+    s = re.sub(r"\s+", " ", s.strip())
+    return s
+
+
+def stable_point_id(doc: str, fuente: str, texto: str, meta_id: str = "") -> str:
+    """ID determinista por chunk (evita duplicados al reindexar)."""
+    base = f"{doc}|{fuente}|{_norm_text(texto)}|{meta_id or ''}"
+    return hashlib.sha1(base.encode("utf-8")).hexdigest()
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -143,8 +159,9 @@ def main():
     try:
         count = client.count(collection_name=COLLECTION_NAME, exact=True).count
         if count > 0:
-            logger.info(f"ℹ️ La colección '{COLLECTION_NAME}' ya contiene {count} puntos. Saltando indexación.")
-            return
+            logger.info(
+                f"ℹ️ La colección '{COLLECTION_NAME}' ya contiene {count} puntos. Reindexando para actualizar o insertar nuevos datos."
+            )
     except Exception:
         logger.info(f"No se pudo verificar el conteo de la colección '{COLLECTION_NAME}'. Procediendo con la indexación.")
 
@@ -168,14 +185,42 @@ def main():
             continue
         if len(vector) != EMBEDDINGS_DIM:
             logger.error(
-                f"Vector con tamaño inesperado ({len(vector)}) para id {chunk['id']}"
+                f"Vector con tamaño inesperado ({len(vector)}) para id {chunk.get('id')}"
             )
             continue
+
+        doc = chunk.get("doc") or chunk.get("metadata", {}).get("doc") or ""
+        fuente = (
+            chunk.get("fuente")
+            or chunk.get("metadata", {}).get("fuente")
+            or chunk.get("metadata", {}).get("source")
+            or ""
+        )
+        texto = (
+            chunk.get("texto")
+            or chunk.get("text")
+            or chunk.get("metadata", {}).get("texto")
+            or ""
+        )
+        meta_id = chunk.get("metadata", {}).get("id", "")
+
+        point_id = stable_point_id(doc, fuente, texto, meta_id)
+
+        payload = {
+            "doc": doc,
+            "texto": texto,
+            "fuente": fuente,
+            "tags": chunk.get("tags", []),
+            "alias": chunk.get("alias", []),
+            "metadata": {**chunk.get("metadata", {})},
+        }
+        payload["metadata"]["stable_point_id"] = point_id
+
         docs_to_upload.append(
             PointStruct(
-                id=str(chunk["id"]),
+                id=point_id,
                 vector=vector,
-                payload=chunk["metadata"],
+                payload=payload,
             )
         )
 
