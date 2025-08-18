@@ -67,7 +67,8 @@ def expand_query_with_aliases(
     if selected_doc:
         for it in kb_items:
             doc_val = it.get("doc") or it.get("payload", {}).get("doc")
-            if doc_val == selected_doc:
+            id_val = it.get("id") or it.get("metadata", {}).get("id")
+            if selected_doc in (doc_val, id_val):
                 aliases += it.get("alias") or it.get("payload", {}).get("alias") or []
         aliases = list(dict.fromkeys(a.strip() for a in aliases if a))[:max_aliases]
         if aliases:
