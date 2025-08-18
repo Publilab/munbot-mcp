@@ -237,6 +237,40 @@ def doc_generar_respuesta_llm_with_sources(
 ) -> dict:
     """Genera una respuesta completa con texto y fuentes."""
     return generar_respuesta(
-        pregunta, tema_especifico=tema_especifico, tramite=tramite, 
+        pregunta, tema_especifico=tema_especifico, tramite=tramite,
         departamento=departamento, dominios=dominios
     )
+
+
+def doc_buscar_fragmento_documento(
+    texto: str,
+    documento: str | None = None,
+    top_k: int = 3,
+    score_threshold: float | None = None,
+) -> list[dict]:
+    """Busca fragmentos dentro de un documento específico.
+
+    Parameters
+    ----------
+    texto : str
+        Texto o consulta a buscar.
+    documento : str | None
+        Documento sobre el cual limitar la búsqueda.
+    top_k : int
+        Número máximo de fragmentos a devolver.
+    score_threshold : float | None
+        Umbral mínimo para ``rerank_score``. Si es ``None`` no se filtran los resultados.
+
+    Returns
+    -------
+    list[dict]
+        Fragmentos que cumplen con los criterios de búsqueda.
+    """
+    resultados = obtener_fragmentos(
+        consulta=texto,
+        k=top_k,
+        tema_especifico=documento,
+    )
+    if score_threshold is not None:
+        resultados = [r for r in resultados if r.get("rerank_score", 0) >= score_threshold]
+    return resultados
