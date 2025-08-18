@@ -19,70 +19,95 @@ def _as_list(x):
     return x if isinstance(x, list) else [x]
 
 
+def _pick(*vals):
+    for v in vals:
+        if v not in (None, "", []):
+            return v
+    return None
+
+
 def _norm_spaces(s: str) -> str:
     if not s:
         return ""
     return re.sub(r"\s+", " ", s.strip())
 
 
-def normalize_item(raw: dict) -> dict:
-    """
-    Acepta esquemas dispares (FAQ question/answer, Contrib texto:list,
-    Ayudas content+metadata) y devuelve el formato mínimo común.
-    """
+def normalize_item(raw: dict) -> dict | None:
+    """Normaliza un item con formato heterogéneo."""
     # Mapear claves en inglés a español si existen
     if "question" in raw or "answer" in raw:
-        question = raw.pop("question", None)
-        answer = raw.pop("answer", None)
+        question = raw.get("question")
+        answer = raw.get("answer")
         if question is not None:
-            raw["pregunta"] = question
+            raw.setdefault("pregunta", question)
         if answer is not None:
-            raw["respuesta"] = answer
+            raw.setdefault("respuesta", answer)
 
-    doc = raw.get("doc") or raw.get("metadata", {}).get("doc") or ""
-    fuente = (
-        raw.get("fuente")
-        or raw.get("source")
-        or raw.get("metadata", {}).get("fuente")
-        or raw.get("metadata", {}).get("source")
-        or ""
+    texto_final = _pick(
+        raw.get("texto"),
+        raw.get("respuesta"),
+        raw.get("content"),
+        raw.get("titulo"),
+    )
+    if isinstance(texto_final, list):
+        texto_final = "\n\n".join(map(str, texto_final))
+    if not texto_final:
+        return None
+
+    alias = _as_list(
+        _pick(
+            raw.get("alias"),
+            raw.get("user_says"),
+            raw.get("metadata", {}).get("alias"),
+        )
+    )
+    alias = [str(a).strip() for a in alias if str(a).strip()]
+    if raw.get("pregunta"):
+        alias.append(str(raw["pregunta"]).strip())
+
+    tags = _as_list(
+        _pick(
+            raw.get("tags"),
+            raw.get("metadata", {}).get("tags"),
+        )
+    )
+    tags = [str(t).strip() for t in tags if str(t).strip()]
+
+    doc_logico = _pick(
+        raw.get("doc"),
+        raw.get("metadata", {}).get("doc"),
+        raw.get("id_documento"),
+        raw.get("nombre"),
+    )
+    doc_logico = (doc_logico or "").strip()
+
+    id_logico = _pick(
+        raw.get("metadata", {}).get("id"),
+        raw.get("id"),
+        raw.get("faq_id"),
+    )
+    id_logico = (id_logico or "").strip()
+
+    tipo_fragmento = _pick(
+        raw.get("metadata", {}).get("tipo_fragmento"),
+        raw.get("metadata", {}).get("seccion"),
     )
 
-    tags = raw.get("tags") or raw.get("metadata", {}).get("tags") or []
-    tags = [str(t).strip() for t in _as_list(tags)]
-    if not tags:
-        tags = ["faq"] if ("respuesta" in raw or "pregunta" in raw) else ["documento"]
-
-    alias = raw.get("alias") or raw.get("user_says") or []
-    alias = [str(a).strip() for a in _as_list(alias)]
-
-    meta = dict(raw.get("metadata") or {})
-    if "pregunta" in raw and "pregunta" not in meta:
-        meta["pregunta"] = raw["pregunta"]
-    if "respuesta" in raw and "respuesta" not in meta:
-        meta["respuesta"] = raw["respuesta"]
-
-    texto = raw.get("texto")
-    if isinstance(texto, list):
-        texto = "\n\n".join(str(x) for x in texto)
-
-    if not texto:
-        if "respuesta" in raw:
-            texto = raw["respuesta"]
-            if raw.get("user_says"):
-                alias += [str(a).strip() for a in _as_list(raw["user_says"])]
-        elif "content" in raw:
-            texto = raw["content"]
-
-    texto = _norm_spaces(str(texto or ""))
+    metadata = dict(raw.get("metadata") or {})
+    metadata.setdefault("id", id_logico)
+    metadata.setdefault("doc", doc_logico)
+    if tipo_fragmento:
+        metadata.setdefault("tipo_fragmento", tipo_fragmento)
+    metadata["alias"] = alias
+    metadata["tags"] = tags
 
     return {
-        "doc": str(doc or "").strip(),
-        "texto": texto,
-        "fuente": str(fuente or "").strip(),
-        "tags": tags,
+        "doc": doc_logico,
+        "texto": _norm_spaces(str(texto_final)),
+        "fuente": _pick(raw.get("fuente"), raw.get("source")) or "",
         "alias": alias,
-        "metadata": meta,
+        "tags": tags,
+        "metadata": metadata,
     }
 
 
@@ -137,7 +162,8 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
                 continue
             for raw in data:
                 item = normalize_item(raw)
-                items.append(item)
+                if item:
+                    items.append(item)
     return items
 
 
@@ -156,9 +182,10 @@ def load_text_file_chunks(directory: str) -> list[dict]:
                     for idx, p in enumerate(paragraphs):
                         clean_p = _norm_spaces(p)
                         if clean_p:
+                            doc_name = base_id.replace("_", " ")
                             items.append(
                                 {
-                                    "doc": base_id.replace("_", " "),
+                                    "doc": doc_name,
                                     "texto": clean_p,
                                     "fuente": filename,
                                     "tags": ["documento"],
@@ -167,6 +194,9 @@ def load_text_file_chunks(directory: str) -> list[dict]:
                                         "tipo_fragmento": "documento_oficial",
                                         "id": base_id,
                                         "id_chunk": f"{base_id}-{idx}",
+                                        "doc": doc_name,
+                                        "alias": [],
+                                        "tags": ["documento"],
                                     },
                                 }
                             )
