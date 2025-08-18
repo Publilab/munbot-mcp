@@ -9,3 +9,9 @@ Servicio de búsqueda y generación de respuestas basado en documentos usando Qd
 
 Configura estas variables en tu entorno o en `compose/.env` según tus necesidades.
 
+## Parámetros de entrada
+
+Las herramientas que procesan texto esperan el parámetro `texto` como entrada
+estándar. Para mantener compatibilidad con integraciones anteriores también se
+acepta el alias `consulta`.
+

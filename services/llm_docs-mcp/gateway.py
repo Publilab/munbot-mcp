@@ -379,6 +379,15 @@ def _extract_field_from_hits(hits, kind: str) -> str | None:
             return val
     return None
 
+
+def _get_texto(params: dict) -> str:
+    """Obtiene el texto de los parámetros.
+
+    Acepta ``consulta`` como alias para ``texto`` para mantener
+    compatibilidad retroactiva.
+    """
+    return params.get("texto") or params.get("consulta", "")
+
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
 
@@ -588,7 +597,7 @@ async def tools_call(request: Request):
             logger.info("Respuesta generada por Llama con RAG", extra={"trace_id": trace_id})
             return respuesta
         elif tool == "doc-buscar_fragmento_documento":
-            texto = params.get("texto", params.get("consulta", ""))
+            texto = _get_texto(params)
             documento = params.get("documento")
             top_k = params.get("top_k", 3)
             frags = rag.doc_buscar_fragmento_documento(
@@ -596,7 +605,7 @@ async def tools_call(request: Request):
             )
             return {"fragmentos": frags}
         elif tool == "doc-classify_intent_llm":
-            texto = params.get("texto", "")
+            texto = _get_texto(params)
             intent = classify_intent_with_llm(texto, llama)
             return {"intent": intent}
         else:
@@ -632,7 +641,7 @@ async def tools_doc_generar_respuesta_llm(params: dict):
 
 @app.post("/tools/doc-classify_intent_llm", dependencies=[Depends(authenticate)])
 async def tools_doc_classify_intent_llm(params: dict):
-    texto = params.get("texto", "")
+    texto = _get_texto(params)
     intent = classify_intent_with_llm(texto, llama)
     return {"intent": intent}
 
@@ -640,7 +649,7 @@ async def tools_doc_classify_intent_llm(params: dict):
 @app.post("/doc-buscar_fragmento_documento", dependencies=[Depends(authenticate)])
 async def doc_buscar_fragmento_documento_endpoint(params: dict):
     trace_id = params.get("trace_id", "unknown")
-    texto = params.get("texto", params.get("consulta", ""))
+    texto = _get_texto(params)
     documento = params.get("documento")
     top_k = params.get("top_k", 3)
     frags = rag.doc_buscar_fragmento_documento(
