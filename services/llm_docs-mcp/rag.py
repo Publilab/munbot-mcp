@@ -57,16 +57,38 @@ def load_prompt(prompt_name: str) -> str:
     with open(prompt_file, "r", encoding="utf-8") as f:
         return f.read()
 
-def rewrite_query_with_aliases(consulta: str, tramite: str | None = None) -> str:
-    """Expande la consulta con alias si encuentra una coincidencia."""
-    if not tramite:
-        return consulta
-    for item in KNOWLEDGE_BASE:
-        if item.get('id_documento') == tramite or item.get('nombre') == tramite:
-            aliases = item.get('alias', [])
-            if aliases:
-                return f"{consulta} {' '.join(aliases)}"
-    return consulta
+def expand_query_with_aliases(
+    query: str, selected_doc: str | None, kb_items: list[dict], max_aliases: int = 8
+) -> str:
+    """Expande la consulta con alias basados en 'doc' y 'alias'."""
+    q = query.strip()
+    aliases: list[str] = []
+
+    if selected_doc:
+        for it in kb_items:
+            doc_val = it.get("doc") or it.get("payload", {}).get("doc")
+            if doc_val == selected_doc:
+                aliases += it.get("alias") or it.get("payload", {}).get("alias") or []
+        aliases = list(dict.fromkeys(a.strip() for a in aliases if a))[:max_aliases]
+        if aliases:
+            q = q + " " + " ".join(aliases)
+        return q
+
+    doc_counts: dict[str, int] = {}
+    for it in kb_items:
+        d = (it.get("doc") or it.get("payload", {}).get("doc") or "").strip()
+        if not d:
+            continue
+        doc_counts[d] = doc_counts.get(d, 0) + 1
+    if doc_counts:
+        doc_top = max(doc_counts, key=doc_counts.get)
+        for it in kb_items:
+            if (it.get("doc") or it.get("payload", {}).get("doc")) == doc_top:
+                aliases += it.get("alias") or it.get("payload", {}).get("alias") or []
+        aliases = list(dict.fromkeys(a.strip() for a in aliases if a))[:max_aliases]
+        if aliases:
+            q = q + " " + " ".join(aliases)
+    return q
 
 def rerank_results(query: str, results: list[dict]) -> list[dict]:
     """Reordena los resultados de la búsqueda usando un CrossEncoder."""
@@ -101,7 +123,7 @@ def obtener_fragmentos(
     dominios: list[str] | None = None,
 ) -> list[dict]:
     """Obtiene y reordena fragmentos de Qdrant."""
-    rewritten_query = rewrite_query_with_aliases(consulta, tramite)
+    rewritten_query = expand_query_with_aliases(consulta, tema_especifico or tramite, KNOWLEDGE_BASE)
     vec = embed([rewritten_query])[0]
 
     filtro_final = combine_filters(
