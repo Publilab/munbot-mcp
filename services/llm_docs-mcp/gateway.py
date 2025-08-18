@@ -588,10 +588,12 @@ async def tools_call(request: Request):
             logger.info("Respuesta generada por Llama con RAG", extra={"trace_id": trace_id})
             return respuesta
         elif tool == "doc-buscar_fragmento_documento":
-            consulta = params.get("texto", params.get("consulta", ""))
+            texto = params.get("texto", params.get("consulta", ""))
             documento = params.get("documento")
             top_k = params.get("top_k", 3)
-            frags = rag.obtener_fragmentos(consulta=consulta, tema_especifico=documento, k=top_k)
+            frags = rag.doc_buscar_fragmento_documento(
+                texto=texto, documento=documento, top_k=top_k
+            )
             return {"fragmentos": frags}
         elif tool == "doc-classify_intent_llm":
             texto = params.get("texto", "")
@@ -638,10 +640,12 @@ async def tools_doc_classify_intent_llm(params: dict):
 @app.post("/doc-buscar_fragmento_documento", dependencies=[Depends(authenticate)])
 async def doc_buscar_fragmento_documento_endpoint(params: dict):
     trace_id = params.get("trace_id", "unknown")
-    consulta = params.get("consulta", "")
+    texto = params.get("texto", params.get("consulta", ""))
     documento = params.get("documento")
     top_k = params.get("top_k", 3)
-    frags = rag.obtener_fragmentos(consulta=consulta, tema_especifico=documento, k=top_k)
+    frags = rag.doc_buscar_fragmento_documento(
+        texto=texto, documento=documento, top_k=top_k
+    )
     logger.info("Fragmentos buscados", extra={"trace_id": trace_id})
     return {"fragmentos": frags}
 
