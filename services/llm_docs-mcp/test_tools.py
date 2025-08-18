@@ -2,9 +2,11 @@ import os
 import sys
 import types
 import unittest
+import importlib.machinery
 from fastapi.testclient import TestClient
 
 os.environ["ALLOWED_IPS"] = "testclient,127.0.0.1"
+os.environ["LLM_DOCS_API_KEY"] = "test-key"
 
 # Stub llama_cpp to avoid heavy dependency in tests
 fake_llama = types.ModuleType("llama_cpp")
@@ -17,10 +19,58 @@ class FakeLlama:
 fake_llama.Llama = FakeLlama
 sys.modules["llama_cpp"] = fake_llama
 
+# Stub sentence_transformers CrossEncoder
+fake_st = types.ModuleType("sentence_transformers")
+fake_st.__spec__ = importlib.machinery.ModuleSpec(
+    "sentence_transformers", loader=None
+)
+
+class FakeCrossEncoder:
+    def __init__(self, *a, **k):
+        pass
+
+    def predict(self, *a, **k):
+        return [0.0]
+
+fake_st.CrossEncoder = lambda *a, **k: FakeCrossEncoder()
+fake_st.__path__ = []
+sys.modules["sentence_transformers"] = fake_st
+
+# Stub intent_classifier functions expected by gateway
+fake_ic = types.ModuleType("intent_classifier")
+fake_ic.__spec__ = importlib.machinery.ModuleSpec("intent_classifier", loader=None)
+
+def fake_classify_intent_with_llm(texto, llama):
+    return {"intent": "faq"}
+
+def fake_set_llm_client(client):
+    pass
+
+fake_ic.classify_intent_with_llm = fake_classify_intent_with_llm
+fake_ic.set_llm_client = fake_set_llm_client
+sys.modules["intent_classifier"] = fake_ic
+
+# Patch httpx.Client to ignore deprecated 'app' parameter used by Starlette TestClient
+import httpx
+
+_orig_client_init = httpx.Client.__init__
+
+def _patched_client_init(self, *args, app=None, **kwargs):
+    return _orig_client_init(self, **kwargs)
+
+httpx.Client.__init__ = _patched_client_init
+
 # Stub sklearn modules used in gateway
 fake_sklearn = types.ModuleType("sklearn")
+fake_sklearn.__spec__ = importlib.machinery.ModuleSpec("sklearn", loader=None)
 fake_feature = types.ModuleType("sklearn.feature_extraction")
+fake_feature.__spec__ = importlib.machinery.ModuleSpec(
+    "sklearn.feature_extraction", loader=None
+)
 fake_text = types.ModuleType("sklearn.feature_extraction.text")
+fake_text.__spec__ = importlib.machinery.ModuleSpec(
+    "sklearn.feature_extraction.text", loader=None
+)
 class FakeVectorizer:
     def fit(self, *a, **k):
         return self
@@ -34,7 +84,13 @@ fake_text.TfidfVectorizer = FakeTfidfVectorizer
 fake_feature.text = fake_text
 fake_sklearn.feature_extraction = fake_feature
 fake_metrics = types.ModuleType("sklearn.metrics")
+fake_metrics.__spec__ = importlib.machinery.ModuleSpec(
+    "sklearn.metrics", loader=None
+)
 fake_pairwise = types.ModuleType("sklearn.metrics.pairwise")
+fake_pairwise.__spec__ = importlib.machinery.ModuleSpec(
+    "sklearn.metrics.pairwise", loader=None
+)
 def fake_cosine_similarity(*a, **k):
     return [[1.0]]
 fake_pairwise.cosine_similarity = fake_cosine_similarity
@@ -69,6 +125,12 @@ fake_qdrant.filter_by_procedure_id = fake_filter_by_procedure_id
 def fake_filter_by_department_id(did):
     return None
 fake_qdrant.filter_by_department_id = fake_filter_by_department_id
+def fake_filter_by_domain(domain):
+    return None
+fake_qdrant.filter_by_domain = fake_filter_by_domain
+def fake_combine_filters(*filters):
+    return None
+fake_qdrant.combine_filters = fake_combine_filters
 sys.modules["qdrant_utils"] = fake_qdrant
 
 # Stub qdrant_client and llama_runner used by rag
@@ -113,7 +175,8 @@ from gateway import app
 
 class TestGateway(unittest.TestCase):
     def setUp(self):
-        self.client = TestClient(app)
+        api_key = os.environ["LLM_DOCS_API_KEY"]
+        self.client = TestClient(app, headers={"X-API-Key": api_key})
 
     def test_endpoints(self):
         response = self.client.get("/endpoints")
@@ -127,7 +190,7 @@ class TestGateway(unittest.TestCase):
 
     def test_process(self):
         data = {"question": "¿Cuál es el horario de atención?"}
-        response = self.client.post("/process", json=data, auth=("admin", "admin"))
+        response = self.client.post("/process", json=data)
         self.assertEqual(response.status_code, 200)
         self.assertIn("respuesta", response.json())
 
@@ -136,24 +199,45 @@ class TestGateway(unittest.TestCase):
             "tool": "doc-generar_respuesta_llm",
             "params": {"pregunta": "hola"}
         }
-        response = self.client.post("/tools/call", json=payload, auth=("admin", "admin"))
+        response = self.client.post("/tools/call", json=payload)
         self.assertEqual(response.status_code, 200)
 
     def test_doc_generar_respuesta_llm_direct(self):
         payload = {"pregunta": "hola"}
-        resp = self.client.post("/doc-generar_respuesta_llm", json=payload, auth=("admin", "admin"))
+        resp = self.client.post("/doc-generar_respuesta_llm", json=payload)
         self.assertEqual(resp.status_code, 200)
         self.assertIn("respuesta", resp.json())
 
     def test_doc_buscar_fragmento_documento(self):
+        payload = {"texto": "hola"}
+        resp = self.client.post(
+            "/doc-buscar_fragmento_documento", json=payload
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("fragmentos", resp.json())
+
+    def test_doc_buscar_fragmento_documento_alias(self):
         payload = {"consulta": "hola"}
-        resp = self.client.post("/doc-buscar_fragmento_documento", json=payload, auth=("admin", "admin"))
+        resp = self.client.post(
+            "/doc-buscar_fragmento_documento", json=payload
+        )
         self.assertEqual(resp.status_code, 200)
         self.assertIn("fragmentos", resp.json())
 
     def test_doc_buscar_fragmento_documento_tool(self):
-        payload = {"tool": "doc-buscar_fragmento_documento", "params": {"consulta": "hola"}}
-        resp = self.client.post("/tools/call", json=payload, auth=("admin", "admin"))
+        payload = {
+            "tool": "doc-buscar_fragmento_documento",
+            "params": {"texto": "hola"},
+        }
+        resp = self.client.post("/tools/call", json=payload)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_doc_buscar_fragmento_documento_tool_alias(self):
+        payload = {
+            "tool": "doc-buscar_fragmento_documento",
+            "params": {"consulta": "hola"},
+        }
+        resp = self.client.post("/tools/call", json=payload)
         self.assertEqual(resp.status_code, 200)
 
 if __name__ == "__main__":
