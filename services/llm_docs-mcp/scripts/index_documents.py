@@ -30,6 +30,15 @@ def normalize_item(raw: dict) -> dict:
     Acepta esquemas dispares (FAQ question/answer, Contrib texto:list,
     Ayudas content+metadata) y devuelve el formato mínimo común.
     """
+    # Mapear claves en inglés a español si existen
+    if "question" in raw or "answer" in raw:
+        question = raw.pop("question", None)
+        answer = raw.pop("answer", None)
+        if question is not None:
+            raw["pregunta"] = question
+        if answer is not None:
+            raw["respuesta"] = answer
+
     doc = raw.get("doc") or raw.get("metadata", {}).get("doc") or ""
     fuente = (
         raw.get("fuente")
@@ -42,20 +51,24 @@ def normalize_item(raw: dict) -> dict:
     tags = raw.get("tags") or raw.get("metadata", {}).get("tags") or []
     tags = [str(t).strip() for t in _as_list(tags)]
     if not tags:
-        tags = ["faq"] if ("answer" in raw or "pregunta" in raw) else ["documento"]
+        tags = ["faq"] if ("respuesta" in raw or "pregunta" in raw) else ["documento"]
 
     alias = raw.get("alias") or raw.get("user_says") or []
     alias = [str(a).strip() for a in _as_list(alias)]
 
     meta = dict(raw.get("metadata") or {})
+    if "pregunta" in raw and "pregunta" not in meta:
+        meta["pregunta"] = raw["pregunta"]
+    if "respuesta" in raw and "respuesta" not in meta:
+        meta["respuesta"] = raw["respuesta"]
 
     texto = raw.get("texto")
     if isinstance(texto, list):
         texto = "\n\n".join(str(x) for x in texto)
 
     if not texto:
-        if "answer" in raw:
-            texto = raw["answer"]
+        if "respuesta" in raw:
+            texto = raw["respuesta"]
             if raw.get("user_says"):
                 alias += [str(a).strip() for a in _as_list(raw["user_says"])]
         elif "content" in raw:
