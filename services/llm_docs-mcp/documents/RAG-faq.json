@@ -1,30 +1,53 @@
 [
   {
     "doc": "faq",
-    "texto": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. ¿En qué puedo ayudarte hoy?",
     "fuente": "RAG-faq.json#faq_saludo_01",
-    "tags": ["saludo", "faq", "session_start"],
-    "alias": ["hola", "buenos dias", "buenas tardes", "buenas noches", "saludos", "hello", "hi"],
     "metadata": {
       "category": "faq",
       "subcategory": "saludo",
-      "faq_id": "faq_saludo_01",
-      "title": "Saludo básico",
-      "user_says": ["hola", "buenos dias", "buenas tardes", "buenas noches", "saludos", "hello", "hi"],
-      "answer_variants": [
-        "¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?",
-        "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy",
-        "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?"
+      "tags": [
+        "saludo",
+        "faq",
+        "session_start"
       ],
-      "priority": 1
-    }
+      "priority": 1,
+      "faq_id": "faq_saludo_01"
+    },
+    "pregunta": "Saludo básico",
+    "respuesta": "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. ¿En qué puedo ayudarte hoy?",
+    "user_says": [
+      "hola",
+      "buenos dias",
+      "buenas tardes",
+      "buenas noches",
+      "saludos",
+      "hello",
+      "hi"
+    ],
+    "answer_variants": [
+      "¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?",
+      "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy",
+      "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?"
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¡Todo bien! Gracias por preguntar. ¿En qué puedo ayudarte hoy?",
     "fuente": "RAG-faq.json#faq_saludo_02",
-    "tags": ["saludo", "pregunta_estado", "faq", "session_start"],
-    "alias": [
+    "metadata": {
+      "category": "faq",
+      "subcategory": "saludo",
+      "tags": [
+        "saludo",
+        "pregunta_estado",
+        "faq",
+        "session_start"
+      ],
+      "priority": 2,
+      "faq_id": "faq_saludo_02"
+    },
+    "pregunta": "Saludo preguntando por estado",
+    "respuesta": "¡Todo bien! Gracias por preguntar. ¿En qué puedo ayudarte hoy?",
+    "user_says": [
       "hola como estas",
       "hi como va todo",
       "hola como va todo",
@@ -37,495 +60,764 @@
       "hola como te va hoy",
       "hola como te sientes hoy"
     ],
-    "metadata": {
-      "category": "faq",
-      "subcategory": "saludo",
-      "faq_id": "faq_saludo_02",
-      "title": "Saludo preguntando por estado",
-      "user_says": [
-        "hola como estas",
-        "hi como va todo",
-        "hola como va todo",
-        "hola como te encuentras",
-        "hola como va tu dia",
-        "hola como te va",
-        "hola como te sientes",
-        "hola como te encuentras hoy",
-        "hola como estas hoy",
-        "hola como te va hoy",
-        "hola como te sientes hoy"
-      ],
-      "answer_variants": [
-        "Todo perfecto y listo para que me digas en que puedo ayudarte",
-        "Yo muy bien. Espero que tú también lo estes y ahora estoy listo para responder lo que me consultes",
-        "A pesar de ser un Chatbot podría decir que estoy bien, por lo que estoy dispuesto a ayudarte en lo que necesites"
-      ],
-      "priority": 2
-    }
+    "answer_variants": [
+      "Todo perfecto y listo para que me digas en que puedo ayudarte",
+      "Yo muy bien. Espero que tú también lo estes y ahora estoy listo para responder lo que me consultes",
+      "A pesar de ser un Chatbot podría decir que estoy bien, por lo que estoy dispuesto a ayudarte en lo que necesites"
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¡Hasta luego! Si necesitas algo más, no dudes en consultarme.",
     "fuente": "RAG-faq.json#faq_despedida_01",
-    "tags": ["despedida", "faq", "session_end"],
-    "alias": ["adios", "hasta luego", "nos vemos", "chau", "chao", "bye", "hasta pronto", "hasta la proxima", "me despido"],
     "metadata": {
       "category": "faq",
       "subcategory": "despedida",
-      "faq_id": "faq_despedida_01",
-      "title": "Despedida corta",
-      "user_says": ["adios", "hasta luego", "nos vemos", "chau", "chao", "bye", "hasta pronto", "hasta la proxima", "me despido"],
-      "answer_variants": [
-        "¡Hasta luego! Que tengas un buen día.",
-        "Nos vemos. Estoy aquí 24/7 si me necesitas.",
-        "Chao. Cuando quieras, vuelve y te ayudo."
-      ],
-      "priority": 1
-    }
-  },
-  {
-    "doc": "faq",
-    "texto": "¡Entendido! Espero haber sido de ayuda. Si necesitas algo en el futuro, aquí estaré.",
-    "fuente": "RAG-faq.json#faq_despedida_02",
-    "tags": ["despedida", "cierre_confirmado", "faq", "session_end"],
-    "alias": ["no necesito mas ayuda", "no necesito ayuda", "eso es todo", "termine", "ya esta", "ya termine"],
-    "metadata": {
-      "category": "faq",
-      "subcategory": "despedida",
-      "faq_id": "faq_despedida_02",
-      "title": "Despedida confirmando que no necesita más ayuda",
-      "user_says": ["no necesito mas ayuda", "no necesito ayuda", "eso es todo", "termine", "ya esta", "ya termine"],
-      "answer_variants": [
-        "Perfecto, me alegra haber ayudado. Estaré por aquí cuando lo requieras.",
-        "De acuerdo. Cierro la sesión; cuando necesites, volvemos a conversar.",
-        "Listo. Si surge otra consulta, vuelve y la resolvemos."
-      ],
-      "priority": 2
-    }
-  },
-  {
-    "doc": "faq",
-    "texto": "¡De nada! ¿Hay algo más en lo que pueda ayudarte?",
-    "fuente": "RAG-faq.json#faq_agradecimiento_01",
-    "tags": ["agradecimiento", "faq"],
-    "alias": ["gracias", "muchas gracias", "te agradezco", "agradecido", "agradecida"],
-    "metadata": {
-      "category": "faq",
-      "subcategory": "agradecimiento",
-      "faq_id": "faq_agradecimiento_01",
-      "title": "Agradecimiento breve",
-      "user_says": ["gracias", "muchas gracias", "te agradezco", "agradecido", "agradecida"],
-      "answer_variants": [
-        "Con gusto. ¿Te ayudo con algo más?",
-        "Con mucho gusto. ¿Qué más necesitas?",
-        "Para eso estoy. ¿Seguimos con algo más?"
+      "tags": [
+        "despedida",
+        "faq",
+        "session_end"
       ],
       "priority": 1,
-      "suggested_replies": ["Trámites", "Agendar cita", "Presentar reclamo", "Consultar horarios"]
-    }
+      "faq_id": "faq_despedida_01"
+    },
+    "pregunta": "Despedida corta",
+    "respuesta": "¡Hasta luego! Si necesitas algo más, no dudes en consultarme.",
+    "user_says": [
+      "adios",
+      "hasta luego",
+      "nos vemos",
+      "chau",
+      "chao",
+      "bye",
+      "hasta pronto",
+      "hasta la proxima",
+      "me despido"
+    ],
+    "answer_variants": [
+      "¡Hasta luego! Que tengas un buen día.",
+      "Nos vemos. Estoy aquí 24/7 si me necesitas.",
+      "Chao. Cuando quieras, vuelve y te ayudo."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¡De nada! Si tienes más preguntas, aquí estoy.",
-    "fuente": "RAG-faq.json#faq_agradecimiento_02",
-    "tags": ["agradecimiento", "faq"],
-    "alias": ["gracias por tu ayuda", "gracias por ayudarme", "gracias por la informacion"],
+    "fuente": "RAG-faq.json#faq_despedida_02",
+    "metadata": {
+      "category": "faq",
+      "subcategory": "despedida",
+      "tags": [
+        "despedida",
+        "cierre_confirmado",
+        "faq",
+        "session_end"
+      ],
+      "priority": 2,
+      "faq_id": "faq_despedida_02"
+    },
+    "pregunta": "Despedida confirmando que no necesita más ayuda",
+    "respuesta": "¡Entendido! Espero haber sido de ayuda. Si necesitas algo en el futuro, aquí estaré.",
+    "user_says": [
+      "no necesito mas ayuda",
+      "no necesito ayuda",
+      "eso es todo",
+      "termine",
+      "ya esta",
+      "ya termine"
+    ],
+    "answer_variants": [
+      "Perfecto, me alegra haber ayudado. Estaré por aquí cuando lo requieras.",
+      "De acuerdo. Cierro la sesión; cuando necesites, volvemos a conversar.",
+      "Listo. Si surge otra consulta, vuelve y la resolvemos."
+    ]
+  },
+  {
+    "doc": "faq",
+    "fuente": "RAG-faq.json#faq_agradecimiento_01",
     "metadata": {
       "category": "faq",
       "subcategory": "agradecimiento",
-      "faq_id": "faq_agradecimiento_02",
-      "title": "Agradecimiento por la ayuda recibida",
-      "user_says": ["gracias por tu ayuda", "gracias por ayudarme", "gracias por la informacion"],
-      "answer_variants": [
-        "Me alegra haber ayudado. ¿Algo más?",
-        "Un gusto. ¿Deseas hacer otro trámite o consulta?",
-        "Cuando quieras, seguimos con lo que necesites."
+      "tags": [
+        "agradecimiento",
+        "faq"
       ],
-      "priority": 2,
-      "suggested_replies": ["Trámites", "Agendar cita", "Presentar reclamo", "Consultar horarios"]
-    }
+      "priority": 1,
+      "faq_id": "faq_agradecimiento_01",
+      "suggested_replies": [
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo",
+        "Consultar horarios"
+      ]
+    },
+    "pregunta": "Agradecimiento breve",
+    "respuesta": "¡De nada! ¿Hay algo más en lo que pueda ayudarte?",
+    "user_says": [
+      "gracias",
+      "muchas gracias",
+      "te agradezco",
+      "agradecido",
+      "agradecida"
+    ],
+    "answer_variants": [
+      "Con gusto. ¿Te ayudo con algo más?",
+      "Con mucho gusto. ¿Qué más necesitas?",
+      "Para eso estoy. ¿Seguimos con algo más?"
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¡Me alegra que todo vaya bien! Estoy aquí para ayudarte.",
+    "fuente": "RAG-faq.json#faq_agradecimiento_02",
+    "metadata": {
+      "category": "faq",
+      "subcategory": "agradecimiento",
+      "tags": [
+        "agradecimiento",
+        "faq"
+      ],
+      "priority": 2,
+      "faq_id": "faq_agradecimiento_02",
+      "suggested_replies": [
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo",
+        "Consultar horarios"
+      ]
+    },
+    "pregunta": "Agradecimiento por la ayuda recibida",
+    "respuesta": "¡De nada! Si tienes más preguntas, aquí estoy.",
+    "user_says": [
+      "gracias por tu ayuda",
+      "gracias por ayudarme",
+      "gracias por la informacion"
+    ],
+    "answer_variants": [
+      "Me alegra haber ayudado. ¿Algo más?",
+      "Un gusto. ¿Deseas hacer otro trámite o consulta?",
+      "Cuando quieras, seguimos con lo que necesites."
+    ]
+  },
+  {
+    "doc": "faq",
     "fuente": "RAG-faq.json#faq_estado_animo_positivo",
-    "tags": ["estado_animo", "faq", "positivo"],
-    "alias": ["estoy bien", "todo bien", "genial", "excelente", "perfecto", "feliz", "me alegro"],
     "metadata": {
       "category": "faq",
       "subcategory": "estado_animo_positivo",
-      "faq_id": "faq_estado_animo_positivo",
-      "title": "Respuesta a estado de ánimo positivo del usuario",
-      "user_says": ["estoy bien", "todo bien", "genial", "excelente", "perfecto", "feliz", "me alegro"],
-      "answer_variants": [
-        "Qué bueno leer eso. ¿En qué puedo ayudarte?",
-        "Excelente. Dime, ¿qué necesitas?",
-        "Me alegra. ¿Seguimos con tu consulta?"
+      "tags": [
+        "estado_animo",
+        "faq",
+        "positivo"
       ],
       "priority": 1,
-      "suggested_replies": ["Trámites", "Agendar cita", "Presentar reclamo", "Consultar horarios"]
-    }
+      "faq_id": "faq_estado_animo_positivo",
+      "suggested_replies": [
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo",
+        "Consultar horarios"
+      ]
+    },
+    "pregunta": "Respuesta a estado de ánimo positivo del usuario",
+    "respuesta": "¡Me alegra que todo vaya bien! Estoy aquí para ayudarte.",
+    "user_says": [
+      "estoy bien",
+      "todo bien",
+      "genial",
+      "excelente",
+      "perfecto",
+      "feliz",
+      "me alegro"
+    ],
+    "answer_variants": [
+      "Qué bueno leer eso. ¿En qué puedo ayudarte?",
+      "Excelente. Dime, ¿qué necesitas?",
+      "Me alegra. ¿Seguimos con tu consulta?"
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Lamento que te sientas así. Cuéntame cómo puedo ayudarte.",
     "fuente": "RAG-faq.json#faq_estado_animo_negativo",
-    "tags": ["estado_animo", "faq", "negativo"],
-    "alias": ["no me siento bien", "no estoy bien", "me siento mal", "estoy triste"],
     "metadata": {
       "category": "faq",
       "subcategory": "estado_animo_negativo",
-      "faq_id": "faq_estado_animo_negativo",
-      "title": "Respuesta a estado de ánimo negativo del usuario",
-      "user_says": ["no me siento bien", "no estoy bien", "me siento mal", "estoy triste"],
-      "answer_variants": [
-        "Siento que estés pasando por eso. ¿En qué te puedo apoyar?",
-        "Gracias por contarlo. ¿Qué necesitas que resolvamos?",
-        "Estoy aquí para ayudarte. Dime qué te preocupa."
+      "tags": [
+        "estado_animo",
+        "faq",
+        "negativo"
       ],
       "priority": 2,
-      "suggested_replies": ["Trámites", "Agendar cita", "Presentar reclamo", "Consultar horarios"]
-    }
+      "faq_id": "faq_estado_animo_negativo",
+      "suggested_replies": [
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo",
+        "Consultar horarios"
+      ]
+    },
+    "pregunta": "Respuesta a estado de ánimo negativo del usuario",
+    "respuesta": "Lamento que te sientas así. Cuéntame cómo puedo ayudarte.",
+    "user_says": [
+      "no me siento bien",
+      "no estoy bien",
+      "me siento mal",
+      "estoy triste"
+    ],
+    "answer_variants": [
+      "Siento que estés pasando por eso. ¿En qué te puedo apoyar?",
+      "Gracias por contarlo. ¿Qué necesitas que resolvamos?",
+      "Estoy aquí para ayudarte. Dime qué te preocupa."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Muy bien, gracias. ¿Cómo puedo ayudarte?",
     "fuente": "RAG-faq.json#faq_estado_animo_bot",
-    "tags": ["estado_animo", "faq", "meta_pregunta"],
-    "alias": ["como estas", "como te encuentras", "como va todo", "como va tu dia"],
     "metadata": {
       "category": "faq",
       "subcategory": "meta_bot",
-      "faq_id": "faq_estado_animo_bot",
-      "title": "Pregunta sobre el estado del bot",
-      "user_says": ["como estas", "como te encuentras", "como va todo", "como va tu dia"],
-      "answer_variants": [
-        "Todo en orden. ¿En qué te ayudo?",
-        "Listo para ayudarte. ¿Qué necesitas?",
-        "Muy bien por aquí. Dime, ¿cómo te apoyo?"
+      "tags": [
+        "estado_animo",
+        "faq",
+        "meta_pregunta"
       ],
-      "priority": 2
-    }
+      "priority": 2,
+      "faq_id": "faq_estado_animo_bot"
+    },
+    "pregunta": "Pregunta sobre el estado del bot",
+    "respuesta": "Muy bien, gracias. ¿Cómo puedo ayudarte?",
+    "user_says": [
+      "como estas",
+      "como te encuentras",
+      "como va todo",
+      "como va tu dia"
+    ],
+    "answer_variants": [
+      "Todo en orden. ¿En qué te ayudo?",
+      "Listo para ayudarte. ¿Qué necesitas?",
+      "Muy bien por aquí. Dime, ¿cómo te apoyo?"
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Lamento no haber cumplido tus expectativas. Si reformulas la pregunta o agregas más detalles, intentaré ayudarte mejor.",
     "fuente": "RAG-faq.json#faq_decepcion_01",
-    "tags": ["decepcion", "faq", "feedback"],
-    "alias": ["no es la respuesta que esperaba", "mala respuesta", "no me ayudaste", "no resolviste mi problema", "no me sirvio"],
     "metadata": {
       "category": "faq",
       "subcategory": "decepcion",
-      "faq_id": "faq_decepcion_01",
-      "title": "Decepción o queja por la respuesta del bot",
-      "user_says": ["no es la respuesta que esperaba", "mala respuesta", "no me ayudaste", "no resolviste mi problema", "no me sirvio"],
-      "answer_variants": [
-        "Perdona la confusión. Dame más contexto y lo solucionamos.",
-        "Entiendo. ¿Puedes contarme un poco más para ayudarte mejor?",
-        "Gracias por el comentario. Ajustemos la consulta para darte una mejor respuesta."
+      "tags": [
+        "decepcion",
+        "faq",
+        "feedback"
       ],
       "priority": 3,
-      "suggested_replies": ["Reformular pregunta", "Hablar con una persona", "Presentar reclamo", "Trámites"]
-    }
+      "faq_id": "faq_decepcion_01",
+      "suggested_replies": [
+        "Reformular pregunta",
+        "Hablar con una persona",
+        "Presentar reclamo",
+        "Trámites"
+      ]
+    },
+    "pregunta": "Decepción o queja por la respuesta del bot",
+    "respuesta": "Lamento no haber cumplido tus expectativas. Si reformulas la pregunta o agregas más detalles, intentaré ayudarte mejor.",
+    "user_says": [
+      "no es la respuesta que esperaba",
+      "mala respuesta",
+      "no me ayudaste",
+      "no resolviste mi problema",
+      "no me sirvio"
+    ],
+    "answer_variants": [
+      "Perdona la confusión. Dame más contexto y lo solucionamos.",
+      "Entiendo. ¿Puedes contarme un poco más para ayudarte mejor?",
+      "Gracias por el comentario. Ajustemos la consulta para darte una mejor respuesta."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Puedo orientarte en trámites, beneficios sociales, horarios y normativa municipal; además, agendar citas y registrar reclamos.",
     "fuente": "RAG-faq.json#faq_funcion_bot_01",
-    "tags": ["funcion_bot", "faq", "meta_pregunta"],
-    "alias": ["que haces", "para que te crearon", "que puedes hacer", "cuales son tus funciones"],
     "metadata": {
       "category": "faq",
       "subcategory": "meta_bot",
-      "faq_id": "faq_funcion_bot_01",
-      "title": "¿Qué puedes hacer?",
-      "user_says": ["que haces", "para que te crearon", "que puedes hacer", "cuales son tus funciones"],
-      "answer_variants": [
-        "Respondo preguntas y te guío en trámites, beneficios, horarios y normativa.",
-        "Te ayudo a encontrar información, agendar horas y presentar reclamos.",
-        "Puedo asesorarte en servicios municipales y realizar gestiones como agenda y reclamos."
-      ],
-      "priority": 1
-    }
-  },
-  {
-    "doc": "faq",
-    "texto": "Estoy disponible 24/7, siempre listo para ayudarte.",
-    "fuente": "RAG-faq.json#faq_disponibilidad_01",
-    "tags": ["disponibilidad", "faq", "meta_pregunta"],
-    "alias": ["a que horas estas disponible", "cual es tu horario de atencion", "cuando puedo contactarte", "estas 24/7"],
-    "metadata": {
-      "category": "faq",
-      "subcategory": "meta_bot",
-      "faq_id": "faq_disponibilidad_01",
-      "title": "¿Cuál es tu horario de atención?",
-      "user_says": ["a que horas estas disponible", "cual es tu horario de atencion", "cuando puedo contactarte", "estas 24/7"],
-      "answer_variants": [
-        "Atiendo 24/7. Escríbeme cuando quieras.",
-        "Disponible todo el día, todos los días.",
-        "Puedes contactarme en cualquier momento; estoy siempre en línea."
-      ],
-      "priority": 1
-    }
-  },
-  {
-    "doc": "faq",
-    "texto": "Actualmente respondo en español, idioma oficial de la República.",
-    "fuente": "RAG-faq.json#faq_idiomas_01",
-    "tags": ["idiomas", "faq", "meta_pregunta"],
-    "alias": ["en que idiomas hablas", "que idioma hablas", "que idiomas entiendes", "hablas ingles"],
-    "metadata": {
-      "category": "faq",
-      "subcategory": "meta_bot",
-      "faq_id": "faq_idiomas_01",
-      "title": "¿En qué idiomas hablas?",
-      "user_says": ["en que idiomas hablas", "que idioma hablas", "que idiomas entiendes", "hablas ingles"],
-      "answer_variants": [
-        "Por ahora atiendo en español.",
-        "Respondo en español. ¿Continuamos?",
-        "Mi soporte actual es en español."
+      "tags": [
+        "funcion_bot",
+        "faq",
+        "meta_pregunta"
       ],
       "priority": 1,
-      "suggested_replies": ["Trámites", "Agendar cita", "Presentar reclamo", "Consultar horarios"]
-    }
+      "faq_id": "faq_funcion_bot_01"
+    },
+    "pregunta": "¿Qué puedes hacer?",
+    "respuesta": "Puedo orientarte en trámites, beneficios sociales, horarios y normativa municipal; además, agendar citas y registrar reclamos.",
+    "user_says": [
+      "que haces",
+      "para que te crearon",
+      "que puedes hacer",
+      "cuales son tus funciones"
+    ],
+    "answer_variants": [
+      "Respondo preguntas y te guío en trámites, beneficios, horarios y normativa.",
+      "Te ayudo a encontrar información, agendar horas y presentar reclamos.",
+      "Puedo asesorarte en servicios municipales y realizar gestiones como agenda y reclamos."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Tratamos tus datos conforme a la normativa vigente y no los compartimos con terceros sin tu consentimiento.",
+    "fuente": "RAG-faq.json#faq_disponibilidad_01",
+    "metadata": {
+      "category": "faq",
+      "subcategory": "meta_bot",
+      "tags": [
+        "disponibilidad",
+        "faq",
+        "meta_pregunta"
+      ],
+      "priority": 1,
+      "faq_id": "faq_disponibilidad_01"
+    },
+    "pregunta": "¿Cuál es tu horario de atención?",
+    "respuesta": "Estoy disponible 24/7, siempre listo para ayudarte.",
+    "user_says": [
+      "a que horas estas disponible",
+      "cual es tu horario de atencion",
+      "cuando puedo contactarte",
+      "estas 24/7"
+    ],
+    "answer_variants": [
+      "Atiendo 24/7. Escríbeme cuando quieras.",
+      "Disponible todo el día, todos los días.",
+      "Puedes contactarme en cualquier momento; estoy siempre en línea."
+    ]
+  },
+  {
+    "doc": "faq",
+    "fuente": "RAG-faq.json#faq_idiomas_01",
+    "metadata": {
+      "category": "faq",
+      "subcategory": "meta_bot",
+      "tags": [
+        "idiomas",
+        "faq",
+        "meta_pregunta"
+      ],
+      "priority": 1,
+      "faq_id": "faq_idiomas_01",
+      "suggested_replies": [
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo",
+        "Consultar horarios"
+      ]
+    },
+    "pregunta": "¿En qué idiomas hablas?",
+    "respuesta": "Actualmente respondo en español, idioma oficial de la República.",
+    "user_says": [
+      "en que idiomas hablas",
+      "que idioma hablas",
+      "que idiomas entiendes",
+      "hablas ingles"
+    ],
+    "answer_variants": [
+      "Por ahora atiendo en español.",
+      "Respondo en español. ¿Continuamos?",
+      "Mi soporte actual es en español."
+    ]
+  },
+  {
+    "doc": "faq",
     "fuente": "RAG-faq.json#faq_privacidad_01",
-    "tags": ["privacidad", "faq", "seguridad"],
-    "alias": ["como proteges mis datos", "politica de privacidad", "mis datos estan seguros", "que haces con mi informacion"],
     "metadata": {
       "category": "faq",
       "subcategory": "privacidad",
-      "faq_id": "faq_privacidad_01",
-      "title": "¿Cómo protegen mis datos?",
-      "user_says": ["como proteges mis datos", "politica de privacidad", "mis datos estan seguros", "que haces con mi informacion"],
-      "answer_variants": [
-        "Protegemos tus datos según la ley vigente y con medidas de seguridad internas.",
-        "Tus datos se usan solo para atender tu consulta y no se comparten sin autorización.",
-        "Aplicamos resguardo legal y técnico; puedes revisar la política de privacidad."
+      "tags": [
+        "privacidad",
+        "faq",
+        "seguridad"
       ],
       "priority": 2,
-      "suggested_replies": ["Ver política de privacidad", "Contactar humano", "Trámites"]
-    }
+      "faq_id": "faq_privacidad_01",
+      "suggested_replies": [
+        "Ver política de privacidad",
+        "Contactar humano",
+        "Trámites"
+      ]
+    },
+    "pregunta": "¿Cómo protegen mis datos?",
+    "respuesta": "Tratamos tus datos conforme a la normativa vigente y no los compartimos con terceros sin tu consentimiento.",
+    "user_says": [
+      "como proteges mis datos",
+      "politica de privacidad",
+      "mis datos estan seguros",
+      "que haces con mi informacion"
+    ],
+    "answer_variants": [
+      "Protegemos tus datos según la ley vigente y con medidas de seguridad internas.",
+      "Tus datos se usan solo para atender tu consulta y no se comparten sin autorización.",
+      "Aplicamos resguardo legal y técnico; puedes revisar la política de privacidad."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "El costo depende de los módulos requeridos. Escríbenos a ei@publilab.cl y un asesor te cotizará.",
     "fuente": "RAG-faq.json#faq_costos_01",
-    "tags": ["costos", "faq", "comercial"],
-    "alias": ["cuanto cuesta munbot", "precio de munbot", "cuanto cuesta la implementacion", "valor de munbot"],
     "metadata": {
       "category": "faq",
       "subcategory": "costos",
-      "faq_id": "faq_costos_01",
-      "title": "¿Cuánto cuesta MunBoT?",
-      "user_says": ["cuanto cuesta munbot", "precio de munbot", "cuanto cuesta la implementacion", "valor de munbot"],
-      "answer_variants": [
-        "La inversión varía según los módulos. Contáctanos en ei@publilab.cl para una cotización.",
-        "Depende del alcance (trámites, agenda, reclamos, etc.). Solicita propuesta en ei@publilab.cl.",
-        "Ofrecemos planes según necesidades. Te orientamos vía ei@publilab.cl."
+      "tags": [
+        "costos",
+        "faq",
+        "comercial"
       ],
       "priority": 1,
-      "suggested_replies": ["Solicitar contacto comercial", "Características del servicio", "Casos de uso"]
-    }
+      "faq_id": "faq_costos_01",
+      "suggested_replies": [
+        "Solicitar contacto comercial",
+        "Características del servicio",
+        "Casos de uso"
+      ]
+    },
+    "pregunta": "¿Cuánto cuesta MunBoT?",
+    "respuesta": "El costo depende de los módulos requeridos. Escríbenos a ei@publilab.cl y un asesor te cotizará.",
+    "user_says": [
+      "cuanto cuesta munbot",
+      "precio de munbot",
+      "cuanto cuesta la implementacion",
+      "valor de munbot"
+    ],
+    "answer_variants": [
+      "La inversión varía según los módulos. Contáctanos en ei@publilab.cl para una cotización.",
+      "Depende del alcance (trámites, agenda, reclamos, etc.). Solicita propuesta en ei@publilab.cl.",
+      "Ofrecemos planes según necesidades. Te orientamos vía ei@publilab.cl."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Claro. Indícame el motivo de tu reclamo, fecha y lugar del hecho, y tus datos de contacto para registrarlo.",
     "fuente": "RAG-faq.json#faq_reclamos_01",
-    "tags": ["reclamos", "faq", "iniciar_reclamo"],
-    "alias": ["quiero hacer un reclamo", "dejar una queja", "escribir un reclamo", "como presento un reclamo"],
     "metadata": {
       "category": "faq",
       "subcategory": "reclamos",
-      "faq_id": "faq_reclamos_01",
-      "title": "Quiero ingresar un reclamo",
-      "user_says": ["quiero hacer un reclamo", "dejar una queja", "escribir un reclamo", "como presento un reclamo"],
-      "answer_variants": [
-        "Te ayudo con el reclamo. Cuéntame motivo, fecha/lugar y tu contacto.",
-        "Procedamos: motivo del reclamo, fecha/lugar y datos de contacto.",
-        "Para registrarlo, necesito motivo, cuándo/dónde ocurrió y tu contacto."
+      "tags": [
+        "reclamos",
+        "faq",
+        "iniciar_reclamo"
       ],
       "priority": 3,
-      "suggested_replies": ["Ingresar reclamo ahora", "Ver estado de un reclamo", "Contactar humano"]
-    }
+      "faq_id": "faq_reclamos_01",
+      "suggested_replies": [
+        "Ingresar reclamo ahora",
+        "Ver estado de un reclamo",
+        "Contactar humano"
+      ]
+    },
+    "pregunta": "Quiero ingresar un reclamo",
+    "respuesta": "Claro. Indícame el motivo de tu reclamo, fecha y lugar del hecho, y tus datos de contacto para registrarlo.",
+    "user_says": [
+      "quiero hacer un reclamo",
+      "dejar una queja",
+      "escribir un reclamo",
+      "como presento un reclamo"
+    ],
+    "answer_variants": [
+      "Te ayudo con el reclamo. Cuéntame motivo, fecha/lugar y tu contacto.",
+      "Procedamos: motivo del reclamo, fecha/lugar y datos de contacto.",
+      "Para registrarlo, necesito motivo, cuándo/dónde ocurrió y tu contacto."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Indícame el trámite y la fecha/hora deseadas para generar la reserva.",
     "fuente": "RAG-faq.json#faq_citas_01",
-    "tags": ["citas", "faq", "iniciar_agendamiento"],
-    "alias": ["quiero agendar una cita", "pedir una hora", "como agendar una cita", "necesito una cita"],
     "metadata": {
       "category": "faq",
       "subcategory": "citas",
-      "faq_id": "faq_citas_01",
-      "title": "Quiero agendar una cita",
-      "user_says": ["quiero agendar una cita", "pedir una hora", "como agendar una cita", "necesito una cita"],
-      "answer_variants": [
-        "¿Para qué trámite y en qué fecha/hora necesitas la cita?",
-        "Dime el trámite y tu disponibilidad y gestiono la reserva.",
-        "Especifica trámite y fecha/hora preferidas y la agendamos."
+      "tags": [
+        "citas",
+        "faq",
+        "iniciar_agendamiento"
       ],
       "priority": 3,
-      "suggested_replies": ["Ver horas disponibles", "Cancelar cita", "Confirmar cita"]
-    }
+      "faq_id": "faq_citas_01",
+      "suggested_replies": [
+        "Ver horas disponibles",
+        "Cancelar cita",
+        "Confirmar cita"
+      ]
+    },
+    "pregunta": "Quiero agendar una cita",
+    "respuesta": "Indícame el trámite y la fecha/hora deseadas para generar la reserva.",
+    "user_says": [
+      "quiero agendar una cita",
+      "pedir una hora",
+      "como agendar una cita",
+      "necesito una cita"
+    ],
+    "answer_variants": [
+      "¿Para qué trámite y en qué fecha/hora necesitas la cita?",
+      "Dime el trámite y tu disponibilidad y gestiono la reserva.",
+      "Especifica trámite y fecha/hora preferidas y la agendamos."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Visita https://claveunica.gob.cl, selecciona “Obtener Clave Única” y sigue las instrucciones de validación.",
     "fuente": "RAG-faq.json#faq_clave_unica_01",
-    "tags": ["clave_unica", "faq", "tramites"],
-    "alias": ["como obtengo mi clave unica", "proceso para obtener clave unica", "sacar clave unica", "donde consigo la clave unica"],
     "metadata": {
       "category": "faq",
       "subcategory": "clave_unica",
-      "faq_id": "faq_clave_unica_01",
-      "title": "¿Cómo obtengo la Clave Única?",
-      "user_says": ["como obtengo mi clave unica", "proceso para obtener clave unica", "sacar clave unica", "donde consigo la clave unica"],
-      "answer_variants": [
-        "Ingresa a https://claveunica.gob.cl y elige “Obtener Clave Única”.",
-        "Realízalo en https://claveunica.gob.cl, opción “Obtener Clave Única”.",
-        "Dirígete a https://claveunica.gob.cl y sigue los pasos indicados."
+      "tags": [
+        "clave_unica",
+        "faq",
+        "tramites"
       ],
       "priority": 2,
-      "suggested_replies": ["Requisitos", "Dónde obtener", "Horario de atención"]
-    }
+      "faq_id": "faq_clave_unica_01",
+      "suggested_replies": [
+        "Requisitos",
+        "Dónde obtener",
+        "Horario de atención"
+      ]
+    },
+    "pregunta": "¿Cómo obtengo la Clave Única?",
+    "respuesta": "Visita https://claveunica.gob.cl, selecciona “Obtener Clave Única” y sigue las instrucciones de validación.",
+    "user_says": [
+      "como obtengo mi clave unica",
+      "proceso para obtener clave unica",
+      "sacar clave unica",
+      "donde consigo la clave unica"
+    ],
+    "answer_variants": [
+      "Ingresa a https://claveunica.gob.cl y elige “Obtener Clave Única”.",
+      "Realízalo en https://claveunica.gob.cl, opción “Obtener Clave Única”.",
+      "Dirígete a https://claveunica.gob.cl y sigue los pasos indicados."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Puedes consultar sobre trámites, beneficios, horarios y normativa; además, agendar citas y presentar reclamos.",
     "fuente": "RAG-faq.json#faq_consultas_tramites_01",
-    "tags": ["consultas_tramites", "faq", "meta_pregunta"],
-    "alias": ["que tipo de consultas puedo hacer", "que tramites puedo realizar", "que te puedo preguntar", "cual es el alcance de tus respuestas"],
     "metadata": {
       "category": "faq",
       "subcategory": "consultas_tramites",
-      "faq_id": "faq_consultas_tramites_01",
-      "title": "¿Qué tipo de consultas puedo hacer?",
-      "user_says": ["que tipo de consultas puedo hacer", "que tramites puedo realizar", "que te puedo preguntar", "cual es el alcance de tus respuestas"],
-      "answer_variants": [
-        "Resuelvo dudas de trámites, beneficios, horarios y normativa; también agenda y reclamos.",
-        "Puedo orientarte en servicios municipales, agenda y registro de reclamos.",
-        "Atiendo consultas de información municipal y gestiones básicas (agenda, reclamos)."
+      "tags": [
+        "consultas_tramites",
+        "faq",
+        "meta_pregunta"
       ],
       "priority": 1,
-      "suggested_replies": ["Trámites", "Agendar cita", "Presentar reclamo", "Consultar horarios"]
-    }
+      "faq_id": "faq_consultas_tramites_01",
+      "suggested_replies": [
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo",
+        "Consultar horarios"
+      ]
+    },
+    "pregunta": "¿Qué tipo de consultas puedo hacer?",
+    "respuesta": "Puedes consultar sobre trámites, beneficios, horarios y normativa; además, agendar citas y presentar reclamos.",
+    "user_says": [
+      "que tipo de consultas puedo hacer",
+      "que tramites puedo realizar",
+      "que te puedo preguntar",
+      "cual es el alcance de tus respuestas"
+    ],
+    "answer_variants": [
+      "Resuelvo dudas de trámites, beneficios, horarios y normativa; también agenda y reclamos.",
+      "Puedo orientarte en servicios municipales, agenda y registro de reclamos.",
+      "Atiendo consultas de información municipal y gestiones básicas (agenda, reclamos)."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¿Qué certificado necesitas? Puedo indicarte requisitos, dónde obtenerlo y horarios.",
     "fuente": "RAG-faq.json#faq_consultas_tramites_02",
-    "tags": ["consultas_tramites", "faq", "certificados", "consulta_incompleta"],
-    "alias": ["obtener un certificado", "solicitar un certificado", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "sacar un certificado"],
     "metadata": {
       "category": "faq",
       "subcategory": "consultas_tramites",
+      "tags": [
+        "consultas_tramites",
+        "faq",
+        "certificados",
+        "consulta_incompleta"
+      ],
+      "priority": 2,
       "faq_id": "faq_consultas_tramites_02",
-      "title": "Quiero obtener un certificado",
-      "user_says": ["obtener un certificado", "solicitar un certificado", "quiero obtener un certificado", "quiero solicitar un certificado", "quiero un certificado", "sacar un certificado"],
-      "answer_variants": [
-        "Indícame el tipo de certificado y te doy requisitos, lugar y horarios.",
-        "¿Cuál certificado en específico? Te entrego requisitos y dónde tramitarlo.",
-        "Dime el certificado y te muestro requisitos y horarios."
-      ],
-      "priority": 2,
-      "suggested_replies": ["Requisitos", "Dónde obtener", "Horario de atención"]
-    }
+      "suggested_replies": [
+        "Requisitos",
+        "Dónde obtener",
+        "Horario de atención"
+      ]
+    },
+    "pregunta": "Quiero obtener un certificado",
+    "respuesta": "¿Qué certificado necesitas? Puedo indicarte requisitos, dónde obtenerlo y horarios.",
+    "user_says": [
+      "obtener un certificado",
+      "solicitar un certificado",
+      "quiero obtener un certificado",
+      "quiero solicitar un certificado",
+      "quiero un certificado",
+      "sacar un certificado"
+    ],
+    "answer_variants": [
+      "Indícame el tipo de certificado y te doy requisitos, lugar y horarios.",
+      "¿Cuál certificado en específico? Te entrego requisitos y dónde tramitarlo.",
+      "Dime el certificado y te muestro requisitos y horarios."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¿Qué permiso en particular? Puedo indicarte requisitos, dónde obtenerlo y horarios.",
     "fuente": "RAG-faq.json#faq_consultas_tramites_03",
-    "tags": ["consultas_tramites", "faq", "permisos", "consulta_incompleta"],
-    "alias": ["obtener un permiso", "solicitar un permiso", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "sacar un permiso"],
     "metadata": {
       "category": "faq",
       "subcategory": "consultas_tramites",
+      "tags": [
+        "consultas_tramites",
+        "faq",
+        "permisos",
+        "consulta_incompleta"
+      ],
+      "priority": 2,
       "faq_id": "faq_consultas_tramites_03",
-      "title": "Quiero obtener un permiso",
-      "user_says": ["obtener un permiso", "solicitar un permiso", "quiero obtener un permiso", "quiero solicitar un permiso", "quiero un permiso", "sacar un permiso"],
-      "answer_variants": [
-        "Dime el tipo de permiso y te doy requisitos, lugar y horarios.",
-        "¿Qué permiso necesitas? Te oriento con requisitos y dónde tramitar.",
-        "Especifica el permiso y te indico requisitos y atención."
-      ],
-      "priority": 2,
-      "suggested_replies": ["Requisitos", "Dónde obtener", "Horario de atención"]
-    }
+      "suggested_replies": [
+        "Requisitos",
+        "Dónde obtener",
+        "Horario de atención"
+      ]
+    },
+    "pregunta": "Quiero obtener un permiso",
+    "respuesta": "¿Qué permiso en particular? Puedo indicarte requisitos, dónde obtenerlo y horarios.",
+    "user_says": [
+      "obtener un permiso",
+      "solicitar un permiso",
+      "quiero obtener un permiso",
+      "quiero solicitar un permiso",
+      "quiero un permiso",
+      "sacar un permiso"
+    ],
+    "answer_variants": [
+      "Dime el tipo de permiso y te doy requisitos, lugar y horarios.",
+      "¿Qué permiso necesitas? Te oriento con requisitos y dónde tramitar.",
+      "Especifica el permiso y te indico requisitos y atención."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¿Qué licencia necesitas? Te puedo indicar requisitos, dónde tramitarla y horarios.",
     "fuente": "RAG-faq.json#faq_consultas_tramites_04",
-    "tags": ["consultas_tramites", "faq", "licencias", "consulta_incompleta"],
-    "alias": ["obtener una licencia", "solicitar una licencia", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"],
     "metadata": {
       "category": "faq",
       "subcategory": "consultas_tramites",
+      "tags": [
+        "consultas_tramites",
+        "faq",
+        "licencias",
+        "consulta_incompleta"
+      ],
+      "priority": 2,
       "faq_id": "faq_consultas_tramites_04",
-      "title": "Quiero obtener una licencia",
-      "user_says": ["obtener una licencia", "solicitar una licencia", "quiero obtener una licencia", "quiero solicitar una licencia", "quiero una licencia", "sacar una licencia"],
-      "answer_variants": [
-        "Indica la licencia y te doy requisitos y dónde tramitar.",
-        "¿Qué tipo de licencia? Te oriento con requisitos y atención.",
-        "Dime la licencia específica y te entrego requisitos y horarios."
-      ],
-      "priority": 2,
-      "suggested_replies": ["Requisitos", "Dónde obtener", "Horario de atención"]
-    }
+      "suggested_replies": [
+        "Requisitos",
+        "Dónde obtener",
+        "Horario de atención"
+      ]
+    },
+    "pregunta": "Quiero obtener una licencia",
+    "respuesta": "¿Qué licencia necesitas? Te puedo indicar requisitos, dónde tramitarla y horarios.",
+    "user_says": [
+      "obtener una licencia",
+      "solicitar una licencia",
+      "quiero obtener una licencia",
+      "quiero solicitar una licencia",
+      "quiero una licencia",
+      "sacar una licencia"
+    ],
+    "answer_variants": [
+      "Indica la licencia y te doy requisitos y dónde tramitar.",
+      "¿Qué tipo de licencia? Te oriento con requisitos y atención.",
+      "Dime la licencia específica y te entrego requisitos y horarios."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "¿Qué patente te interesa? Puedo darte requisitos, dónde tramitarla y horarios.",
     "fuente": "RAG-faq.json#faq_consultas_tramites_05",
-    "tags": ["consultas_tramites", "faq", "patentes", "consulta_incompleta"],
-    "alias": ["obtener una patente", "solicitar una patente", "quiero obtener una patente", "quiero solicitar una patente", "quiero una patente", "sacar una patente"],
     "metadata": {
       "category": "faq",
       "subcategory": "consultas_tramites",
-      "faq_id": "faq_consultas_tramites_05",
-      "title": "Quiero obtener una patente",
-      "user_says": ["obtener una patente", "solicitar una patente", "quiero obtener una patente", "quiero solicitar una patente", "quiero una patente", "sacar una patente"],
-      "answer_variants": [
-        "Dime qué patente necesitas y te indico requisitos y dónde obtenerla.",
-        "¿Qué tipo de patente? Te doy requisitos y atención.",
-        "Especifica la patente y te muestro requisitos y horarios."
+      "tags": [
+        "consultas_tramites",
+        "faq",
+        "patentes",
+        "consulta_incompleta"
       ],
       "priority": 2,
-      "suggested_replies": ["Requisitos", "Dónde obtener", "Horario de atención"]
-    }
+      "faq_id": "faq_consultas_tramites_05",
+      "suggested_replies": [
+        "Requisitos",
+        "Dónde obtener",
+        "Horario de atención"
+      ]
+    },
+    "pregunta": "Quiero obtener una patente",
+    "respuesta": "¿Qué patente te interesa? Puedo darte requisitos, dónde tramitarla y horarios.",
+    "user_says": [
+      "obtener una patente",
+      "solicitar una patente",
+      "quiero obtener una patente",
+      "quiero solicitar una patente",
+      "quiero una patente",
+      "sacar una patente"
+    ],
+    "answer_variants": [
+      "Dime qué patente necesitas y te indico requisitos y dónde obtenerla.",
+      "¿Qué tipo de patente? Te doy requisitos y atención.",
+      "Especifica la patente y te muestro requisitos y horarios."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Para la Cédula de Identidad necesitas identificación planetaria válida, formulario de solicitud completo, una foto tipo identificación y comprobante de pago.",
     "fuente": "RAG-faq.json#faq_tramites_01",
-    "tags": ["tramites", "faq", "cedula_identidad"],
-    "alias": ["que requisitos necesito para obtener una cedula de identidad", "como saco la cedula de identidad", "documentos para la cedula"],
     "metadata": {
       "category": "faq",
       "subcategory": "tramites",
-      "faq_id": "faq_tramites_01",
-      "title": "¿Qué requisitos necesito para la Cédula de Identidad?",
-      "user_says": ["que requisitos necesito para obtener una cedula de identidad", "como saco la cedula de identidad", "documentos para la cedula"],
-      "answer_variants": [
-        "Requisitos: identificación válida, formulario, foto tipo ID y pago.",
-        "Necesitas ID planetaria, formulario completo, foto tipo ID y comprobante de pago.",
-        "Debes presentar identificación, formulario, foto y el pago correspondiente."
+      "tags": [
+        "tramites",
+        "faq",
+        "cedula_identidad"
       ],
       "priority": 3,
-      "suggested_replies": ["Dónde obtener", "Horario de atención", "Costo"]
-    }
+      "faq_id": "faq_tramites_01",
+      "suggested_replies": [
+        "Dónde obtener",
+        "Horario de atención",
+        "Costo"
+      ]
+    },
+    "pregunta": "¿Qué requisitos necesito para la Cédula de Identidad?",
+    "respuesta": "Para la Cédula de Identidad necesitas identificación planetaria válida, formulario de solicitud completo, una foto tipo identificación y comprobante de pago.",
+    "user_says": [
+      "que requisitos necesito para obtener una cedula de identidad",
+      "como saco la cedula de identidad",
+      "documentos para la cedula"
+    ],
+    "answer_variants": [
+      "Requisitos: identificación válida, formulario, foto tipo ID y pago.",
+      "Necesitas ID planetaria, formulario completo, foto tipo ID y comprobante de pago.",
+      "Debes presentar identificación, formulario, foto y el pago correspondiente."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
     "fuente": "RAG-faq.json#faq_contacto_humano_02",
-    "tags": ["contacto_humano", "faq", "escalamiento"],
-    "alias": [
+    "metadata": {
+      "category": "faq",
+      "subcategory": "contacto_humano",
+      "tags": [
+        "contacto_humano",
+        "faq",
+        "escalamiento"
+      ],
+      "priority": 2,
+      "faq_id": "faq_contacto_humano_02",
+      "suggested_replies": [
+        "Enviar correo ahora",
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo"
+      ]
+    },
+    "pregunta": "¿Cómo puedo contactar a un humano?",
+    "respuesta": "Puedes escribirnos al correo contacto@coruscant.gov para comunicarte con un agente.",
+    "user_says": [
       "como puedo contactar a un humano",
       "cual es el correo electronico de contacto",
       "cual es tu correo electronico",
@@ -534,35 +826,35 @@
       "me das tu correo",
       "hablar con una persona"
     ],
-    "metadata": {
-      "category": "faq",
-      "subcategory": "contacto_humano",
-      "faq_id": "faq_contacto_humano_02",
-      "title": "¿Cómo puedo contactar a un humano?",
-      "user_says": [
-        "como puedo contactar a un humano",
-        "cual es el correo electronico de contacto",
-        "cual es tu correo electronico",
-        "cual es tu correo",
-        "me das tu correo electronico",
-        "me das tu correo",
-        "hablar con una persona"
-      ],
-      "answer_variants": [
-        "Contacta a un agente en contacto@coruscant.gov.",
-        "Escríbenos a contacto@coruscant.gov y te derivamos con una persona.",
-        "Un humano te atiende vía contacto@coruscant.gov."
-      ],
-      "priority": 2,
-      "suggested_replies": ["Enviar correo ahora", "Trámites", "Agendar cita", "Presentar reclamo"]
-    }
+    "answer_variants": [
+      "Contacta a un agente en contacto@coruscant.gov.",
+      "Escríbenos a contacto@coruscant.gov y te derivamos con una persona.",
+      "Un humano te atiende vía contacto@coruscant.gov."
+    ]
   },
   {
     "doc": "faq",
-    "texto": "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?",
     "fuente": "RAG-faq.json#faq_otras_consultas_01",
-    "tags": ["otras_consultas", "faq", "continuar_conversacion"],
-    "alias": [
+    "metadata": {
+      "category": "faq",
+      "subcategory": "otras_consultas",
+      "tags": [
+        "otras_consultas",
+        "faq",
+        "continuar_conversacion"
+      ],
+      "priority": 1,
+      "faq_id": "faq_otras_consultas_01",
+      "suggested_replies": [
+        "Trámites",
+        "Agendar cita",
+        "Presentar reclamo",
+        "Consultar horarios"
+      ]
+    },
+    "pregunta": "Tengo otra consulta",
+    "respuesta": "Claro, estoy aquí para ayudarte. ¿Cuál es tu pregunta o consulta?",
+    "user_says": [
       "quiero hacerte una pregunta",
       "quiero hacerte una consulta",
       "quiero hacerte otra pregunta",
@@ -583,39 +875,10 @@
       "puedo hacerte un requerimiento",
       "puedo hacerte una consulta"
     ],
-    "metadata": {
-      "category": "faq",
-      "subcategory": "otras_consultas",
-      "faq_id": "faq_otras_consultas_01",
-      "title": "Tengo otra consulta",
-      "user_says": [
-        "quiero hacerte una pregunta",
-        "quiero hacerte una consulta",
-        "quiero hacerte otra pregunta",
-        "quiero hacerte otra consulta",
-        "tengo otra solicitud",
-        "tengo otro requerimiento",
-        "tengo un requerimiento",
-        "tengo una solicitud",
-        "tengo una consulta",
-        "tengo una pregunta",
-        "tengo otra pregunta",
-        "tengo otra consulta",
-        "puedo hacerte otra pregunta",
-        "puedo hacerte otra consulta",
-        "puedo hacerte otra solicitud",
-        "puedo hacerte otro requerimiento",
-        "puedo hacerte una solicitud",
-        "puedo hacerte un requerimiento",
-        "puedo hacerte una consulta"
-      ],
-      "answer_variants": [
-        "Te escucho. ¿Cuál es tu consulta?",
-        "Adelante, dime qué necesitas.",
-        "De acuerdo, cuéntame tu pregunta."
-      ],
-      "priority": 1,
-      "suggested_replies": ["Trámites", "Agendar cita", "Presentar reclamo", "Consultar horarios"]
-    }
+    "answer_variants": [
+      "Te escucho. ¿Cuál es tu consulta?",
+      "Adelante, dime qué necesitas.",
+      "De acuerdo, cuéntame tu pregunta."
+    ]
   }
 ]
