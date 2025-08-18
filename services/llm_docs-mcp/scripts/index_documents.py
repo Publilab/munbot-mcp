@@ -4,7 +4,6 @@ import sys
 # running this script from the scripts/ folder.
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import json
-import uuid
 import hashlib
 import logging
 import re
@@ -14,17 +13,68 @@ from qdrant_client.http.models import PointStruct
 from embeddings import embed  # Reutilizamos el helper de embeddings
 
 
-def _norm_text(s: str) -> str:
-    """Normaliza texto para hashing: recorta, colapsa espacios y quita líneas ruidosas vacías."""
+def _as_list(x):
+    if x is None:
+        return []
+    return x if isinstance(x, list) else [x]
+
+
+def _norm_spaces(s: str) -> str:
     if not s:
         return ""
-    s = re.sub(r"\s+", " ", s.strip())
-    return s
+    return re.sub(r"\s+", " ", s.strip())
+
+
+def normalize_item(raw: dict) -> dict:
+    """
+    Acepta esquemas dispares (FAQ question/answer, Contrib texto:list,
+    Ayudas content+metadata) y devuelve el formato mínimo común.
+    """
+    doc = raw.get("doc") or raw.get("metadata", {}).get("doc") or ""
+    fuente = (
+        raw.get("fuente")
+        or raw.get("source")
+        or raw.get("metadata", {}).get("fuente")
+        or raw.get("metadata", {}).get("source")
+        or ""
+    )
+
+    tags = raw.get("tags") or raw.get("metadata", {}).get("tags") or []
+    tags = [str(t).strip() for t in _as_list(tags)]
+    if not tags:
+        tags = ["faq"] if ("answer" in raw or "pregunta" in raw) else ["documento"]
+
+    alias = raw.get("alias") or raw.get("user_says") or []
+    alias = [str(a).strip() for a in _as_list(alias)]
+
+    meta = dict(raw.get("metadata") or {})
+
+    texto = raw.get("texto")
+    if isinstance(texto, list):
+        texto = "\n\n".join(str(x) for x in texto)
+
+    if not texto:
+        if "answer" in raw:
+            texto = raw["answer"]
+            if raw.get("user_says"):
+                alias += [str(a).strip() for a in _as_list(raw["user_says"])]
+        elif "content" in raw:
+            texto = raw["content"]
+
+    texto = _norm_spaces(str(texto or ""))
+
+    return {
+        "doc": str(doc or "").strip(),
+        "texto": texto,
+        "fuente": str(fuente or "").strip(),
+        "tags": tags,
+        "alias": alias,
+        "metadata": meta,
+    }
 
 
 def stable_point_id(doc: str, fuente: str, texto: str, meta_id: str = "") -> str:
-    """ID determinista por chunk (evita duplicados al reindexar)."""
-    base = f"{doc}|{fuente}|{_norm_text(texto)}|{meta_id or ''}"
+    base = f"{doc}|{fuente}|{_norm_spaces(texto)}|{meta_id or ''}"
     return hashlib.sha1(base.encode("utf-8")).hexdigest()
 
 
@@ -59,10 +109,9 @@ COLLECTION_NAME = args.collection
 
 
 def load_rag_json_chunks(directory: str) -> list[dict]:
-    """Carga todos los archivos RAG-*.json y los convierte en chunks."""
-    chunks = []
+    """Carga todos los archivos RAG-*.json y normaliza cada entrada."""
+    items: list[dict] = []
     for filename in os.listdir(directory):
-        # Incluir todos los JSON que parecen contener datos estructurados para RAG
         if filename.startswith("RAG-") and filename.endswith(".json"):
             filepath = os.path.join(directory, filename)
             try:
@@ -71,57 +120,17 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
             except Exception as e:
                 logger.error(f"Error cargando archivo RAG JSON {filename}: {e}")
                 data = None
-            if data is None:
-                continue  # Salta este documento
-            for item in data:
-                    # Crear un texto semánticamente rico para el embedding
-                    if 'pregunta' in item and 'respuesta' in item:
-                        text_to_embed = f"Pregunta frecuente: {item['pregunta']}\nRespuesta: {item['respuesta']}"
-                        metadata_text = item['respuesta']
-                        fuente = f"FAQ-{item.get('categoria', 'general')}"
-                        doc_name = "Preguntas Frecuentes"
-                    else:
-                        text_to_embed = f"Título: {item.get('titulo', '')}\nContenido: {item.get('texto', '')}"
-                        metadata_text = item.get('texto', '')
-                        fuente = item.get("fuente", filename)
-                        doc_name = item.get("doc", "Desconocido")
-
-                    metadata = {
-                        "fuente": fuente,
-                        "doc": doc_name,
-                        "texto": metadata_text,
-                        "tipo_fragmento": item.get("tipo_fragmento", "general")
-                    }
-                    if "id" in item:
-                        metadata["id"] = item["id"]
-                        metadata["id_documento"] = item["id"]
-                    if "id_chunk" in item:
-                        metadata["id_chunk"] = item["id_chunk"]
-                    if "articulo" in item:
-                        metadata["articulo"] = item["articulo"]
-                    if "decreto" in item:
-                        metadata["decreto"] = item["decreto"]
-                    for field in ("correo", "direccion", "horario", "seccion"):
-                        if field in item:
-                            metadata[field] = item[field]
-
-                    chunks.append({
-                        # Qdrant solo acepta enteros o UUIDs como identificadores.
-                        # Para garantizar la compatibilidad, generamos siempre
-                        # un nuevo UUID y almacenamos el id original en el payload.
-                        "id": str(uuid.uuid4()),
-                        "text": text_to_embed,
-                        "metadata": {
-                            **metadata,
-                            "orig_id": item.get("id"),
-                        },
-                    })
-    return chunks
+            if not data:
+                continue
+            for raw in data:
+                item = normalize_item(raw)
+                items.append(item)
+    return items
 
 
 def load_text_file_chunks(directory: str) -> list[dict]:
-    """Carga archivos .txt recursivamente, los divide en párrafos y prepara para indexar."""
-    chunks = []
+    """Carga archivos .txt recursivamente y los convierte al formato normalizado."""
+    items: list[dict] = []
     for root, _, files in os.walk(directory):
         for filename in files:
             if filename.endswith(".txt"):
@@ -132,24 +141,25 @@ def load_text_file_chunks(directory: str) -> list[dict]:
                         content = f.read()
                     paragraphs = re.split(r'\n\s*\n', content)
                     for idx, p in enumerate(paragraphs):
-                        clean_p = p.strip()
+                        clean_p = _norm_spaces(p)
                         if clean_p:
-                            chunks.append({
-                                "id": str(uuid.uuid4()),
-                                "text": clean_p,
-                                "metadata": {
-                                    "fuente": filename,
+                            items.append(
+                                {
                                     "doc": base_id.replace("_", " "),
                                     "texto": clean_p,
-                                    "tipo_fragmento": "documento_oficial",
-                                    "id": base_id,
-                                    "id_documento": base_id,
-                                    "id_chunk": f"{base_id}-{idx}"
+                                    "fuente": filename,
+                                    "tags": ["documento"],
+                                    "alias": [],
+                                    "metadata": {
+                                        "tipo_fragmento": "documento_oficial",
+                                        "id": base_id,
+                                        "id_chunk": f"{base_id}-{idx}",
+                                    },
                                 }
-                            })
+                            )
                 except Exception as e:
                     logger.error(f"Error procesando archivo de texto {filename}: {e}")
-    return chunks
+    return items
 
 
 def main():
@@ -166,54 +176,34 @@ def main():
         logger.info(f"No se pudo verificar el conteo de la colección '{COLLECTION_NAME}'. Procediendo con la indexación.")
 
     logger.info("Cargando y procesando documentos...")
-    json_chunks = load_rag_json_chunks(DOCS_PATH)
-    text_chunks = load_text_file_chunks(DOCS_PATH)
-    all_chunks = json_chunks + text_chunks
+    json_items = load_rag_json_chunks(DOCS_PATH)
+    text_items = load_text_file_chunks(DOCS_PATH)
+    all_items = json_items + text_items
 
-    if not all_chunks:
+    if not all_items:
         logger.warning("No se encontraron documentos para indexar. Saliendo.")
         return
 
-    logger.info(f"Generando embeddings para {len(all_chunks)} chunks...")
-    vectors = embed([chunk["text"] for chunk in all_chunks])
+    logger.info(f"Generando embeddings para {len(all_items)} chunks...")
+    vectors = embed([item["texto"] for item in all_items])
 
     logger.info("Subiendo puntos a Qdrant...")
 
     docs_to_upload = []
-    for chunk, vector in zip(all_chunks, vectors):
-        if vector is None or chunk is None:
+    for item, vector in zip(all_items, vectors):
+        if vector is None or not item.get("texto"):
             continue
         if len(vector) != EMBEDDINGS_DIM:
             logger.error(
-                f"Vector con tamaño inesperado ({len(vector)}) para id {chunk.get('id')}"
+                f"Vector con tamaño inesperado ({len(vector)}) para doc {item.get('doc')}"
             )
             continue
 
-        doc = chunk.get("doc") or chunk.get("metadata", {}).get("doc") or ""
-        fuente = (
-            chunk.get("fuente")
-            or chunk.get("metadata", {}).get("fuente")
-            or chunk.get("metadata", {}).get("source")
-            or ""
-        )
-        texto = (
-            chunk.get("texto")
-            or chunk.get("text")
-            or chunk.get("metadata", {}).get("texto")
-            or ""
-        )
-        meta_id = chunk.get("metadata", {}).get("id", "")
+        meta_id = item.get("metadata", {}).get("id", "")
+        point_id = stable_point_id(item["doc"], item["fuente"], item["texto"], meta_id)
 
-        point_id = stable_point_id(doc, fuente, texto, meta_id)
-
-        payload = {
-            "doc": doc,
-            "texto": texto,
-            "fuente": fuente,
-            "tags": chunk.get("tags", []),
-            "alias": chunk.get("alias", []),
-            "metadata": {**chunk.get("metadata", {})},
-        }
+        payload = {**item}
+        payload["metadata"] = dict(item.get("metadata", {}))
         payload["metadata"]["stable_point_id"] = point_id
 
         docs_to_upload.append(
@@ -224,7 +214,6 @@ def main():
             )
         )
 
-    docs_to_upload = [doc for doc in docs_to_upload if doc is not None]
     if not docs_to_upload:
         logger.warning("No hay documentos válidos para subir a Qdrant.")
         return
@@ -236,7 +225,9 @@ def main():
         points=docs_to_upload,
         wait=True,
     )
-    logger.info(f"✅ Indexación completada. {len(all_chunks)} puntos subidos a la colección '{COLLECTION_NAME}'.")
+    logger.info(
+        f"✅ Indexación completada. {len(all_items)} puntos subidos a la colección '{COLLECTION_NAME}'."
+    )
 
 if __name__ == "__main__":
     main()
