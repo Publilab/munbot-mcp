@@ -4,12 +4,18 @@ import os
 import pytest
 import importlib.util
 
+# For rich output in tests
+os.environ["INTENT_OUTPUT_MODE"] = "rich"
+
 # Añadir las rutas necesarias al path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'services', 'llm_docs-mcp')))
 
+# Remove any stubbed module from other tests
+sys.modules.pop("intent_classifier", None)
+
 # Ahora las importaciones deberían funcionar
-from intent_classifier import classify_reclamo_response, classify_main_intent
+from intent_classifier import classify_reclamo_response, classify_intent_with_llm
 
 # --- Pruebas para la lógica de clasificación de respuestas de reclamos ---
 
@@ -57,7 +63,7 @@ class MockIntentEngine:
 
 @pytest.fixture(autouse=True)
 def override_dependencies(monkeypatch):
-    monkeypatch.setattr("intent_classifier._get_llm_client", lambda: MockLlamaClient())
+    monkeypatch.setattr("intent_classifier._llm", lambda: MockLlamaClient())
     monkeypatch.setattr("intent_classifier.classify_intent_payload", MockIntentEngine().classify)
 
 
@@ -72,7 +78,7 @@ def override_dependencies(monkeypatch):
 ])
 def test_classify_main_intent_basic(user_input, expected_intent):
     """Prueba la clasificación de intenciones principales para entradas comunes."""
-    result = classify_main_intent(user_input)
+    result = classify_intent_with_llm(user_input)
     
     # Comparamos solo las claves que nos interesan para la prueba
     assert result.get("intent") == expected_intent.get("intent")
