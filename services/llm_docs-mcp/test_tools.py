@@ -4,6 +4,7 @@ import types
 import unittest
 import importlib.machinery
 from fastapi.testclient import TestClient
+from unittest.mock import patch
 
 os.environ["ALLOWED_IPS"] = "testclient,127.0.0.1"
 os.environ["LLM_DOCS_API_KEY"] = "test-key"
@@ -172,6 +173,7 @@ fake_llama_runner.LlamaRunner = lambda *a, **k: FakeRunner()
 sys.modules["llama_runner"] = fake_llama_runner
 
 from gateway import app
+import rag
 
 class TestGateway(unittest.TestCase):
     def setUp(self):
@@ -239,6 +241,22 @@ class TestGateway(unittest.TestCase):
         }
         resp = self.client.post("/tools/call", json=payload)
         self.assertEqual(resp.status_code, 200)
+
+def test_doc_buscar_fragmento_documento_direct_call_and_threshold():
+    """Calls rag.doc_buscar_fragmento_documento and checks parameter propagation."""
+
+    fake_results = [
+        {"texto": "a", "rerank_score": 0.9},
+        {"texto": "b", "rerank_score": 0.4},
+    ]
+
+    with patch("rag.obtener_fragmentos", return_value=fake_results) as mock_of:
+        res = rag.doc_buscar_fragmento_documento(
+            "hola", documento="doc.txt", top_k=5, score_threshold=0.5
+        )
+
+    mock_of.assert_called_once_with(consulta="hola", k=5, tema_especifico="doc.txt")
+    assert res == [{"texto": "a", "rerank_score": 0.9}]
 
 if __name__ == "__main__":
     unittest.main()
