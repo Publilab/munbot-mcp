@@ -9,7 +9,7 @@ import logging
 import re
 import argparse
 from qdrant_client import QdrantClient
-from qdrant_client.http.models import Batch
+from qdrant_client.http.models import PointStruct
 from embeddings import embed  # Reutilizamos el helper de embeddings
 
 
@@ -232,9 +232,7 @@ def main():
 
     logger.info("Subiendo puntos a Qdrant...")
 
-    ids = []
-    vectors_to_upload = []
-    payloads = []
+    docs_to_upload = []
     for item, vector in zip(all_items, vectors):
         if vector is None or not item.get("texto"):
             continue
@@ -250,24 +248,24 @@ def main():
         payload = {**item}
         payload["metadata"] = dict(item.get("metadata", {}))
         payload["metadata"]["stable_point_id"] = point_id
-        
-        ids.append(point_id)
-        vectors_to_upload.append(vector)
-        payloads.append(payload)
 
-    if not ids:
+        docs_to_upload.append(
+            PointStruct(
+                id=point_id,
+                vector=vector,
+                payload=payload,
+            )
+        )
+
+    if not docs_to_upload:
         logger.warning("No hay documentos válidos para subir a Qdrant.")
         return
 
-    logger.debug(f"Payload de ejemplo: {payloads[:1]}")
+    logger.debug(f"Payload de ejemplo: {docs_to_upload[:1]}")
 
-    client.upsert(
+    client.upload_points(
         collection_name=COLLECTION_NAME,
-        points=Batch(
-            ids=ids,
-            vectors=vectors_to_upload,
-            payloads=payloads
-        ),
+        points=docs_to_upload,
         wait=True,
     )
     logger.info(
