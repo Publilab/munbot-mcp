@@ -4,110 +4,16 @@ import json
 import logging
 import re
 import argparse
+import hashlib
+from typing import Any, Dict, Iterable
 
 # Ensure the root directory is on the path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__name__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from qdrant_client import QdrantClient
+from qdrant_client.models import PointStruct # Import PointStruct
 from embeddings import embed
-
-
-def _as_list(x):
-    if x is None:
-        return []
-    return x if isinstance(x, list) else [x]
-
-
-def _pick(*vals):
-    for v in vals:
-        if v not in (None, "", []):
-            return v
-    return None
-
-
-def _norm_spaces(s: str) -> str:
-    if not s:
-        return ""
-    return re.sub(r"\s+", " ", s.strip())
-
-
-def normalize_item(raw: dict) -> dict | None:
-    """Normaliza un item con formato heterogéneo."""
-    # Mapear claves en inglés a español si existen
-    if "question" in raw or "answer" in raw:
-        question = raw.get("question")
-        answer = raw.get("answer")
-        if question is not None:
-            raw.setdefault("pregunta", question)
-        if answer is not None:
-            raw.setdefault("respuesta", answer)
-
-    texto_final = _pick(
-        raw.get("texto"),
-        raw.get("respuesta"),
-        raw.get("content"),
-        raw.get("titulo"),
-    )
-    if isinstance(texto_final, list):
-        texto_final = "\n\n".join(map(str, texto_final))
-    if not texto_final:
-        return None
-
-    alias = _as_list(
-        _pick(
-            raw.get("alias"),
-            raw.get("user_says"),
-            raw.get("metadata", {}).get("alias"),
-        )
-    )
-    alias = [str(a).strip() for a in alias if str(a).strip()]
-    if raw.get("pregunta"):
-        alias.append(str(raw["pregunta"]).strip())
-
-    tags = _as_list(
-        _pick(
-            raw.get("tags"),
-            raw.get("metadata", {}).get("tags"),
-        )
-    )
-    tags = [str(t).strip() for t in tags if str(t).strip()]
-
-    doc_logico = _pick(
-        raw.get("doc"),
-        raw.get("metadata", {}).get("doc"),
-        raw.get("id_documento"),
-        raw.get("nombre"),
-    )
-    doc_logico = (doc_logico or "").strip()
-
-    id_logico = _pick(
-        raw.get("metadata", {}).get("id"),
-        raw.get("id"),
-        raw.get("faq_id"),
-    )
-    id_logico = (id_logico or "").strip()
-
-    tipo_fragmento = _pick(
-        raw.get("metadata", {}).get("tipo_fragmento"),
-        raw.get("metadata", {}).get("seccion"),
-    )
-
-    metadata = dict(raw.get("metadata") or {})
-    metadata.setdefault("id", id_logico)
-    metadata.setdefault("doc", doc_logico)
-    if tipo_fragmento:
-        metadata.setdefault("tipo_fragmento", tipo_fragmento)
-    metadata["alias"] = alias
-    metadata["tags"] = tags
-
-    return {
-        "doc": doc_logico,
-        "texto": _norm_spaces(str(texto_final)),
-        "fuente": _pick(raw.get("fuente"), raw.get("source")) or "",
-        "alias": alias,
-        "tags": tags,
-        "metadata": metadata,
-    }
+from qdrant_helpers import EMBEDDINGS_DIM # Import EMBEDDINGS_DIM from qdrant_helpers
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -117,6 +23,63 @@ try:
     logger.info(f"Qdrant client version: {qdrant_client.__version__}")
 except (ImportError, AttributeError):
     logger.info("Could not determine Qdrant client version.")
+
+# --- Helper functions ---
+def _sha1(s: str) -> str:
+    return hashlib.sha1(s.encode("utf-8")).hexdigest()
+
+def _norm_spaces(s: str) -> str:
+    if not s:
+        return ""
+    return re.sub(r"\s+", " ", s.strip())
+
+def normalize_item(item: Dict[str, Any], filename: str) -> Dict[str, Any]:
+    # 1) Texto robusto
+    if "texto" in item:
+        t = item["texto"]
+        texto = " ".join(t) if isinstance(t, list) else str(t)
+    elif "content" in item:
+        c = item["content"]
+        texto = " ".join(c) if isinstance(c, list) else str(c)
+    elif "answer" in item or "respuesta" in item:
+        # Soporta FAQ antiguos (question/answer) o (pregunta/respuesta)
+        q = item.get("question") or item.get("pregunta") or ""
+        a = item.get("answer") or item.get("respuesta") or ""
+        texto = f"Pregunta frecuente: {q}\nRespuesta: {a}".strip()
+    else:
+        # Último recurso: concatena strings sueltos
+        texto = " ".join(str(v) for v in item.values() if isinstance(v, str))
+
+    # 2) Doc / Fuente
+    meta = item.get("metadata") or {}
+    doc = item.get("doc") or meta.get("source_doc") or meta.get("doc") or "desconocido"
+    fuente = item.get("fuente") or filename
+
+    # 3) Tags / Alias (listas)
+    tags = item.get("tags") or meta.get("tags") or []
+    if isinstance(tags, str): tags = [tags]
+    alias = item.get("alias") or meta.get("alias") or []
+    if isinstance(alias, str): alias = [alias]
+
+    # 4) Metadata mínima coherente
+    metadata = {
+        "category": meta.get("category"),
+        "subcategory": meta.get("subcategory"),
+        "id": meta.get("id"),
+        "id_chunk": meta.get("id_chunk"),
+        "title": meta.get("title"),
+        "source_doc": meta.get("source_doc") or doc,
+        "raw": meta.get("raw"),  # opcional
+    }
+
+    return {
+        "doc": doc, "texto": _norm_spaces(texto), "fuente": fuente,
+        "tags": tags, "alias": alias, "metadata": metadata
+    }
+
+def stable_point_id(n: Dict[str, Any]) -> str:
+    base = f"{n['doc']}|{n['fuente']}|{n['texto']}|{(n['metadata'] or {}).get('id','')}"
+    return _sha1(base)
 
 # --- Configuración por defecto desde variables de entorno ---
 QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
@@ -131,7 +94,6 @@ parser.add_argument("--collection", default=COLLECTION_NAME)
 args = parser.parse_args()
 DOCS_PATH = args.docs_dir
 COLLECTION_NAME = args.collection
-
 
 def load_rag_json_chunks(directory: str) -> list[dict]:
     """Carga todos los archivos RAG-*.json y normaliza cada entrada."""
@@ -148,11 +110,10 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
             if not data:
                 continue
             for raw in data:
-                item = normalize_item(raw)
+                item = normalize_item(raw, filename) # Pass filename to normalize_item
                 if item:
                     items.append(item)
     return items
-
 
 def load_text_file_chunks(directory: str) -> list[dict]:
     """Carga archivos .txt recursivamente y los convierte al formato normalizado."""
@@ -169,41 +130,28 @@ def load_text_file_chunks(directory: str) -> list[dict]:
                     for idx, p in enumerate(paragraphs):
                         clean_p = _norm_spaces(p)
                         if clean_p:
-                            doc_name = base_id.replace("_", " ")
-                            items.append(
-                                {
-                                    "doc": doc_name,
-                                    "texto": clean_p,
-                                    "fuente": filename,
-                                    "tags": ["documento"],
+                            # Use the new normalize_item for text chunks as well
+                            raw_item = {
+                                "doc": base_id.replace("_", " "),
+                                "texto": clean_p,
+                                "fuente": filename,
+                                "tags": ["documento"],
+                                "alias": [],
+                                "metadata": {
+                                    "tipo_fragmento": "documento_oficial",
+                                    "id": base_id,
+                                    "id_chunk": f"{base_id}-{idx}",
+                                    "doc": base_id.replace("_", " "),
                                     "alias": [],
-                                    "metadata": {
-                                        "tipo_fragmento": "documento_oficial",
-                                        "id": base_id,
-                                        "id_chunk": f"{base_id}-{idx}",
-                                        "doc": doc_name,
-                                        "alias": [],
-                                        "tags": ["documento"],
-                                    },
-                                }
-                            )
+                                    "tags": ["documento"],
+                                },
+                            }
+                            item = normalize_item(raw_item, filename)
+                            if item:
+                                items.append(item)
                 except Exception as e:
                     logger.error(f"Error procesando archivo de texto {filename}: {e}")
     return items
-
-
-
-import hashlib
-import math
-from qdrant_client.http.models import PointStruct
-
-def make_stable_id(item: dict) -> str:
-    # Normaliza el texto antes de hashear para evitar duplicados por espacios
-    doc = str(item.get("doc", "")).strip()
-    texto = str(item.get("texto", "")).strip()
-    texto_norm = re.sub(r"\s+", " ", texto)
-    base = (doc + "|" + texto_norm).encode("utf-8")
-    return hashlib.sha1(base).hexdigest()
 
 def main():
     """Función principal para indexar todos los documentos en Qdrant."""
@@ -233,65 +181,29 @@ def main():
     texts = [item["texto"] for item in all_items]
     embeddings = embed(texts)
 
-    # Validación de vectores
-    if not embeddings or any(len(vec) != len(embeddings[0]) for vec in embeddings):
-        logger.error("Error en la generación de embeddings o dimensiones inconsistentes.")
-        return
+    # Build PointStruct list
+    points: list[PointStruct] = []
+    for n, vec in zip(all_items, embeddings):
+        # Ensure vector is a list of floats
+        vec = [float(x) for x in vec]
 
-    embedding_dim = len(embeddings[0])
+        pid = stable_point_id(n)
+        payload = {
+            "doc": n["doc"],
+            "texto": n["texto"],
+            "fuente": n["fuente"],
+            "tags": n["tags"],
+            "alias": n["alias"],
+            "metadata": n["metadata"],
+        }
+        points.append(PointStruct(id=pid, vector=vec, payload=payload))
 
-    # Verificar dimensión de la colección en Qdrant
-    try:
-        collection_info = client.get_collection(COLLECTION_NAME)
-        qdrant_dim = collection_info.vector_size
-        if qdrant_dim != embedding_dim:
-            logger.error(f"Dimensión de la colección Qdrant ({qdrant_dim}) no coincide con la de los embeddings ({embedding_dim}). Aborta indexación.")
-            return
-    except Exception as e:
-        logger.warning(f"No se pudo obtener la dimensión de la colección en Qdrant: {e}. Se asume que es compatible.")
+    # Upsert with list of PointStruct
+    client.upsert(collection_name=COLLECTION_NAME, points=points, wait=True)
 
-    for idx, vec in enumerate(embeddings):
-        if not isinstance(vec, (list, tuple)):
-            logger.error(f"Embedding #{idx} no es lista/tupla: {type(vec)}")
-            return
-        if len(vec) != embedding_dim:
-            logger.error(f"Embedding #{idx} tiene dimensión {len(vec)} en vez de {embedding_dim}")
-            return
-        for j, val in enumerate(vec):
-            if not isinstance(val, (float, int)):
-                logger.error(f"Embedding #{idx} posición {j} no es float/int: {type(val)}")
-                return
-            if math.isnan(val) or math.isinf(val):
-                logger.error(f"Embedding #{idx} posición {j} es NaN o Inf: {val}")
-                return
-
-    # Construir puntos
-    import json
-    points = []
-    for item, vector in zip(all_items, embeddings):
-        point_id = make_stable_id(item)
-        payload = {k: v for k, v in item.items() if k != "texto"}
-        payload["texto"] = item["texto"]
-        # Asegura que el payload sea JSON-serializable
-        try:
-            json.dumps(payload, ensure_ascii=False)
-        except Exception as e:
-            logger.error(f"Payload no serializable para ID {point_id}: {e}\nPayload: {payload}")
-            continue
-        points.append(
-            PointStruct(
-                id=point_id,
-                vector=vector,
-                payload=payload
-            )
-        )
-
-    # Upsert directo de la lista de puntos (sin batch wrapper extra)
-    try:
-        client.upsert(collection_name=COLLECTION_NAME, points=points)
-        logger.info(f"✅ Indexación completada. {len(points)} puntos procesados para la colección '{COLLECTION_NAME}'.")
-    except Exception as e:
-        logger.error(f"❌ Error al hacer upsert en Qdrant: {e}")
+    logger.info(
+        f"✅ Indexación completada. {len(all_items)} puntos procesados para la colección '{COLLECTION_NAME}'."
+    )
 
 if __name__ == "__main__":
     main()
