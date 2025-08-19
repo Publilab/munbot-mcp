@@ -12,7 +12,6 @@ from typing import Any, Dict, Iterable
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from qdrant_client import QdrantClient
-from qdrant_client.models import PointStruct # Import PointStruct
 from embeddings import embed
 
 # --- Constants with Environment Variable Fallbacks ---
@@ -227,12 +226,9 @@ def main():
     texts = [item["texto"] for item in all_items]
     embeddings = embed(texts)
 
-    # Build PointStruct list
-    points: list[PointStruct] = []
+    # Build points as dictionaries compatible with Qdrant
+    points: list[Dict[str, Any]] = []
     for n, vec in zip(all_items, embeddings):
-        # Ensure vector is a list of floats
-        vec = [float(x) for x in vec]
-
         pid = stable_point_id(n)
         payload = {
             "doc": n["doc"],
@@ -242,12 +238,16 @@ def main():
             "alias": n["alias"],
             "metadata": n["metadata"],
         }
-        points.append(PointStruct(id=pid, vector=vec, payload=payload))
+        points.append({
+            "id": pid,
+            "vector": [float(x) for x in vec],
+            "payload": payload,
+        })
 
     # Validate all vectors before upserting
-    assert all(_valid_vec(p.vector) for p in points), "Vector inválido (tipo/dim/NaN/Inf)."
+    assert all(_valid_vec(p["vector"]) for p in points), "Vector inválido (tipo/dim/NaN/Inf)."
 
-    # Upsert with list of PointStruct
+    # Upsert with list of dictionaries
     client.upsert(collection_name=COLLECTION_NAME, points=points, wait=True)
 
     logger.info(
