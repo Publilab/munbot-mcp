@@ -5,6 +5,7 @@ import logging
 import re
 import argparse
 import hashlib
+import httpx
 from typing import Any, Dict, Iterable
 
 # Ensure the root directory is on the path
@@ -13,7 +14,14 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct # Import PointStruct
 from embeddings import embed
-from qdrant_helpers import EMBEDDINGS_DIM # Import EMBEDDINGS_DIM from qdrant_helpers
+
+# --- Constants with Environment Variable Fallbacks ---
+EMBEDDINGS_DIM = int(os.getenv("EMBEDDINGS_DIM", "384"))
+Q_HOST = os.getenv("QDRANT_HOST", "qdrant")
+Q_PORT = int(os.getenv("QDRANT_PORT", "6333"))
+Q_COLL = os.getenv("QDRANT_COLLECTION", "munbot_docs")
+Q_TIMEOUT = float(os.getenv("QDRANT_TIMEOUT", "10"))
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -32,6 +40,36 @@ def _norm_spaces(s: str) -> str:
     if not s:
         return ""
     return re.sub(r"\s+", " ", s.strip())
+
+def _get_collection_dim() -> int | None:
+    """Fetches the vector dimension from an existing Qdrant collection."""
+    try:
+        r = httpx.get(f"http://{Q_HOST}:{Q_PORT}/collections/{Q_COLL}", timeout=Q_TIMEOUT)
+        r.raise_for_status()
+        data = r.json()
+        # Qdrant >=1.8: vectors can be a dict of named vectors or a single vector config object
+        vectors_config = data["result"].get("vectors", {})
+        
+        if isinstance(vectors_config, dict):  # Named vectors
+            # If multiple named vectors exist, take the first one as reference.
+            first_vector_config = next(iter(vectors_config.values()), None)
+            if first_vector_config and "size" in first_vector_config:
+                return int(first_vector_config["size"])
+        elif hasattr(vectors_config, 'size'): # Single vector
+             return int(vectors_config.get("size"))
+
+    except Exception as e:
+        logger.warning(f"Could not determine dimension for collection '{Q_COLL}': {e}")
+        return None
+    return None
+
+def _valid_vec(v):
+    """Validates a vector to ensure it's well-formed."""
+    return (
+        isinstance(v, (list, tuple)) and
+        len(v) == EMBEDDINGS_DIM and
+        all(isinstance(x, (float, int)) and x == x and x not in (float("inf"), float("-inf")) for x in v)
+    )
 
 def normalize_item(item: Dict[str, Any], filename: str) -> Dict[str, Any]:
     # 1) Texto robusto
@@ -157,6 +195,14 @@ def main():
     """Función principal para indexar todos los documentos en Qdrant."""
     client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
+    # Validate collection dimension before proceeding
+    _coll_dim = _get_collection_dim()
+    if _coll_dim is not None and _coll_dim != EMBEDDINGS_DIM:
+        raise RuntimeError(
+            f"Dimensión de colección Qdrant ({_coll_dim}) != EMBEDDINGS_DIM ({EMBEDDINGS_DIM}). "
+            f"Recrea la colección o ajusta EMBEDDINGS_DIM/tu modelo de embeddings."
+        )
+
     try:
         count = client.count(collection_name=COLLECTION_NAME, exact=True).count
         if count > 0:
@@ -197,6 +243,9 @@ def main():
             "metadata": n["metadata"],
         }
         points.append(PointStruct(id=pid, vector=vec, payload=payload))
+
+    # Validate all vectors before upserting
+    assert all(_valid_vec(p.vector) for p in points), "Vector inválido (tipo/dim/NaN/Inf)."
 
     # Upsert with list of PointStruct
     client.upsert(collection_name=COLLECTION_NAME, points=points, wait=True)
