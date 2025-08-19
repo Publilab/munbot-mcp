@@ -114,9 +114,31 @@ def normalize_item(item: Dict[str, Any], filename: str) -> Dict[str, Any]:
         "tags": tags, "alias": alias, "metadata": metadata
     }
 
-def stable_point_id(n: Dict[str, Any]) -> str:
-    base = f"{n['doc']}|{n['fuente']}|{n['texto']}|{(n['metadata'] or {}).get('id','')}"
-    return _sha1(base)
+from uuid import uuid5, NAMESPACE_URL
+
+def stable_uuid_for_chunk(n):
+    base = f"{n['doc']}|{n['alias']}|{n['metadata'].get('page', 0)}|{n['texto'][:64]}"
+    return str(uuid5(NAMESPACE_URL, base))
+
+def to_float_list(vec):
+    # Convierte numpy arrays / float32 a float nativo de Python
+    try:
+        # Si es numpy array
+        vec = vec.tolist()
+    except AttributeError:
+        pass
+    return [float(x) for x in vec]
+
+def make_payload(n):
+    # Solo tipos JSON (str, int, float, bool, None, list, dict anidados)
+    return {
+        "doc": n.get("doc"),
+        "texto": n.get("texto"),
+        "fuente": n.get("fuente"),
+        "tags": n.get("tags"),
+        "alias": n.get("alias"),
+        "metadata": n.get("metadata"),
+    }
 
 # --- Configuración por defecto desde variables de entorno ---
 QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
@@ -226,26 +248,28 @@ def main():
     texts = [item["texto"] for item in all_items]
     embeddings = embed(texts)
 
-    # Build points as dictionaries compatible with Qdrant
-    points: list[Dict[str, Any]] = []
+    points = []
     for n, vec in zip(all_items, embeddings):
-        pid = stable_point_id(n)
-        payload = {
-            "doc": n["doc"],
-            "texto": n["texto"],
-            "fuente": n["fuente"],
-            "tags": n["tags"],
-            "alias": n["alias"],
-            "metadata": n["metadata"],
-        }
+        pid = stable_uuid_for_chunk(n)
+        payload = make_payload(n)
+        vector = to_float_list(vec)
+
+        # Sanidad local (opcional pero muy útil)
+        assert isinstance(pid, (int, str)), f"id inválido: {type(pid)}"
+        if isinstance(pid, str):
+            import uuid as _uuid
+            _ = _uuid.UUID(pid)  # valida formato UUID; lanzará excepción si es inválido
+        assert isinstance(vector, list) and all(isinstance(x, float) for x in vector), "vector debe ser list[float]"
+
         points.append({
             "id": pid,
-            "vector": [float(x) for x in vec],
+            "vector": vector,
             "payload": payload,
         })
 
-    # Validate all vectors before upserting
-    assert all(_valid_vec(p["vector"]) for p in points), "Vector inválido (tipo/dim/NaN/Inf)."
+    # (Opcional) prueba de serialización local para detectar tipos raros:
+    import json
+    json.dumps({"points": points[:1]})  # no debe lanzar excepción
 
     # Upsert with list of dictionaries
     client.upsert(collection_name=COLLECTION_NAME, points=points, wait=True)
@@ -253,6 +277,7 @@ def main():
     logger.info(
         f"✅ Indexación completada. {len(all_items)} puntos procesados para la colección '{COLLECTION_NAME}'."
     )
+
 
 if __name__ == "__main__":
     main()
