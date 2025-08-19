@@ -1,17 +1,16 @@
 import os
 import sys
-# Ensure the root directory is on the path so 'embeddings' can be imported when
-# running this script from the scripts/ folder.
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import json
-import hashlib
 import logging
 import re
 import argparse
-from qdrant_client import QdrantClient
-from qdrant_client.http.models import Batch
-from embeddings import embed  # Reutilizamos el helper de embeddings
 
+# Ensure the root directory is on the path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__name__), '..')))
+
+from qdrant_client import QdrantClient
+from embeddings import embed
+from qdrant_helpers import upsert_points_batch # Import the new helper function
 
 def _as_list(x):
     if x is None:
@@ -110,14 +109,14 @@ def normalize_item(raw: dict) -> dict | None:
         "metadata": metadata,
     }
 
-
-def stable_point_id(doc: str, fuente: str, texto: str, meta_id: str = "") -> str:
-    base = f"{doc}|{fuente}|{_norm_spaces(texto)}|{meta_id or ''}"
-    return hashlib.sha1(base.encode("utf-8")).hexdigest()
-
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+try:
+    import qdrant_client
+    logger.info(f"Qdrant client version: {qdrant_client.__version__}")
+except (ImportError, AttributeError):
+    logger.info("Could not determine Qdrant client version.")
 
 # --- Configuración por defecto desde variables de entorno ---
 QDRANT_HOST = os.getenv("QDRANT_HOST", "qdrant")
@@ -125,20 +124,8 @@ QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
 COLLECTION_NAME = os.getenv("QDRANT_COLLECTION", "munbot_docs")
 DOCS_PATH = os.getenv("DOCS_DIR", "/app/documents")
 
-
-def _get_embeddings_dim(default: int = 384) -> int:
-    raw = os.getenv("EMBEDDINGS_DIM")
-    try:
-        return int(raw) if raw and raw.strip().isdigit() else default
-    except Exception:
-        return default
-
-
-EMBEDDINGS_DIM = _get_embeddings_dim()
-
 # Permite override mediante argumentos CLI
 parser = argparse.ArgumentParser(description="Indexa documentos RAG en Qdrant")
-# Mantener compatibilidad con versiones previas que usaban --src
 parser.add_argument("--docs-dir", "--src", dest="docs_dir", default=DOCS_PATH)
 parser.add_argument("--collection", default=COLLECTION_NAME)
 args = parser.parse_args()
@@ -209,6 +196,7 @@ def main():
     client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     try:
+        # Use the client from the helper module for consistency
         count = client.count(collection_name=COLLECTION_NAME, exact=True).count
         if count > 0:
             logger.info(
@@ -226,51 +214,24 @@ def main():
         logger.warning("No se encontraron documentos para indexar. Saliendo.")
         return
 
-    logger.info(f"Generando embeddings para {len(all_items)} chunks...")
-    vectors = embed([item["texto"] for item in all_items])
+    logger.info(f"Generando embeddings y subiendo puntos a Qdrant para {len(all_items)} chunks...")
+    
+    # The embedding function now expects a single text, not a list.
+    # We define a wrapper function to pass to the helper.
+    def embedding_function(text: str) -> list[float]:
+        # The original embed function expects a list of texts and returns a list of embeddings.
+        # The helper expects a function that takes a single text and returns a single embedding.
+        embeddings_list = embed([text])
+        return embeddings_list[0] if embeddings_list else []
 
-    logger.info("Subiendo puntos a Qdrant...")
-
-    ids = []
-    vectors_to_upload = []
-    payloads = []
-    for item, vector in zip(all_items, vectors):
-        if vector is None or not item.get("texto"):
-            continue
-        if len(vector) != EMBEDDINGS_DIM:
-            logger.error(
-                f"Vector con tamaño inesperado ({len(vector)}) para doc {item.get('doc')}"
-            )
-            continue
-
-        meta_id = item.get("metadata", {}).get("id", "")
-        point_id = stable_point_id(item["doc"], item["fuente"], item["texto"], meta_id)
-
-        payload = {**item}
-        payload["metadata"] = dict(item.get("metadata", {}))
-        payload["metadata"]["stable_point_id"] = point_id
-        
-        ids.append(point_id)
-        vectors_to_upload.append(vector)
-        payloads.append(payload)
-
-    if not ids:
-        logger.warning("No hay documentos válidos para subir a Qdrant.")
-        return
-
-    logger.debug(f"Payload de ejemplo: {payloads[:1]}")
-
-    client.upsert(
-        collection_name=COLLECTION_NAME,
-        points=Batch(
-            ids=ids,
-            vectors=vectors_to_upload,
-            payloads=payloads
-        ),
-        wait=True,
+    # Use the centralized upsert function
+    upsert_points_batch(
+        items_normalizados=all_items,
+        embedding_function=embedding_function
     )
+
     logger.info(
-        f"✅ Indexación completada. {len(all_items)} puntos subidos a la colección '{COLLECTION_NAME}'."
+        f"✅ Indexación completada. {len(all_items)} puntos procesados para la colección '{COLLECTION_NAME}'."
     )
 
 if __name__ == "__main__":
