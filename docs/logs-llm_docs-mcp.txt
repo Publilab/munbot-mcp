@@ -1,4 +1,4 @@
-docker logs  llm_docs-mcp
+docker logs -f llm_docs-mcp
 ✅ Qdrant is ready.
 🚀 Starting auto-indexing...
 ℹ️  Colección munbot_docs ya existe — sin cambios.
@@ -8,147 +8,7 @@ INFO:__main__:Cargando y procesando documentos...
 INFO:__main__:Generando embeddings para 199 chunks...
 INFO:__main__:Subiendo puntos a Qdrant...
 INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
-Traceback (most recent call last):
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
-🧠 Modelo cargado en 2,441 ms (CPU)
-    main()
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
-    client.upsert(
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
-    return self._client.upsert(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
-    http_result = self.openapi_client.points_api.upsert_points(
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
-    return self._build_for_upsert_points(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
-    return self.api_client.request(
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
-    return self.send(request, type_)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
-    raise UnexpectedResponse.for_response(response)
-qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
-Raw response content:
-b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
-✅ Qdrant is ready.
-🚀 Starting auto-indexing...
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:__main__:Could not determine Qdrant client version.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:Cargando y procesando documentos...
-INFO:__main__:Generando embeddings para 199 chunks...
-INFO:__main__:Subiendo puntos a Qdrant...
-INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
-Traceback (most recent call last):
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
-🧠 Modelo cargado en 2,417 ms (CPU)
-    main()
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
-    client.upsert(
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
-    return self._client.upsert(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
-    http_result = self.openapi_client.points_api.upsert_points(
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
-    return self._build_for_upsert_points(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
-    return self.api_client.request(
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
-    return self.send(request, type_)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
-    raise UnexpectedResponse.for_response(response)
-qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
-Raw response content:
-b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
-✅ Qdrant is ready.
-🚀 Starting auto-indexing...
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:__main__:Could not determine Qdrant client version.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:Cargando y procesando documentos...
-INFO:__main__:Generando embeddings para 199 chunks...
-INFO:__main__:Subiendo puntos a Qdrant...
-INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
-Traceback (most recent call last):
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
-🧠 Modelo cargado en 2,362 ms (CPU)
-    main()
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
-    client.upsert(
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
-    return self._client.upsert(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
-    http_result = self.openapi_client.points_api.upsert_points(
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
-    return self._build_for_upsert_points(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
-    return self.api_client.request(
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
-    return self.send(request, type_)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
-    raise UnexpectedResponse.for_response(response)
-qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
-Raw response content:
-b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
-✅ Qdrant is ready.
-🚀 Starting auto-indexing...
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:__main__:Could not determine Qdrant client version.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:Cargando y procesando documentos...
-INFO:__main__:Generando embeddings para 199 chunks...
-INFO:__main__:Subiendo puntos a Qdrant...
-INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
-Traceback (most recent call last):
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
-🧠 Modelo cargado en 2,431 ms (CPU)
-    main()
-  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
-    client.upsert(
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
-    return self._client.upsert(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
-    http_result = self.openapi_client.points_api.upsert_points(
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
-    return self._build_for_upsert_points(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
-    return self.api_client.request(
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
-    return self.send(request, type_)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
-    raise UnexpectedResponse.for_response(response)
-qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
-Raw response content:
-b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
-✅ Qdrant is ready.
-🚀 Starting auto-indexing...
-ℹ️  Colección munbot_docs ya existe — sin cambios.
-INFO:__main__:Could not determine Qdrant client version.
-INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-INFO:__main__:Cargando y procesando documentos...
-INFO:__main__:Generando embeddings para 199 chunks...
-INFO:__main__:Subiendo puntos a Qdrant...
-INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
-🧠 Modelo cargado en 2,450 ms (CPU)
+🧠 Modelo cargado en 2,728 ms (CPU)
 Traceback (most recent call last):
   File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
     main()
@@ -185,7 +45,7 @@ INFO:__main__:Subiendo puntos a Qdrant...
 INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
 Traceback (most recent call last):
   File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
-🧠 Modelo cargado en 2,673 ms (CPU)
+🧠 Modelo cargado en 4,451 ms (CPU)
     main()
   File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
     client.upsert(
@@ -212,3 +72,735 @@ b'{"status":{"error":"Format error in JSON body: data did not match any variant 
 ✅ Qdrant is ready.
 🚀 Starting auto-indexing...
 ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,366 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,394 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+🧠 Modelo cargado en 2,326 ms (CPU)
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,435 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,359 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,356 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,342 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,342 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+🧠 Modelo cargado en 2,380 ms (CPU)
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+🧠 Modelo cargado en 2,324 ms (CPU)
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,352 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+🧠 Modelo cargado en 2,411 ms (CPU)
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,349 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,484 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,364 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,328 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,352 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+🧠 Modelo cargado en 2,597 ms (CPU)
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+🧠 Modelo cargado en 2,322 ms (CPU)
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+🧠 Modelo cargado en 2,318 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+🧠 Modelo cargado en 2,311 ms (CPU)
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 283, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 269, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'

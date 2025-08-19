@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__name__), '..')))
 
 from qdrant_client import QdrantClient
 from embeddings import embed
-from qdrant_helpers import upsert_points_batch # Import the new helper function
+
 
 def _as_list(x):
     if x is None:
@@ -191,12 +191,25 @@ def load_text_file_chunks(directory: str) -> list[dict]:
                     logger.error(f"Error procesando archivo de texto {filename}: {e}")
     return items
 
+
+
+import hashlib
+import math
+from qdrant_client.http.models import PointStruct
+
+def make_stable_id(item: dict) -> str:
+    # Normaliza el texto antes de hashear para evitar duplicados por espacios
+    doc = str(item.get("doc", "")).strip()
+    texto = str(item.get("texto", "")).strip()
+    texto_norm = re.sub(r"\s+", " ", texto)
+    base = (doc + "|" + texto_norm).encode("utf-8")
+    return hashlib.sha1(base).hexdigest()
+
 def main():
     """Función principal para indexar todos los documentos en Qdrant."""
     client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
     try:
-        # Use the client from the helper module for consistency
         count = client.count(collection_name=COLLECTION_NAME, exact=True).count
         if count > 0:
             logger.info(
@@ -215,24 +228,70 @@ def main():
         return
 
     logger.info(f"Generando embeddings y subiendo puntos a Qdrant para {len(all_items)} chunks...")
-    
-    # The embedding function now expects a single text, not a list.
-    # We define a wrapper function to pass to the helper.
-    def embedding_function(text: str) -> list[float]:
-        # The original embed function expects a list of texts and returns a list of embeddings.
-        # The helper expects a function that takes a single text and returns a single embedding.
-        embeddings_list = embed([text])
-        return embeddings_list[0] if embeddings_list else []
 
-    # Use the centralized upsert function
-    upsert_points_batch(
-        items_normalizados=all_items,
-        embedding_function=embedding_function
-    )
+    # Embeddings
+    texts = [item["texto"] for item in all_items]
+    embeddings = embed(texts)
 
-    logger.info(
-        f"✅ Indexación completada. {len(all_items)} puntos procesados para la colección '{COLLECTION_NAME}'."
-    )
+    # Validación de vectores
+    if not embeddings or any(len(vec) != len(embeddings[0]) for vec in embeddings):
+        logger.error("Error en la generación de embeddings o dimensiones inconsistentes.")
+        return
+
+    embedding_dim = len(embeddings[0])
+
+    # Verificar dimensión de la colección en Qdrant
+    try:
+        collection_info = client.get_collection(COLLECTION_NAME)
+        qdrant_dim = collection_info.vector_size
+        if qdrant_dim != embedding_dim:
+            logger.error(f"Dimensión de la colección Qdrant ({qdrant_dim}) no coincide con la de los embeddings ({embedding_dim}). Aborta indexación.")
+            return
+    except Exception as e:
+        logger.warning(f"No se pudo obtener la dimensión de la colección en Qdrant: {e}. Se asume que es compatible.")
+
+    for idx, vec in enumerate(embeddings):
+        if not isinstance(vec, (list, tuple)):
+            logger.error(f"Embedding #{idx} no es lista/tupla: {type(vec)}")
+            return
+        if len(vec) != embedding_dim:
+            logger.error(f"Embedding #{idx} tiene dimensión {len(vec)} en vez de {embedding_dim}")
+            return
+        for j, val in enumerate(vec):
+            if not isinstance(val, (float, int)):
+                logger.error(f"Embedding #{idx} posición {j} no es float/int: {type(val)}")
+                return
+            if math.isnan(val) or math.isinf(val):
+                logger.error(f"Embedding #{idx} posición {j} es NaN o Inf: {val}")
+                return
+
+    # Construir puntos
+    import json
+    points = []
+    for item, vector in zip(all_items, embeddings):
+        point_id = make_stable_id(item)
+        payload = {k: v for k, v in item.items() if k != "texto"}
+        payload["texto"] = item["texto"]
+        # Asegura que el payload sea JSON-serializable
+        try:
+            json.dumps(payload, ensure_ascii=False)
+        except Exception as e:
+            logger.error(f"Payload no serializable para ID {point_id}: {e}\nPayload: {payload}")
+            continue
+        points.append(
+            PointStruct(
+                id=point_id,
+                vector=vector,
+                payload=payload
+            )
+        )
+
+    # Upsert directo de la lista de puntos (sin batch wrapper extra)
+    try:
+        client.upsert(collection_name=COLLECTION_NAME, points=points)
+        logger.info(f"✅ Indexación completada. {len(points)} puntos procesados para la colección '{COLLECTION_NAME}'.")
+    except Exception as e:
+        logger.error(f"❌ Error al hacer upsert en Qdrant: {e}")
 
 if __name__ == "__main__":
     main()
