@@ -9,7 +9,7 @@ import logging
 import re
 import argparse
 from qdrant_client import QdrantClient
-from qdrant_client.http.models import PointStruct
+from qdrant_client.http.models import Batch
 from embeddings import embed  # Reutilizamos el helper de embeddings
 
 
@@ -204,7 +204,6 @@ def load_text_file_chunks(directory: str) -> list[dict]:
                     logger.error(f"Error procesando archivo de texto {filename}: {e}")
     return items
 
-
 def main():
     """Función principal para indexar todos los documentos en Qdrant."""
     client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
@@ -232,7 +231,9 @@ def main():
 
     logger.info("Subiendo puntos a Qdrant...")
 
-    docs_to_upload = []
+    ids = []
+    vectors_to_upload = []
+    payloads = []
     for item, vector in zip(all_items, vectors):
         if vector is None or not item.get("texto"):
             continue
@@ -248,24 +249,24 @@ def main():
         payload = {**item}
         payload["metadata"] = dict(item.get("metadata", {}))
         payload["metadata"]["stable_point_id"] = point_id
+        
+        ids.append(point_id)
+        vectors_to_upload.append(vector)
+        payloads.append(payload)
 
-        docs_to_upload.append(
-            PointStruct(
-                id=point_id,
-                vector=vector,
-                payload=payload,
-            )
-        )
-
-    if not docs_to_upload:
+    if not ids:
         logger.warning("No hay documentos válidos para subir a Qdrant.")
         return
 
-    logger.debug(f"Payload de ejemplo: {docs_to_upload[:1]}")
+    logger.debug(f"Payload de ejemplo: {payloads[:1]}")
 
-    client.upload_points(
+    client.upsert(
         collection_name=COLLECTION_NAME,
-        points=docs_to_upload,
+        points=Batch(
+            ids=ids,
+            vectors=vectors_to_upload,
+            payloads=payloads
+        ),
         wait=True,
     )
     logger.info(

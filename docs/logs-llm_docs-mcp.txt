@@ -1,458 +1,273 @@
-docker compose logs -f llm_docs-mcp
-llm_docs-mcp  | ✅ Qdrant is ready.
-llm_docs-mcp  | 🚀 Starting auto-indexing...
-llm_docs-mcp  | ✅  Colección creada: munbot_docs
-llm_docs-mcp  | INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
-llm_docs-mcp  | INFO:__main__:Cargando y procesando documentos...
-llm_docs-mcp  | INFO:__main__:Generando embeddings para 199 chunks...
-llm_docs-mcp  | INFO:__main__:Subiendo puntos a Qdrant...
-llm_docs-mcp  | INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
-llm_docs-mcp  | INFO:__main__:✅ Indexación completada. 199 puntos subidos a la colección 'munbot_docs'.
-llm_docs-mcp  | 🧠 Modelo cargado en 2,735 ms (CPU)
-llm_docs-mcp  | ✅ Indexing complete.
-llm_docs-mcp  | llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from /app/models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
-llm_docs-mcp  | llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
-llm_docs-mcp  | llama_model_loader: - kv   0:                       general.architecture str              = phi2
-llm_docs-mcp  | llama_model_loader: - kv   1:                               general.name str              = Phi2
-llm_docs-mcp  | llama_model_loader: - kv   2:                        phi2.context_length u32              = 2048
-llm_docs-mcp  | llama_model_loader: - kv   3:                      phi2.embedding_length u32              = 2560
-llm_docs-mcp  | llama_model_loader: - kv   4:                   phi2.feed_forward_length u32              = 10240
-llm_docs-mcp  | llama_model_loader: - kv   5:                           phi2.block_count u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv   6:                  phi2.attention.head_count u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv   7:               phi2.attention.head_count_kv u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv   8:          phi2.attention.layer_norm_epsilon f32              = 0.000010
-llm_docs-mcp  | llama_model_loader: - kv   9:                  phi2.rope.dimension_count u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv  10:                          general.file_type u32              = 15
-llm_docs-mcp  | llama_model_loader: - kv  11:               tokenizer.ggml.add_bos_token bool             = false
-llm_docs-mcp  | llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = gpt2
-llm_docs-mcp  | llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,51200]   = ["!", "\"", "#", "$", "%", "&", "'", ...
-llm_docs-mcp  | llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr[i32,51200]   = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
-llm_docs-mcp  | llama_model_loader: - kv  15:                      tokenizer.ggml.merges arr[str,50000]   = ["Ġ t", "Ġ a", "h e", "i n", "r e",...
-llm_docs-mcp  | llama_model_loader: - kv  16:                tokenizer.ggml.bos_token_id u32              = 50256
-llm_docs-mcp  | llama_model_loader: - kv  17:                tokenizer.ggml.eos_token_id u32              = 50256
-llm_docs-mcp  | llama_model_loader: - kv  18:            tokenizer.ggml.unknown_token_id u32              = 50256
-llm_docs-mcp  | llama_model_loader: - kv  19:               general.quantization_version u32              = 2
-llm_docs-mcp  | llama_model_loader: - type  f32:  195 tensors
-llm_docs-mcp  | llama_model_loader: - type q4_K:   81 tensors
-llm_docs-mcp  | llama_model_loader: - type q5_K:   32 tensors
-llm_docs-mcp  | llama_model_loader: - type q6_K:   17 tensors
-llm_docs-mcp  | print_info: file format = GGUF V3 (latest)
-llm_docs-mcp  | print_info: file type   = Q4_K - Medium
-llm_docs-mcp  | print_info: file size   = 1.66 GiB (5.14 BPW) 
-llm_docs-mcp  | load: missing pre-tokenizer type, using: 'default'
-llm_docs-mcp  | load:                                             
-llm_docs-mcp  | load: ************************************        
-llm_docs-mcp  | load: GENERATION QUALITY WILL BE DEGRADED!        
-llm_docs-mcp  | load: CONSIDER REGENERATING THE MODEL             
-llm_docs-mcp  | load: ************************************        
-llm_docs-mcp  | load:                                             
-llm_docs-mcp  | init_tokenizer: initializing tokenizer for type 2
-llm_docs-mcp  | load: printing all EOG tokens:
-llm_docs-mcp  | load:   - 50256 ('<|endoftext|>')
-llm_docs-mcp  | load: special tokens cache size = 944
-llm_docs-mcp  | load: token to piece cache size = 0.3151 MB
-llm_docs-mcp  | print_info: arch             = phi2
-llm_docs-mcp  | print_info: vocab_only       = 0
-llm_docs-mcp  | print_info: n_ctx_train      = 2048
-llm_docs-mcp  | print_info: n_embd           = 2560
-llm_docs-mcp  | print_info: n_layer          = 32
-llm_docs-mcp  | print_info: n_head           = 32
-llm_docs-mcp  | print_info: n_head_kv        = 32
-llm_docs-mcp  | print_info: n_rot            = 32
-llm_docs-mcp  | print_info: n_swa            = 0
-llm_docs-mcp  | print_info: is_swa_any       = 0
-llm_docs-mcp  | print_info: n_embd_head_k    = 80
-llm_docs-mcp  | print_info: n_embd_head_v    = 80
-llm_docs-mcp  | print_info: n_gqa            = 1
-llm_docs-mcp  | print_info: n_embd_k_gqa     = 2560
-llm_docs-mcp  | print_info: n_embd_v_gqa     = 2560
-llm_docs-mcp  | print_info: f_norm_eps       = 1.0e-05
-llm_docs-mcp  | print_info: f_norm_rms_eps   = 0.0e+00
-llm_docs-mcp  | print_info: f_clamp_kqv      = 0.0e+00
-llm_docs-mcp  | print_info: f_max_alibi_bias = 0.0e+00
-llm_docs-mcp  | print_info: f_logit_scale    = 0.0e+00
-llm_docs-mcp  | print_info: f_attn_scale     = 0.0e+00
-llm_docs-mcp  | print_info: n_ff             = 10240
-llm_docs-mcp  | print_info: n_expert         = 0
-llm_docs-mcp  | print_info: n_expert_used    = 0
-llm_docs-mcp  | print_info: causal attn      = 1
-llm_docs-mcp  | print_info: pooling type     = 0
-llm_docs-mcp  | print_info: rope type        = 2
-llm_docs-mcp  | print_info: rope scaling     = linear
-llm_docs-mcp  | print_info: freq_base_train  = 10000.0
-llm_docs-mcp  | print_info: freq_scale_train = 1
-llm_docs-mcp  | print_info: n_ctx_orig_yarn  = 2048
-llm_docs-mcp  | print_info: rope_finetuned   = unknown
-llm_docs-mcp  | print_info: model type       = 3B
-llm_docs-mcp  | print_info: model params     = 2.78 B
-llm_docs-mcp  | print_info: general.name     = Phi2
-llm_docs-mcp  | print_info: vocab type       = BPE
-llm_docs-mcp  | print_info: n_vocab          = 51200
-llm_docs-mcp  | print_info: n_merges         = 50000
-llm_docs-mcp  | print_info: BOS token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: EOS token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: EOT token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: UNK token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: LF token         = 198 'Ċ'
-llm_docs-mcp  | print_info: EOG token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: max token length = 256
-llm_docs-mcp  | load_tensors: loading model tensors, this can take a while... (mmap = true)
-llm_docs-mcp  | load_tensors: layer   0 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   1 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   2 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   3 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   4 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   5 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   6 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   7 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   8 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   9 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  10 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  11 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  12 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  13 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  14 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  15 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  16 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  17 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  18 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  19 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  20 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  21 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  22 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  23 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  24 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  25 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  26 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  27 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  28 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  29 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  30 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  31 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  32 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: tensor 'token_embd.weight' (q4_K) (and 324 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
-llm_docs-mcp  | load_tensors:   CPU_Mapped model buffer size =  1704.63 MiB
-llm_docs-mcp  | ....................................................................................
-llm_docs-mcp  | llama_context: constructing llama_context
-llm_docs-mcp  | llama_context: n_seq_max     = 1
-llm_docs-mcp  | llama_context: n_ctx         = 2048
-llm_docs-mcp  | llama_context: n_ctx_per_seq = 2048
-llm_docs-mcp  | llama_context: n_batch       = 512
-llm_docs-mcp  | llama_context: n_ubatch      = 512
-llm_docs-mcp  | llama_context: causal_attn   = 1
-llm_docs-mcp  | llama_context: flash_attn    = 0
-llm_docs-mcp  | llama_context: kv_unified    = false
-llm_docs-mcp  | llama_context: freq_base     = 10000.0
-llm_docs-mcp  | llama_context: freq_scale    = 1
-llm_docs-mcp  | set_abort_callback: call
-llm_docs-mcp  | llama_context:        CPU  output buffer size =     0.20 MiB
-llm_docs-mcp  | create_memory: n_ctx = 2048 (padded)
-llm_docs-mcp  | llama_kv_cache_unified: layer   0: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   1: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   2: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   3: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   4: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   5: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   6: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   7: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   8: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   9: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  10: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  11: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  12: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  13: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  14: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  15: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  16: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  17: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  18: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  19: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  20: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  21: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  22: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  23: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  24: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  25: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  26: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  27: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  28: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  29: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  30: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  31: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified:        CPU KV buffer size =   640.00 MiB
-llm_docs-mcp  | llama_kv_cache_unified: size =  640.00 MiB (  2048 cells,  32 layers,  1/1 seqs), K (f16):  320.00 MiB, V (f16):  320.00 MiB
-llm_docs-mcp  | llama_context: enumerating backends
-llm_docs-mcp  | llama_context: backend_ptrs.size() = 1
-llm_docs-mcp  | llama_context: max_nodes = 2600
-llm_docs-mcp  | llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
-llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
-llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-llm_docs-mcp  | llama_context:        CPU compute buffer size =   172.01 MiB
-llm_docs-mcp  | llama_context: graph nodes  = 1225
-llm_docs-mcp  | llama_context: graph splits = 1
-llm_docs-mcp  | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
-llm_docs-mcp  | Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
-llm_docs-mcp  | Using fallback chat format: llama-2
-llm_docs-mcp  | llama_perf_context_print:        load time =     145.76 ms
-llm_docs-mcp  | llama_perf_context_print: prompt eval time =     145.63 ms /     2 tokens (   72.81 ms per token,    13.73 tokens per second)
-llm_docs-mcp  | llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
-llm_docs-mcp  | llama_perf_context_print:       total time =     146.27 ms /     3 tokens
-llm_docs-mcp  | llama_perf_context_print:    graphs reused =          0
-llm_docs-mcp  | llama_model_loader: loaded meta data with 20 key-value pairs and 325 tensors from /app/models/phi-2.Q4_K_M.gguf (version GGUF V3 (latest))
-llm_docs-mcp  | llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
-llm_docs-mcp  | llama_model_loader: - kv   0:                       general.architecture str              = phi2
-llm_docs-mcp  | llama_model_loader: - kv   1:                               general.name str              = Phi2
-llm_docs-mcp  | llama_model_loader: - kv   2:                        phi2.context_length u32              = 2048
-llm_docs-mcp  | llama_model_loader: - kv   3:                      phi2.embedding_length u32              = 2560
-llm_docs-mcp  | llama_model_loader: - kv   4:                   phi2.feed_forward_length u32              = 10240
-llm_docs-mcp  | llama_model_loader: - kv   5:                           phi2.block_count u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv   6:                  phi2.attention.head_count u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv   7:               phi2.attention.head_count_kv u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv   8:          phi2.attention.layer_norm_epsilon f32              = 0.000010
-llm_docs-mcp  | llama_model_loader: - kv   9:                  phi2.rope.dimension_count u32              = 32
-llm_docs-mcp  | llama_model_loader: - kv  10:                          general.file_type u32              = 15
-llm_docs-mcp  | llama_model_loader: - kv  11:               tokenizer.ggml.add_bos_token bool             = false
-llm_docs-mcp  | llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = gpt2
-llm_docs-mcp  | llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,51200]   = ["!", "\"", "#", "$", "%", "&", "'", ...
-llm_docs-mcp  | llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr[i32,51200]   = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
-llm_docs-mcp  | llama_model_loader: - kv  15:                      tokenizer.ggml.merges arr[str,50000]   = ["Ġ t", "Ġ a", "h e", "i n", "r e",...
-llm_docs-mcp  | llama_model_loader: - kv  16:                tokenizer.ggml.bos_token_id u32              = 50256
-llm_docs-mcp  | llama_model_loader: - kv  17:                tokenizer.ggml.eos_token_id u32              = 50256
-llm_docs-mcp  | llama_model_loader: - kv  18:            tokenizer.ggml.unknown_token_id u32              = 50256
-llm_docs-mcp  | llama_model_loader: - kv  19:               general.quantization_version u32              = 2
-llm_docs-mcp  | llama_model_loader: - type  f32:  195 tensors
-llm_docs-mcp  | llama_model_loader: - type q4_K:   81 tensors
-llm_docs-mcp  | llama_model_loader: - type q5_K:   32 tensors
-llm_docs-mcp  | llama_model_loader: - type q6_K:   17 tensors
-llm_docs-mcp  | print_info: file format = GGUF V3 (latest)
-llm_docs-mcp  | print_info: file type   = Q4_K - Medium
-llm_docs-mcp  | print_info: file size   = 1.66 GiB (5.14 BPW) 
-llm_docs-mcp  | load: missing pre-tokenizer type, using: 'default'
-llm_docs-mcp  | load:                                             
-llm_docs-mcp  | load: ************************************        
-llm_docs-mcp  | load: GENERATION QUALITY WILL BE DEGRADED!        
-llm_docs-mcp  | load: CONSIDER REGENERATING THE MODEL             
-llm_docs-mcp  | load: ************************************        
-llm_docs-mcp  | load:                                             
-llm_docs-mcp  | init_tokenizer: initializing tokenizer for type 2
-llm_docs-mcp  | load: printing all EOG tokens:
-llm_docs-mcp  | load:   - 50256 ('<|endoftext|>')
-llm_docs-mcp  | load: special tokens cache size = 944
-llm_docs-mcp  | load: token to piece cache size = 0.3151 MB
-llm_docs-mcp  | print_info: arch             = phi2
-llm_docs-mcp  | print_info: vocab_only       = 0
-llm_docs-mcp  | print_info: n_ctx_train      = 2048
-llm_docs-mcp  | print_info: n_embd           = 2560
-llm_docs-mcp  | print_info: n_layer          = 32
-llm_docs-mcp  | print_info: n_head           = 32
-llm_docs-mcp  | print_info: n_head_kv        = 32
-llm_docs-mcp  | print_info: n_rot            = 32
-llm_docs-mcp  | print_info: n_swa            = 0
-llm_docs-mcp  | print_info: is_swa_any       = 0
-llm_docs-mcp  | print_info: n_embd_head_k    = 80
-llm_docs-mcp  | print_info: n_embd_head_v    = 80
-llm_docs-mcp  | print_info: n_gqa            = 1
-llm_docs-mcp  | print_info: n_embd_k_gqa     = 2560
-llm_docs-mcp  | print_info: n_embd_v_gqa     = 2560
-llm_docs-mcp  | print_info: f_norm_eps       = 1.0e-05
-llm_docs-mcp  | print_info: f_norm_rms_eps   = 0.0e+00
-llm_docs-mcp  | print_info: f_clamp_kqv      = 0.0e+00
-llm_docs-mcp  | print_info: f_max_alibi_bias = 0.0e+00
-llm_docs-mcp  | print_info: f_logit_scale    = 0.0e+00
-llm_docs-mcp  | print_info: f_attn_scale     = 0.0e+00
-llm_docs-mcp  | print_info: n_ff             = 10240
-llm_docs-mcp  | print_info: n_expert         = 0
-llm_docs-mcp  | print_info: n_expert_used    = 0
-llm_docs-mcp  | print_info: causal attn      = 1
-llm_docs-mcp  | print_info: pooling type     = 0
-llm_docs-mcp  | print_info: rope type        = 2
-llm_docs-mcp  | print_info: rope scaling     = linear
-llm_docs-mcp  | print_info: freq_base_train  = 10000.0
-llm_docs-mcp  | print_info: freq_scale_train = 1
-llm_docs-mcp  | print_info: n_ctx_orig_yarn  = 2048
-llm_docs-mcp  | print_info: rope_finetuned   = unknown
-llm_docs-mcp  | print_info: model type       = 3B
-llm_docs-mcp  | print_info: model params     = 2.78 B
-llm_docs-mcp  | print_info: general.name     = Phi2
-llm_docs-mcp  | print_info: vocab type       = BPE
-llm_docs-mcp  | print_info: n_vocab          = 51200
-llm_docs-mcp  | print_info: n_merges         = 50000
-llm_docs-mcp  | print_info: BOS token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: EOS token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: EOT token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: UNK token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: LF token         = 198 'Ċ'
-llm_docs-mcp  | print_info: EOG token        = 50256 '<|endoftext|>'
-llm_docs-mcp  | print_info: max token length = 256
-llm_docs-mcp  | load_tensors: loading model tensors, this can take a while... (mmap = true)
-llm_docs-mcp  | load_tensors: layer   0 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   1 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   2 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   3 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   4 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   5 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   6 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   7 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   8 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer   9 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  10 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  11 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  12 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  13 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  14 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  15 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  16 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  17 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  18 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  19 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  20 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  21 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  22 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  23 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  24 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  25 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  26 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  27 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  28 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  29 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  30 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  31 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: layer  32 assigned to device CPU, is_swa = 0
-llm_docs-mcp  | load_tensors: tensor 'token_embd.weight' (q4_K) (and 324 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
-llm_docs-mcp  | load_tensors:   CPU_Mapped model buffer size =  1704.63 MiB
-llm_docs-mcp  | ....................................................................................
-llm_docs-mcp  | llama_context: constructing llama_context
-llm_docs-mcp  | llama_context: n_seq_max     = 1
-llm_docs-mcp  | llama_context: n_ctx         = 2048
-llm_docs-mcp  | llama_context: n_ctx_per_seq = 2048
-llm_docs-mcp  | llama_context: n_batch       = 512
-llm_docs-mcp  | llama_context: n_ubatch      = 512
-llm_docs-mcp  | llama_context: causal_attn   = 1
-llm_docs-mcp  | llama_context: flash_attn    = 0
-llm_docs-mcp  | llama_context: kv_unified    = false
-llm_docs-mcp  | llama_context: freq_base     = 10000.0
-llm_docs-mcp  | llama_context: freq_scale    = 1
-llm_docs-mcp  | set_abort_callback: call
-llm_docs-mcp  | llama_context:        CPU  output buffer size =     0.20 MiB
-llm_docs-mcp  | create_memory: n_ctx = 2048 (padded)
-llm_docs-mcp  | llama_kv_cache_unified: layer   0: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   1: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   2: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   3: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   4: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   5: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   6: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   7: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   8: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer   9: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  10: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  11: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  12: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  13: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  14: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  15: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  16: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  17: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  18: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  19: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  20: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  21: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  22: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  23: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  24: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  25: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  26: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  27: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  28: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  29: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  30: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified: layer  31: dev = CPU
-llm_docs-mcp  | llama_kv_cache_unified:        CPU KV buffer size =   640.00 MiB
-llm_docs-mcp  | llama_kv_cache_unified: size =  640.00 MiB (  2048 cells,  32 layers,  1/1 seqs), K (f16):  320.00 MiB, V (f16):  320.00 MiB
-llm_docs-mcp  | llama_context: enumerating backends
-llm_docs-mcp  | llama_context: backend_ptrs.size() = 1
-llm_docs-mcp  | llama_context: max_nodes = 2600
-llm_docs-mcp  | llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
-llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
-llm_docs-mcp  | graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
-llm_docs-mcp  | llama_context:        CPU compute buffer size =   172.01 MiB
-llm_docs-mcp  | llama_context: graph nodes  = 1225
-llm_docs-mcp  | llama_context: graph splits = 1
-llm_docs-mcp  | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
-llm_docs-mcp  | Model metadata: {'tokenizer.ggml.unknown_token_id': '50256', 'tokenizer.ggml.eos_token_id': '50256', 'tokenizer.ggml.bos_token_id': '50256', 'general.architecture': 'phi2', 'general.name': 'Phi2', 'phi2.context_length': '2048', 'general.quantization_version': '2', 'tokenizer.ggml.model': 'gpt2', 'tokenizer.ggml.add_bos_token': 'false', 'phi2.embedding_length': '2560', 'phi2.attention.head_count': '32', 'phi2.attention.head_count_kv': '32', 'phi2.feed_forward_length': '10240', 'phi2.attention.layer_norm_epsilon': '0.000010', 'phi2.block_count': '32', 'phi2.rope.dimension_count': '32', 'general.file_type': '15'}
-llm_docs-mcp  | Using fallback chat format: llama-2
-llm_docs-mcp  | llama_perf_context_print:        load time =     139.79 ms
-llm_docs-mcp  | llama_perf_context_print: prompt eval time =     139.66 ms /     2 tokens (   69.83 ms per token,    14.32 tokens per second)
-llm_docs-mcp  | llama_perf_context_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
-llm_docs-mcp  | llama_perf_context_print:       total time =     140.28 ms /     3 tokens
-llm_docs-mcp  | llama_perf_context_print:    graphs reused =          0
-llm_docs-mcp  | INFO:     Started server process [1]
-llm_docs-mcp  | INFO:     Waiting for application startup.
-llm_docs-mcp  | INFO:     Application startup complete.
-llm_docs-mcp  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-llm_docs-mcp  | 🧠 Modelo cargado en 2,132 ms (CPU)
-llm_docs-mcp  | INFO:     127.0.0.1:46510 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:54168 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:54170 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:55638 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:34704 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:48466 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:53532 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:45082 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:46134 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:56838 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:55286 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:56162 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:56458 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:52950 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:47488 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:54442 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:33050 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:37460 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:44084 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:44922 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:42376 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:54078 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:53914 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:39486 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:37932 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:59472 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:37250 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:43868 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:54590 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:59458 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:56932 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:36828 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:58026 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:40402 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:42294 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:37076 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:45762 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:41610 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:37494 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:39080 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:38482 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:45194 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:58628 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:52642 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:39456 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:41836 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:34204 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:42680 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:47558 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:46894 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:39828 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:38930 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:55392 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:34250 - "POST /tools/call HTTP/1.1" 401 Unauthorized
-llm_docs-mcp  | INFO:     127.0.0.1:59604 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:59538 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:43088 - "POST /tools/call HTTP/1.1" 401 Unauthorized
-llm_docs-mcp  | INFO:     127.0.0.1:59504 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:45550 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:44176 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:42386 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     127.0.0.1:33014 - "GET /health HTTP/1.1" 200 OK
-llm_docs-mcp  | INFO:     172.18.0.10:47744 - "GET /health HTTP/1.1" 200 OK
+docker logs -f llm_docs-mcp
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+🧠 Modelo cargado en 2,964 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+🧠 Modelo cargado en 2,546 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+🧠 Modelo cargado en 2,393 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+🧠 Modelo cargado en 2,393 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+🧠 Modelo cargado en 2,315 ms (CPU)
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+🧠 Modelo cargado en 2,428 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+🧠 Modelo cargado en 2,439 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+ℹ️  Colección munbot_docs ya existe — sin cambios.
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings para 199 chunks...
+INFO:__main__:Subiendo puntos a Qdrant...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 400 Bad Request"
+Traceback (most recent call last):
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 275, in <module>
+🧠 Modelo cargado en 2,372 ms (CPU)
+    main()
+  File "/app/services/llm_docs-mcp/scripts/index_documents.py", line 265, in main
+    client.upsert(
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_client.py", line 987, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/qdrant_remote.py", line 1300, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 1439, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api/points_api.py", line 738, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 74, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/qdrant_client/http/api_client.py", line 97, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 400 (Bad Request)
+Raw response content:
+b'{"status":{"error":"Format error in JSON body: data did not match any variant of untagged enum PointInsertOperations"},"time":0.0}'
