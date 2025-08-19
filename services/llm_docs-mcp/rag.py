@@ -66,10 +66,12 @@ def expand_query_with_aliases(
 
     if selected_doc:
         for it in kb_items:
-            doc_val = it.get("doc") or it.get("payload", {}).get("doc")
-            id_val = it.get("id") or it.get("metadata", {}).get("id")
-            if selected_doc in (doc_val, id_val):
-                aliases += it.get("alias") or it.get("payload", {}).get("alias") or []
+            # Access 'doc' and 'alias' directly from the item or its payload
+            # as normalize_item ensures their presence.
+            current_doc = it.get("doc") or it.get("payload", {}).get("doc")
+            if current_doc == selected_doc:
+                item_aliases = it.get("alias") or it.get("payload", {}).get("alias") or []
+                aliases.extend(item_aliases)
         aliases = list(dict.fromkeys(a.strip() for a in aliases if a))[:max_aliases]
         if aliases:
             q = q + " " + " ".join(aliases)
@@ -77,6 +79,7 @@ def expand_query_with_aliases(
 
     doc_counts: dict[str, int] = {}
     for it in kb_items:
+        # Access 'doc' directly from the item or its payload
         d = (it.get("doc") or it.get("payload", {}).get("doc") or "").strip()
         if not d:
             continue
@@ -84,8 +87,11 @@ def expand_query_with_aliases(
     if doc_counts:
         doc_top = max(doc_counts, key=doc_counts.get)
         for it in kb_items:
-            if (it.get("doc") or it.get("payload", {}).get("doc")) == doc_top:
-                aliases += it.get("alias") or it.get("payload", {}).get("alias") or []
+            # Access 'doc' and 'alias' directly from the item or its payload
+            current_doc = it.get("doc") or it.get("payload", {}).get("doc")
+            if current_doc == doc_top:
+                item_aliases = it.get("alias") or it.get("payload", {}).get("alias") or []
+                aliases.extend(item_aliases)
         aliases = list(dict.fromkeys(a.strip() for a in aliases if a))[:max_aliases]
         if aliases:
             q = q + " " + " ".join(aliases)
