@@ -1,63 +1,56 @@
-docker compose logs -f mcp-core
-mcp-core  | → Esperando a Redis en redis:6379...
-mcp-core  | → Esperando a Postgres en postgres:5432...
-mcp-core  | → Esperando a Qdrant en qdrant:6333...
-mcp-core  | → Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-mcp-core  | → Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
-mcp-core  | → Todas las dependencias listas. Iniciando mcp‑core...
-mcp-core  | INFO:     Started server process [1]
-mcp-core  | INFO:     Waiting for application startup.
-mcp-core  | INFO:     Application startup complete.
-mcp-core  | INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-mcp-core  | {"asctime": "2025-08-12 10:38:57,005", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
-mcp-core  | INFO:     127.0.0.1:50500 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:50258 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:41738 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:41036 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:52334 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:56020 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:60076 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:32842 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:57004 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:52062 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:59266 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:33598 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:50600 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:47388 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:32772 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:50302 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:48970 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:51176 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:50192 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:36844 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:34534 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:56660 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:57994 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:47540 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:53952 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:36308 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | {"asctime": "2025-08-12 10:51:35,142", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:51:35,142", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:51:35,142", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:51:35,142", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | INFO:     172.18.0.11:59494 - "POST /orchestrate HTTP/1.1" 200 OK
-mcp-core  | {"asctime": "2025-08-12 10:51:44,141", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 401 Unauthorized\"", "trace_id": null}
-mcp-core  | {"asctime": "2025-08-12 10:51:44,141", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "60519554-5f92-477e-9490-86344f80c89c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
-mcp-core  | {"asctime": "2025-08-12 10:51:44,141", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "60519554-5f92-477e-9490-86344f80c89c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
-mcp-core  | {"asctime": "2025-08-12 10:51:44,144", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:51:44,144", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | INFO:     172.18.0.11:33340 - "POST /orchestrate HTTP/1.1" 200 OK
-mcp-core  | {"asctime": "2025-08-12 10:51:58,741", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:51:58,741", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Detectado saludo por regla local", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:51:58,741", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:51:58,741", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: saludo", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | INFO:     172.18.0.11:35882 - "POST /orchestrate HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:56752 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | {"asctime": "2025-08-12 10:52:16,306", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 401 Unauthorized\"", "trace_id": null}
-mcp-core  | {"asctime": "2025-08-12 10:52:16,306", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "60519554-5f92-477e-9490-86344f80c89c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
-mcp-core  | {"asctime": "2025-08-12 10:52:16,306", "levelname": "ERROR", "name": "munbot", "message": "Error al clasificar la intenci\u00f3n: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401", "trace_id": "60519554-5f92-477e-9490-86344f80c89c", "exc_info": "Traceback (most recent call last):\n  File \"/app/mcp-core/intent_classifier.py\", line 47, in classify_intent_and_entities\n    result = llm_client.classify_intent(user_input)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 51, in classify_intent\n    resp = self.tools_call(\"doc-classify_intent_llm\", {\"texto\": texto}, trace_id)\n  File \"/app/mcp-core/clients/llm_docs.py\", line 45, in tools_call\n    r.raise_for_status()\n  File \"/usr/local/lib/python3.10/site-packages/httpx/_models.py\", line 829, in raise_for_status\n    raise HTTPStatusError(message, request=request, response=self)\nhttpx.HTTPStatusError: Client error '401 Unauthorized' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"}
-mcp-core  | {"asctime": "2025-08-12 10:52:16,306", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | {"asctime": "2025-08-12 10:52:16,306", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: no_entendido", "trace_id": "60519554-5f92-477e-9490-86344f80c89c"}
-mcp-core  | INFO:     172.18.0.11:47656 - "POST /orchestrate HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:57676 - "GET /health HTTP/1.1" 200 OK
-mcp-core  | INFO:     127.0.0.1:55160 - "GET /health HTTP/1.1" 200 OK
+docker logs -f mcp-core 
+→ Esperando a Redis en redis:6379...
+Connection to redis (172.18.0.4) 6379 port [tcp/redis] succeeded!
+→ Esperando a Postgres en postgres:5432...
+Connection to postgres (172.18.0.2) 5432 port [tcp/postgresql] succeeded!
+→ Esperando a Qdrant en qdrant:6333...
+Connection to qdrant (172.18.0.3) 6333 port [tcp/*] succeeded!
+→ Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
+Connection to llm_docs-mcp (172.18.0.6) 8000 port [tcp/*] succeeded!
+→ Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
+→ Todas las dependencias listas. Iniciando mcp‑core...
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+{"asctime": "2025-08-19 22:25:50,896", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+INFO:     127.0.0.1:51806 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55174 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44904 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43660 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35636 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43670 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54488 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44176 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40714 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36700 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33730 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49480 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38072 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54406 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35294 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53878 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49176 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35658 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42224 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47364 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48252 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41780 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51566 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40044 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-19 22:37:28,243", "levelname": "ERROR", "name": "munbot", "message": "Error calling intent classifier: 404 Client Error: Not Found for url: http://llm_docs-mcp:8000/classify_intent", "trace_id": null}
+{"asctime": "2025-08-19 22:37:28,243", "levelname": "ERROR", "name": "munbot", "message": "Error calling intent classifier: 404 Client Error: Not Found for url: http://llm_docs-mcp:8000/classify_intent", "trace_id": null}
+{"asctime": "2025-08-19 22:37:28,243", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "6b26cfa1-e784-4c8b-840b-8bec951abfab"}
+{"asctime": "2025-08-19 22:37:28,243", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "6b26cfa1-e784-4c8b-840b-8bec951abfab"}
+INFO:     172.18.0.11:58684 - "POST /orchestrate HTTP/1.1" 200 OK
+{"asctime": "2025-08-19 22:37:34,160", "levelname": "ERROR", "name": "munbot", "message": "Error calling intent classifier: 404 Client Error: Not Found for url: http://llm_docs-mcp:8000/classify_intent", "trace_id": null}
+{"asctime": "2025-08-19 22:37:34,160", "levelname": "ERROR", "name": "munbot", "message": "Error calling intent classifier: 404 Client Error: Not Found for url: http://llm_docs-mcp:8000/classify_intent", "trace_id": null}
+{"asctime": "2025-08-19 22:37:34,160", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "6b26cfa1-e784-4c8b-840b-8bec951abfab"}
+{"asctime": "2025-08-19 22:37:34,160", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "6b26cfa1-e784-4c8b-840b-8bec951abfab"}
+INFO:     172.18.0.11:58700 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48406 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41178 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49782 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48970 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43826 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50002 - "GET /health HTTP/1.1" 200 OK
