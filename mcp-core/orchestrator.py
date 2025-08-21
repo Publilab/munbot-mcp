@@ -18,6 +18,7 @@ import threading
 import time
 import concurrent.futures
 from .context_manager import ConversationalContextManager
+from mcp_core.clients.llm_docs import LlmDocsClient
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -69,13 +70,6 @@ LLM_DOCS_MCP_HEALTH_URL = os.getenv(
     "LLM_DOCS_MCP_HEALTH_URL",
     LLM_DOCS_MCP_URL.replace("/tools/call", "/health"),
 )
-# Base URL del servicio de documentos. Si la variable de entorno está
-# ausente o vacía, utilizamos la URL del micro servicio sin el sufijo
-# "/tools/call". Esto evita caer en el modo local que requiere el
-# módulo de embeddings cuando se desea usar el servicio remoto.
-LLM_DOCS_BASE = os.getenv("LLM_DOCS_BASE") or LLM_DOCS_MCP_URL.replace(
-    "/tools/call", ""
-)
 # Credenciales opcionales para microservicios
 LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
 LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
@@ -89,6 +83,7 @@ LLM_DOCS_CIRCUIT_COOLDOWN = int(
     os.getenv("LLM_DOCS_CIRCUIT_COOLDOWN", "60")
 )
 _doc_cb_state = {"fails": 0, "opened_until": 0.0}
+llm_client = LlmDocsClient()
 # == Rutas de los archivos ==
 PROMPTS_PATH = os.getenv("PROMPTS_PATH")
 TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
@@ -654,16 +649,14 @@ def call_scheduler_endpoint(endpoint: str, params: Dict[str, Any]) -> Dict[str, 
     except requests.RequestException as e:
         return {"error": f"Connection error: {e}"}
 
-def classify_intent_remotely(user_input: str) -> Dict[str, Any]:
-    """Calls the centralized intent classification service."""
-    base = LLM_DOCS_BASE
-    url = f"{base.rstrip('/')}/classify_intent"
+def classify_intent_remotely(user_input: str) -> dict:
+    """Clasifica la intención del usuario usando llm_docs-mcp."""
     try:
-        resp = requests.post(url, json={"user_input": user_input, "output_mode": "rich"}, timeout=10)
-        resp.raise_for_status()
-        return resp.json()
-    except requests.RequestException as e:
+        # El método devuelve un dict con 'intent' y 'entities'
+        return llm_client.classify_intent(user_input)
+    except Exception as e:
         logger.error(f"Error calling intent classifier: {e}")
+        # Conserva comportamiento actual en caso de fallo
         return {"intent": "n/a", "error": str(e)}
 
 
