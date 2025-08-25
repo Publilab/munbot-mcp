@@ -1,43 +1,40 @@
 docker logs -f mcp-core
 → Esperando a Redis en redis:6379...
-Connection to redis (172.18.0.4) 6379 port [tcp/redis] succeeded!
+Connection to redis (172.18.0.2) 6379 port [tcp/redis] succeeded!
 → Esperando a Postgres en postgres:5432...
-Connection to postgres (172.18.0.2) 5432 port [tcp/postgresql] succeeded!
+Connection to postgres (172.18.0.4) 5432 port [tcp/postgresql] succeeded!
 → Esperando a Qdrant en qdrant:6333...
 Connection to qdrant (172.18.0.3) 6333 port [tcp/*] succeeded!
 → Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-Connection to llm_docs-mcp (172.18.0.6) 8000 port [tcp/*] succeeded!
+Connection to llm_docs-mcp (172.18.0.5) 8000 port [tcp/*] succeeded!
 → Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
 → Todas las dependencias listas. Iniciando mcp‑core...
 INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-{"asctime": "2025-08-25 13:17:39,934", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
-INFO:     127.0.0.1:40728 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47002 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39982 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51082 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59470 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42094 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52146 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41778 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59844 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:32954 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50336 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47680 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49886 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41396 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52306 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:53248 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59460 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52326 - "GET /health HTTP/1.1" 200 OK
-{"asctime": "2025-08-25 13:26:46,365", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 200 OK\"", "trace_id": null}
-{"asctime": "2025-08-25 13:26:46,365", "levelname": "ERROR", "name": "munbot", "message": "Error calling intent classifier: 'dict' object has no attribute 'strip'", "trace_id": null}
-{"asctime": "2025-08-25 13:26:46,365", "levelname": "ERROR", "name": "munbot", "message": "Error calling intent classifier: 'dict' object has no attribute 'strip'", "trace_id": null}
-{"asctime": "2025-08-25 13:26:46,365", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "886e9f28-70d9-4627-ba91-28cd90bd57fa"}
-{"asctime": "2025-08-25 13:26:46,365", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "886e9f28-70d9-4627-ba91-28cd90bd57fa"}
-INFO:     172.18.0.11:47268 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50358 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51968 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37104 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-25 15:13:26,761", "levelname": "INFO", "name": "root", "message": "Migraci\u00f3n de sesiones de Redis a PostgreSQL completada.", "trace_id": null}
+INFO:     127.0.0.1:37782 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37160 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54112 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33814 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57310 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42464 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47692 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42930 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33780 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45384 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57606 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40312 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46498 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44234 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60288 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-25 15:21:04,178", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 200 OK\"", "trace_id": null}
+{"asctime": "2025-08-25 15:21:04,179", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "ff59026d-5574-42ee-9aba-ad84affde384"}
+{"asctime": "2025-08-25 15:21:04,179", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "ff59026d-5574-42ee-9aba-ad84affde384"}
+INFO:     172.18.0.11:56434 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44122 - "GET /health HTTP/1.1" 200 OK
+{"asctime": "2025-08-25 15:21:15,876", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 200 OK\"", "trace_id": null}
+{"asctime": "2025-08-25 15:21:15,876", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "ff59026d-5574-42ee-9aba-ad84affde384"}
+{"asctime": "2025-08-25 15:21:15,876", "levelname": "INFO", "name": "munbot", "message": "[INTENT] Intenci\u00f3n clasificada: n/a", "trace_id": "ff59026d-5574-42ee-9aba-ad84affde384"}
+INFO:     172.18.0.11:46180 - "POST /orchestrate HTTP/1.1" 200 OK
