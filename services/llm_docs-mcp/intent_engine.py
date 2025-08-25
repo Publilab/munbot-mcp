@@ -6,6 +6,20 @@ from typing import List, Dict, Any, Optional, Tuple
 DATA_GLOB = os.getenv("RAG_DATA_GLOB", "RAG-*.json")  # mismo dir del proceso
 UMBRAL_SCORE = 0.18  # si baja de esto => n/a
 
+def dynamic_threshold(query_text: str) -> float:
+    """Retorna un umbral adaptativo según la longitud de la consulta.
+
+    Consultas muy cortas reciben un umbral menor para no penalizar
+    saludos o frases de dos palabras. A mayor longitud, el umbral vuelve
+    al valor por defecto.
+    """
+    n = len(query_text.strip().split())
+    if n <= 2:
+        return 0.08
+    if n <= 4:
+        return 0.12
+    return UMBRAL_SCORE
+
 def _norm(s: str) -> str:
     if not s: return ""
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
@@ -277,7 +291,7 @@ def boost_by_keywords(user: str, item: Item) -> float:
         if slot == (item.metadata.get("seccion") or item.metadata.get("tipo_fragmento")):
             bonus += 0.08
         if slot in (sub or ""):
-            bonus += 0.06
+            bonus += 0.12
 
     # bonificar por doc mencionado en el texto del usuario
     d = item.doc or ""
@@ -329,7 +343,8 @@ class IntentEngine:
         matched = best.source
 
         # si score bajo, marcar n/a
-        if score < UMBRAL_SCORE:
+        thr = dynamic_threshold(texto_usuario)
+        if score < thr:
             return {
                 "intent":"n/a", "sub_intent":None, "doc":None, "doc_id":None,
                 "slot":None, "matched_entry":None, "confidence":float(round(score,4)),
