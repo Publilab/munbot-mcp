@@ -18,6 +18,42 @@ def _norm(s: str) -> str:
 def _tokenize(s: str) -> List[str]:
     return [t for t in _norm(s).split() if t]
 
+
+def normalize_for_search(s: str) -> str:
+    """Normalize text to improve search indexing.
+
+    Lowercase, remove diacritics and collapse repeated whitespace.
+    """
+    return _norm(s)
+
+
+def build_searchable_text(obj: dict) -> str:
+    """Create a normalized blob of text from all relevant fields."""
+    # Campos principales
+    title = obj.get("title") or obj.get("question") or ""
+    text = obj.get("text") or obj.get("answer") or ""
+
+    # NUEVO: incluir variantes de respuesta
+    answer_variants = obj.get("answer_variant") or []
+
+    # Alias y frases de usuario
+    alias = obj.get("alias") or []
+    user_says = obj.get("user_says") or []
+
+    # Metadatos y tags
+    md = obj.get("metadata") or {}
+    tags = md.get("tags") or obj.get("tags") or []
+    subcat = md.get("subcategory") or ""
+
+    parts = [title, text, subcat]
+    parts.extend(tags)
+    parts.extend(alias)
+    parts.extend(user_says)
+    parts.extend(answer_variants)
+
+    blob = " ".join([p for p in parts if p])
+    return normalize_for_search(blob)
+
 @dataclass
 class Item:
     source: str
@@ -31,13 +67,16 @@ class Item:
 
     def searchable_text(self) -> str:
         # concatena campos relevantes para el fallback
-        parts = []
-        parts += self.alias
-        parts += _ensure_list(self.metadata.get("user_says"))
-        if self.title: parts.append(self.title)
-        if self.texto: parts.append(self.texto)
-        parts += self.tags
-        return " | ".join(parts)
+        obj = {
+            "title": self.title,
+            "text": self.texto,
+            "alias": self.alias,
+            "user_says": _ensure_list(self.metadata.get("user_says")),
+            "answer_variant": _ensure_list(self.metadata.get("answer_variant")),
+            "metadata": self.metadata,
+            "tags": self.tags,
+        }
+        return build_searchable_text(obj)
 
 def _ensure_list(v) -> List[str]:
     if not v: return []
@@ -50,14 +89,23 @@ def load_all() -> List[Item]:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
         for obj in data:
+            alias_list = _ensure_list(obj.get("alias"))
+            user_says = _ensure_list(obj.get("user_says"))
+            answer_variants = _ensure_list(obj.get("answer_variant") or obj.get("answer_variants"))
+            meta = obj.get("metadata") or {}
+            if user_says:
+                meta["user_says"] = user_says
+            if answer_variants:
+                meta["answer_variant"] = answer_variants
+            alias_norm = [_norm(a) for a in alias_list + user_says]
             items.append(Item(
                 source = obj.get("fuente") or path,
                 doc    = obj.get("doc"),
                 texto  = obj.get("texto") or "",
                 tags   = _ensure_list(obj.get("tags")),
-                alias  = [ _norm(a) for a in _ensure_list(obj.get("alias")) ],
-                metadata = obj.get("metadata") or {},
-                title    = obj.get("metadata",{}).get("title"),
+                alias  = alias_norm,
+                metadata = meta,
+                title    = meta.get("title"),
             ))
     return items
 

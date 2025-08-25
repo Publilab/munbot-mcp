@@ -70,7 +70,22 @@ def _valid_vec(v):
         all(isinstance(x, (float, int)) and x == x and x not in (float("inf"), float("-inf")) for x in v)
     )
 
-def normalize_item(item: Dict[str, Any], filename: str) -> Dict[str, Any]:
+def normalize_item(item: Dict[str, Any], filename: str = "") -> Dict[str, Any]:
+    # Normaliza llaves en español si vienen como question/answer y actualiza metadata
+    q = item.pop("question", None)
+    a = item.pop("answer", None)
+    if q is not None:
+        item["pregunta"] = q
+    if a is not None:
+        item["respuesta"] = a
+
+    meta = item.get("metadata") or {}
+    if q is not None:
+        meta["pregunta"] = q
+    if a is not None:
+        meta["respuesta"] = a
+    item["metadata"] = meta
+
     # 1) Texto robusto
     if "texto" in item:
         t = item["texto"]
@@ -78,17 +93,13 @@ def normalize_item(item: Dict[str, Any], filename: str) -> Dict[str, Any]:
     elif "content" in item:
         c = item["content"]
         texto = " ".join(c) if isinstance(c, list) else str(c)
-    elif "answer" in item or "respuesta" in item:
-        # Soporta FAQ antiguos (question/answer) o (pregunta/respuesta)
-        q = item.get("question") or item.get("pregunta") or ""
-        a = item.get("answer") or item.get("respuesta") or ""
-        texto = f"Pregunta frecuente: {q}\nRespuesta: {a}".strip()
+    elif "respuesta" in item or a is not None:
+        texto = item.get("respuesta") or a or ""
     else:
         # Último recurso: concatena strings sueltos
         texto = " ".join(str(v) for v in item.values() if isinstance(v, str))
 
     # 2) Doc / Fuente
-    meta = item.get("metadata") or {}
     doc = item.get("doc") or meta.get("source_doc") or meta.get("doc") or "desconocido"
     fuente = item.get("fuente") or filename
 
@@ -107,6 +118,8 @@ def normalize_item(item: Dict[str, Any], filename: str) -> Dict[str, Any]:
         "title": meta.get("title"),
         "source_doc": meta.get("source_doc") or doc,
         "raw": meta.get("raw"),  # opcional
+        "pregunta": meta.get("pregunta"),
+        "respuesta": meta.get("respuesta"),
     }
 
     return {
