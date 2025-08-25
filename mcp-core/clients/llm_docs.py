@@ -51,7 +51,11 @@ class LlmDocsClient:
     def classify_intent(self, texto: str, trace_id: Optional[str] = None) -> dict:
         """Clasifica la intención y devuelve un dict con intent y entities."""
         resp = self.tools_call("doc-classify_intent_llm", {"texto": texto}, trace_id)
-        intent = (resp.get("intent") or "").strip()
+        raw_intent = resp.get("intent")
+        if isinstance(raw_intent, dict):
+            intent = (raw_intent.get("intent") or "").strip()
+        else:
+            intent = (raw_intent or "").strip()
         entities = resp.get("entities") or {}
         return {"intent": intent, "entities": entities}
 
