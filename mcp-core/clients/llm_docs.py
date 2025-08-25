@@ -2,6 +2,7 @@
 import os
 import httpx
 from typing import Optional
+from urllib.parse import urlparse
 
 # Usa la misma URL que el orquestador (por defecto: http://llm_docs-mcp:8000/tools/call)
 BASE_URL = (
@@ -17,7 +18,8 @@ PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
 
 class LlmDocsClient:
     def __init__(self, base_url: str = BASE_URL, timeout: float = 30.0):
-        self.base_url = base_url.rstrip("/")
+        parsed_url = urlparse(base_url)
+        self.base_url = f"{parsed_url.scheme}://{parsed_url.netloc}/tools/call"
         self.timeout = timeout
 
     def _headers(self) -> dict:

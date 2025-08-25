@@ -44,12 +44,12 @@ def _norm_slot(s: Optional[str]) -> Optional[str]:
     return _SLOT_NORMALIZE.get(s, s) if (s := s.strip()) else s
 
 
-def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None):
+def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None, mode: str | None = None):
     """Classify a user's intent using the RAG engine with an LLM fallback."""
 
     text = (user_input or "").strip()
     if not text:
-        return "n/a" if _MODE == "flat" else {"intent": "n/a"}
+        return "n/a" if (mode or _MODE) == "flat" else {"intent": "n/a"}
 
     # 1) IntentEngine primero (usa RAG + alias + tags)
     rich = classify_intent_payload(text)
@@ -77,7 +77,8 @@ def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None):
         rich["sub_intent"] = _norm_slot(rich["sub_intent"])
 
     # 4) Salida por modo
-    if _MODE == "flat":
+    output_mode = mode or _MODE
+    if output_mode == "flat":
         # Si quieres compat extrema con flujos viejos:
         # devolver "saludo" cuando sea faq+saludo
         sub = (rich.get("sub_intent") or "").lower()

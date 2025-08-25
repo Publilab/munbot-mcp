@@ -12,6 +12,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import re
 from email.utils import parseaddr
+from urllib.parse import urlparse
 import redis
 import uuid
 import threading
@@ -544,6 +545,10 @@ def _cb_success() -> None:
 
 def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | None = None) -> Dict[str, Any]:
     service_url = route_to_service(tool)
+    if tool.startswith("doc-"):
+        parsed_url = urlparse(service_url)
+        service_url = f"{parsed_url.scheme}://{parsed_url.netloc}/tools/call"
+
     logger.info(f"intent={tool}, routing to {service_url}")
     payload = {"tool": tool, "params": params}
     if trace_id is not None:

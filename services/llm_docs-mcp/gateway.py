@@ -606,7 +606,7 @@ async def tools_call(request: Request):
             return {"fragmentos": frags}
         elif tool == "doc-classify_intent_llm":
             texto = _get_texto(params)
-            intent = classify_intent_with_llm(texto, llama)
+            intent = classify_intent_with_llm(texto, llama, mode='plain')
             return {"intent": intent}
         else:
             raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
@@ -642,7 +642,7 @@ async def tools_doc_generar_respuesta_llm(params: dict):
 @app.post("/tools/doc-classify_intent_llm", dependencies=[Depends(authenticate)])
 async def tools_doc_classify_intent_llm(params: dict):
     texto = _get_texto(params)
-    intent = classify_intent_with_llm(texto, llama)
+    intent = classify_intent_with_llm(texto, llama, mode='plain')
     return {"intent": intent}
 
 
