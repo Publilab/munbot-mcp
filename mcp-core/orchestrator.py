@@ -19,7 +19,7 @@ import threading
 import time
 import concurrent.futures
 from .context_manager import ConversationalContextManager
-from mcp_core.clients.llm_docs import LlmDocsClient
+from .clients.llm_docs import LlmDocsClient
 from prometheus_client import (
     Counter,
     CollectorRegistry,
