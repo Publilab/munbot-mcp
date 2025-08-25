@@ -127,6 +127,7 @@ def normalize_item(item: Dict[str, Any], filename: str = "") -> Dict[str, Any]:
         "faq_id": meta.get("faq_id"),
         # opcionales adicionales
         "nivel_normativo": meta.get("nivel_normativo"),
+        "peso_normativo": meta.get("peso_normativo"),
         "vigencia_inicio": meta.get("vigencia_inicio"),
         "vigencia_fin": meta.get("vigencia_fin"),
         "version": meta.get("version"),
@@ -181,6 +182,15 @@ COLLECTION_NAME = args.collection
 def load_rag_json_chunks(directory: str) -> list[dict]:
     """Carga todos los archivos RAG-*.json y normaliza cada entrada."""
     items: list[dict] = []
+    metadata_path = os.path.join(directory, "metadata.json")
+    metadata_map: dict[str, dict] = {}
+    if os.path.isfile(metadata_path):
+        try:
+            with open(metadata_path, "r", encoding="utf-8") as f:
+                metadata_map = json.load(f)
+        except Exception as e:
+            logger.error(f"Error cargando metadata global: {e}")
+
     for filename in os.listdir(directory):
         if filename.startswith("RAG-") and filename.endswith(".json"):
             filepath = os.path.join(directory, filename)
@@ -192,8 +202,23 @@ def load_rag_json_chunks(directory: str) -> list[dict]:
                 data = None
             if not data:
                 continue
+
+            global_meta = metadata_map.get(filename, {})
             for raw in data:
-                item = normalize_item(raw, filename) # Pass filename to normalize_item
+                raw_meta = raw.get("metadata") or {}
+                for k in [
+                    "nivel_normativo",
+                    "peso_normativo",
+                    "vigencia_inicio",
+                    "vigencia_fin",
+                    "version",
+                    "last_updated",
+                ]:
+                    if k in global_meta and k not in raw_meta:
+                        raw_meta[k] = global_meta[k]
+                raw["metadata"] = raw_meta
+
+                item = normalize_item(raw, filename)
                 if item:
                     items.append(item)
     return items
