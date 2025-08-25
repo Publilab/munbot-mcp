@@ -45,11 +45,22 @@ def build_searchable_text(obj: dict) -> str:
     tags = md.get("tags") or obj.get("tags") or []
     subcat = md.get("subcategory") or ""
 
+    # Extra metadata fields to include in the searchable text
+    extra_md_fields = [
+        md.get("category"),
+        md.get("tema"),
+        md.get("tipo_fragmento"),
+        md.get("seccion"),
+        md.get("priority"),
+        md.get("faq_id"),
+    ]
+
     parts = [title, text, subcat]
     parts.extend(tags)
     parts.extend(alias)
     parts.extend(user_says)
     parts.extend(answer_variants)
+    parts.extend(str(f) for f in extra_md_fields if f not in (None, ""))
 
     blob = " ".join([p for p in parts if p])
     return normalize_for_search(blob)
