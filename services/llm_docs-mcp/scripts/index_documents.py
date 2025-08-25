@@ -120,6 +120,17 @@ def normalize_item(item: Dict[str, Any], filename: str = "") -> Dict[str, Any]:
         "raw": meta.get("raw"),  # opcional
         "pregunta": meta.get("pregunta"),
         "respuesta": meta.get("respuesta"),
+        "tema": meta.get("tema"),
+        "tipo_fragmento": meta.get("tipo_fragmento"),
+        "seccion": meta.get("seccion"),
+        "priority": meta.get("priority"),
+        "faq_id": meta.get("faq_id"),
+        # opcionales adicionales
+        "nivel_normativo": meta.get("nivel_normativo"),
+        "vigencia_inicio": meta.get("vigencia_inicio"),
+        "vigencia_fin": meta.get("vigencia_fin"),
+        "version": meta.get("version"),
+        "last_updated": meta.get("last_updated"),
     }
 
     return {
