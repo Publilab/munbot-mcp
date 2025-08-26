@@ -15,7 +15,11 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 sys.modules.pop("intent_classifier", None)
 
 # Ahora las importaciones deberían funcionar
-from intent_classifier import classify_reclamo_response, classify_intent_with_llm
+from intent_classifier import (
+    classify_reclamo_response,
+    classify_intent_with_llm,
+    flatten_for_orchestrator,
+)
 
 # --- Pruebas para la lógica de clasificación de respuestas de reclamos ---
 
@@ -55,6 +59,8 @@ class MockIntentEngine:
             return {"intent": "reclamo"}
         if "permiso" in text:
             return {"intent": "tramite"}
+        if "horario" in text:
+            return {"intent": "documento"}
         if "documento" in text:
             return {"intent": "documento"}
         if "información" in text:
@@ -84,3 +90,21 @@ def test_classify_main_intent_basic(user_input, expected_intent):
     assert result.get("intent") == expected_intent.get("intent")
     if expected_intent.get("sub_intent"):
         assert result.get("sub_intent") == expected_intent.get("sub_intent")
+
+
+@pytest.mark.parametrize(
+    "user_input, expected_label",
+    [
+        ("hola", "saludo"),
+        ("adiós", "despedida"),
+        ("gracias", "agradecimiento"),
+        ("permiso de circulación", "tramite"),
+        ("horario comercio", "documento"),
+        ("quiero agendar una hora", "agenda"),
+        ("quiero poner un reclamo", "reclamo"),
+        ("ruido", "n/a"),
+    ],
+)
+def test_flatten_for_orchestrator_outputs(user_input, expected_label):
+    result = classify_intent_with_llm(user_input)
+    assert flatten_for_orchestrator(result) == expected_label
