@@ -52,10 +52,17 @@ class LlmDocsClient:
         """Clasifica la intención y devuelve un dict con intent y entities."""
         resp = self.tools_call("doc-classify_intent_llm", {"texto": texto}, trace_id)
         raw_intent = resp.get("intent")
+        sub_intent = resp.get("sub_intent")
         if isinstance(raw_intent, dict):
             intent = (raw_intent.get("intent") or "").strip()
+            sub_intent = (raw_intent.get("sub_intent") or sub_intent or "").strip()
         else:
             intent = (raw_intent or "").strip()
+            sub_intent = (sub_intent or "").strip()
+
+        if intent == "faq" and sub_intent in {"saludo", "despedida", "agradecimiento"}:
+            intent = sub_intent
+
         entities = resp.get("entities") or {}
         return {"intent": intent, "entities": entities}
 
