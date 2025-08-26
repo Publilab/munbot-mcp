@@ -28,7 +28,7 @@ from prometheus_client import (
 )
 
 from .utils.cache import make_answer_cache_key
-from settings import (
+from .settings import (
     ANSWER_CACHE_TTL_CONTACT,
     ANSWER_CACHE_TTL_DEFAULT,
     ANSWER_CACHE_TTL_GENERIC,
