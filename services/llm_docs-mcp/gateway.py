@@ -606,8 +606,28 @@ async def tools_call(request: Request):
             return {"fragmentos": frags}
         elif tool == "doc-classify_intent_llm":
             texto = _get_texto(params)
-            intent = classify_intent_with_llm(texto, llama, mode='plain')
-            return {"intent": intent}
+            result = classify_intent_with_llm(texto, llama, mode="rich")
+            if isinstance(result, str):
+                flat = result
+                intent = result
+                sub_intent = None
+            else:
+                intent = result.get("intent")
+                sub_intent = result.get("sub_intent")
+                if intent == "faq" and sub_intent in {"saludo", "despedida", "agradecimiento"}:
+                    flat = sub_intent
+                else:
+                    flat = intent
+            logger.debug(
+                {
+                    "tool": "doc-classify_intent_llm",
+                    "mode": "rich->flat",
+                    "intent": intent,
+                    "sub_intent": sub_intent,
+                    "returned": flat,
+                }
+            )
+            return {"intent": flat}
         else:
             raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
     except ValidationError as ve:
@@ -642,8 +662,28 @@ async def tools_doc_generar_respuesta_llm(params: dict):
 @app.post("/tools/doc-classify_intent_llm", dependencies=[Depends(authenticate)])
 async def tools_doc_classify_intent_llm(params: dict):
     texto = _get_texto(params)
-    intent = classify_intent_with_llm(texto, llama, mode='plain')
-    return {"intent": intent}
+    result = classify_intent_with_llm(texto, llama, mode="rich")
+    if isinstance(result, str):
+        flat = result
+        intent = result
+        sub_intent = None
+    else:
+        intent = result.get("intent")
+        sub_intent = result.get("sub_intent")
+        if intent == "faq" and sub_intent in {"saludo", "despedida", "agradecimiento"}:
+            flat = sub_intent
+        else:
+            flat = intent
+    logger.debug(
+        {
+            "tool": "doc-classify_intent_llm",
+            "mode": "rich->flat",
+            "intent": intent,
+            "sub_intent": sub_intent,
+            "returned": flat,
+        }
+    )
+    return {"intent": flat}
 
 
 @app.post("/doc-buscar_fragmento_documento", dependencies=[Depends(authenticate)])
