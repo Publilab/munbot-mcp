@@ -49,7 +49,7 @@ class LlmDocsClient:
 
     # --- Alto nivel ---
     def classify_intent(self, texto: str, trace_id: Optional[str] = None) -> dict:
-        """Clasifica la intención y devuelve un dict con intent y entities."""
+        """Clasifica la intención del usuario y preserva sub_intent cuando exista."""
         resp = self.tools_call("doc-classify_intent_llm", {"texto": texto}, trace_id)
         raw_intent = resp.get("intent")
         sub_intent = resp.get("sub_intent")
@@ -64,7 +64,7 @@ class LlmDocsClient:
             intent = sub_intent
 
         entities = resp.get("entities") or {}
-        return {"intent": intent, "entities": entities}
+        return {"intent": intent, "sub_intent": sub_intent, "entities": entities}
 
     def doc_generar_respuesta_llm(self, pregunta: str, trace_id: Optional[str] = None, **kwargs) -> dict:
         params = {"pregunta": pregunta} | kwargs
