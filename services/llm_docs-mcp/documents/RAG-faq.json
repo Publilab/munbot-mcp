@@ -31,7 +31,8 @@
       "buenas noches",
       "saludos",
       "hello",
-      "hi"
+      "hi",
+      "que tal"
     ],
     "answer_variants": [
       "¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?",
@@ -204,7 +205,8 @@
       "muchas gracias",
       "te agradezco",
       "agradecido",
-      "agradecida"
+      "agradecida",
+      "se agradece"
     ],
     "answer_variants": [
       "Con gusto. ¿Te ayudo con algo más?",
@@ -361,7 +363,9 @@
       "como estas",
       "como te encuentras",
       "como va todo",
-      "como va tu dia"
+      "como va tu dia",
+      "como te va",
+      "que tal"
     ],
     "answer_variants": [
       "Todo en orden. ¿En qué te ayudo?",
