@@ -48,7 +48,7 @@ def build_searchable_text(obj: dict) -> str:
     text = obj.get("text") or obj.get("answer") or ""
 
     # NUEVO: incluir variantes de respuesta
-    answer_variants = obj.get("answer_variant") or []
+    answer_variants = obj.get("answer_variants") or []
 
     # Alias y frases de usuario
     alias = obj.get("alias") or []
@@ -97,7 +97,7 @@ class Item:
             "text": self.texto,
             "alias": self.alias,
             "user_says": _ensure_list(self.metadata.get("user_says")),
-            "answer_variant": _ensure_list(self.metadata.get("answer_variant")),
+            "answer_variants": _ensure_list(self.metadata.get("answer_variants")),
             "metadata": self.metadata,
             "tags": self.tags,
         }
@@ -116,12 +116,12 @@ def load_all() -> List[Item]:
         for obj in data:
             alias_list = _ensure_list(obj.get("alias"))
             user_says = _ensure_list(obj.get("user_says"))
-            answer_variants = _ensure_list(obj.get("answer_variant") or obj.get("answer_variants"))
+            answer_variants = _ensure_list(obj.get("answer_variants"))
             meta = obj.get("metadata") or {}
             if user_says:
                 meta["user_says"] = user_says
             if answer_variants:
-                meta["answer_variant"] = answer_variants
+                meta["answer_variants"] = answer_variants
             alias_norm = [_norm(a) for a in alias_list + user_says]
             items.append(Item(
                 source = obj.get("fuente") or path,

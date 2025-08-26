@@ -2,6 +2,7 @@ import os
 import json
 import time
 import redis
+import random
 from embeddings import embed
 from llama_client import LlamaClient
 from qdrant_utils import (
@@ -43,6 +44,9 @@ def load_knowledge_base():
 
 load_knowledge_base()
 
+# Respuesta por defecto para smalltalk cuando falta información
+DEFAULT_GREETING = "¡Hola! ¿En qué puedo ayudarte hoy?"
+
 # --- Métricas de Prometheus ---
 RAG_QDRANT_LATENCY = Histogram('rag_qdrant_latency_seconds', 'Latencia de la búsqueda en Qdrant')
 RAG_RERANK_LATENCY = Histogram('rag_rerank_latency_seconds', 'Latencia del reranking')
@@ -56,6 +60,68 @@ def load_prompt(prompt_name: str) -> str:
     prompt_file = os.path.join(PROMPTS_PATH, prompt_name)
     with open(prompt_file, "r", encoding="utf-8") as f:
         return f.read()
+
+
+def build_context(item: dict) -> str:
+    """Arma el contexto a entregar al LLM usando los campos reales."""
+    parts: list[str] = []
+
+    base_text = item.get("texto")
+    if not base_text:
+        base_text = item.get("respuesta") or item.get("answer") or ""
+
+    if base_text:
+        parts.append(base_text)
+
+    variants = item.get("answer_variants") or []
+    if variants:
+        parts.append(
+            "\nVariantes sugeridas (no obligatorias):\n- " + "\n- ".join(variants)
+        )
+
+    return "\n".join([p for p in parts if p])
+
+
+def render_smalltalk(item: dict) -> str:
+    """Devuelve una respuesta directa de smalltalk."""
+    base = item.get("respuesta") or item.get("answer") or ""
+    variants = item.get("answer_variants") or []
+
+    if variants:
+        pool = ([base] if base else []) + variants
+        return random.choice(pool)
+
+    return base or DEFAULT_GREETING
+
+
+def build_index_blob(obj: dict) -> str:
+    """Texto a enviar al índice vectorial (Qdrant/FAISS/…)."""
+    campos: list[str] = []
+
+    titulo = obj.get("title") or obj.get("pregunta") or ""
+    texto = obj.get("texto") or obj.get("respuesta") or ""
+    alias = obj.get("alias") or []
+    tags = (obj.get("metadata") or {}).get("tags") or obj.get("tags") or []
+    user_says = obj.get("user_says") or []
+    ans_vars = obj.get("answer_variants") or []
+
+    campos.extend([titulo, texto])
+    campos.extend(tags)
+    campos.extend(alias)
+    campos.extend(user_says)
+    campos.extend(ans_vars)
+
+    return " ".join([c for c in campos if c])
+
+
+def pick_faq_smalltalk_item(faq_items: list, sub_intent: str) -> dict | None:
+    candidates = [
+        it
+        for it in faq_items
+        if (it.get("metadata") or {}).get("subcategory") == sub_intent
+    ]
+    candidates.sort(key=lambda x: (x.get("metadata") or {}).get("priority", 99))
+    return candidates[0] if candidates else None
 
 def expand_query_with_aliases(
     query: str, selected_doc: str | None, kb_items: list[dict], max_aliases: int = 8
