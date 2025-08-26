@@ -52,7 +52,6 @@ def build_searchable_text(obj: dict) -> str:
 
     # Alias y frases de usuario
     alias = obj.get("alias") or []
-    user_says = obj.get("user_says") or []
 
     # Metadatos y tags
     md = obj.get("metadata") or {}
@@ -72,7 +71,6 @@ def build_searchable_text(obj: dict) -> str:
     parts = [title, text, subcat]
     parts.extend(tags)
     parts.extend(alias)
-    parts.extend(user_says)
     parts.extend(answer_variants)
     parts.extend(str(f) for f in extra_md_fields if f not in (None, ""))
 
@@ -96,7 +94,6 @@ class Item:
             "title": self.title,
             "text": self.texto,
             "alias": self.alias,
-            "user_says": _ensure_list(self.metadata.get("user_says")),
             "answer_variants": _ensure_list(self.metadata.get("answer_variants")),
             "metadata": self.metadata,
             "tags": self.tags,
@@ -118,8 +115,6 @@ def load_all() -> List[Item]:
             user_says = _ensure_list(obj.get("user_says"))
             answer_variants = _ensure_list(obj.get("answer_variants"))
             meta = obj.get("metadata") or {}
-            if user_says:
-                meta["user_says"] = user_says
             if answer_variants:
                 meta["answer_variants"] = answer_variants
             alias_norm = [_norm(a) for a in alias_list + user_says]
