@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 os.environ["ALLOWED_IPS"] = "testclient,127.0.0.1"
 os.environ["LLM_DOCS_API_KEY"] = "test-key"
+os.environ["LLAMA_MOCK"] = "1"
 
 # Stub llama_cpp to avoid heavy dependency in tests
 fake_llama = types.ModuleType("llama_cpp")
@@ -53,8 +54,17 @@ def fake_classify_intent_with_llm(texto, llama=None, mode=None):
 def fake_set_llm_client(client):
     pass
 
+def fake_flatten_for_orchestrator(pred):
+    if isinstance(pred, dict):
+        sub = pred.get("sub_intent")
+        if pred.get("intent") == "faq" and sub in {"saludo", "despedida", "agradecimiento"}:
+            return sub
+        return pred.get("intent")
+    return pred
+
 fake_ic.classify_intent_with_llm = fake_classify_intent_with_llm
 fake_ic.set_llm_client = fake_set_llm_client
+fake_ic.flatten_for_orchestrator = fake_flatten_for_orchestrator
 sys.modules["intent_classifier"] = fake_ic
 
 # Patch httpx.Client to ignore deprecated 'app' parameter used by Starlette TestClient

@@ -11,7 +11,17 @@ from intent_engine import classify_intent_payload
 from text_utils import normalize_for_search
 
 
-_VALID = {"faq", "documento", "agenda", "reclamo", "tramite", "n/a"}
+LLM_INTENT_LABELS = [
+    "faq",
+    "documento",
+    "tramite",
+    "agenda",
+    "reclamo",
+    "saludo",
+    "despedida",
+    "agradecimiento",
+    "n/a",
+]
 
 # Compiled patterns for smalltalk fast-path
 SALUDO_PAT = re.compile(r"\b(hola|buen[oa]s(?:\s*(dias|tardes|noches))?|que tal|como estas)\b", re.I)
@@ -69,6 +79,32 @@ def fastpath_smalltalk(user_text: str):
     return None
 
 
+def build_llm_prompt(user_text: str) -> str:
+    labels = " | ".join(LLM_INTENT_LABELS)
+    return (
+        "Clasifica la consulta EXACTAMENTE en una de estas categorías:\n"
+        f"{labels}\n\n"
+        "Reglas:\n"
+        "- 'saludo', 'despedida' y 'agradecimiento' son smalltalk, p.ej. 'hola', 'adiós', 'gracias'.\n"
+        "- 'documento' y 'tramite' son consultas informativas sobre normativa/procesos.\n"
+        "- 'faq' es genérico y abarca preguntas frecuentes cuando no quede claro si es documento o trámite.\n"
+        "- 'agenda' para pedir hora; 'reclamo' para iniciar queja/formalizar denuncia.\n"
+        "- Si no encaja, responde 'n/a'.\n\n"
+        f"Texto del usuario:\n\"\"\"{user_text}\"\"\"\n"
+        "Devuelve solo la etiqueta, sin explicación."
+    )
+
+
+def classify_with_llm(user_text: str, llm: LlamaClient | None = None) -> dict:
+    client = llm or _llm()
+    label = (client.generate(build_llm_prompt(user_text), temperature=0) or "").strip().lower()
+    if label not in LLM_INTENT_LABELS:
+        label = "n/a"
+    if label in {"saludo", "despedida", "agradecimiento"}:
+        return {"intent": "faq", "sub_intent": label, "source": "llm"}
+    return {"intent": label, "sub_intent": None, "source": "llm"}
+
+
 def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None, mode: str | None = None):
     """Classify a user's intent using the RAG engine with an LLM fallback."""
 
@@ -89,21 +125,9 @@ def classify_intent_with_llm(user_input: str, llm: LlamaClient | None = None, mo
     # 1) IntentEngine primero (usa RAG + alias + tags)
     rich = classify_intent_payload(text)
 
-    # 2) Fallback: si el engine no está seguro, pedir SOLO la superclase al LLM
+    # 2) Fallback: si el engine no está seguro, usar LLM
     if rich.get("intent") == "n/a":
-        client = llm or _llm()
-        prompt = (
-            "Clasifica la consulta EXACTAMENTE en una de estas categorías:\n"
-            "faq | documento | agenda | reclamo | tramite | n/a\n\n"
-            "Reglas:\n"
-            "- Responde SOLO con una palabra del listado.\n"
-            "- No inventes categorías.\n\n"
-            f"Consulta: {text}\n"
-            "Etiqueta:"
-        )
-        guess = (client.generate(prompt, temperature=0) or "").strip().lower()
-        if guess in _VALID:
-            rich["intent"] = guess
+        rich.update(classify_with_llm(text, llm))
 
     # 3) Normalización leve de slots por compat (si tu heurística añade 'horario'/'vigencia')
     if rich.get("slot"):
@@ -139,4 +163,13 @@ def classify_reclamo_response(text: str) -> str:
     if t.startswith("no") or " no" in t:
         return "negative"
     return "unknown"
+
+
+def flatten_for_orchestrator(pred: dict | str) -> str:
+    if isinstance(pred, str):
+        return pred
+    intent, sub = pred.get("intent"), pred.get("sub_intent")
+    if intent == "faq" and sub in {"saludo", "despedida", "agradecimiento"}:
+        return sub
+    return intent or "n/a"
 

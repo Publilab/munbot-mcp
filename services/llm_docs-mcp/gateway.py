@@ -33,7 +33,11 @@ from qdrant_utils import (
     filter_by_department_id,
 )
 import rag
-from intent_classifier import classify_intent_with_llm, set_llm_client
+from intent_classifier import (
+    classify_intent_with_llm,
+    set_llm_client,
+    flatten_for_orchestrator,
+)
 from pythonjsonlogger import jsonlogger
 
 # ==== Configuración ====
@@ -607,17 +611,9 @@ async def tools_call(request: Request):
         elif tool == "doc-classify_intent_llm":
             texto = _get_texto(params)
             result = classify_intent_with_llm(texto, llama, mode="rich")
-            if isinstance(result, str):
-                flat = result
-                intent = result
-                sub_intent = None
-            else:
-                intent = result.get("intent")
-                sub_intent = result.get("sub_intent")
-                if intent == "faq" and sub_intent in {"saludo", "despedida", "agradecimiento"}:
-                    flat = sub_intent
-                else:
-                    flat = intent
+            flat = flatten_for_orchestrator(result)
+            intent = result.get("intent") if isinstance(result, dict) else result
+            sub_intent = result.get("sub_intent") if isinstance(result, dict) else None
             logger.debug(
                 {
                     "tool": "doc-classify_intent_llm",
@@ -663,17 +659,9 @@ async def tools_doc_generar_respuesta_llm(params: dict):
 async def tools_doc_classify_intent_llm(params: dict):
     texto = _get_texto(params)
     result = classify_intent_with_llm(texto, llama, mode="rich")
-    if isinstance(result, str):
-        flat = result
-        intent = result
-        sub_intent = None
-    else:
-        intent = result.get("intent")
-        sub_intent = result.get("sub_intent")
-        if intent == "faq" and sub_intent in {"saludo", "despedida", "agradecimiento"}:
-            flat = sub_intent
-        else:
-            flat = intent
+    flat = flatten_for_orchestrator(result)
+    intent = result.get("intent") if isinstance(result, dict) else result
+    sub_intent = result.get("sub_intent") if isinstance(result, dict) else None
     logger.debug(
         {
             "tool": "doc-classify_intent_llm",
