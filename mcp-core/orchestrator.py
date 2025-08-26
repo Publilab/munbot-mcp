@@ -18,7 +18,7 @@ import uuid
 import threading
 import time
 import concurrent.futures
-from context_manager import ConversationalContextManager
+from .context_manager import ConversationalContextManager
 from clients.llm_docs import LlmDocsClient
 from prometheus_client import (
     Counter,
