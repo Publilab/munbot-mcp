@@ -236,6 +236,10 @@ FAREWELL_RESPONSE = (
     "inicia una nueva conversación."
 )
 
+THANKS_RESPONSE = (
+    "¡De nada! Estoy aquí para ayudarte. ¿Necesitas algo más?"
+)
+
 # --- Variación de respuestas FAQ ---
 _RND = random.Random(os.getenv("ANSWER_SEED", "munbot"))
 
@@ -1334,6 +1338,7 @@ def orchestrate(
         "reclamo": "init_complaint",
         "saludo": "saludo",
         "despedida": "despedida",
+        "agradecimiento": "agradecimiento",
     }
     intent = intent_map.get(classification.get("intent"), "n/a")
 
@@ -1356,6 +1361,10 @@ def orchestrate(
         context_manager.clear_context(sid)
         delete_session(sid)
         return {"respuesta": FAREWELL_RESPONSE, "session_id": sid}
+
+    if intent == "agradecimiento":
+        context_manager.update_context(sid, user_input, THANKS_RESPONSE)
+        return {"respuesta": THANKS_RESPONSE, "session_id": sid}
 
     # --- Flujo de Consulta de Documentos (RAG) ---
     if intent == "ask_document":

@@ -26,9 +26,11 @@ def fake_embed(texts, batch_size=32):
 fake_embeddings.embed = fake_embed
 sys.modules['embeddings'] = fake_embeddings
 
-sys.path.insert(0, os.path.abspath('mcp-core'))
+package = types.ModuleType('mcp_core')
+package.__path__ = ['mcp-core']
+sys.modules['mcp_core'] = package
 
-spec = importlib.util.spec_from_file_location('orchestrator', os.path.join('mcp-core','orchestrator.py'))
+spec = importlib.util.spec_from_file_location('mcp_core.orchestrator', os.path.join('mcp-core','orchestrator.py'))
 orchestrator = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(orchestrator)
 os.environ.pop("PROMPTS_PATH", None)
@@ -36,6 +38,18 @@ os.environ.pop("PROMPTS_PATH", None)
 fake = fakeredis.FakeRedis()
 orchestrator.redis_client = fake
 orchestrator.context_manager.redis_client = fake
+
+def fake_classify(text, trace_id=None):
+    t = text.lower()
+    if "hola" in t:
+        return {"intent": "saludo"}
+    if "adios" in t:
+        return {"intent": "despedida"}
+    if "gracias" in t:
+        return {"intent": "agradecimiento"}
+    return {"intent": "faq"}
+
+orchestrator.llm_client.classify_intent = fake_classify
 
 client = TestClient(orchestrator.app)
 
@@ -49,3 +63,9 @@ def test_farewell_resets_context():
     assert r2.status_code == 200
     assert 'hasta luego' in r2.json()['respuesta'].lower()
     assert orchestrator.context_manager.get_context(sid) == {}
+
+
+def test_thanks_response():
+    r = client.post('/orchestrate', json={'pregunta': 'gracias'})
+    assert r.status_code == 200
+    assert 'de nada' in r.json()['respuesta'].lower()

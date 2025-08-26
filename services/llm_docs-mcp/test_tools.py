@@ -41,8 +41,14 @@ sys.modules["sentence_transformers"] = fake_st
 fake_ic = types.ModuleType("intent_classifier")
 fake_ic.__spec__ = importlib.machinery.ModuleSpec("intent_classifier", loader=None)
 
-def fake_classify_intent_with_llm(texto, llama):
-    return {"intent": "faq"}
+def fake_classify_intent_with_llm(texto, llama=None, mode=None):
+    mapping = {
+        "hola": {"intent": "faq", "sub_intent": "saludo"},
+        "adios": {"intent": "faq", "sub_intent": "despedida"},
+        "gracias": {"intent": "faq", "sub_intent": "agradecimiento"},
+        "permiso de circulación": {"intent": "documento"},
+    }
+    return mapping.get(texto, {"intent": "faq"})
 
 def fake_set_llm_client(client):
     pass
@@ -241,6 +247,35 @@ class TestGateway(unittest.TestCase):
         }
         resp = self.client.post("/tools/call", json=payload)
         self.assertEqual(resp.status_code, 200)
+
+    def test_doc_classify_intent_saludo(self):
+        resp = self.client.post(
+            "/tools/doc-classify_intent_llm", json={"texto": "hola"}
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json().get("intent"), "saludo")
+
+    def test_doc_classify_intent_despedida(self):
+        resp = self.client.post(
+            "/tools/doc-classify_intent_llm", json={"texto": "adios"}
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json().get("intent"), "despedida")
+
+    def test_doc_classify_intent_agradecimiento(self):
+        resp = self.client.post(
+            "/tools/doc-classify_intent_llm", json={"texto": "gracias"}
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json().get("intent"), "agradecimiento")
+
+    def test_doc_classify_intent_regular(self):
+        resp = self.client.post(
+            "/tools/doc-classify_intent_llm",
+            json={"texto": "permiso de circulación"},
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json().get("intent"), "documento")
 
 def test_doc_buscar_fragmento_documento_direct_call_and_threshold():
     """Calls rag.doc_buscar_fragmento_documento and checks parameter propagation."""
