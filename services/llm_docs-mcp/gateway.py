@@ -623,7 +623,7 @@ async def tools_call(request: Request):
                     "returned": flat,
                 }
             )
-            return {"intent": flat}
+            return {"intent": flat, "sub_intent": sub_intent}
         else:
             raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
     except ValidationError as ve:
@@ -671,7 +671,7 @@ async def tools_doc_classify_intent_llm(params: dict):
             "returned": flat,
         }
     )
-    return {"intent": flat}
+    return {"intent": flat, "sub_intent": sub_intent}
 
 
 @app.post("/doc-buscar_fragmento_documento", dependencies=[Depends(authenticate)])
