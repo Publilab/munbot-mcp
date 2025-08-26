@@ -225,20 +225,93 @@ def tokenize(text: str) -> list[str]:
     tokens = [t.strip(".,¡!¿?\"").lower() for t in text.split()]
     return [t for t in tokens if t and t not in STOPWORDS]
 
-# Respuestas base para saludos y despedidas
-GREETING_RESPONSE = (
-    "¡Hola! Soy MunBoT, asistente virtual del Gobierno de Coruscant. "
-    "¿En qué puedo ayudarte hoy?"
-)
+# === Smalltalk (respuestas fijas) ===
+GREETING_VARIANTS = [
+    "¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?",
+    "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy",
+    "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?",
+    "Todo perfecto y listo para que me digas en que puedo ayudarte",
+    "Yo muy bien. Espero que tú también lo estes y ahora estoy listo para responder lo que me consultes",
+    "A pesar de ser un Chatbot podría decir que estoy bien, por lo que estoy dispuesto a ayudarte en lo que necesites",
+]
 
-FAREWELL_RESPONSE = (
-    "¡Hasta luego! Tu sesión ha terminado. Si necesitas algo más, "
-    "inicia una nueva conversación."
-)
+FAREWELL_VARIANTS = [
+    "¡Hasta luego! Que tengas un buen día.",
+    "Nos vemos. Estoy aquí 24/7 si me necesitas.",
+    "Chao. Cuando quieras, vuelve y te ayudo.",
+    "Perfecto, me alegra haber ayudado. Estaré por aquí cuando lo requieras.",
+    "De acuerdo. Cierro la sesión; cuando necesites, volvemos a conversar.",
+    "Listo. Si surge otra consulta, vuelve y la resolvemos.",
+]
 
-THANKS_RESPONSE = (
-    "¡De nada! Estoy aquí para ayudarte. ¿Necesitas algo más?"
-)
+THANKS_VARIANTS = [
+    "Con gusto. ¿Te ayudo con algo más?",
+    "Con mucho gusto. ¿Qué más necesitas?",
+    "Para eso estoy. ¿Seguimos con algo más?",
+    "Me alegra haber ayudado. ¿Algo más?",
+    "Un gusto. ¿Deseas hacer otro trámite o consulta?",
+    "Cuando quieras, seguimos con lo que necesites.",
+]
+
+SMALLTALK_VARIANTS = {
+    "saludo": GREETING_VARIANTS,
+    "despedida": FAREWELL_VARIANTS,
+    "agradecimiento": THANKS_VARIANTS,
+}
+
+SMALLTALK_PATTERNS = {
+    "hola",
+    "buenos dias",
+    "buenas tardes",
+    "buenas noches",
+    "saludos",
+    "adios",
+    "hasta luego",
+    "nos vemos",
+    "chau",
+    "chao",
+    "bye",
+    "hasta pronto",
+    "hasta la proxima",
+    "me despido",
+    "gracias",
+    "muchas gracias",
+    "te agradezco",
+    "agradecido",
+    "agradecida",
+}
+
+
+def _is_pure_smalltalk(text: str) -> bool:
+    return normalize_text(text) in SMALLTALK_PATTERNS
+
+
+def _pick_smalltalk(intent: str) -> str:
+    variants = SMALLTALK_VARIANTS.get(intent, [])
+    if variants:
+        return _RND.choice(variants)
+    return ""
+
+
+# === Mapeo de intenciones ===
+INTENT_MAP = {
+    # Conversacionales (faq.json)
+    "saludo": "saludo",
+    "despedida": "despedida",
+    "agradecimiento": "agradecimiento",
+
+    # Flujos informativos
+    "faq": "ask_document",
+    "documento": "ask_document",
+    "tramite": "ask_document",
+
+    # Servicios
+    "agenda": "init_scheduler",
+    "reclamo": "init_complaint",
+
+    # Default
+    "n/a": "n/a",
+}
 
 # --- Variación de respuestas FAQ ---
 _RND = random.Random(os.getenv("ANSWER_SEED", "munbot"))
@@ -1328,46 +1401,50 @@ def orchestrate(
 
     # --- 1. CLASIFICACIÓN DE INTENCIÓN ---
     classification = classify_intent_remotely(user_input)
-    
-    # Mapeo de intenciones nuevas a viejas para compatibilidad
-    intent_map = {
-        "faq": "ask_document",
-        "documento": "ask_document",
-        "tramite": "ask_document",
-        "agenda": "init_scheduler",
-        "reclamo": "init_complaint",
-        "saludo": "saludo",
-        "despedida": "despedida",
-        "agradecimiento": "agradecimiento",
-    }
-    intent = intent_map.get(classification.get("intent"), "n/a")
 
+    intent = INTENT_MAP.get(classification.get("intent"), "n/a")
+
+    raw_entities = classification.get("entities") or {}
     entities = {
-        "tema_especifico": classification.get("slot"),
-        "tramite": classification.get("doc"),
+        "tema_especifico": classification.get("slot")
+        or raw_entities.get("slot")
+        or raw_entities.get("tema_especifico"),
+        "tramite": classification.get("doc")
+        or raw_entities.get("doc")
+        or raw_entities.get("tramite"),
+        "departamento": raw_entities.get("departamento"),
     }
     dominios = []  # dominios ya no se usa en el nuevo clasificador
 
-    logger.info(f"[INTENT] Intención clasificada: {intent}", extra={"trace_id": sid})
+    logger.info(
+        f"[INTENT] Intención clasificada: {intent}",
+        extra={"trace_id": sid},
+    )
     REQUEST_COUNTER.labels(intent=intent).inc()
 
     # --- 2. ENRUTAMIENTO BASADO EN INTENCIÓN ---
-
-    if intent == "saludo":
-        context_manager.update_context(sid, user_input, GREETING_RESPONSE)
-        return {"respuesta": GREETING_RESPONSE, "session_id": sid}
-
-    if intent == "despedida":
-        context_manager.clear_context(sid)
-        delete_session(sid)
-        return {"respuesta": FAREWELL_RESPONSE, "session_id": sid}
-
-    if intent == "agradecimiento":
-        context_manager.update_context(sid, user_input, THANKS_RESPONSE)
-        return {"respuesta": THANKS_RESPONSE, "session_id": sid}
+    if intent in {"saludo", "despedida", "agradecimiento"}:
+        if not _is_pure_smalltalk(user_input):
+            intent = "ask_document"
+        else:
+            reply = _pick_smalltalk(intent)
+            if intent == "despedida":
+                context_manager.clear_context(sid)
+                delete_session(sid)
+            else:
+                context_manager.update_context(sid, user_input, reply)
+            logger.info(
+                f"[SMALLTALK] Respuesta enviada ({intent})",
+                extra={"trace_id": sid, "action": "smalltalk_reply"},
+            )
+            return {"respuesta": reply, "session_id": sid}
 
     # --- Flujo de Consulta de Documentos (RAG) ---
     if intent == "ask_document":
+        logger.info(
+            "[RAG] Llamando a llm_docs",
+            extra={"trace_id": sid, "action": "rag_call"},
+        )
         # Pasar los dominios al manejador de RAG
         return handle_document_query(sid, user_input, entities, dominios)
 
