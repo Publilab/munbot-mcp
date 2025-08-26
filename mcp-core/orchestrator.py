@@ -27,30 +27,30 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 
-from utils.cache import make_answer_cache_key
+from .utils.cache import make_answer_cache_key
 from settings import (
     ANSWER_CACHE_TTL_CONTACT,
     ANSWER_CACHE_TTL_DEFAULT,
     ANSWER_CACHE_TTL_GENERIC,
 )
 try:
-    from utils.human import registrar_evento_humano
+    from .utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
     def registrar_evento_humano(session_id: str, pregunta: str, trace_id: str | None = None) -> None:
         pass
-from utils.parser import parse_date_time
-from utils.audit import audit_step
+from .utils.parser import parse_date_time
+from .utils.audit import audit_step
 from zoneinfo import ZoneInfo
-from utils.datetime_utils import (
+from .utils.datetime_utils import (
     parse_nl_datetime,
     compute_relative_date,
     compute_last_business_day,
 )
 from datetime import datetime, date
 
-from utils.phone_utils import validar_telefono_movil
+from .utils.phone_utils import validar_telefono_movil
 
-from utils.text import normalize_text
+from .utils.text import normalize_text
 
 
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
