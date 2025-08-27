@@ -45,7 +45,7 @@
     "fuente": "RAG-faq.json#faq_saludo_02",
     "metadata": {
       "category": "faq",
-      "subcategory": "saludo",
+      "subcategory": "saludo_compuesto",
       "tags": [
         "saludo",
         "pregunta_estado",
@@ -138,7 +138,7 @@
     "fuente": "RAG-faq.json#faq_despedida_02",
     "metadata": {
       "category": "faq",
-      "subcategory": "despedida",
+      "subcategory": "rechazo_ayuda",
       "tags": [
         "despedida",
         "cierre_confirmado",
@@ -219,7 +219,7 @@
     "fuente": "RAG-faq.json#faq_agradecimiento_02",
     "metadata": {
       "category": "faq",
-      "subcategory": "agradecimiento",
+      "subcategory": "agradecimiento_ayuda",
       "tags": [
         "agradecimiento",
         "faq"
@@ -342,7 +342,7 @@
     "fuente": "RAG-faq.json#faq_estado_animo_bot",
     "metadata": {
       "category": "faq",
-      "subcategory": "meta_bot",
+      "subcategory": "pregunta_estado",
       "tags": [
         "estado_animo",
         "faq",
@@ -378,7 +378,7 @@
     "fuente": "RAG-faq.json#faq_decepcion_01",
     "metadata": {
       "category": "faq",
-      "subcategory": "decepcion",
+      "subcategory": "decepcion_respuesta",
       "tags": [
         "decepcion",
         "faq",
@@ -419,7 +419,7 @@
     "fuente": "RAG-faq.json#faq_funcion_bot_01",
     "metadata": {
       "category": "faq",
-      "subcategory": "meta_bot",
+      "subcategory": "pregunta_funcion",
       "tags": [
         "funcion_bot",
         "faq",
@@ -453,7 +453,7 @@
     "fuente": "RAG-faq.json#faq_disponibilidad_01",
     "metadata": {
       "category": "faq",
-      "subcategory": "meta_bot",
+      "subcategory": "pregunta_disponibilidad",
       "tags": [
         "disponibilidad",
         "faq",
@@ -487,7 +487,7 @@
     "fuente": "RAG-faq.json#faq_idiomas_01",
     "metadata": {
       "category": "faq",
-      "subcategory": "meta_bot",
+      "subcategory": "pregunta_idioma",
       "tags": [
         "idiomas",
         "faq",
@@ -762,7 +762,7 @@
     "fuente": "RAG-faq.json#faq_consultas_tramites_02",
     "metadata": {
       "category": "faq",
-      "subcategory": "consultas_tramites",
+      "subcategory": "consultas_certificado",
       "tags": [
         "consultas_tramites",
         "faq",
@@ -806,7 +806,7 @@
     "fuente": "RAG-faq.json#faq_consultas_tramites_03",
     "metadata": {
       "category": "faq",
-      "subcategory": "consultas_tramites",
+      "subcategory": "consultas_permisos",
       "tags": [
         "consultas_tramites",
         "faq",
@@ -850,7 +850,7 @@
     "fuente": "RAG-faq.json#faq_consultas_tramites_04",
     "metadata": {
       "category": "faq",
-      "subcategory": "consultas_tramites",
+      "subcategory": "consultas_licencias",
       "tags": [
         "consultas_tramites",
         "faq",
@@ -894,7 +894,7 @@
     "fuente": "RAG-faq.json#faq_consultas_tramites_05",
     "metadata": {
       "category": "faq",
-      "subcategory": "consultas_tramites",
+      "subcategory": "consultas_patentes",
       "tags": [
         "consultas_tramites",
         "faq",
@@ -938,7 +938,7 @@
     "fuente": "RAG-faq.json#faq_tramites_01",
     "metadata": {
       "category": "faq",
-      "subcategory": "tramites",
+      "subcategory": "consulta_cedula",
       "tags": [
         "tramites",
         "faq",
@@ -1021,7 +1021,7 @@
     "fuente": "RAG-faq.json#faq_otras_consultas_01",
     "metadata": {
       "category": "faq",
-      "subcategory": "otras_consultas",
+      "subcategory": "consulta_general",
       "tags": [
         "otras_consultas",
         "faq",

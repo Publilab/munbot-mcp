@@ -1,4 +1,4 @@
-docker logs -f  llm_docs-mcp
+docker logs -f llm_docs-mcp
 ✅ Qdrant is ready.
 🚀 Starting auto-indexing...
 ✅  Colección creada: munbot_docs
@@ -9,7 +9,7 @@ INFO:__main__:Cargando y procesando documentos...
 INFO:__main__:Generando embeddings y subiendo puntos a Qdrant para 199 chunks...
 INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
 INFO:__main__:✅ Indexación completada. 199 puntos procesados para la colección 'munbot_docs'.
-🧠 Modelo cargado en 2,495 ms (CPU)
+🧠 Modelo cargado en 2,602 ms (CPU)
 ✅ Indexing complete.
 llama_model_loader: loaded meta data with 39 key-value pairs and 434 tensors from /app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
@@ -302,10 +302,10 @@ Using gguf chat template: {%- if tools %}
 
 Using chat eos_token: <|im_end|>
 Using chat bos_token: <|endoftext|>
-llama_perf_context_print:        load time =      76.35 ms
+llama_perf_context_print:        load time =      78.29 ms
 llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:        eval time =      76.23 ms /     1 runs   (   76.23 ms per token,    13.12 tokens per second)
-llama_perf_context_print:       total time =      77.32 ms /     2 tokens
+llama_perf_context_print:        eval time =      78.17 ms /     1 runs   (   78.17 ms per token,    12.79 tokens per second)
+llama_perf_context_print:       total time =      79.25 ms /     2 tokens
 llama_perf_context_print:    graphs reused =          0
 llama_model_loader: loaded meta data with 39 key-value pairs and 434 tensors from /app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
@@ -598,61 +598,56 @@ Using gguf chat template: {%- if tools %}
 
 Using chat eos_token: <|im_end|>
 Using chat bos_token: <|endoftext|>
-llama_perf_context_print:        load time =      76.67 ms
+llama_perf_context_print:        load time =      76.43 ms
 llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:        eval time =      76.54 ms /     1 runs   (   76.54 ms per token,    13.06 tokens per second)
-llama_perf_context_print:       total time =      77.63 ms /     2 tokens
+llama_perf_context_print:        eval time =      76.31 ms /     1 runs   (   76.31 ms per token,    13.10 tokens per second)
+llama_perf_context_print:       total time =      77.41 ms /     2 tokens
 llama_perf_context_print:    graphs reused =          0
 INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-🧠 Modelo cargado en 2,124 ms (CPU)
-INFO:     127.0.0.1:46702 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51090 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51098 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59622 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:57474 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:45944 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:35708 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38908 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:44632 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42082 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51480 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:58814 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:50240 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40000 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:60768 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:38786 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:55098 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:56074 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:48766 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40130 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:35126 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34462 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:55842 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46096 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:59198 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36150 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:60644 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60492 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:35072 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52976 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:53116 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46440 - "GET /health HTTP/1.1" 200 OK
-llama_perf_context_print:        load time =      76.67 ms
-llama_perf_context_print: prompt eval time =    2994.77 ms /    61 tokens (   49.09 ms per token,    20.37 tokens per second)
-llama_perf_context_print:        eval time =    4062.93 ms /    52 runs   (   78.13 ms per token,    12.80 tokens per second)
-llama_perf_context_print:       total time =    7082.46 ms /   113 tokens
-llama_perf_context_print:    graphs reused =         49
-INFO:     172.18.0.10:40118 - "POST /tools/call HTTP/1.1" 200 OK
-INFO:     172.18.0.10:40126 - "GET /health HTTP/1.1" 200 OK
-Llama.generate: 55 prefix-match hit, remaining 6 prompt tokens to eval
-llama_perf_context_print:        load time =      76.67 ms
-llama_perf_context_print: prompt eval time =     315.95 ms /     6 tokens (   52.66 ms per token,    18.99 tokens per second)
-llama_perf_context_print:        eval time =    4014.65 ms /    53 runs   (   75.75 ms per token,    13.20 tokens per second)
-llama_perf_context_print:       total time =    4354.45 ms /    59 tokens
-llama_perf_context_print:    graphs reused =         50
-INFO:     172.18.0.10:38000 - "POST /tools/call HTTP/1.1" 200 OK
-INFO:     127.0.0.1:40482 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51050 - "GET /health HTTP/1.1" 200 OK
+🧠 Modelo cargado en 2,134 ms (CPU)
+INFO:     127.0.0.1:36602 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:51752 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:51762 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54070 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:49170 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37136 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:54506 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59608 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:42856 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42918 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:56934 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41100 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:59354 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:60772 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48274 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:48160 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     172.18.0.10:48164 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60810 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:34734 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52648 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:56090 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46294 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:58120 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47778 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:37426 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:58158 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57610 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:44090 - "GET /health HTTP/1.1" 200 OK
+llama_perf_context_print:        load time =      76.43 ms
+llama_perf_context_print: prompt eval time =    9625.68 ms /   193 tokens (   49.87 ms per token,    20.05 tokens per second)
+llama_perf_context_print:        eval time =   12123.25 ms /   149 runs   (   81.36 ms per token,    12.29 tokens per second)
+llama_perf_context_print:       total time =   21829.90 ms /   342 tokens
+llama_perf_context_print:    graphs reused =        144
+INFO:     172.18.0.10:41562 - "POST /tools/call HTTP/1.1" 200 OK
+Llama.generate: 175 prefix-match hit, remaining 17 prompt tokens to eval
+llama_perf_context_print:        load time =      76.43 ms
+llama_perf_context_print: prompt eval time =     859.20 ms /    17 tokens (   50.54 ms per token,    19.79 tokens per second)
+llama_perf_context_print:        eval time =   11653.22 ms /   149 runs   (   78.21 ms per token,    12.79 tokens per second)
+llama_perf_context_print:       total time =   12592.59 ms /   166 tokens
+llama_perf_context_print:    graphs reused =        144
+INFO:     172.18.0.10:39398 - "POST /tools/call HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42410 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.10:32842 - "GET /health HTTP/1.1" 200 OK

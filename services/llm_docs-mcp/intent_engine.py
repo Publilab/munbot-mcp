@@ -117,15 +117,23 @@ def load_all() -> List[Item]:
             meta = obj.get("metadata") or {}
             if answer_variants:
                 meta["answer_variants"] = answer_variants
+
+            # Títulos y textos pueden venir en español (pregunta/respuesta) o en inglés
+            title_val = obj.get("pregunta") or obj.get("title") or obj.get("question") or meta.get("title")
+            texto_val = obj.get("respuesta") or obj.get("answer") or obj.get("texto") or ""
+
+            # Tags suelen estar en metadata.tags
+            tags_val = _ensure_list(meta.get("tags") or obj.get("tags"))
+
             alias_norm = [_norm(a) for a in alias_list + user_says]
             items.append(Item(
                 source = obj.get("fuente") or path,
                 doc    = obj.get("doc"),
-                texto  = obj.get("texto") or "",
-                tags   = _ensure_list(obj.get("tags")),
+                texto  = texto_val,
+                tags   = tags_val,
                 alias  = alias_norm,
                 metadata = meta,
-                title    = meta.get("title"),
+                title    = title_val,
             ))
     return items
 
