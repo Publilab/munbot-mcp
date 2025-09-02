@@ -198,36 +198,44 @@ def obtener_fragmentos(
     tema_especifico: str | None = None,
     tramite: str | None = None,
     departamento: str | None = None,
-    dominios: list[str] | None = None,
-) -> list[dict]:
-    """Obtiene y reordena fragmentos de Qdrant."""
-    rewritten_query = expand_query_with_aliases(consulta, tema_especifico or tramite, KNOWLEDGE_BASE)
-    vec = embed([rewritten_query])[0]
+):
+    vec = embed([consulta])[0]
 
-    filtro_final = combine_filters(
-        filter_by_document(tema_especifico),
-        filter_by_procedure_id(tramite),
-        filter_by_department_id(departamento),
-        filter_by_domain(dominios),
-    )
+    # Construir filtros basados en hints
+    filtro_doc = filter_by_document(tema_especifico)
+    filtro_tramite = filter_by_procedure_id(tramite)
+    filtro_depto = filter_by_department_id(departamento)
 
-    with RAG_QDRANT_LATENCY.time():
-        initial_results = search_in_qdrant(vec, top_k=k * 3, filtro=filtro_final)
+    # Combinar filtros
+    filtro_final = combine_filters(filtro_doc, filtro_tramite, filtro_depto)
 
-    # Formateo de resultados para el reranking
-    resultados_formatados = []
-    if initial_results:
-        for res in initial_results:
-            if hasattr(res, 'payload') and 'texto' in res.payload:
-                # Aseguramos que el score siempre esté presente
-                payload = res.payload.copy()
-                payload['score'] = res.score if hasattr(res, 'score') else 0.0
-                resultados_formatados.append(payload)
+    # 1) Intentamos búsqueda con filtros y top_k solicitado
+    hits = search_in_qdrant(vec, top_k=k, filtro=filtro_final)
 
-    with RAG_RERANK_LATENCY.time():
-        reranked_results = rerank_results(rewritten_query, resultados_formatados)
-    
-    return reranked_results[:k]
+    # 2) Fallback: si no hay hits, reintentar sin filtros y con más resultados
+    if not hits:
+        # log opcional
+        try:
+            import logging
+            logging.getLogger("rag").info("No hits with filters, retrying without filters")
+        except Exception:
+            pass
+
+        # Reintento sin filtros conservador (más candidatos)
+        hits = search_in_qdrant(vec, top_k=max(k, 10), filtro=None)
+
+    resultados = []
+    for h in hits:
+        payload = getattr(h, "payload", {}) or {}
+        resultados.append(
+            {
+                "doc_id": payload.get("doc") or payload.get("fuente", ""),
+                "titulo": payload.get("titulo") or payload.get("doc") or "",
+                "parrafo": payload.get("texto") or payload.get("text") or "",
+                "puntaje": getattr(h, "score", 0.0),
+            }
+        )
+    return resultados
 
 def verificar_atribucion(respuesta: str, contexto: str) -> bool:
     """Verifica si la respuesta del LLM se puede atribuir al contexto proporcionado."""

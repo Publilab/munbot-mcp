@@ -182,6 +182,7 @@ services:
     environment:
       - AUTO_INDEX=1
       - COLLECTION=munbot_docs
+      - QDRANT_COLLECTION=munbot_docs
       - QDRANT_HOST=qdrant
       - QDRANT_PORT=6333
       - EMBEDDINGS_DIM=384
