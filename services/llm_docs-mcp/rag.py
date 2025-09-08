@@ -32,6 +32,16 @@ PROMPTS_PATH = os.path.abspath(
 )
 KNOWLEDGE_BASE = []
 
+# --- Configuración por categoría ---
+RAG_CATEGORY_AWARE = os.getenv("RAG_CATEGORY_AWARE", "false").lower() == "true"
+RAG_COLLECTION_FAQ = os.getenv("RAG_COLLECTION_FAQ")
+RAG_COLLECTION_TRAMITES = os.getenv("RAG_COLLECTION_TRAMITES")
+RAG_COLLECTION_NORMATIVA = os.getenv("RAG_COLLECTION_NORMATIVA")
+
+PROMPT_FAQ = os.getenv("PROMPT_FAQ", "doc-generar_respuesta_llm.txt")
+PROMPT_TRAMITE = os.getenv("PROMPT_TRAMITE", "doc-generar_respuesta_llm.txt")
+PROMPT_DOCUMENTO = os.getenv("PROMPT_DOCUMENTO", "doc-generar_respuesta_llm.txt")
+
 def load_knowledge_base():
     """Carga todos los archivos RAG-*.json en una base de conocimiento en memoria."""
     if not os.path.exists(DOCUMENTS_PATH):
@@ -60,6 +70,18 @@ def load_prompt(prompt_name: str) -> str:
     prompt_file = os.path.join(PROMPTS_PATH, prompt_name)
     with open(prompt_file, "r", encoding="utf-8") as f:
         return f.read()
+
+
+def _category_config(categoria: str | None) -> tuple[str | None, str]:
+    """Devuelve la colección y el prompt asociados a una categoría."""
+    if not (RAG_CATEGORY_AWARE and categoria):
+        return None, PROMPT_DOCUMENTO
+    cat = categoria.lower()
+    if cat == "faq":
+        return RAG_COLLECTION_FAQ, PROMPT_FAQ
+    if cat in {"tramite", "trámite", "tramites", "trámites"}:
+        return RAG_COLLECTION_TRAMITES, PROMPT_TRAMITE
+    return RAG_COLLECTION_NORMATIVA, PROMPT_DOCUMENTO
 
 
 def build_context(item: dict) -> str:
@@ -198,6 +220,8 @@ def obtener_fragmentos(
     tema_especifico: str | None = None,
     tramite: str | None = None,
     departamento: str | None = None,
+    dominios: list[str] | None = None,
+    collection_name: str | None = None,
 ):
     vec = embed([consulta])[0]
 
@@ -205,12 +229,13 @@ def obtener_fragmentos(
     filtro_doc = filter_by_document(tema_especifico)
     filtro_tramite = filter_by_procedure_id(tramite)
     filtro_depto = filter_by_department_id(departamento)
+    filtro_dom = filter_by_domain(dominios)
 
     # Combinar filtros
-    filtro_final = combine_filters(filtro_doc, filtro_tramite, filtro_depto)
+    filtro_final = combine_filters(filtro_doc, filtro_tramite, filtro_depto, filtro_dom)
 
     # 1) Intentamos búsqueda con filtros y top_k solicitado
-    hits = search_in_qdrant(vec, top_k=k, filtro=filtro_final)
+    hits = search_in_qdrant(vec, top_k=k, filtro=filtro_final, collection_name=collection_name)
 
     # 2) Fallback: si no hay hits, reintentar sin filtros y con más resultados
     if not hits:
@@ -222,16 +247,16 @@ def obtener_fragmentos(
             pass
 
         # Reintento sin filtros conservador (más candidatos)
-        hits = search_in_qdrant(vec, top_k=max(k, 10), filtro=None)
+        hits = search_in_qdrant(vec, top_k=max(k, 10), filtro=None, collection_name=collection_name)
 
     resultados = []
     for h in hits:
         payload = getattr(h, "payload", {}) or {}
         resultados.append(
             {
-                "doc_id": payload.get("doc") or payload.get("fuente", ""),
+                "doc": payload.get("doc") or payload.get("fuente", ""),
                 "titulo": payload.get("titulo") or payload.get("doc") or "",
-                "parrafo": payload.get("texto") or payload.get("text") or "",
+                "texto": payload.get("texto") or payload.get("text") or "",
                 "puntaje": getattr(h, "score", 0.0),
             }
         )
@@ -253,6 +278,7 @@ def generar_respuesta(
     tramite: str | None = None,
     departamento: str | None = None,
     dominios: list[str] | None = None,
+    categoria: str | None = None,
 ) -> dict:
     """
     Genera una respuesta completa ejecutando el pipeline RAG:
@@ -261,15 +287,22 @@ def generar_respuesta(
     3. Genera una respuesta basada en los fragmentos.
     4. Verifica que la respuesta sea atribuible al contexto (Guardrail).
     """
+    collection_name, prompt_name = _category_config(categoria)
+
     # 1. Planificación (Plan-then-Generate)
     plan = crear_plan(pregunta, dominios)
-    
+
     # 2. Obtención de fragmentos (Retrieve & Rerank)
     fragmentos = []
     for paso in plan:
         fragmentos_paso = obtener_fragmentos(
-            consulta=paso, k=k, tema_especifico=tema_especifico, 
-            tramite=tramite, departamento=departamento, dominios=dominios
+            consulta=paso,
+            k=k,
+            tema_especifico=tema_especifico,
+            tramite=tramite,
+            departamento=departamento,
+            dominios=dominios,
+            collection_name=collection_name,
         )
         fragmentos.extend(fragmentos_paso)
 
@@ -281,7 +314,7 @@ def generar_respuesta(
 
     # 3. Generación de Respuesta
     contexto = "\n".join(f["texto"] for f in fragmentos_unicos)
-    prompt_template = load_prompt("doc-generar_respuesta_llm.txt")
+    prompt_template = load_prompt(prompt_name)
     prompt = prompt_template.replace("{{contexto}}", contexto).replace("{{pregunta}}", pregunta)
     
     with RAG_LLM_LATENCY.time():
@@ -305,11 +338,16 @@ def doc_generar_respuesta_llm(
     tramite: str | None = None,
     departamento: str | None = None,
     dominios: list[str] | None = None,
+    categoria: str | None = None,
 ) -> str:
     """Genera una respuesta de texto simple (sin fuentes)."""
     resultado = generar_respuesta(
-        pregunta, tema_especifico=tema_especifico, tramite=tramite, 
-        departamento=departamento, dominios=dominios
+        pregunta,
+        tema_especifico=tema_especifico,
+        tramite=tramite,
+        departamento=departamento,
+        dominios=dominios,
+        categoria=categoria,
     )
     return resultado["respuesta"]
 
@@ -319,11 +357,16 @@ def doc_generar_respuesta_llm_with_sources(
     tramite: str | None = None,
     departamento: str | None = None,
     dominios: list[str] | None = None,
+    categoria: str | None = None,
 ) -> dict:
     """Genera una respuesta completa con texto y fuentes."""
     return generar_respuesta(
-        pregunta, tema_especifico=tema_especifico, tramite=tramite,
-        departamento=departamento, dominios=dominios
+        pregunta,
+        tema_especifico=tema_especifico,
+        tramite=tramite,
+        departamento=departamento,
+        dominios=dominios,
+        categoria=categoria,
     )
 
 

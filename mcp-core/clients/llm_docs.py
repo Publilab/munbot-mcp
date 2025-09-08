@@ -66,8 +66,17 @@ class LlmDocsClient:
         entities = resp.get("entities") or {}
         return {"intent": intent, "sub_intent": sub_intent, "entities": entities}
 
-    def doc_generar_respuesta_llm(self, pregunta: str, trace_id: Optional[str] = None, **kwargs) -> dict:
-        params = {"pregunta": pregunta} | kwargs
+    def doc_generar_respuesta_llm(
+        self,
+        pregunta: str,
+        categoria: Optional[str] = None,
+        trace_id: Optional[str] = None,
+        **kwargs,
+    ) -> dict:
+        params = {"pregunta": pregunta}
+        if categoria:
+            params["categoria"] = categoria
+        params |= kwargs
         return self.tools_call("doc-generar_respuesta_llm", params, trace_id)
 
 

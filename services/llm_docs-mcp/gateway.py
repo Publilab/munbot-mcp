@@ -156,7 +156,7 @@ PROM_REGISTRY = CollectorRegistry()
 REQUEST_COUNTER = Counter(
     "munbot_requests_total",
     "Número de peticiones procesadas",
-    ["intent"],
+    ["intent", "categoria"],
     registry=PROM_REGISTRY,
 )
 FALLBACK_COUNTER = Counter(
@@ -393,166 +393,49 @@ def _get_texto(params: dict) -> str:
     return params.get("texto") or params.get("consulta", "")
 
 def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
-    """Flujo RAG: embedding, búsqueda en Qdrant y generación con Llama.
-
-    Devuelve tanto la respuesta generada como las referencias utilizadas."""
+    """Delegates the response generation to the RAG module."""
     pregunta = params.get("pregunta", "")
-    REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
+    categoria = params.get("categoria")
+    REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
     if not pregunta:
         return {"respuesta": "", "referencias": [], "no_results": True}
 
-    # 1) Obtener embedding de la pregunta
-    logger.info("Generando embeddings", extra={"trace_id": trace_id})
     try:
-        vector = run_with_timeout(embed, EMBED_TIMEOUT, [pregunta])[0]
-    except FuturesTimeoutError:
-        logger.error("Embedding timeout", extra={"trace_id": trace_id})
+        result = rag.doc_generar_respuesta_llm_with_sources(
+            pregunta=pregunta,
+            tema_especifico=params.get("documento"),
+            tramite=params.get("procedure_id"),
+            departamento=params.get("department_id"),
+            dominios=params.get("dominios"),
+            categoria=categoria,
+        )
+    except Exception as e:
+        logger.error(
+            f"RAG generation failed: {e}",
+            extra={"trace_id": trace_id, "categoria": categoria},
+        )
         ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
         return {"respuesta": "", "referencias": [], "no_results": True}
 
-    # 2) Aplicar filtro por ID de trámite, departamento o documento
-    procedure_id = params.get("procedure_id")
-    department_id = params.get("department_id")
-    document_name = params.get("documento")
-
-    if procedure_id:
-        filtro = filter_by_procedure_id(procedure_id)
-    elif department_id:
-        filtro = filter_by_department_id(department_id)
-    else:
-        filtro = filter_by_document(document_name)
-
-    # 3) Buscar fragmentos relevantes en Qdrant
-    try:
-        start_time = time.perf_counter()
-        hits = run_with_timeout(
-            search_in_qdrant, QDRANT_TIMEOUT, vector, top_k=5, filtro=filtro
-        )
-        RAG_LATENCY_HISTOGRAM.observe(time.perf_counter() - start_time)
-        logger.info(
-            "Qdrant hits", extra={"trace_id": trace_id, "hits": len(hits)}
-        )
-    except FuturesTimeoutError:
-        logger.error("Qdrant search timeout", extra={"trace_id": trace_id})
-        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
-        hits = []
-    except Exception as e:
-        logger.error(f"Qdrant search failed: {e}", extra={"trace_id": trace_id})
-        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
-        hits = []
-
-    # 3.1) Evaluar la similitud del mejor resultado
-    tokens = pregunta.split()
-    base_thr = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5))
-    threshold = 0.45 if len(tokens) <= 3 else base_thr
-    score = getattr(hits[0], "score", 0.0) if hits else 0.0
-
-    if not hits or score < threshold:
-        logger.info(
-            f"Insufficient similarity (score={score}, threshold={threshold}) – fallback triggered",
-            extra={"trace_id": trace_id},
-        )
-        FALLBACK_COUNTER.inc()
-        return {
-            "respuesta": "No dispongo de esa información",
-            "referencias": [],
-            "no_results": True,
-        }
-
-    question_l = pregunta.lower()
-    if department_id:
-        if any(k in question_l for k in ["correo", "mail", "email"]):
-            val = _extract_field_from_hits(hits, "correo")
-            if val:
-                return {"respuesta": val, "referencias": [], "no_results": False}
-        if "direccion" in question_l or "dirección" in question_l:
-            val = _extract_field_from_hits(hits, "direccion")
-            if val:
-                return {"respuesta": val, "referencias": [], "no_results": False}
-        if "horario" in question_l:
-            val = _extract_field_from_hits(hits, "horario")
-            if val:
-                return {"respuesta": val, "referencias": [], "no_results": False}
-
-    # 4) Extraer fragmentos y referencias sin filtrar por score
-    fragments = []
-    referencias = []
-    for h in hits:
-        payload = getattr(h, "payload", {}) or {}
-        texto = payload.get("texto") or payload.get("text")
-        fuente = payload.get("fuente") or payload.get("doc")
-        if texto:
-            fragments.append(texto)
-        if fuente:
+    referencias: list[str] = []
+    for fuente in result.get("fuentes") or []:
+        if isinstance(fuente, dict):
+            ref = fuente.get("doc") or fuente.get("fuente")
+            if ref:
+                referencias.append(ref)
+        elif isinstance(fuente, str):
             referencias.append(fuente)
 
-    # Si no se encontraron fragmentos
-    if not fragments:
-        FALLBACK_COUNTER.inc()
-        return {
-            "respuesta": "No dispongo de esa información",
-            "referencias": [],
-            "no_results": True,
-        }
-
-    if len(fragments) == 1 and len(fragments[0]) < 80:
-        logger.info("Very short context; asking user to precisar", extra={"trace_id": trace_id})
-        return {
-            "respuesta": "Tengo muy poca información relevante. ¿Podrías detallar qué parte te interesa (requisitos, horario, dirección, correo, utilidad o vigencia)?",
-            "referencias": list(set(referencias)),
-            "no_results": False,
-        }
-
-    max_frags = 5
-    max_chars = 1000
-    fragments = [f[:max_chars] for f in fragments[:max_frags]]
-    contexto = "\n".join(fragments)
-
-    extra_instr = ""
-    if department_id and any(
-        k in question_l for k in ["correo", "mail", "email", "dirección", "direccion", "horario"]
-    ):
-        extra_instr = (
-            "Si el contexto contiene un correo, dirección u horario, respóndelo de forma literal sin reformular "
-            "(por ejemplo, correo@dominio o 'Horario : lun-vie 08:30-13:00').\n"
-        )
-
-    prompt = (
-        "<s>[INST] Eres un asistente virtual del Gobierno de Curoscant. Tu tarea es responder la pregunta del usuario "
-        "basándote únicamente en el CONTEXTO proporcionado. Resume y reescribe con tus propias palabras en un solo "
-        "párrafo breve, excepto si se solicita un dato de contacto (correo, dirección u horario): en ese caso, devuelve "
-        "el dato de forma literal. No inventes nada. [/INST]\n"
-        "</s><s>[INST] CONTEXTO:\n"
-        "---------------------\n"
-        f"{contexto}\n"
-        "---------------------\n\n"
-        f"{extra_instr}"
-        f"PREGUNTA DEL USUARIO: {pregunta}\n\n"
-        "RESPUESTA: [/INST]"
-    )
-
-    # 5) Generar respuesta con Llama
-    try:
-        respuesta = generate_response(prompt)
-    except FuturesTimeoutError:
-        logger.error("LLM generation timeout", extra={"trace_id": trace_id})
-        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
-        FALLBACK_COUNTER.inc()
-        return {
-            "respuesta": "",
-            "referencias": list(set(referencias)),
-            "no_results": True,
-        }
-    respuesta = _clean_output(respuesta)
     logger.info(
         "Respuesta generada",
-        extra={
-            "trace_id": trace_id,
-            "fragments": referencias,
-        },
+        extra={"trace_id": trace_id, "categoria": categoria, "fragments": referencias},
     )
-    # Devolvemos las referencias como una lista separada para que el orquestador decida cómo usarlas
-    return {"respuesta": respuesta, "referencias": list(set(referencias)), "no_results": False}
+
+    return {
+        "respuesta": result.get("respuesta", ""),
+        "referencias": list(set(referencias)),
+        "no_results": not bool(result.get("respuesta")),
+    }
 
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
@@ -566,8 +449,9 @@ async def tools_call(request: Request):
         req = await request.json()
         trace_id = req.get("trace_id", "unknown")
         tool = req.get("tool")
-        REQUEST_COUNTER.labels(intent=tool).inc()
         params = req.get("params", {})
+        categoria = params.get("categoria", "unknown")
+        REQUEST_COUNTER.labels(intent=tool, categoria=categoria).inc()
         faq_context = params.get("faq_context")
         if tool == "buscar_documento_por_tag":
             pregunta = params["pregunta"]
@@ -598,7 +482,10 @@ async def tools_call(request: Request):
             return respuesta  # Solo el texto
         elif tool == "doc-generar_respuesta_llm":
             respuesta = generar_respuesta_llm(params, trace_id=trace_id)
-            logger.info("Respuesta generada por Llama con RAG", extra={"trace_id": trace_id})
+            logger.info(
+                "Respuesta generada por Llama con RAG",
+                extra={"trace_id": trace_id, "categoria": params.get("categoria")},
+            )
             return respuesta
         elif tool == "doc-buscar_fragmento_documento":
             texto = _get_texto(params)
