@@ -1388,6 +1388,44 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
     return {"answer": "Lo siento, hubo un error interno.", "pending": False}
 
 
+def _log_router(event: str, **kv):
+    info = {"event": event, **kv}
+    try:
+        logger.info("[ROUTER] %s", info)
+    except Exception:
+        logger.info("[ROUTER] %s", str(info))
+
+def try_rag_probe(user_text: str, top_k: int = 3, timeout_s: int = 20):
+    """
+    Intenta recuperar respuesta vía llm_docs-mcp. Devuelve (ok: bool, data: dict|None).
+    """
+    payload = {
+        "messages": [
+            {"role": "system", "content": "Eres un asistente municipal. Devuelve respuesta breve y cites fuentes si existen."},
+            {"role": "user", "content": user_text}
+        ],
+        "tools": [
+            { "type": "function",
+              "function": {
+                "name": "generar_respuesta_llm",
+                "arguments": {"pregunta": user_text}
+              }
+            }
+        ]
+    }
+    try:
+        r = httpx.post("http://llm_docs-mcp:8000/tools/call", json=payload, timeout=timeout_s)
+        r.raise_for_status()
+        data = r.json()
+        # SUPOSICIÓN: presencia de fragments/sources indica hallazgos
+        sources = data.get("sources") or data.get("fragments") or []
+        ok = isinstance(sources, list) and len(sources) > 0
+        _log_router("rag_probe_done", ok=ok, hits=len(sources) if isinstance(sources, list) else 0)
+        return ok, data
+    except Exception as e:
+        _log_router("rag_probe_error", error=str(e))
+        return False, None
+
 # Mapeo de herramientas a sus manejadores especializados
 TOOL_HANDLERS = {
     "scheduler-appointment_create": _handle_scheduler_flow,
@@ -1426,6 +1464,7 @@ def orchestrate(
         f"[INTENT] Intención clasificada: {intent}",
         extra={"trace_id": sid},
     )
+    _log_router("intent_decided", intent=intent)
     REQUEST_COUNTER.labels(intent=intent).inc()
 
     # --- 2. ENRUTAMIENTO BASADO EN INTENCIÓN ---
@@ -1444,6 +1483,7 @@ def orchestrate(
 
     # --- Flujo de Consulta de Documentos (RAG) ---
     if intent == "ask_document":
+        _log_router("route_document", intent=intent)
         logger.info(
             "[RAG] Llamando a llm_docs",
             extra={"trace_id": sid, "action": "rag_call"},
@@ -1477,6 +1517,16 @@ def orchestrate(
             resp = _handle_slot_filling(user_input, sid, ctx)
             if resp:
                 return resp
+
+    if intent == "n/a":
+        # Antes de rendirse, intentemos RAG de bajo costo
+        _log_router("intent_na_try_rag")
+        ok, data = try_rag_probe(user_input)
+        if ok and isinstance(data, dict):
+            # SUPOSICIÓN: formateador; en su defecto, devolvemos data "tal cual"
+            return {"respuesta": data.get("answer") or data.get("respuesta") or " ", 
+                    "fuentes": data.get("sources") or data.get("fragments") or [],
+                    "session_id": sid}
 
     # --- Manejo de Casos No Entendidos o Fallback ---
     return handle_fallback(sid, user_input)
@@ -1525,17 +1575,7 @@ def handle_document_query(session_id: str, user_input: str, entities: Dict[str, 
 def handle_fallback(session_id: str, user_input: str) -> Dict[str, Any]:
     """Maneja los casos en que la intención no es clara."""
     FALLBACK_COUNTER.inc()
-    # SUPOSICIÓN: intentar RAG como último recurso cuando la intención es 'n/a'
-    rag_result = handle_document_query(
-        session_id,
-        user_input,
-        {"tema_especifico": None, "tramite": None, "departamento": None},
-        [],
-    )
-    respuesta = (rag_result or {}).get("respuesta", "") if isinstance(rag_result, dict) else ""
-    if not respuesta.strip() or respuesta.strip().lower().startswith("no se encontr"):
-        respuesta = "Lo siento, no he entendido tu consulta. ¿Podrías reformularla?"
-    return {"respuesta": respuesta, "session_id": session_id}
+    return {"respuesta": "Lo siento, no he entendido tu consulta. ¿Podrías reformularla?", "session_id": session_id}
 
 
 # === API REST ===
