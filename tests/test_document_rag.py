@@ -26,7 +26,10 @@ fake_embeddings.embed = fake_embed
 sys.modules['embeddings'] = fake_embeddings
 
 sys.path.insert(0, os.path.abspath('mcp-core'))
-spec = importlib.util.spec_from_file_location('orchestrator', os.path.join('mcp-core','orchestrator.py'))
+mcp_core = types.ModuleType('mcp_core')
+mcp_core.__path__ = [os.path.abspath('mcp-core')]
+sys.modules['mcp_core'] = mcp_core
+spec = importlib.util.spec_from_file_location('mcp_core.orchestrator', os.path.join('mcp-core','orchestrator.py'))
 orchestrator = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(orchestrator)
 
@@ -73,6 +76,32 @@ def test_short_question_expands(monkeypatch):
     orchestrator.orchestrate('y el costo?', session_id=sid)
     assert calls[0]['documento'] == 'Permiso de Circulacion'
     assert calls[0]['pregunta'].endswith('del trámite Permiso de Circulacion')
+
+
+def test_categoria_propagates_collection(monkeypatch):
+    os.environ['RAG_COLLECTION_FAQ'] = 'faq_coll'
+    os.environ['RAG_COLLECTION_TRAMITES'] = 'tram_coll'
+    os.environ['RAG_COLLECTION_NORMATIVA'] = 'norm_coll'
+
+    captured = {}
+
+    def fake_call(tool, params, trace_id=None):
+        captured['params'] = params.copy()
+        cat = params.get('categoria')
+        if cat == 'faq':
+            captured['collection'] = os.environ['RAG_COLLECTION_FAQ']
+        elif cat in {'tramite', 'tramites', 'trámite', 'trámites'}:
+            captured['collection'] = os.environ['RAG_COLLECTION_TRAMITES']
+        else:
+            captured['collection'] = os.environ['RAG_COLLECTION_NORMATIVA']
+        return {'respuesta': 'ok'}
+
+    monkeypatch.setattr(orchestrator, 'call_tool_microservice', fake_call)
+
+    orchestrator.handle_document_query('sid', 'pregunta', {}, [], 'tramites')
+
+    assert captured['params']['categoria'] == 'tramites'
+    assert captured['collection'] == 'tram_coll'
 
 
 def test_generic_doc_query_prompts_specific(monkeypatch):
