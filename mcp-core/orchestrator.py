@@ -12,6 +12,7 @@ import logging
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import re
+import unicodedata
 from email.utils import parseaddr
 from urllib.parse import urlparse
 import redis
@@ -293,6 +294,20 @@ def _pick_smalltalk(intent: str) -> str:
     if variants:
         return variants[0]
     return ""
+
+
+def _norm_intent(label: str) -> str:
+    """Normaliza etiquetas de intención removiendo acentos y puntuación."""
+    if not label:
+        return ""
+    # a) pasar a minúsculas
+    txt = label.strip().lower()
+    # b) eliminar acentos
+    txt = unicodedata.normalize("NFD", txt)
+    txt = "".join(ch for ch in txt if unicodedata.category(ch) != "Mn")
+    # c) eliminar puntuación sobrante
+    txt = re.sub(r"[^\w\s]", "", txt)
+    return txt.strip()
 
 
 # === Mapeo de intenciones ===
@@ -1446,7 +1461,12 @@ def orchestrate(
     # --- 1. CLASIFICACIÓN DE INTENCIÓN ---
     classification = classify_intent_remotely(user_input)
 
-    intent = INTENT_MAP.get(classification.get("intent"), "n/a")
+    raw_intent = classification.get("intent") or ""
+    k = _norm_intent(raw_intent)
+    if k.endswith("s") and k[:-1] in INTENT_MAP:
+        k = k[:-1]
+    categoria = k
+    intent = INTENT_MAP.get(k, "n/a")
 
     raw_entities = classification.get("entities") or {}
     entities = {
@@ -1462,9 +1482,9 @@ def orchestrate(
 
     logger.info(
         f"[INTENT] Intención clasificada: {intent}",
-        extra={"trace_id": sid},
+        extra={"trace_id": sid, "intent_norm": categoria},
     )
-    _log_router("intent_decided", intent=intent)
+    _log_router("intent_decided", intent=intent, intent_norm=categoria)
     REQUEST_COUNTER.labels(intent=intent).inc()
 
     # --- 2. ENRUTAMIENTO BASADO EN INTENCIÓN ---
@@ -1483,13 +1503,13 @@ def orchestrate(
 
     # --- Flujo de Consulta de Documentos (RAG) ---
     if intent == "ask_document":
-        _log_router("route_document", intent=intent)
+        _log_router("route_document", intent=intent, intent_type=categoria)
         logger.info(
             "[RAG] Llamando a llm_docs",
-            extra={"trace_id": sid, "action": "rag_call"},
+            extra={"trace_id": sid, "action": "rag_call", "intent_type": categoria},
         )
         # Pasar los dominios al manejador de RAG
-        return handle_document_query(sid, user_input, entities, dominios)
+        return handle_document_query(sid, user_input, entities, dominios, categoria)
 
     # --- Flujo de Agendamiento de Citas ---
     if intent in ["init_scheduler", "cont_scheduler"]:
@@ -1531,7 +1551,13 @@ def orchestrate(
     # --- Manejo de Casos No Entendidos o Fallback ---
     return handle_fallback(sid, user_input)
 
-def handle_document_query(session_id: str, user_input: str, entities: Dict[str, Any], dominios: list[str]) -> Dict[str, Any]:
+def handle_document_query(
+    session_id: str,
+    user_input: str,
+    entities: Dict[str, Any],
+    dominios: list[str],
+    intent_type: str,
+) -> Dict[str, Any]:
     """Maneja la lógica de consulta de documentos (RAG) llamando al servicio centralizado."""
     
     # Extraer hints de las entidades para enviar al servicio RAG
@@ -1541,6 +1567,7 @@ def handle_document_query(session_id: str, user_input: str, entities: Dict[str, 
         "tramite": entities.get("tramite"),
         "departamento": entities.get("departamento"),
         "dominios": dominios,
+        "categoria": intent_type,
     }
 
     # Llamar al microservicio llm_docs-mcp
