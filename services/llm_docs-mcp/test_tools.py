@@ -303,5 +303,60 @@ def test_doc_buscar_fragmento_documento_direct_call_and_threshold():
     mock_of.assert_called_once_with(consulta="hola", k=5, tema_especifico="doc.txt")
     assert res == [{"texto": "a", "rerank_score": 0.9}]
 
+
+def _setup_category_env(monkeypatch):
+    monkeypatch.setenv("RAG_CATEGORY_AWARE", "1")
+    monkeypatch.setattr(rag, "RAG_CATEGORY_AWARE", True)
+    monkeypatch.setenv("RAG_COLLECTION_FAQ", "faq_coll")
+    monkeypatch.setattr(rag, "RAG_COLLECTION_FAQ", "faq_coll")
+    monkeypatch.setenv("RAG_COLLECTION_TRAMITES", "tram_coll")
+    monkeypatch.setattr(rag, "RAG_COLLECTION_TRAMITES", "tram_coll")
+    monkeypatch.setenv("RAG_COLLECTION_NORMATIVA", "norm_coll")
+    monkeypatch.setattr(rag, "RAG_COLLECTION_NORMATIVA", "norm_coll")
+    monkeypatch.setenv("PROMPT_FAQ", "faq_prompt.txt")
+    monkeypatch.setattr(rag, "PROMPT_FAQ", "faq_prompt.txt")
+    monkeypatch.setenv("PROMPT_TRAMITE", "tram_prompt.txt")
+    monkeypatch.setattr(rag, "PROMPT_TRAMITE", "tram_prompt.txt")
+    monkeypatch.setenv("PROMPT_DOCUMENTO", "doc_prompt.txt")
+    monkeypatch.setattr(rag, "PROMPT_DOCUMENTO", "doc_prompt.txt")
+
+
+def _run_categoria_test(monkeypatch, categoria, expected_collection, expected_prompt):
+    _setup_category_env(monkeypatch)
+    captured = {}
+    monkeypatch.setattr(rag, "crear_plan", lambda pregunta, dominios: [pregunta])
+
+    def fake_obtener_fragmentos(consulta, k=3, tema_especifico=None, tramite=None,
+                                departamento=None, dominios=None, collection_name=None):
+        captured["collection"] = collection_name
+        return [{"texto": "x", "rerank_score": 1.0}]
+
+    monkeypatch.setattr(rag, "obtener_fragmentos", fake_obtener_fragmentos)
+
+    def fake_load_prompt(name):
+        captured["prompt"] = name
+        return "CTX {{contexto}}\nQ {{pregunta}}"
+
+    monkeypatch.setattr(rag, "load_prompt", fake_load_prompt)
+    monkeypatch.setattr(rag.lama, "generate", lambda prompt: "resp")
+    monkeypatch.setattr(rag, "verificar_atribucion", lambda r, c: True)
+
+    rag.generar_respuesta("hola", categoria=categoria)
+
+    assert captured["collection"] == expected_collection
+    assert captured["prompt"] == expected_prompt
+
+
+def test_generar_respuesta_categoria_faq(monkeypatch):
+    _run_categoria_test(monkeypatch, "faq", "faq_coll", "faq_prompt.txt")
+
+
+def test_generar_respuesta_categoria_tramite(monkeypatch):
+    _run_categoria_test(monkeypatch, "tramite", "tram_coll", "tram_prompt.txt")
+
+
+def test_generar_respuesta_categoria_normativa(monkeypatch):
+    _run_categoria_test(monkeypatch, "normativa", "norm_coll", "doc_prompt.txt")
+
 if __name__ == "__main__":
     unittest.main()
