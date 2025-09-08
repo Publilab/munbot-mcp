@@ -3,6 +3,7 @@ import sys
 import random
 import json
 import requests
+import httpx
 from requests.auth import HTTPBasicAuth
 from typing import Dict, Any, List, Optional
 from fastapi import FastAPI, HTTPException, Request, Body, Response
