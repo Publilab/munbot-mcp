@@ -11,10 +11,10 @@ COLLECTION = os.getenv("QDRANT_COLLECTION", "munbot_docs")
 client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
 
-def search_in_qdrant(vector, top_k=5, filtro=None):
+def search_in_qdrant(vector, top_k=5, filtro=None, collection_name: Optional[str] = None):
     """Search similar vectors in Qdrant and return hits."""
     return client.search(
-        collection_name=COLLECTION,
+        collection_name=collection_name or COLLECTION,
         query_vector=vector,
         query_filter=filtro,
         limit=top_k,
