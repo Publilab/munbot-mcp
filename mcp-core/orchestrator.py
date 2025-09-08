@@ -1524,8 +1524,17 @@ def handle_document_query(session_id: str, user_input: str, entities: Dict[str, 
 def handle_fallback(session_id: str, user_input: str) -> Dict[str, Any]:
     """Maneja los casos en que la intención no es clara."""
     FALLBACK_COUNTER.inc()
-    # Lógica de fallback, escalamiento a humano, etc.
-    return {"respuesta": "Lo siento, no he entendido tu consulta. ¿Podrías reformularla?", "session_id": session_id}
+    # SUPOSICIÓN: intentar RAG como último recurso cuando la intención es 'n/a'
+    rag_result = handle_document_query(
+        session_id,
+        user_input,
+        {"tema_especifico": None, "tramite": None, "departamento": None},
+        [],
+    )
+    respuesta = (rag_result or {}).get("respuesta", "") if isinstance(rag_result, dict) else ""
+    if not respuesta.strip() or respuesta.strip().lower().startswith("no se encontr"):
+        respuesta = "Lo siento, no he entendido tu consulta. ¿Podrías reformularla?"
+    return {"respuesta": respuesta, "session_id": session_id}
 
 
 # === API REST ===
