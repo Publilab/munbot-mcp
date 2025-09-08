@@ -168,7 +168,7 @@ PROM_REGISTRY = CollectorRegistry()
 REQUEST_COUNTER = Counter(
     "munbot_requests_total",
     "Número de peticiones procesadas",
-    ["intent"],
+    ["intent", "categoria"],
     registry=PROM_REGISTRY,
 )
 FALLBACK_COUNTER = Counter(
@@ -184,7 +184,7 @@ HUMAN_ESCALATION_COUNTER = Counter(
 ERROR_COUNTER = Counter(
     "mcp_microservice_errors_total",
     "Errores al invocar microservicios",
-    ["intent"],
+    ["intent", "categoria"],
     registry=PROM_REGISTRY,
 )
 CACHE_HIT_COUNTER = Counter(
@@ -728,13 +728,19 @@ def handle_turn(session_id: str, user_input: str) -> Dict[str, Any]:
     return call_tool_microservice("doc-search", {"pregunta": user_input})
 
 
-def handle_service_error(resp: Dict[str, Any], intent: str, trace_id: str | None = None) -> Optional[Dict[str, str]]:
+def handle_service_error(
+    resp: Dict[str, Any],
+    intent: str,
+    trace_id: str | None = None,
+    categoria: str | None = None,
+) -> Optional[Dict[str, str]]:
     """Check microservice response and return friendly message on error."""
     if resp.get("error"):
         logger.error(
-            f"Microservice error: {resp['error']}", extra={"trace_id": trace_id}
+            f"Microservice error: {resp['error']}",
+            extra={"trace_id": trace_id, "categoria": categoria},
         )
-        ERROR_COUNTER.labels(intent=intent).inc()
+        ERROR_COUNTER.labels(intent=intent, categoria=categoria or "unknown").inc()
         return {"texto": "Ocurrió un problema al consultar nuestros servicios. Por favor, intenta más tarde."}
     return None
 
@@ -1485,7 +1491,7 @@ def orchestrate(
         extra={"trace_id": sid, "intent_norm": categoria},
     )
     _log_router("intent_decided", intent=intent, intent_norm=categoria)
-    REQUEST_COUNTER.labels(intent=intent).inc()
+    REQUEST_COUNTER.labels(intent=intent, categoria=categoria).inc()
 
     # --- 2. ENRUTAMIENTO BASADO EN INTENCIÓN ---
     if intent in {"saludo", "despedida", "agradecimiento"}:
@@ -1574,9 +1580,26 @@ def handle_document_query(
     response = call_tool_microservice("doc-generar_respuesta_llm", tool_params, trace_id=session_id)
 
     # Manejar errores del servicio
-    error_response = handle_service_error(response, "doc-generar_respuesta_llm", trace_id=session_id)
+    error_response = handle_service_error(
+        response, "doc-generar_respuesta_llm", trace_id=session_id, categoria=intent_type
+    )
     if error_response:
         return {"respuesta": error_response["texto"], "session_id": session_id}
+
+    # Registrar métricas del servicio RAG
+    hit = response.get("hit")
+    if hit is None:
+        hit = bool(response.get("respuesta") or response.get("candidates"))
+    logger.info(
+        "[RAG] Respuesta recibida",
+        extra={
+            "trace_id": session_id,
+            "categoria": intent_type,
+            "collection": response.get("collection"),
+            "top_k": response.get("top_k"),
+            "hit": hit,
+        },
+    )
     # 1) Si llm_docs devuelve un ítem enriquecido (opcional futuro)
     item = response.get("item") or {}
     if item:

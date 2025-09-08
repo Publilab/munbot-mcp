@@ -172,7 +172,7 @@ HUMAN_ESCALATION_COUNTER = Counter(
 ERROR_COUNTER = Counter(
     "munbot_errors_total",
     "Número de errores de microservicios",
-    ["intent"],
+    ["intent", "categoria"],
     registry=PROM_REGISTRY,
 )
 
@@ -397,6 +397,8 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     pregunta = params.get("pregunta", "")
     categoria = params.get("categoria")
     REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
+    collection_name, _ = rag._category_config(categoria)
+    top_k = params.get("top_k", 3)
     if not pregunta:
         return {"respuesta": "", "referencias": [], "no_results": True}
 
@@ -414,7 +416,7 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             f"RAG generation failed: {e}",
             extra={"trace_id": trace_id, "categoria": categoria},
         )
-        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm").inc()
+        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
         return {"respuesta": "", "referencias": [], "no_results": True}
 
     referencias: list[str] = []
@@ -426,15 +428,23 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         elif isinstance(fuente, str):
             referencias.append(fuente)
 
+    hit = bool(result.get("respuesta"))
     logger.info(
         "Respuesta generada",
-        extra={"trace_id": trace_id, "categoria": categoria, "fragments": referencias},
+        extra={
+            "trace_id": trace_id,
+            "categoria": categoria,
+            "collection": collection_name,
+            "top_k": top_k,
+            "hit": hit,
+            "fragments": referencias,
+        },
     )
 
     return {
         "respuesta": result.get("respuesta", ""),
         "referencias": list(set(referencias)),
-        "no_results": not bool(result.get("respuesta")),
+        "no_results": not hit,
     }
 
 # ==== MCP Endpoints ====
