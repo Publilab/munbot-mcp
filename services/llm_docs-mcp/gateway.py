@@ -101,6 +101,54 @@ PROMPT_DOCUMENTO = (
     información que no esté provista."""
 )
 
+VALID_CATS = {"faq", "tramite", "documento"}
+
+
+def _select_collection_and_prompt(categoria: str | None):
+    """Decide colección, filtro y plantilla según la categoría.
+
+    Retorna una tupla ``(collection_name, filtro_dict, prompt_template)``.
+    - ``collection_name``: nombre de la colección en Qdrant.
+    - ``filtro_dict``: diccionario simple para filtrar por categoría cuando
+      ``RAG_SELECTION_MODE`` es ``filter``.
+    - ``prompt_template``: plantilla de prompt a utilizar.
+    """
+
+    def _normalize(cat: str | None) -> str | None:
+        if not cat:
+            return None
+        cat = cat.lower()
+        if cat in {"tramites", "trámites", "trámite"}:
+            cat = "tramite"
+        if cat not in VALID_CATS:
+            return None
+        return cat
+
+    cat = _normalize(categoria)
+
+    selection_mode = (RAG_SELECTION_MODE or "").lower()
+
+    if selection_mode == "collection":
+        if RAG_CATEGORY_AWARE and cat == "faq":
+            return RAG_COLLECTION_FAQ, None, PROMPT_FAQ
+        if RAG_CATEGORY_AWARE and cat == "tramite":
+            return RAG_COLLECTION_TRAMITES, None, PROMPT_TRAMITE
+        return RAG_COLLECTION_NORMATIVA, None, PROMPT_DOCUMENTO
+
+    # Modo 'filter' (o cualquier otro no reconocido)
+    collection = RAG_COLLECTION_NORMATIVA
+    filtro = None
+    prompt = PROMPT_DOCUMENTO
+
+    if RAG_CATEGORY_AWARE and cat:
+        filtro = {RAG_FILTER_FIELD: cat}
+        if cat == "faq":
+            prompt = PROMPT_FAQ
+        elif cat == "tramite":
+            prompt = PROMPT_TRAMITE
+
+    return collection, filtro, prompt
+
 # ==== FastAPI y Seguridad ====
 app = FastAPI()
 
