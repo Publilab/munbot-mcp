@@ -428,9 +428,12 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     """Delegates the response generation to the RAG module."""
     pregunta = params.get("pregunta", "")
     categoria = params.get("categoria")
+    top_k = int(params.get("top_k", 3))
+    _logger.info(
+        "doc-generar_respuesta_llm: categoria=%s top_k=%s", categoria, top_k
+    )
     REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
     collection_name, _ = rag._category_config(categoria)
-    top_k = params.get("top_k", 3)
     if not pregunta:
         return {"respuesta": "", "referencias": [], "no_results": True}
 
@@ -523,12 +526,24 @@ async def tools_call(request: Request):
             logger.info("Respuesta generada por Llama (tool directo MCP)", extra={"trace_id": trace_id})
             return respuesta  # Solo el texto
         elif tool == "doc-generar_respuesta_llm":
-            respuesta = generar_respuesta_llm(params, trace_id=trace_id)
-            logger.info(
-                "Respuesta generada por Llama con RAG",
-                extra={"trace_id": trace_id, "categoria": params.get("categoria")},
+            query = (params.get("pregunta") or "").strip()
+            top_k = int(params.get("top_k", 5))
+            categoria = params.get("categoria")
+            _logger.info(
+                "doc-generar_respuesta_llm: categoria=%s top_k=%s", categoria, top_k
             )
-            return respuesta
+            return generar_respuesta_llm(
+                {
+                    "pregunta": query,
+                    "top_k": top_k,
+                    "categoria": categoria,
+                    "documento": params.get("documento"),
+                    "procedure_id": params.get("procedure_id"),
+                    "department_id": params.get("department_id"),
+                    "dominios": params.get("dominios"),
+                },
+                trace_id=trace_id,
+            )
         elif tool == "doc-buscar_fragmento_documento":
             texto = _get_texto(params)
             documento = params.get("documento")
