@@ -41,6 +41,10 @@ from intent_classifier import (
 from pythonjsonlogger import jsonlogger
 
 
+JSON_CALL_RE = re.compile(r'\{[\s\S]*"call"[\s\S]*\}', re.MULTILINE)
+DSL_CALL_RE  = re.compile(r'<CALL\s+([\w\-.\/]+)\s*(.*?)>', re.DOTALL)
+
+
 def _getenv_int(name: str, default: int) -> int:
     try:
         return int(os.getenv(name, str(default)).strip())
@@ -79,6 +83,64 @@ TOOLS = {
         "handler": "handle_complaint_handover",
     },
 }
+
+def try_parse_call(text: str):
+    """Detecta intentos de llamada de herramientas en formato JSON o DSL.
+
+    Retorna una tupla ``(tool, params)`` si se encuentra una llamada válida,
+    en caso contrario ``None``.
+    """
+    if not text:
+        return None
+    text = text.strip()
+
+    m = JSON_CALL_RE.search(text)
+    if m:
+        try:
+            data = json.loads(m.group())
+        except Exception:
+            data = None
+        if isinstance(data, dict):
+            call = data.get("call")
+            if isinstance(call, dict):
+                tool = call.get("tool") or call.get("name")
+                params = call.get("params") or call.get("arguments") or {}
+                if isinstance(tool, str):
+                    return tool, params if isinstance(params, dict) else {}
+
+    m = DSL_CALL_RE.search(text)
+    if m:
+        tool = m.group(1)
+        args = m.group(2).strip()
+        params: dict = {}
+        if args:
+            try:
+                params = json.loads(args)
+            except Exception:
+                for k, v in re.findall(r'(\w+)="([^"]*)"', args):
+                    params[k] = v
+        return tool, params
+
+    return None
+
+
+def validate_params(tool_name: str, params: dict) -> None:
+    """Valida tipos y presencia de parámetros obligatorios según ``TOOLS``."""
+    schema = TOOLS.get(tool_name, {}).get("schema", {}) or {}
+    for param, spec in schema.items():
+        if isinstance(spec, tuple):
+            expected_type, _default = spec
+            required = False
+        else:
+            expected_type = spec
+            required = True
+        if required and param not in params:
+            raise HTTPException(status_code=400, detail=f"Falta parámetro requerido: {param}")
+        if param in params and params[param] is not None and not isinstance(params[param], expected_type):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Parámetro '{param}' debe ser de tipo {expected_type.__name__}",
+            )
 
 _logger = logging.getLogger("llm_docs_mcp")
 
@@ -659,6 +721,7 @@ async def tools_call(request: Request):
                 {"error": "missing 'tool' or 'messages'"}, status_code=400
             )
         params = req.get("params", {})
+        validate_params(tool, params)
         categoria = params.get("categoria", "unknown")
         REQUEST_COUNTER.labels(intent=tool, categoria=categoria).inc()
         faq_context = params.get("faq_context")

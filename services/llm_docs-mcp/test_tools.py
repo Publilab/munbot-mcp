@@ -5,6 +5,8 @@ import unittest
 import importlib.machinery
 from fastapi.testclient import TestClient
 from unittest.mock import patch
+import pytest
+from fastapi import HTTPException
 
 os.environ["ALLOWED_IPS"] = "testclient,127.0.0.1"
 os.environ["LLM_DOCS_API_KEY"] = "test-key"
@@ -286,6 +288,27 @@ class TestGateway(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json().get("intent"), "documento")
+
+def test_try_parse_call_json():
+    from gateway import try_parse_call
+
+    texto = '{"call": {"tool": "doc-generar_respuesta_llm", "params": {"query": "hola"}}}'
+    assert try_parse_call(texto) == ("doc-generar_respuesta_llm", {"query": "hola"})
+
+
+def test_try_parse_call_dsl():
+    from gateway import try_parse_call
+
+    texto = '<CALL doc-generar_respuesta_llm {"query": "hola"}>'
+    assert try_parse_call(texto) == ("doc-generar_respuesta_llm", {"query": "hola"})
+
+
+def test_validate_params():
+    from gateway import validate_params
+
+    validate_params("doc-generar_respuesta_llm", {"query": "hola"})
+    with pytest.raises(HTTPException):
+        validate_params("doc-generar_respuesta_llm", {})
 
 def test_doc_buscar_fragmento_documento_direct_call_and_threshold():
     """Calls rag.doc_buscar_fragmento_documento and checks parameter propagation."""
