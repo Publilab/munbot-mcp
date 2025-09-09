@@ -756,11 +756,11 @@ async def handle_rag_call(params, hints):
     return await generar_respuesta_llm(query, top_k=top_k, categoria=categoria)
 
 
-async def handle_scheduler_handover(params, hints):
+async def handle_scheduler_handover(params: dict, hints: dict):
     return {"type": "handover", "flow": "scheduler"}
 
 
-async def handle_complaint_handover(params, hints):
+async def handle_complaint_handover(params: dict, hints: dict):
     return {"type": "handover", "flow": "complaint"}
 
 
