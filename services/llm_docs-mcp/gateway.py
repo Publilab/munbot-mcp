@@ -82,6 +82,25 @@ QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5
 # Umbral de alta confianza para los resultados de Qdrant
 HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.6))
 
+# ==== Prompts por defecto ====
+PROMPT_FAQ = (
+    """Responde de forma breve y concisa en español. Utiliza únicamente la
+    información disponible y, si no encuentras la respuesta, indica que no
+    dispones de datos suficientes."""
+)
+
+PROMPT_TRAMITE = (
+    """Responde en español, estructurando la salida en los campos 'descripcion',
+    'requisitos', 'pasos', 'donde' y 'costo'. Si falta información, deja el
+    campo vacío e indícalo explícitamente."""
+)
+
+PROMPT_DOCUMENTO = (
+    """Genera una respuesta en español, con foco normativo. Resume el contenido
+    del documento e incluye referencias legales relevantes sin agregar
+    información que no esté provista."""
+)
+
 # ==== FastAPI y Seguridad ====
 app = FastAPI()
 
