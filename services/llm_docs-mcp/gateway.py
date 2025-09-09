@@ -749,6 +749,107 @@ async def generar_respuesta_llm(
     }
     return _generar_respuesta_llm(params, trace_id=trace_id)
 
+
+async def handle_rag_call(params: dict):
+    """Wrapper de herramienta para realizar una consulta RAG."""
+    query = (params.get("query") or "").strip()
+    top_k = int(params.get("top_k", 5))
+    categoria = params.get("categoria")
+    return await generar_respuesta_llm(
+        query,
+        top_k=top_k,
+        categoria=categoria,
+        documento=params.get("documento"),
+        procedure_id=params.get("procedure_id"),
+        department_id=params.get("department_id"),
+        dominios=params.get("dominios"),
+        trace_id=params.get("trace_id", "unknown"),
+    )
+
+
+async def handle_scheduler_handover(_params: dict):
+    """Retorna un traspaso inmediato al flujo de agenda."""
+    return {"type": "handover", "flow": "scheduler"}
+
+
+async def handle_complaint_handover(_params: dict):
+    """Retorna un traspaso inmediato al flujo de reclamos."""
+    return {"type": "handover", "flow": "complaint"}
+
+
+async def agent_mode(req: dict):
+    """Proceso principal para el modo agente con llamadas a herramientas."""
+
+    trace_id = req.get("trace_id", "unknown")
+    messages = req.get("messages") or []
+    allowed_names = req.get("tools") or []
+    hints = req.get("hints")
+
+    allowed_tools: list[dict] = []
+    for name in allowed_names:
+        tool_spec = TOOLS.get(name)
+        if tool_spec:
+            allowed_tools.append({"name": name, **tool_spec})
+
+    system_prompt = AGENT_SYSTEM_TPL.format(
+        tools_doc=build_tools_doc(allowed_tools),
+        max_calls=AGENT_MAX_TOOL_CALLS,
+    )
+
+    conversation = [{"role": "system", "content": system_prompt}]
+
+    if hints:
+        if isinstance(hints, str):
+            conversation.append({"role": "system", "content": hints})
+        elif isinstance(hints, list):
+            for hint in hints:
+                if isinstance(hint, str):
+                    conversation.append({"role": "system", "content": hint})
+
+    conversation.extend(messages)
+
+    call_count = 0
+    while True:
+        prompt = serialize_messages(conversation)
+        logger.info("agent.step", extra={"trace_id": trace_id, "step": call_count})
+        text = llama_generate(prompt)
+        logger.info(
+            "agent.step", extra={"trace_id": trace_id, "step": call_count, "output": text}
+        )
+
+        parsed = try_parse_call(text)
+        if not parsed:
+            return {"content": text}
+
+        tool, params = parsed
+        if tool not in allowed_names:
+            raise HTTPException(status_code=400, detail=f"Herramienta no permitida: {tool}")
+
+        call_count += 1
+        if call_count > AGENT_MAX_TOOL_CALLS:
+            raise HTTPException(
+                status_code=400, detail="Se excedió el máximo de llamadas a herramientas"
+            )
+
+        validate_params(tool, params)
+        handler_name = TOOLS[tool].get("handler")
+        handler = globals().get(handler_name)
+        if handler is None:
+            raise HTTPException(status_code=500, detail=f"Handler no encontrado: {handler_name}")
+
+        result = (
+            await handler(params)
+            if inspect.iscoroutinefunction(handler)
+            else handler(params)
+        )
+
+        if isinstance(result, dict) and result.get("type") == "handover":
+            return result
+
+        conversation.append({"role": "assistant", "content": text})
+        conversation.append({"role": "tool", "name": tool, "content": json.dumps(result)})
+
+
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
 def tools_list():
