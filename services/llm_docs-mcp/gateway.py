@@ -586,8 +586,14 @@ async def tools_call(request: Request):
     trace_id = "unknown"
     try:
         req = await request.json()
+        if AGENT_MODE and "messages" in req:
+            return await agent_mode(req)
         trace_id = req.get("trace_id", "unknown")
         tool = req.get("tool")
+        if not tool:
+            return JSONResponse(
+                {"error": "missing 'tool' or 'messages'"}, status_code=400
+            )
         params = req.get("params", {})
         categoria = params.get("categoria", "unknown")
         REQUEST_COUNTER.labels(intent=tool, categoria=categoria).inc()
