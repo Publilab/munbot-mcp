@@ -59,6 +59,8 @@ AGENT_MAX_TOOL_CALLS = _getenv_int("AGENT_MAX_TOOL_CALLS", 2)
 RAG_COLLECTION_FAQ = _getenv_str("RAG_COLLECTION_FAQ", "faq")
 RAG_COLLECTION_TRAMITES = _getenv_str("RAG_COLLECTION_TRAMITES", "tramites")
 RAG_COLLECTION_NORMATIVA = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
+RAG_SELECTION_MODE = _getenv_str("RAG_SELECTION_MODE", "collection")
+RAG_FILTER_FIELD   = _getenv_str("RAG_FILTER_FIELD", "tipo")
 
 _logger = logging.getLogger("llm_docs_mcp")
 
@@ -87,9 +89,11 @@ app = FastAPI()
 async def _log_feature_flags():
     _logger.info(
         "FeatureFlags llm_docs-mcp | AGENT_MODE=%s RAG_CATEGORY_AWARE=%s "
-        "AGENT_MAX_TOOL_CALLS=%s RAG_COLLECTIONS={faq:%s, tramite:%s, doc:%s}",
+        "AGENT_MAX_TOOL_CALLS=%s RAG_COLLECTIONS={faq:%s, tramite:%s, doc:%s} "
+        "RAG_SELECTION_MODE=%s RAG_FILTER_FIELD=%s",
         AGENT_MODE, RAG_CATEGORY_AWARE, AGENT_MAX_TOOL_CALLS,
-        RAG_COLLECTION_FAQ, RAG_COLLECTION_TRAMITES, RAG_COLLECTION_NORMATIVA
+        RAG_COLLECTION_FAQ, RAG_COLLECTION_TRAMITES, RAG_COLLECTION_NORMATIVA,
+        RAG_SELECTION_MODE, RAG_FILTER_FIELD
     )
 
 app.add_middleware(
