@@ -119,6 +119,52 @@ PROMPT_DOCUMENTO = (
     información que no esté provista."""
 )
 
+AGENT_SYSTEM_TPL = (
+    """
+Eres un asistente municipal que brinda orientación a la ciudadanía.
+Responde siempre en español de forma clara y concisa.
+
+Herramientas disponibles:
+{tools_doc}
+
+Reglas de uso de herramientas:
+- Emplea solo las herramientas listadas y respeta el nombre exacto.
+- Invoca a lo sumo {max_calls} herramientas en total y una por turno.
+- Sigue el esquema de parámetros indicado; no inventes argumentos.
+- Si ninguna herramienta resulta útil, responde directamente con la información que tengas.
+"""
+).strip()
+
+
+def build_tools_doc(allowed_tools: list[dict]) -> str:
+    """Genera documentación en texto para las herramientas disponibles.
+
+    ``allowed_tools`` debe ser una lista de diccionarios que incluyen al menos
+    los campos ``name``, ``desc`` y ``schema``. El campo ``schema`` es un
+    diccionario donde la clave es el nombre del parámetro y el valor puede ser
+    un tipo o una tupla ``(tipo, default)`` para parámetros opcionales.
+    """
+
+    lines: list[str] = []
+    for tool in allowed_tools:
+        name = tool.get("name")
+        desc = tool.get("desc", "").strip()
+        schema = tool.get("schema", {}) or {}
+
+        lines.append(f"- **{name}**: {desc}")
+        if schema:
+            param_lines: list[str] = []
+            for param, spec in schema.items():
+                type_ = spec[0] if isinstance(spec, tuple) else spec
+                optional = isinstance(spec, tuple)
+                param_lines.append(
+                    f"    - `{param}` ({type_.__name__}{' opcional' if optional else ''})"
+                )
+            lines.append("  Parámetros:\n" + "\n".join(param_lines))
+
+    return "\n".join(lines)
+
+
 VALID_CATS = {"faq", "tramite", "documento"}
 
 
