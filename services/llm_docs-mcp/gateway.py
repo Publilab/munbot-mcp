@@ -495,7 +495,7 @@ def _get_texto(params: dict) -> str:
     """
     return params.get("texto") or params.get("consulta", "")
 
-def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
+def _generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
     """Delegates the response generation to the RAG module."""
     pregunta = params.get("pregunta", "")
     categoria = params.get("categoria")
@@ -553,6 +553,29 @@ def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         "no_results": not hit,
     }
 
+
+async def generar_respuesta_llm(
+    query: str,
+    *,
+    top_k: int = 3,
+    categoria: str | None = None,
+    documento: str | None = None,
+    procedure_id: str | None = None,
+    department_id: str | None = None,
+    dominios: list[str] | None = None,
+    trace_id: str = "unknown",
+) -> dict:
+    params = {
+        "pregunta": query,
+        "top_k": top_k,
+        "categoria": categoria,
+        "documento": documento,
+        "procedure_id": procedure_id,
+        "department_id": department_id,
+        "dominios": dominios,
+    }
+    return _generar_respuesta_llm(params, trace_id=trace_id)
+
 # ==== MCP Endpoints ====
 @app.get("/tools/list")
 def tools_list():
@@ -597,22 +620,20 @@ async def tools_call(request: Request):
             logger.info("Respuesta generada por Llama (tool directo MCP)", extra={"trace_id": trace_id})
             return respuesta  # Solo el texto
         elif tool == "doc-generar_respuesta_llm":
-            query = (params.get("pregunta") or "").strip()
+            query = (params.get("query") or "").strip()
             top_k = int(params.get("top_k", 5))
             categoria = params.get("categoria")
             _logger.info(
                 "doc-generar_respuesta_llm: categoria=%s top_k=%s", categoria, top_k
             )
-            return generar_respuesta_llm(
-                {
-                    "pregunta": query,
-                    "top_k": top_k,
-                    "categoria": categoria,
-                    "documento": params.get("documento"),
-                    "procedure_id": params.get("procedure_id"),
-                    "department_id": params.get("department_id"),
-                    "dominios": params.get("dominios"),
-                },
+            return await generar_respuesta_llm(
+                query,
+                top_k=top_k,
+                categoria=categoria,
+                documento=params.get("documento"),
+                procedure_id=params.get("procedure_id"),
+                department_id=params.get("department_id"),
+                dominios=params.get("dominios"),
                 trace_id=trace_id,
             )
         elif tool == "doc-buscar_fragmento_documento":
@@ -661,13 +682,37 @@ async def tools_call(request: Request):
 async def doc_generar_respuesta_llm_endpoint(params: dict):
     """Endpoint directo que combina búsqueda y generación."""
     trace_id = params.get("trace_id", "unknown")
-    return generar_respuesta_llm(params, trace_id=trace_id)
+    query = (params.get("query") or "").strip()
+    top_k = int(params.get("top_k", 3))
+    categoria = params.get("categoria")
+    return await generar_respuesta_llm(
+        query,
+        top_k=top_k,
+        categoria=categoria,
+        documento=params.get("documento"),
+        procedure_id=params.get("procedure_id"),
+        department_id=params.get("department_id"),
+        dominios=params.get("dominios"),
+        trace_id=trace_id,
+    )
 
 
 @app.post("/tools/doc-generar_respuesta_llm", dependencies=[Depends(authenticate)])
 async def tools_doc_generar_respuesta_llm(params: dict):
     trace_id = params.get("trace_id", "unknown")
-    return generar_respuesta_llm(params, trace_id=trace_id)
+    query = (params.get("query") or "").strip()
+    top_k = int(params.get("top_k", 3))
+    categoria = params.get("categoria")
+    return await generar_respuesta_llm(
+        query,
+        top_k=top_k,
+        categoria=categoria,
+        documento=params.get("documento"),
+        procedure_id=params.get("procedure_id"),
+        department_id=params.get("department_id"),
+        dominios=params.get("dominios"),
+        trace_id=trace_id,
+    )
 
 
 @app.post("/tools/doc-classify_intent_llm", dependencies=[Depends(authenticate)])
