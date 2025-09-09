@@ -8,6 +8,8 @@ import time
 import re
 import ipaddress
 import requests
+import asyncio
+import inspect
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -507,21 +509,66 @@ def buscar_similitud_en_documentos(pregunta, docs_relevantes):
         return corpus[idx_max], nombres[idx_max]
     return None, None
 
+
+def serialize_messages(messages: list[dict]) -> str:
+    """Convierte mensajes con roles en un transcript simple.
+
+    Cada mensaje se representa como ``"Rol: contenido"`` en líneas
+    separadas. Los roles válidos son ``system``, ``user`` y ``assistant``;
+    cualquier otro rol se preserva tal cual.
+    """
+    role_map = {"system": "System", "user": "User", "assistant": "Assistant"}
+    lines: list[str] = []
+    for msg in messages or []:
+        role = role_map.get(msg.get("role"), msg.get("role", ""))
+        content = msg.get("content", "")
+        if role:
+            lines.append(f"{role}: {content}".strip())
+        else:
+            lines.append(str(content))
+    return "\n".join(lines)
+
 # === Cliente Llama ===
 llama = LlamaClient()
 set_llm_client(llama)
 
-def generate_response(prompt: str) -> str:
-    """Genera una respuesta utilizando el modelo Llama local, usando la configuración del entorno."""
+def generate_response(
+    prompt: str,
+    temperature: float = 0.3,
+    top_p: float = 0.9,
+    stop: list[str] | None = None,
+) -> str:
+    """Genera una respuesta utilizando el modelo Llama local."""
     max_new = int(os.getenv("LLM_MAX_NEW_TOKENS", LLM_MAX_NEW_TOKENS))
+    kwargs = {
+        "max_tokens": min(max_new, 96),
+        "temperature": temperature,
+        "top_p": top_p,
+    }
+    if stop is not None:
+        kwargs["stop"] = stop
     return run_with_timeout(
         llama.generate,
         LLM_GENERATION_TIMEOUT,
         prompt,
-        max_tokens=min(max_new, 96),
-        temperature=0.3,
-        top_p=0.9,
+        **kwargs,
     )
+
+
+def llama_generate(
+    prompt: str,
+    temperature: float = 0.1,
+    top_p: float = 0.9,
+    stop: list[str] | None = None,
+):
+    """Wrapper de conveniencia para ``generate_response`` con parámetros deterministas."""
+    params = {"temperature": temperature, "top_p": top_p}
+    if stop is not None:
+        params["stop"] = stop
+    func = generate_response
+    if inspect.iscoroutinefunction(func):
+        return asyncio.run(func(prompt, **params))
+    return func(prompt, **params)
 
 
 # --- Nueva función de auditoría para RAG ---
