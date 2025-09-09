@@ -3,6 +3,7 @@ import json
 import time
 import redis
 import random
+import logging
 from embeddings import embed
 from llama_client import LlamaClient
 from qdrant_utils import (
@@ -31,6 +32,8 @@ PROMPTS_PATH = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', 'mcp-core', 'prompts')
 )
 KNOWLEDGE_BASE = []
+
+_logger = logging.getLogger("rag")
 
 # --- Configuración por categoría ---
 RAG_CATEGORY_AWARE = os.getenv("RAG_CATEGORY_AWARE", "false").lower() == "true"
@@ -235,19 +238,58 @@ def obtener_fragmentos(
     filtro_final = combine_filters(filtro_doc, filtro_tramite, filtro_depto, filtro_dom)
 
     # 1) Intentamos búsqueda con filtros y top_k solicitado
-    hits = search_in_qdrant(vec, top_k=k, filtro=filtro_final, collection_name=collection_name)
+    chunks = search_in_qdrant(
+        vec, top_k=k, filtro=filtro_final, collection_name=collection_name
+    )
+
+    filtro_repr = None
+    if filtro_final is not None:
+        try:
+            filtro_repr = filtro_final.dict()
+        except Exception:
+            try:
+                filtro_repr = filtro_final.model_dump()
+            except Exception:
+                filtro_repr = str(filtro_final)
+
+    top1 = None
+    if chunks:
+        top1 = {
+            "id": getattr(chunks[0], "id", None),
+            "score": getattr(chunks[0], "score", None),
+            "metadata": getattr(chunks[0], "payload", None),
+        }
+
+    _logger.info(
+        "Qdrant search results",
+        extra={
+            "top_k": k,
+            "hits": len(chunks),
+            "top1": top1,
+            "collection": collection_name,
+            "filtro": filtro_repr,
+        },
+    )
+
+    for i, c in enumerate(chunks[: min(len(chunks), k)]):
+        _logger.debug(
+            "hit#%d score=%s id=%s meta=%s",
+            i + 1,
+            getattr(c, "score", None),
+            getattr(c, "id", None),
+            getattr(c, "payload", None),
+        )
+
+    hits = chunks
 
     # 2) Fallback: si no hay hits, reintentar sin filtros y con más resultados
     if not hits:
-        # log opcional
-        try:
-            import logging
-            logging.getLogger("rag").info("No hits with filters, retrying without filters")
-        except Exception:
-            pass
+        _logger.info("No hits with filters, retrying without filters")
 
         # Reintento sin filtros conservador (más candidatos)
-        hits = search_in_qdrant(vec, top_k=max(k, 10), filtro=None, collection_name=collection_name)
+        hits = search_in_qdrant(
+            vec, top_k=max(k, 10), filtro=None, collection_name=collection_name
+        )
 
     resultados = []
     for h in hits:
