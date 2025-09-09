@@ -215,13 +215,13 @@ class TestGateway(unittest.TestCase):
     def test_doc_generar_respuesta_llm(self):
         payload = {
             "tool": "doc-generar_respuesta_llm",
-            "params": {"pregunta": "hola"}
+            "params": {"query": "hola"}
         }
         response = self.client.post("/tools/call", json=payload)
         self.assertEqual(response.status_code, 200)
 
     def test_doc_generar_respuesta_llm_direct(self):
-        payload = {"pregunta": "hola"}
+        payload = {"query": "hola"}
         resp = self.client.post("/doc-generar_respuesta_llm", json=payload)
         self.assertEqual(resp.status_code, 200)
         self.assertIn("respuesta", resp.json())
