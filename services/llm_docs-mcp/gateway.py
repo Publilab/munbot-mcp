@@ -875,10 +875,15 @@ async def agent_mode(req: dict):
             )
 
             if isinstance(result, dict) and result.get("type") == "handover":
-                duration_ms = int((time.time() - start_time) * 1000)
+                dt = int((time.time() - start_time) * 1000)
+                _logger.info(
+                    "agent.handover flow=%s duration_ms=%s",
+                    result.get("flow"),
+                    dt,
+                )
                 logger.info(
                     "agent.handover",
-                    extra={"trace_id": trace_id, "duration_ms": duration_ms},
+                    extra={"trace_id": trace_id, "duration_ms": dt},
                 )
                 return result
 
