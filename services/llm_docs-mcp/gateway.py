@@ -72,17 +72,14 @@ TOOLS = {
     "doc-generar_respuesta_llm": {
         "desc": "Consulta RAG con generación LLM",
         "schema": {"query": str, "top_k": (int, None), "categoria": (str, None)},
-        "handler": "handle_rag_call",
     },
     "scheduler-init": {
         "desc": "Entrega control al flujo de agenda (orquestador)",
         "schema": {},
-        "handler": "handle_scheduler_handover",
     },
     "complaint-init": {
         "desc": "Entrega control al flujo de reclamos (orquestador)",
         "schema": {},
-        "handler": "handle_complaint_handover",
     },
 }
 
@@ -750,31 +747,24 @@ async def generar_respuesta_llm(
     return _generar_respuesta_llm(params, trace_id=trace_id)
 
 
-async def handle_rag_call(params: dict):
-    """Wrapper de herramienta para realizar una consulta RAG."""
+async def handle_rag_call(params, hints):
     query = (params.get("query") or "").strip()
     top_k = int(params.get("top_k", 5))
     categoria = params.get("categoria")
-    return await generar_respuesta_llm(
-        query,
-        top_k=top_k,
-        categoria=categoria,
-        documento=params.get("documento"),
-        procedure_id=params.get("procedure_id"),
-        department_id=params.get("department_id"),
-        dominios=params.get("dominios"),
-        trace_id=params.get("trace_id", "unknown"),
-    )
+    return await generar_respuesta_llm(query, top_k=top_k, categoria=categoria)
 
 
-async def handle_scheduler_handover(_params: dict):
-    """Retorna un traspaso inmediato al flujo de agenda."""
+async def handle_scheduler_handover(params, hints):
     return {"type": "handover", "flow": "scheduler"}
 
 
-async def handle_complaint_handover(_params: dict):
-    """Retorna un traspaso inmediato al flujo de reclamos."""
+async def handle_complaint_handover(params, hints):
     return {"type": "handover", "flow": "complaint"}
+
+
+TOOLS["doc-generar_respuesta_llm"]["handler"] = handle_rag_call
+TOOLS["scheduler-init"]["handler"] = handle_scheduler_handover
+TOOLS["complaint-init"]["handler"] = handle_complaint_handover
 
 
 async def agent_mode(req: dict):
@@ -832,15 +822,14 @@ async def agent_mode(req: dict):
             )
 
         validate_params(tool, params)
-        handler_name = TOOLS[tool].get("handler")
-        handler = globals().get(handler_name)
+        handler = TOOLS[tool].get("handler")
         if handler is None:
-            raise HTTPException(status_code=500, detail=f"Handler no encontrado: {handler_name}")
+            raise HTTPException(status_code=500, detail=f"Handler no encontrado: {tool}")
 
         result = (
-            await handler(params)
+            await handler(params, hints)
             if inspect.iscoroutinefunction(handler)
-            else handler(params)
+            else handler(params, hints)
         )
 
         if isinstance(result, dict) and result.get("type") == "handover":
