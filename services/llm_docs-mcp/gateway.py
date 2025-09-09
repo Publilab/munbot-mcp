@@ -62,6 +62,24 @@ RAG_COLLECTION_NORMATIVA = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
 RAG_SELECTION_MODE = _getenv_str("RAG_SELECTION_MODE", "collection")
 RAG_FILTER_FIELD   = _getenv_str("RAG_FILTER_FIELD", "tipo")
 
+TOOLS = {
+    "doc-generar_respuesta_llm": {
+        "desc": "Consulta RAG con generación LLM",
+        "schema": {"query": str, "top_k": (int, None), "categoria": (str, None)},
+        "handler": "handle_rag_call",
+    },
+    "scheduler-init": {
+        "desc": "Entrega control al flujo de agenda (orquestador)",
+        "schema": {},
+        "handler": "handle_scheduler_handover",
+    },
+    "complaint-init": {
+        "desc": "Entrega control al flujo de reclamos (orquestador)",
+        "schema": {},
+        "handler": "handle_complaint_handover",
+    },
+}
+
 _logger = logging.getLogger("llm_docs_mcp")
 
 # ==== Configuración ====
