@@ -35,11 +35,17 @@ from .settings import (
     ANSWER_CACHE_TTL_DEFAULT,
     ANSWER_CACHE_TTL_GENERIC,
 )
+
 try:
     from .utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
-    def registrar_evento_humano(session_id: str, pregunta: str, trace_id: str | None = None) -> None:
+
+    def registrar_evento_humano(
+        session_id: str, pregunta: str, trace_id: str | None = None
+    ) -> None:
         pass
+
+
 from .utils.parser import parse_date_time
 from .utils.audit import audit_step
 from zoneinfo import ZoneInfo
@@ -58,29 +64,36 @@ from .utils.text import normalize_text
 import os
 import logging
 
+
 def _getenv_int(name: str, default: int) -> int:
     try:
         return int(os.getenv(name, str(default)).strip())
     except Exception:
         return default
 
+
 def _getenv_str(name: str, default: str) -> str:
     val = os.getenv(name)
     return val.strip() if isinstance(val, str) and val.strip() else default
 
-AGENT_MODE            = _getenv_int("AGENT_MODE", 0)
-RAG_CATEGORY_AWARE    = _getenv_int("RAG_CATEGORY_AWARE", 0)
-AGENT_MAX_TOOL_CALLS  = _getenv_int("AGENT_MAX_TOOL_CALLS", 2)
-RAG_COLLECTION_FAQ        = _getenv_str("RAG_COLLECTION_FAQ", "faq")
-RAG_COLLECTION_TRAMITES   = _getenv_str("RAG_COLLECTION_TRAMITES", "tramites")
-RAG_COLLECTION_NORMATIVA  = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
+
+AGENT_MODE = _getenv_int("AGENT_MODE", 0)
+RAG_CATEGORY_AWARE = _getenv_int("RAG_CATEGORY_AWARE", 0)
+AGENT_MAX_TOOL_CALLS = _getenv_int("AGENT_MAX_TOOL_CALLS", 2)
+RAG_COLLECTION_FAQ = _getenv_str("RAG_COLLECTION_FAQ", "faq")
+RAG_COLLECTION_TRAMITES = _getenv_str("RAG_COLLECTION_TRAMITES", "tramites")
+RAG_COLLECTION_NORMATIVA = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
 
 _logger = logging.getLogger("orchestrator")
 _logger.info(
     "FeatureFlags orchestrator | AGENT_MODE=%s RAG_CATEGORY_AWARE=%s "
     "AGENT_MAX_TOOL_CALLS=%s RAG_COLLECTIONS={faq:%s, tramite:%s, doc:%s}",
-    AGENT_MODE, RAG_CATEGORY_AWARE, AGENT_MAX_TOOL_CALLS,
-    RAG_COLLECTION_FAQ, RAG_COLLECTION_TRAMITES, RAG_COLLECTION_NORMATIVA
+    AGENT_MODE,
+    RAG_CATEGORY_AWARE,
+    AGENT_MAX_TOOL_CALLS,
+    RAG_COLLECTION_FAQ,
+    RAG_COLLECTION_TRAMITES,
+    RAG_COLLECTION_NORMATIVA,
 )
 
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
@@ -88,9 +101,7 @@ SANTIAGO_TZ = ZoneInfo("America/Santiago")
 
 # === Configuración ===
 
-LLM_DOCS_MCP_URL = os.getenv(
-    "LLM_DOCS_MCP_URL", "http://llm_docs-mcp:8000/tools/call"
-)
+LLM_DOCS_MCP_URL = os.getenv("LLM_DOCS_MCP_URL", "http://llm_docs-mcp:8000/tools/call")
 MICROSERVICES = {
     # == Rutas de los microservicios ==
     "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL"),
@@ -107,12 +118,8 @@ LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
 LLM_DOCS_API_KEY = os.getenv("LLM_DOCS_API_KEY")
 LLM_DOCS_TIMEOUT = int(os.getenv("LLM_DOCS_TIMEOUT", "120"))
 LLM_DOCS_RETRIES = int(os.getenv("LLM_DOCS_RETRIES", "1"))
-LLM_DOCS_CIRCUIT_THRESHOLD = int(
-    os.getenv("LLM_DOCS_CIRCUIT_THRESHOLD", "5")
-)
-LLM_DOCS_CIRCUIT_COOLDOWN = int(
-    os.getenv("LLM_DOCS_CIRCUIT_COOLDOWN", "60")
-)
+LLM_DOCS_CIRCUIT_THRESHOLD = int(os.getenv("LLM_DOCS_CIRCUIT_THRESHOLD", "5"))
+LLM_DOCS_CIRCUIT_COOLDOWN = int(os.getenv("LLM_DOCS_CIRCUIT_COOLDOWN", "60"))
 _doc_cb_state = {"fails": 0, "opened_until": 0.0}
 llm_client = LlmDocsClient()
 # == Rutas de los archivos ==
@@ -131,7 +138,6 @@ REDIS_HOST = os.getenv("REDIS_HOST", "redis")
 REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 context_manager = ConversationalContextManager(host=REDIS_HOST, port=REDIS_PORT)
-
 
 
 # == Campos requeridos por tool ==
@@ -180,7 +186,7 @@ logger = logging.getLogger("munbot")
 logger.setLevel(logging.INFO)
 logHandler = logging.StreamHandler()
 formatter = jsonlogger.JsonFormatter(
-    '%(asctime)s %(levelname)s %(name)s %(message)s %(trace_id)s'
+    "%(asctime)s %(levelname)s %(name)s %(message)s %(trace_id)s"
 )
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
@@ -245,15 +251,15 @@ GENERIC_RAG_SUCCESS_COUNTER = Counter(
 )
 
 
-
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
 STOPWORDS = {"y", "de", "la", "el", "que", "en"}
 
 
 def tokenize(text: str) -> list[str]:
-    tokens = [t.strip(".,¡!¿?\"").lower() for t in text.split()]
+    tokens = [t.strip('.,¡!¿?"').lower() for t in text.split()]
     return [t for t in tokens if t and t not in STOPWORDS]
+
 
 # === Smalltalk (respuestas fijas) ===
 GREETING_VARIANTS = [
@@ -340,16 +346,13 @@ INTENT_MAP = {
     "saludo": "saludo",
     "despedida": "despedida",
     "agradecimiento": "agradecimiento",
-
     # Flujos informativos
     "faq": "ask_document",
     "documento": "ask_document",
     "tramite": "ask_document",
-
     # Servicios
     "agenda": "init_scheduler",
     "reclamo": "init_complaint",
-
     # Default
     "n/a": "n/a",
 }
@@ -373,6 +376,7 @@ def pick_answer_from_payload(payload: dict) -> str:
 
 def _sort_candidates(cands: list[dict]) -> list[dict]:
     """Ordena candidatos por prioridad y otros metadatos."""
+
     def key(c):
         meta = c.get("metadata") or {}
         prio = meta.get("priority", 0)
@@ -381,7 +385,6 @@ def _sort_candidates(cands: list[dict]) -> list[dict]:
         return (prio, matched_len, score)
 
     return sorted(cands, key=key, reverse=True)
-
 
 
 def is_cache_eligible(resp: dict, ctx: Optional[dict] = None) -> bool:
@@ -398,9 +401,16 @@ def is_cache_eligible(resp: dict, ctx: Optional[dict] = None) -> bool:
         "elige una opción",
         "te refieres a",
     ]
-    if any(p in text for p in prompts_aclaracion) or any(ch in text for ch in interrogativos):
+    if any(p in text for p in prompts_aclaracion) or any(
+        ch in text for ch in interrogativos
+    ):
         return False
-    errores = ["ocurrió un problema", "tuvimos un error", "intenta nuevamente", "timeout"]
+    errores = [
+        "ocurrió un problema",
+        "tuvimos un error",
+        "intenta nuevamente",
+        "timeout",
+    ]
     if any(e in text for e in errores):
         return False
     if ctx is not None:
@@ -412,6 +422,7 @@ def is_cache_eligible(resp: dict, ctx: Optional[dict] = None) -> bool:
         if not has_ctx and not resp.get("referencias"):
             return False
     return True
+
 
 def pick_ttl(resp: dict) -> int:
     txt = (resp.get("respuesta") or "").lower()
@@ -433,10 +444,10 @@ def pick_ttl(resp: dict) -> int:
     return ANSWER_CACHE_TTL_GENERIC
 
 
-
 def fallback(msg: str) -> Dict[str, Any]:
     """Construye una respuesta de fallback estándar."""
     return {"respuesta": msg, "no_results": True}
+
 
 def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
     """Normaliza la respuesta del microservicio RAG."""
@@ -445,9 +456,6 @@ def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
     # if resp.get("referencias"):
     #     formatted["referencias"] = resp["referencias"]
     return formatted
-
-
-
 
 
 def extract_name_with_llm(user_text: str) -> Optional[str]:
@@ -464,20 +472,22 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
             potential_name = match.group(1).strip()
             if 2 <= len(potential_name.split()) <= 4:
                 # Capitalizar cada palabra
-                return ' '.join(word.capitalize() for word in potential_name.split())
+                return " ".join(word.capitalize() for word in potential_name.split())
 
     # 2. Heurística para cuando el input es solo el nombre (ej: "Emilio Ibarra")
     words = cleaned_text.split()
-    if 2 <= len(words) <= 4 and re.fullmatch(NAME_REGEX, cleaned_text, flags=re.IGNORECASE):
+    if 2 <= len(words) <= 4 and re.fullmatch(
+        NAME_REGEX, cleaned_text, flags=re.IGNORECASE
+    ):
         # Capitalizar cada palabra
-        return ' '.join(word.capitalize() for word in words)
+        return " ".join(word.capitalize() for word in words)
 
     # 3. LLM como respaldo
     prompt = (
         "Eres un extractor de nombres propios. Recibirás la frase completa que "
         "escribió un usuario y debes devolver ÚNICAMENTE su nombre completo "
         "(nombre y apellido). Si no identificas un nombre válido, responde 'None'.\n\n"
-        f"Usuario: \"{user_text}\""
+        f'Usuario: "{user_text}"'
     )
 
     try:
@@ -494,6 +504,7 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
         return name.strip()
     return None
 
+
 def _extract_email_simple(text: str) -> Optional[str]:
     match = re.search(EMAIL_REGEX, text)
     if match:
@@ -501,6 +512,7 @@ def _extract_email_simple(text: str) -> Optional[str]:
         if es_email_valido(email):
             return email
     return None
+
 
 def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str]:
     email = _extract_email_simple(user_text)
@@ -511,7 +523,7 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
         "completa de un usuario y debes devolver SOLO la dirección de email si está "
         "en un formato correcto (usuario@dominio.ext). Responde 'None' si no "
         "encuentras un email válido.\n\n"
-        f"Usuario: \"{user_text}\""
+        f'Usuario: "{user_text}"'
     )
     try:
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
@@ -522,6 +534,7 @@ def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str
         return None
     email = resp.strip().splitlines()[0]
     return email if es_email_valido(email) else None
+
 
 def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     """Adaptar formato Markdown según el canal."""
@@ -553,22 +566,26 @@ def format_response(data: Dict[str, Any], sid: str, trace_id=None) -> Dict[str, 
 
 # Frases introductorias a ignorar al inicio de la consulta del usuario
 INTRO_PHRASES = [
-    "quiero saber", "me gustaría saber", "quisiera saber", "deseo saber",
-    "podrías decirme", "me puedes informar sobre"
+    "quiero saber",
+    "me gustaría saber",
+    "quisiera saber",
+    "deseo saber",
+    "podrías decirme",
+    "me puedes informar sobre",
 ]
+
 
 def strip_intro_phrase(text: str) -> str:
     return text
+
 
 def preprocess_input(text: str) -> str:
     t = normalize_text(text).strip()
     for phrase in INTRO_PHRASES:
         ph = normalize_text(phrase)
         if t.startswith(ph):
-            return t[len(ph):].lstrip()
+            return t[len(ph) :].lstrip()
     return t
-
-
 
 
 # === Carga y utilidades ===
@@ -634,11 +651,13 @@ def route_to_service(tool: str) -> str:
         return MICROSERVICES["scheduler-mcp"]
     raise Exception(f"No se encuentra microservicio para tool {tool}")
 
+
 def validate_against_schema(data: Dict[str, Any], schema: Dict[str, Any]) -> bool:
     for req in schema.get("input_schema", {}).get("required", []):
         if req not in data:
             return False
     return True
+
 
 def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
     prompt = prompt_template
@@ -650,18 +669,23 @@ def fill_prompt(prompt_template: str, context: Dict[str, Any]) -> str:
 def _cb_allow() -> bool:
     return time.time() >= _doc_cb_state["opened_until"]
 
+
 def _cb_failure() -> None:
     st = _doc_cb_state
     st["fails"] += 1
     if st["fails"] >= LLM_DOCS_CIRCUIT_THRESHOLD:
         st["opened_until"] = time.time() + LLM_DOCS_CIRCUIT_COOLDOWN
 
+
 def _cb_success() -> None:
     st = _doc_cb_state
     st["fails"] = 0
     st["opened_until"] = 0.0
 
-def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | None = None) -> Dict[str, Any]:
+
+def call_tool_microservice(
+    tool: str, params: Dict[str, Any], trace_id: str | None = None
+) -> Dict[str, Any]:
     service_url = route_to_service(tool)
     if tool.startswith("doc-"):
         parsed_url = urlparse(service_url)
@@ -713,7 +737,13 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
                 continue
             if tool.startswith("doc-"):
                 _cb_failure()
-            return {"error": "timeout" if isinstance(e, requests.Timeout) else f"connection_error: {e}"}
+            return {
+                "error": (
+                    "timeout"
+                    if isinstance(e, requests.Timeout)
+                    else f"connection_error: {e}"
+                )
+            }
         except requests.HTTPError as e:
             status = e.response.status_code if e.response else 0
             body = e.response.text if e.response else ""
@@ -738,9 +768,7 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: str | No
 
 def remote_llm_generate(prompt: str, timeout: float = 120.0) -> str:
     """Generate text using llm_docs-mcp via tools.call."""
-    resp = call_tool_microservice(
-        "doc-generar_respuesta_llm", {"pregunta": prompt}
-    )
+    resp = call_tool_microservice("doc-generar_respuesta_llm", {"pregunta": prompt})
     if resp.get("error"):
         raise Exception(resp["error"])
     return resp.get("respuesta", "")
@@ -765,8 +793,11 @@ def handle_service_error(
             extra={"trace_id": trace_id, "categoria": categoria},
         )
         ERROR_COUNTER.labels(intent=intent, categoria=categoria or "unknown").inc()
-        return {"texto": "Ocurrió un problema al consultar nuestros servicios. Por favor, intenta más tarde."}
+        return {
+            "texto": "Ocurrió un problema al consultar nuestros servicios. Por favor, intenta más tarde."
+        }
     return None
+
 
 def call_scheduler_endpoint(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
     """Call a direct REST endpoint on the scheduler microservice."""
@@ -782,6 +813,7 @@ def call_scheduler_endpoint(endpoint: str, params: Dict[str, Any]) -> Dict[str, 
     except requests.RequestException as e:
         return {"error": f"Connection error: {e}"}
 
+
 def classify_intent_remotely(user_input: str) -> dict:
     """Clasifica la intención del usuario usando llm_docs-mcp."""
     try:
@@ -795,19 +827,20 @@ def classify_intent_remotely(user_input: str) -> dict:
 
 # === Utilidades de generación con el LLM ===
 
+
 def find_next_available_slot():
     """Return next available appointment slot (placeholder)."""
     # TODO: implement search in scheduler service
     pass
+
+
 def generate_response(prompt: str) -> str:
     """Genera una respuesta utilizando llm_docs-mcp."""
     return remote_llm_generate(prompt)
 
+
 def infer_intent_with_llm(prompt):
     return remote_llm_generate(prompt)
-
-
-
 
 
 def registrar_feedback_usuario(
@@ -829,12 +862,11 @@ def registrar_feedback_usuario(
     except Exception as e:
         logging.warning(f"No se pudo registrar feedback de usuario: {e}")
 
+
 def get_db():
     return psycopg2.connect(
         host=DB_HOST, port=DB_PORT, dbname=DB_NAME, user=DB_USER, password=DB_PASS
     )
-
-
 
 
 # === Orquestador principal ===
@@ -879,6 +911,7 @@ def extract_entities_complaint(text: str) -> dict:
         "categoria": categoria,
         "departamento": departamento,
     }
+
 
 def extract_entities_scheduler(text: str, base_dt: datetime) -> dict:
     # Heurística simple para agendamiento
@@ -926,9 +959,11 @@ def extract_entities_scheduler(text: str, base_dt: datetime) -> dict:
         "motiv": motiv,
     }
 
+
 def extract_entities_llm_docs(text: str) -> dict:
     # Para llm_docs-mcp, normalmente solo se requiere la pregunta
     return {"pregunta": text}
+
 
 def save_conversation_to_postgres(session_id, session_data):
     try:
@@ -955,19 +990,23 @@ def save_conversation_to_postgres(session_id, session_data):
     except Exception as e:
         logging.error(f"Error guardando historial en PostgreSQL: {e}")
 
+
 def get_session(session_id):
     session_data = redis_client.get(f"session:{session_id}")
     if session_data:
         return json.loads(session_data)
     return {}
 
+
 def save_session(session_id, data):
     redis_client.set(
         f"session:{session_id}", json.dumps(data), ex=3600 * 24 * 7
     )  # 1 semana de expiración
 
+
 def delete_session(session_id):
     redis_client.delete(f"session:{session_id}")
+
 
 def migrate_sessions_to_postgres():
     for key in redis_client.scan_iter():
@@ -977,6 +1016,7 @@ def migrate_sessions_to_postgres():
             save_conversation_to_postgres(session_id, session_data)
             delete_session(session_id)
     logging.info("Migración de sesiones de Redis a PostgreSQL completada.")
+
 
 def periodic_migration():
     while True:
@@ -988,14 +1028,17 @@ def periodic_migration():
 if os.getenv("DISABLE_PERIODIC_MIGRATION") != "1":
     threading.Thread(target=periodic_migration, daemon=True).start()
 
-def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+
+def _handle_slot_filling(
+    user_input: str, sid: str, ctx: Dict[str, Any]
+) -> Optional[Dict[str, Any]]:
     """Procesa el flujo de registro de reclamos cuando hay campos pendientes."""
 
     pending = ctx.get("pending_field")
     if not pending:
         return None
 
-# NOMBRE (LLM extraction)
+    # NOMBRE (LLM extraction)
     if pending == "nombre":
         nombre = extract_name_with_llm(user_input)
         if not nombre:
@@ -1028,7 +1071,9 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
             }
         ctx["rut"] = rut_formateado
         save_session(sid, ctx)
-        context_manager.update_context(sid, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado}).")
+        context_manager.update_context(
+            sid, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado})."
+        )
         context_manager.update_pending_field(sid, "mensaje")
         return {
             "respuesta": "Ahora que te tengo registrado, ¿cuál es tu reclamo?",
@@ -1062,7 +1107,9 @@ def _handle_slot_filling(user_input: str, sid: str, ctx: Dict[str, Any]) -> Opti
             if 1 <= depto <= 8:
                 ctx["departamento"] = depto
                 save_session(sid, ctx)
-                context_manager.update_context(sid, user_input, f"Departamento seleccionado: {depto}")
+                context_manager.update_context(
+                    sid, user_input, f"Departamento seleccionado: {depto}"
+                )
                 context_manager.update_pending_field(sid, "mail")
                 return {
                     "respuesta": "Perfecto, ahora indícame tu correo electrónico.",
@@ -1173,6 +1220,7 @@ def handle_agenda(texto_usuario: str, sid: str) -> Dict[str, Any]:
     context_manager.update_context(sid, texto_usuario, msg)
     return {"answer": msg, "finish": True}
 
+
 def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
     """Flujo paso a paso para agendar citas."""
 
@@ -1216,9 +1264,14 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                     "No he encontrado disponibilidad en el día y hora proporcionada, no obtante, he encontrado los siguientes bloques de atención disponibles para que seas atendido(a) por un funcionario del gobierno:",
                 ]
                 for i, nb in enumerate(nuevas, start=1):
-                    rango = nb.get("hora") or f"{nb['hora_inicio'][:5]}-{nb['hora_fin'][:5]}"
+                    rango = (
+                        nb.get("hora")
+                        or f"{nb['hora_inicio'][:5]}-{nb['hora_fin'][:5]}"
+                    )
                     lines.append(f"  {i}. {nb['fecha']} {rango}")
-                lines.append(f"  {len(nuevas)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO")
+                lines.append(
+                    f"  {len(nuevas)+1}. NO ME ACOMODA NINGÚN BLOQUE PROPUESTO"
+                )
                 return {"answer": "\n".join(lines), "pending": True}
             else:
                 context_manager.set_current_flow(sid, None)
@@ -1252,18 +1305,22 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
                 "pending": True,
             }
         else:
-            return {"answer": "¿Podrías indicarme con exactitud la fecha y la hora en la que te gustaría ser atendido por un funcionario?", "pending": True}
+            return {
+                "answer": "¿Podrías indicarme con exactitud la fecha y la hora en la que te gustaría ser atendido por un funcionario?",
+                "pending": True,
+            }
 
         # Buscar bloques disponibles
-        payload = {"fecha": ctx["bloque_cita"]["fecha"], "hora": ctx["bloque_cita"]["hora"]}
+        payload = {
+            "fecha": ctx["bloque_cita"]["fecha"],
+            "hora": ctx["bloque_cita"]["hora"],
+        }
         raw = call_tool_microservice("scheduler-listar_horas_disponibles", payload)
         err = handle_service_error(raw, "scheduler-listar_horas_disponibles", sid)
         if err:
             return {"answer": err["texto"], "finish": True}
         bloques = raw.get("data") or raw.get("disponibles", [])
-        hora_user_dt = datetime.strptime(
-            ctx["bloque_cita"]["hora"], "%H:%M"
-        ).time()
+        hora_user_dt = datetime.strptime(ctx["bloque_cita"]["hora"], "%H:%M").time()
 
         bloque_match = None
         for b in bloques:
@@ -1277,7 +1334,10 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         ctx["last_search_hora"] = f"{ctx['bloque_cita']['hora']}-%"
 
         if bloque_match:
-            rango = bloque_match.get("hora") or f"{bloque_match['hora_inicio'][:5]}-{bloque_match['hora_fin'][:5]}"
+            rango = (
+                bloque_match.get("hora")
+                or f"{bloque_match['hora_inicio'][:5]}-{bloque_match['hora_fin'][:5]}"
+            )
             bloque_match["hora_rango"] = rango
             ctx["last_suggestions"] = [bloque_match]
             save_session(sid, ctx)
@@ -1291,15 +1351,21 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
 
         alternativas = call_tool_microservice(
             "scheduler-listar_horas_cercanas",
-            {"fecha": ctx["bloque_cita"]["fecha"], "hora_rango": f"{ctx['bloque_cita']['hora']}-%", "limit": 5},
+            {
+                "fecha": ctx["bloque_cita"]["fecha"],
+                "hora_rango": f"{ctx['bloque_cita']['hora']}-%",
+                "limit": 5,
+            },
         )
-        opciones = alternativas if isinstance(alternativas, list) else alternativas.get("data", [])
+        opciones = (
+            alternativas
+            if isinstance(alternativas, list)
+            else alternativas.get("data", [])
+        )
         if not opciones:
             context_manager.set_current_flow(sid, None)
             context_manager.clear_pending_field(sid)
-            msg = (
-                "NO hay bloques de atención disponibles para lo que queda del mes. Por favor vuelva a contactarnos el último día hábil del mes para agendar su hora por este mismo medio. Lamentamos no poder ayudarle, de igual manera, el intento fallido alimentará nuestra base de datos para el análisis de posibles mejoras en la atención de nuestros vecinos."
-            )
+            msg = "NO hay bloques de atención disponibles para lo que queda del mes. Por favor vuelva a contactarnos el último día hábil del mes para agendar su hora por este mismo medio. Lamentamos no poder ayudarle, de igual manera, el intento fallido alimentará nuestra base de datos para el análisis de posibles mejoras en la atención de nuestros vecinos."
             return {"answer": msg, "finish": True}
         ctx["last_suggestions"] = opciones
         save_session(sid, ctx)
@@ -1316,19 +1382,28 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
     if pending == "fecha_cita":
         fecha = entities.get("fecha")
         if not fecha:
-            return {"answer": "¿Podrías indicarme la fecha exacta para la cita?", "pending": True}
+            return {
+                "answer": "¿Podrías indicarme la fecha exacta para la cita?",
+                "pending": True,
+            }
         ctx.setdefault("bloque_cita", {})["fecha"] = fecha
         save_session(sid, ctx)
         if "hora" not in ctx.get("bloque_cita", {}):
             context_manager.update_pending_field(sid, "hora_cita")
-            return {"answer": "¿A qué hora te gustaría reservar la cita?", "pending": True}
+            return {
+                "answer": "¿A qué hora te gustaría reservar la cita?",
+                "pending": True,
+            }
         context_manager.update_pending_field(sid, "bloque_cita")
         return _handle_scheduler_flow(sid, "", base_dt)
 
     if pending == "hora_cita":
         hora = entities.get("hora")
         if not hora:
-            return {"answer": "Por favor indica la hora exacta (por ejemplo, 10:00)", "pending": True}
+            return {
+                "answer": "Por favor indica la hora exacta (por ejemplo, 10:00)",
+                "pending": True,
+            }
         ctx.setdefault("bloque_cita", {})["hora"] = hora
         save_session(sid, ctx)
         if "fecha" not in ctx.get("bloque_cita", {}):
@@ -1408,11 +1483,14 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         if ctx.get("depto_cita"):
             payload["departamento_codigo"] = ctx["depto_cita"]
         import logging
+
         logger.info(
             f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}",
             extra={"trace_id": sid},
         )
-        tool_result = call_tool_microservice("scheduler-reservar_hora", payload, trace_id=sid)
+        tool_result = call_tool_microservice(
+            "scheduler-reservar_hora", payload, trace_id=sid
+        )
         logger.info(
             f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}",
             extra={"trace_id": sid},
@@ -1440,41 +1518,54 @@ def _log_router(event: str, **kv):
     except Exception:
         logger.info("[ROUTER] %s", str(info))
 
+
 def try_rag_probe(user_text: str, top_k: int = 3, timeout_s: int = 20):
     """
     Intenta recuperar respuesta vía llm_docs-mcp. Devuelve (ok: bool, data: dict|None).
     """
     payload = {
         "messages": [
-            {"role": "system", "content": "Eres un asistente municipal. Devuelve respuesta breve y cites fuentes si existen."},
-            {"role": "user", "content": user_text}
+            {
+                "role": "system",
+                "content": "Eres un asistente municipal. Devuelve respuesta breve y cites fuentes si existen.",
+            },
+            {"role": "user", "content": user_text},
         ],
         "tools": [
-            { "type": "function",
-              "function": {
-                "name": "generar_respuesta_llm",
-                "arguments": {"pregunta": user_text}
-              }
+            {
+                "type": "function",
+                "function": {
+                    "name": "generar_respuesta_llm",
+                    "arguments": {"pregunta": user_text},
+                },
             }
-        ]
+        ],
     }
     try:
-        r = httpx.post("http://llm_docs-mcp:8000/tools/call", json=payload, timeout=timeout_s)
+        r = httpx.post(
+            "http://llm_docs-mcp:8000/tools/call", json=payload, timeout=timeout_s
+        )
         r.raise_for_status()
         data = r.json()
         # SUPOSICIÓN: presencia de fragments/sources indica hallazgos
         sources = data.get("sources") or data.get("fragments") or []
         ok = isinstance(sources, list) and len(sources) > 0
-        _log_router("rag_probe_done", ok=ok, hits=len(sources) if isinstance(sources, list) else 0)
+        _log_router(
+            "rag_probe_done",
+            ok=ok,
+            hits=len(sources) if isinstance(sources, list) else 0,
+        )
         return ok, data
     except Exception as e:
         _log_router("rag_probe_error", error=str(e))
         return False, None
 
+
 # Mapeo de herramientas a sus manejadores especializados
 TOOL_HANDLERS = {
     "scheduler-appointment_create": _handle_scheduler_flow,
 }
+
 
 def orchestrate(
     user_input: str,
@@ -1499,7 +1590,9 @@ def orchestrate(
     intent = INTENT_MAP.get(norm_intent, "n/a")
     _logger.info(
         "intent_raw=%s intent_norm=%s mapped_action=%s",
-        raw_intent, norm_intent, intent,
+        raw_intent,
+        norm_intent,
+        intent,
     )
 
     raw_entities = classification.get("entities") or {}
@@ -1566,7 +1659,7 @@ def orchestrate(
             context_manager.update_context(sid, user_input, privacy_msg)
             context_manager.update_context(sid, "", question_msg)
             return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
-        else: # cont_complaint
+        else:  # cont_complaint
             # Aquí se manejarían los pasos intermedios del reclamo
             resp = _handle_slot_filling(user_input, sid, ctx)
             if resp:
@@ -1578,22 +1671,25 @@ def orchestrate(
         ok, data = try_rag_probe(user_input)
         if ok and isinstance(data, dict):
             # SUPOSICIÓN: formateador; en su defecto, devolvemos data "tal cual"
-            return {"respuesta": data.get("answer") or data.get("respuesta") or " ", 
-                    "fuentes": data.get("sources") or data.get("fragments") or [],
-                    "session_id": sid}
+            return {
+                "respuesta": data.get("answer") or data.get("respuesta") or " ",
+                "fuentes": data.get("sources") or data.get("fragments") or [],
+                "session_id": sid,
+            }
 
     # --- Manejo de Casos No Entendidos o Fallback ---
     return handle_fallback(sid, user_input)
+
 
 def handle_document_query(
     session_id: str,
     user_input: str,
     entities: Dict[str, Any],
     dominios: list[str],
-    intent_type: str,
+    intent_type: str | None = None,
 ) -> Dict[str, Any]:
     """Maneja la lógica de consulta de documentos (RAG) llamando al servicio centralizado."""
-    
+
     # Extraer hints de las entidades para enviar al servicio RAG
     tool_params = {
         "pregunta": user_input,
@@ -1601,15 +1697,23 @@ def handle_document_query(
         "tramite": entities.get("tramite"),
         "departamento": entities.get("departamento"),
         "dominios": dominios,
-        "categoria": intent_type,
     }
 
+    if intent_type in ("faq", "tramite", "documento"):
+        tool_params["categoria"] = intent_type
+        _logger.info("propagate_categoria=%s", intent_type)
+
     # Llamar al microservicio llm_docs-mcp
-    response = call_tool_microservice("doc-generar_respuesta_llm", tool_params, trace_id=session_id)
+    response = call_tool_microservice(
+        "doc-generar_respuesta_llm", tool_params, trace_id=session_id
+    )
 
     # Manejar errores del servicio
     error_response = handle_service_error(
-        response, "doc-generar_respuesta_llm", trace_id=session_id, categoria=intent_type
+        response,
+        "doc-generar_respuesta_llm",
+        trace_id=session_id,
+        categoria=intent_type,
     )
     if error_response:
         return {"respuesta": error_response["texto"], "session_id": session_id}
@@ -1638,7 +1742,8 @@ def handle_document_query(
             context_manager.clear_context(session_id)
             delete_session(session_id)
         return {
-            "respuesta": texto or response.get("respuesta", "No se encontró una respuesta."),
+            "respuesta": texto
+            or response.get("respuesta", "No se encontró una respuesta."),
             "session_id": session_id,
         }
 
@@ -1648,12 +1753,19 @@ def handle_document_query(
         return {"respuesta": pick_answer_from_payload(top), "session_id": session_id}
 
     texto = pick_answer_from_payload(response)
-    return {"respuesta": texto or "No se encontró una respuesta.", "session_id": session_id}
+    return {
+        "respuesta": texto or "No se encontró una respuesta.",
+        "session_id": session_id,
+    }
+
 
 def handle_fallback(session_id: str, user_input: str) -> Dict[str, Any]:
     """Maneja los casos en que la intención no es clara."""
     FALLBACK_COUNTER.inc()
-    return {"respuesta": "Lo siento, no he entendido tu consulta. ¿Podrías reformularla?", "session_id": session_id}
+    return {
+        "respuesta": "Lo siento, no he entendido tu consulta. ¿Podrías reformularla?",
+        "session_id": session_id,
+    }
 
 
 # === API REST ===
@@ -1738,8 +1850,6 @@ def metrics():
     return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
 
 
-
-
 # === CLI para pruebas ===
 if __name__ == "__main__":
     print("MCP Orchestrator inicializado.")
@@ -1790,17 +1900,19 @@ def validar_y_formatear_rut(rut: str) -> str:
         return None
     return rut
 
+
 def es_email_valido(email: str) -> bool:
     """Valida el formato de un correo usando email.utils.parseaddr."""
     if not email:
         return False
     # parseaddr devuelve ('', 'addr@example.com') si el email es válido
     _, addr = parseaddr(email)
-    if not addr or '@' not in addr:
+    if not addr or "@" not in addr:
         return False
     # comprueba que la parte de dominio tenga al menos un punto
-    dominio = addr.split('@', 1)[1]
-    return '.' in dominio
+    dominio = addr.split("@", 1)[1]
+    return "." in dominio
+
 
 def validar_telefono_movil(numero: str) -> Optional[str]:
     """Valida un número de teléfono chileno. Acepta solo formato internacional +569XXXXXXXX."""
