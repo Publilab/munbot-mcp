@@ -76,10 +76,12 @@ TOOLS = {
     "scheduler-init": {
         "desc": "Entrega control al flujo de agenda (orquestador)",
         "schema": {},
+        "handler": "handle_scheduler_handover",
     },
     "complaint-init": {
         "desc": "Entrega control al flujo de reclamos (orquestador)",
         "schema": {},
+        "handler": "handle_complaint_handover",
     },
 }
 
