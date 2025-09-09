@@ -771,6 +771,7 @@ async def agent_mode(req: dict):
     """Proceso principal para el modo agente con llamadas a herramientas."""
 
     trace_id = req.get("trace_id", "unknown")
+    start_time = time.time()
     messages = req.get("messages") or []
     allowed_names = req.get("tools") or []
     hints = req.get("hints")
@@ -799,44 +800,97 @@ async def agent_mode(req: dict):
     conversation.extend(messages)
 
     call_count = 0
-    while True:
-        prompt = serialize_messages(conversation)
-        logger.info("agent.step", extra={"trace_id": trace_id, "step": call_count})
-        text = llama_generate(prompt)
-        logger.info(
-            "agent.step", extra={"trace_id": trace_id, "step": call_count, "output": text}
-        )
-
-        parsed = try_parse_call(text)
-        if not parsed:
-            return {"content": text}
-
-        tool, params = parsed
-        if tool not in allowed_names:
-            raise HTTPException(status_code=400, detail=f"Herramienta no permitida: {tool}")
-
-        call_count += 1
-        if call_count > AGENT_MAX_TOOL_CALLS:
-            raise HTTPException(
-                status_code=400, detail="Se excedió el máximo de llamadas a herramientas"
+    try:
+        while True:
+            prompt = serialize_messages(conversation)
+            logger.info("agent.step", extra={"trace_id": trace_id, "step": call_count})
+            text = await asyncio.wait_for(
+                asyncio.to_thread(llama_generate, prompt),
+                timeout=LLM_GENERATION_TIMEOUT,
+            )
+            logger.info(
+                "agent.step",
+                extra={"trace_id": trace_id, "step": call_count, "output": text},
             )
 
-        validate_params(tool, params)
-        handler = TOOLS[tool].get("handler")
-        if handler is None:
-            raise HTTPException(status_code=500, detail=f"Handler no encontrado: {tool}")
+            parsed = try_parse_call(text)
+            if not parsed:
+                duration_ms = int((time.time() - start_time) * 1000)
+                logger.info(
+                    "agent.final",
+                    extra={"trace_id": trace_id, "duration_ms": duration_ms},
+                )
+                return {"content": text}
 
-        result = (
-            await handler(params, hints)
-            if inspect.iscoroutinefunction(handler)
-            else handler(params, hints)
+            tool, params = parsed
+            if tool not in allowed_names:
+                logger.error(
+                    "tool_not_allowed", extra={"trace_id": trace_id, "tool": tool}
+                )
+                raise HTTPException(
+                    status_code=400, detail=f"Herramienta no permitida: {tool}"
+                )
+
+            call_count += 1
+            if call_count > AGENT_MAX_TOOL_CALLS:
+                logger.error(
+                    "max_tool_calls_exceeded",
+                    extra={"trace_id": trace_id, "limit": AGENT_MAX_TOOL_CALLS},
+                )
+                raise HTTPException(
+                    status_code=400,
+                    detail="Se excedió el máximo de llamadas a herramientas",
+                )
+
+            try:
+                validate_params(tool, params)
+            except HTTPException as e:
+                logger.error(
+                    "schema_invalid",
+                    extra={"trace_id": trace_id, "tool": tool, "detail": e.detail},
+                )
+                raise
+
+            handler = TOOLS[tool].get("handler")
+            if handler is None:
+                logger.error(
+                    "handler_not_found", extra={"trace_id": trace_id, "tool": tool}
+                )
+                raise HTTPException(
+                    status_code=500, detail=f"Handler no encontrado: {tool}"
+                )
+
+            result = (
+                await asyncio.wait_for(
+                    handler(params, hints),
+                    timeout=LLM_GENERATION_TIMEOUT,
+                )
+                if inspect.iscoroutinefunction(handler)
+                else await asyncio.wait_for(
+                    asyncio.to_thread(handler, params, hints),
+                    timeout=LLM_GENERATION_TIMEOUT,
+                )
+            )
+
+            if isinstance(result, dict) and result.get("type") == "handover":
+                duration_ms = int((time.time() - start_time) * 1000)
+                logger.info(
+                    "agent.handover",
+                    extra={"trace_id": trace_id, "duration_ms": duration_ms},
+                )
+                return result
+
+            conversation.append({"role": "assistant", "content": text})
+            conversation.append(
+                {"role": "tool", "name": tool, "content": json.dumps(result)}
+            )
+    except Exception:
+        duration_ms = int((time.time() - start_time) * 1000)
+        logger.exception(
+            "agent.error",
+            extra={"trace_id": trace_id, "duration_ms": duration_ms},
         )
-
-        if isinstance(result, dict) and result.get("type") == "handover":
-            return result
-
-        conversation.append({"role": "assistant", "content": text})
-        conversation.append({"role": "tool", "name": tool, "content": json.dumps(result)})
+        raise
 
 
 # ==== MCP Endpoints ====
