@@ -325,17 +325,13 @@ def _pick_smalltalk(intent: str) -> str:
 
 
 def _norm_intent(label: str) -> str:
-    """Normaliza etiquetas de intención removiendo acentos y puntuación."""
+    """Normaliza etiquetas de intención usando solo caracteres ASCII."""
     if not label:
         return ""
-    # a) pasar a minúsculas
-    txt = label.strip().lower()
-    # b) eliminar acentos
-    txt = unicodedata.normalize("NFD", txt)
-    txt = "".join(ch for ch in txt if unicodedata.category(ch) != "Mn")
-    # c) eliminar puntuación sobrante
-    txt = re.sub(r"[^\w\s]", "", txt)
-    return txt.strip()
+    s = label.strip().lower()
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+    s = re.sub(r"[^\w/]+", "", s)
+    return s
 
 
 # === Mapeo de intenciones ===
@@ -1496,11 +1492,15 @@ def orchestrate(
     classification = classify_intent_remotely(user_input)
 
     raw_intent = classification.get("intent") or ""
-    k = _norm_intent(raw_intent)
-    if k.endswith("s") and k[:-1] in INTENT_MAP:
-        k = k[:-1]
-    categoria = k
-    intent = INTENT_MAP.get(k, "n/a")
+    norm_intent = _norm_intent(raw_intent)
+    if norm_intent.endswith("s") and norm_intent[:-1] in INTENT_MAP:
+        norm_intent = norm_intent[:-1]
+    categoria = norm_intent
+    intent = INTENT_MAP.get(norm_intent, "n/a")
+    _logger.info(
+        "intent_raw=%s intent_norm=%s mapped_action=%s",
+        raw_intent, norm_intent, intent,
+    )
 
     raw_entities = classification.get("entities") or {}
     entities = {
