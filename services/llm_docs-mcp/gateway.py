@@ -60,6 +60,16 @@ HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.6))
 
 # ==== FastAPI y Seguridad ====
 app = FastAPI()
+
+@app.on_event("startup")
+async def _log_feature_flags():
+    _logger.info(
+        "FeatureFlags llm_docs-mcp | AGENT_MODE=%s RAG_CATEGORY_AWARE=%s "
+        "AGENT_MAX_TOOL_CALLS=%s RAG_COLLECTIONS={faq:%s, tramite:%s, doc:%s}",
+        AGENT_MODE, RAG_CATEGORY_AWARE, AGENT_MAX_TOOL_CALLS,
+        RAG_COLLECTION_FAQ, RAG_COLLECTION_TRAMITES, RAG_COLLECTION_NORMATIVA
+    )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
