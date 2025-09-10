@@ -8,6 +8,7 @@ import time
 import re
 import ipaddress
 import requests
+import httpx
 import asyncio
 import inspect
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
@@ -168,6 +169,9 @@ LLM_GENERATION_TIMEOUT = int(os.getenv("LLM_GENERATION_TIMEOUT", "60"))
 QDRANT_SIMILARITY_THRESHOLD = float(os.getenv("QDRANT_SIMILARITY_THRESHOLD", 0.5))
 # Umbral de alta confianza para los resultados de Qdrant
 HIGH_CONFIDENCE_THRESHOLD = float(os.getenv("HIGH_CONFIDENCE_THRESHOLD", 0.6))
+
+SCHEDULER_HEALTH_URL = os.getenv("SCHEDULER_HEALTH_URL")
+COMPLAINTS_HEALTH_URL = os.getenv("COMPLAINTS_HEALTH_URL")
 
 # ==== Prompts por defecto ====
 PROMPT_FAQ = (
@@ -786,10 +790,24 @@ async def handle_rag_call(params, hints):
 
 
 async def handle_scheduler_handover(params: dict, hints: dict):
+    if SCHEDULER_HEALTH_URL:
+        try:
+            async with httpx.AsyncClient(timeout=2.0) as client:
+                response = await client.get(SCHEDULER_HEALTH_URL)
+                response.raise_for_status()
+        except Exception:
+            logger.warning("scheduler health check failed")
     return {"type": "handover", "flow": "scheduler"}
 
 
 async def handle_complaint_handover(params: dict, hints: dict):
+    if COMPLAINTS_HEALTH_URL:
+        try:
+            async with httpx.AsyncClient(timeout=2.0) as client:
+                response = await client.get(COMPLAINTS_HEALTH_URL)
+                response.raise_for_status()
+        except Exception:
+            logger.warning("complaints health check failed")
     return {"type": "handover", "flow": "complaint"}
 
 

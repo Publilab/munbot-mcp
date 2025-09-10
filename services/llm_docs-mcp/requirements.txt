@@ -4,6 +4,7 @@ scikit-learn>=0.24.2
 prometheus_client>=0.16.0
 python-json-logger
 requests>=2.25.1
+httpx>=0.27.0
 
 # LLM, RAG & Vector DB
 llama-cpp-python>=0.2.11 # Para inferencia de modelos GGUF en CPU
