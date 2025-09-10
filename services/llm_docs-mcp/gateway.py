@@ -923,6 +923,7 @@ async def agent_mode(req: dict):
 
             if isinstance(result, dict) and result.get("type") == "handover":
                 dt = int((time.time() - start_time) * 1000)
+                _logger.info("handover.emitted flow=%s source=agent", result.get("flow"))
                 _logger.info(
                     "agent.handover flow=%s duration_ms=%s",
                     result.get("flow"),
@@ -1035,6 +1036,7 @@ async def tools_call(request: Request):
             )
             return {"intent": flat, "sub_intent": sub_intent}
         elif tool == "scheduler-init":
+            _logger.info("handover.emitted flow=scheduler source=legacy")
             return {"type": "handover", "flow": "scheduler"}
         elif tool == "complaint-init":
             return {"type": "handover", "flow": "complaint"}
