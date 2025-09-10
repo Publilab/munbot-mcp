@@ -1,5 +1,6 @@
 # mcp-core/clients/llm_docs.py
 import os
+import logging
 import httpx
 from typing import Optional
 from urllib.parse import urlparse
@@ -14,6 +15,8 @@ BASE_URL = (
 API_KEY = os.getenv("LLM_DOCS_API_KEY")
 USER = os.getenv("LLM_DOCS_MCP_USER")
 PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
+
+logger = logging.getLogger(__name__)
 
 
 class LlmDocsClient:
@@ -43,6 +46,30 @@ class LlmDocsClient:
             headers=self._headers(),
             auth=self._auth(),
             timeout=self.timeout,
+        )
+        r.raise_for_status()
+        return r.json()
+
+    def agent_call(self, messages, tools=None, categoria=None, timeout=None):
+        payload = {"messages": messages}
+        tools_log = []
+        if tools:
+            payload["tools"] = tools
+            for t in tools:
+                if isinstance(t, dict):
+                    tools_log.append(t.get("function", {}).get("name"))
+                else:
+                    tools_log.append(str(t))
+        if categoria:
+            payload["hints"] = {"categoria": categoria}
+        logger.info("agent_call tools=%s categoria=%s", tools_log, categoria)
+        to = timeout or self.timeout
+        r = httpx.post(
+            self.base_url,
+            json=payload,
+            headers=self._headers(),
+            auth=self._auth(),
+            timeout=to,
         )
         r.raise_for_status()
         return r.json()
