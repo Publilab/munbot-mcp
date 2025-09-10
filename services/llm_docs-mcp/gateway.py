@@ -1016,6 +1016,10 @@ async def tools_call(request: Request):
                 }
             )
             return {"intent": flat, "sub_intent": sub_intent}
+        elif tool == "scheduler-init":
+            return {"type": "handover", "flow": "scheduler"}
+        elif tool == "complaint-init":
+            return {"type": "handover", "flow": "complaint"}
         else:
             raise HTTPException(status_code=400, detail=f"Herramienta desconocida: {tool}")
     except ValidationError as ve:
