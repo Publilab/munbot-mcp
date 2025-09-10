@@ -340,6 +340,65 @@ def _norm_intent(label: str) -> str:
     return s
 
 
+# --- Helpers extra para el agente ---
+_ACTION_VERBS = re.compile(r"\b(solicitar|pedir|obtener|sacar|renovar)\b", re.I)
+_TRAMITE_TOKS = re.compile(
+    r"\b(tramite|trámite|certificado|licencia|permiso|cita)\b", re.I
+)
+_INFO_TOKS = re.compile(
+    r"\b(informacion|información|requisitos?|horarios?|costo|precio|valor)\b", re.I
+)
+
+
+def _build_agent_messages(
+    contexto, session_id: str, user_text: str, history_k: int = 4
+) -> List[Dict[str, str]]:
+    """Recupera los últimos N turnos y añade el mensaje actual."""
+    history = []
+    if contexto and session_id:
+        try:
+            history = contexto.get_history(session_id) or []
+        except Exception:
+            history = []
+    msgs = [
+        {"role": h.get("role"), "content": h.get("content", "")}
+        for h in history[-history_k:]
+    ]
+    if user_text:
+        msgs.append({"role": "user", "content": user_text})
+    return msgs
+
+
+def _is_multi_intent(text: str) -> bool:
+    """Heurística simple para detectar múltiples intenciones."""
+    if not text:
+        return False
+    t = text.lower()
+    if len(re.findall(r"[?¿]", t)) > 1:
+        return True
+    hits = 0
+    if _ACTION_VERBS.search(t):
+        hits += 1
+    if _TRAMITE_TOKS.search(t):
+        hits += 1
+    if _INFO_TOKS.search(t):
+        hits += 1
+    return hits > 1
+
+
+def _low_confidence(classification: Any, threshold: float = 0.3) -> bool:
+    """Retorna True si la clasificación es n/a o tiene baja confianza."""
+    if not classification:
+        return True
+    if isinstance(classification, dict):
+        intent = (classification.get("intent") or "").lower()
+        conf = classification.get("confidence")
+        return intent == "n/a" or conf is None or conf < threshold
+    if isinstance(classification, str):
+        return classification.strip().lower() == "n/a"
+    return True
+
+
 # === Mapeo de intenciones ===
 INTENT_MAP = {
     # Conversacionales (faq.json)
