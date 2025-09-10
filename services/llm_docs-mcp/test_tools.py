@@ -264,6 +264,18 @@ class TestGateway(unittest.TestCase):
         resp = self.client.post("/tools/call", json=payload)
         self.assertEqual(resp.status_code, 200)
 
+    def test_scheduler_init_tool(self):
+        payload = {"tool": "scheduler-init", "params": {}}
+        resp = self.client.post("/tools/call", json=payload)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json(), {"type": "handover", "flow": "scheduler"})
+
+    def test_complaint_init_tool(self):
+        payload = {"tool": "complaint-init", "params": {}}
+        resp = self.client.post("/tools/call", json=payload)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json(), {"type": "handover", "flow": "complaint"})
+
     def test_doc_classify_intent_saludo(self):
         resp = self.client.post(
             "/tools/doc-classify_intent_llm", json={"texto": "hola"}
