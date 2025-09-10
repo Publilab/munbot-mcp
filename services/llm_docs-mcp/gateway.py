@@ -32,6 +32,7 @@ from qdrant_utils import (
     filter_by_procedure_id,
     filter_by_department_id,
 )
+from qdrant_client.http import models as qdrant
 import rag
 from intent_classifier import (
     classify_intent_with_llm,
@@ -495,62 +496,98 @@ def _get_texto(params: dict) -> str:
     """
     return params.get("texto") or params.get("consulta", "")
 
-def generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
-    """Delegates the response generation to the RAG module."""
-    pregunta = params.get("pregunta", "")
-    categoria = params.get("categoria")
-    top_k = int(params.get("top_k", 3))
-    _logger.info(
-        "doc-generar_respuesta_llm: categoria=%s top_k=%s", categoria, top_k
-    )
-    REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
-    collection_name, _ = rag._category_config(categoria)
-    if not pregunta:
+
+def retrieve_context(query: str, top_k: int = 5, collection: str | None = None, filtro: dict | None = None):
+    """Busca fragmentos relevantes en Qdrant y devuelve los hits."""
+    vector = embed([query])[0]
+    q_filter = None
+    if filtro:
+        conditions = [
+            qdrant.FieldCondition(key=k, match=qdrant.MatchValue(value=v))
+            for k, v in filtro.items()
+        ]
+        q_filter = qdrant.Filter(must=conditions)
+    return search_in_qdrant(vector, top_k=top_k, filtro=q_filter, collection_name=collection)
+
+
+def generar_respuesta_llm(query: str, top_k: int = 5, categoria: str | None = None) -> dict:
+    """Genera una respuesta usando RAG simple o el flujo legado."""
+    if not query:
         return {"respuesta": "", "referencias": [], "no_results": True}
 
+    if not RAG_CATEGORY_AWARE:
+        try:
+            result = rag.doc_generar_respuesta_llm_with_sources(
+                pregunta=query, categoria=categoria
+            )
+        except Exception:
+            respuesta = generate_response(query)
+            respuesta = _clean_output(respuesta)
+            return {"respuesta": respuesta, "referencias": [], "no_results": not bool(respuesta)}
+        referencias: list[str] = []
+        for fuente in result.get("fuentes") or []:
+            if isinstance(fuente, dict):
+                ref = fuente.get("doc") or fuente.get("fuente")
+                if ref:
+                    referencias.append(ref)
+            elif isinstance(fuente, str):
+                referencias.append(fuente)
+        hit = bool(result.get("respuesta"))
+        return {
+            "respuesta": result.get("respuesta", ""),
+            "referencias": list(set(referencias)),
+            "no_results": not hit,
+        }
+
+    collection, filtro, prompt_template = _select_collection_and_prompt(categoria)
+
     try:
-        result = rag.doc_generar_respuesta_llm_with_sources(
-            pregunta=pregunta,
-            tema_especifico=params.get("documento"),
-            tramite=params.get("procedure_id"),
-            departamento=params.get("department_id"),
-            dominios=params.get("dominios"),
-            categoria=categoria,
+        hits = retrieve_context(query, top_k=top_k, collection=collection, filtro=filtro)
+    except Exception:
+        hits = []
+    if not hits:
+        try:
+            hits = retrieve_context(query, top_k=top_k)
+        except Exception:
+            hits = []
+
+    if not hits:
+        _logger.info(
+            "doc-generar_respuesta_llm", extra={"collection": collection, "filtro": filtro, "top_k": top_k, "hits": 0, "top1": None}
         )
-    except Exception as e:
-        logger.error(
-            f"RAG generation failed: {e}",
-            extra={"trace_id": trace_id, "categoria": categoria},
-        )
-        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
         return {"respuesta": "", "referencias": [], "no_results": True}
 
     referencias: list[str] = []
-    for fuente in result.get("fuentes") or []:
-        if isinstance(fuente, dict):
-            ref = fuente.get("doc") or fuente.get("fuente")
-            if ref:
-                referencias.append(ref)
-        elif isinstance(fuente, str):
-            referencias.append(fuente)
+    context_parts: list[str] = []
+    for h in hits:
+        payload = getattr(h, "payload", {}) or {}
+        text = payload.get("texto") or payload.get("text") or ""
+        if text:
+            context_parts.append(text)
+        ref = payload.get("doc") or payload.get("fuente")
+        if ref:
+            referencias.append(ref)
 
-    hit = bool(result.get("respuesta"))
-    logger.info(
-        "Respuesta generada",
+    contexto = "\n".join(context_parts)
+    prompt = prompt_template.replace("{{contexto}}", contexto).replace("{{pregunta}}", query)
+    respuesta = generate_response(prompt)
+    respuesta = _clean_output(respuesta)
+
+    _logger.info(
+        "doc-generar_respuesta_llm",
         extra={
-            "trace_id": trace_id,
-            "categoria": categoria,
-            "collection": collection_name,
+            "collection": collection,
+            "filtro": filtro,
             "top_k": top_k,
-            "hit": hit,
-            "fragments": referencias,
+            "hits": len(hits),
+            "top1": referencias[0] if referencias else None,
         },
     )
 
     return {
-        "respuesta": result.get("respuesta", ""),
+        "respuesta": respuesta,
         "referencias": list(set(referencias)),
-        "no_results": not hit,
+        "no_results": not bool(respuesta),
     }
 
 # ==== MCP Endpoints ====
@@ -603,18 +640,7 @@ async def tools_call(request: Request):
             _logger.info(
                 "doc-generar_respuesta_llm: categoria=%s top_k=%s", categoria, top_k
             )
-            return generar_respuesta_llm(
-                {
-                    "pregunta": query,
-                    "top_k": top_k,
-                    "categoria": categoria,
-                    "documento": params.get("documento"),
-                    "procedure_id": params.get("procedure_id"),
-                    "department_id": params.get("department_id"),
-                    "dominios": params.get("dominios"),
-                },
-                trace_id=trace_id,
-            )
+            return generar_respuesta_llm(query, top_k=top_k, categoria=categoria)
         elif tool == "doc-buscar_fragmento_documento":
             texto = _get_texto(params)
             documento = params.get("documento")
@@ -660,14 +686,18 @@ async def tools_call(request: Request):
 @app.post("/doc-generar_respuesta_llm", dependencies=[Depends(authenticate)])
 async def doc_generar_respuesta_llm_endpoint(params: dict):
     """Endpoint directo que combina búsqueda y generación."""
-    trace_id = params.get("trace_id", "unknown")
-    return generar_respuesta_llm(params, trace_id=trace_id)
+    query = (params.get("pregunta") or "").strip()
+    top_k = int(params.get("top_k", 5))
+    categoria = params.get("categoria")
+    return generar_respuesta_llm(query, top_k=top_k, categoria=categoria)
 
 
 @app.post("/tools/doc-generar_respuesta_llm", dependencies=[Depends(authenticate)])
 async def tools_doc_generar_respuesta_llm(params: dict):
-    trace_id = params.get("trace_id", "unknown")
-    return generar_respuesta_llm(params, trace_id=trace_id)
+    query = (params.get("pregunta") or "").strip()
+    top_k = int(params.get("top_k", 5))
+    categoria = params.get("categoria")
+    return generar_respuesta_llm(query, top_k=top_k, categoria=categoria)
 
 
 @app.post("/tools/doc-classify_intent_llm", dependencies=[Depends(authenticate)])
