@@ -80,18 +80,28 @@ class LlmDocsClient:
         resp = self.tools_call("doc-classify_intent_llm", {"texto": texto}, trace_id)
         raw_intent = resp.get("intent")
         sub_intent = resp.get("sub_intent")
+        confidence = None
         if isinstance(raw_intent, dict):
             intent = (raw_intent.get("intent") or "").strip()
             sub_intent = (raw_intent.get("sub_intent") or sub_intent or "").strip()
+            confidence = raw_intent.get("confidence")
         else:
             intent = (raw_intent or "").strip()
             sub_intent = (sub_intent or "").strip()
+            confidence = resp.get("confidence")
 
         if intent == "faq" and sub_intent in {"saludo", "despedida", "agradecimiento"}:
             intent = sub_intent
 
         entities = resp.get("entities") or {}
-        return {"intent": intent, "sub_intent": sub_intent, "entities": entities}
+        result = {
+            "intent": intent,
+            "sub_intent": sub_intent,
+            "entities": entities,
+        }
+        if confidence is not None:
+            result["confidence"] = confidence
+        return result
 
     def doc_generar_respuesta_llm(
         self,

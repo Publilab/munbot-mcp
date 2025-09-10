@@ -1645,7 +1645,12 @@ def orchestrate(
     norm_intent = _norm_intent(raw_intent)
     if norm_intent.endswith("s") and norm_intent[:-1] in INTENT_MAP:
         norm_intent = norm_intent[:-1]
-    categoria = norm_intent
+    categoria = classification.get("sub_intent") or norm_intent
+
+    multi_intent = _is_multi_intent(user_input)
+    low_conf = _low_confidence(classification)
+    use_agent = bool(AGENT_MODE and not multi_intent and not low_conf)
+
     intent = INTENT_MAP.get(norm_intent, "n/a")
     _logger.info(
         "intent_raw=%s intent_norm=%s mapped_action=%s",
@@ -1672,6 +1677,52 @@ def orchestrate(
     )
     _log_router("intent_decided", intent=intent, intent_norm=categoria)
     REQUEST_COUNTER.labels(intent=intent, categoria=categoria).inc()
+
+    if use_agent:
+        try:
+            messages = _build_agent_messages(context_manager, sid, user_input)
+            tools = [
+                {"type": "function", "function": {"name": "doc-generar_respuesta_llm"}},
+                {"type": "function", "function": {"name": "scheduler-init"}},
+                {"type": "function", "function": {"name": "complaint-init"}},
+            ]
+            agent_resp = llm_client.agent_call(messages, tools=tools, categoria=categoria)
+        except Exception as e:
+            _logger.error("agent_call_failed %s", e)
+        else:
+            if isinstance(agent_resp, dict):
+                if agent_resp.get("type") == "handover":
+                    flow = agent_resp.get("flow")
+                    if flow == "scheduler":
+                        context_manager.set_current_flow(sid, "scheduler")
+                        result = _handle_scheduler_flow(
+                            sid, user_input, datetime.now(tz=SANTIAGO_TZ)
+                        )
+                        return format_response(result, sid, trace_id=sid)
+                    if flow == "complaint":
+                        context_manager.set_pending_confirmation(sid, True)
+                        context_manager.set_current_flow(sid, "reclamo")
+                        privacy_msg = (
+                            "Si quieres hacer un reclamo o una denuncia estoy a tu disposición para registrarlo. "
+                            "Recuerda que tus datos serán tratados de acuerdo a la Ley de Protección de Datos "
+                            "y las políticas internas para resguardar tu seguridad digital"
+                        )
+                        question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
+                        context_manager.update_context(sid, user_input, privacy_msg)
+                        context_manager.update_context(sid, "", question_msg)
+                        return {
+                            "respuestas": [privacy_msg, question_msg],
+                            "session_id": sid,
+                        }
+                if agent_resp.get("type") == "final":
+                    text = agent_resp.get("text") or ""
+                    refs = agent_resp.get("references") or agent_resp.get("refs") or []
+                    context_manager.update_context(sid, user_input, text)
+                    return {
+                        "respuesta": text,
+                        "fuentes": refs,
+                        "session_id": sid,
+                    }
 
     # --- 2. ENRUTAMIENTO BASADO EN INTENCIÓN ---
     if intent in {"saludo", "despedida", "agradecimiento"}:
