@@ -35,6 +35,12 @@ from qdrant_utils import (
     filter_by_department_id,
 )
 import rag
+import llama_runner
+try:
+    from rag import retrieve_context  # type: ignore
+except Exception:  # pragma: no cover
+    def retrieve_context(*args, **kwargs):
+        raise RuntimeError("retrieve_context not available")
 from intent_classifier import (
     classify_intent_with_llm,
     set_llm_client,
@@ -667,26 +673,70 @@ def _get_texto(params: dict) -> str:
     """
     return params.get("texto") or params.get("consulta", "")
 
-def _generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
-    """Delegates the response generation to the RAG module."""
-    pregunta = params.get("pregunta", "")
-    categoria = params.get("categoria")
-    top_k = int(params.get("top_k", 3))
+
+async def generar_respuesta_llm(
+    query: str,
+    top_k: int = 5,
+    categoria: str | None = None,
+    trace_id: str = "unknown",
+) -> dict:
     _logger.info(
         "doc-generar_respuesta_llm: categoria=%s top_k=%s", categoria, top_k
     )
-    REQUEST_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
+    REQUEST_COUNTER.labels(
+        intent="doc-generar_respuesta_llm", categoria=categoria or "unknown"
+    ).inc()
+
+    if os.getenv("RAG_CATEGORY_AWARE") not in (None, "", "0", "false", "False"):
+        collection, filtro, prompt_tpl = _select_collection_and_prompt(categoria)
+        try:
+            contexto, hits, top1 = retrieve_context(
+                query, top_k, collection=collection, filtro=filtro
+            )
+        except Exception:
+            contexto, hits, top1 = retrieve_context(query, top_k)
+
+        prompt = (
+            prompt_tpl.replace("{{contexto}}", contexto).replace("{{pregunta}}", query)
+        )
+        respuesta = llama_runner.generar_respuesta_llm(prompt)
+
+        _logger.info(
+            "retrieve_context results",
+            extra={
+                "collection": collection,
+                "filtro": filtro,
+                "top_k": top_k,
+                "hits": len(hits),
+                "top1": top1,
+            },
+        )
+
+        referencias: list[str] = []
+        for h in hits:
+            if isinstance(h, dict):
+                ref = h.get("doc") or h.get("fuente")
+                if ref:
+                    referencias.append(ref)
+            else:
+                payload = getattr(h, "payload", {}) or {}
+                ref = payload.get("doc") or payload.get("fuente")
+                if ref:
+                    referencias.append(ref)
+
+        return {
+            "respuesta": respuesta,
+            "referencias": list(set(referencias)),
+            "no_results": not hits,
+        }
+
     collection_name, _ = rag._category_config(categoria)
-    if not pregunta:
+    if not query:
         return {"respuesta": "", "referencias": [], "no_results": True}
 
     try:
         result = rag.doc_generar_respuesta_llm_with_sources(
-            pregunta=pregunta,
-            tema_especifico=params.get("documento"),
-            tramite=params.get("procedure_id"),
-            departamento=params.get("department_id"),
-            dominios=params.get("dominios"),
+            pregunta=query,
             categoria=categoria,
         )
     except Exception as e:
@@ -694,7 +744,9 @@ def _generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
             f"RAG generation failed: {e}",
             extra={"trace_id": trace_id, "categoria": categoria},
         )
-        ERROR_COUNTER.labels(intent="doc-generar_respuesta_llm", categoria=categoria or "unknown").inc()
+        ERROR_COUNTER.labels(
+            intent="doc-generar_respuesta_llm", categoria=categoria or "unknown"
+        ).inc()
         return {"respuesta": "", "referencias": [], "no_results": True}
 
     referencias: list[str] = []
@@ -724,29 +776,6 @@ def _generar_respuesta_llm(params: dict, trace_id: str = "unknown") -> dict:
         "referencias": list(set(referencias)),
         "no_results": not hit,
     }
-
-
-async def generar_respuesta_llm(
-    query: str,
-    *,
-    top_k: int = 3,
-    categoria: str | None = None,
-    documento: str | None = None,
-    procedure_id: str | None = None,
-    department_id: str | None = None,
-    dominios: list[str] | None = None,
-    trace_id: str = "unknown",
-) -> dict:
-    params = {
-        "pregunta": query,
-        "top_k": top_k,
-        "categoria": categoria,
-        "documento": documento,
-        "procedure_id": procedure_id,
-        "department_id": department_id,
-        "dominios": dominios,
-    }
-    return _generar_respuesta_llm(params, trace_id=trace_id)
 
 
 async def handle_rag_call(params, hints):
@@ -961,10 +990,6 @@ async def tools_call(request: Request):
                 query,
                 top_k=top_k,
                 categoria=categoria,
-                documento=params.get("documento"),
-                procedure_id=params.get("procedure_id"),
-                department_id=params.get("department_id"),
-                dominios=params.get("dominios"),
                 trace_id=trace_id,
             )
         elif tool == "doc-buscar_fragmento_documento":
@@ -1020,10 +1045,6 @@ async def doc_generar_respuesta_llm_endpoint(params: dict):
         query,
         top_k=top_k,
         categoria=categoria,
-        documento=params.get("documento"),
-        procedure_id=params.get("procedure_id"),
-        department_id=params.get("department_id"),
-        dominios=params.get("dominios"),
         trace_id=trace_id,
     )
 
@@ -1038,10 +1059,6 @@ async def tools_doc_generar_respuesta_llm(params: dict):
         query,
         top_k=top_k,
         categoria=categoria,
-        documento=params.get("documento"),
-        procedure_id=params.get("procedure_id"),
-        department_id=params.get("department_id"),
-        dominios=params.get("dominios"),
         trace_id=trace_id,
     )
 

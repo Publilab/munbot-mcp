@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch
 import pytest
 from fastapi import HTTPException
+import asyncio
 
 os.environ["ALLOWED_IPS"] = "testclient,127.0.0.1"
 os.environ["LLM_DOCS_API_KEY"] = "test-key"
@@ -188,6 +189,9 @@ class FakeRunner:
     def generate(self, *a, **k):
         return "ok"
 fake_llama_runner.LlamaRunner = lambda *a, **k: FakeRunner()
+def fake_generar_respuesta_llm(prompt: str) -> str:
+    return "ok"
+fake_llama_runner.generar_respuesta_llm = fake_generar_respuesta_llm
 sys.modules["llama_runner"] = fake_llama_runner
 
 from gateway import app
@@ -325,6 +329,54 @@ def test_doc_buscar_fragmento_documento_direct_call_and_threshold():
 
     mock_of.assert_called_once_with(consulta="hola", k=5, tema_especifico="doc.txt")
     assert res == [{"texto": "a", "rerank_score": 0.9}]
+
+
+def test_generar_respuesta_llm_legacy(monkeypatch):
+    import gateway
+
+    monkeypatch.setenv("RAG_CATEGORY_AWARE", "0")
+    monkeypatch.setattr(gateway, "RAG_CATEGORY_AWARE", 0)
+
+    called = {}
+
+    def fake_doc_generar_respuesta_llm_with_sources(**kwargs):
+        called.update(kwargs)
+        return {"respuesta": "ok", "fuentes": [{"doc": "ref"}]}
+
+    monkeypatch.setattr(
+        gateway.rag, "doc_generar_respuesta_llm_with_sources", fake_doc_generar_respuesta_llm_with_sources
+    )
+
+    res = asyncio.run(gateway.generar_respuesta_llm("pregunta", categoria="faq"))
+    assert res["respuesta"] == "ok"
+    assert res["referencias"] == ["ref"]
+    assert called["pregunta"] == "pregunta"
+
+
+def test_generar_respuesta_llm_category_aware(monkeypatch):
+    import gateway
+
+    monkeypatch.setenv("RAG_CATEGORY_AWARE", "1")
+    monkeypatch.setattr(gateway, "RAG_CATEGORY_AWARE", 1)
+
+    captured = {}
+
+    def fake_retrieve_context(query, top_k, collection=None, filtro=None):
+        captured["collection"] = collection
+        captured["filtro"] = filtro
+        return "ctx", [{"doc": "ref"}], {"id": 1}
+
+    monkeypatch.setattr(gateway, "retrieve_context", fake_retrieve_context)
+
+    def fake_llama(prompt: str) -> str:
+        captured["prompt"] = prompt
+        return "resp"
+
+    monkeypatch.setattr(gateway.llama_runner, "generar_respuesta_llm", fake_llama)
+
+    res = asyncio.run(gateway.generar_respuesta_llm("hola", categoria="faq", top_k=2))
+    assert res["respuesta"] == "resp"
+    assert captured["collection"] == gateway.RAG_COLLECTION_FAQ
 
 
 def _setup_category_env(monkeypatch):
