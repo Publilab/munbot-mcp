@@ -69,6 +69,9 @@ def _getenv_str(name: str, default: str) -> str:
 AGENT_MODE = _getenv_int("AGENT_MODE", 0)
 RAG_CATEGORY_AWARE = _getenv_int("RAG_CATEGORY_AWARE", 0)
 AGENT_MAX_TOOL_CALLS = _getenv_int("AGENT_MAX_TOOL_CALLS", 2)
+AGENT_LLM_TIMEOUT_SEC = int(os.getenv("AGENT_LLM_TIMEOUT_SEC", "8"))
+AGENT_HANDLER_TIMEOUT_SEC = int(os.getenv("AGENT_HANDLER_TIMEOUT_SEC", "4"))
+AGENT_MAX_RETRIES = int(os.getenv("AGENT_MAX_RETRIES", "1"))
 RAG_COLLECTION_FAQ = _getenv_str("RAG_COLLECTION_FAQ", "faq")
 RAG_COLLECTION_TRAMITES = _getenv_str("RAG_COLLECTION_TRAMITES", "tramites")
 RAG_COLLECTION_NORMATIVA = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
@@ -212,6 +215,19 @@ def validate_params(tool_name: str, params: dict) -> None:
             )
 
         params[param] = value
+
+
+async def with_timeout_retry(coro_factory, timeout_s: int, retries: int):
+    """Run a coroutine returned by ``coro_factory`` with timeout and retries."""
+    last_exc: Exception | None = None
+    for _ in range(retries + 1):
+        try:
+            return await asyncio.wait_for(coro_factory(), timeout=timeout_s)
+        except Exception as exc:  # pragma: no cover
+            last_exc = exc
+    if last_exc is not None:
+        raise last_exc
+
 
 _logger = logging.getLogger("llm_docs_mcp")
 
@@ -916,10 +932,19 @@ async def agent_mode(req: dict):
         while True:
             prompt = serialize_messages(conversation)
             logger.info("agent.step", extra={"trace_id": trace_id, "step": call_count})
-            text = await asyncio.wait_for(
-                asyncio.to_thread(llama_generate, prompt),
-                timeout=LLM_GENERATION_TIMEOUT,
-            )
+            try:
+                text = await with_timeout_retry(
+                    lambda: asyncio.to_thread(llama_generate, prompt),
+                    AGENT_LLM_TIMEOUT_SEC,
+                    AGENT_MAX_RETRIES,
+                )
+            except Exception as e:
+                duration_ms = int((time.time() - start_time) * 1000)
+                logger.exception(
+                    "agent.llm_error",
+                    extra={"trace_id": trace_id, "step": call_count, "duration_ms": duration_ms},
+                )
+                return {"type": "error", "error": str(e)}
             logger.info(
                 "agent.step",
                 extra={"trace_id": trace_id, "step": call_count, "output": text},
@@ -972,17 +997,24 @@ async def agent_mode(req: dict):
                     status_code=500, detail=f"Handler no encontrado: {tool}"
                 )
 
-            result = (
-                await asyncio.wait_for(
-                    handler(params, hints),
-                    timeout=LLM_GENERATION_TIMEOUT,
-                )
+            handler_coro = (
+                lambda: handler(params, hints)
                 if inspect.iscoroutinefunction(handler)
-                else await asyncio.wait_for(
-                    asyncio.to_thread(handler, params, hints),
-                    timeout=LLM_GENERATION_TIMEOUT,
-                )
+                else lambda: asyncio.to_thread(handler, params, hints)
             )
+            try:
+                result = await with_timeout_retry(
+                    handler_coro,
+                    AGENT_HANDLER_TIMEOUT_SEC,
+                    AGENT_MAX_RETRIES,
+                )
+            except Exception as e:
+                duration_ms = int((time.time() - start_time) * 1000)
+                logger.exception(
+                    "agent.handler_error",
+                    extra={"trace_id": trace_id, "tool": tool, "duration_ms": duration_ms},
+                )
+                return {"type": "error", "error": str(e)}
 
             if isinstance(result, dict) and result.get("type") == "handover":
                 dt = int((time.time() - start_time) * 1000)
@@ -1002,13 +1034,13 @@ async def agent_mode(req: dict):
             conversation.append(
                 {"role": "tool", "name": tool, "content": json.dumps(result)}
             )
-    except Exception:
+    except Exception as e:
         duration_ms = int((time.time() - start_time) * 1000)
         logger.exception(
             "agent.error",
             extra={"trace_id": trace_id, "duration_ms": duration_ms},
         )
-        raise
+        return {"type": "error", "error": str(e)}
 
 
 # ==== MCP Endpoints ====
