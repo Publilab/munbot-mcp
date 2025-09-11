@@ -75,10 +75,19 @@ RAG_COLLECTION_NORMATIVA = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
 RAG_SELECTION_MODE = _getenv_str("RAG_SELECTION_MODE", "collection")
 RAG_FILTER_FIELD   = _getenv_str("RAG_FILTER_FIELD", "tipo")
 
+ALLOWED_CATEGORIAS = {"faq", "tramite", "documento"}
+QUERY_MIN_LEN, QUERY_MAX_LEN = 2, 512
+TOPK_MIN, TOPK_MAX = 1, 8
+
 TOOLS = {
     "doc-generar_respuesta_llm": {
         "desc": "Consulta RAG con generación LLM",
         "schema": {"query": str, "top_k": (int, None), "categoria": (str, None)},
+        "constraints": {
+            "query": {"min_len": QUERY_MIN_LEN, "max_len": QUERY_MAX_LEN},
+            "top_k": {"min": TOPK_MIN, "max": TOPK_MAX},
+            "categoria": {"one_of": ALLOWED_CATEGORIAS},
+        },
     },
     "scheduler-init": {
         "desc": "Entrega control al flujo de agenda (orquestador)",
@@ -132,23 +141,77 @@ def try_parse_call(text: str):
     return None
 
 
+def _sanitize_str(s: str, max_len: int) -> str:
+    """Limpia caracteres de control, recorta y trunca a ``max_len``."""
+    if not isinstance(s, str):
+        s = str(s)
+    s = re.sub(r"[\x00-\x1f\x7f-\x9f]", "", s).strip()
+    if len(s) > max_len:
+        s = s[:max_len]
+    return s
+
+
 def validate_params(tool_name: str, params: dict) -> None:
-    """Valida tipos y presencia de parámetros obligatorios según ``TOOLS``."""
-    schema = TOOLS.get(tool_name, {}).get("schema", {}) or {}
+    """Coacciona y valida parámetros basados en ``TOOLS``."""
+    tool_cfg = TOOLS.get(tool_name, {})
+    schema = tool_cfg.get("schema", {}) or {}
+    constraints = tool_cfg.get("constraints", {}) or {}
     for param, spec in schema.items():
         if isinstance(spec, tuple):
-            expected_type, _default = spec
+            expected_type, default = spec
             required = False
         else:
             expected_type = spec
+            default = None
             required = True
-        if required and param not in params:
-            raise HTTPException(status_code=400, detail=f"Falta parámetro requerido: {param}")
-        if param in params and params[param] is not None and not isinstance(params[param], expected_type):
+
+        if param not in params or params.get(param) is None:
+            if required:
+                raise HTTPException(status_code=400, detail=f"Falta parámetro requerido: {param}")
+            if default is not None:
+                params[param] = default
+            continue
+
+        value = params[param]
+        # Coerción de tipos
+        try:
+            if expected_type is bool and isinstance(value, str):
+                v = value.strip().lower()
+                if v in {"true", "1", "yes", "y", "t"}:
+                    value = True
+                elif v in {"false", "0", "no", "n", "f"}:
+                    value = False
+                else:
+                    raise ValueError
+            else:
+                value = expected_type(value)
+        except Exception:
             raise HTTPException(
                 status_code=400,
                 detail=f"Parámetro '{param}' debe ser de tipo {expected_type.__name__}",
             )
+
+        cons = constraints.get(param, {})
+        if expected_type in (int, float):
+            if "min" in cons and value < cons["min"]:
+                raise HTTPException(status_code=400, detail=f"Parámetro '{param}' fuera de rango")
+            if "max" in cons and value > cons["max"]:
+                raise HTTPException(status_code=400, detail=f"Parámetro '{param}' fuera de rango")
+
+        if expected_type is str:
+            max_len = cons.get("max_len", len(value))
+            value = _sanitize_str(value, max_len)
+            if "min_len" in cons and len(value) < cons["min_len"]:
+                raise HTTPException(status_code=400, detail=f"Parámetro '{param}' longitud mínima {cons['min_len']}")
+
+        one_of = cons.get("one_of")
+        if one_of is not None and value not in one_of:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Parámetro '{param}' debe ser uno de: {', '.join(map(str, one_of))}",
+            )
+
+        params[param] = value
 
 _logger = logging.getLogger("llm_docs_mcp")
 
