@@ -1202,16 +1202,41 @@ def _register_complaint_and_reply(
         f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}",
         extra={"trace_id": sid},
     )
-    response = call_tool_microservice("complaint-registrar_reclamo", params)
+    try:
+        response = call_tool_microservice("complaint-registrar_reclamo", params)
+    except Exception as e:
+        logger.error(
+            f"[ORQUESTADOR] Error llamando complaints-mcp: {e}",
+            extra={"trace_id": sid},
+        )
+        ctx["complaint_awaiting_confirm"] = True
+        save_session(sid, ctx)
+        context_manager.set_current_flow(sid, "reclamo")
+        retry_msg = (
+            "Ocurrió un problema al registrar tu reclamo. ¿Deseas intentarlo nuevamente?"
+        )
+        context_manager.update_context(sid, user_input, retry_msg)
+        return {"respuesta": retry_msg, "session_id": sid}
     logger.info(
         f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}",
         extra={"trace_id": sid},
     )
-    context_manager.clear_complaint_state(sid)
-    context_manager.set_current_flow(sid, None)
     err = handle_service_error(response, "complaint-registrar_reclamo", sid)
     if err:
-        return {"respuesta": err["texto"], "session_id": sid}
+        logger.error(
+            f"[ORQUESTADOR] Respuesta de error de complaints-mcp: {response}",
+            extra={"trace_id": sid},
+        )
+        ctx["complaint_awaiting_confirm"] = True
+        save_session(sid, ctx)
+        context_manager.set_current_flow(sid, "reclamo")
+        retry_msg = (
+            "Ocurrió un problema al registrar tu reclamo. ¿Deseas intentarlo nuevamente?"
+        )
+        context_manager.update_context(sid, user_input, retry_msg)
+        return {"respuesta": retry_msg, "session_id": sid}
+    context_manager.clear_complaint_state(sid)
+    context_manager.set_current_flow(sid, None)
     success_msg = (
         "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
         "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
@@ -1240,18 +1265,43 @@ def _create_appointment_and_reply(sid: str, ctx: Dict[str, Any]) -> Dict[str, An
         f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}",
         extra={"trace_id": sid},
     )
-    tool_result = call_tool_microservice(
-        "scheduler-reservar_hora", payload, trace_id=sid
-    )
+    try:
+        tool_result = call_tool_microservice(
+            "scheduler-reservar_hora", payload, trace_id=sid
+        )
+    except Exception as e:
+        logger.error(
+            f"[SCHEDULER] Error llamando scheduler-reservar_hora: {e}",
+            extra={"trace_id": sid},
+        )
+        ctx["scheduler_awaiting_confirm"] = True
+        save_session(sid, ctx)
+        context_manager.set_current_flow(sid, "scheduler")
+        retry_msg = (
+            "Ocurrió un problema al agendar la cita. ¿Deseas intentarlo nuevamente?"
+        )
+        context_manager.update_context(sid, "", retry_msg)
+        return {"answer": retry_msg, "finish": False}
     logger.info(
         f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}",
         extra={"trace_id": sid},
     )
-    context_manager.set_current_flow(sid, None)
-    context_manager.clear_pending_field(sid)
     err = handle_service_error(tool_result, "scheduler-reservar_hora", sid)
     if err:
-        return {"answer": err["texto"], "finish": True}
+        logger.error(
+            f"[SCHEDULER] Respuesta de error de scheduler-reservar_hora: {tool_result}",
+            extra={"trace_id": sid},
+        )
+        ctx["scheduler_awaiting_confirm"] = True
+        save_session(sid, ctx)
+        context_manager.set_current_flow(sid, "scheduler")
+        retry_msg = (
+            "Ocurrió un problema al agendar la cita. ¿Deseas intentarlo nuevamente?"
+        )
+        context_manager.update_context(sid, "", retry_msg)
+        return {"answer": retry_msg, "finish": False}
+    context_manager.set_current_flow(sid, None)
+    context_manager.clear_pending_field(sid)
     message = tool_result.get("mensaje", "No se pudo agendar la cita.")
     return {"answer": message, "finish": True}
 
