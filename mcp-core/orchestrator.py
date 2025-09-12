@@ -797,7 +797,11 @@ def _cb_success() -> None:
 
 
 def call_tool_microservice(
-    tool: str, params: Dict[str, Any], trace_id: str | None = None
+    tool: str,
+    params: Dict[str, Any],
+    trace_id: str | None = None,
+    timeout: float | None = None,
+    retries: int | None = None,
 ) -> Dict[str, Any]:
     service_url = route_to_service(tool)
     if tool.startswith("doc-"):
@@ -817,9 +821,13 @@ def call_tool_microservice(
         auth = HTTPBasicAuth(LLM_DOCS_MCP_USER, LLM_DOCS_MCP_PASSWORD)
     if tool.startswith("doc-") and LLM_DOCS_API_KEY:
         headers = {"X-API-KEY": LLM_DOCS_API_KEY}
-    timeout = LLM_DOCS_TIMEOUT if tool.startswith("doc-") else 30
-    retries = LLM_DOCS_RETRIES if tool.startswith("doc-") else 0
-    for attempt in range(retries + 1):
+    to = timeout if timeout is not None else (
+        LLM_DOCS_TIMEOUT if tool.startswith("doc-") else 30
+    )
+    rt = retries if retries is not None else (
+        LLM_DOCS_RETRIES if tool.startswith("doc-") else 0
+    )
+    for attempt in range(rt + 1):
         t0 = time.time()
         try:
             resp = requests.post(
@@ -827,7 +835,7 @@ def call_tool_microservice(
                 json=payload,
                 auth=auth,
                 headers=headers,
-                timeout=timeout,
+                timeout=to,
             )
             if resp.status_code >= 500:
                 raise requests.HTTPError(response=resp)
@@ -845,7 +853,7 @@ def call_tool_microservice(
                 f"llm_docs-mcp transient error attempt={attempt} tool={tool}: {e}",
                 extra={"trace_id": trace_id},
             )
-            if attempt < retries:
+            if attempt < rt:
                 time.sleep(0.2 * (2**attempt))
                 continue
             if tool.startswith("doc-"):
@@ -864,7 +872,7 @@ def call_tool_microservice(
                 f"HTTP error calling {service_url}: {status} - body={body}",
                 extra={"trace_id": trace_id},
             )
-            if status >= 500 and attempt < retries:
+            if status >= 500 and attempt < rt:
                 time.sleep(0.2 * (2**attempt))
                 continue
             if tool.startswith("doc-"):
@@ -881,7 +889,9 @@ def call_tool_microservice(
 
 def remote_llm_generate(prompt: str, timeout: float = 120.0) -> str:
     """Generate text using llm_docs-mcp via tools.call."""
-    resp = call_tool_microservice("doc-generar_respuesta_llm", {"pregunta": prompt})
+    resp = call_tool_microservice(
+        "doc-generar_respuesta_llm", {"pregunta": prompt}, timeout=timeout
+    )
     if resp.get("error"):
         raise Exception(resp["error"])
     return resp.get("respuesta", "")

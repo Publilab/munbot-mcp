@@ -2,6 +2,7 @@
 import os
 import logging
 import httpx
+import time
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -36,19 +37,42 @@ class LlmDocsClient:
             return (USER, PASSWORD)
         return None
 
-    def tools_call(self, tool: str, params: dict, trace_id: Optional[str] = None) -> dict:
+    def tools_call(
+        self,
+        tool: str,
+        params: dict,
+        trace_id: Optional[str] = None,
+        timeout: Optional[float] = None,
+        retries: int = 0,
+    ) -> dict:
+        """Call the tools endpoint with optional timeout and retries."""
         payload = {"tool": tool, "params": params}
         if trace_id:
             payload["trace_id"] = trace_id
-        r = httpx.post(
-            self.base_url,
-            json=payload,
-            headers=self._headers(),
-            auth=self._auth(),
-            timeout=self.timeout,
-        )
-        r.raise_for_status()
-        return r.json()
+        to = timeout or self.timeout
+        for attempt in range(retries + 1):
+            try:
+                r = httpx.post(
+                    self.base_url,
+                    json=payload,
+                    headers=self._headers(),
+                    auth=self._auth(),
+                    timeout=to,
+                )
+                r.raise_for_status()
+                return r.json()
+            except (httpx.TimeoutException, httpx.RequestError) as e:
+                if attempt < retries:
+                    time.sleep(0.2 * (2**attempt))
+                    continue
+                logger.warning("tools_call error %s", e)
+                return {"error": str(e)}
+            except httpx.HTTPStatusError as e:
+                if attempt < retries and e.response.status_code >= 500:
+                    time.sleep(0.2 * (2**attempt))
+                    continue
+                logger.warning("tools_call http error %s", e)
+                return {"error": f"http_error_{e.response.status_code}"}
 
     def agent_call(self, messages, tools=None, categoria=None, timeout=None):
         payload = {"messages": messages}
@@ -64,15 +88,22 @@ class LlmDocsClient:
             payload["hints"] = {"categoria": categoria}
         logger.info("agent_call tools=%s categoria=%s", tools_log, categoria)
         to = timeout or self.timeout
-        r = httpx.post(
-            self.base_url,
-            json=payload,
-            headers=self._headers(),
-            auth=self._auth(),
-            timeout=to,
-        )
-        r.raise_for_status()
-        return r.json()
+        try:
+            r = httpx.post(
+                self.base_url,
+                json=payload,
+                headers=self._headers(),
+                auth=self._auth(),
+                timeout=to,
+            )
+            r.raise_for_status()
+            return r.json()
+        except (httpx.TimeoutException, httpx.RequestError) as e:
+            logger.warning("agent_call error %s", e)
+            return {"error": str(e)}
+        except httpx.HTTPStatusError as e:
+            logger.warning("agent_call http error %s", e)
+            return {"error": f"http_error_{e.response.status_code}"}
 
     # --- Alto nivel ---
     def classify_intent(self, texto: str, trace_id: Optional[str] = None) -> dict:
