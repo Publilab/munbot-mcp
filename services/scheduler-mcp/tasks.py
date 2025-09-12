@@ -9,6 +9,7 @@ from notifications import send_email
 
 META_PHONE_ID = os.getenv('META_PHONE_ID')
 META_TOKEN = os.getenv('META_TOKEN')
+META_TIMEOUT = int(os.getenv('META_TIMEOUT', '10'))
 
 
 def fetch_tomorrow_confirmed(conn) -> Iterable[dict]:
@@ -41,7 +42,7 @@ def send_whatsapp(cita):
             "Authorization": f"Bearer {META_TOKEN}",
             "Content-Type": "application/json",
         }
-        requests.post(url, json=payload, headers=headers)
+        requests.post(url, json=payload, headers=headers, timeout=META_TIMEOUT)
     except Exception as e:
         print(f"Error al enviar WhatsApp a {cita['usuario_whatsapp']}: {e}")
 
