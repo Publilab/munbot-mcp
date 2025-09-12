@@ -20,8 +20,8 @@ import uuid
 import threading
 import time
 import concurrent.futures
-from .context_manager import ConversationalContextManager
-from .clients.llm_docs import LlmDocsClient
+from context_manager import ConversationalContextManager
+from clients.llm_docs import LlmDocsClient
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -29,15 +29,15 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 
-from .utils.cache import make_answer_cache_key
-from .settings import (
+from utils.cache import make_answer_cache_key
+from settings import (
     ANSWER_CACHE_TTL_CONTACT,
     ANSWER_CACHE_TTL_DEFAULT,
     ANSWER_CACHE_TTL_GENERIC,
 )
 
 try:
-    from .utils.human import registrar_evento_humano
+    from utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
 
     def registrar_evento_humano(
@@ -46,19 +46,19 @@ except Exception:  # pragma: no cover - allow tests to run without full package
         pass
 
 
-from .utils.parser import parse_date_time
-from .utils.audit import audit_step
+from utils.parser import parse_date_time
+from utils.audit import audit_step
 from zoneinfo import ZoneInfo
-from .utils.datetime_utils import (
+from utils.datetime_utils import (
     parse_nl_datetime,
     compute_relative_date,
     compute_last_business_day,
 )
 from datetime import datetime, date
 
-from .utils.phone_utils import validar_telefono_movil
+from utils.phone_utils import validar_telefono_movil
 
-from .utils.text import normalize_text
+from utils.text import normalize_text
 
 # === Feature flags / config ===
 import os
@@ -1088,10 +1088,130 @@ if os.getenv("DISABLE_PERIODIC_MIGRATION") != "1":
     threading.Thread(target=periodic_migration, daemon=True).start()
 
 
-def _handle_slot_filling(
+def _is_affirmative(text: str) -> bool:
+    """Return True if the text seems to be an affirmative answer."""
+    t = normalize_text(text)
+    if not t:
+        return False
+    first = t.split()[0]
+    return first in {
+        "si",
+        "sii",
+        "claro",
+        "ok",
+        "okay",
+        "vale",
+        "afirmativo",
+        "confirmo",
+        "correcto",
+        "yes",
+    }
+
+
+def _format_summary(data: Dict[str, Any]) -> str:
+    """Format a key-value mapping into a multiline summary."""
+    lines = ["Por favor confirma los siguientes datos:"]
+    for key, value in data.items():
+        if not value:
+            continue
+        if isinstance(value, dict):
+            value = ", ".join(
+                f"{k}: {v}" for k, v in value.items() if v is not None and v != ""
+            )
+        lines.append(f"- {key}: {value}")
+    return "\n".join(lines)
+
+
+def _register_complaint_and_reply(
+    sid: str, user_input: str, ctx: Dict[str, Any]
+) -> Dict[str, Any]:
+    params = {
+        "rut": ctx.get("rut"),
+        "nombre": ctx.get("nombre"),
+        "mail": ctx.get("mail"),
+        "mensaje": ctx.get("mensaje"),
+        "departamento": ctx.get("departamento"),
+        "categoria": 1,
+        "prioridad": 3,
+    }
+    logger.info(
+        f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}",
+        extra={"trace_id": sid},
+    )
+    response = call_tool_microservice("complaint-registrar_reclamo", params)
+    logger.info(
+        f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}",
+        extra={"trace_id": sid},
+    )
+    context_manager.clear_complaint_state(sid)
+    context_manager.set_current_flow(sid, None)
+    err = handle_service_error(response, "complaint-registrar_reclamo", sid)
+    if err:
+        return {"respuesta": err["texto"], "session_id": sid}
+    success_msg = (
+        "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
+        "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
+    )
+    success_msg += "\n¿Te fue útil mi respuesta? (Sí/No)"
+    context_manager.set_feedback_pending(sid, None)
+    context_manager.update_context(sid, user_input, success_msg)
+    return {"respuesta": success_msg, "session_id": sid}
+
+
+def _create_appointment_and_reply(sid: str, ctx: Dict[str, Any]) -> Dict[str, Any]:
+    payload = {
+        "slot_id": ctx.get("slot_id"),
+        "usuario_nombre": ctx.get("nombre_cita"),
+        "usuario_mail": ctx.get("mail_cita"),
+    }
+    if ctx.get("whatsapp_cita"):
+        payload["usuario_whatsapp"] = ctx["whatsapp_cita"]
+    if ctx.get("motiv_cita"):
+        payload["motivo"] = ctx["motiv_cita"]
+    if ctx.get("rut_cita"):
+        payload["usuario_rut"] = ctx["rut_cita"]
+    if ctx.get("depto_cita"):
+        payload["departamento_codigo"] = ctx["depto_cita"]
+    logger.info(
+        f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}",
+        extra={"trace_id": sid},
+    )
+    tool_result = call_tool_microservice(
+        "scheduler-reservar_hora", payload, trace_id=sid
+    )
+    logger.info(
+        f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}",
+        extra={"trace_id": sid},
+    )
+    context_manager.set_current_flow(sid, None)
+    context_manager.clear_pending_field(sid)
+    err = handle_service_error(tool_result, "scheduler-reservar_hora", sid)
+    if err:
+        return {"answer": err["texto"], "finish": True}
+    message = tool_result.get("mensaje", "No se pudo agendar la cita.")
+    return {"answer": message, "finish": True}
+
+
+def _handle_complaint_flow(
     user_input: str, sid: str, ctx: Dict[str, Any]
 ) -> Optional[Dict[str, Any]]:
     """Procesa el flujo de registro de reclamos cuando hay campos pendientes."""
+
+    if ctx.get("complaint_awaiting_confirm"):
+        ctx.pop("complaint_awaiting_confirm", None)
+        if _is_affirmative(user_input):
+            save_session(sid, ctx)
+            return _register_complaint_and_reply(sid, user_input, ctx)
+        for k in ["nombre", "rut", "mensaje", "departamento", "mail"]:
+            ctx.pop(k, None)
+        save_session(sid, ctx)
+        context_manager.clear_pending_field(sid)
+        context_manager.set_current_flow(sid, None)
+        return {"respuesta": "Operación cancelada.", "session_id": sid}
+
+    pending = ctx.get("pending_field")
+    if not pending:
+        return None
 
     pending = ctx.get("pending_field")
     if not pending:
@@ -1203,36 +1323,18 @@ def _handle_slot_filling(
         save_session(sid, ctx)
         context_manager.update_context(sid, user_input, f"Correo registrado: {mail}")
         context_manager.clear_pending_field(sid)
-        params = {
-            "rut": ctx["rut"],
-            "nombre": ctx["nombre"],
-            "mail": mail,
-            "mensaje": ctx["mensaje"],
-            "departamento": ctx["departamento"],
-            "categoria": 1,
-            "prioridad": 3,
-        }
-        logger.info(
-            f"[ORQUESTADOR] Payload enviado a complaints-mcp: {params}, rut={params.get('rut')}",
-            extra={"trace_id": sid},
+        ctx["complaint_awaiting_confirm"] = True
+        save_session(sid, ctx)
+        summary = _format_summary(
+            {
+                "Nombre": ctx.get("nombre"),
+                "RUT": ctx.get("rut"),
+                "Reclamo": ctx.get("mensaje"),
+                "Departamento": ctx.get("departamento"),
+                "Correo": ctx.get("mail"),
+            }
         )
-        response = call_tool_microservice("complaint-registrar_reclamo", params)
-        logger.info(
-            f"[ORQUESTADOR] Respuesta recibida de complaints-mcp: {response}",
-            extra={"trace_id": sid},
-        )
-        context_manager.clear_complaint_state(sid)
-        err = handle_service_error(response, "complaint-registrar_reclamo", sid)
-        if err:
-            return {"respuesta": err["texto"], "session_id": sid}
-        success_msg = (
-            "He registrado tu reclamo en mi base de datos y he enviado la información del registro para que puedas comprobar el estado de avances. "
-            "Uno de nuestros funcionarios se encargará de dar respuesta a tu reclamo y se pondrá en contacto contigo"
-        )
-        success_msg += "\n¿Te fue útil mi respuesta? (Sí/No)"
-        context_manager.set_feedback_pending(sid, None)
-        context_manager.update_context(sid, user_input, success_msg)
-        return {"respuesta": success_msg, "session_id": sid}
+        return {"respuesta": summary + "\n¿Confirmas?", "session_id": sid}
 
     return None
 
@@ -1284,6 +1386,24 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
     """Flujo paso a paso para agendar citas."""
 
     ctx = context_manager.get_context(sid) or {}
+    if ctx.get("scheduler_awaiting_confirm"):
+        ctx.pop("scheduler_awaiting_confirm", None)
+        if _is_affirmative(user_text):
+            save_session(sid, ctx)
+            return _create_appointment_and_reply(sid, ctx)
+        for k in REQUIRED_FIELDS.get("scheduler-appointment_create", []):
+            ctx.pop(k, None)
+        for k in [
+            "slot_id",
+            "last_suggestions",
+            "last_search_fecha",
+            "last_search_hora",
+        ]:
+            ctx.pop(k, None)
+        save_session(sid, ctx)
+        context_manager.set_current_flow(sid, None)
+        context_manager.clear_pending_field(sid)
+        return {"answer": "Operación cancelada.", "finish": True}
     pending = ctx.get("pending_field")
     entities = extract_entities_scheduler(user_text, base_dt)
 
@@ -1526,46 +1646,43 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         ctx["mail_cita"] = mail
         save_session(sid, ctx)
         context_manager.clear_pending_field(sid)
-
-        payload = {
-            "slot_id": ctx.get("slot_id"),
-            "usuario_nombre": ctx.get("nombre_cita"),
-            "usuario_mail": ctx.get("mail_cita"),
-        }
-        # Opcionales
-        if ctx.get("whatsapp_cita"):
-            payload["usuario_whatsapp"] = ctx["whatsapp_cita"]
-        if ctx.get("motiv_cita"):
-            payload["motivo"] = ctx["motiv_cita"]
-        if ctx.get("rut_cita"):
-            payload["usuario_rut"] = ctx["rut_cita"]
-        if ctx.get("depto_cita"):
-            payload["departamento_codigo"] = ctx["depto_cita"]
-        import logging
-
-        logger.info(
-            f"[SCHEDULER] Payload enviado a scheduler-reservar_hora: {payload}",
-            extra={"trace_id": sid},
+        ctx["scheduler_awaiting_confirm"] = True
+        save_session(sid, ctx)
+        summary = _format_summary(
+            {
+                "Fecha": ctx.get("bloque_cita", {}).get("fecha"),
+                "Hora": ctx.get("bloque_cita", {}).get("hora"),
+                "Nombre": ctx.get("nombre_cita"),
+                "RUT": ctx.get("rut_cita"),
+                "Departamento": ctx.get("depto_cita"),
+                "Motivo": ctx.get("motiv_cita"),
+                "Whatsapp": ctx.get("whatsapp_cita"),
+                "Email": ctx.get("mail_cita"),
+            }
         )
-        tool_result = call_tool_microservice(
-            "scheduler-reservar_hora", payload, trace_id=sid
-        )
-        logger.info(
-            f"[SCHEDULER] Respuesta recibida de scheduler-reservar_hora: {tool_result}",
-            extra={"trace_id": sid},
-        )
-        err = handle_service_error(tool_result, "scheduler-reservar_hora", sid)
-        if err:
-            context_manager.set_current_flow(sid, None)
-            return {"answer": err["texto"], "finish": True}
-        message = tool_result.get("mensaje", "No se pudo agendar la cita.")
-        context_manager.set_current_flow(sid, None)
-        return {"answer": message, "finish": True}
+        return {"answer": summary + "\n¿Confirmas?", "pending": True}
 
     for field in REQUIRED_FIELDS.get("scheduler-appointment_create", []):
         if not ctx.get(field):
             context_manager.update_pending_field(sid, field)
             return {"answer": FIELD_QUESTIONS.get(field), "pending": True}
+
+    if not ctx.get("scheduler_awaiting_confirm"):
+        ctx["scheduler_awaiting_confirm"] = True
+        save_session(sid, ctx)
+        summary = _format_summary(
+            {
+                "Fecha": ctx.get("bloque_cita", {}).get("fecha"),
+                "Hora": ctx.get("bloque_cita", {}).get("hora"),
+                "Nombre": ctx.get("nombre_cita"),
+                "RUT": ctx.get("rut_cita"),
+                "Departamento": ctx.get("depto_cita"),
+                "Motivo": ctx.get("motiv_cita"),
+                "Whatsapp": ctx.get("whatsapp_cita"),
+                "Email": ctx.get("mail_cita"),
+            }
+        )
+        return {"answer": summary + "\n¿Confirmas?", "pending": True}
 
     return {"answer": "Lo siento, hubo un error interno.", "pending": False}
 
@@ -1771,7 +1888,7 @@ def orchestrate(
             return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
         else:  # cont_complaint
             # Aquí se manejarían los pasos intermedios del reclamo
-            resp = _handle_slot_filling(user_input, sid, ctx)
+            resp = _handle_complaint_flow(user_input, sid, ctx)
             if resp:
                 return resp
 
