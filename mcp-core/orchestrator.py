@@ -1,7 +1,6 @@
 import os
 import sys
 import random
-import json
 import requests
 import httpx
 from requests.auth import HTTPBasicAuth
@@ -58,10 +57,67 @@ from datetime import datetime, date
 from utils.text import normalize_text
 
 
+import json, hashlib
+
+
+def _getenv_bool(name: str, default: bool) -> bool:
+    val = os.getenv(name)
+    if val is None:
+        return default
+    val = val.strip().lower()
+    if val in {"1", "true", "t", "yes", "y"}:
+        return True
+    if val in {"0", "false", "f", "no", "n"}:
+        return False
+    return default
+
+
+TELEMETRY_ENABLED = _getenv_bool("TELEMETRY_ENABLED", True)
+REDACTION_ENABLED = _getenv_bool("REDACTION_ENABLED", True)
+LOG_FORMAT = os.getenv("LOG_FORMAT", "json").strip()
+TRACE_SAMPLING = float(os.getenv("TRACE_SAMPLING", "0.15"))
+TRACE_SALT = os.getenv("TRACE_SALT", "munbot_salt")
+EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", re.IGNORECASE)
+PHONE_RE = re.compile(r"\\b(?:\\+?\\d[\\s-]?){8,15}\\b")
+RUT_RE = re.compile(r"\\b(?:\\d{1,2}\\.\\d{3}\\.\\d{3}-[\\dkK]|\\d{7,8}-[\\dkK])\\b")
+
+
+def _redact(text):
+    if not REDACTION_ENABLED or not isinstance(text, str):
+        return text
+    text = EMAIL_RE.sub("<redacted>", text)
+    text = PHONE_RE.sub("<redacted>", text)
+    text = RUT_RE.sub("<redacted>", text)
+    return text
+
+
+def _sid_hash(session_id):
+    if session_id is None:
+        return ""
+    return hashlib.sha256(f"{TRACE_SALT}:{session_id}".encode()).hexdigest()[:12]
+
+
+def _jlog(logger, event, **fields):
+    if not TELEMETRY_ENABLED:
+        return
+    data = {"event": event}
+    for k, v in fields.items():
+        if k in {"session_id", "sid"}:
+            v = _sid_hash(v)
+            k = "sid"
+        if isinstance(v, str):
+            v = _redact(v)
+        data[k] = v
+    if LOG_FORMAT == "json":
+        logger.info(json.dumps(data, ensure_ascii=False))
+    else:
+        logger.info(f"{event} - {data}")
+
+
 # === Validadores de datos ===
-RUT_RE = re.compile(r"^\d{7,8}-[\dkK]$")
+RUT_VALID_RE = re.compile(r"^\d{7,8}-[\dkK]$")
 MAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
-PHONE_RE = re.compile(r"^\+569\d{8}$")
+PHONE_VALID_RE = re.compile(r"^\+569\d{8}$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
@@ -70,7 +126,7 @@ def _valid_rut(s: str) -> Optional[str]:
     if not s:
         return None
     rut = s.replace(".", "").replace(" ", "").upper()
-    if not RUT_RE.fullmatch(rut):
+    if not RUT_VALID_RE.fullmatch(rut):
         return None
     body, dv = rut.split("-")
     factors = [2, 3, 4, 5, 6, 7]
@@ -97,7 +153,7 @@ def _valid_phone(s: str) -> Optional[str]:
     if not s:
         return None
     phone = s.strip()
-    return phone if PHONE_RE.fullmatch(phone) else None
+    return phone if PHONE_VALID_RE.fullmatch(phone) else None
 
 
 def _valid_date(s: str) -> Optional[str]:
