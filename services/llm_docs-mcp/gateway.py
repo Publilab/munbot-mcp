@@ -1,5 +1,4 @@
 import os
-import json
 import glob
 import logging
 from logging.handlers import RotatingFileHandler
@@ -48,6 +47,63 @@ from intent_classifier import (
     flatten_for_orchestrator,
 )
 from pythonjsonlogger import jsonlogger
+
+
+import json, hashlib
+
+
+def _getenv_bool(name: str, default: bool) -> bool:
+    val = os.getenv(name)
+    if val is None:
+        return default
+    val = val.strip().lower()
+    if val in {"1", "true", "t", "yes", "y"}:
+        return True
+    if val in {"0", "false", "f", "no", "n"}:
+        return False
+    return default
+
+
+TELEMETRY_ENABLED = _getenv_bool("TELEMETRY_ENABLED", True)
+REDACTION_ENABLED = _getenv_bool("REDACTION_ENABLED", True)
+LOG_FORMAT = os.getenv("LOG_FORMAT", "json").strip()
+TRACE_SAMPLING = float(os.getenv("TRACE_SAMPLING", "0.15"))
+TRACE_SALT = os.getenv("TRACE_SALT", "munbot_salt")
+EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE)
+PHONE_RE = re.compile(r"\b(?:\+?\d[\s-]?){8,15}\b")
+RUT_RE = re.compile(r"\b(?:\d{1,2}\.\d{3}\.\d{3}-[\dkK]|\d{7,8}-[\dkK])\b")
+
+
+def _redact(text):
+    if not REDACTION_ENABLED or not isinstance(text, str):
+        return text
+    text = EMAIL_RE.sub("<redacted>", text)
+    text = PHONE_RE.sub("<redacted>", text)
+    text = RUT_RE.sub("<redacted>", text)
+    return text
+
+
+def _sid_hash(session_id):
+    if session_id is None:
+        return ""
+    return hashlib.sha256(f"{TRACE_SALT}:{session_id}".encode()).hexdigest()[:12]
+
+
+def _jlog(event, **fields):
+    if not TELEMETRY_ENABLED:
+        return
+    data = {"event": event}
+    for k, v in fields.items():
+        if k in {"session_id", "sid"}:
+            v = _sid_hash(v)
+            k = "sid"
+        if isinstance(v, str):
+            v = _redact(v)
+        data[k] = v
+    if LOG_FORMAT == "json":
+        logging.getLogger("munbot").info(json.dumps(data, ensure_ascii=False))
+    else:
+        logging.getLogger("munbot").info(f"{event} - {data}")
 
 
 JSON_CALL_RE = re.compile(r'\{[\s\S]*"call"[\s\S]*\}', re.MULTILINE)
