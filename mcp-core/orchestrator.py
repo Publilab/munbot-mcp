@@ -13,7 +13,6 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import re
 import unicodedata
-from email.utils import parseaddr
 from urllib.parse import urlparse
 import redis
 import uuid
@@ -56,9 +55,64 @@ from utils.datetime_utils import (
 )
 from datetime import datetime, date
 
-from utils.phone_utils import validar_telefono_movil
-
 from utils.text import normalize_text
+
+
+# === Validadores de datos ===
+RUT_RE = re.compile(r"^\d{7,8}-[\dkK]$")
+MAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
+PHONE_RE = re.compile(r"^\+569\d{8}$")
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _valid_rut(s: str) -> Optional[str]:
+    """Valida un RUT chileno y lo normaliza."""
+    if not s:
+        return None
+    rut = s.replace(".", "").replace(" ", "").upper()
+    if not RUT_RE.fullmatch(rut):
+        return None
+    body, dv = rut.split("-")
+    factors = [2, 3, 4, 5, 6, 7]
+    total = 0
+    for i, digit in enumerate(reversed(body)):
+        total += int(digit) * factors[i % len(factors)]
+    mod = 11 - (total % 11)
+    dv_calc = "0" if mod == 11 else "K" if mod == 10 else str(mod)
+    if dv_calc != dv:
+        return None
+    return f"{body}-{dv}"
+
+
+def _valid_email(s: str) -> Optional[str]:
+    """Valida el formato de un correo electrónico."""
+    if not s:
+        return None
+    email = s.strip()
+    return email if MAIL_RE.fullmatch(email) else None
+
+
+def _valid_phone(s: str) -> Optional[str]:
+    """Valida un número de teléfono chileno en formato internacional."""
+    if not s:
+        return None
+    phone = s.strip()
+    return phone if PHONE_RE.fullmatch(phone) else None
+
+
+def _valid_date(s: str) -> Optional[str]:
+    """Valida una fecha en formato AAAA-MM-DD."""
+    if not s:
+        return None
+    date_str = s.strip()
+    if not DATE_RE.fullmatch(date_str):
+        return None
+    try:
+        datetime.strptime(date_str, "%Y-%m-%d")
+        return date_str
+    except ValueError:
+        return None
+
 
 # === Feature flags / config ===
 import os
@@ -1240,18 +1294,17 @@ def _handle_complaint_flow(
 
     # RUT
     if pending == "rut":
-        rut = user_input.strip()
-        rut_formateado = validar_y_formatear_rut(rut)
-        if not rut_formateado:
+        rut = _valid_rut(user_input)
+        if not rut:
             return {
                 "respuesta": "El RUT ingresado no es válido. Por favor, ingresa un RUT válido (ej. 12.345.678-5).",
                 "session_id": sid,
                 "pending_field": "rut",
             }
-        ctx["rut"] = rut_formateado
+        ctx["rut"] = rut
         save_session(sid, ctx)
         context_manager.update_context(
-            sid, user_input, f"Perfecto, {ctx['nombre']} ({rut_formateado})."
+            sid, user_input, f"Perfecto, {ctx['nombre']} ({rut})."
         )
         context_manager.update_pending_field(sid, "mensaje")
         return {
@@ -1307,9 +1360,9 @@ def _handle_complaint_flow(
                 "pending_field": "departamento",
             }
 
-    # MAIL (LLM extraction & validation)
+    # MAIL (validación básica)
     if pending == "mail":
-        mail = extract_email_with_llm(user_input)
+        mail = _valid_email(user_input)
         if not mail:
             return {
                 "respuesta": (
@@ -1559,10 +1612,10 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         return {"answer": "\n".join(lines), "pending": True}
 
     if pending == "fecha_cita":
-        fecha = entities.get("fecha")
+        fecha = _valid_date(user_text)
         if not fecha:
             return {
-                "answer": "¿Podrías indicarme la fecha exacta para la cita?",
+                "answer": "¿Podrías indicarme la fecha exacta para la cita? (AAAA-MM-DD)",
                 "pending": True,
             }
         ctx.setdefault("bloque_cita", {})["fecha"] = fecha
@@ -1601,7 +1654,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         return {"answer": FIELD_QUESTIONS["rut_cita"], "pending": True}
 
     if pending == "rut_cita":
-        rut = validar_y_formatear_rut(user_text)
+        rut = _valid_rut(user_text)
         if not rut:
             return {"answer": FIELD_QUESTIONS["rut_cita"], "pending": True}
         ctx["rut_cita"] = rut
@@ -1631,7 +1684,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         return {"answer": FIELD_QUESTIONS["whatsapp_cita"], "pending": True}
 
     if pending == "whatsapp_cita":
-        telefono = validar_telefono_movil(user_text)
+        telefono = _valid_phone(user_text)
         if not telefono:
             return {"answer": FIELD_QUESTIONS["whatsapp_cita"], "pending": True}
         ctx["whatsapp_cita"] = telefono
@@ -1640,7 +1693,7 @@ def _handle_scheduler_flow(sid: str, user_text: str, base_dt: datetime) -> dict:
         return {"answer": FIELD_QUESTIONS["mail_cita"], "pending": True}
 
     if pending == "mail_cita":
-        mail = extract_email_with_llm(user_text)
+        mail = _valid_email(user_text)
         if not mail:
             return {"answer": FIELD_QUESTIONS["mail_cita"], "pending": True}
         ctx["mail_cita"] = mail
@@ -2092,60 +2145,3 @@ if __name__ == "__main__":
             print(f"Error: {e}")
 
 
-# --- Validación y formateo de RUT chileno ---
-
-
-import re
-
-
-def validar_y_formatear_rut(rut: str) -> str:
-    if not rut:
-        return None
-    # Elimina puntos y espacios
-    rut = rut.replace(".", "").replace(" ", "")
-    # Verifica el formato XXXXXXXX-X o XXXXXXX-X
-    if not re.fullmatch(r"\d{7,8}-[\dKk]", rut):
-        return None
-    # Extrae el número y el dígito verificador
-    numero = rut[:-2]
-    dv = rut[-1]
-    # Calcula el dígito verificador
-    suma = 0
-    multiplicador = 2
-    for r in reversed(numero):
-        suma += int(r) * multiplicador
-        multiplicador = multiplicador + 1 if multiplicador < 7 else 2
-    dvr = 11 - (suma % 11)
-    if dvr == 11:
-        dvr = "0"
-    elif dvr == 10:
-        dvr = "K"
-    else:
-        dvr = str(dvr)
-    # Verifica el dígito verificador
-    if dv != dvr:
-        return None
-    return rut
-
-
-def es_email_valido(email: str) -> bool:
-    """Valida el formato de un correo usando email.utils.parseaddr."""
-    if not email:
-        return False
-    # parseaddr devuelve ('', 'addr@example.com') si el email es válido
-    _, addr = parseaddr(email)
-    if not addr or "@" not in addr:
-        return False
-    # comprueba que la parte de dominio tenga al menos un punto
-    dominio = addr.split("@", 1)[1]
-    return "." in dominio
-
-
-def validar_telefono_movil(numero: str) -> Optional[str]:
-    """Valida un número de teléfono chileno. Acepta solo formato internacional +569XXXXXXXX."""
-    if not numero:
-        return None
-    n = numero.strip()
-    if re.fullmatch(r"\+569\d{8}", n):
-        return n
-    return None
