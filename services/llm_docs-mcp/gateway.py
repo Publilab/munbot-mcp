@@ -1093,6 +1093,8 @@ async def agent_mode(req: dict):
                     status_code=400, detail=f"Herramienta no permitida: {tool}"
                 )
 
+            MET_AGENT_DECISIONS.labels(type="tool").inc()
+
             call_count += 1
             if call_count > AGENT_MAX_TOOL_CALLS:
                 logger.error(
