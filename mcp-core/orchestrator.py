@@ -23,6 +23,7 @@ from clients.llm_docs import LlmDocsClient
 from prometheus_client import (
     Counter,
     CollectorRegistry,
+    Histogram,
     generate_latest,
     CONTENT_TYPE_LATEST,
 )
@@ -357,6 +358,26 @@ GENERIC_RAG_COUNTER = Counter(
 GENERIC_RAG_SUCCESS_COUNTER = Counter(
     "munbot_generic_rag_success_total",
     "Consultas genéricas con RAG que devolvieron resultados",
+    registry=PROM_REGISTRY,
+)
+
+MET_INTENT_NA = Counter(
+    "munbot_intent_na_total",
+    "Intenciones n/a",
+    registry=PROM_REGISTRY,
+)
+
+MET_FLOW_LAT = Histogram(
+    "munbot_orchestrate_duration_seconds",
+    "Duración de orchestrate",
+    buckets=(0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8),
+    registry=PROM_REGISTRY,
+)
+
+MET_SUCCESS_BY_CAT = Counter(
+    "munbot_success_by_category_total",
+    "Respuestas exitosas por categoría",
+    ["categoria"],
     registry=PROM_REGISTRY,
 )
 
@@ -1918,6 +1939,7 @@ def orchestrate(
     session_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Orquestador principal refactorizado."""
+    start = time.perf_counter()
     sid = session_id or str(uuid.uuid4())
     trace_id = str(uuid.uuid4())
     context_manager.update_context_data(sid, {"trace_id": trace_id})
@@ -1944,6 +1966,16 @@ def orchestrate(
         norm_intent,
         intent,
     )
+    _jlog(
+        _logger,
+        "intent_classified",
+        intent_raw=raw_intent,
+        intent_norm=norm_intent,
+        categoria=categoria,
+        mapped_action=intent,
+    )
+    if intent == "n/a":
+        MET_INTENT_NA.inc()
 
     raw_entities = classification.get("entities") or {}
     entities = {
@@ -1984,7 +2016,10 @@ def orchestrate(
                         result = _handle_scheduler_flow(
                             sid, user_input, datetime.now(tz=SANTIAGO_TZ)
                         )
-                        return format_response(result, sid, trace_id=sid)
+                        response = format_response(result, sid, trace_id=sid)
+                        MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+                        MET_FLOW_LAT.observe(time.perf_counter() - start)
+                        return response
                     if flow == "complaint":
                         context_manager.set_pending_confirmation(sid, True)
                         context_manager.set_current_flow(sid, "reclamo")
@@ -1996,19 +2031,25 @@ def orchestrate(
                         question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
                         context_manager.update_context(sid, user_input, privacy_msg)
                         context_manager.update_context(sid, "", question_msg)
-                        return {
+                        resp = {
                             "respuestas": [privacy_msg, question_msg],
                             "session_id": sid,
                         }
+                        MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+                        MET_FLOW_LAT.observe(time.perf_counter() - start)
+                        return resp
                 if agent_resp.get("type") == "final":
                     text = agent_resp.get("text") or ""
                     refs = agent_resp.get("references") or agent_resp.get("refs") or []
                     context_manager.update_context(sid, user_input, text)
-                    return {
+                    resp = {
                         "respuesta": text,
                         "fuentes": refs,
                         "session_id": sid,
                     }
+                    MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+                    MET_FLOW_LAT.observe(time.perf_counter() - start)
+                    return resp
 
     # --- 2. ENRUTAMIENTO BASADO EN INTENCIÓN ---
     if intent in {"saludo", "despedida", "agradecimiento"}:
@@ -2022,7 +2063,10 @@ def orchestrate(
             f"[SMALLTALK] Respuesta enviada ({intent})",
             extra={"trace_id": sid, "action": "smalltalk_reply"},
         )
-        return {"respuesta": reply, "session_id": sid}
+        resp = {"respuesta": reply, "session_id": sid}
+        MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+        MET_FLOW_LAT.observe(time.perf_counter() - start)
+        return resp
 
     # --- Flujo de Consulta de Documentos (RAG) ---
     if intent == "ask_document":
@@ -2032,13 +2076,19 @@ def orchestrate(
             extra={"trace_id": sid, "action": "rag_call", "intent_type": categoria},
         )
         # Pasar los dominios al manejador de RAG
-        return handle_document_query(sid, user_input, entities, dominios, categoria)
+        result = handle_document_query(sid, user_input, entities, dominios, categoria)
+        MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+        MET_FLOW_LAT.observe(time.perf_counter() - start)
+        return result
 
     # --- Flujo de Agendamiento de Citas ---
     if intent in ["init_scheduler", "cont_scheduler"]:
         context_manager.set_current_flow(sid, "scheduler")
         result = _handle_scheduler_flow(sid, user_input, datetime.now(tz=SANTIAGO_TZ))
-        return format_response(result, sid, trace_id=sid)
+        response = format_response(result, sid, trace_id=sid)
+        MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+        MET_FLOW_LAT.observe(time.perf_counter() - start)
+        return response
 
     # --- Flujo de Registro de Reclamos ---
     if intent in ["init_complaint", "cont_complaint"]:
@@ -2054,11 +2104,16 @@ def orchestrate(
             question_msg = "¿Te gustaría registrar el reclamo en estos momentos?"
             context_manager.update_context(sid, user_input, privacy_msg)
             context_manager.update_context(sid, "", question_msg)
-            return {"respuestas": [privacy_msg, question_msg], "session_id": sid}
+            resp = {"respuestas": [privacy_msg, question_msg], "session_id": sid}
+            MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+            MET_FLOW_LAT.observe(time.perf_counter() - start)
+            return resp
         else:  # cont_complaint
             # Aquí se manejarían los pasos intermedios del reclamo
             resp = _handle_complaint_flow(user_input, sid, ctx)
             if resp:
+                MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+                MET_FLOW_LAT.observe(time.perf_counter() - start)
                 return resp
 
     if intent == "n/a":
@@ -2067,14 +2122,19 @@ def orchestrate(
         ok, data = try_rag_probe(user_input)
         if ok and isinstance(data, dict):
             # SUPOSICIÓN: formateador; en su defecto, devolvemos data "tal cual"
-            return {
+            resp = {
                 "respuesta": data.get("answer") or data.get("respuesta") or " ",
                 "fuentes": data.get("sources") or data.get("fragments") or [],
                 "session_id": sid,
             }
+            MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
+            MET_FLOW_LAT.observe(time.perf_counter() - start)
+            return resp
 
     # --- Manejo de Casos No Entendidos o Fallback ---
-    return handle_fallback(sid, user_input)
+    resp = handle_fallback(sid, user_input)
+    MET_FLOW_LAT.observe(time.perf_counter() - start)
+    return resp
 
 
 def handle_document_query(
@@ -2172,8 +2232,6 @@ class OrchestratorInput(BaseModel):
     context: Optional[Dict[str, Any]] = None
     session_id: Optional[str] = None
     channel: Optional[str] = None
-
-
 @app.post("/orchestrate")
 def orchestrate_api(input: OrchestratorInput, request: Request):
     """
