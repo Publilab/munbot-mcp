@@ -72,6 +72,7 @@ TRACE_SALT = os.getenv("TRACE_SALT", "munbot_salt")
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE)
 PHONE_RE = re.compile(r"\b(?:\+?\d[\s-]?){8,15}\b")
 RUT_RE = re.compile(r"\b(?:\d{1,2}\.\d{3}\.\d{3}-[\dkK]|\d{7,8}-[\dkK])\b")
+PROMETHEUS_ENABLED = _getenv_bool("PROMETHEUS_ENABLED", False)
 
 
 def _redact(text):
@@ -551,6 +552,50 @@ ERROR_COUNTER = Counter(
     registry=PROM_REGISTRY,
 )
 
+MET_AGENT_DECISIONS = Counter(
+    "munbot_agent_decisions_total",
+    "Decisiones del agente",
+    ["type"],
+    registry=PROM_REGISTRY,
+)
+MET_HANDOVERS = Counter(
+    "munbot_handovers_total",
+    "Handovers emitidos",
+    ["flow"],
+    registry=PROM_REGISTRY,
+)
+MET_RAG_HITS = Counter(
+    "munbot_rag_hits_total",
+    "Consultas RAG por categoría y éxito",
+    ["categoria", "hit"],
+    registry=PROM_REGISTRY,
+)
+MET_AGENT_LATENCY = Histogram(
+    "munbot_agent_duration_seconds",
+    "Duración del ciclo del agente",
+    buckets=(0.1, 0.2, 0.5, 1, 2, 4, 8, 16),
+    registry=PROM_REGISTRY,
+)
+MET_TOOLS_CALL_LATENCY = Histogram(
+    "munbot_tools_call_duration_seconds",
+    "Latencia de /tools/call",
+    buckets=(0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8),
+    registry=PROM_REGISTRY,
+)
+
+
+class ToolsCallLatencyMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        if PROMETHEUS_ENABLED and request.url.path == "/tools/call":
+            start = time.perf_counter()
+            response = await call_next(request)
+            MET_TOOLS_CALL_LATENCY.observe(time.perf_counter() - start)
+            return response
+        return await call_next(request)
+
+
+app.add_middleware(ToolsCallLatencyMiddleware)
+
 # === Métrica de latencia RAG para auditoría ===
 rag_latency = Histogram(
     "rag_latency_seconds",
@@ -862,7 +907,9 @@ async def generar_respuesta_llm(
                 ref = payload.get("doc") or payload.get("fuente")
                 if ref:
                     referencias.append(ref)
-
+        MET_RAG_HITS.labels(
+            categoria=categoria or "unknown", hit="1" if hits else "0"
+        ).inc()
         return {
             "respuesta": respuesta,
             "referencias": list(set(referencias)),
@@ -871,6 +918,7 @@ async def generar_respuesta_llm(
 
     collection_name, _ = rag._category_config(categoria)
     if not query:
+        MET_RAG_HITS.labels(categoria=categoria or "unknown", hit="0").inc()
         return {"respuesta": "", "referencias": [], "no_results": True}
 
     try:
@@ -886,6 +934,7 @@ async def generar_respuesta_llm(
         ERROR_COUNTER.labels(
             intent="doc-generar_respuesta_llm", categoria=categoria or "unknown"
         ).inc()
+        MET_RAG_HITS.labels(categoria=categoria or "unknown", hit="0").inc()
         return {"respuesta": "", "referencias": [], "no_results": True}
 
     referencias: list[str] = []
@@ -909,7 +958,9 @@ async def generar_respuesta_llm(
             "fragments": referencias,
         },
     )
-
+    MET_RAG_HITS.labels(
+        categoria=categoria or "unknown", hit="1" if hit else "0"
+    ).inc()
     return {
         "respuesta": result.get("respuesta", ""),
         "referencias": list(set(referencias)),
@@ -932,6 +983,7 @@ async def handle_scheduler_handover(params: dict, hints: dict):
                 response.raise_for_status()
         except Exception:
             logger.warning("scheduler health check failed")
+    MET_HANDOVERS.labels(flow="scheduler").inc()
     return {"type": "handover", "flow": "scheduler"}
 
 
@@ -943,6 +995,7 @@ async def handle_complaint_handover(params: dict, hints: dict):
                 response.raise_for_status()
         except Exception:
             logger.warning("complaints health check failed")
+    MET_HANDOVERS.labels(flow="complaint").inc()
     return {"type": "handover", "flow": "complaint"}
 
 
@@ -1000,6 +1053,8 @@ async def agent_mode(req: dict):
                     "agent.llm_error",
                     extra={"trace_id": trace_id, "step": call_count, "duration_ms": duration_ms},
                 )
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
                 return {"type": "error", "error": str(e)}
             logger.info(
                 "agent.step",
@@ -1013,6 +1068,8 @@ async def agent_mode(req: dict):
                     "agent.final",
                     extra={"trace_id": trace_id, "duration_ms": duration_ms},
                 )
+                MET_AGENT_DECISIONS.labels(type="final").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
                 return {"content": text}
 
             tool, params = parsed
@@ -1070,6 +1127,8 @@ async def agent_mode(req: dict):
                     "agent.handler_error",
                     extra={"trace_id": trace_id, "tool": tool, "duration_ms": duration_ms},
                 )
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
                 return {"type": "error", "error": str(e)}
 
             if isinstance(result, dict) and result.get("type") == "handover":
@@ -1084,6 +1143,9 @@ async def agent_mode(req: dict):
                     "agent.handover",
                     extra={"trace_id": trace_id, "duration_ms": dt},
                 )
+                MET_HANDOVERS.labels(flow=result.get("flow", "unknown")).inc()
+                MET_AGENT_DECISIONS.labels(type="handover").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
                 return result
 
             conversation.append({"role": "assistant", "content": text})
@@ -1096,6 +1158,8 @@ async def agent_mode(req: dict):
             "agent.error",
             extra={"trace_id": trace_id, "duration_ms": duration_ms},
         )
+        MET_AGENT_DECISIONS.labels(type="error").inc()
+        MET_AGENT_LATENCY.observe(time.time() - start_time)
         return {"type": "error", "error": str(e)}
 
 
@@ -1289,7 +1353,9 @@ def list_endpoints():
 
 @app.get("/metrics")
 def metrics():
-    return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
+    if PROMETHEUS_ENABLED:
+        return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
+    raise HTTPException(status_code=404, detail="Prometheus metrics disabled")
 
 @app.post("/process", dependencies=[Depends(authenticate)])
 def process(data: dict):
