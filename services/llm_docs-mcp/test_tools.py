@@ -12,6 +12,7 @@ import asyncio
 os.environ["ALLOWED_IPS"] = "testclient,127.0.0.1"
 os.environ["LLM_DOCS_API_KEY"] = "test-key"
 os.environ["LLAMA_MOCK"] = "1"
+os.environ["PROMETHEUS_ENABLED"] = "1"
 
 # Stub llama_cpp to avoid heavy dependency in tests
 fake_llama = types.ModuleType("llama_cpp")

@@ -69,6 +69,7 @@ REDACTION_ENABLED = _getenv_bool("REDACTION_ENABLED", True)
 LOG_FORMAT = os.getenv("LOG_FORMAT", "json").strip()
 TRACE_SAMPLING = float(os.getenv("TRACE_SAMPLING", "0.15"))
 TRACE_SALT = os.getenv("TRACE_SALT", "munbot_salt")
+PROMETHEUS_ENABLED = _getenv_bool("PROMETHEUS_ENABLED", False)
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", re.IGNORECASE)
 PHONE_RE = re.compile(r"\b(?:\+?\d[\s-]?){8,15}\b")
 RUT_RE = re.compile(r"\b(?:\d{1,2}\.\d{3}\.\d{3}-[\dkK]|\d{7,8}-[\dkK])\b")
@@ -485,6 +486,19 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
 app.add_middleware(IPWhitelistMiddleware)
 
 
+class ToolsCallMetricsMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        if request.url.path == "/tools/call":
+            start = time.time()
+            response = await call_next(request)
+            MET_TOOLS_CALL_LATENCY.observe(time.time() - start)
+            return response
+        return await call_next(request)
+
+
+app.add_middleware(ToolsCallMetricsMiddleware)
+
+
 def authenticate(request: Request):
     api_key = request.headers.get(API_KEY_NAME)
     if LLM_DOCS_API_KEY and api_key == LLM_DOCS_API_KEY:
@@ -548,6 +562,36 @@ ERROR_COUNTER = Counter(
     "munbot_errors_total",
     "Número de errores de microservicios",
     ["intent", "categoria"],
+    registry=PROM_REGISTRY,
+)
+MET_AGENT_DECISIONS = Counter(
+    "munbot_agent_decisions_total",
+    "Decisiones del agente",
+    ["type"],
+    registry=PROM_REGISTRY,
+)
+MET_HANDOVERS = Counter(
+    "munbot_handovers_total",
+    "Handovers emitidos",
+    ["flow"],
+    registry=PROM_REGISTRY,
+)
+MET_RAG_HITS = Counter(
+    "munbot_rag_hits_total",
+    "Consultas RAG por categoría y éxito",
+    ["categoria", "hit"],
+    registry=PROM_REGISTRY,
+)
+MET_AGENT_LATENCY = Histogram(
+    "munbot_agent_duration_seconds",
+    "Duración del ciclo del agente",
+    buckets=(0.1, 0.2, 0.5, 1, 2, 4, 8, 16),
+    registry=PROM_REGISTRY,
+)
+MET_TOOLS_CALL_LATENCY = Histogram(
+    "munbot_tools_call_duration_seconds",
+    "Latencia de /tools/call",
+    buckets=(0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8),
     registry=PROM_REGISTRY,
 )
 
@@ -862,7 +906,10 @@ async def generar_respuesta_llm(
                 ref = payload.get("doc") or payload.get("fuente")
                 if ref:
                     referencias.append(ref)
-
+        hit = bool(hits)
+        MET_RAG_HITS.labels(
+            categoria=categoria or "unknown", hit=str(hit).lower()
+        ).inc()
         return {
             "respuesta": respuesta,
             "referencias": list(set(referencias)),
@@ -898,6 +945,9 @@ async def generar_respuesta_llm(
             referencias.append(fuente)
 
     hit = bool(result.get("respuesta"))
+    MET_RAG_HITS.labels(
+        categoria=categoria or "unknown", hit=str(hit).lower()
+    ).inc()
     logger.info(
         "Respuesta generada",
         extra={
@@ -932,6 +982,7 @@ async def handle_scheduler_handover(params: dict, hints: dict):
                 response.raise_for_status()
         except Exception:
             logger.warning("scheduler health check failed")
+    MET_HANDOVERS.labels(flow="scheduler").inc()
     return {"type": "handover", "flow": "scheduler"}
 
 
@@ -943,6 +994,7 @@ async def handle_complaint_handover(params: dict, hints: dict):
                 response.raise_for_status()
         except Exception:
             logger.warning("complaints health check failed")
+    MET_HANDOVERS.labels(flow="complaint").inc()
     return {"type": "handover", "flow": "complaint"}
 
 
@@ -995,7 +1047,10 @@ async def agent_mode(req: dict):
                     AGENT_MAX_RETRIES,
                 )
             except Exception as e:
-                duration_ms = int((time.time() - start_time) * 1000)
+                duration = time.time() - start_time
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(duration)
+                duration_ms = int(duration * 1000)
                 logger.exception(
                     "agent.llm_error",
                     extra={"trace_id": trace_id, "step": call_count, "duration_ms": duration_ms},
@@ -1008,7 +1063,10 @@ async def agent_mode(req: dict):
 
             parsed = try_parse_call(text)
             if not parsed:
-                duration_ms = int((time.time() - start_time) * 1000)
+                duration = time.time() - start_time
+                MET_AGENT_DECISIONS.labels(type="final").inc()
+                MET_AGENT_LATENCY.observe(duration)
+                duration_ms = int(duration * 1000)
                 logger.info(
                     "agent.final",
                     extra={"trace_id": trace_id, "duration_ms": duration_ms},
@@ -1017,15 +1075,17 @@ async def agent_mode(req: dict):
 
             tool, params = parsed
             if tool not in allowed_names:
-                logger.error(
-                    "tool_not_allowed", extra={"trace_id": trace_id, "tool": tool}
-                )
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
+                logger.error("tool_not_allowed", extra={"trace_id": trace_id, "tool": tool})
                 raise HTTPException(
                     status_code=400, detail=f"Herramienta no permitida: {tool}"
                 )
 
             call_count += 1
             if call_count > AGENT_MAX_TOOL_CALLS:
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
                 logger.error(
                     "max_tool_calls_exceeded",
                     extra={"trace_id": trace_id, "limit": AGENT_MAX_TOOL_CALLS},
@@ -1038,6 +1098,8 @@ async def agent_mode(req: dict):
             try:
                 validate_params(tool, params)
             except HTTPException as e:
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
                 logger.error(
                     "schema_invalid",
                     extra={"trace_id": trace_id, "tool": tool, "detail": e.detail},
@@ -1046,9 +1108,9 @@ async def agent_mode(req: dict):
 
             handler = TOOLS[tool].get("handler")
             if handler is None:
-                logger.error(
-                    "handler_not_found", extra={"trace_id": trace_id, "tool": tool}
-                )
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(time.time() - start_time)
+                logger.error("handler_not_found", extra={"trace_id": trace_id, "tool": tool})
                 raise HTTPException(
                     status_code=500, detail=f"Handler no encontrado: {tool}"
                 )
@@ -1058,6 +1120,7 @@ async def agent_mode(req: dict):
                 if inspect.iscoroutinefunction(handler)
                 else lambda: asyncio.to_thread(handler, params, hints)
             )
+            MET_AGENT_DECISIONS.labels(type="tool_call").inc()
             try:
                 result = await with_timeout_retry(
                     handler_coro,
@@ -1065,7 +1128,10 @@ async def agent_mode(req: dict):
                     AGENT_MAX_RETRIES,
                 )
             except Exception as e:
-                duration_ms = int((time.time() - start_time) * 1000)
+                duration = time.time() - start_time
+                MET_AGENT_DECISIONS.labels(type="error").inc()
+                MET_AGENT_LATENCY.observe(duration)
+                duration_ms = int(duration * 1000)
                 logger.exception(
                     "agent.handler_error",
                     extra={"trace_id": trace_id, "tool": tool, "duration_ms": duration_ms},
@@ -1073,7 +1139,11 @@ async def agent_mode(req: dict):
                 return {"type": "error", "error": str(e)}
 
             if isinstance(result, dict) and result.get("type") == "handover":
-                dt = int((time.time() - start_time) * 1000)
+                duration = time.time() - start_time
+                MET_AGENT_DECISIONS.labels(type="handover").inc()
+                MET_HANDOVERS.labels(flow=result.get("flow", "unknown")).inc()
+                MET_AGENT_LATENCY.observe(duration)
+                dt = int(duration * 1000)
                 _logger.info("handover.emitted flow=%s source=agent", result.get("flow"))
                 _logger.info(
                     "agent.handover flow=%s duration_ms=%s",
@@ -1091,7 +1161,10 @@ async def agent_mode(req: dict):
                 {"role": "tool", "name": tool, "content": json.dumps(result)}
             )
     except Exception as e:
-        duration_ms = int((time.time() - start_time) * 1000)
+        duration = time.time() - start_time
+        MET_AGENT_DECISIONS.labels(type="error").inc()
+        MET_AGENT_LATENCY.observe(duration)
+        duration_ms = int(duration * 1000)
         logger.exception(
             "agent.error",
             extra={"trace_id": trace_id, "duration_ms": duration_ms},
@@ -1289,7 +1362,9 @@ def list_endpoints():
 
 @app.get("/metrics")
 def metrics():
-    return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
+    if PROMETHEUS_ENABLED:
+        return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
+    raise HTTPException(status_code=404, detail="Prometheus deshabilitado")
 
 @app.post("/process", dependencies=[Depends(authenticate)])
 def process(data: dict):
