@@ -3,7 +3,7 @@ services:
     build: ./gateways/evolution-api
     container_name: evolution-api
     env_file:
-      - ./gateways/evolution-api/.env
+      - ./.env
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -28,7 +28,7 @@ services:
     build: ./gateways/evolution-manager
     container_name: evolution-manager
     env_file:
-      - ./gateways/evolution-manager/.env
+      - ./.env
     ports:
       - "9615:9615"
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
       dockerfile: Dockerfile
     container_name: web-interface
     env_file:
-      - ./gateways/web-interface/.env
+      - ./.env
     ports:
       - "3000:3000"
     environment:
@@ -61,7 +61,7 @@ services:
     image: postgres:14
     container_name: postgres
     env_file:
-      - ./databases/.env
+      - ./.env
     ports:
       - "5432:5432"
     volumes:
@@ -110,7 +110,7 @@ services:
       dockerfile: mcp-core/Dockerfile
     container_name: mcp-core
     env_file:
-      - ./mcp-core/.env
+      - ./.env
     environment:
       - PYTHONPATH=/app
       - REDIS_HOST=redis
@@ -153,7 +153,7 @@ services:
       dockerfile: Dockerfile
     container_name: complaints-mcp
     env_file:
-      - ./services/complaints-mcp/.env
+      - ./.env
     environment:
       - REDIS_HOST=redis
       # Variable para el remitente del correo
@@ -178,7 +178,7 @@ services:
       dockerfile: services/llm_docs-mcp/Dockerfile
     container_name: llm_docs-mcp
     env_file:
-      - ./services/llm_docs-mcp/.env
+      - ./.env
     environment:
       - AUTO_INDEX=1
       - COLLECTION=munbot_docs
@@ -226,7 +226,7 @@ services:
       dockerfile: Dockerfile
     container_name: scheduler-mcp
     env_file:
-      - ./services/scheduler-mcp/.env
+      - ./.env
     environment:
       - REDIS_HOST=redis
       # Variable para el remitente del correo
