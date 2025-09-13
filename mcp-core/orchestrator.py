@@ -1944,6 +1944,19 @@ def orchestrate(
     trace_id = str(uuid.uuid4())
     context_manager.update_context_data(sid, {"trace_id": trace_id})
 
+    trace_on = random.random() < TRACE_SAMPLING
+    if trace_on:
+        _jlog(_logger, "trace.begin", session_id=sid)
+        _jlog(_logger, "trace.turn", session_id=sid, user=user_input)
+
+    def _trace_end(resp: Dict[str, Any]) -> Dict[str, Any]:
+        if trace_on:
+            answer = resp.get("respuesta") or resp.get("answer") or ""
+            if not answer and isinstance(resp.get("respuestas"), list):
+                answer = " | ".join(resp["respuestas"])
+            _jlog(_logger, "trace.end", session_id=sid, answer=answer)
+        return resp
+
     ctx = context_manager.get_context(sid) or {}
 
     # --- 1. CLASIFICACIÓN DE INTENCIÓN ---
@@ -2019,7 +2032,7 @@ def orchestrate(
                         response = format_response(result, sid, trace_id=sid)
                         MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
                         MET_FLOW_LAT.observe(time.perf_counter() - start)
-                        return response
+                        return _trace_end(response)
                     if flow == "complaint":
                         context_manager.set_pending_confirmation(sid, True)
                         context_manager.set_current_flow(sid, "reclamo")
@@ -2037,7 +2050,7 @@ def orchestrate(
                         }
                         MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
                         MET_FLOW_LAT.observe(time.perf_counter() - start)
-                        return resp
+                        return _trace_end(resp)
                 if agent_resp.get("type") == "final":
                     text = agent_resp.get("text") or ""
                     refs = agent_resp.get("references") or agent_resp.get("refs") or []
@@ -2049,7 +2062,7 @@ def orchestrate(
                     }
                     MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
                     MET_FLOW_LAT.observe(time.perf_counter() - start)
-                    return resp
+                    return _trace_end(resp)
 
     # --- 2. ENRUTAMIENTO BASADO EN INTENCIÓN ---
     if intent in {"saludo", "despedida", "agradecimiento"}:
@@ -2066,7 +2079,7 @@ def orchestrate(
         resp = {"respuesta": reply, "session_id": sid}
         MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
         MET_FLOW_LAT.observe(time.perf_counter() - start)
-        return resp
+        return _trace_end(resp)
 
     # --- Flujo de Consulta de Documentos (RAG) ---
     if intent == "ask_document":
@@ -2079,7 +2092,7 @@ def orchestrate(
         result = handle_document_query(sid, user_input, entities, dominios, categoria)
         MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
         MET_FLOW_LAT.observe(time.perf_counter() - start)
-        return result
+        return _trace_end(result)
 
     # --- Flujo de Agendamiento de Citas ---
     if intent in ["init_scheduler", "cont_scheduler"]:
@@ -2088,7 +2101,7 @@ def orchestrate(
         response = format_response(result, sid, trace_id=sid)
         MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
         MET_FLOW_LAT.observe(time.perf_counter() - start)
-        return response
+        return _trace_end(response)
 
     # --- Flujo de Registro de Reclamos ---
     if intent in ["init_complaint", "cont_complaint"]:
@@ -2107,14 +2120,14 @@ def orchestrate(
             resp = {"respuestas": [privacy_msg, question_msg], "session_id": sid}
             MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
             MET_FLOW_LAT.observe(time.perf_counter() - start)
-            return resp
+            return _trace_end(resp)
         else:  # cont_complaint
             # Aquí se manejarían los pasos intermedios del reclamo
             resp = _handle_complaint_flow(user_input, sid, ctx)
             if resp:
                 MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
                 MET_FLOW_LAT.observe(time.perf_counter() - start)
-                return resp
+                return _trace_end(resp)
 
     if intent == "n/a":
         # Antes de rendirse, intentemos RAG de bajo costo
@@ -2129,12 +2142,12 @@ def orchestrate(
             }
             MET_SUCCESS_BY_CAT.labels(categoria=categoria).inc()
             MET_FLOW_LAT.observe(time.perf_counter() - start)
-            return resp
+            return _trace_end(resp)
 
     # --- Manejo de Casos No Entendidos o Fallback ---
     resp = handle_fallback(sid, user_input)
     MET_FLOW_LAT.observe(time.perf_counter() - start)
-    return resp
+    return _trace_end(resp)
 
 
 def handle_document_query(
