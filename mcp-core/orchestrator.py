@@ -194,6 +194,9 @@ AGENT_MAX_TOOL_CALLS = _getenv_int("AGENT_MAX_TOOL_CALLS", 2)
 RAG_COLLECTION_FAQ = _getenv_str("RAG_COLLECTION_FAQ", "faq")
 RAG_COLLECTION_TRAMITES = _getenv_str("RAG_COLLECTION_TRAMITES", "tramites")
 RAG_COLLECTION_NORMATIVA = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
+AGENT_CANARY_RATIO = float(os.getenv("AGENT_CANARY_RATIO", "0"))
+AGENT_CANARY_HEADER_KEY = os.getenv("AGENT_CANARY_HEADER_KEY", "x-agent-canary")
+AGENT_CANARY_HEADER_ON = os.getenv("AGENT_CANARY_HEADER_ON", "1")
 
 _logger = logging.getLogger("orchestrator")
 _logger.info(
@@ -208,6 +211,17 @@ _logger.info(
 )
 
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
+
+
+def _should_use_canary(session_id: str | None, force_canary: bool) -> bool:
+    if force_canary:
+        return True
+    if AGENT_CANARY_RATIO <= 0:
+        return False
+    if not session_id:
+        return random.random() < AGENT_CANARY_RATIO
+    h = hash(session_id) % 1000
+    return (h / 1000.0) < AGENT_CANARY_RATIO
 
 
 # === Configuración ===
@@ -1937,6 +1951,7 @@ def orchestrate(
     user_input: str,
     extra_context: Optional[Dict[str, Any]] = None,
     session_id: Optional[str] = None,
+    force_canary: bool = False,
 ) -> Dict[str, Any]:
     """Orquestador principal refactorizado."""
     start = time.perf_counter()
@@ -1971,6 +1986,7 @@ def orchestrate(
     multi_intent = _is_multi_intent(user_input)
     low_conf = _low_confidence(classification)
     use_agent = bool(AGENT_MODE and not multi_intent and not low_conf)
+    use_agent = use_agent or _should_use_canary(sid, force_canary)
 
     intent = INTENT_MAP.get(norm_intent, "n/a")
     _logger.info(
@@ -2256,7 +2272,16 @@ def orchestrate_api(input: OrchestratorInput, request: Request):
         extra_context = input.context or {}
         if ip:
             extra_context["ip"] = ip
-        result = orchestrate(input.pregunta, extra_context, input.session_id)
+        headers = request.headers if request else {}
+        force_canary = (
+            headers.get(AGENT_CANARY_HEADER_KEY) == AGENT_CANARY_HEADER_ON
+        )
+        result = orchestrate(
+            input.pregunta,
+            extra_context,
+            input.session_id,
+            force_canary,
+        )
         if result is None:
             logger.error("Tool handler returned None")
             return {"answer": "Lo siento, hubo un error interno."}
