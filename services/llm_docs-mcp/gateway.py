@@ -10,6 +10,7 @@ import requests
 import httpx
 import asyncio
 import inspect
+import random
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from fastapi import FastAPI, HTTPException, Request, Depends, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -871,6 +872,17 @@ async def generar_respuesta_llm(
         intent="doc-generar_respuesta_llm", categoria=categoria or "unknown"
     ).inc()
 
+    trace_on = random.random() < TRACE_SAMPLING
+    if trace_on:
+        _jlog("trace.begin", session_id=trace_id)
+        _jlog("trace.turn", session_id=trace_id, query=query)
+
+    def _trace_end(resp: dict) -> dict:
+        if trace_on:
+            ans = resp.get("respuesta") or ""
+            _jlog("trace.end", session_id=trace_id, respuesta=ans)
+        return resp
+
     if os.getenv("RAG_CATEGORY_AWARE") not in (None, "", "0", "false", "False"):
         collection, filtro, prompt_tpl = _select_collection_and_prompt(categoria)
         try:
@@ -910,16 +922,16 @@ async def generar_respuesta_llm(
         MET_RAG_HITS.labels(
             categoria=categoria or "unknown", hit="1" if hits else "0"
         ).inc()
-        return {
+        return _trace_end({
             "respuesta": respuesta,
             "referencias": list(set(referencias)),
             "no_results": not hits,
-        }
+        })
 
     collection_name, _ = rag._category_config(categoria)
     if not query:
         MET_RAG_HITS.labels(categoria=categoria or "unknown", hit="0").inc()
-        return {"respuesta": "", "referencias": [], "no_results": True}
+        return _trace_end({"respuesta": "", "referencias": [], "no_results": True})
 
     try:
         result = rag.doc_generar_respuesta_llm_with_sources(
@@ -935,7 +947,7 @@ async def generar_respuesta_llm(
             intent="doc-generar_respuesta_llm", categoria=categoria or "unknown"
         ).inc()
         MET_RAG_HITS.labels(categoria=categoria or "unknown", hit="0").inc()
-        return {"respuesta": "", "referencias": [], "no_results": True}
+        return _trace_end({"respuesta": "", "referencias": [], "no_results": True})
 
     referencias: list[str] = []
     for fuente in result.get("fuentes") or []:
@@ -961,11 +973,11 @@ async def generar_respuesta_llm(
     MET_RAG_HITS.labels(
         categoria=categoria or "unknown", hit="1" if hit else "0"
     ).inc()
-    return {
+    return _trace_end({
         "respuesta": result.get("respuesta", ""),
         "referencias": list(set(referencias)),
         "no_results": not hit,
-    }
+    })
 
 
 async def handle_rag_call(params, hints):
