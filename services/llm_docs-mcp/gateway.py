@@ -489,10 +489,11 @@ app.add_middleware(IPWhitelistMiddleware)
 class ToolsCallMetricsMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         if request.url.path == "/tools/call":
-            start = time.time()
-            response = await call_next(request)
-            MET_TOOLS_CALL_LATENCY.observe(time.time() - start)
-            return response
+            start = time.perf_counter()
+            try:
+                return await call_next(request)
+            finally:
+                MET_TOOLS_CALL_LATENCY.observe(time.perf_counter() - start)
         return await call_next(request)
 
 
