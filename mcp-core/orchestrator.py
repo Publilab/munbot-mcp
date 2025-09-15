@@ -19,9 +19,9 @@ import threading
 import time
 import concurrent.futures
 from .context_manager import ConversationalContextManager
-from clients.llm_docs import LlmDocsClient
-from intent_audit import audit_intent  # auditoría de intents
-from prometheus_client import (
+from .clients.llm_docs import LlmDocsClient
+from .intent_audit import audit_intent  # auditoría de intents
+from .prometheus_client import (
     Counter,
     CollectorRegistry,
     Histogram,
@@ -29,8 +29,8 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 
-from utils.cache import make_answer_cache_key
-from settings import (
+from .utils.cache import make_answer_cache_key
+from .settings import (
     ANSWER_CACHE_TTL_CONTACT,
     ANSWER_CACHE_TTL_DEFAULT,
     ANSWER_CACHE_TTL_GENERIC,
@@ -61,8 +61,8 @@ TRACE_SAMPLING = float(os.getenv("TRACE_SAMPLING", "0.15"))
 TRACE_SALT = os.getenv("TRACE_SALT", "munbot_salt")
 
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}", re.IGNORECASE)
-PHONE_RE = re.compile(r"\\b(?:\\+?\\d[\\s-]?){8,15}\\b")
-RUT_RE = re.compile(r"\\b(?:\\d{1,2}\\.\\d{3}\\.\\d{3}-[\\dkK]|\\d{7,8}-[\\dkK])\\b")
+PHONE_RE = re.compile(r"\\b(?:\\+?\d[\s-]?){8,15}\b")
+RUT_RE = re.compile(r"\\b(?:\d{1,2}\.\d{3}\.\d{3}-[\dkK]|\d{7,8}-[\dkK])\b")
 
 def _redact(text):
     if not REDACTION_ENABLED or not isinstance(text, str):
@@ -96,7 +96,7 @@ def _jlog(logger, event, **fields):
 _jlog(_logger, "features.boot", agent_mode=AGENT_MODE, rag_category_aware=RAG_CATEGORY_AWARE)
 
 try:
-    from utils.human import registrar_evento_humano
+    from .utils.human import registrar_evento_humano
 except Exception:  # pragma: no cover - allow tests to run without full package
 
     def registrar_evento_humano(
@@ -105,17 +105,18 @@ except Exception:  # pragma: no cover - allow tests to run without full package
         pass
 
 
-from utils.parser import parse_date_time
-from utils.audit import audit_step
+from .utils.parser import parse_date_time
+from .utils.audit import audit_step
 from zoneinfo import ZoneInfo
-from utils.datetime_utils import (
+from .utils.datetime_utils import (
     parse_nl_datetime,
     compute_relative_date,
     compute_last_business_day,
 )
 from datetime import datetime, date
 
-from utils.text import normalize_text
+from .utils.text import normalize_text
+
 
 
 import json, hashlib
