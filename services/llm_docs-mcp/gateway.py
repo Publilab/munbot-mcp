@@ -297,88 +297,38 @@ async def generar_respuesta_llm(query: str, top_k: int = 5, categoria: str | Non
     collection = None
     filtro = None
     prompt_tpl = None
-
     if RAG_CATEGORY_AWARE and categoria:
         collection, filtro, prompt_tpl = _select_collection_and_prompt(categoria)
-        _logger.info(
-            "RAG category-aware ON | categoria=%s mode=%s collection=%s filtro=%s",
-            categoria,
-            RAG_SELECTION_MODE,
-            collection,
-            filtro,
-        )
+        _logger.info("RAG category-aware ON | categoria=%s mode=%s collection=%s filtro=%s",
+                     categoria, RAG_SELECTION_MODE, collection, filtro)
     else:
         _logger.info("RAG category-aware OFF | usando configuración legacy")
 
-    # Legacy: usa implementación previa del módulo rag
-    if not (RAG_CATEGORY_AWARE and categoria):
-        resp = rag.doc_generar_respuesta_llm_with_sources(
-            pregunta=query, categoria=categoria
-        )
-        fuentes = resp.get("fuentes") or []
-        # Normaliza referencias a lista legible
-        refs = []
-        for f in fuentes:
-            if isinstance(f, dict):
-                refs.append(f.get("doc") or f.get("source") or f.get("titulo"))
-            else:
-                refs.append(str(f))
-        return {"respuesta": resp.get("respuesta", ""), "referencias": refs}
-
-    # 1) Recuperar contexto (primero por categoría; si no hay hits, cae a legacy)
-    chunks: list[dict] = []
-    contexto_text: str | None = None
+    # 1) recuperar contexto (intenta por categoría y cae a legacy si no hay hits)
+    chunks = []
     try:
         if RAG_CATEGORY_AWARE and (collection or filtro):
-            res = retrieve_context(query, top_k=top_k, collection=collection, filtro=filtro)  # type: ignore
-            if inspect.isawaitable(res):  # pragma: no cover
-                res = await res  # type: ignore
-            if isinstance(res, tuple) and len(res) >= 2:
-                contexto_text, chunks = res[0], list(res[1])
-            else:
-                chunks = list(res) if isinstance(res, list) else []  # type: ignore
+            chunks = await retrieve_context(query, top_k=top_k, collection=collection, filtro=filtro)
     except Exception as e:
         _logger.warning("retrieve_context con categoría falló: %s", e)
         chunks = []
-
     if not chunks:
-        # Fallback a retrieve_context sin categoría si existe
-        try:
-            res = retrieve_context(query, top_k=top_k)  # type: ignore
-            if inspect.isawaitable(res):  # pragma: no cover
-                res = await res  # type: ignore
-            if isinstance(res, tuple) and len(res) >= 2:
-                contexto_text, chunks = res[0], list(res[1])
-            else:
-                chunks = list(res) if isinstance(res, list) else []  # type: ignore
-        except Exception:
-            chunks = []
+        chunks = await retrieve_context(query, top_k=top_k)
 
-    # 2) Construir prompt
+    # 2) construir prompt
+    contexto = build_context_text(chunks)
     if not prompt_tpl:
-        prompt_tpl = PROMPT_FAQ  # fallback
-    contexto = contexto_text or build_context_text(chunks)
+        prompt_tpl = PROMPT_FAQ  # fallback razonable
     prompt = prompt_tpl.format(contexto=contexto, pregunta=query)
 
-    # 3) Generar con LLM
+    # 3) generar con LLM (sin cambios)
     answer = await generate_response(prompt)
 
-    # 4) Referencias + logging
+    # 4) referencias y logging
     refs = build_references(chunks)
-    top1 = None
-    if chunks:
-        c0 = chunks[0]
-        top1 = c0.get("score") or c0.get("puntaje")
-    _logger.info(
-        "rag",
-        extra={
-            "top_k": top_k,
-            "hits": len(chunks),
-            "top1": top1,
-            "collection": collection,
-            "filtro": filtro,
-        },
-    )
+    top1 = chunks[0]["score"] if chunks and "score" in chunks[0] else None
+    _logger.info("rag: top_k=%s hits=%s top1=%s collection=%s filtro=%s",
+                 top_k, len(chunks), top1, collection, filtro)
     return {"respuesta": answer, "referencias": refs}
 
 

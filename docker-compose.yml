@@ -160,6 +160,7 @@ services:
     env_file:
       - ./.env
     environment:
+      - DATABASE_URL=postgresql://munbot:${POSTGRES_PASSWORD:-1234}@postgres:5432/munbot
       - REDIS_HOST=redis
       # Variable para el remitente del correo
       - GMAIL_FROM=tu-correo-verificado@gmail.com
@@ -236,6 +237,7 @@ services:
     env_file:
       - ./.env
     environment:
+      - DATABASE_URL=postgresql://munbot:${POSTGRES_PASSWORD:-1234}@postgres:5432/munbot
       - REDIS_HOST=redis
       # Variable para el remitente del correo
       - GMAIL_FROM=tu-correo-verificado@gmail.com
