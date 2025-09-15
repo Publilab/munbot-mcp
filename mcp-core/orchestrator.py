@@ -20,6 +20,7 @@ import time
 import concurrent.futures
 from context_manager import ConversationalContextManager
 from clients.llm_docs import LlmDocsClient
+from intent_audit import audit_intent  # auditoría de intents
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -358,6 +359,11 @@ def _process_intent_classification(classification: Optional[Dict]) -> Dict[str, 
     mapped_action = INTENT_MAP.get(norm_intent, "n/a")
     categoria = classification.get("sub_intent") or norm_intent
     _jlog(_logger, "intent.classified", intent_raw=_redact(raw_intent), intent_norm=norm_intent, mapped_action=mapped_action, categoria=categoria)
+    # Auditoría de intent contra el registro canónico
+    try:
+        audit_intent(norm_intent, source="classifier", extra={"raw": raw_intent, "categoria": categoria})
+    except Exception as e:
+        _jlog(_logger, "intent.audit_error", error=str(e))
     return {"raw": raw_intent, "normalized": norm_intent, "action": mapped_action, "category": categoria}
 
 _RND = random.Random(os.getenv("ANSWER_SEED", "munbot"))
