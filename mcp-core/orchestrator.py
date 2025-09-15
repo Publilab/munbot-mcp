@@ -21,7 +21,7 @@ import concurrent.futures
 from .context_manager import ConversationalContextManager
 from .clients.llm_docs import LlmDocsClient
 from .intent_audit import audit_intent  # auditoría de intents
-from .prometheus_client import (
+from prometheus_client import (
     Counter,
     CollectorRegistry,
     Histogram,
