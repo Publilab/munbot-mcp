@@ -132,5 +132,87 @@ DSL_CALL_RE = re.compile(r'<CALL\s+([\w\-.\/]+)\s*(.*?)>', re.DOTALL)
 ALLOWED_CATEGORIAS = {"faq", "tramite", "documento"}
 QUERY_MIN_LEN, QUERY_MAX_LEN = 2, 512
 TOPK_MIN, TOPK_MAX = 1, 8
+# === Plantillas de prompt por categoría ===
+PROMPT_FAQ = """Responde en español, de forma breve y clara (máx. 120 palabras), usando EXCLUSIVAMENTE la información del CONTEXTO.
+- Si el CONTEXTO no contiene información suficiente para responder, di textualmente: “Información no disponible en las fuentes”.
+- No inventes datos ni asumas hechos no presentes en el CONTEXTO.
+- Si hay múltiples fragmentos, prioriza la evidencia más específica y reciente indicada en el CONTEXTO.
+
+CONTEXTO:
+{contexto}
+
+PREGUNTA:
+{pregunta}
+
+RESPUESTA:
+"""
+
+PROMPT_TRAMITE = """Responde en español con la siguiente estructura, usando EXCLUSIVAMENTE el CONTEXTO. No inventes datos.
+- Resumen (1–2 frases)
+- Requisitos: (si no hay en CONTEXTO, escribe “No informado en las fuentes”)
+- Pasos: (idem)
+- Documentos: (idem)
+- Plazos: (idem)
+
+Reglas:
+- Si el CONTEXTO es insuficiente para algún apartado, escribe “No informado en las fuentes” en ese apartado.
+- Si hay múltiples fragmentos, prioriza la información más específica y consistente; evita contradicciones.
+- Si el CONTEXTO no permite responder, di: “Información no disponible en las fuentes”.
+
+CONTEXTO:
+{contexto}
+
+PREGUNTA:
+{pregunta}
+
+RESPUESTA:
+"""
+
+PROMPT_DOCUMENTO = """Genera una respuesta en español, con foco normativo, usando EXCLUSIVAMENTE el CONTEXTO. No inventes datos.
+Estructura:
+- Resumen normativo (1–2 frases)
+- Artículo/Cláusula relevante (si aplica; si no, “No informado en las fuentes”)
+- Vigencia/Fecha (si aplica; si no, “No informado en las fuentes”)
+- Referencia (nombre/identificador del documento según CONTEXTO)
+
+Reglas:
+- Si hay versiones/fechas diferentes en el CONTEXTO, indica la más reciente y menciona la discrepancia.
+- Si el CONTEXTO no permite responder, di: “Información no disponible en las fuentes”.
+- No incluyas contenido que no esté en el CONTEXTO.
+
+CONTEXTO:
+{contexto}
+
+PREGUNTA:
+{pregunta}
+
+RESPUESTA:
+"""
+VALID_CATS = {"faq", "tramite", "documento"}
+
+def _select_collection_and_prompt(categoria: str | None):
+    """
+    Devuelve (collection, filtro_dict, prompt_template)
+    según RAG_SELECTION_MODE y categoria.
+    """
+    cat = (categoria or "").strip().lower()
+    if cat not in VALID_CATS:
+        # fallback por defecto (FAQ)
+        return (RAG_COLLECTION_FAQ, None, PROMPT_FAQ) if RAG_SELECTION_MODE == "collection" \
+               else (None, {RAG_FILTER_FIELD: "faq"}, PROMPT_FAQ)
+
+    if RAG_SELECTION_MODE == "collection":
+        if cat == "tramite":
+            return (RAG_COLLECTION_TRAMITES, None, PROMPT_TRAMITE)
+        if cat == "documento":
+            return (RAG_COLLECTION_NORMATIVA, None, PROMPT_DOCUMENTO)
+        return (RAG_COLLECTION_FAQ, None, PROMPT_FAQ)
+    # modo filter (una sola colección con metadato tipo)
+    if cat == "tramite":
+        return (None, {RAG_FILTER_FIELD: "tramite"}, PROMPT_TRAMITE)
+    if cat == "documento":
+        return (None, {RAG_FILTER_FIELD: "documento"}, PROMPT_DOCUMENTO)
+    return (None, {RAG_FILTER_FIELD: "faq"}, PROMPT_FAQ)
+
 
 # ... (resto del archivo sin cambios, asumiendo que ya usa _jlog donde corresponde)
