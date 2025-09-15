@@ -242,6 +242,10 @@ FIELD_QUESTIONS = {
 HISTORIAL_TABLE = "conversaciones_historial"
 app = FastAPI()
 
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
 from pythonjsonlogger import jsonlogger
 
 logger = logging.getLogger("munbot")

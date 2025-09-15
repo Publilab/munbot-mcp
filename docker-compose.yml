@@ -145,7 +145,8 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
+      # Use OpenAPI as a robust readiness signal (FastAPI exposes it by default)
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/openapi.json || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 5
