@@ -347,6 +347,11 @@ def _require_api_key(x_api_key: Optional[str] = Header(default=None)):
         raise HTTPException(status_code=401, detail="invalid api key")
 
 
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
 @app.get("/endpoints")
 def list_endpoints(_: None = Depends(_require_api_key)):
     return {"endpoints": ["/tools/call", "/doc-generar_respuesta_llm", "/doc-buscar_fragmento_documento", "/tools/doc-classify_intent_llm", "/metrics"]}
