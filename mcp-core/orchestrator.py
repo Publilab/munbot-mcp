@@ -3,6 +3,8 @@ import sys
 import random
 import requests
 import httpx
+import json
+import hashlib
 from requests.auth import HTTPBasicAuth
 from typing import Dict, Any, List, Optional
 from fastapi import FastAPI, HTTPException, Request, Body, Response
@@ -120,9 +122,6 @@ from .utils.text import normalize_text
 
 
 import json, hashlib
-
-
-# === Validadores de datos ===
 RUT_VALID_RE = re.compile(r"^\\d{7,8}-[\\dkK]$")
 MAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
 PHONE_VALID_RE = re.compile(r"^\\+569\\d{8}$")
