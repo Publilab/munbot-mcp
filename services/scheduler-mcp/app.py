@@ -35,6 +35,9 @@ def get_available_block(fecha: date, hora: dtime, trace_id: str | None = None):
     return select_exact_block(bloques, hora, trace_id=trace_id)
 
 app = FastAPI()
+
+from prometheus_fastapi_instrumentator import Instrumentator
+Instrumentator().instrument(app).expose(app)
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 logger = logging.getLogger(__name__)
 audit_logger = logging.getLogger("audit")

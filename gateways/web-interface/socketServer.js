@@ -9,6 +9,17 @@ const axios = require('axios');
 const path = require('path');
 
 const app = express();
+
+// Setup prom-client
+const client = require('prom-client');
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics({ timeout: 5000 });
+
+app.get('/metrics', async (req, res) => {
+    res.set('Content-Type', client.register.contentType);
+    res.end(await client.register.metrics());
+});
+
 const server = http.createServer(app);
 
 // Servir archivos estáticos desde /static

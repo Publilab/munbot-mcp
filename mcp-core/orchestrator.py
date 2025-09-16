@@ -257,6 +257,11 @@ FIELD_QUESTIONS = {
 HISTORIAL_TABLE = "conversaciones_historial"
 app = FastAPI()
 
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(PROM_REGISTRY), media_type=CONTENT_TYPE_LATEST)
+
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}

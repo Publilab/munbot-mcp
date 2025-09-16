@@ -18,6 +18,13 @@ load_dotenv()
 app = Flask(__name__)
 
 # ------------------------------------------------------------
+#  PROMETHEUS METRICS
+# ------------------------------------------------------------
+from prometheus_flask_exporter import PrometheusMetrics
+metrics = PrometheusMetrics(app)
+
+
+# ------------------------------------------------------------
 #  1) CONEXIÓN A POSTGRES USANDO VARIABLES DE ENTORNO
 # ------------------------------------------------------------
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")

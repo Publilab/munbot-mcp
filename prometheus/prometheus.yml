@@ -9,16 +9,31 @@ scrape_configs:
       - targets:
           - evolution-api:8080
 
-  - job_name: 'munbot_llm_gateway'
+  - job_name: 'munbot_llm_docs_mcp'
     metrics_path: /metrics
     static_configs:
       - targets:
-          - llm-gateway:8000
+          - llm_docs-mcp:8000
   
   - job_name: scheduler
     metrics_path: /metrics
     static_configs:
       - targets: [scheduler:6001]
+
+  - job_name: 'complaint-mcp'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['complaints-mcp:7000']
+
+  - job_name: 'mcp-core'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['mcp-core:5000']
+
+  - job_name: 'web-interface'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['web-interface:3000']
 
   - job_name: 'docker_engine'
     static_configs:
