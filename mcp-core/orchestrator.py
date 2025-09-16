@@ -287,7 +287,29 @@ GREETING_VARIANTS = ["¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?", "Hola,
 FAREWELL_VARIANTS = ["¡Hasta luego! Que tengas un buen día.", "Nos vemos. Estoy aquí 24/7 si me necesitas.", "Chao. Cuando quieras, vuelve y te ayudo.", "Perfecto, me alegra haber ayudado. Estaré por aquí cuando lo requieras.", "De acuerdo. Cierro la sesión; cuando necesites, volvemos a conversar.", "Listo. Si surge otra consulta, vuelve y la resolvemos."]
 THANKS_VARIANTS = ["De nada. ¿Te ayudo con algo más?", "Con gusto. ¿Te ayudo con algo más?", "Con mucho gusto. ¿Qué más necesitas?", "Para eso estoy. ¿Seguimos con algo más?", "Me alegra haber ayudado. ¿Algo más?", "Un gusto. ¿Deseas hacer otro trámite o consulta?", "Cuando quieras, seguimos con lo que necesites."]
 SMALLTALK_VARIANTS = {"saludo": GREETING_VARIANTS, "despedida": FAREWELL_VARIANTS, "agradecimiento": THANKS_VARIANTS}
-SMALLTALK_PATTERNS = {"hola", "buenos dias", "buenas tardes", "buenas noches", "saludos", "adios", "hasta luego", "nos vemos", "chau", "chao", "bye", "hasta pronto", "hasta la proxima", "me despido", "gracias", "muchas gracias", "te agradezco", "agradecido", "agradecida"}
+SMALLTALK_PATTERNS = {
+    "hola",
+    "buenos dias",
+    "buenas tardes",
+    "buenas noches",
+    "saludos",
+    "adios",
+    "hasta luego",
+    "nos vemos",
+    "chau",
+    "chao",
+    "bye",
+    "hasta pronto",
+    "hasta la proxima",
+    "me despido",
+    "gracias",
+    "muchas gracias",
+    "te agradezco",
+    "agradecido",
+    "agradecida",
+    "como estas",
+    "como te va",
+}
 
 def _is_pure_smalltalk(text: str) -> bool:
     return normalize_text(text) in SMALLTALK_PATTERNS
@@ -597,6 +619,15 @@ DOC_PREFIXES = [
     "me gustaría saber",
 ]
 
+CHANGE_TOPIC_PATTERNS = {
+    "cambiemos de tema",
+    "cambia de tema",
+    "otro tema",
+    "hablemos de otra cosa",
+    "cambiemos de conversacion",
+    "cambia de conversacion",
+}
+
 
 def _generate_session_id() -> str:
     return str(uuid.uuid4())
@@ -684,6 +715,13 @@ def _needs_specific_info(text: str, has_context: bool = False) -> bool:
     return True
 
 
+def _wants_change_topic(text: str) -> bool:
+    if not text:
+        return False
+    norm = normalize_text(text)
+    return any(pat in norm for pat in CHANGE_TOPIC_PATTERNS)
+
+
 def _map_collection_for_category(category: Optional[str]) -> Optional[str]:
     if not category:
         return None
@@ -724,9 +762,35 @@ def _handle_pending_feedback(session_id: str, user_text: str) -> Optional[Dict[s
 
 
 def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional[str] = None) -> Dict[str, Any]:
+    params = dict(params or {})
+
+    if tool.startswith("doc-"):
+        payload = dict(params)
+        if "pregunta" in payload and not payload.get("query"):
+            payload["query"] = payload["pregunta"]
+        try:
+            return llm_client.tools_call(tool, payload, trace_id=trace_id, timeout=LLM_DOCS_TIMEOUT)
+        except Exception as exc:  # pragma: no cover - defensive
+            _jlog(_logger, "tools.error", tool=tool, error=str(exc))
+            return {"error": str(exc)}
+
+    service_url = None
+    if tool.startswith("scheduler-"):
+        service_url = MICROSERVICES.get("scheduler-mcp")
+    elif tool.startswith("complaint-"):
+        service_url = MICROSERVICES.get("complaints-mcp")
+
+    if not service_url:
+        return {"error": f"tool_not_supported_{tool}"}
+
+    payload = {"tool": tool, "params": params}
+    if trace_id:
+        payload["trace_id"] = trace_id
     try:
-        return llm_client.tools_call(tool, params, trace_id=trace_id, timeout=LLM_DOCS_TIMEOUT)
-    except Exception as exc:  # pragma: no cover - defensive
+        resp = requests.post(service_url, json=payload, timeout=LLM_DOCS_TIMEOUT)
+        resp.raise_for_status()
+        return resp.json()
+    except requests.RequestException as exc:  # pragma: no cover - network
         _jlog(_logger, "tools.error", tool=tool, error=str(exc))
         return {"error": str(exc)}
 
@@ -922,6 +986,17 @@ def handle_turn(
     force_canary: bool = False,
     channel: Optional[str] = None,
 ) -> Dict[str, Any]:
+    if _wants_change_topic(user_text):
+        context_manager.clear_pending_field(session_id)
+        context_manager.clear_complaint_state(session_id)
+        context_manager.clear_pending_confirmation(session_id)
+        context_manager.set_current_flow(session_id, None)
+        context_manager.clear_doc_clarification(session_id)
+        context_manager.clear_selected_document(session_id)
+        msg = "Entendido, cambiemos de tema. ¿Sobre qué te gustaría hablar ahora?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
     classification = classify_intent_remotely(user_text, trace_id=trace_id)
     processed = _process_intent_classification(classification)
     intent_action = processed["action"]
