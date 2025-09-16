@@ -7,7 +7,7 @@ import httpx
 import json
 import hashlib
 from requests.auth import HTTPBasicAuth
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 from fastapi import FastAPI, HTTPException, Request, Body, Response
 from pydantic import BaseModel
 import logging
@@ -24,6 +24,7 @@ import concurrent.futures
 from .context_manager import ConversationalContextManager
 from .clients.llm_docs import LlmDocsClient
 from .intent_audit import audit_intent  # auditoría de intents
+from .intent_similarity import load_embeddings, encode_text
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -31,6 +32,8 @@ from prometheus_client import (
     generate_latest,
     CONTENT_TYPE_LATEST,
 )
+
+from sklearn.metrics.pairwise import cosine_similarity
 
 from .utils.cache import make_answer_cache_key
 from .settings import (
@@ -48,6 +51,13 @@ from .settings import (
 _logger = logging.getLogger("orchestrator")
 
 INTENT_REGRESSION_PATH = os.getenv("INTENT_REGRESSION_PATH", "tests/data/intent_regresion.json")
+SIMILARITY_THRESHOLD = float(os.getenv("INTENT_SIMILARITY_THRESHOLD", "0.55"))
+
+try:
+    SIM_VECTORS, SIM_LABELS = load_embeddings()
+except Exception as exc:  # pragma: no cover - fallback if embeddings fail
+    SIM_VECTORS, SIM_LABELS = None, []
+    logging.getLogger("orchestrator").warning("intent.similarity_load_failed: %s", exc)
 
 # =====================================
 # Telemetry & Observability Helpers
@@ -274,6 +284,7 @@ ERROR_COUNTER = Counter("mcp_microservice_errors_total", "Errores al invocar mic
 CACHE_HIT_COUNTER = Counter("munbot_cache_hits_total", "Número de respuestas servidas desde el caché", registry=PROM_REGISTRY)
 CACHE_MISS_COUNTER = Counter("munbot_cache_miss_total", "Consultas que no se encontraron en el caché", registry=PROM_REGISTRY)
 CACHE_STORE_COUNTER = Counter("munbot_cache_store_total", "Número de respuestas almacenadas en el caché", registry=PROM_REGISTRY)
+HEURISTIC_FALLBACK_COUNTER = Counter("munbot_intent_heuristic_total", "Intenciones clasificadas por heurístico", registry=PROM_REGISTRY)
 GENERIC_RAG_COUNTER = Counter("munbot_generic_rag_total", "Consultas genéricas enviadas a RAG sin documento", registry=PROM_REGISTRY)
 GENERIC_RAG_SUCCESS_COUNTER = Counter("munbot_generic_rag_success_total", "Consultas genéricas con RAG que devolvieron resultados", registry=PROM_REGISTRY)
 MET_INTENT_NA = Counter("munbot_intent_na_total", "Intenciones n/a", registry=PROM_REGISTRY)
@@ -381,6 +392,22 @@ def _record_intent_sample(
 _ACTION_VERBS = re.compile(r"\\b(solicitar|pedir|obtener|sacar|renovar)\\b", re.I)
 _TRAMITE_TOKS = re.compile(r"\\b(tramite|trámite|certificado|licencia|permiso|cita)\\b", re.I)
 _INFO_TOKS = re.compile(r"\\b(informacion|información|requisitos?|horarios?|costo|precio|valor)\\b", re.I)
+
+
+def _similarity_rescue(user_text: str) -> Tuple[Optional[str], float]:
+    if not user_text or SIM_VECTORS is None or not SIM_LABELS:
+        return None, 0.0
+    try:
+        vec = encode_text(user_text)
+        sims = cosine_similarity(vec, SIM_VECTORS)[0]
+        idx = int(sims.argmax())
+        score = float(sims[idx])
+        if score >= SIMILARITY_THRESHOLD:
+            return SIM_LABELS[idx], score
+    except Exception as exc:  # pragma: no cover - defensive
+        _jlog(_logger, "intent.similarity_error", error=str(exc))
+    return None, 0.0
+
 
 def _build_agent_messages(contexto, session_id: str, user_text: str, history_k: int = 4) -> List[Dict[str, str]]:
     history = []
@@ -701,37 +728,52 @@ def _generate_session_id() -> str:
 
 
 def _heuristic_classify(text: str) -> Dict[str, Any]:
+    def _finalize(result: Dict[str, Any]) -> Dict[str, Any]:
+        final = dict(result)
+        intent = final.get("intent") or "n/a"
+        if "sub_intent" not in final and intent not in {"n/a", ""}:
+            final["sub_intent"] = intent
+        final["source"] = "heuristic"
+        HEURISTIC_FALLBACK_COUNTER.inc()
+        _jlog(
+            _logger,
+            "intent.fallback",
+            fallback_intent=intent,
+            utterance=_redact(text),
+        )
+        return final
+
     if not text:
-        return {"intent": "n/a"}
+        return _finalize({"intent": "n/a"})
     norm = normalize_text(text)
     lower = norm.lower()
 
     if _is_pure_smalltalk(lower):
         if any(word in lower for word in ("hola", "buenos dias", "buenas tardes", "buenas noches")):
-            return {"intent": "saludo", "sub_intent": "saludo"}
+            return _finalize({"intent": "saludo", "sub_intent": "saludo"})
         if any(word in lower for word in ("adios", "chao", "chau", "hasta luego", "bye")):
-            return {"intent": "despedida", "sub_intent": "despedida"}
+            return _finalize({"intent": "despedida", "sub_intent": "despedida"})
         if "gracias" in lower or "agradecid" in lower:
-            return {"intent": "agradecimiento", "sub_intent": "agradecimiento"}
+            return _finalize({"intent": "agradecimiento", "sub_intent": "agradecimiento"})
 
     if "reclamo" in lower or "denuncia" in lower:
-        return {"intent": "reclamo"}
+        return _finalize({"intent": "reclamo"})
 
     if any(word in lower for word in ("agendar", "agenda", "cita", "hora", "turno", "reservar")):
-        return {"intent": "agenda"}
+        return _finalize({"intent": "agenda"})
 
     if any(word in lower for word in ("permiso", "licencia", "certificado", "tramite", "trámite", "documento")):
-        return {"intent": "documento", "sub_intent": "tramite"}
+        return _finalize({"intent": "documento", "sub_intent": "tramite"})
 
     if any(word in lower for word in ("informacion", "información", "municipalidad", "pregunta")):
-        return {"intent": "faq"}
+        return _finalize({"intent": "faq"})
 
     if lower.strip() in YES_WORDS:
-        return {"intent": "confirm"}
+        return _finalize({"intent": "confirm"})
     if lower.strip() in NO_WORDS:
-        return {"intent": "deny"}
+        return _finalize({"intent": "deny"})
 
-    return {"intent": "faq"}
+    return _finalize({"intent": "faq"})
 
 
 def classify_intent_remotely(text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
@@ -741,6 +783,25 @@ def classify_intent_remotely(text: str, trace_id: Optional[str] = None) -> Dict[
         result = llm_client.classify_intent(text, trace_id=trace_id)
         if isinstance(result, dict):
             intent = (result.get("intent") or "").strip().lower()
+            if intent in {"faq", "n/a"}:
+                rescued_intent, score = _similarity_rescue(text)
+                if rescued_intent:
+                    result["intent"] = rescued_intent
+                    result["sub_intent"] = result.get("sub_intent") or rescued_intent
+                    if score:
+                        prev_conf = result.get("confidence")
+                        try:
+                            prev_conf = float(prev_conf) if prev_conf is not None else 0.0
+                        except (TypeError, ValueError):
+                            prev_conf = 0.0
+                        result["confidence"] = max(prev_conf, score)
+                    _jlog(
+                        _logger,
+                        "intent.similarity_rescue",
+                        rescued_intent=rescued_intent,
+                        score=round(score, 4),
+                    )
+                    return result
             if intent and intent != "n/a":
                 return result
             if result.get("sub_intent"):
@@ -1075,11 +1136,19 @@ def handle_turn(
         context_manager.set_current_flow(session_id, None)
         context_manager.clear_doc_clarification(session_id)
         context_manager.clear_selected_document(session_id)
+        context_manager.clear_entities(session_id)
         msg = "Entendido, cambiemos de tema. ¿Sobre qué te gustaría hablar ahora?"
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
 
     classification = classify_intent_remotely(user_text, trace_id=trace_id)
+    entities = classification.get("entities") if isinstance(classification, dict) else None
+    if isinstance(entities, dict) and entities:
+        context_manager.merge_entities(session_id, entities)
+    else:
+        stored_entities = context_manager.get_entities(session_id)
+        if stored_entities and isinstance(classification, dict):
+            classification["entities"] = stored_entities
     processed = _process_intent_classification(classification, utterance=user_text)
     intent_action = processed["action"]
     categoria = processed["category"]

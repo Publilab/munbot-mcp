@@ -173,6 +173,43 @@ class ConversationalContextManager:
             ex=self.session_expiry_seconds
         )
 
+    # ---- Entidades detectadas por el LLM ----
+    def set_entities(self, session_id: str, entities: Optional[Dict[str, Any]]):
+        context = self.get_context(session_id)
+        context["entities"] = entities or {}
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def merge_entities(self, session_id: str, entities: Dict[str, Any]):
+        if not entities:
+            return
+        context = self.get_context(session_id)
+        current = context.get("entities") or {}
+        current.update(entities)
+        context["entities"] = current
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def get_entities(self, session_id: str) -> Dict[str, Any]:
+        context = self.get_context(session_id)
+        return context.get("entities") or {}
+
+    def clear_entities(self, session_id: str):
+        context = self.get_context(session_id)
+        if "entities" in context:
+            del context["entities"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
 
     # ---- Manejo de selección de documentos ----
     def set_document_options(self, session_id: str, options: List[str]):

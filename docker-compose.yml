@@ -129,6 +129,8 @@ services:
       - LLM_DOCS_MCP_PASSWORD=${LLM_DOCS_MCP_PASSWORD:-}
       - SCHEDULER_MCP_URL=${SCHEDULER_MCP_URL:-http://scheduler-mcp:6001/tools/call}
       - COMPLAINTS_MCP_URL=${COMPLAINTS_MCP_URL:-http://complaints-mcp:7000/tools/call}
+      - INTENT_SIMILARITY_PATH=${INTENT_SIMILARITY_PATH:-mcp-core/config/intent_similarities.json}
+      - INTENT_SIMILARITY_THRESHOLD=${INTENT_SIMILARITY_THRESHOLD:-0.55}
     ports:
       - "5000:5000"
     networks:
