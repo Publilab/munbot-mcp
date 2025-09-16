@@ -12,5 +12,26 @@
     "intent_detectado": "init_scheduler",
     "status": "validated",
     "source": "manual"
+  },
+  {
+    "texto": "Quiero agendar una hora para la proxima semana",
+    "esperado": "init_scheduler",
+    "intent_detectado": "init_scheduler",
+    "status": "validated",
+    "source": "manual"
+  },
+  {
+    "texto": "Quiero poner un reclamo",
+    "esperado": "init_complaint",
+    "intent_detectado": "init_complaint",
+    "status": "validated",
+    "source": "manual"
+  },
+  {
+    "texto": "Quiero hacer un reclamo por ruidos molestos",
+    "esperado": "init_complaint",
+    "intent_detectado": "init_complaint",
+    "status": "validated",
+    "source": "manual"
   }
 ]
