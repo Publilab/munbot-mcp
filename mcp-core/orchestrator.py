@@ -526,3 +526,474 @@ def preprocess_input(text: str) -> str:
     return t
 
 # ... (resto del archivo sin cambios) ...
+
+# ------------------------------------
+# Conversational Orchestrator (core)
+# ------------------------------------
+
+class OrchestrateRequest(BaseModel):
+    pregunta: str
+    session_id: Optional[str] = None
+    canal: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
+
+
+YES_WORDS = {"si", "sí", "claro", "por supuesto", "afirmativo", "dale"}
+NO_WORDS = {"no", "para nada", "negativo", "no gracias"}
+DOC_SPECIFIC_KEYWORDS = {
+    "requisito",
+    "requisitos",
+    "horario",
+    "horarios",
+    "costo",
+    "costos",
+    "precio",
+    "precios",
+    "valor",
+    "valores",
+    "donde",
+    "dónde",
+    "como",
+    "cómo",
+    "quien",
+    "quién",
+    "cuando",
+    "cuándo",
+    "cuanto",
+    "cuánto",
+    "documento",
+    "plazo",
+    "duracion",
+    "duración",
+    "mail",
+    "correo",
+}
+DOC_PREFIXES = [
+    "informacion sobre",
+    "informacion del",
+    "informacion de",
+    "información sobre",
+    "información del",
+    "información de",
+    "necesito informacion sobre",
+    "necesito información sobre",
+    "necesito informacion del",
+    "necesito información del",
+    "quiero informacion sobre",
+    "quiero información sobre",
+    "quiero toda la informacion de",
+    "quiero toda la información de",
+    "quiero toda la informacion sobre",
+    "quiero toda la información sobre",
+    "quiero toda la informacion del",
+    "quiero toda la información del",
+    "quiero saber",
+    "quisiera saber",
+    "deseo saber",
+    "me puedes informar sobre",
+    "me podrías informar sobre",
+    "me puedes informar del",
+    "me podrías informar del",
+    "me gustaría saber",
+]
+
+
+def _generate_session_id() -> str:
+    return str(uuid.uuid4())
+
+
+def classify_intent_remotely(text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
+    if not text:
+        return {"intent": "n/a"}
+    norm = normalize_text(text)
+    lower = norm.lower()
+
+    # Simple heuristics that are good enough for tests and local usage
+    if _is_pure_smalltalk(lower):
+        if any(word in lower for word in ("hola", "buenos dias", "buenas tardes", "buenas noches")):
+            return {"intent": "saludo"}
+        if any(word in lower for word in ("adios", "chao", "chau", "hasta luego", "bye")):
+            return {"intent": "despedida"}
+        if "gracias" in lower or "agradecid" in lower:
+            return {"intent": "agradecimiento"}
+
+    if "reclamo" in lower or "denuncia" in lower:
+        return {"intent": "reclamo"}
+
+    if any(word in lower for word in ("agendar", "agenda", "cita", "hora", "turno", "reservar")):
+        return {"intent": "agenda"}
+
+    if any(word in lower for word in ("permiso", "licencia", "certificado", "tramite", "trámite", "documento")):
+        return {"intent": "documento", "sub_intent": "tramite"}
+
+    if any(word in lower for word in ("informacion", "información", "municipalidad", "pregunta")):
+        return {"intent": "faq"}
+
+    if lower.strip() in YES_WORDS:
+        return {"intent": "confirm"}
+    if lower.strip() in NO_WORDS:
+        return {"intent": "deny"}
+
+    return {"intent": "faq"}
+
+
+def _extract_document_name(text: str) -> str:
+    if not text:
+        return ""
+    working = text.strip()
+    lower = working.lower()
+    for pref in DOC_PREFIXES:
+        if lower.startswith(pref):
+            working = working[len(pref) :].strip()
+            break
+    # If the sentence still contains question scaffolding, keep the tail after the
+    # last connector such as "de la" or "del" which usually precedes the document
+    # name (e.g. "cuál es el mail de la licencia").
+    connectors = [
+        " de la ",
+        " de las ",
+        " de los ",
+        " del ",
+        " sobre la ",
+        " sobre el ",
+        " sobre los ",
+        " sobre las ",
+    ]
+    lower = working.lower()
+    for conn in connectors:
+        if conn in lower:
+            idx = lower.rfind(conn)
+            working = working[idx + len(conn) :].strip()
+            break
+    working = working.strip(" :,.?¿¡!")
+    if not working:
+        return text.strip()
+    return working
+
+
+def _needs_specific_info(text: str, has_context: bool = False) -> bool:
+    if not text:
+        return True
+    lower = text.lower()
+    if "?" in lower or "¿" in lower:
+        return False
+    if any(keyword in lower for keyword in DOC_SPECIFIC_KEYWORDS):
+        return False
+    if has_context and lower.startswith(("y ", "e ", "además", "ademas")):
+        return False
+    return True
+
+
+def _map_collection_for_category(category: Optional[str]) -> Optional[str]:
+    if not category:
+        return None
+    cat_norm = _norm_intent(category)
+    if cat_norm == "faq":
+        return RAG_COLLECTION_FAQ
+    if cat_norm == "tramite":
+        return RAG_COLLECTION_TRAMITES
+    if cat_norm == "documento":
+        return RAG_COLLECTION_NORMATIVA
+    return None
+
+
+def _handle_pending_feedback(session_id: str, user_text: str) -> Optional[Dict[str, Any]]:
+    if not context_manager.has_feedback_pending(session_id):
+        return None
+    norm = normalize_text(user_text).strip()
+    if norm in YES_WORDS or norm in {"gracias"}:
+        context_manager.clear_feedback_pending(session_id)
+        context_manager.reset_fallback_count(session_id)
+        msg = "¡Me alegra que te haya ayudado! Si necesitas algo más, aquí estaré."
+        return {"respuesta": msg, "no_results": False}
+    if norm in NO_WORDS:
+        context_manager.clear_feedback_pending(session_id)
+        context_manager.increment_fallback_count(session_id)
+        count = context_manager.get_fallback_count(session_id)
+        if count >= 3:
+            registrar_evento_humano(session_id, user_text)
+            msg = "Lamento no haber estado a la altura. Un experto te contactará para continuar."  # noqa: E501
+            return {"respuesta": msg, "escalado": True, "no_results": False}
+        msg = "Lamento no haberte ayudado como esperabas. ¿Hay algo más que pueda hacer?"
+        return {"respuesta": msg, "no_results": False}
+    # If feedback pending but input not clear, keep asking
+    return {
+        "respuesta": "¿Podrías confirmarme si mi respuesta te fue útil? Responde 'Sí' o 'No'.",
+        "no_results": False,
+    }
+
+
+def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional[str] = None) -> Dict[str, Any]:
+    try:
+        return llm_client.tools_call(tool, params, trace_id=trace_id, timeout=LLM_DOCS_TIMEOUT)
+    except Exception as exc:  # pragma: no cover - defensive
+        _jlog(_logger, "tools.error", tool=tool, error=str(exc))
+        return {"error": str(exc)}
+
+
+# --- Stubs that can be monkeypatched in tests ---
+def buscar_documento_por_accion(accion: str) -> Optional[Dict[str, Any]]:  # pragma: no cover - placeholder
+    return None
+
+
+def buscar_oficina_documento(doc_id: str) -> Optional[Dict[str, Any]]:  # pragma: no cover - placeholder
+    return None
+
+
+def buscar_info_documento_campo(doc_id: str, campo: str) -> Optional[Dict[str, Any]]:  # pragma: no cover
+    return None
+
+
+def handle_document_query(
+    session_id: str,
+    pregunta: str,
+    classification: Optional[Dict[str, Any]],
+    history: List[Dict[str, Any]],
+    categoria: Optional[str],
+    trace_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    selected_document = context_manager.get_selected_document(session_id)
+    entities = (classification or {}).get("entities") or {}
+    doc_name = entities.get("tramite") or entities.get("documento")
+    if not doc_name:
+        doc_name = _extract_document_name(pregunta)
+    if doc_name and not selected_document:
+        selected_document = doc_name.strip()
+        context_manager.set_selected_document(session_id, selected_document)
+
+    needs_specific = _needs_specific_info(pregunta, has_context=bool(selected_document))
+    if needs_specific and selected_document:
+        # Ask user to clarify what information is needed
+        doc_for_msg = selected_document.lower()
+        msg = (
+            "Para ayudarte con el trámite "
+            f"'{doc_for_msg}', necesito saber qué información específica buscas (por ejemplo, requisitos, horario, costo)."
+        )
+        context_manager.update_context(session_id, pregunta, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    params: Dict[str, Any] = {"pregunta": pregunta.strip()}
+    if selected_document:
+        params["documento"] = selected_document
+        if selected_document.lower() not in pregunta.lower():
+            base = pregunta.rstrip("?¿ .")
+            params["pregunta"] = f"{base} del trámite {selected_document}"
+    cat_norm = _norm_intent(categoria or "")
+    collection = None
+    if cat_norm in {"faq", "tramite", "documento"}:
+        params["categoria"] = cat_norm
+        collection = _map_collection_for_category(cat_norm) if RAG_CATEGORY_AWARE else None
+    else:
+        if RAG_CATEGORY_AWARE:
+            collection = RAG_COLLECTION_NORMATIVA
+    if collection:
+        params.setdefault("collection", collection)
+
+    resp = call_tool_microservice("doc-generar_respuesta_llm", params, trace_id=trace_id)
+    if resp.get("error"):
+        return fallback("Lo siento, ocurrió un problema al consultar la información.")
+    if resp.get("no_results"):
+        return resp
+    formatted = format_answer(resp)
+    context_manager.update_context(session_id, pregunta, formatted["respuesta"])
+    return formatted
+
+
+def _agenda_state(session_id: str) -> Dict[str, Optional[str]]:
+    ctx = context_manager.get_context(session_id)
+    agenda = ctx.get("agenda") or {}
+    return {
+        "fecha": agenda.get("fecha"),
+        "hora": agenda.get("hora"),
+    }
+
+
+def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
+    state = _agenda_state(session_id)
+    fecha, hora = parse_date_time(user_text)
+    if fecha:
+        state["fecha"] = fecha
+    if hora:
+        state["hora"] = hora
+    context_manager.update_context_data(session_id, {"agenda": state})
+
+    if not state["fecha"]:
+        msg = "Para agendar una cita necesito que me indiques la fecha que te acomoda."
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+    if not state["hora"]:
+        msg = "Perfecto, ¿a qué hora te gustaría agendarla?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    payload = {"fecha": state["fecha"], "hora": state["hora"]}
+    resp = call_tool_microservice("scheduler-listar_horas_disponibles", payload, trace_id=trace_id)
+    if resp.get("error"):
+        return fallback("No pude consultar la agenda en este momento, intenta nuevamente más tarde.")
+    data = resp.get("data") or []
+    if data:
+        slot = data[0]
+        answer = f"Encontré disponibilidad el {slot.get('fecha')} a las {slot.get('hora')}."
+    else:
+        answer = "No encontré disponibilidad exacta, pero puedo ayudarte a buscar otra alternativa."
+    context_manager.update_context(session_id, user_text, answer)
+    context_manager.update_context_data(session_id, {"agenda": {"fecha": None, "hora": None}})
+    context_manager.clear_pending_confirmation(session_id)
+    context_manager.set_current_flow(session_id, None)
+    return {"respuesta": answer, "finish": True, "no_results": False}
+
+
+def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
+    state = context_manager.get_complaint_state(session_id)
+    text_norm = normalize_text(user_text)
+
+    if state is None:
+        context_manager.set_current_flow(session_id, "reclamo")
+        context_manager.set_pending_confirmation(session_id, True)
+        context_manager.set_complaint_state(session_id, "confirming")
+        msg = "Puedo ayudarte a registrar tu reclamo. ¿Deseas registrarlo ahora?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    if text_norm.strip() == "cancelar":
+        context_manager.clear_pending_field(session_id)
+        context_manager.clear_complaint_state(session_id)
+        context_manager.clear_pending_confirmation(session_id)
+        context_manager.set_current_flow(session_id, None)
+        msg = "Perfecto, el reclamo ha sido cancelado."
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    if state == "confirming":
+        if text_norm.strip() in YES_WORDS:
+            context_manager.set_complaint_state(session_id, "collecting_name")
+            context_manager.set_pending_field(session_id, "nombre")
+            msg = "Excelente, comencemos. ¿Cómo te llamas?"
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        if text_norm.strip() in NO_WORDS:
+            context_manager.clear_complaint_state(session_id)
+            context_manager.clear_pending_confirmation(session_id)
+            context_manager.set_current_flow(session_id, None)
+            msg = "Entendido, no registraré ningún reclamo."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        msg = "Solo necesito que me confirmes con un 'Sí' para continuar o 'Cancelar' para salir."
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    if state == "collecting_name":
+        name = user_text.strip()
+        if not name or len(name.split()) < 2:
+            msg = "Por favor indícame tu nombre y apellido para continuar."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        context_manager.update_context_data(session_id, {"complaint": {"nombre": name}})
+        context_manager.set_complaint_state(session_id, "collecting_rut")
+        context_manager.set_pending_field(session_id, "rut")
+        msg = "Gracias. ¿Cuál es tu RUT?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    if state == "collecting_rut":
+        rut = _valid_rut(user_text)
+        if rut is None:
+            msg = "El RUT no tiene un formato válido. Recuerda usar el formato 12.345.678-9."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        complaint_data = context_manager.get_context(session_id).get("complaint", {})
+        complaint_data["rut"] = rut
+        context_manager.update_context_data(session_id, {"complaint": complaint_data})
+        context_manager.clear_pending_field(session_id)
+        context_manager.clear_complaint_state(session_id)
+        context_manager.clear_pending_confirmation(session_id)
+        context_manager.set_current_flow(session_id, None)
+        msg = "Perfecto, he registrado tus datos del reclamo. Continuemos cuando estés listo."
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    return fallback("Lo siento, no pude procesar tu reclamo en este momento.")
+
+
+def handle_turn(
+    session_id: str,
+    user_text: str,
+    trace_id: Optional[str] = None,
+    force_canary: bool = False,
+    channel: Optional[str] = None,
+) -> Dict[str, Any]:
+    classification = classify_intent_remotely(user_text, trace_id=trace_id)
+    processed = _process_intent_classification(classification)
+    intent_action = processed["action"]
+    categoria = processed["category"]
+
+    feedback_resp = _handle_pending_feedback(session_id, user_text)
+    if feedback_resp is not None and intent_action != "saludo":
+        return feedback_resp
+
+    if intent_action == "saludo":
+        answer = _pick_smalltalk("saludo") or "¡Hola! ¿En qué puedo ayudarte?"
+        context_manager.update_context(session_id, user_text, answer)
+        return {"respuesta": answer, "no_results": False}
+
+    if intent_action == "despedida":
+        answer = _pick_smalltalk("despedida") or "Hasta luego."
+        context_manager.update_context(session_id, user_text, answer)
+        context_manager.clear_context(session_id)
+        return {"respuesta": answer, "no_results": False}
+
+    if intent_action == "agradecimiento":
+        answer = _pick_smalltalk("agradecimiento") or "De nada. ¿Hay algo más en lo que pueda ayudar?"
+        context_manager.update_context(session_id, user_text, answer)
+        return {"respuesta": answer, "no_results": False}
+
+    if intent_action == "init_complaint" or context_manager.get_current_flow(session_id) == "reclamo":
+        return handle_complaint_flow(session_id, user_text)
+
+    if intent_action == "init_scheduler" or context_manager.get_current_flow(session_id) == "agenda":
+        context_manager.set_current_flow(session_id, "agenda")
+        return handle_scheduler_flow(session_id, user_text)
+
+    if intent_action == "ask_document":
+        history = context_manager.get_history(session_id)
+        return handle_document_query(session_id, user_text, classification, history, categoria)
+
+    if intent_action == "n/a":
+        context_manager.increment_fallback_count(session_id)
+        return fallback("Lo siento, no he entendido tu consulta. ¿Podrías reformularla?")
+
+    # Generic FAQ fallbacks -> redirect to RAG as default
+    history = context_manager.get_history(session_id)
+    return handle_document_query(session_id, user_text, classification, history, categoria)
+
+
+def orchestrate(
+    user_text: str,
+    session_id: Optional[str] = None,
+    channel: Optional[str] = None,
+    force_canary: bool = False,
+    trace_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    sid = session_id or _generate_session_id()
+    response_payload = handle_turn(sid, user_text, trace_id=trace_id, force_canary=force_canary, channel=channel)
+    respuesta = response_payload.get("respuesta") or "Lo siento, hubo un error procesando tu solicitud."
+    respuesta = adapt_markdown_for_channel(respuesta, channel)
+
+    result: Dict[str, Any] = {"session_id": sid, "respuesta": respuesta}
+    for key in ("no_results", "referencias", "finish", "pending", "respuestas", "escalado"):
+        if key in response_payload:
+            result[key] = response_payload[key]
+    return result
+
+
+@app.post("/orchestrate")
+async def orchestrate_route(request: Request, payload: OrchestrateRequest):
+    headers = request.headers
+    force_canary = headers.get(AGENT_CANARY_HEADER_KEY, "") == AGENT_CANARY_HEADER_ON
+    result = orchestrate(
+        payload.pregunta,
+        session_id=payload.session_id,
+        channel=payload.canal,
+        force_canary=force_canary,
+    )
+    return result
