@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+from pathlib import Path
 import requests
 import httpx
 import json
@@ -45,6 +46,8 @@ from .settings import (
 )
 
 _logger = logging.getLogger("orchestrator")
+
+INTENT_REGRESSION_PATH = os.getenv("INTENT_REGRESSION_PATH", "tests/data/intent_regresion.json")
 
 # =====================================
 # Telemetry & Observability Helpers
@@ -330,6 +333,51 @@ def _norm_intent(label: str) -> str:
     s = re.sub(r"[\\^\\w/]+", "", s)
     return s
 
+
+def _record_intent_sample(
+    text: Optional[str],
+    detected_intent: str,
+    expected_intent: Optional[str] = None,
+    status: Optional[str] = None,
+    source: str = "classifier",
+) -> None:
+    if not INTENT_REGRESSION_PATH or not text:
+        return
+    try:
+        path = Path(INTENT_REGRESSION_PATH)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        entries: List[Dict[str, Any]] = []
+        if path.exists() and path.stat().st_size > 0:
+            with path.open("r", encoding="utf-8") as fh:
+                entries = json.load(fh)
+        normalized_text = text.strip()
+        detected = detected_intent or "n/a"
+        timestamp = datetime.utcnow().isoformat() + "Z"
+        for item in entries:
+            if item.get("texto") == normalized_text:
+                if expected_intent:
+                    item["esperado"] = expected_intent
+                item["intent_detectado"] = detected
+                if status:
+                    item["status"] = status
+                item["source"] = source
+                item["timestamp"] = timestamp
+                break
+        else:
+            entry = {
+                "texto": normalized_text,
+                "intent_detectado": detected,
+                "esperado": expected_intent,
+                "status": status or "pending",
+                "source": source,
+                "timestamp": timestamp,
+            }
+            entries.append(entry)
+        with path.open("w", encoding="utf-8") as fh:
+            json.dump(entries, fh, ensure_ascii=False, indent=2)
+    except Exception as exc:
+        _jlog(_logger, "intent.record_error", error=str(exc))
+
 _ACTION_VERBS = re.compile(r"\\b(solicitar|pedir|obtener|sacar|renovar)\\b", re.I)
 _TRAMITE_TOKS = re.compile(r"\\b(tramite|trámite|certificado|licencia|permiso|cita)\\b", re.I)
 _INFO_TOKS = re.compile(r"\\b(informacion|información|requisitos?|horarios?|costo|precio|valor)\\b", re.I)
@@ -375,7 +423,10 @@ def _low_confidence(classification: Any, threshold: float = 0.3) -> bool:
 
 INTENT_MAP = {"saludo": "saludo", "despedida": "despedida", "agradecimiento": "agradecimiento", "faq": "ask_document", "documento": "ask_document", "tramite": "ask_document", "agenda": "init_scheduler", "reclamo": "init_complaint", "n/a": "n/a"}
 
-def _process_intent_classification(classification: Optional[Dict]) -> Dict[str, str]:
+def _process_intent_classification(
+    classification: Optional[Dict],
+    utterance: Optional[str] = None,
+) -> Dict[str, str]:
     if not classification:
         classification = {}
     raw_intent = classification.get("intent") or ""
@@ -388,10 +439,24 @@ def _process_intent_classification(classification: Optional[Dict]) -> Dict[str, 
     categoria = classification.get("sub_intent") or norm_intent
     _jlog(_logger, "intent.classified", intent_raw=_redact(raw_intent), intent_norm=norm_intent, mapped_action=mapped_action, categoria=categoria)
     # Auditoría de intent contra el registro canónico
+    audit_info = None
     try:
-        audit_intent(norm_intent, source="classifier", extra={"raw": raw_intent, "categoria": categoria})
+        extra = {"raw": raw_intent, "categoria": categoria}
+        if utterance:
+            extra["utterance"] = utterance
+        audit_info = audit_intent(norm_intent, source="classifier", extra=extra)
     except Exception as e:
         _jlog(_logger, "intent.audit_error", error=str(e))
+    if utterance:
+        match_type = None
+        if isinstance(audit_info, dict):
+            match_type = audit_info.get("match_type")
+        _record_intent_sample(
+            utterance,
+            norm_intent or "n/a",
+            expected_intent=mapped_action if mapped_action != "n/a" else None,
+            status=match_type or "unknown",
+        )
     return {"raw": raw_intent, "normalized": norm_intent, "action": mapped_action, "category": categoria}
 
 _RND = random.Random(os.getenv("ANSWER_SEED", "munbot"))
@@ -1015,7 +1080,7 @@ def handle_turn(
         return {"respuesta": msg, "no_results": False}
 
     classification = classify_intent_remotely(user_text, trace_id=trace_id)
-    processed = _process_intent_classification(classification)
+    processed = _process_intent_classification(classification, utterance=user_text)
     intent_action = processed["action"]
     categoria = processed["category"]
 

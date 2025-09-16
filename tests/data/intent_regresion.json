@@ -1,0 +1,16 @@
+[
+  {
+    "texto": "Necesito saber requisitos para permiso de aterrizaje",
+    "esperado": "ask_document",
+    "intent_detectado": "ask_document",
+    "status": "validated",
+    "source": "manual"
+  },
+  {
+    "texto": "Quiero reservar una hora para el jueves",
+    "esperado": "init_scheduler",
+    "intent_detectado": "init_scheduler",
+    "status": "validated",
+    "source": "manual"
+  }
+]
