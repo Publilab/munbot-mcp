@@ -127,6 +127,8 @@ services:
       - LLM_DOCS_API_KEY=${LLM_DOCS_API_KEY:-}
       - LLM_DOCS_MCP_USER=${LLM_DOCS_MCP_USER:-}
       - LLM_DOCS_MCP_PASSWORD=${LLM_DOCS_MCP_PASSWORD:-}
+      - SCHEDULER_MCP_URL=${SCHEDULER_MCP_URL:-http://scheduler-mcp:6001/tools/call}
+      - COMPLAINTS_MCP_URL=${COMPLAINTS_MCP_URL:-http://complaints-mcp:7000/tools/call}
     ports:
       - "5000:5000"
     networks:

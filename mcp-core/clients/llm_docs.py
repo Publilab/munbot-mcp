@@ -23,7 +23,8 @@ logger = logging.getLogger(__name__)
 class LlmDocsClient:
     def __init__(self, base_url: str = BASE_URL, timeout: float = 30.0):
         parsed_url = urlparse(base_url)
-        self.base_url = f"{parsed_url.scheme}://{parsed_url.netloc}/tools/call"
+        self._root_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
+        self.base_url = f"{self._root_url}/tools/call"
         self.timeout = timeout
 
     def _headers(self) -> dict:
@@ -108,7 +109,26 @@ class LlmDocsClient:
     # --- Alto nivel ---
     def classify_intent(self, texto: str, trace_id: Optional[str] = None) -> dict:
         """Clasifica la intención del usuario y preserva sub_intent cuando exista."""
-        resp = self.tools_call("doc-classify_intent_llm", {"texto": texto}, trace_id)
+        payload = {"texto": texto}
+        endpoint = f"{self._root_url}/tools/doc-classify_intent_llm"
+        to = self.timeout
+        try:
+            r = httpx.post(
+                endpoint,
+                json=payload,
+                headers=self._headers(),
+                auth=self._auth(),
+                timeout=to,
+            )
+            r.raise_for_status()
+            resp = r.json()
+        except (httpx.TimeoutException, httpx.RequestError) as e:
+            logger.warning("classify_intent error %s", e)
+            return {"intent": "n/a"}
+        except httpx.HTTPStatusError as e:
+            logger.warning("classify_intent http error %s", e)
+            return {"intent": "n/a"}
+
         raw_intent = resp.get("intent")
         sub_intent = resp.get("sub_intent")
         confidence = None
@@ -149,4 +169,3 @@ class LlmDocsClient:
 
 
 client = LlmDocsClient()
-

@@ -191,9 +191,11 @@ def _should_use_canary(session_id: str | None, force_canary: bool) -> bool:
 
 # === Configuración ===
 LLM_DOCS_MCP_URL = os.getenv("LLM_DOCS_MCP_URL", "http://llm_docs-mcp:8000/tools/call")
+DEFAULT_SCHEDULER_URL = "http://scheduler-mcp:6001/tools/call"
+DEFAULT_COMPLAINTS_URL = "http://complaints-mcp:7000/tools/call"
 MICROSERVICES = {
-    "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL"),
-    "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL"),
+    "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL", DEFAULT_COMPLAINTS_URL),
+    "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL", DEFAULT_SCHEDULER_URL),
     "llm_docs-mcp": LLM_DOCS_MCP_URL,
 }
 LLM_DOCS_MCP_HEALTH_URL = os.getenv(
@@ -633,20 +635,19 @@ def _generate_session_id() -> str:
     return str(uuid.uuid4())
 
 
-def classify_intent_remotely(text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
+def _heuristic_classify(text: str) -> Dict[str, Any]:
     if not text:
         return {"intent": "n/a"}
     norm = normalize_text(text)
     lower = norm.lower()
 
-    # Simple heuristics that are good enough for tests and local usage
     if _is_pure_smalltalk(lower):
         if any(word in lower for word in ("hola", "buenos dias", "buenas tardes", "buenas noches")):
-            return {"intent": "saludo"}
+            return {"intent": "saludo", "sub_intent": "saludo"}
         if any(word in lower for word in ("adios", "chao", "chau", "hasta luego", "bye")):
-            return {"intent": "despedida"}
+            return {"intent": "despedida", "sub_intent": "despedida"}
         if "gracias" in lower or "agradecid" in lower:
-            return {"intent": "agradecimiento"}
+            return {"intent": "agradecimiento", "sub_intent": "agradecimiento"}
 
     if "reclamo" in lower or "denuncia" in lower:
         return {"intent": "reclamo"}
@@ -666,6 +667,22 @@ def classify_intent_remotely(text: str, trace_id: Optional[str] = None) -> Dict[
         return {"intent": "deny"}
 
     return {"intent": "faq"}
+
+
+def classify_intent_remotely(text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
+    if not text:
+        return {"intent": "n/a"}
+    try:
+        result = llm_client.classify_intent(text, trace_id=trace_id)
+        if isinstance(result, dict):
+            intent = (result.get("intent") or "").strip().lower()
+            if intent and intent != "n/a":
+                return result
+            if result.get("sub_intent"):
+                return result
+    except Exception as exc:  # pragma: no cover - defensive logging
+        _jlog(_logger, "intent.remote_error", error=str(exc))
+    return _heuristic_classify(text)
 
 
 def _extract_document_name(text: str) -> str:
