@@ -215,6 +215,7 @@ services:
       - LLM_DOCS_MCP_PASSWORD=${LLM_DOCS_MCP_PASSWORD:-}
       - LOG_DIR=/app/logs
       - LOG_PATH=/app/logs/llm_docs_gateway.log
+      - INTENT_OUTPUT_MODE=rich
     depends_on:
       qdrant:
         condition: service_started
