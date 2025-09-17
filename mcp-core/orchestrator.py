@@ -453,7 +453,19 @@ def _low_confidence(classification: Any, threshold: float = 0.3) -> bool:
         return classification.strip().lower() == "n/a"
     return True
 
-INTENT_MAP = {"saludo": "saludo", "despedida": "despedida", "agradecimiento": "agradecimiento", "faq": "ask_document", "documento": "ask_document", "tramite": "ask_document", "agenda": "init_scheduler", "reclamo": "init_complaint", "n/a": "n/a"}
+INTENT_MAP = {
+    "saludo": "saludo",
+    "despedida": "despedida",
+    "agradecimiento": "agradecimiento",
+    "faq": "ask_document",
+    "documento": "ask_document",
+    "tramite": "ask_document",
+    "agenda": "init_scheduler",
+    "init_scheduler": "init_scheduler",
+    "init_complaint": "init_complaint",
+    "reclamo": "init_complaint",
+    "n/a": "n/a",
+}
 
 def _process_intent_classification(
     classification: Optional[Dict],

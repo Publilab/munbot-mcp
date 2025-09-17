@@ -1,52 +1,157 @@
-docker logs -f mcp-core
+docker logs -f mcp-core 
 → Esperando a Redis en redis:6379...
-Connection to redis (172.18.0.3) 6379 port [tcp/redis] succeeded!
+Connection to redis (172.18.0.4) 6379 port [tcp/redis] succeeded!
 → Esperando a Postgres en postgres:5432...
-Connection to postgres (172.18.0.2) 5432 port [tcp/postgresql] succeeded!
+Connection to postgres (172.18.0.5) 5432 port [tcp/postgresql] succeeded!
 → Esperando a Qdrant en qdrant:6333...
-Connection to qdrant (172.18.0.4) 6333 port [tcp/*] succeeded!
+Connection to qdrant (172.18.0.3) 6333 port [tcp/*] succeeded!
 → Esperando a llm_docs-mcp (puerto TCP) en llm_docs-mcp:8000...
-Connection to llm_docs-mcp (172.18.0.6) 8000 port [tcp/*] succeeded!
+Connection to llm_docs-mcp (172.18.0.8) 8000 port [tcp/*] succeeded!
 → Esperando al endpoint de salud de llm_docs-mcp en http://llm_docs-mcp:8000/health...
 → Todas las dependencias listas. Iniciando mcp‑core...
 INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5000 (Press CTRL+C to quit)
-INFO:     127.0.0.1:57210 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34666 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42392 - "GET /openapi.json HTTP/1.1" 200 OK
-{"asctime": "2025-09-16 10:53:31,028", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"saludo\", \"intent_norm\": \"saludo\", \"mapped_action\": \"saludo\", \"categoria\": \"saludo\"}", "trace_id": null}
-{"asctime": "2025-09-16 10:53:31,030", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"saludo\", \"intent_norm\": \"saludo\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"saludo\", \"categoria\": \"saludo\"}}", "trace_id": null}
-{"asctime": "2025-09-16 10:53:31,030", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"saludo\", \"intent_norm\": \"saludo\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"saludo\", \"categoria\": \"saludo\"}}", "trace_id": null}
-INFO:     172.18.0.11:45498 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37386 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:57170 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60600 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:39398 - "GET /openapi.json HTTP/1.1" 200 OK
-{"asctime": "2025-09-16 10:55:26,364", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"faq\", \"intent_norm\": \"faq\", \"mapped_action\": \"ask_document\", \"categoria\": \"faq\"}", "trace_id": null}
-{"asctime": "2025-09-16 10:55:26,400", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 400 Bad Request\"", "trace_id": null}
-{"asctime": "2025-09-16 10:55:26,400", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "tools_call http error Client error '400 Bad Request' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400", "trace_id": null}
-INFO:     172.18.0.11:43998 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43784 - "GET /openapi.json HTTP/1.1" 200 OK
-{"asctime": "2025-09-16 10:55:43,732", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"agenda\", \"intent_norm\": \"agenda\", \"mapped_action\": \"init_scheduler\", \"categoria\": \"agenda\"}", "trace_id": null}
-{"asctime": "2025-09-16 10:55:43,732", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"agenda\", \"intent_norm\": \"agenda\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"agenda\", \"categoria\": \"agenda\"}}", "trace_id": null}
-{"asctime": "2025-09-16 10:55:43,732", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"agenda\", \"intent_norm\": \"agenda\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"agenda\", \"categoria\": \"agenda\"}}", "trace_id": null}
-INFO:     172.18.0.11:39182 - "POST /orchestrate HTTP/1.1" 200 OK
-{"asctime": "2025-09-16 10:56:01,600", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"faq\", \"intent_norm\": \"faq\", \"mapped_action\": \"ask_document\", \"categoria\": \"faq\"}", "trace_id": null}
-{"asctime": "2025-09-16 10:56:01,619", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 400 Bad Request\"", "trace_id": null}
-{"asctime": "2025-09-16 10:56:01,619", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "tools_call http error Client error '400 Bad Request' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400", "trace_id": null}
-INFO:     172.18.0.11:48688 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:48332 - "GET /openapi.json HTTP/1.1" 200 OK
-{"asctime": "2025-09-16 10:56:27,567", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"documento\", \"intent_norm\": \"documento\", \"mapped_action\": \"ask_document\", \"categoria\": \"tramite\"}", "trace_id": null}
-{"asctime": "2025-09-16 10:56:27,582", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 400 Bad Request\"", "trace_id": null}
-{"asctime": "2025-09-16 10:56:27,582", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "tools_call http error Client error '400 Bad Request' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400", "trace_id": null}
-INFO:     172.18.0.11:60292 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:42230 - "GET /openapi.json HTTP/1.1" 200 OK
-{"asctime": "2025-09-16 10:56:36,617", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"faq\", \"intent_norm\": \"faq\", \"mapped_action\": \"ask_document\", \"categoria\": \"faq\"}", "trace_id": null}
-{"asctime": "2025-09-16 10:56:36,633", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/call \"HTTP/1.1 400 Bad Request\"", "trace_id": null}
-{"asctime": "2025-09-16 10:56:36,633", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "tools_call http error Client error '400 Bad Request' for url 'http://llm_docs-mcp:8000/tools/call'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400", "trace_id": null}
-INFO:     172.18.0.11:51372 - "POST /orchestrate HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59082 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46188 - "GET /openapi.json HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51834 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59874 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:51382 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:56298 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47788 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:51066 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:49526 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59794 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:37484 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:34654 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59310 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:39930 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:37550 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57624 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:51416 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:41416 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54354 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:57374 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:54312 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54842 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:42584 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:50294 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39292 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:42234 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:46750 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53056 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:36296 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:54048 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40004 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:38010 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:56726 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48170 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:34002 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:52632 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45892 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:54646 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53346 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42634 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:38510 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:35876 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38736 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:41810 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:35854 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60150 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:36358 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:41142 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34186 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:54980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:48544 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56242 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:52236 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:38900 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53756 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:43772 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:40350 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42378 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:34922 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53538 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33698 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:35816 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53526 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33610 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:48694 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:52454 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43044 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:60638 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:52318 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43460 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:51714 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:49070 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60892 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:48174 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:37922 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57852 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:43398 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:40014 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38758 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:57880 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:60830 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59792 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:33720 - "GET /metrics HTTP/1.1" 200 OK
+{"asctime": "2025-09-17 12:08:44,428", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/doc-classify_intent_llm \"HTTP/1.1 500 Internal Server Error\"", "trace_id": null}
+{"asctime": "2025-09-17 12:08:44,428", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "classify_intent http error Server error '500 Internal Server Error' for url 'http://llm_docs-mcp:8000/tools/doc-classify_intent_llm'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500", "trace_id": null}
+Batches: 100%|██████████| 1/1 [00:00<00:00, 48.89it/s]
+{"asctime": "2025-09-17 12:08:44,454", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.similarity_rescue\", \"rescued_intent\": \"saludo\", \"score\": 0.9053}", "trace_id": null}
+{"asctime": "2025-09-17 12:08:44,455", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"saludo\", \"intent_norm\": \"saludo\", \"mapped_action\": \"saludo\", \"categoria\": \"saludo\"}", "trace_id": null}
+{"asctime": "2025-09-17 12:08:44,457", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"saludo\", \"intent_norm\": \"saludo\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"saludo\", \"categoria\": \"saludo\", \"utterance\": \"Hola\"}}", "trace_id": null}
+{"asctime": "2025-09-17 12:08:44,457", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"saludo\", \"intent_norm\": \"saludo\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"saludo\", \"categoria\": \"saludo\", \"utterance\": \"Hola\"}}", "trace_id": null}
+INFO:     172.18.0.13:48446 - "POST /orchestrate HTTP/1.1" 200 OK
+{"asctime": "2025-09-17 12:08:48,611", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/doc-classify_intent_llm \"HTTP/1.1 500 Internal Server Error\"", "trace_id": null}
+{"asctime": "2025-09-17 12:08:48,612", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "classify_intent http error Server error '500 Internal Server Error' for url 'http://llm_docs-mcp:8000/tools/doc-classify_intent_llm'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500", "trace_id": null}
+Batches: 100%|██████████| 1/1 [00:00<00:00, 51.70it/s]
+{"asctime": "2025-09-17 12:08:48,636", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.fallback\", \"fallback_intent\": \"despedida\", \"utterance\": \"Adios\"}", "trace_id": null}
+{"asctime": "2025-09-17 12:08:48,637", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"despedida\", \"intent_norm\": \"despedida\", \"mapped_action\": \"despedida\", \"categoria\": \"despedida\"}", "trace_id": null}
+{"asctime": "2025-09-17 12:08:48,637", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"despedida\", \"intent_norm\": \"despedida\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"despedida\", \"categoria\": \"despedida\", \"utterance\": \"Adios\"}}", "trace_id": null}
+{"asctime": "2025-09-17 12:08:48,637", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"despedida\", \"intent_norm\": \"despedida\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"despedida\", \"categoria\": \"despedida\", \"utterance\": \"Adios\"}}", "trace_id": null}
+INFO:     172.18.0.13:35964 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53584 - "GET /metrics HTTP/1.1" 200 OK
+{"asctime": "2025-09-17 12:08:57,978", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/doc-classify_intent_llm \"HTTP/1.1 500 Internal Server Error\"", "trace_id": null}
+{"asctime": "2025-09-17 12:08:57,978", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "classify_intent http error Server error '500 Internal Server Error' for url 'http://llm_docs-mcp:8000/tools/doc-classify_intent_llm'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500", "trace_id": null}
+Batches: 100%|██████████| 1/1 [00:00<00:00, 56.75it/s]
+{"asctime": "2025-09-17 12:08:58,004", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.similarity_rescue\", \"rescued_intent\": \"init_scheduler\", \"score\": 0.9849}", "trace_id": null}
+{"asctime": "2025-09-17 12:08:58,004", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"init_scheduler\", \"intent_norm\": \"init_scheduler\", \"mapped_action\": \"n/a\", \"categoria\": \"init_scheduler\"}", "trace_id": null}
+INFO:     172.18.0.13:53972 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34742 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:46876 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:42522 - "GET /metrics HTTP/1.1" 200 OK
+{"asctime": "2025-09-17 12:09:23,320", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/doc-classify_intent_llm \"HTTP/1.1 500 Internal Server Error\"", "trace_id": null}
+{"asctime": "2025-09-17 12:09:23,320", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "classify_intent http error Server error '500 Internal Server Error' for url 'http://llm_docs-mcp:8000/tools/doc-classify_intent_llm'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500", "trace_id": null}
+Batches: 100%|██████████| 1/1 [00:00<00:00, 39.11it/s]
+{"asctime": "2025-09-17 12:09:23,351", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.similarity_rescue\", \"rescued_intent\": \"ask_document\", \"score\": 0.9462}", "trace_id": null}
+{"asctime": "2025-09-17 12:09:23,351", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"ask_document\", \"intent_norm\": \"ask_document\", \"mapped_action\": \"n/a\", \"categoria\": \"ask_document\"}", "trace_id": null}
+{"asctime": "2025-09-17 12:09:23,352", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"ask_document\", \"intent_norm\": \"ask_document\", \"closest\": {\"canonical_candidate\": \"documento\", \"similarity\": 0.762}, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"ask_document\", \"categoria\": \"ask_document\", \"utterance\": \"Necesito informaci\u00f3n del permiso de circulaci\u00f3n\"}}", "trace_id": null}
+{"asctime": "2025-09-17 12:09:23,352", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"ask_document\", \"intent_norm\": \"ask_document\", \"closest\": {\"canonical_candidate\": \"documento\", \"similarity\": 0.762}, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"ask_document\", \"categoria\": \"ask_document\", \"utterance\": \"Necesito informaci\u00f3n del permiso de circulaci\u00f3n\"}}", "trace_id": null}
+INFO:     172.18.0.13:44686 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38140 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:43518 - "GET /metrics HTTP/1.1" 200 OK
+{"asctime": "2025-09-17 12:09:49,637", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/doc-classify_intent_llm \"HTTP/1.1 500 Internal Server Error\"", "trace_id": null}
+{"asctime": "2025-09-17 12:09:49,638", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "classify_intent http error Server error '500 Internal Server Error' for url 'http://llm_docs-mcp:8000/tools/doc-classify_intent_llm'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500", "trace_id": null}
+Batches: 100%|██████████| 1/1 [00:00<00:00, 52.25it/s]
+{"asctime": "2025-09-17 12:09:49,662", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.similarity_rescue\", \"rescued_intent\": \"init_scheduler\", \"score\": 0.7062}", "trace_id": null}
+{"asctime": "2025-09-17 12:09:49,662", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"init_scheduler\", \"intent_norm\": \"init_scheduler\", \"mapped_action\": \"n/a\", \"categoria\": \"init_scheduler\"}", "trace_id": null}
+INFO:     172.18.0.13:54332 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.2:59704 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50508 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:50108 - "GET /metrics HTTP/1.1" 200 OK
+{"asctime": "2025-09-17 12:10:11,161", "levelname": "INFO", "name": "httpx", "message": "HTTP Request: POST http://llm_docs-mcp:8000/tools/doc-classify_intent_llm \"HTTP/1.1 500 Internal Server Error\"", "trace_id": null}
+{"asctime": "2025-09-17 12:10:11,161", "levelname": "WARNING", "name": "mcp-core.clients.llm_docs", "message": "classify_intent http error Server error '500 Internal Server Error' for url 'http://llm_docs-mcp:8000/tools/doc-classify_intent_llm'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500", "trace_id": null}
+Batches: 100%|██████████| 1/1 [00:00<00:00, 49.82it/s]
+{"asctime": "2025-09-17 12:10:11,186", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.similarity_rescue\", \"rescued_intent\": \"despedida\", \"score\": 0.6423}", "trace_id": null}
+{"asctime": "2025-09-17 12:10:11,186", "levelname": "INFO", "name": "orchestrator", "message": "{\"event\": \"intent.classified\", \"intent_raw\": \"despedida\", \"intent_norm\": \"despedida\", \"mapped_action\": \"despedida\", \"categoria\": \"despedida\"}", "trace_id": null}
+{"asctime": "2025-09-17 12:10:11,187", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"despedida\", \"intent_norm\": \"despedida\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"despedida\", \"categoria\": \"despedida\", \"utterance\": \"que\"}}", "trace_id": null}
+{"asctime": "2025-09-17 12:10:11,187", "levelname": "WARNING", "name": "munbot", "message": "{\"event\": \"intent_registry_miss\", \"source\": \"classifier\", \"intent_raw\": \"despedida\", \"intent_norm\": \"despedida\", \"closest\": null, \"known_canonical\": [\"documento\", \"faq\", \"init_complaint\", \"init_scheduler\", \"na\", \"smalltalk\", \"tramite\"], \"notes\": \"Intent no encontrado en registry\", \"extra\": {\"raw\": \"despedida\", \"categoria\": \"despedida\", \"utterance\": \"que\"}}", "trace_id": null}
+INFO:     172.18.0.13:35798 - "POST /orchestrate HTTP/1.1" 200 OK
+INFO:     172.18.0.2:37238 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49464 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:55824 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:43940 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34560 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:46516 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:36174 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46004 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53478 - "GET /metrics HTTP/1.1" 200 OK

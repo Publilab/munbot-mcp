@@ -1,4 +1,8 @@
-docker logs llm_docs-mcp
+docker logs -f llm_docs-mcp
+curl: (7) Failed to connect to qdrant port 6333 after 0 ms: Could not connect to server
+⌛ Waiting for Qdrant...
+curl: (7) Failed to connect to qdrant port 6333 after 0 ms: Could not connect to server
+⌛ Waiting for Qdrant...
 curl: (7) Failed to connect to qdrant port 6333 after 0 ms: Could not connect to server
 ⌛ Waiting for Qdrant...
 ✅ Qdrant is ready.
@@ -11,7 +15,7 @@ INFO:__main__:Cargando y procesando documentos...
 INFO:__main__:Generando embeddings y subiendo puntos a Qdrant para 199 chunks...
 INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
 INFO:__main__:✅ Indexación completada. 199 puntos procesados para la colección 'munbot_docs'.
-🧠 Modelo cargado en 2,493 ms (CPU)
+🧠 Modelo cargado en 2,639 ms (CPU)
 ✅ Indexing complete.
 llama_model_loader: loaded meta data with 39 key-value pairs and 434 tensors from /app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
@@ -304,10 +308,10 @@ Using gguf chat template: {%- if tools %}
 
 Using chat eos_token: <|im_end|>
 Using chat bos_token: <|endoftext|>
-llama_perf_context_print:        load time =      78.70 ms
+llama_perf_context_print:        load time =      98.56 ms
 llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
-llama_perf_context_print:        eval time =      78.58 ms /     1 runs   (   78.58 ms per token,    12.73 tokens per second)
-llama_perf_context_print:       total time =      79.69 ms /     2 tokens
+llama_perf_context_print:        eval time =      98.45 ms /     1 runs   (   98.45 ms per token,    10.16 tokens per second)
+llama_perf_context_print:       total time =      99.67 ms /     2 tokens
 llama_perf_context_print:    graphs reused =          0
 llama_model_loader: loaded meta data with 39 key-value pairs and 434 tensors from /app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
@@ -604,24 +608,467 @@ INFO:     Started server process [1]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-🧠 Modelo cargado en 2,113 ms (CPU)
-INFO:     127.0.0.1:45504 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:51170 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:47588 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:36756 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:37892 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49986 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:34462 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:50308 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:34742 - "POST /tools/call HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:49366 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41856 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:37032 - "POST /tools/call HTTP/1.1" 400 Bad Request
-INFO:     172.18.0.10:41216 - "POST /tools/call HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:33640 - "GET /health HTTP/1.1" 200 OK
-INFO:     172.18.0.10:52144 - "POST /tools/call HTTP/1.1" 400 Bad Request
-INFO:     127.0.0.1:37770 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:46520 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:55804 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:41804 - "GET /health HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43562 - "GET /health HTTP/1.1" 200 OK
+🧠 Modelo cargado en 2,091 ms (CPU)
+INFO:     127.0.0.1:55388 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:39888 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.12:41588 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:38950 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:40848 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50944 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:34094 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:33786 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47842 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:36388 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:59150 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42166 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:38748 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:34418 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45628 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:32984 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:41934 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47136 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:49204 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:60322 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59918 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:59348 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:56172 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47732 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:43242 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:57140 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43838 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:52892 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:37628 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54280 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:38774 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:59702 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51116 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:56830 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:52684 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53018 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:42684 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:40628 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38430 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:47542 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:54682 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36966 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:55712 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53064 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41464 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:51626 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:33170 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45826 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:49430 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:36156 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41346 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:60614 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:33904 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36978 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:60656 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:33886 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46120 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:44320 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:34260 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35752 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:46856 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:49626 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32828 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:60514 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:56980 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44482 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:58984 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53930 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35234 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:50604 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53394 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37764 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:45794 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53864 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38264 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:52092 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:45432 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42138 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:59128 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:46388 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49490 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:51728 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.12:47696 - "POST /tools/doc-classify_intent_llm HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/services/llm_docs-mcp/gateway.py", line 406, in endpoint_classify_intent
+    pred = classify_intent_with_llm(texto, llama=None, mode=None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: classify_intent_with_llm() got an unexpected keyword argument 'llama'
+INFO:     172.18.0.2:60090 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.12:52374 - "POST /tools/doc-classify_intent_llm HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/services/llm_docs-mcp/gateway.py", line 406, in endpoint_classify_intent
+    pred = classify_intent_with_llm(texto, llama=None, mode=None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: classify_intent_with_llm() got an unexpected keyword argument 'llama'
+INFO:     127.0.0.1:40938 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.12:55026 - "POST /tools/doc-classify_intent_llm HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/services/llm_docs-mcp/gateway.py", line 406, in endpoint_classify_intent
+    pred = classify_intent_with_llm(texto, llama=None, mode=None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: classify_intent_with_llm() got an unexpected keyword argument 'llama'
+INFO:     172.18.0.2:60020 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:34116 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59884 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.12:54574 - "POST /tools/doc-classify_intent_llm HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/services/llm_docs-mcp/gateway.py", line 406, in endpoint_classify_intent
+    pred = classify_intent_with_llm(texto, llama=None, mode=None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: classify_intent_with_llm() got an unexpected keyword argument 'llama'
+INFO:     172.18.0.2:47064 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:50854 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.12:36916 - "POST /tools/doc-classify_intent_llm HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/services/llm_docs-mcp/gateway.py", line 406, in endpoint_classify_intent
+    pred = classify_intent_with_llm(texto, llama=None, mode=None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: classify_intent_with_llm() got an unexpected keyword argument 'llama'
+INFO:     127.0.0.1:52866 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:40012 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.12:54558 - "POST /tools/doc-classify_intent_llm HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.11/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/services/llm_docs-mcp/gateway.py", line 406, in endpoint_classify_intent
+    pred = classify_intent_with_llm(texto, llama=None, mode=None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: classify_intent_with_llm() got an unexpected keyword argument 'llama'
+INFO:     172.18.0.2:48904 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60476 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:43158 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:58210 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52264 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:50650 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:40702 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36318 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:35934 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     172.18.0.2:47464 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56238 - "GET /health HTTP/1.1" 200 OK
+INFO:     172.18.0.2:53170 - "GET /metrics HTTP/1.1" 200 OK

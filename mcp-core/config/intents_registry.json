@@ -2,7 +2,7 @@
   "canonical": [
     "faq", "tramite", "documento",
     "init_scheduler", "init_complaint",
-    "smalltalk", "n/a"
+    "smalltalk", "saludo", "despedida", "agradecimiento", "n/a"
   ],
   "aliases": {
     "faq":       ["pregunta", "consulta", "horario", "atencion", "informacion"],
@@ -10,7 +10,10 @@
     "documento": ["ordenanza", "articulo", "normativa", "decreto", "vigencia"],
     "init_scheduler": ["agendar", "reservar hora", "cita", "agendamiento"],
     "init_complaint": ["reclamo", "denuncia", "queja"],
-    "smalltalk": ["hola", "gracias", "adios"]
+    "smalltalk": ["hola", "gracias", "adios"],
+    "saludo": ["hola", "buenos dias", "buenas tardes", "buenas noches"],
+    "despedida": ["adios", "hasta luego", "bye"],
+    "agradecimiento": ["gracias", "muchas gracias"],
+    "n/a": ["desconocido", "na"]
   }
 }
-
