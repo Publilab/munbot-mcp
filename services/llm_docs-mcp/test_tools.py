@@ -45,7 +45,10 @@ sys.modules["sentence_transformers"] = fake_st
 fake_ic = types.ModuleType("intent_classifier")
 fake_ic.__spec__ = importlib.machinery.ModuleSpec("intent_classifier", loader=None)
 
-def fake_classify_intent_with_llm(texto, llama=None, mode=None):
+def fake_classify_intent_with_llm(texto, llm=None, mode=None, **kwargs):
+    # Acepta la keyword legacy 'llama' para compatibilidad con imágenes antiguas.
+    if llm is None and "llama" in kwargs:
+        llm = kwargs["llama"]
     mapping = {
         "hola": {"intent": "faq", "sub_intent": "saludo"},
         "adios": {"intent": "faq", "sub_intent": "despedida"},
