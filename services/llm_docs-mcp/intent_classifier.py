@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import re
+import unicodedata
 import logging
 from typing import Optional
 
@@ -22,6 +23,46 @@ LLM_INTENT_LABELS = [
     "agradecimiento",
     "n/a",
 ]
+
+def _norm_label(label: str) -> str:
+    """Normalize LLM labels to be accent/case-insensitive and map synonyms.
+
+    Examples:
+    - "Trámite" -> "tramite"
+    - "DOCUMENTO" -> "documento"
+    - "no_entendido" | "n/a" | "NA" -> "n/a"
+    - "pregunta_casual" -> "faq"
+    """
+    s = (label or "").strip().lower()
+    # remove diacritics
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join(ch for ch in s if not unicodedata.combining(ch))
+    # unify separators
+    s = s.replace("/", "_").replace("-", "_")
+    s = re.sub(r"\s+", "_", s)
+    s = re.sub(r"[^a-z0-9_]", "", s)
+    synonyms = {
+        "tramites": "tramite",
+        "documentos": "documento",
+        "pregunta_casual": "faq",
+        "preguntafrecuente": "faq",
+        "preguntas_frecuentes": "faq",
+        "smalltalk": "faq",
+        "meta_bot": "faq",
+        "saludos": "saludo",
+        "despedidas": "despedida",
+        "agradecimientos": "agradecimiento",
+        "reclamos": "reclamo",
+        "no_entendido": "n/a",
+        "noentendido": "n/a",
+        "n_a": "n/a",
+        "na": "n/a",
+    }
+    s = synonyms.get(s, s)
+    # final cleanup: we only allow the known forms; map any residual 'n_a' to 'n/a'
+    if s == "n_a":
+        return "n/a"
+    return s
 
 # Compiled patterns for smalltalk fast-path
 SALUDO_PAT = re.compile(r"\b(hola|buen[oa]s(?:\s*(dias|tardes|noches))?|que tal|como estas)\b", re.I)
@@ -97,7 +138,8 @@ def build_llm_prompt(user_text: str) -> str:
 
 def classify_with_llm(user_text: str, llm: LlamaClient | None = None) -> dict:
     client = llm or _llm()
-    label = (client.generate(build_llm_prompt(user_text), temperature=0) or "").strip().lower()
+    raw = (client.generate(build_llm_prompt(user_text), temperature=0) or "").strip()
+    label = _norm_label(raw)
     if label not in LLM_INTENT_LABELS:
         label = "n/a"
     if label in {"saludo", "despedida", "agradecimiento"}:
@@ -172,4 +214,3 @@ def flatten_for_orchestrator(pred: dict | str) -> str:
     if intent == "faq" and sub in {"saludo", "despedida", "agradecimiento"}:
         return sub
     return intent or "n/a"
-

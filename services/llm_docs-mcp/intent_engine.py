@@ -4,7 +4,8 @@ from dataclasses import dataclass
 from typing import List, Dict, Any, Optional, Tuple
 
 DATA_GLOB = os.getenv("RAG_DATA_GLOB", "RAG-*.json")  # mismo dir del proceso
-UMBRAL_SCORE = 0.18  # si baja de esto => n/a
+# Umbral base configurable vía entorno; recomendación del informe: 0.15
+UMBRAL_SCORE = float(os.getenv("INTENT_UMBRAL_SCORE", "0.15"))  # si baja de esto => n/a
 
 def dynamic_threshold(query_text: str) -> float:
     """Retorna un umbral adaptativo según la longitud de la consulta.

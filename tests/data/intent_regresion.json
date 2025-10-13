@@ -34,4 +34,40 @@
     "status": "validated",
     "source": "manual"
   }
+  ,
+  {
+    "texto": "Requisitos para licencia de conducir",
+    "esperado": "ask_document",
+    "intent_detectado": "ask_document",
+    "status": "validated",
+    "source": "regresion"
+  },
+  {
+    "texto": "¿Dónde obtener patente comercial?",
+    "esperado": "ask_document",
+    "intent_detectado": "ask_document",
+    "status": "validated",
+    "source": "regresion"
+  },
+  {
+    "texto": "Costo del permiso de circulación",
+    "esperado": "ask_document",
+    "intent_detectado": "ask_document",
+    "status": "validated",
+    "source": "regresion"
+  },
+  {
+    "texto": "Horario de atención del departamento de obras",
+    "esperado": "ask_document",
+    "intent_detectado": "ask_document",
+    "status": "validated",
+    "source": "regresion"
+  },
+  {
+    "texto": "Qué documentos necesito para la patente de alcoholes",
+    "esperado": "ask_document",
+    "intent_detectado": "ask_document",
+    "status": "validated",
+    "source": "regresion"
+  }
 ]
