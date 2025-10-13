@@ -292,28 +292,66 @@ async def generate_response(prompt: str) -> str:
 async def generar_respuesta_llm(query: str, top_k: int = 5, categoria: str | None = None):
     """
     Recupera fragmentos y genera respuesta con el LLM.
-    Si RAG_CATEGORY_AWARE=1 y se pasa 'categoria', selecciona colección/filtro y prompt específicos.
+    - Si RAG_CATEGORY_AWARE=0 → usa el pipeline legacy de rag.doc_generar_respuesta_llm_with_sources.
+    - Si RAG_CATEGORY_AWARE=1 → selecciona colección/filtro y arma prompt con contexto recuperado.
     """
+    # Camino legacy (compat con tests existentes)
+    if not RAG_CATEGORY_AWARE:
+        _logger.info("RAG category-aware OFF | usando pipeline legacy")
+        try:
+            out = rag.doc_generar_respuesta_llm_with_sources(
+                pregunta=query, categoria=categoria
+            )
+            refs = [f.get("doc") for f in (out.get("fuentes") or [])]
+            return {"respuesta": out.get("respuesta", ""), "referencias": refs}
+        except Exception as e:
+            _logger.warning("legacy rag.doc_generar_respuesta_llm_with_sources falló: %s", e)
+            # Fallback minimal para no romper tests básicos
+            return {"respuesta": "", "referencias": []}
+
+    # Ruta category-aware (o fallback si legacy falló)
     collection = None
     filtro = None
     prompt_tpl = None
     if RAG_CATEGORY_AWARE and categoria:
         collection, filtro, prompt_tpl = _select_collection_and_prompt(categoria)
-        _logger.info("RAG category-aware ON | categoria=%s mode=%s collection=%s filtro=%s",
-                     categoria, RAG_SELECTION_MODE, collection, filtro)
+        _logger.info(
+            "RAG category-aware ON | categoria=%s mode=%s collection=%s filtro=%s",
+            categoria,
+            RAG_SELECTION_MODE,
+            collection,
+            filtro,
+        )
     else:
-        _logger.info("RAG category-aware OFF | usando configuración legacy")
+        _logger.info("RAG category-aware OFF | usando configuración legacy (fallback)")
 
-    # 1) recuperar contexto (intenta por categoría y cae a legacy si no hay hits)
+    # 1) recuperar contexto (intenta por categoría y cae a búsqueda sin filtro)
     chunks = []
     try:
         if RAG_CATEGORY_AWARE and (collection or filtro):
-            chunks = await retrieve_context(query, top_k=top_k, collection=collection, filtro=filtro)
+            maybe = retrieve_context(
+                query, top_k=top_k, collection=collection, filtro=filtro
+            )
+            if inspect.isawaitable(maybe):
+                maybe = await maybe
+            # Permitir tanto lista de fragmentos como tupla (ctx, chunks, top)
+            if isinstance(maybe, tuple) and len(maybe) >= 2:
+                _, chunks = maybe[0], maybe[1]
+            else:
+                chunks = maybe or []
     except Exception as e:
         _logger.warning("retrieve_context con categoría falló: %s", e)
         chunks = []
+
     if not chunks:
-        chunks = await retrieve_context(query, top_k=top_k)
+        # Llamada sin categoría; igual soporta sync/async
+        maybe2 = retrieve_context(query, top_k=top_k)
+        if inspect.isawaitable(maybe2):
+            maybe2 = await maybe2
+        if isinstance(maybe2, tuple) and len(maybe2) >= 2:
+            _, chunks = maybe2[0], maybe2[1]
+        else:
+            chunks = maybe2 or []
 
     # 2) construir prompt
     contexto = build_context_text(chunks)
@@ -321,14 +359,20 @@ async def generar_respuesta_llm(query: str, top_k: int = 5, categoria: str | Non
         prompt_tpl = PROMPT_FAQ  # fallback razonable
     prompt = prompt_tpl.format(contexto=contexto, pregunta=query)
 
-    # 3) generar con LLM (sin cambios)
+    # 3) generar con LLM
     answer = await generate_response(prompt)
 
     # 4) referencias y logging
     refs = build_references(chunks)
-    top1 = chunks[0]["score"] if chunks and "score" in chunks[0] else None
-    _logger.info("rag: top_k=%s hits=%s top1=%s collection=%s filtro=%s",
-                 top_k, len(chunks), top1, collection, filtro)
+    top1 = chunks[0]["score"] if chunks and isinstance(chunks[0], dict) and "score" in chunks[0] else None
+    _logger.info(
+        "rag: top_k=%s hits=%s top1=%s collection=%s filtro=%s",
+        top_k,
+        len(chunks) if isinstance(chunks, list) else 0,
+        top1,
+        collection,
+        filtro,
+    )
     return {"respuesta": answer, "referencias": refs}
 
 
