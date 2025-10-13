@@ -1,6 +1,6 @@
 {
   "canonical": [
-    "faq", "tramite", "documento",
+    "faq", "tramite", "documento", "ask_document",
     "init_scheduler", "init_complaint",
     "smalltalk", "saludo", "despedida", "agradecimiento", "n/a"
   ],
@@ -8,6 +8,7 @@
     "faq":       ["pregunta", "consulta", "horario", "atencion", "informacion"],
     "tramite":   ["trámite", "requisitos", "pasos", "documentos", "plazos"],
     "documento": ["ordenanza", "articulo", "normativa", "decreto", "vigencia"],
+    "ask_document": ["documentos", "informacion", "información", "requisitos", "datos"],
     "init_scheduler": ["agendar", "reservar hora", "cita", "agendamiento"],
     "init_complaint": ["reclamo", "denuncia", "queja"],
     "smalltalk": ["hola", "gracias", "adios"],
