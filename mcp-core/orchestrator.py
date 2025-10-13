@@ -296,6 +296,18 @@ MET_INTENT_NA = Counter("munbot_intent_na_total", "Intenciones n/a", registry=PR
 MET_FLOW_LAT = Histogram("munbot_orchestrate_duration_seconds", "Duración de orchestrate", buckets=(0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8), registry=PROM_REGISTRY)
 MET_SUCCESS_BY_CAT = Counter("munbot_success_by_category_total", "Respuestas exitosas por categoría", ["categoria"], registry=PROM_REGISTRY)
 
+# Métricas para evaluar el fallback con RAG cuando el intent es n/a
+FALLBACK_RAG_HIT_COUNTER = Counter(
+    "munbot_fallback_rag_hit_total",
+    "Consultas con intent n/a resueltas por RAG",
+    registry=PROM_REGISTRY,
+)
+FALLBACK_RAG_MISS_COUNTER = Counter(
+    "munbot_fallback_rag_miss_total",
+    "Consultas con intent n/a sin resultados útiles en RAG",
+    registry=PROM_REGISTRY,
+)
+
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
 STOPWORDS = {"y", "de", "la", "el", "que", "en"}
@@ -1202,6 +1214,20 @@ def handle_turn(
         return handle_document_query(session_id, user_text, classification, history, categoria)
 
     if intent_action == "n/a":
+        # Fallback: intentar resolver vía RAG antes de disculparnos
+        history = context_manager.get_history(session_id)
+        rag_resp = handle_document_query(session_id, user_text, classification, history, categoria)
+        if not rag_resp.get("no_results"):
+            try:
+                FALLBACK_RAG_HIT_COUNTER.inc()
+            except Exception:
+                pass
+            return rag_resp
+        # Sin resultados útiles: mantenemos el comportamiento anterior
+        try:
+            FALLBACK_RAG_MISS_COUNTER.inc()
+        except Exception:
+            pass
         context_manager.increment_fallback_count(session_id)
         return fallback("Lo siento, no he entendido tu consulta. ¿Podrías reformularla?")
 

@@ -8,7 +8,7 @@
     "faq":       ["pregunta", "consulta", "horario", "atencion", "informacion"],
     "tramite":   ["trámite", "requisitos", "pasos", "documentos", "plazos"],
     "documento": ["ordenanza", "articulo", "normativa", "decreto", "vigencia"],
-    "ask_document": ["documentos", "informacion", "información", "requisitos", "datos"],
+    "ask_document": ["documento", "tramite", "trámite", "documentos", "informacion", "información", "requisitos", "datos"],
     "init_scheduler": ["agendar", "reservar hora", "cita", "agendamiento"],
     "init_complaint": ["reclamo", "denuncia", "queja"],
     "smalltalk": ["hola", "gracias", "adios"],
