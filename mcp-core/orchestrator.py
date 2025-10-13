@@ -1202,6 +1202,27 @@ def handle_turn(
         return handle_document_query(session_id, user_text, classification, history, categoria)
 
     if intent_action == "n/a":
+        history = context_manager.get_history(session_id)
+        rag_response = handle_document_query(
+            session_id,
+            user_text,
+            classification,
+            history,
+            categoria,
+            trace_id=trace_id,
+        )
+
+        if not isinstance(rag_response, dict):
+            rag_response = {}
+
+        if rag_response.get("no_results"):
+            context_manager.increment_fallback_count(session_id)
+            if not rag_response.get("respuesta"):
+                return fallback("Lo siento, no he entendido tu consulta. ¿Podrías reformularla?")
+
+        if rag_response:
+            return rag_response
+
         context_manager.increment_fallback_count(session_id)
         return fallback("Lo siento, no he entendido tu consulta. ¿Podrías reformularla?")
 
