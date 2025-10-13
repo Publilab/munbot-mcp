@@ -448,8 +448,16 @@ def endpoint_buscar_frag(data: BuscarFragPayload, _: None = Depends(_require_api
 def endpoint_classify_intent(payload: dict = None, _: None = Depends(_require_api_key)):
     texto = ((payload or {}).get("texto") or "").strip()
     pred = classify_intent_with_llm(texto, llm=None, mode="rich")
+    # Tolerar clasificadores que devuelven string o JSON serializado
     if isinstance(pred, str):
-        pred = {"intent": pred, "sub_intent": None, "confidence": None, "entities": None}
+        try:
+            parsed = json.loads(pred)
+            if isinstance(parsed, dict):
+                pred = parsed
+            else:
+                pred = {"intent": pred, "sub_intent": None, "confidence": None, "entities": None}
+        except Exception:
+            pred = {"intent": pred, "sub_intent": None, "confidence": None, "entities": None}
     # No aplanamos aquí, el cliente decide; el test compara intent directo
     intent = pred.get("intent")
     sub = pred.get("sub_intent")

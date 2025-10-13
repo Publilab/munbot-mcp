@@ -324,6 +324,22 @@ class TestGateway(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json().get("intent"), "saludo")
 
+    def test_doc_classify_intent_json_string_response(self):
+        # El clasificador devuelve un JSON serializado como string
+        with patch(
+            "gateway.classify_intent_with_llm",
+            return_value='{"intent": "faq", "sub_intent": "saludo"}',
+        ):
+            resp = self.client.post(
+                "/tools/doc-classify_intent_llm",
+                json={"texto": "hola"},
+            )
+        self.assertEqual(resp.status_code, 200)
+        body = resp.json()
+        # Smalltalk mapping: faq+saludo → intent "saludo"
+        self.assertEqual(body.get("intent"), "saludo")
+        self.assertEqual(body.get("sub_intent"), "saludo")
+
 def test_try_parse_call_json():
     from gateway import try_parse_call
 
