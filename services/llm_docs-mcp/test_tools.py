@@ -4,7 +4,7 @@ import types
 import unittest
 import importlib.machinery
 from fastapi.testclient import TestClient
-from unittest.mock import patch
+from unittest.mock import patch, AsyncMock
 import pytest
 from fastapi import HTTPException
 import asyncio
@@ -204,6 +204,13 @@ class TestGateway(unittest.TestCase):
     def setUp(self):
         api_key = os.environ["LLM_DOCS_API_KEY"]
         self.client = TestClient(app, headers={"X-API-Key": api_key})
+        self._retrieve_ctx_patch = patch(
+            "gateway.retrieve_context", new=AsyncMock(return_value=[])
+        )
+        self._retrieve_ctx_patch.start()
+
+    def tearDown(self):
+        self._retrieve_ctx_patch.stop()
 
     def test_endpoints(self):
         response = self.client.get("/endpoints")
@@ -308,6 +315,15 @@ class TestGateway(unittest.TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json().get("intent"), "documento")
 
+    def test_doc_classify_intent_string_response(self):
+        with patch("gateway.classify_intent_with_llm", return_value="saludo"):
+            resp = self.client.post(
+                "/tools/doc-classify_intent_llm",
+                json={"texto": "hola"},
+            )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json().get("intent"), "saludo")
+
 def test_try_parse_call_json():
     from gateway import try_parse_call
 
@@ -352,20 +368,17 @@ def test_generar_respuesta_llm_legacy(monkeypatch):
     monkeypatch.setenv("RAG_CATEGORY_AWARE", "0")
     monkeypatch.setattr(gateway, "RAG_CATEGORY_AWARE", 0)
 
-    called = {}
+    fake_retrieve_context = AsyncMock(return_value=[{"doc": "ref"}])
+    monkeypatch.setattr(gateway, "retrieve_context", fake_retrieve_context)
 
-    def fake_doc_generar_respuesta_llm_with_sources(**kwargs):
-        called.update(kwargs)
-        return {"respuesta": "ok", "fuentes": [{"doc": "ref"}]}
-
-    monkeypatch.setattr(
-        gateway.rag, "doc_generar_respuesta_llm_with_sources", fake_doc_generar_respuesta_llm_with_sources
-    )
+    fake_generate_response = AsyncMock(return_value="ok")
+    monkeypatch.setattr(gateway, "generate_response", fake_generate_response)
 
     res = asyncio.run(gateway.generar_respuesta_llm("pregunta", categoria="faq"))
     assert res["respuesta"] == "ok"
-    assert res["referencias"] == ["ref"]
-    assert called["pregunta"] == "pregunta"
+    assert res["referencias"][0]["source"] == "ref"
+    fake_retrieve_context.assert_called_with("pregunta", top_k=5)
+    fake_generate_response.assert_awaited()
 
 
 def test_generar_respuesta_llm_category_aware(monkeypatch):
@@ -376,10 +389,10 @@ def test_generar_respuesta_llm_category_aware(monkeypatch):
 
     captured = {}
 
-    def fake_retrieve_context(query, top_k, collection=None, filtro=None):
+    async def fake_retrieve_context(query, top_k, collection=None, filtro=None):
         captured["collection"] = collection
         captured["filtro"] = filtro
-        return "ctx", [{"doc": "ref"}], {"id": 1}
+        return [{"doc": "ref"}]
 
     monkeypatch.setattr(gateway, "retrieve_context", fake_retrieve_context)
 
