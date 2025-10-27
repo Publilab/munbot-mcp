@@ -19,8 +19,6 @@ services:
         condition: service_healthy
       complaints-mcp:
         condition: service_started
-      llm_docs-mcp:
-        condition: service_started
       scheduler-mcp:
         condition: service_started
 
@@ -93,21 +91,7 @@ services:
       timeout: 5s
       retries: 5
 
-  qdrant:
-    image: qdrant/qdrant:v1.7.0
-    container_name: qdrant
-    ports:
-      - "6333:6333"
-    networks:
-      - munbot-net
-    volumes:
-      - qdrant_data:/qdrant/storage
-    healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
-      interval: 5s
-      timeout: 2s
-      retries: 1
-      start_period: 1s
+  
       
   mcp-core:
     build:
@@ -123,10 +107,6 @@ services:
       - HUMAN_ESCALATION_LOG=/app/human_escalations.log
       - PROMPTS_PATH=/app/mcp-core/prompts
       - TOOL_SCHEMAS_PATH=/app/mcp-core/tool_schemas
-      - LLM_DOCS_MCP_URL=http://llm_docs-mcp:8000/tools/call
-      - LLM_DOCS_API_KEY=${LLM_DOCS_API_KEY:-}
-      - LLM_DOCS_MCP_USER=${LLM_DOCS_MCP_USER:-}
-      - LLM_DOCS_MCP_PASSWORD=${LLM_DOCS_MCP_PASSWORD:-}
       - SCHEDULER_MCP_URL=${SCHEDULER_MCP_URL:-http://scheduler-mcp:6001/tools/call}
       - COMPLAINTS_MCP_URL=${COMPLAINTS_MCP_URL:-http://complaints-mcp:7000/tools/call}
       - INTENT_SIMILARITY_PATH=${INTENT_SIMILARITY_PATH:-mcp-core/config/intent_similarities.json}
@@ -138,14 +118,11 @@ services:
     volumes:
       - ./mcp-core/models:/mcp-core/models
       - ./services:/app/services:ro
-      - ./services/llm_docs-mcp/documents:/app/documents:ro
       - ./logs/human_escalations.log:/app/human_escalations.log
     depends_on:
       redis:
         condition: service_healthy
       postgres:
-        condition: service_healthy
-      llm_docs-mcp:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
@@ -184,57 +161,6 @@ services:
       timeout: 10s
       retries: 5
 
-  llm_docs-mcp:
-    build:
-      context: .
-      dockerfile: services/llm_docs-mcp/Dockerfile
-    container_name: llm_docs-mcp
-    env_file:
-      - ./.env
-    environment:
-      - AUTO_INDEX=1
-      - COLLECTION=munbot_docs
-      - QDRANT_COLLECTION=munbot_docs
-      - QDRANT_HOST=qdrant
-      - QDRANT_PORT=6333
-      - EMBEDDINGS_DIM=384
-      - EMBEDDINGS_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-      - DOCS_DIR=/app/documents
-      - REDIS_HOST=redis
-      - QDRANT_SIMILARITY_THRESHOLD=0.3
-      - LLM_MAX_NEW_TOKENS=200
-      # Path used by llama_cpp in llama_runner.py
-      - LLAMA_MODEL_PATH=/app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf
-      # Optional: legacy variable retained for clarity; not used by llama_runner
-      - MODEL_PATH=/app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf # o nombre HF para transformers
-      - N_THREADS=4
-      - N_CTX=2048
-      - ALLOWED_IPS=127.0.0.1,172.18.0.0/16
-      - LLM_DOCS_API_KEY=${LLM_DOCS_API_KEY:-}
-      - LLM_DOCS_MCP_USER=${LLM_DOCS_MCP_USER:-}
-      - LLM_DOCS_MCP_PASSWORD=${LLM_DOCS_MCP_PASSWORD:-}
-      - LOG_DIR=/app/logs
-      - LOG_PATH=/app/logs/llm_docs_gateway.log
-      - INTENT_OUTPUT_MODE=rich
-    depends_on:
-      qdrant:
-        condition: service_started
-    expose:
-      - "8000"
-    restart: unless-stopped
-    networks:
-      - munbot-net
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request,sys;             sys.exit(urllib.request.urlopen('http://localhost:8000/health').getcode()!=200)"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      # Período de gracia para que el contenedor complete su arranque (indexación, carga de modelos)
-      start_period: 300s
-    volumes:
-      
-      - ./services/llm_docs-mcp/documents:/app/documents:ro
-      - ./logs:/app/logs
 
   scheduler-mcp:
     build: 
@@ -303,6 +229,5 @@ networks:
 
 volumes:
   postgres_data:
-  qdrant_data:
   prometheus_data:
   grafana_data:
