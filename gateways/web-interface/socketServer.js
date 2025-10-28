@@ -83,6 +83,9 @@ io.on('connection', (socket) => {
                 socket.sessionId = response.data.session_id || socket.sessionId;
             }
             const data = response.data || {};
+            const hasReplies = Array.isArray(data.suggested_replies) && data.suggested_replies.length > 0;
+            const messageText = data.respuesta || data.message || 'No se recibió respuesta válida del MCP.';
+
             if (Array.isArray(data.respuestas)) {
                 // Manejar una lista de respuestas de cualquier longitud
                 data.respuestas.forEach((botMsg, index) => {
@@ -90,22 +93,13 @@ io.on('connection', (socket) => {
                         socket.emit('bot_message', botMsg);
                     }, index * 1200); // Pausa de 1.2 segundos entre mensajes
                 });
-            } 
-            else if (data.respuesta) {
-                socket.emit('bot_message', data.respuesta);
-            }
-            else if (data.message) {
-                socket.emit('bot_message', data.message);
-            }
-            else {
-                socket.emit('bot_message', 'No se recibió respuesta válida del MCP.');
-            }
-            // Emitir sugerencias de respuesta como payload estructurado para la web
-            if (Array.isArray(data.suggested_replies) && data.suggested_replies.length > 0) {
+            } else if (hasReplies) {
                 socket.emit('bot_payload', {
-                    respuesta: data.respuesta || null,
+                    respuesta: messageText,
                     suggested_replies: data.suggested_replies
                 });
+            } else {
+                socket.emit('bot_message', messageText);
             }
         } catch (error) {
             console.error('Error al comunicarse con el MCP:', error);

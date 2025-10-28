@@ -73,21 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let botMessageQueue = [];
     let processingBotQueue = false;
 
-    // Al recibir un mensaje del bot, agregarlo a la cola (texto plano)
+    // Al recibir un mensaje del bot, agregarlo a la cola
     socket.on('bot_message', (msg) => {
-        botMessageQueue.push(msg);
+        botMessageQueue.push({ text: msg, replies: null });
         processBotQueue();
     });
 
-    // Al recibir payload estructurado (incluye suggested_replies), renderizar botones
+    // Al recibir payload estructurado, agregarlo a la cola
     socket.on('bot_payload', (payload) => {
-        try {
-            if (payload && Array.isArray(payload.suggested_replies)) {
-                renderSuggestedReplies(payload.suggested_replies);
-            }
-        } catch (e) {
-            console.error('Error renderizando suggested_replies', e);
-        }
+        botMessageQueue.push({ text: payload.respuesta, replies: payload.suggested_replies });
+        processBotQueue();
     });
 
     // Función para agregar el indicador de "escribiendo" usando animación CSS
@@ -109,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Función que procesa la cola de mensajes con un retardo de 2 segundos y muestra el indicador
+    // Función que procesa la cola de mensajes con un retardo y muestra el indicador
     function processBotQueue() {
         if (processingBotQueue || botMessageQueue.length === 0) {
             return;
@@ -119,12 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Mostrar el indicador de escritura
         showTypingIndicator();
         
-        // Esperar 2 segundos antes de mostrar el siguiente mensaje
+        // Esperar antes de mostrar el siguiente mensaje
         setTimeout(() => {
             // Remover el indicador de escritura
             removeTypingIndicator();
-            const nextMessage = botMessageQueue.shift();
-            appendMessage(nextMessage, 'bot');
+            const nextItem = botMessageQueue.shift();
+            if (nextItem.text) {
+                appendMessage(nextItem.text, 'bot');
+            }
+            if (nextItem.replies) {
+                renderSuggestedReplies(nextItem.replies);
+            }
             processingBotQueue = false;
             processBotQueue();
         }, 2000);
