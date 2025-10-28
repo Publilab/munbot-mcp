@@ -283,38 +283,43 @@ def offer_aspect_buttons(tramite_id: str) -> list[str]:
         return [str(b) for b in buttons][:8]
     return []
 
-def respond_direct(tramite_id: str, aspecto: str) -> Dict[str, Any]:
+def respond_direct(tramite_id: str, aspecto: str, session_id: str, turn_count: int) -> Dict[str, Any]:
     t = KB_BY_ID.get(tramite_id) or {}
     resp_map = t.get("respuestas") or {}
     txt = (resp_map.get(aspecto) or "").strip()
     if not txt:
         return fallback("No tengo información para ese aspecto.")
-    # Prefer clear, natural phrasing for some aspects
-    if aspecto == "costos":
-        name = _kb_display_name(tramite_id)
-        # Remove leading emojis or symbols from KB text
-        clean = txt.lstrip("💰 ").strip()
-        # Build a full sentence as requested: "El <name> tiene un valor de <clean>"
-        txt = f"El {name.lower()} tiene un valor de {clean}".rstrip(".") + "."
-    try:
-        RESP_DIRECT_COUNTER.inc()
-    except Exception:
-        pass
-    _jlog(_logger, "metrics.response_direct", tramite_id=tramite_id, aspecto=aspecto)
-    payload = {
-        "respuesta": txt,
-        "no_results": False,
-        "_resp_type": "direct",
-    }
-    buttons = offer_aspect_buttons(tramite_id)
-    if buttons:
-        payload["suggested_replies"] = buttons
-    return payload
 
-def show_aspect_menu(tramite_id: str) -> Dict[str, Any]:
+    name = _kb_display_name(tramite_id).lower()
+    
+    # Guardar contexto para el seguimiento
+    context_manager.update_context_data(session_id, {
+        "last_tramite": tramite_id,
+        "last_aspecto": aspecto,
+    })
+    context_manager.set_current_flow(session_id, "FOLLOWUP_GATE")
+
+    # Preparar la respuesta directa (primer mensaje)
+    direct_answer = {"respuesta": f"{txt}", "no_results": False, "_resp_type": "direct"}
+
+    # Preparar el prompt de seguimiento (segundo mensaje)
+    followup_prompt = build_followup_prompt(tramite_id, turn_count)
+
+    # Devolver una lista de respuestas para que el orquestador las envíe en secuencia
+    return {"respuestas": [direct_answer, followup_prompt]}
+
+def show_aspect_menu(tramite_id: str, exclude_aspect: Optional[str] = None) -> Dict[str, Any]:
     name = _kb_display_name(tramite_id)
     buttons = offer_aspect_buttons(tramite_id)
-    msg = f"Puedo ayudarte con el trámite '{name}'. Elige un aspecto para continuar:"
+    
+    # Excluir el aspecto ya respondido
+    if exclude_aspect:
+        # Mapeo simple de aspecto a texto de botón (puede necesitar ajuste)
+        # Esto asume que el texto del botón es predecible a partir del nombre del aspecto
+        exclude_text = f"Ver {exclude_aspect}" # Asume un patrón como "Ver costos"
+        buttons = [b for b in buttons if exclude_aspect not in b.lower()]
+
+    msg = f"¿Qué parte te interesa ahora de *{name}*?"
     try:
         RESP_MENU_ASPECT_COUNTER.inc()
     except Exception:
@@ -354,6 +359,46 @@ def show_main_menu() -> Dict[str, Any]:
         "📞 Hablar con un agente",
     ]
     return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
+
+
+# --- Constantes para el nuevo flujo conversacional ---
+V_CONFIRM = ["Listo 👍", "Perfecto 👌", "Entendido ✅"]
+V_INVITE = [
+    "¿Quieres ver algo más de *{tramite}*?",
+    "¿Te muestro algo más sobre *{tramite}*?",
+    "¿Seguimos con *{tramite}*?"
+]
+V_OPTIONS = [
+    "Puedo mostrarte requisitos, costos, horarios o dónde tramitar.",
+    "Tengo requisitos, costos, horarios y dirección del trámite.",
+    "Dispongo de requisitos, costos, horarios y lugar de tramitación."
+]
+
+
+def graceful_close() -> Dict[str, Any]:
+    """Devuelve un mensaje de cierre elegante con opciones."""
+    return {
+        "respuesta": "Genial, me alegra ayudarte. ¿Quieres volver al menú principal o hablar con un agente?",
+        "suggested_replies": ["Menú principal", "Hablar con un agente"],
+        "no_results": False,
+        "_resp_type": "graceful_close",
+    }
+
+
+def build_followup_prompt(tramite_id: str, turn_count: int) -> Dict[str, Any]:
+    """Construye el mensaje de seguimiento después de una respuesta directa."""
+    tramite_name = _kb_display_name(tramite_id)
+    # Elegir variante de forma cíclica
+    v_idx = turn_count % len(V_CONFIRM)
+    
+    texto = f"{V_CONFIRM[v_idx]} {V_INVITE[v_idx].format(tramite=tramite_name)} {V_OPTIONS[v_idx]}"
+    
+    return {
+        "respuesta": texto,
+        "suggested_replies": ["Sí, ver opciones", "No, gracias"],
+        "no_results": False,
+        "_resp_type": "followup_prompt",
+    }
 
 PROM_REGISTRY = CollectorRegistry()
 REQUEST_COUNTER = Counter("munbot_requests_total", "Número de peticiones procesadas", ["intent", "categoria"], registry=PROM_REGISTRY)
@@ -430,7 +475,7 @@ def _is_pure_smalltalk(text: str) -> bool:
 def _pick_smalltalk(intent: str) -> str:
     variants = SMALLTALK_VARIANTS.get(intent, [])
     if variants:
-        return variants[0]
+        return random.choice(variants)
     return ""
 
 def _norm_intent(label: str) -> str:
@@ -1317,6 +1362,51 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
     return fallback("Lo siento, no pude procesar tu reclamo en este momento.")
 
 
+def handle_followup_gate(session_id: str, user_text: str, intent_action: str) -> Optional[Dict[str, Any]]:
+    """Gestiona la respuesta del usuario después de un `respond_direct`."""
+    norm_text = normalize_text(user_text)
+    last_tramite = context_manager.get_context_field(session_id, "last_tramite")
+    last_aspecto = context_manager.get_context_field(session_id, "last_aspecto")
+
+    # Opción 1: El usuario quiere ver más opciones del mismo trámite
+    if norm_text in YES_WORDS or "ver opciones" in norm_text:
+        context_manager.set_current_flow(session_id, None) # Salir del estado FOLLOWUP
+        if last_tramite:
+            return show_aspect_menu(last_tramite, exclude_aspect=last_aspecto)
+        else:
+            return fallback("No recuerdo de qué trámite estábamos hablando. ¿Puedes recordármelo?")
+
+    # Opción 2: El usuario dice "No"
+    elif norm_text in NO_WORDS:
+        context_manager.set_current_flow(session_id, None)
+        return graceful_close()
+
+    # Opción 3: El usuario pregunta directamente por otro aspecto (atajo)
+    new_aspect = match_aspect(user_text, KB_ASPECT_MAP)
+    if new_aspect and last_tramite:
+        turn_count = context_manager.get_context_field(session_id, "turn_count") or 0
+        return respond_direct(last_tramite, new_aspect, session_id, turn_count)
+
+    # Opción 4: El usuario hace una pregunta completamente nueva
+    if match_tramite(user_text, KB_BY_ALIAS) or intent_action != "ask_document":
+        context_manager.set_current_flow(session_id, None)
+        # Devolver None para que handle_turn procese el mensaje desde cero
+        return None
+
+    # Opción 5: Ambigüedad. Repreguntar una vez.
+    reprompt_count = context_manager.get_context_field(session_id, "reprompt_count") or 0
+    if reprompt_count < 1:
+        context_manager.update_context_data(session_id, {"reprompt_count": reprompt_count + 1})
+        return {
+            "respuesta": "No te he entendido. ¿Quieres ver otras opciones sobre el trámite o prefieres terminar?",
+            "suggested_replies": ["Sí, ver opciones", "No, gracias"],
+            "no_results": False
+        }
+    else:
+        # Si ya se repreguntó, cerrar elegantemente
+        context_manager.set_current_flow(session_id, None)
+        return graceful_close()
+
 def handle_turn(
     session_id: str,
     user_text: str,
@@ -1324,6 +1414,10 @@ def handle_turn(
     force_canary: bool = False,
     channel: Optional[str] = None,
 ) -> Dict[str, Any]:
+    # Incrementar y obtener el contador de turnos de la sesión
+    turn_count = (context_manager.get_context_field(session_id, "turn_count") or 0) + 1
+    context_manager.update_context_data(session_id, {"turn_count": turn_count})
+
     if _wants_change_topic(user_text):
         context_manager.clear_pending_field(session_id)
         context_manager.clear_complaint_state(session_id)
@@ -1347,6 +1441,15 @@ def handle_turn(
     processed = _process_intent_classification(classification, utterance=user_text)
     intent_action = processed["action"]
     categoria = processed["category"]
+
+    # --- INICIO: Nuevo flujo de seguimiento ---
+    if context_manager.get_current_flow(session_id) == "FOLLOWUP_GATE":
+        response = handle_followup_gate(session_id, user_text, intent_action)
+        if response is not None:
+            return response
+        # Si handle_followup_gate devuelve None, el usuario cambió de tema
+        # y procesamos el input como un nuevo turno.
+    # --- FIN: Nuevo flujo de seguimiento ---
 
     feedback_resp = _handle_pending_feedback(session_id, user_text)
     if feedback_resp is not None and intent_action != "saludo":
@@ -1387,9 +1490,9 @@ def handle_turn(
                 context_manager.set_selected_document(session_id, t_id)
             # Caso: ya hay documento en contexto y el usuario eligió solo el aspecto
             if not t_id and selected and aspecto:
-                return respond_direct(selected, aspecto)
+                return respond_direct(selected, aspecto, session_id, turn_count)
             if t_id and aspecto:
-                return respond_direct(t_id, aspecto)
+                return respond_direct(t_id, aspecto, session_id, turn_count)
             if t_id and not aspecto:
                 return show_aspect_menu(t_id)
             if cat and not t_id:
@@ -1417,25 +1520,33 @@ def orchestrate(
     sid = session_id or _generate_session_id()
     t0 = time.time()
     response_payload = handle_turn(sid, user_text, trace_id=trace_id, force_canary=force_canary, channel=channel)
-    respuesta = response_payload.get("respuesta") or "Lo siento, hubo un error procesando tu solicitud."
-    # Formato por canal
-    suggested = response_payload.get("suggested_replies")
-    if channel == "whatsapp" and isinstance(suggested, list) and suggested:
-        # Mostrar sugerencias como viñetas en WhatsApp
-        bullets = "\n".join([f"• {str(it)}" for it in suggested])
-        extra = f"\n\n¿Necesitas algo más?\n{bullets}"
-        respuesta = f"{respuesta}{extra}"
-    respuesta = adapt_markdown_for_channel(respuesta, channel)
 
-    result: Dict[str, Any] = {"session_id": sid, "respuesta": respuesta}
-    # Enviar suggested_replies solo para Web; WhatsApp ya recibió viñetas en el texto
-    keys = ["no_results", "referencias", "finish", "pending", "respuestas", "escalado"]
+    # Si el payload ya contiene una lista de respuestas, usarla directamente
+    if "respuestas" in response_payload:
+        result = {"session_id": sid, "respuestas": response_payload["respuestas"]}
+    else:
+        # Lógica anterior para una sola respuesta
+        respuesta = response_payload.get("respuesta") or "Lo siento, hubo un error procesando tu solicitud."
+        suggested = response_payload.get("suggested_replies")
+        if channel == "whatsapp" and isinstance(suggested, list) and suggested:
+            bullets = "\n".join([f"• {str(it)}" for it in suggested])
+            extra = f"\n\n¿Necesitas algo más?\n{bullets}"
+            respuesta = f"{respuesta}{extra}"
+        respuesta = adapt_markdown_for_channel(respuesta, channel)
+        result = {"session_id": sid, "respuesta": respuesta}
+
+    # Transferir claves adicionales al resultado
+    keys = ["no_results", "referencias", "finish", "pending", "escalado"]
     if channel == "web":
         keys.append("suggested_replies")
-    for key in keys:
-        if key in response_payload:
-            result[key] = response_payload[key]
-    # Métricas de latencia por tipo de respuesta
+    
+    # Si es una respuesta única, se pueden añadir las sugerencias
+    if "respuestas" not in result:
+        for key in keys:
+            if key in response_payload:
+                result[key] = response_payload[key]
+    
+    # Métricas de latencia
     try:
         resp_type = str(response_payload.get("_resp_type") or "generic")
         RESP_LATENCY.labels(type=resp_type).observe(max(0.0, time.time() - t0))

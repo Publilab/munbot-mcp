@@ -90,7 +90,13 @@ io.on('connection', (socket) => {
                 // Manejar una lista de respuestas de cualquier longitud
                 data.respuestas.forEach((botMsg, index) => {
                     setTimeout(() => {
-                        socket.emit('bot_message', botMsg);
+                        if (typeof botMsg === 'object' && botMsg !== null && botMsg.suggested_replies) {
+                            socket.emit('bot_payload', botMsg);
+                        } else if (typeof botMsg === 'object' && botMsg !== null && botMsg.respuesta) {
+                            socket.emit('bot_message', botMsg.respuesta);
+                        } else {
+                            socket.emit('bot_message', botMsg);
+                        }
                     }, index * 1200); // Pausa de 1.2 segundos entre mensajes
                 });
             } else if (hasReplies) {
