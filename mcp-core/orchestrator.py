@@ -346,7 +346,7 @@ def show_main_menu() -> Dict[str, Any]:
         "📝 Presentar un reclamo",
         "📞 Hablar con un agente",
     ]
-return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
+    return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
 
 PROM_REGISTRY = CollectorRegistry()
 REQUEST_COUNTER = Counter("munbot_requests_total", "Número de peticiones procesadas", ["intent", "categoria"], registry=PROM_REGISTRY)
