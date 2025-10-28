@@ -38,7 +38,7 @@ def test_keys_change_with_context():
     )
     k2 = make_answer_cache_key(
         "requisitos",
-        selected_document="RAG-doc_tramites.json",
+        selected_document="KB-doc_tramites.json",
         procedure_id=None,
         department_id=None,
     )

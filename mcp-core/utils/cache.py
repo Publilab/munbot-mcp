@@ -13,7 +13,7 @@ def make_answer_cache_key(
     department_id: Optional[str] = None,
     locale: Optional[str] = None,
     channel: Optional[str] = None,
-    rag_version: Optional[str] = None,
+    kb_version: Optional[str] = None,
 ) -> str:
     parts = [
         f"schema={CACHE_SCHEMA_VERSION}",
@@ -24,8 +24,8 @@ def make_answer_cache_key(
     ]
     if channel:
         parts.append(f"chn={channel}")
-    if rag_version:
-        parts.append(f"rag={rag_version}")
+    if kb_version:
+        parts.append(f"kb={kb_version}")
     parts.append(f"q={_norm(user_query)}")
     raw = "|".join(parts)
     h = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:24]

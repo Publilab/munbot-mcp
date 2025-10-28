@@ -36,12 +36,4 @@ def test_fallback_no_undefined_vars(mock_call, mock_ctx):
     assert resp.get("no_results") is True
 
 
-@patch("orchestrator.context_manager.get_context", return_value={})
-@patch("orchestrator.call_tool_microservice")
-def test_rag_called_with_defined_tool_params(mock_call, mock_ctx):
-    mock_call.return_value = {"no_results": False, "respuesta": "ok"}
-    resp = handle_turn("s1", "requisitos permiso de aterrizaje")
-    assert resp.get("no_results") is False
-    mock_call.assert_called_once()
-    called_params = mock_call.call_args[0][1]
-    assert "pregunta" in called_params
+

@@ -1,27 +1,27 @@
 {
   "documents": [
     {
-      "name": "RAG-doc_tramites.json",
+      "name": "KB-doc_tramites.json",
       "description": "Trámites, permisos, licencias y certificados: requisitos, dónde obtener, horarios, utilidad, penalidades y vigencia. Incluye 'permiso de aterrizaje', 'licencia de piloto', 'patente comercial'."
     },
     {
-      "name": "RAG-depto_info.json",
+      "name": "KB-depto_info.json",
       "description": "Directorio de departamentos: contacto, correo, dirección, horario. Incluye 'departamento de transporte interestelar', 'salud pública', 'seguridad pública'."
     },
     {
-      "name": "RAG-Contrib_Derechos.json",
+      "name": "KB-Contrib_Derechos.json",
       "description": "Contribuciones y tasas municipales: aseo, alumbrado, patentes."
     },
     {
-      "name": "RAG-Medio_Ambiente.json",
+      "name": "KB-Medio_Ambiente.json",
       "description": "Reglamento ambiental: reciclaje, residuos, calidad del aire, protección de recursos hídricos."
     },
     {
-      "name": "RAG-Horario_Comercio.json",
+      "name": "KB-Horario_Comercio.json",
       "description": "Horarios de funcionamiento de comercios, ferias libres y cierres durante estados de excepción."
     },
     {
-      "name": "RAG-faq.json",
+      "name": "KB-faq.json",
       "description": "Preguntas frecuentes: saludos, despedidas, disponibilidad del bot, alcance de consultas."
     }
   ],

@@ -516,3 +516,25 @@ footer {
   0%, 80%, 100% { opacity: 0; }
   40% { opacity: 1; }
 }
+
+/* Sugerencias (botones) para Web */
+.suggested-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 8px 0;
+}
+
+.suggested-button {
+  background: #e9eefc;
+  color: #1f2d5a;
+  border: 1px solid #c9d4ff;
+  border-radius: 16px;
+  font-size: 12px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.suggested-button:hover {
+  background: #dbe4ff;
+}

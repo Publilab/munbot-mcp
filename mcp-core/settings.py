@@ -16,10 +16,10 @@ ANSWER_CACHE_TTL_DEFAULT = _getenv_int("ANSWER_CACHE_TTL_DEFAULT", 21600)
 ANSWER_CACHE_TTL_CONTACT = _getenv_int("ANSWER_CACHE_TTL_CONTACT", 14400)
 ANSWER_CACHE_TTL_GENERIC = _getenv_int("ANSWER_CACHE_TTL_GENERIC", 86400)
 
-# === Feature flags (híbrido agente + RAG categoría) ===
-AGENT_MODE            = _getenv_int("AGENT_MODE", 0)
-RAG_CATEGORY_AWARE    = _getenv_int("RAG_CATEGORY_AWARE", 0)
-AGENT_MAX_TOOL_CALLS  = _getenv_int("AGENT_MAX_TOOL_CALLS", 2)
-RAG_COLLECTION_FAQ        = _getenv_str("RAG_COLLECTION_FAQ", "faq")
-RAG_COLLECTION_TRAMITES   = _getenv_str("RAG_COLLECTION_TRAMITES", "tramites")
-RAG_COLLECTION_NORMATIVA  = _getenv_str("RAG_COLLECTION_NORMATIVA", "normativa")
+# === Feature flags (búsqueda determinística por categoría) ===
+AGENT_MODE               = _getenv_int("AGENT_MODE", 0)
+KB_CATEGORY_AWARE        = _getenv_int("KB_CATEGORY_AWARE", 0)
+AGENT_MAX_TOOL_CALLS     = _getenv_int("AGENT_MAX_TOOL_CALLS", 2)
+KB_COLLECTION_FAQ        = _getenv_str("KB_COLLECTION_FAQ", "faq")
+KB_COLLECTION_TRAMITES   = _getenv_str("KB_COLLECTION_TRAMITES", "tramites")
+KB_COLLECTION_NORMATIVA  = _getenv_str("KB_COLLECTION_NORMATIVA", "normativa")

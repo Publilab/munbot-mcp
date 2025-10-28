@@ -100,6 +100,13 @@ io.on('connection', (socket) => {
             else {
                 socket.emit('bot_message', 'No se recibió respuesta válida del MCP.');
             }
+            // Emitir sugerencias de respuesta como payload estructurado para la web
+            if (Array.isArray(data.suggested_replies) && data.suggested_replies.length > 0) {
+                socket.emit('bot_payload', {
+                    respuesta: data.respuesta || null,
+                    suggested_replies: data.suggested_replies
+                });
+            }
         } catch (error) {
             console.error('Error al comunicarse con el MCP:', error);
             socket.emit('bot_message', 'Lo siento, hubo un error procesando tu solicitud.');

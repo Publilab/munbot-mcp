@@ -73,10 +73,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let botMessageQueue = [];
     let processingBotQueue = false;
 
-    // Al recibir un mensaje del bot, agregarlo a la cola
+    // Al recibir un mensaje del bot, agregarlo a la cola (texto plano)
     socket.on('bot_message', (msg) => {
         botMessageQueue.push(msg);
         processBotQueue();
+    });
+
+    // Al recibir payload estructurado (incluye suggested_replies), renderizar botones
+    socket.on('bot_payload', (payload) => {
+        try {
+            if (payload && Array.isArray(payload.suggested_replies)) {
+                renderSuggestedReplies(payload.suggested_replies);
+            }
+        } catch (e) {
+            console.error('Error renderizando suggested_replies', e);
+        }
     });
 
     // Función para agregar el indicador de "escribiendo" usando animación CSS
@@ -122,5 +133,32 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleConnectionError() {
         alert('Hubo un error, reiniciando el chat...');
         window.location.reload();
+    }
+
+    // Renderizar botones sugeridos en el chat (solo Web)
+    function renderSuggestedReplies(options) {
+        // Eliminar bloques anteriores de sugerencias
+        const oldBlocks = chatBody.querySelectorAll('.suggested-block');
+        oldBlocks.forEach(b => b.remove());
+
+        if (!Array.isArray(options) || options.length === 0) return;
+        const block = document.createElement('div');
+        block.classList.add('suggested-block');
+
+        options.forEach((label) => {
+            const btn = document.createElement('button');
+            btn.classList.add('suggested-button');
+            btn.textContent = label;
+            btn.addEventListener('click', () => {
+                // Enviar el texto literal del botón
+                appendMessage(label, 'user');
+                socket.emit('message', label);
+                // Limpiar opciones luego del click
+                block.remove();
+            });
+            block.appendChild(btn);
+        });
+        chatBody.appendChild(block);
+        chatBody.scrollTop = chatBody.scrollHeight;
     }
 });

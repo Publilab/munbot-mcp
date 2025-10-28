@@ -1,0 +1,76 @@
+{
+  "description": "MunBoT demo A/B/C flows — deterministic, no LLM",
+  "channels": ["web", "whatsapp"],
+  "cases": [
+    {
+      "id": "A-experto",
+      "title": "Respuesta directa por trámite y aspecto",
+      "steps": [
+        {
+          "user": "¿Cuánto cuesta el certificado de residencia definitiva?",
+          "expect": {
+            "respuesta_contains": "32 créditos galácticos",
+            "suggested_replies_include": [
+              "Ver requisitos",
+              "Ver costos",
+              "Ver horarios",
+              "Dónde tramitar",
+              "Para qué sirve"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "B-exploratorio",
+      "title": "Menú por categoría → selección de trámite → menú de aspectos → respuesta",
+      "steps": [
+        {
+          "user": "Quiero un certificado",
+          "expect": {
+            "menu": "categoria",
+            "suggested_replies_include": ["Certificado de residencia definitiva"]
+          }
+        },
+        {
+          "user": "Certificado de residencia definitiva",
+          "expect": {
+            "menu": "aspect",
+            "suggested_replies_include": ["Ver requisitos", "Ver costos", "Ver horarios", "Dónde tramitar", "Para qué sirve"]
+          }
+        },
+        {
+          "user": "Ver requisitos",
+          "expect": {
+            "respuesta_contains": "CRD-001"
+          }
+        }
+      ]
+    },
+    {
+      "id": "C-perdido",
+      "title": "Menú principal ante consulta genérica",
+      "steps": [
+        {
+          "user": "ayuda",
+          "expect": {
+            "menu": "main",
+            "suggested_replies_include": [
+              "🗂️ Certificados y trámites",
+              "📅 Agendar una cita",
+              "📝 Presentar un reclamo",
+              "📞 Hablar con un agente"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "notes": {
+    "web": "El front muestra suggested_replies como botones. Al hacer clic se envía el texto literal.
+             Verificar que los textos y botones coincidan con lo esperado en cada paso.",
+    "whatsapp": "El orquestador concatena suggested_replies como viñetas (•). Responder escribiendo ‘Ver requisitos’ o el texto del ítem.",
+    "kb": "Respuestas tomadas de kb/tramites.json. Ejemplos: costos= ‘💰 32 créditos galácticos’, requisitos incluyen ‘formulario CRD-001’."
+  }
+}
+

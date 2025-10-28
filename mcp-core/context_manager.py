@@ -173,7 +173,7 @@ class ConversationalContextManager:
             ex=self.session_expiry_seconds
         )
 
-    # ---- Entidades detectadas por el LLM ----
+    # ---- Entidades detectadas por el analizador ----
     def set_entities(self, session_id: str, entities: Optional[Dict[str, Any]]):
         context = self.get_context(session_id)
         context["entities"] = entities or {}

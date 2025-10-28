@@ -11,8 +11,12 @@ from typing import Dict, Any, List, Optional, Tuple
 from fastapi import FastAPI, HTTPException, Request, Body, Response
 from pydantic import BaseModel
 import logging
-import psycopg2
-from psycopg2.extras import RealDictCursor
+try:  # Optional at runtime; not required for KB-only flows
+    import psycopg2  # type: ignore
+    from psycopg2.extras import RealDictCursor  # type: ignore
+except Exception:  # pragma: no cover
+    psycopg2 = None  # type: ignore
+    RealDictCursor = None  # type: ignore
 import re
 import unicodedata
 from urllib.parse import urlparse
@@ -22,9 +26,7 @@ import threading
 import time
 import concurrent.futures
 from .context_manager import ConversationalContextManager
-from .clients.llm_docs import LlmDocsClient
 from .intent_audit import audit_intent  # auditoría de intents
-from .intent_similarity import load_embeddings, encode_text
 from prometheus_client import (
     Counter,
     CollectorRegistry,
@@ -33,31 +35,23 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 
-from sklearn.metrics.pairwise import cosine_similarity
-
 from .utils.cache import make_answer_cache_key
 from .settings import (
     ANSWER_CACHE_TTL_CONTACT,
     ANSWER_CACHE_TTL_DEFAULT,
     ANSWER_CACHE_TTL_GENERIC,
     AGENT_MODE,
-    RAG_CATEGORY_AWARE,
+    KB_CATEGORY_AWARE,
     AGENT_MAX_TOOL_CALLS,
-    RAG_COLLECTION_FAQ,
-    RAG_COLLECTION_TRAMITES,
-    RAG_COLLECTION_NORMATIVA,
+    KB_COLLECTION_FAQ,
+    KB_COLLECTION_TRAMITES,
+    KB_COLLECTION_NORMATIVA,
 )
 
 _logger = logging.getLogger("orchestrator")
 
 INTENT_REGRESSION_PATH = os.getenv("INTENT_REGRESSION_PATH", "tests/data/intent_regresion.json")
-SIMILARITY_THRESHOLD = float(os.getenv("INTENT_SIMILARITY_THRESHOLD", "0.55"))
 
-try:
-    SIM_VECTORS, SIM_LABELS = load_embeddings()
-except Exception as exc:  # pragma: no cover - fallback if embeddings fail
-    SIM_VECTORS, SIM_LABELS = None, []
-    logging.getLogger("orchestrator").warning("intent.similarity_load_failed: %s", exc)
 
 # =====================================
 # Telemetry & Observability Helpers
@@ -108,7 +102,7 @@ def _jlog(logger, event, **fields):
     else:
         logger.info(f"{event} - {data}")
 
-_jlog(_logger, "features.boot", agent_mode=AGENT_MODE, rag_category_aware=RAG_CATEGORY_AWARE)
+_jlog(_logger, "features.boot", agent_mode=AGENT_MODE, kb_category_aware=KB_CATEGORY_AWARE)
 
 try:
     from .utils.human import registrar_evento_humano
@@ -131,6 +125,7 @@ from .utils.datetime_utils import (
 from datetime import datetime, date
 
 from .utils.text import normalize_text
+from .utils.kb import load_kb, match_tramite, match_aspect, match_categoria
 
 
 
@@ -203,27 +198,13 @@ def _should_use_canary(session_id: str | None, force_canary: bool) -> bool:
     return (h / 1000.0) < AGENT_CANARY_RATIO
 
 # === Configuración ===
-LLM_DOCS_MCP_URL = os.getenv("LLM_DOCS_MCP_URL", "http://llm_docs-mcp:8000/tools/call")
 DEFAULT_SCHEDULER_URL = "http://scheduler-mcp:6001/tools/call"
 DEFAULT_COMPLAINTS_URL = "http://complaints-mcp:7000/tools/call"
 MICROSERVICES = {
     "complaints-mcp": os.getenv("COMPLAINTS_MCP_URL", DEFAULT_COMPLAINTS_URL),
     "scheduler-mcp": os.getenv("SCHEDULER_MCP_URL", DEFAULT_SCHEDULER_URL),
-    "llm_docs-mcp": LLM_DOCS_MCP_URL,
 }
-LLM_DOCS_MCP_HEALTH_URL = os.getenv(
-    "LLM_DOCS_MCP_HEALTH_URL",
-    LLM_DOCS_MCP_URL.replace("/tools/call", "/health"),
-)
-LLM_DOCS_MCP_USER = os.getenv("LLM_DOCS_MCP_USER")
-LLM_DOCS_MCP_PASSWORD = os.getenv("LLM_DOCS_MCP_PASSWORD")
-LLM_DOCS_API_KEY = os.getenv("LLM_DOCS_API_KEY")
-LLM_DOCS_TIMEOUT = int(os.getenv("LLM_DOCS_TIMEOUT", "120"))
-LLM_DOCS_RETRIES = int(os.getenv("LLM_DOCS_RETRIES", "1"))
-LLM_DOCS_CIRCUIT_THRESHOLD = int(os.getenv("LLM_DOCS_CIRCUIT_THRESHOLD", "5"))
-LLM_DOCS_CIRCUIT_COOLDOWN = int(os.getenv("LLM_DOCS_CIRCUIT_COOLDOWN", "60"))
-_doc_cb_state = {"fails": 0, "opened_until": 0.0}
-llm_client = LlmDocsClient()
+MICROSERVICE_TIMEOUT = int(os.getenv("MICROSERVICE_TIMEOUT", "60"))
 PROMPTS_PATH = os.getenv("PROMPTS_PATH")
 TOOL_SCHEMAS_PATH = os.getenv("TOOL_SCHEMAS_PATH")
 DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
@@ -281,6 +262,92 @@ audit_logger = logging.getLogger("audit")
 if not audit_logger.handlers:
     audit_logger.addHandler(logHandler)
 
+# ===== Deterministic KB (tramites/aspectos/categorías) =====
+try:
+    KB_BY_ID, KB_BY_ALIAS, KB_ASPECT_MAP, KB_CATEGORIAS = load_kb()
+except Exception as _kb_exc:  # pragma: no cover - keep app running even if KB missing
+    KB_BY_ID, KB_BY_ALIAS, KB_ASPECT_MAP, KB_CATEGORIAS = {}, {}, {}, {}
+    _jlog(_logger, "kb.load_error", error=str(_kb_exc))
+
+def _kb_display_name(tramite_id: str) -> str:
+    t = KB_BY_ID.get(tramite_id) or {}
+    aliases = t.get("aliases") or []
+    if aliases:
+        return str(aliases[0]).strip().capitalize()
+    return (tramite_id or "").replace("_", " ").strip().capitalize()
+
+def offer_aspect_buttons(tramite_id: str) -> list[str]:
+    t = KB_BY_ID.get(tramite_id) or {}
+    buttons = t.get("aspect_buttons") or []
+    if isinstance(buttons, list):
+        return [str(b) for b in buttons][:8]
+    return []
+
+def respond_direct(tramite_id: str, aspecto: str) -> Dict[str, Any]:
+    t = KB_BY_ID.get(tramite_id) or {}
+    resp_map = t.get("respuestas") or {}
+    txt = (resp_map.get(aspecto) or "").strip()
+    if not txt:
+        return fallback("No tengo información para ese aspecto.")
+    try:
+        RESP_DIRECT_COUNTER.inc()
+    except Exception:
+        pass
+    _jlog(_logger, "metrics.response_direct", tramite_id=tramite_id, aspecto=aspecto)
+    payload = {
+        "respuesta": txt,
+        "no_results": False,
+        "_resp_type": "direct",
+    }
+    buttons = offer_aspect_buttons(tramite_id)
+    if buttons:
+        payload["suggested_replies"] = buttons
+    return payload
+
+def show_aspect_menu(tramite_id: str) -> Dict[str, Any]:
+    name = _kb_display_name(tramite_id)
+    buttons = offer_aspect_buttons(tramite_id)
+    msg = f"Puedo ayudarte con el trámite '{name}'. Elige un aspecto para continuar:"
+    try:
+        RESP_MENU_ASPECT_COUNTER.inc()
+    except Exception:
+        pass
+    _jlog(_logger, "metrics.menu_aspect", tramite_id=tramite_id)
+    payload = {"respuesta": msg, "no_results": False, "_resp_type": "menu_aspect"}
+    if buttons:
+        payload["suggested_replies"] = buttons
+    return payload
+
+def _kb_tramites_of_category(cat: str) -> list[str]:
+    ids = KB_CATEGORIAS.get(cat) or []
+    return [str(tid) for tid in ids]
+
+def show_tramites_menu(categoria: str) -> Dict[str, Any]:
+    ids = _kb_tramites_of_category(categoria)[:6]
+    names = [_kb_display_name(tid) for tid in ids]
+    cat_disp = categoria.capitalize()
+    if not ids:
+        return fallback(f"No encontré trámites para la categoría '{cat_disp}'.")
+    msg = f"Estos son algunos trámites de la categoría {cat_disp}:"
+    try:
+        RESP_MENU_CATEGORY_COUNTER.inc()
+    except Exception:
+        pass
+    _jlog(_logger, "metrics.menu_category", categoria=categoria)
+    payload = {"respuesta": msg, "no_results": False, "_resp_type": "menu_category"}
+    payload["suggested_replies"] = names
+    return payload
+
+def show_main_menu() -> Dict[str, Any]:
+    msg = "¿En qué puedo ayudarte?"
+    buttons = [
+        "🗂️ Certificados y trámites",
+        "📅 Agendar una cita",
+        "📝 Presentar un reclamo",
+        "📞 Hablar con un agente",
+    ]
+return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
+
 PROM_REGISTRY = CollectorRegistry()
 REQUEST_COUNTER = Counter("munbot_requests_total", "Número de peticiones procesadas", ["intent", "categoria"], registry=PROM_REGISTRY)
 FALLBACK_COUNTER = Counter("munbot_fallbacks_total", "Número de fallbacks activados", registry=PROM_REGISTRY)
@@ -290,23 +357,29 @@ CACHE_HIT_COUNTER = Counter("munbot_cache_hits_total", "Número de respuestas se
 CACHE_MISS_COUNTER = Counter("munbot_cache_miss_total", "Consultas que no se encontraron en el caché", registry=PROM_REGISTRY)
 CACHE_STORE_COUNTER = Counter("munbot_cache_store_total", "Número de respuestas almacenadas en el caché", registry=PROM_REGISTRY)
 HEURISTIC_FALLBACK_COUNTER = Counter("munbot_intent_heuristic_total", "Intenciones clasificadas por heurístico", registry=PROM_REGISTRY)
-GENERIC_RAG_COUNTER = Counter("munbot_generic_rag_total", "Consultas genéricas enviadas a RAG sin documento", registry=PROM_REGISTRY)
-GENERIC_RAG_SUCCESS_COUNTER = Counter("munbot_generic_rag_success_total", "Consultas genéricas con RAG que devolvieron resultados", registry=PROM_REGISTRY)
+## Removed legacy semantic-search metrics
 MET_INTENT_NA = Counter("munbot_intent_na_total", "Intenciones n/a", registry=PROM_REGISTRY)
 MET_FLOW_LAT = Histogram("munbot_orchestrate_duration_seconds", "Duración de orchestrate", buckets=(0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8), registry=PROM_REGISTRY)
 MET_SUCCESS_BY_CAT = Counter("munbot_success_by_category_total", "Respuestas exitosas por categoría", ["categoria"], registry=PROM_REGISTRY)
 
-# Métricas para evaluar el fallback con RAG cuando el intent es n/a
-FALLBACK_RAG_HIT_COUNTER = Counter(
-    "munbot_fallback_rag_hit_total",
-    "Consultas con intent n/a resueltas por RAG",
+# === Minimal demo counters ===
+RESP_DIRECT_COUNTER = Counter("responses_direct_total", "Respuestas directas desde KB", registry=PROM_REGISTRY)
+RESP_MENU_ASPECT_COUNTER = Counter("responses_menu_aspect_total", "Menús de aspecto mostrados", registry=PROM_REGISTRY)
+RESP_MENU_CATEGORY_COUNTER = Counter("responses_menu_category_total", "Menús de categoría mostrados", registry=PROM_REGISTRY)
+FALLBACK_MIN_COUNTER = Counter("fallback_total", "Fallbacks activados (mínimo)", registry=PROM_REGISTRY)
+COMPLAINTS_CREATED_COUNTER = Counter("complaints_created_total", "Reclamos registrados", registry=PROM_REGISTRY)
+SCHEDULER_BOOKED_COUNTER = Counter("scheduler_booked_total", "Citas reservadas", registry=PROM_REGISTRY)
+
+# Latencia por tipo de respuesta (usar en p90 por tipo)
+RESP_LATENCY = Histogram(
+    "munbot_response_duration_seconds",
+    "Duración de respuesta por tipo",
+    ["type"],
+    buckets=(0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8),
     registry=PROM_REGISTRY,
 )
-FALLBACK_RAG_MISS_COUNTER = Counter(
-    "munbot_fallback_rag_miss_total",
-    "Consultas con intent n/a sin resultados útiles en RAG",
-    registry=PROM_REGISTRY,
-)
+
+## Removed legacy semantic fallback metrics
 
 NAME_REGEX = r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+(?: [A-Za-zÁÉÍÓÚÜáéíóúüÑñ]+)+$"
 EMAIL_REGEX = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
@@ -411,19 +484,7 @@ _TRAMITE_TOKS = re.compile(r"\\b(tramite|trámite|certificado|licencia|permiso|c
 _INFO_TOKS = re.compile(r"\\b(informacion|información|requisitos?|horarios?|costo|precio|valor)\\b", re.I)
 
 
-def _similarity_rescue(user_text: str) -> Tuple[Optional[str], float]:
-    if not user_text or SIM_VECTORS is None or not SIM_LABELS:
-        return None, 0.0
-    try:
-        vec = encode_text(user_text)
-        sims = cosine_similarity(vec, SIM_VECTORS)[0]
-        idx = int(sims.argmax())
-        score = float(sims[idx])
-        if score >= SIMILARITY_THRESHOLD:
-            return SIM_LABELS[idx], score
-    except Exception as exc:  # pragma: no cover - defensive
-        _jlog(_logger, "intent.similarity_error", error=str(exc))
-    return None, 0.0
+
 
 
 def _build_agent_messages(contexto, session_id: str, user_text: str, history_k: int = 4) -> List[Dict[str, str]]:
@@ -580,14 +641,20 @@ def pick_ttl(resp: dict) -> int:
     return ANSWER_CACHE_TTL_GENERIC
 
 def fallback(msg: str) -> Dict[str, Any]:
-    return {"respuesta": msg, "no_results": True}
+    try:
+        FALLBACK_COUNTER.inc()
+        FALLBACK_MIN_COUNTER.inc()
+    except Exception:
+        pass
+    _jlog(_logger, "metrics.fallback", message=_redact(msg))
+    return {"respuesta": msg, "no_results": True, "_resp_type": "fallback"}
 
 def format_answer(resp: Dict[str, Any]) -> Dict[str, Any]:
     answer = resp.get("respuesta") or resp.get("answer") or resp.get("mensaje", "")
     formatted: Dict[str, Any] = {"respuesta": answer, "no_results": False}
     return formatted
 
-def extract_name_with_llm(user_text: str) -> Optional[str]:
+def extract_name(user_text: str) -> Optional[str]:
     cleaned_text = user_text.strip()
     patterns = [r"^(?:me llamo|mi nombre es|soy)\\s+([A-Za-zÁÉÍÓÚáéíóúñÑ\\s'-]+)$"]
     for pattern in patterns:
@@ -599,17 +666,6 @@ def extract_name_with_llm(user_text: str) -> Optional[str]:
     words = cleaned_text.split()
     if 2 <= len(words) <= 4 and re.fullmatch(NAME_REGEX, cleaned_text, flags=re.IGNORECASE):
         return " ".join(word.capitalize() for word in words)
-    prompt = f'''Eres un extractor de nombres propios. Recibirás la frase completa que escribió un usuario y debes devolver ÚNICAMENTE su nombre completo (nombre y apellido). Si no identificas un nombre válido, responde 'None'.\n\nUsuario: "{user_text}"'''
-    try:
-        resp = remote_llm_generate(prompt)
-    except Exception as e:
-        _jlog(_logger, "llm.error", reason="extract_name_failed", error=str(e))
-        return None
-    name = resp.strip().splitlines()[0]
-    if name.lower() == "none" or len(name.split()) < 2:
-        return None
-    if re.fullmatch(NAME_REGEX, name.strip(), flags=re.IGNORECASE):
-        return name.strip()
     return None
 
 def _extract_email_simple(text: str) -> Optional[str]:
@@ -620,20 +676,11 @@ def _extract_email_simple(text: str) -> Optional[str]:
             return email
     return None
 
-def extract_email_with_llm(user_text: str, timeout: float = 1.0) -> Optional[str]:
+def extract_email(user_text: str, timeout: float = 1.0) -> Optional[str]:
     email = _extract_email_simple(user_text)
     if email:
         return email
-    prompt = f'''Eres un extractor y validador de correos electrónicos. Recibirás la frase completa de un usuario y debes devolver SOLO la dirección de email si está en un formato correcto (usuario@dominio.ext). Responde 'None' si no encuentras un email válido.\n\nUsuario: "{user_text}"'''
-    try:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as ex:
-            future = ex.submit(remote_llm_generate, prompt)
-            resp = future.result(timeout=timeout)
-    except Exception as e:
-        _jlog(_logger, "llm.error", reason="extract_email_failed", error=str(e))
-        return None
-    email = resp.strip().splitlines()[0]
-    return email if _valid_email(email) else None
+    return None
 
 def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     if channel in ["web", "whatsapp", None]:
@@ -808,35 +855,7 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
 def classify_intent_remotely(text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
     if not text:
         return {"intent": "n/a"}
-    try:
-        result = llm_client.classify_intent(text, trace_id=trace_id)
-        if isinstance(result, dict):
-            intent = (result.get("intent") or "").strip().lower()
-            if intent in {"faq", "n/a"}:
-                rescued_intent, score = _similarity_rescue(text)
-                if rescued_intent:
-                    result["intent"] = rescued_intent
-                    result["sub_intent"] = result.get("sub_intent") or rescued_intent
-                    if score:
-                        prev_conf = result.get("confidence")
-                        try:
-                            prev_conf = float(prev_conf) if prev_conf is not None else 0.0
-                        except (TypeError, ValueError):
-                            prev_conf = 0.0
-                        result["confidence"] = max(prev_conf, score)
-                    _jlog(
-                        _logger,
-                        "intent.similarity_rescue",
-                        rescued_intent=rescued_intent,
-                        score=round(score, 4),
-                    )
-                    return result
-            if intent and intent != "n/a":
-                return result
-            if result.get("sub_intent"):
-                return result
-    except Exception as exc:  # pragma: no cover - defensive logging
-        _jlog(_logger, "intent.remote_error", error=str(exc))
+    # Deterministic rule-based classification only
     return _heuristic_classify(text)
 
 
@@ -895,15 +914,15 @@ def _wants_change_topic(text: str) -> bool:
 
 
 def _map_collection_for_category(category: Optional[str]) -> Optional[str]:
-    if not category:
+    if not category or not KB_CATEGORY_AWARE:
         return None
     cat_norm = _norm_intent(category)
     if cat_norm == "faq":
-        return RAG_COLLECTION_FAQ
+        return KB_COLLECTION_FAQ
     if cat_norm == "tramite":
-        return RAG_COLLECTION_TRAMITES
+        return KB_COLLECTION_TRAMITES
     if cat_norm == "documento":
-        return RAG_COLLECTION_NORMATIVA
+        return KB_COLLECTION_NORMATIVA
     return None
 
 
@@ -936,16 +955,6 @@ def _handle_pending_feedback(session_id: str, user_text: str) -> Optional[Dict[s
 def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional[str] = None) -> Dict[str, Any]:
     params = dict(params or {})
 
-    if tool.startswith("doc-"):
-        payload = dict(params)
-        if "pregunta" in payload and not payload.get("query"):
-            payload["query"] = payload["pregunta"]
-        try:
-            return llm_client.tools_call(tool, payload, trace_id=trace_id, timeout=LLM_DOCS_TIMEOUT)
-        except Exception as exc:  # pragma: no cover - defensive
-            _jlog(_logger, "tools.error", tool=tool, error=str(exc))
-            return {"error": str(exc)}
-
     service_url = None
     if tool.startswith("scheduler-"):
         service_url = MICROSERVICES.get("scheduler-mcp")
@@ -959,7 +968,7 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional
     if trace_id:
         payload["trace_id"] = trace_id
     try:
-        resp = requests.post(service_url, json=payload, timeout=LLM_DOCS_TIMEOUT)
+        resp = requests.post(service_url, json=payload, timeout=MICROSERVICE_TIMEOUT)
         resp.raise_for_status()
         return resp.json()
     except requests.RequestException as exc:  # pragma: no cover - network
@@ -967,72 +976,7 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional
         return {"error": str(exc)}
 
 
-# --- Stubs that can be monkeypatched in tests ---
-def buscar_documento_por_accion(accion: str) -> Optional[Dict[str, Any]]:  # pragma: no cover - placeholder
-    return None
 
-
-def buscar_oficina_documento(doc_id: str) -> Optional[Dict[str, Any]]:  # pragma: no cover - placeholder
-    return None
-
-
-def buscar_info_documento_campo(doc_id: str, campo: str) -> Optional[Dict[str, Any]]:  # pragma: no cover
-    return None
-
-
-def handle_document_query(
-    session_id: str,
-    pregunta: str,
-    classification: Optional[Dict[str, Any]],
-    history: List[Dict[str, Any]],
-    categoria: Optional[str],
-    trace_id: Optional[str] = None,
-) -> Dict[str, Any]:
-    selected_document = context_manager.get_selected_document(session_id)
-    entities = (classification or {}).get("entities") or {}
-    doc_name = entities.get("tramite") or entities.get("documento")
-    if not doc_name:
-        doc_name = _extract_document_name(pregunta)
-    if doc_name and not selected_document:
-        selected_document = doc_name.strip()
-        context_manager.set_selected_document(session_id, selected_document)
-
-    needs_specific = _needs_specific_info(pregunta, has_context=bool(selected_document))
-    if needs_specific and selected_document:
-        # Ask user to clarify what information is needed
-        doc_for_msg = selected_document.lower()
-        msg = (
-            "Para ayudarte con el trámite "
-            f"'{doc_for_msg}', necesito saber qué información específica buscas (por ejemplo, requisitos, horario, costo)."
-        )
-        context_manager.update_context(session_id, pregunta, msg)
-        return {"respuesta": msg, "no_results": False}
-
-    params: Dict[str, Any] = {"pregunta": pregunta.strip()}
-    if selected_document:
-        params["documento"] = selected_document
-        if selected_document.lower() not in pregunta.lower():
-            base = pregunta.rstrip("?¿ .")
-            params["pregunta"] = f"{base} del trámite {selected_document}"
-    cat_norm = _norm_intent(categoria or "")
-    collection = None
-    if cat_norm in {"faq", "tramite", "documento"}:
-        params["categoria"] = cat_norm
-        collection = _map_collection_for_category(cat_norm) if RAG_CATEGORY_AWARE else None
-    else:
-        if RAG_CATEGORY_AWARE:
-            collection = RAG_COLLECTION_NORMATIVA
-    if collection:
-        params.setdefault("collection", collection)
-
-    resp = call_tool_microservice("doc-generar_respuesta_llm", params, trace_id=trace_id)
-    if resp.get("error"):
-        return fallback("Lo siento, ocurrió un problema al consultar la información.")
-    if resp.get("no_results"):
-        return resp
-    formatted = format_answer(resp)
-    context_manager.update_context(session_id, pregunta, formatted["respuesta"])
-    return formatted
 
 
 def _agenda_state(session_id: str) -> Dict[str, Optional[str]]:
@@ -1044,39 +988,159 @@ def _agenda_state(session_id: str) -> Dict[str, Optional[str]]:
     }
 
 
-def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
-    state = _agenda_state(session_id)
+def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[str] = None, channel: Optional[str] = None) -> Dict[str, Any]:
+    ctx = context_manager.get_context(session_id)
+    agenda = ctx.get("agenda") or {"fecha": None, "hora": None}
+    norm = normalize_text(user_text)
+
+    # Cancelación en cualquier momento del flujo
+    if norm.strip() in {"cancelar", "cancelar agenda"}:
+        reserva_id = ctx.get("agenda_reserva_id")
+        if reserva_id:
+            cancel_resp = call_tool_microservice(
+                "scheduler-cancelar_hora",
+                {"id_reserva": reserva_id, "motivo_cancelacion": "Usuario lo solicitó"},
+                trace_id=trace_id,
+            )
+            msg = cancel_resp.get("mensaje") or "He cancelado tu cita."
+        else:
+            msg = "De acuerdo, cancelamos el proceso de agendamiento."
+        context_manager.update_context(session_id, user_text, msg)
+        context_manager.clear_pending_confirmation(session_id)
+        context_manager.set_current_flow(session_id, None)
+        # Limpiar estado
+        context_manager.update_context_data(session_id, {"agenda": {"fecha": None, "hora": None}})
+        for k in (
+            "agenda_slots",
+            "agenda_pending_selection",
+            "agenda_selected_slot_id",
+            "agenda_collecting_name",
+            "agenda_collecting_email",
+            "agenda_name",
+            "agenda_email",
+            "agenda_reserva_id",
+        ):
+            context_manager.clear_context_field(session_id, k)
+        return {"respuesta": msg, "no_results": False}
+
+    # Selección de slot pendiente
+    if ctx.get("agenda_pending_selection"):
+        slots = ctx.get("agenda_slots") or []
+        chosen = None
+        for s in slots[:3]:
+            hora_str = str(s.get("hora") or "")
+            if hora_str and (hora_str.split("-")[0] in norm or hora_str in user_text):
+                chosen = s
+                break
+        if not chosen:
+            msg = "No identifiqué el bloque seleccionado. Elige uno de los horarios disponibles."
+            buttons = [f"Reservar {str(s.get('hora'))}" for s in slots[:3]] + ["Cancelar agenda"]
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
+        context_manager.update_context_data(
+            session_id, {"agenda_selected_slot_id": chosen.get("slot_id") or chosen.get("id"), "agenda_pending_selection": False}
+        )
+        context_manager.update_context_data(session_id, {"agenda_collecting_name": True})
+        msg = "Para confirmar la reserva, ¿puedes indicarme tu nombre completo?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+
+    # Recolección de nombre
+    if ctx.get("agenda_collecting_name"):
+        name = user_text.strip()
+        if not name or len(name.split()) < 2:
+            msg = "Por favor indícame tu nombre y apellido."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+        context_manager.update_context_data(
+            session_id,
+            {"agenda_name": name, "agenda_collecting_name": False, "agenda_collecting_email": True},
+        )
+        msg = "Gracias. ¿Cuál es tu correo electrónico para enviarte la confirmación?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+
+    # Recolección de email y reserva
+    if ctx.get("agenda_collecting_email"):
+        email = _valid_email(user_text)
+        if email is None:
+            msg = "El correo no parece válido. Indícalo en formato usuario@dominio.com."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+        name = ctx.get("agenda_name")
+        slot_id = ctx.get("agenda_selected_slot_id")
+        if not slot_id or not name:
+            msg = "Ocurrió un problema con la selección del horario. Intentemos nuevamente."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        params = {
+            "slot_id": slot_id,
+            "usuario_nombre": name,
+            "usuario_mail": email,
+            "usuario_whatsapp": "",
+            "motivo": "cita",
+        }
+        r = call_tool_microservice("scheduler-reservar_hora", params, trace_id=trace_id)
+        if r.get("error"):
+            return fallback("No pude reservar el bloque seleccionado. Intenta con otro horario.")
+        reserva_id = r.get("id_reserva") or slot_id
+        context_manager.update_context_data(session_id, {"agenda_reserva_id": reserva_id})
+        answer = r.get("mensaje") or "Tu cita ha sido reservada."
+        try:
+            SCHEDULER_BOOKED_COUNTER.inc()
+        except Exception:
+            pass
+        _jlog(_logger, "metrics.scheduler_booked", reserva_id=reserva_id)
+        context_manager.update_context(session_id, user_text, answer)
+        # Limpiar y finalizar flujo
+        context_manager.update_context_data(session_id, {"agenda": {"fecha": None, "hora": None}})
+        for k in (
+            "agenda_slots",
+            "agenda_pending_selection",
+            "agenda_selected_slot_id",
+            "agenda_collecting_name",
+            "agenda_collecting_email",
+            "agenda_name",
+            "agenda_email",
+        ):
+            context_manager.clear_context_field(session_id, k)
+        context_manager.clear_pending_confirmation(session_id)
+        context_manager.set_current_flow(session_id, None)
+        return {"respuesta": answer, "finish": True, "no_results": False, "_resp_type": "scheduler_booked"}
+
+    # Primera fase: obtener fecha/hora
     fecha, hora = parse_date_time(user_text)
     if fecha:
-        state["fecha"] = fecha
+        agenda["fecha"] = fecha
     if hora:
-        state["hora"] = hora
-    context_manager.update_context_data(session_id, {"agenda": state})
+        agenda["hora"] = hora
+    context_manager.update_context_data(session_id, {"agenda": agenda})
 
-    if not state["fecha"]:
+    if not agenda["fecha"]:
         msg = "Para agendar una cita necesito que me indiques la fecha que te acomoda."
         context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False}
-    if not state["hora"]:
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+    if not agenda["hora"]:
         msg = "Perfecto, ¿a qué hora te gustaría agendarla?"
         context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False}
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
 
-    payload = {"fecha": state["fecha"], "hora": state["hora"]}
+    payload = {"fecha": agenda["fecha"], "hora": agenda["hora"]}
     resp = call_tool_microservice("scheduler-listar_horas_disponibles", payload, trace_id=trace_id)
     if resp.get("error"):
         return fallback("No pude consultar la agenda en este momento, intenta nuevamente más tarde.")
     data = resp.get("data") or []
-    if data:
-        slot = data[0]
-        answer = f"Encontré disponibilidad el {slot.get('fecha')} a las {slot.get('hora')}."
-    else:
-        answer = "No encontré disponibilidad exacta, pero puedo ayudarte a buscar otra alternativa."
-    context_manager.update_context(session_id, user_text, answer)
-    context_manager.update_context_data(session_id, {"agenda": {"fecha": None, "hora": None}})
-    context_manager.clear_pending_confirmation(session_id)
-    context_manager.set_current_flow(session_id, None)
-    return {"respuesta": answer, "finish": True, "no_results": False}
+    if not data:
+        msg = "No encontré disponibilidad para esa hora. ¿Quieres intentar con otra hora o fecha?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+    top = data[:3]
+    options = [f"Reservar {s.get('hora')}" for s in top]
+    options.append("Cancelar agenda")
+    context_manager.update_context_data(session_id, {"agenda_slots": top, "agenda_pending_selection": True})
+    msg = "Tengo estos bloques disponibles. Elige uno para reservar:"
+    context_manager.update_context(session_id, user_text, msg)
+    return {"respuesta": msg, "no_results": False, "suggested_replies": options}
 
 
 def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
@@ -1124,10 +1188,29 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
             msg = "Por favor indícame tu nombre y apellido para continuar."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        context_manager.update_context_data(session_id, {"complaint": {"nombre": name}})
+        # Guardar nombre
+        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp["nombre"] = name
+        context_manager.update_context_data(session_id, {"complaint": comp})
+        # Pedir correo de contacto
+        context_manager.set_complaint_state(session_id, "collecting_email")
+        context_manager.set_pending_field(session_id, "correo")
+        msg = "Gracias. ¿Cuál es tu correo electrónico?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    if state == "collecting_email":
+        email = _valid_email(user_text)
+        if email is None:
+            msg = "El correo no parece válido. Por favor indícalo en formato usuario@dominio.com."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp["mail"] = email
+        context_manager.update_context_data(session_id, {"complaint": comp})
         context_manager.set_complaint_state(session_id, "collecting_rut")
         context_manager.set_pending_field(session_id, "rut")
-        msg = "Gracias. ¿Cuál es tu RUT?"
+        msg = "Perfecto. ¿Cuál es tu RUT? (ej: 12.345.678-9)"
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
 
@@ -1137,16 +1220,91 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
             msg = "El RUT no tiene un formato válido. Recuerda usar el formato 12.345.678-9."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        complaint_data = context_manager.get_context(session_id).get("complaint", {})
-        complaint_data["rut"] = rut
-        context_manager.update_context_data(session_id, {"complaint": complaint_data})
+        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp["rut"] = rut
+        context_manager.update_context_data(session_id, {"complaint": comp})
+        # Pedir asunto breve
+        context_manager.set_complaint_state(session_id, "collecting_subject")
+        context_manager.set_pending_field(session_id, "asunto")
+        msg = "Gracias. ¿Cuál es el asunto de tu reclamo? (breve)"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    if state == "collecting_subject":
+        subject = user_text.strip()
+        if len(subject) < 5:
+            msg = "El asunto es muy corto. ¿Podrías resumirlo en al menos 5 caracteres?"
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp["asunto"] = subject
+        context_manager.update_context_data(session_id, {"complaint": comp})
+        # Pedir descripción detallada
+        context_manager.set_complaint_state(session_id, "collecting_message")
+        context_manager.set_pending_field(session_id, "mensaje")
+        msg = "Entendido. Por favor describe tu reclamo con algunos detalles (mínimo 10 caracteres)."
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    if state == "collecting_message":
+        mensaje = (user_text or "").strip()
+        if len(mensaje) < 10:
+            msg = "El mensaje es muy corto. Por favor agrega más detalles (mínimo 10 caracteres)."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp["mensaje"] = mensaje
+        context_manager.update_context_data(session_id, {"complaint": comp})
+
+        # Preparar payload para complaints-mcp
+        nombre = comp.get("nombre")
+        rut = comp.get("rut")
+        mail = comp.get("mail")
+        asunto = comp.get("asunto")
+        detalle = comp.get("mensaje")
+        full_msg = f"[{asunto}] {detalle}" if asunto else detalle
+        params = {
+            "nombre": nombre,
+            "rut": rut,
+            "correo": mail,
+            "mensaje": full_msg,
+            "categoria": "1"
+        }
+        resp = call_tool_microservice("complaint-registrar_reclamo", params)
+        # Manejo de errores de validación devolviendo el slot pendiente
+        if resp.get("error") and resp.get("pending_field"):
+            pf = str(resp.get("pending_field"))
+            # Mapear nombres a nuestros estados
+            if pf in {"nombre"}:
+                context_manager.set_complaint_state(session_id, "collecting_name")
+                context_manager.set_pending_field(session_id, "nombre")
+            elif pf in {"mail", "correo"}:
+                context_manager.set_complaint_state(session_id, "collecting_email")
+                context_manager.set_pending_field(session_id, "correo")
+            elif pf in {"rut"}:
+                context_manager.set_complaint_state(session_id, "collecting_rut")
+                context_manager.set_pending_field(session_id, "rut")
+            elif pf in {"mensaje"}:
+                context_manager.set_complaint_state(session_id, "collecting_message")
+                context_manager.set_pending_field(session_id, "mensaje")
+            msg = resp.get("respuesta") or "Faltan datos para registrar el reclamo."
+            context_manager.update_context(session_id, user_text, msg)
+            return {"respuesta": msg, "no_results": False}
+        if resp.get("error"):
+            return fallback("Ocurrió un problema al registrar tu reclamo. Intenta nuevamente más tarde.")
+        # Éxito: limpiar estado y devolver recibo
+        receipt = resp.get("respuesta") or "Tu reclamo ha sido registrado."
+        try:
+            COMPLAINTS_CREATED_COUNTER.inc()
+        except Exception:
+            pass
+        _jlog(_logger, "metrics.complaint_created")
+        context_manager.update_context(session_id, user_text, receipt)
         context_manager.clear_pending_field(session_id)
         context_manager.clear_complaint_state(session_id)
         context_manager.clear_pending_confirmation(session_id)
         context_manager.set_current_flow(session_id, None)
-        msg = "Perfecto, he registrado tus datos del reclamo. Continuemos cuando estés listo."
-        context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False}
+        return {"respuesta": receipt, "finish": True, "no_results": False, "_resp_type": "complaint_created"}
 
     return fallback("Lo siento, no pude procesar tu reclamo en este momento.")
 
@@ -1207,33 +1365,33 @@ def handle_turn(
 
     if intent_action == "init_scheduler" or context_manager.get_current_flow(session_id) == "agenda":
         context_manager.set_current_flow(session_id, "agenda")
-        return handle_scheduler_flow(session_id, user_text)
+        return handle_scheduler_flow(session_id, user_text, trace_id=trace_id, channel=channel)
 
     if intent_action == "ask_document":
-        history = context_manager.get_history(session_id)
-        return handle_document_query(session_id, user_text, classification, history, categoria)
+        # Deterministic KB dispatcher
+        try:
+            t_id = match_tramite(user_text, KB_BY_ALIAS)
+            aspecto = match_aspect(user_text, KB_ASPECT_MAP)
+            cat = None if t_id else match_categoria(user_text)
+            if t_id:
+                context_manager.set_selected_document(session_id, t_id)
+            if t_id and aspecto:
+                return respond_direct(t_id, aspecto)
+            if t_id and not aspecto:
+                return show_aspect_menu(t_id)
+            if cat and not t_id:
+                return show_tramites_menu(cat)
+            return show_main_menu()
+        except Exception as e:
+            _jlog(_logger, "kb.dispatch_error", error=str(e))
+            return fallback("Lo siento, ocurrió un problema al procesar tu consulta.")
 
     if intent_action == "n/a":
-        # Fallback: intentar resolver vía RAG antes de disculparnos
-        history = context_manager.get_history(session_id)
-        rag_resp = handle_document_query(session_id, user_text, classification, history, categoria)
-        if not rag_resp.get("no_results"):
-            try:
-                FALLBACK_RAG_HIT_COUNTER.inc()
-            except Exception:
-                pass
-            return rag_resp
-        # Sin resultados útiles: mantenemos el comportamiento anterior
-        try:
-            FALLBACK_RAG_MISS_COUNTER.inc()
-        except Exception:
-            pass
         context_manager.increment_fallback_count(session_id)
         return fallback("Lo siento, no he entendido tu consulta. ¿Podrías reformularla?")
 
-    # Generic FAQ fallbacks -> redirect to RAG as default
-    history = context_manager.get_history(session_id)
-    return handle_document_query(session_id, user_text, classification, history, categoria)
+    # Generic fallback when no action matched
+    return fallback("Lo siento, no tengo información para esa consulta.")
 
 
 def orchestrate(
@@ -1244,14 +1402,33 @@ def orchestrate(
     trace_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     sid = session_id or _generate_session_id()
+    t0 = time.time()
     response_payload = handle_turn(sid, user_text, trace_id=trace_id, force_canary=force_canary, channel=channel)
     respuesta = response_payload.get("respuesta") or "Lo siento, hubo un error procesando tu solicitud."
+    # Formato por canal
+    suggested = response_payload.get("suggested_replies")
+    if channel == "whatsapp" and isinstance(suggested, list) and suggested:
+        # Mostrar sugerencias como viñetas en WhatsApp
+        bullets = "\n".join([f"• {str(it)}" for it in suggested])
+        extra = f"\n\n¿Necesitas algo más?\n{bullets}"
+        respuesta = f"{respuesta}{extra}"
     respuesta = adapt_markdown_for_channel(respuesta, channel)
 
     result: Dict[str, Any] = {"session_id": sid, "respuesta": respuesta}
-    for key in ("no_results", "referencias", "finish", "pending", "respuestas", "escalado"):
+    # Enviar suggested_replies solo para Web; WhatsApp ya recibió viñetas en el texto
+    keys = ["no_results", "referencias", "finish", "pending", "respuestas", "escalado"]
+    if channel == "web":
+        keys.append("suggested_replies")
+    for key in keys:
         if key in response_payload:
             result[key] = response_payload[key]
+    # Métricas de latencia por tipo de respuesta
+    try:
+        resp_type = str(response_payload.get("_resp_type") or "generic")
+        RESP_LATENCY.labels(type=resp_type).observe(max(0.0, time.time() - t0))
+        MET_FLOW_LAT.observe(max(0.0, time.time() - t0))
+    except Exception:
+        pass
     return result
 
 

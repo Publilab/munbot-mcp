@@ -13,7 +13,7 @@ until nc -z "$REDIS_HOST" "$REDIS_PORT"; do sleep 2; done
 echo "→ Esperando a Postgres en $POSTGRES_HOST:$POSTGRES_PORT..."
 until nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do sleep 2; done
 
-## LLM/Qdrant removed from deployment; skipping waits for them
+# AI/Qdrant components removed from deployment; skipping waits for them
 
 echo "→ Todas las dependencias listas. Iniciando mcp‑core..."
 exec "$@"

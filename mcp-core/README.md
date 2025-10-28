@@ -3,12 +3,12 @@
 This directory contains the core logic for the Modular Conversational Platform (MCP).
 
 ## Structure
-- `orchestrator.py`: Main LLM-based orchestrator for intent recognition and tool invocation.
+- `orchestrator.py`: Deterministic orchestrator for intent recognition (reglas/heurísticas) y llamadas a microservicios.
 - It also defines a minimal `STOPWORDS` list used for tokenization. Duplicates and
   rarely helpful adverbs were removed to avoid filtering meaningful tokens.
 - `tool_schemas/`: JSON schemas describing each microservice's API as callable tools.
-- `prompts/`: Prompt templates for the LLM to guide tool usage and conversation flow.
-- A `/health` endpoint checks the database connection and that the LLM model is loaded.
+- `prompts/`: Text templates used by auxiliary components.
+- A `/health` endpoint checks basic service readiness.
 
 ## Next Steps
 - Implement the orchestrator logic in `orchestrator.py`.

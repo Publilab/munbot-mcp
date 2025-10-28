@@ -1,0 +1,53 @@
+{
+  "tramites": [
+    {
+      "id": "permiso_aterrizaje",
+      "aliases": [
+        "permiso de aterrizaje",
+        "licencia de aterrizaje",
+        "autorizacion de aterrizaje",
+        "autorización de aterrizaje"
+      ],
+      "categoria": "permisos",
+      "respuestas": {
+        "donde": "📍 Departamento de Tránsito Aéreo, Edificio Consistorial Coruscant (nivel 5143).",
+        "horarios": "🕐 Lunes a viernes, 08:00–17:00.",
+        "requisitos": "📋 Cédula vigente, formulario TA-27 y certificado médico aeronáutico.",
+        "costos": "💰 120 créditos galácticos.",
+        "plazos": "⏳ Emisión en 3 días hábiles.",
+        "proposito": "Sirve para autorizar aterrizajes planificados en jurisdicción municipal."
+      },
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver costos",
+        "Ver horarios",
+        "Dónde tramitar",
+        "Para qué sirve"
+      ]
+    },
+    {
+      "id": "cert_residencia_definitiva",
+      "aliases": [
+        "certificado de residencia definitiva",
+        "residencia definitiva"
+      ],
+      "categoria": "certificados",
+      "respuestas": {
+        "donde": "📍 Oficina de Registro Civil Municipal, Edificio Consistorial Coruscant (nivel 1313).",
+        "horarios": "🕐 Lunes a viernes, 08:00–17:00.",
+        "requisitos": "📋 Cédula vigente, formulario CRD-001, 2 testigos con domicilio en la comuna.",
+        "costos": "💰 32 créditos galácticos.",
+        "plazos": "⏳ Entrega en 5 días hábiles.",
+        "proposito": "Acredita domicilio permanente para trámites municipales."
+      },
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver costos",
+        "Ver horarios",
+        "Dónde tramitar",
+        "Para qué sirve"
+      ]
+    }
+  ]
+}
+

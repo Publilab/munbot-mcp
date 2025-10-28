@@ -12,9 +12,6 @@ phonenumbers
 prometheus-client>=0.20.0
 prometheus-fastapi-instrumentator
 python-json-logger
-scikit-learn>=0.24.2
 httpx
-sentence-transformers==2.7.0
-numpy
 pytest
 pytest-mock
