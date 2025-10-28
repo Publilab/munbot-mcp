@@ -289,6 +289,13 @@ def respond_direct(tramite_id: str, aspecto: str) -> Dict[str, Any]:
     txt = (resp_map.get(aspecto) or "").strip()
     if not txt:
         return fallback("No tengo información para ese aspecto.")
+    # Prefer clear, natural phrasing for some aspects
+    if aspecto == "costos":
+        name = _kb_display_name(tramite_id)
+        # Remove leading emojis or symbols from KB text
+        clean = txt.lstrip("💰 ").strip()
+        # Build a full sentence as requested: "El <name> tiene un valor de <clean>"
+        txt = f"El {name.lower()} tiene un valor de {clean}".rstrip(".") + "."
     try:
         RESP_DIRECT_COUNTER.inc()
     except Exception:
@@ -727,6 +734,7 @@ class OrchestrateRequest(BaseModel):
     pregunta: str
     session_id: Optional[str] = None
     canal: Optional[str] = None
+    channel: Optional[str] = None  # aceptar ambos nombres desde gateways
     metadata: Optional[Dict[str, Any]] = None
 
 
@@ -1372,9 +1380,14 @@ def handle_turn(
         try:
             t_id = match_tramite(user_text, KB_BY_ALIAS)
             aspecto = match_aspect(user_text, KB_ASPECT_MAP)
+            # Considerar documento ya seleccionado en contexto si no hay match por alias
+            selected = context_manager.get_selected_document(session_id)
             cat = None if t_id else match_categoria(user_text)
             if t_id:
                 context_manager.set_selected_document(session_id, t_id)
+            # Caso: ya hay documento en contexto y el usuario eligió solo el aspecto
+            if not t_id and selected and aspecto:
+                return respond_direct(selected, aspecto)
             if t_id and aspecto:
                 return respond_direct(t_id, aspecto)
             if t_id and not aspecto:
@@ -1436,10 +1449,12 @@ def orchestrate(
 async def orchestrate_route(request: Request, payload: OrchestrateRequest):
     headers = request.headers
     force_canary = headers.get(AGENT_CANARY_HEADER_KEY, "") == AGENT_CANARY_HEADER_ON
+    # Aceptar tanto 'canal' como 'channel' desde gateways
+    chan = payload.canal or payload.channel
     result = orchestrate(
         payload.pregunta,
         session_id=payload.session_id,
-        channel=payload.canal,
+        channel=chan,
         force_canary=force_canary,
     )
     return result
