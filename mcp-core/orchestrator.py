@@ -1158,7 +1158,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
     if state is None:
         context_manager.set_current_flow(session_id, "reclamo")
         context_manager.set_pending_confirmation(session_id, True)
-        context_manager.set_complaint_state(session_id, "confirming")
+        context_manager.update_complaint_state(session_id, "confirming")
         msg = "Puedo ayudarte a registrar tu reclamo. ¿Deseas registrarlo ahora?"
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
@@ -1174,7 +1174,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
 
     if state == "confirming":
         if text_norm.strip() in YES_WORDS:
-            context_manager.set_complaint_state(session_id, "collecting_name")
+            context_manager.update_complaint_state(session_id, "collecting_name")
             context_manager.set_pending_field(session_id, "nombre")
             msg = "Excelente, comencemos. ¿Cómo te llamas?"
             context_manager.update_context(session_id, user_text, msg)
@@ -1201,7 +1201,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         comp["nombre"] = name
         context_manager.update_context_data(session_id, {"complaint": comp})
         # Pedir correo de contacto
-        context_manager.set_complaint_state(session_id, "collecting_email")
+        context_manager.update_complaint_state(session_id, "collecting_email")
         context_manager.set_pending_field(session_id, "correo")
         msg = "Gracias. ¿Cuál es tu correo electrónico?"
         context_manager.update_context(session_id, user_text, msg)
@@ -1216,7 +1216,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         comp = context_manager.get_context(session_id).get("complaint", {})
         comp["mail"] = email
         context_manager.update_context_data(session_id, {"complaint": comp})
-        context_manager.set_complaint_state(session_id, "collecting_rut")
+        context_manager.update_complaint_state(session_id, "collecting_rut")
         context_manager.set_pending_field(session_id, "rut")
         msg = "Perfecto. ¿Cuál es tu RUT? (ej: 12.345.678-9)"
         context_manager.update_context(session_id, user_text, msg)
@@ -1232,7 +1232,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         comp["rut"] = rut
         context_manager.update_context_data(session_id, {"complaint": comp})
         # Pedir asunto breve
-        context_manager.set_complaint_state(session_id, "collecting_subject")
+        context_manager.update_complaint_state(session_id, "collecting_subject")
         context_manager.set_pending_field(session_id, "asunto")
         msg = "Gracias. ¿Cuál es el asunto de tu reclamo? (breve)"
         context_manager.update_context(session_id, user_text, msg)
@@ -1248,7 +1248,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         comp["asunto"] = subject
         context_manager.update_context_data(session_id, {"complaint": comp})
         # Pedir descripción detallada
-        context_manager.set_complaint_state(session_id, "collecting_message")
+        context_manager.update_complaint_state(session_id, "collecting_message")
         context_manager.set_pending_field(session_id, "mensaje")
         msg = "Entendido. Por favor describe tu reclamo con algunos detalles (mínimo 10 caracteres)."
         context_manager.update_context(session_id, user_text, msg)
@@ -1284,16 +1284,16 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
             pf = str(resp.get("pending_field"))
             # Mapear nombres a nuestros estados
             if pf in {"nombre"}:
-                context_manager.set_complaint_state(session_id, "collecting_name")
+                context_manager.update_complaint_state(session_id, "collecting_name")
                 context_manager.set_pending_field(session_id, "nombre")
             elif pf in {"mail", "correo"}:
-                context_manager.set_complaint_state(session_id, "collecting_email")
+                context_manager.update_complaint_state(session_id, "collecting_email")
                 context_manager.set_pending_field(session_id, "correo")
             elif pf in {"rut"}:
-                context_manager.set_complaint_state(session_id, "collecting_rut")
+                context_manager.update_complaint_state(session_id, "collecting_rut")
                 context_manager.set_pending_field(session_id, "rut")
             elif pf in {"mensaje"}:
-                context_manager.set_complaint_state(session_id, "collecting_message")
+                context_manager.update_complaint_state(session_id, "collecting_message")
                 context_manager.set_pending_field(session_id, "mensaje")
             msg = resp.get("respuesta") or "Faltan datos para registrar el reclamo."
             context_manager.update_context(session_id, user_text, msg)

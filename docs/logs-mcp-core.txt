@@ -1,0 +1,678 @@
+docker logs llm_docs-mcp
+✅ Qdrant is ready.
+🚀 Starting auto-indexing...
+✅  Colección creada: munbot_docs
+INFO:__main__:Could not determine Qdrant client version.
+INFO:httpx:HTTP Request: GET http://qdrant:6333/collections/munbot_docs "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://qdrant:6333/collections/munbot_docs/points/count "HTTP/1.1 200 OK"
+INFO:__main__:Cargando y procesando documentos...
+INFO:__main__:Generando embeddings y subiendo puntos a Qdrant para 199 chunks...
+INFO:httpx:HTTP Request: PUT http://qdrant:6333/collections/munbot_docs/points?wait=true "HTTP/1.1 200 OK"
+INFO:__main__:✅ Indexación completada. 199 puntos procesados para la colección 'munbot_docs'.
+🧠 Modelo cargado en 2,829 ms (CPU)
+✅ Indexing complete.
+llama_model_loader: loaded meta data with 39 key-value pairs and 434 tensors from /app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = qwen2
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                               general.name str              = Qwen2.5 3B Instruct
+llama_model_loader: - kv   3:                           general.finetune str              = Instruct
+llama_model_loader: - kv   4:                           general.basename str              = Qwen2.5
+llama_model_loader: - kv   5:                         general.size_label str              = 3B
+llama_model_loader: - kv   6:                            general.license str              = other
+llama_model_loader: - kv   7:                       general.license.name str              = qwen-research
+llama_model_loader: - kv   8:                       general.license.link str              = https://huggingface.co/Qwen/Qwen2.5-3...
+llama_model_loader: - kv   9:                   general.base_model.count u32              = 1
+llama_model_loader: - kv  10:                  general.base_model.0.name str              = Qwen2.5 3B
+llama_model_loader: - kv  11:          general.base_model.0.organization str              = Qwen
+llama_model_loader: - kv  12:              general.base_model.0.repo_url str              = https://huggingface.co/Qwen/Qwen2.5-3B
+llama_model_loader: - kv  13:                               general.tags arr[str,2]       = ["chat", "text-generation"]
+llama_model_loader: - kv  14:                          general.languages arr[str,1]       = ["en"]
+llama_model_loader: - kv  15:                          qwen2.block_count u32              = 36
+llama_model_loader: - kv  16:                       qwen2.context_length u32              = 32768
+llama_model_loader: - kv  17:                     qwen2.embedding_length u32              = 2048
+llama_model_loader: - kv  18:                  qwen2.feed_forward_length u32              = 11008
+llama_model_loader: - kv  19:                 qwen2.attention.head_count u32              = 16
+llama_model_loader: - kv  20:              qwen2.attention.head_count_kv u32              = 2
+llama_model_loader: - kv  21:                       qwen2.rope.freq_base f32              = 1000000.000000
+llama_model_loader: - kv  22:     qwen2.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  23:                          general.file_type u32              = 15
+llama_model_loader: - kv  24:                       tokenizer.ggml.model str              = gpt2
+llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2
+llama_model_loader: - kv  26:                      tokenizer.ggml.tokens arr[str,151936]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+llama_model_loader: - kv  27:                  tokenizer.ggml.token_type arr[i32,151936]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  28:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+llama_model_loader: - kv  29:                tokenizer.ggml.eos_token_id u32              = 151645
+llama_model_loader: - kv  30:            tokenizer.ggml.padding_token_id u32              = 151643
+llama_model_loader: - kv  31:                tokenizer.ggml.bos_token_id u32              = 151643
+llama_model_loader: - kv  32:               tokenizer.ggml.add_bos_token bool             = false
+llama_model_loader: - kv  33:                    tokenizer.chat_template str              = {%- if tools %}\n    {{- '<|im_start|>...
+llama_model_loader: - kv  34:               general.quantization_version u32              = 2
+llama_model_loader: - kv  35:                      quantize.imatrix.file str              = /models_out/Qwen2.5-3B-Instruct-GGUF/...
+llama_model_loader: - kv  36:                   quantize.imatrix.dataset str              = /training_dir/calibration_datav3.txt
+llama_model_loader: - kv  37:             quantize.imatrix.entries_count i32              = 252
+llama_model_loader: - kv  38:              quantize.imatrix.chunks_count i32              = 128
+llama_model_loader: - type  f32:  181 tensors
+llama_model_loader: - type q8_0:    1 tensors
+llama_model_loader: - type q4_K:  216 tensors
+llama_model_loader: - type q6_K:   36 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = Q4_K - Medium
+print_info: file size   = 1.86 GiB (5.18 BPW) 
+init_tokenizer: initializing tokenizer for type 2
+load: control token: 151660 '<|fim_middle|>' is not marked as EOG
+load: control token: 151659 '<|fim_prefix|>' is not marked as EOG
+load: control token: 151653 '<|vision_end|>' is not marked as EOG
+load: control token: 151648 '<|box_start|>' is not marked as EOG
+load: control token: 151646 '<|object_ref_start|>' is not marked as EOG
+load: control token: 151649 '<|box_end|>' is not marked as EOG
+load: control token: 151655 '<|image_pad|>' is not marked as EOG
+load: control token: 151651 '<|quad_end|>' is not marked as EOG
+load: control token: 151647 '<|object_ref_end|>' is not marked as EOG
+load: control token: 151652 '<|vision_start|>' is not marked as EOG
+load: control token: 151654 '<|vision_pad|>' is not marked as EOG
+load: control token: 151656 '<|video_pad|>' is not marked as EOG
+load: control token: 151644 '<|im_start|>' is not marked as EOG
+load: control token: 151661 '<|fim_suffix|>' is not marked as EOG
+load: control token: 151650 '<|quad_start|>' is not marked as EOG
+load: printing all EOG tokens:
+load:   - 151643 ('<|endoftext|>')
+load:   - 151645 ('<|im_end|>')
+load:   - 151662 ('<|fim_pad|>')
+load:   - 151663 ('<|repo_name|>')
+load:   - 151664 ('<|file_sep|>')
+load: special tokens cache size = 22
+load: token to piece cache size = 0.9310 MB
+print_info: arch             = qwen2
+print_info: vocab_only       = 0
+print_info: n_ctx_train      = 32768
+print_info: n_embd           = 2048
+print_info: n_layer          = 36
+print_info: n_head           = 16
+print_info: n_head_kv        = 2
+print_info: n_rot            = 128
+print_info: n_swa            = 0
+print_info: is_swa_any       = 0
+print_info: n_embd_head_k    = 128
+print_info: n_embd_head_v    = 128
+print_info: n_gqa            = 8
+print_info: n_embd_k_gqa     = 256
+print_info: n_embd_v_gqa     = 256
+print_info: f_norm_eps       = 0.0e+00
+print_info: f_norm_rms_eps   = 1.0e-06
+print_info: f_clamp_kqv      = 0.0e+00
+print_info: f_max_alibi_bias = 0.0e+00
+print_info: f_logit_scale    = 0.0e+00
+print_info: f_attn_scale     = 0.0e+00
+print_info: n_ff             = 11008
+print_info: n_expert         = 0
+print_info: n_expert_used    = 0
+print_info: causal attn      = 1
+print_info: pooling type     = -1
+print_info: rope type        = 2
+print_info: rope scaling     = linear
+print_info: freq_base_train  = 1000000.0
+print_info: freq_scale_train = 1
+print_info: n_ctx_orig_yarn  = 32768
+print_info: rope_finetuned   = unknown
+print_info: model type       = 3B
+print_info: model params     = 3.09 B
+print_info: general.name     = Qwen2.5 3B Instruct
+print_info: vocab type       = BPE
+print_info: n_vocab          = 151936
+print_info: n_merges         = 151387
+print_info: BOS token        = 151643 '<|endoftext|>'
+print_info: EOS token        = 151645 '<|im_end|>'
+print_info: EOT token        = 151645 '<|im_end|>'
+print_info: PAD token        = 151643 '<|endoftext|>'
+print_info: LF token         = 198 'Ċ'
+print_info: FIM PRE token    = 151659 '<|fim_prefix|>'
+print_info: FIM SUF token    = 151661 '<|fim_suffix|>'
+print_info: FIM MID token    = 151660 '<|fim_middle|>'
+print_info: FIM PAD token    = 151662 '<|fim_pad|>'
+print_info: FIM REP token    = 151663 '<|repo_name|>'
+print_info: FIM SEP token    = 151664 '<|file_sep|>'
+print_info: EOG token        = 151643 '<|endoftext|>'
+print_info: EOG token        = 151645 '<|im_end|>'
+print_info: EOG token        = 151662 '<|fim_pad|>'
+print_info: EOG token        = 151663 '<|repo_name|>'
+print_info: EOG token        = 151664 '<|file_sep|>'
+print_info: max token length = 256
+load_tensors: loading model tensors, this can take a while... (mmap = true)
+load_tensors: layer   0 assigned to device CPU, is_swa = 0
+load_tensors: layer   1 assigned to device CPU, is_swa = 0
+load_tensors: layer   2 assigned to device CPU, is_swa = 0
+load_tensors: layer   3 assigned to device CPU, is_swa = 0
+load_tensors: layer   4 assigned to device CPU, is_swa = 0
+load_tensors: layer   5 assigned to device CPU, is_swa = 0
+load_tensors: layer   6 assigned to device CPU, is_swa = 0
+load_tensors: layer   7 assigned to device CPU, is_swa = 0
+load_tensors: layer   8 assigned to device CPU, is_swa = 0
+load_tensors: layer   9 assigned to device CPU, is_swa = 0
+load_tensors: layer  10 assigned to device CPU, is_swa = 0
+load_tensors: layer  11 assigned to device CPU, is_swa = 0
+load_tensors: layer  12 assigned to device CPU, is_swa = 0
+load_tensors: layer  13 assigned to device CPU, is_swa = 0
+load_tensors: layer  14 assigned to device CPU, is_swa = 0
+load_tensors: layer  15 assigned to device CPU, is_swa = 0
+load_tensors: layer  16 assigned to device CPU, is_swa = 0
+load_tensors: layer  17 assigned to device CPU, is_swa = 0
+load_tensors: layer  18 assigned to device CPU, is_swa = 0
+load_tensors: layer  19 assigned to device CPU, is_swa = 0
+load_tensors: layer  20 assigned to device CPU, is_swa = 0
+load_tensors: layer  21 assigned to device CPU, is_swa = 0
+load_tensors: layer  22 assigned to device CPU, is_swa = 0
+load_tensors: layer  23 assigned to device CPU, is_swa = 0
+load_tensors: layer  24 assigned to device CPU, is_swa = 0
+load_tensors: layer  25 assigned to device CPU, is_swa = 0
+load_tensors: layer  26 assigned to device CPU, is_swa = 0
+load_tensors: layer  27 assigned to device CPU, is_swa = 0
+load_tensors: layer  28 assigned to device CPU, is_swa = 0
+load_tensors: layer  29 assigned to device CPU, is_swa = 0
+load_tensors: layer  30 assigned to device CPU, is_swa = 0
+load_tensors: layer  31 assigned to device CPU, is_swa = 0
+load_tensors: layer  32 assigned to device CPU, is_swa = 0
+load_tensors: layer  33 assigned to device CPU, is_swa = 0
+load_tensors: layer  34 assigned to device CPU, is_swa = 0
+load_tensors: layer  35 assigned to device CPU, is_swa = 0
+load_tensors: layer  36 assigned to device CPU, is_swa = 0
+load_tensors: tensor 'token_embd.weight' (q8_0) (and 434 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
+load_tensors:   CPU_Mapped model buffer size =  1906.69 MiB
+.....................................................................................
+llama_context: constructing llama_context
+llama_context: n_seq_max     = 1
+llama_context: n_ctx         = 2048
+llama_context: n_ctx_per_seq = 2048
+llama_context: n_batch       = 512
+llama_context: n_ubatch      = 512
+llama_context: causal_attn   = 1
+llama_context: flash_attn    = 0
+llama_context: kv_unified    = false
+llama_context: freq_base     = 1000000.0
+llama_context: freq_scale    = 1
+llama_context: n_ctx_per_seq (2048) < n_ctx_train (32768) -- the full capacity of the model will not be utilized
+set_abort_callback: call
+llama_context:        CPU  output buffer size =     0.58 MiB
+create_memory: n_ctx = 2048 (padded)
+llama_kv_cache_unified: layer   0: dev = CPU
+llama_kv_cache_unified: layer   1: dev = CPU
+llama_kv_cache_unified: layer   2: dev = CPU
+llama_kv_cache_unified: layer   3: dev = CPU
+llama_kv_cache_unified: layer   4: dev = CPU
+llama_kv_cache_unified: layer   5: dev = CPU
+llama_kv_cache_unified: layer   6: dev = CPU
+llama_kv_cache_unified: layer   7: dev = CPU
+llama_kv_cache_unified: layer   8: dev = CPU
+llama_kv_cache_unified: layer   9: dev = CPU
+llama_kv_cache_unified: layer  10: dev = CPU
+llama_kv_cache_unified: layer  11: dev = CPU
+llama_kv_cache_unified: layer  12: dev = CPU
+llama_kv_cache_unified: layer  13: dev = CPU
+llama_kv_cache_unified: layer  14: dev = CPU
+llama_kv_cache_unified: layer  15: dev = CPU
+llama_kv_cache_unified: layer  16: dev = CPU
+llama_kv_cache_unified: layer  17: dev = CPU
+llama_kv_cache_unified: layer  18: dev = CPU
+llama_kv_cache_unified: layer  19: dev = CPU
+llama_kv_cache_unified: layer  20: dev = CPU
+llama_kv_cache_unified: layer  21: dev = CPU
+llama_kv_cache_unified: layer  22: dev = CPU
+llama_kv_cache_unified: layer  23: dev = CPU
+llama_kv_cache_unified: layer  24: dev = CPU
+llama_kv_cache_unified: layer  25: dev = CPU
+llama_kv_cache_unified: layer  26: dev = CPU
+llama_kv_cache_unified: layer  27: dev = CPU
+llama_kv_cache_unified: layer  28: dev = CPU
+llama_kv_cache_unified: layer  29: dev = CPU
+llama_kv_cache_unified: layer  30: dev = CPU
+llama_kv_cache_unified: layer  31: dev = CPU
+llama_kv_cache_unified: layer  32: dev = CPU
+llama_kv_cache_unified: layer  33: dev = CPU
+llama_kv_cache_unified: layer  34: dev = CPU
+llama_kv_cache_unified: layer  35: dev = CPU
+llama_kv_cache_unified:        CPU KV buffer size =    72.00 MiB
+llama_kv_cache_unified: size =   72.00 MiB (  2048 cells,  36 layers,  1/1 seqs), K (f16):   36.00 MiB, V (f16):   36.00 MiB
+llama_context: enumerating backends
+llama_context: backend_ptrs.size() = 1
+llama_context: max_nodes = 3472
+llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+llama_context:        CPU compute buffer size =   300.75 MiB
+llama_context: graph nodes  = 1374
+llama_context: graph splits = 1
+CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+Model metadata: {'quantize.imatrix.chunks_count': '128', 'quantize.imatrix.entries_count': '252', 'quantize.imatrix.file': '/models_out/Qwen2.5-3B-Instruct-GGUF/Qwen2.5-3B-Instruct.imatrix', 'general.quantization_version': '2', 'general.base_model.0.repo_url': 'https://huggingface.co/Qwen/Qwen2.5-3B', 'general.license': 'other', 'qwen2.attention.head_count_kv': '2', 'tokenizer.chat_template': '{%- if tools %}\n    {{- \'<|im_start|>system\\n\' }}\n    {%- if messages[0][\'role\'] == \'system\' %}\n        {{- messages[0][\'content\'] }}\n    {%- else %}\n        {{- \'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.\' }}\n    {%- endif %}\n    {{- "\\n\\n# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>" }}\n    {%- for tool in tools %}\n        {{- "\\n" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- "\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\"name\\": <function-name>, \\"arguments\\": <args-json-object>}\\n</tool_call><|im_end|>\\n" }}\n{%- else %}\n    {%- if messages[0][\'role\'] == \'system\' %}\n        {{- \'<|im_start|>system\\n\' + messages[0][\'content\'] + \'<|im_end|>\\n\' }}\n    {%- else %}\n        {{- \'<|im_start|>system\\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\\n\' }}\n    {%- endif %}\n{%- endif %}\n{%- for message in messages %}\n    {%- if (message.role == "user") or (message.role == "system" and not loop.first) or (message.role == "assistant" and not message.tool_calls) %}\n        {{- \'<|im_start|>\' + message.role + \'\\n\' + message.content + \'<|im_end|>\' + \'\\n\' }}\n    {%- elif message.role == "assistant" %}\n        {{- \'<|im_start|>\' + message.role }}\n        {%- if message.content %}\n            {{- \'\\n\' + message.content }}\n        {%- endif %}\n        {%- for tool_call in message.tool_calls %}\n            {%- if tool_call.function is defined %}\n                {%- set tool_call = tool_call.function %}\n            {%- endif %}\n            {{- \'\\n<tool_call>\\n{"name": "\' }}\n            {{- tool_call.name }}\n            {{- \'", "arguments": \' }}\n            {{- tool_call.arguments | tojson }}\n            {{- \'}\\n</tool_call>\' }}\n        {%- endfor %}\n        {{- \'<|im_end|>\\n\' }}\n    {%- elif message.role == "tool" %}\n        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != "tool") %}\n            {{- \'<|im_start|>user\' }}\n        {%- endif %}\n        {{- \'\\n<tool_response>\\n\' }}\n        {{- message.content }}\n        {{- \'\\n</tool_response>\' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != "tool") %}\n            {{- \'<|im_end|>\\n\' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- \'<|im_start|>assistant\\n\' }}\n{%- endif %}\n', 'general.license.name': 'qwen-research', 'general.type': 'model', 'quantize.imatrix.dataset': '/training_dir/calibration_datav3.txt', 'general.base_model.0.name': 'Qwen2.5 3B', 'general.license.link': 'https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE', 'tokenizer.ggml.pre': 'qwen2', 'general.base_model.count': '1', 'general.base_model.0.organization': 'Qwen', 'general.size_label': '3B', 'tokenizer.ggml.add_bos_token': 'false', 'general.basename': 'Qwen2.5', 'qwen2.embedding_length': '2048', 'tokenizer.ggml.padding_token_id': '151643', 'qwen2.block_count': '36', 'general.architecture': 'qwen2', 'qwen2.context_length': '32768', 'qwen2.feed_forward_length': '11008', 'tokenizer.ggml.model': 'gpt2', 'qwen2.attention.head_count': '16', 'qwen2.rope.freq_base': '1000000.000000', 'tokenizer.ggml.eos_token_id': '151645', 'qwen2.attention.layer_norm_rms_epsilon': '0.000001', 'general.finetune': 'Instruct', 'general.file_type': '15', 'general.name': 'Qwen2.5 3B Instruct', 'tokenizer.ggml.bos_token_id': '151643'}
+Available chat formats from metadata: chat_template.default
+Using gguf chat template: {%- if tools %}
+    {{- '<|im_start|>system\n' }}
+    {%- if messages[0]['role'] == 'system' %}
+        {{- messages[0]['content'] }}
+    {%- else %}
+        {{- 'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.' }}
+    {%- endif %}
+    {{- "\n\n# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools> XML tags:\n<tools>" }}
+    {%- for tool in tools %}
+        {{- "\n" }}
+        {{- tool | tojson }}
+    {%- endfor %}
+    {{- "\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call><|im_end|>\n" }}
+{%- else %}
+    {%- if messages[0]['role'] == 'system' %}
+        {{- '<|im_start|>system\n' + messages[0]['content'] + '<|im_end|>\n' }}
+    {%- else %}
+        {{- '<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n' }}
+    {%- endif %}
+{%- endif %}
+{%- for message in messages %}
+    {%- if (message.role == "user") or (message.role == "system" and not loop.first) or (message.role == "assistant" and not message.tool_calls) %}
+        {{- '<|im_start|>' + message.role + '\n' + message.content + '<|im_end|>' + '\n' }}
+    {%- elif message.role == "assistant" %}
+        {{- '<|im_start|>' + message.role }}
+        {%- if message.content %}
+            {{- '\n' + message.content }}
+        {%- endif %}
+        {%- for tool_call in message.tool_calls %}
+            {%- if tool_call.function is defined %}
+                {%- set tool_call = tool_call.function %}
+            {%- endif %}
+            {{- '\n<tool_call>\n{"name": "' }}
+            {{- tool_call.name }}
+            {{- '", "arguments": ' }}
+            {{- tool_call.arguments | tojson }}
+            {{- '}\n</tool_call>' }}
+        {%- endfor %}
+        {{- '<|im_end|>\n' }}
+    {%- elif message.role == "tool" %}
+        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != "tool") %}
+            {{- '<|im_start|>user' }}
+        {%- endif %}
+        {{- '\n<tool_response>\n' }}
+        {{- message.content }}
+        {{- '\n</tool_response>' }}
+        {%- if loop.last or (messages[loop.index0 + 1].role != "tool") %}
+            {{- '<|im_end|>\n' }}
+        {%- endif %}
+    {%- endif %}
+{%- endfor %}
+{%- if add_generation_prompt %}
+    {{- '<|im_start|>assistant\n' }}
+{%- endif %}
+
+Using chat eos_token: <|im_end|>
+Using chat bos_token: <|endoftext|>
+llama_perf_context_print:        load time =      78.00 ms
+llama_perf_context_print: prompt eval time =       0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_perf_context_print:        eval time =      77.87 ms /     1 runs   (   77.87 ms per token,    12.84 tokens per second)
+llama_perf_context_print:       total time =      79.03 ms /     2 tokens
+llama_perf_context_print:    graphs reused =          0
+llama_model_loader: loaded meta data with 39 key-value pairs and 434 tensors from /app/models/Qwen2.5-3B-Instruct-Q4_K_L.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = qwen2
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                               general.name str              = Qwen2.5 3B Instruct
+llama_model_loader: - kv   3:                           general.finetune str              = Instruct
+llama_model_loader: - kv   4:                           general.basename str              = Qwen2.5
+llama_model_loader: - kv   5:                         general.size_label str              = 3B
+llama_model_loader: - kv   6:                            general.license str              = other
+llama_model_loader: - kv   7:                       general.license.name str              = qwen-research
+llama_model_loader: - kv   8:                       general.license.link str              = https://huggingface.co/Qwen/Qwen2.5-3...
+llama_model_loader: - kv   9:                   general.base_model.count u32              = 1
+llama_model_loader: - kv  10:                  general.base_model.0.name str              = Qwen2.5 3B
+llama_model_loader: - kv  11:          general.base_model.0.organization str              = Qwen
+llama_model_loader: - kv  12:              general.base_model.0.repo_url str              = https://huggingface.co/Qwen/Qwen2.5-3B
+llama_model_loader: - kv  13:                               general.tags arr[str,2]       = ["chat", "text-generation"]
+llama_model_loader: - kv  14:                          general.languages arr[str,1]       = ["en"]
+llama_model_loader: - kv  15:                          qwen2.block_count u32              = 36
+llama_model_loader: - kv  16:                       qwen2.context_length u32              = 32768
+llama_model_loader: - kv  17:                     qwen2.embedding_length u32              = 2048
+llama_model_loader: - kv  18:                  qwen2.feed_forward_length u32              = 11008
+llama_model_loader: - kv  19:                 qwen2.attention.head_count u32              = 16
+llama_model_loader: - kv  20:              qwen2.attention.head_count_kv u32              = 2
+llama_model_loader: - kv  21:                       qwen2.rope.freq_base f32              = 1000000.000000
+llama_model_loader: - kv  22:     qwen2.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  23:                          general.file_type u32              = 15
+llama_model_loader: - kv  24:                       tokenizer.ggml.model str              = gpt2
+llama_model_loader: - kv  25:                         tokenizer.ggml.pre str              = qwen2
+llama_model_loader: - kv  26:                      tokenizer.ggml.tokens arr[str,151936]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+llama_model_loader: - kv  27:                  tokenizer.ggml.token_type arr[i32,151936]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  28:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+llama_model_loader: - kv  29:                tokenizer.ggml.eos_token_id u32              = 151645
+llama_model_loader: - kv  30:            tokenizer.ggml.padding_token_id u32              = 151643
+llama_model_loader: - kv  31:                tokenizer.ggml.bos_token_id u32              = 151643
+llama_model_loader: - kv  32:               tokenizer.ggml.add_bos_token bool             = false
+llama_model_loader: - kv  33:                    tokenizer.chat_template str              = {%- if tools %}\n    {{- '<|im_start|>...
+llama_model_loader: - kv  34:               general.quantization_version u32              = 2
+llama_model_loader: - kv  35:                      quantize.imatrix.file str              = /models_out/Qwen2.5-3B-Instruct-GGUF/...
+llama_model_loader: - kv  36:                   quantize.imatrix.dataset str              = /training_dir/calibration_datav3.txt
+llama_model_loader: - kv  37:             quantize.imatrix.entries_count i32              = 252
+llama_model_loader: - kv  38:              quantize.imatrix.chunks_count i32              = 128
+llama_model_loader: - type  f32:  181 tensors
+llama_model_loader: - type q8_0:    1 tensors
+llama_model_loader: - type q4_K:  216 tensors
+llama_model_loader: - type q6_K:   36 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = Q4_K - Medium
+print_info: file size   = 1.86 GiB (5.18 BPW) 
+init_tokenizer: initializing tokenizer for type 2
+load: control token: 151660 '<|fim_middle|>' is not marked as EOG
+load: control token: 151659 '<|fim_prefix|>' is not marked as EOG
+load: control token: 151653 '<|vision_end|>' is not marked as EOG
+load: control token: 151648 '<|box_start|>' is not marked as EOG
+load: control token: 151646 '<|object_ref_start|>' is not marked as EOG
+load: control token: 151649 '<|box_end|>' is not marked as EOG
+load: control token: 151655 '<|image_pad|>' is not marked as EOG
+load: control token: 151651 '<|quad_end|>' is not marked as EOG
+load: control token: 151647 '<|object_ref_end|>' is not marked as EOG
+load: control token: 151652 '<|vision_start|>' is not marked as EOG
+load: control token: 151654 '<|vision_pad|>' is not marked as EOG
+load: control token: 151656 '<|video_pad|>' is not marked as EOG
+load: control token: 151644 '<|im_start|>' is not marked as EOG
+load: control token: 151661 '<|fim_suffix|>' is not marked as EOG
+load: control token: 151650 '<|quad_start|>' is not marked as EOG
+load: printing all EOG tokens:
+load:   - 151643 ('<|endoftext|>')
+load:   - 151645 ('<|im_end|>')
+load:   - 151662 ('<|fim_pad|>')
+load:   - 151663 ('<|repo_name|>')
+load:   - 151664 ('<|file_sep|>')
+load: special tokens cache size = 22
+load: token to piece cache size = 0.9310 MB
+print_info: arch             = qwen2
+print_info: vocab_only       = 0
+print_info: n_ctx_train      = 32768
+print_info: n_embd           = 2048
+print_info: n_layer          = 36
+print_info: n_head           = 16
+print_info: n_head_kv        = 2
+print_info: n_rot            = 128
+print_info: n_swa            = 0
+print_info: is_swa_any       = 0
+print_info: n_embd_head_k    = 128
+print_info: n_embd_head_v    = 128
+print_info: n_gqa            = 8
+print_info: n_embd_k_gqa     = 256
+print_info: n_embd_v_gqa     = 256
+print_info: f_norm_eps       = 0.0e+00
+print_info: f_norm_rms_eps   = 1.0e-06
+print_info: f_clamp_kqv      = 0.0e+00
+print_info: f_max_alibi_bias = 0.0e+00
+print_info: f_logit_scale    = 0.0e+00
+print_info: f_attn_scale     = 0.0e+00
+print_info: n_ff             = 11008
+print_info: n_expert         = 0
+print_info: n_expert_used    = 0
+print_info: causal attn      = 1
+print_info: pooling type     = -1
+print_info: rope type        = 2
+print_info: rope scaling     = linear
+print_info: freq_base_train  = 1000000.0
+print_info: freq_scale_train = 1
+print_info: n_ctx_orig_yarn  = 32768
+print_info: rope_finetuned   = unknown
+print_info: model type       = 3B
+print_info: model params     = 3.09 B
+print_info: general.name     = Qwen2.5 3B Instruct
+print_info: vocab type       = BPE
+print_info: n_vocab          = 151936
+print_info: n_merges         = 151387
+print_info: BOS token        = 151643 '<|endoftext|>'
+print_info: EOS token        = 151645 '<|im_end|>'
+print_info: EOT token        = 151645 '<|im_end|>'
+print_info: PAD token        = 151643 '<|endoftext|>'
+print_info: LF token         = 198 'Ċ'
+print_info: FIM PRE token    = 151659 '<|fim_prefix|>'
+print_info: FIM SUF token    = 151661 '<|fim_suffix|>'
+print_info: FIM MID token    = 151660 '<|fim_middle|>'
+print_info: FIM PAD token    = 151662 '<|fim_pad|>'
+print_info: FIM REP token    = 151663 '<|repo_name|>'
+print_info: FIM SEP token    = 151664 '<|file_sep|>'
+print_info: EOG token        = 151643 '<|endoftext|>'
+print_info: EOG token        = 151645 '<|im_end|>'
+print_info: EOG token        = 151662 '<|fim_pad|>'
+print_info: EOG token        = 151663 '<|repo_name|>'
+print_info: EOG token        = 151664 '<|file_sep|>'
+print_info: max token length = 256
+load_tensors: loading model tensors, this can take a while... (mmap = true)
+load_tensors: layer   0 assigned to device CPU, is_swa = 0
+load_tensors: layer   1 assigned to device CPU, is_swa = 0
+load_tensors: layer   2 assigned to device CPU, is_swa = 0
+load_tensors: layer   3 assigned to device CPU, is_swa = 0
+load_tensors: layer   4 assigned to device CPU, is_swa = 0
+load_tensors: layer   5 assigned to device CPU, is_swa = 0
+load_tensors: layer   6 assigned to device CPU, is_swa = 0
+load_tensors: layer   7 assigned to device CPU, is_swa = 0
+load_tensors: layer   8 assigned to device CPU, is_swa = 0
+load_tensors: layer   9 assigned to device CPU, is_swa = 0
+load_tensors: layer  10 assigned to device CPU, is_swa = 0
+load_tensors: layer  11 assigned to device CPU, is_swa = 0
+load_tensors: layer  12 assigned to device CPU, is_swa = 0
+load_tensors: layer  13 assigned to device CPU, is_swa = 0
+load_tensors: layer  14 assigned to device CPU, is_swa = 0
+load_tensors: layer  15 assigned to device CPU, is_swa = 0
+load_tensors: layer  16 assigned to device CPU, is_swa = 0
+load_tensors: layer  17 assigned to device CPU, is_swa = 0
+load_tensors: layer  18 assigned to device CPU, is_swa = 0
+load_tensors: layer  19 assigned to device CPU, is_swa = 0
+load_tensors: layer  20 assigned to device CPU, is_swa = 0
+load_tensors: layer  21 assigned to device CPU, is_swa = 0
+load_tensors: layer  22 assigned to device CPU, is_swa = 0
+load_tensors: layer  23 assigned to device CPU, is_swa = 0
+load_tensors: layer  24 assigned to device CPU, is_swa = 0
+load_tensors: layer  25 assigned to device CPU, is_swa = 0
+load_tensors: layer  26 assigned to device CPU, is_swa = 0
+load_tensors: layer  27 assigned to device CPU, is_swa = 0
+load_tensors: layer  28 assigned to device CPU, is_swa = 0
+load_tensors: layer  29 assigned to device CPU, is_swa = 0
+load_tensors: layer  30 assigned to device CPU, is_swa = 0
+load_tensors: layer  31 assigned to device CPU, is_swa = 0
+load_tensors: layer  32 assigned to device CPU, is_swa = 0
+load_tensors: layer  33 assigned to device CPU, is_swa = 0
+load_tensors: layer  34 assigned to device CPU, is_swa = 0
+load_tensors: layer  35 assigned to device CPU, is_swa = 0
+load_tensors: layer  36 assigned to device CPU, is_swa = 0
+load_tensors: tensor 'token_embd.weight' (q8_0) (and 434 others) cannot be used with preferred buffer type CPU_REPACK, using CPU instead
+load_tensors:   CPU_Mapped model buffer size =  1906.69 MiB
+.....................................................................................
+llama_context: constructing llama_context
+llama_context: n_seq_max     = 1
+llama_context: n_ctx         = 2048
+llama_context: n_ctx_per_seq = 2048
+llama_context: n_batch       = 512
+llama_context: n_ubatch      = 512
+llama_context: causal_attn   = 1
+llama_context: flash_attn    = 0
+llama_context: kv_unified    = false
+llama_context: freq_base     = 1000000.0
+llama_context: freq_scale    = 1
+llama_context: n_ctx_per_seq (2048) < n_ctx_train (32768) -- the full capacity of the model will not be utilized
+set_abort_callback: call
+llama_context:        CPU  output buffer size =     0.58 MiB
+create_memory: n_ctx = 2048 (padded)
+llama_kv_cache_unified: layer   0: dev = CPU
+llama_kv_cache_unified: layer   1: dev = CPU
+llama_kv_cache_unified: layer   2: dev = CPU
+llama_kv_cache_unified: layer   3: dev = CPU
+llama_kv_cache_unified: layer   4: dev = CPU
+llama_kv_cache_unified: layer   5: dev = CPU
+llama_kv_cache_unified: layer   6: dev = CPU
+llama_kv_cache_unified: layer   7: dev = CPU
+llama_kv_cache_unified: layer   8: dev = CPU
+llama_kv_cache_unified: layer   9: dev = CPU
+llama_kv_cache_unified: layer  10: dev = CPU
+llama_kv_cache_unified: layer  11: dev = CPU
+llama_kv_cache_unified: layer  12: dev = CPU
+llama_kv_cache_unified: layer  13: dev = CPU
+llama_kv_cache_unified: layer  14: dev = CPU
+llama_kv_cache_unified: layer  15: dev = CPU
+llama_kv_cache_unified: layer  16: dev = CPU
+llama_kv_cache_unified: layer  17: dev = CPU
+llama_kv_cache_unified: layer  18: dev = CPU
+llama_kv_cache_unified: layer  19: dev = CPU
+llama_kv_cache_unified: layer  20: dev = CPU
+llama_kv_cache_unified: layer  21: dev = CPU
+llama_kv_cache_unified: layer  22: dev = CPU
+llama_kv_cache_unified: layer  23: dev = CPU
+llama_kv_cache_unified: layer  24: dev = CPU
+llama_kv_cache_unified: layer  25: dev = CPU
+llama_kv_cache_unified: layer  26: dev = CPU
+llama_kv_cache_unified: layer  27: dev = CPU
+llama_kv_cache_unified: layer  28: dev = CPU
+llama_kv_cache_unified: layer  29: dev = CPU
+llama_kv_cache_unified: layer  30: dev = CPU
+llama_kv_cache_unified: layer  31: dev = CPU
+llama_kv_cache_unified: layer  32: dev = CPU
+llama_kv_cache_unified: layer  33: dev = CPU
+llama_kv_cache_unified: layer  34: dev = CPU
+llama_kv_cache_unified: layer  35: dev = CPU
+llama_kv_cache_unified:        CPU KV buffer size =    72.00 MiB
+llama_kv_cache_unified: size =   72.00 MiB (  2048 cells,  36 layers,  1/1 seqs), K (f16):   36.00 MiB, V (f16):   36.00 MiB
+llama_context: enumerating backends
+llama_context: backend_ptrs.size() = 1
+llama_context: max_nodes = 3472
+llama_context: worst-case: n_tokens = 512, n_seqs = 1, n_outputs = 0
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+graph_reserve: reserving a graph for ubatch with n_tokens =    1, n_seqs =  1, n_outputs =    1
+graph_reserve: reserving a graph for ubatch with n_tokens =  512, n_seqs =  1, n_outputs =  512
+llama_context:        CPU compute buffer size =   300.75 MiB
+llama_context: graph nodes  = 1374
+llama_context: graph splits = 1
+CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | DOTPROD = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+Model metadata: {'quantize.imatrix.chunks_count': '128', 'quantize.imatrix.entries_count': '252', 'quantize.imatrix.file': '/models_out/Qwen2.5-3B-Instruct-GGUF/Qwen2.5-3B-Instruct.imatrix', 'general.quantization_version': '2', 'general.base_model.0.repo_url': 'https://huggingface.co/Qwen/Qwen2.5-3B', 'general.license': 'other', 'qwen2.attention.head_count_kv': '2', 'tokenizer.chat_template': '{%- if tools %}\n    {{- \'<|im_start|>system\\n\' }}\n    {%- if messages[0][\'role\'] == \'system\' %}\n        {{- messages[0][\'content\'] }}\n    {%- else %}\n        {{- \'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.\' }}\n    {%- endif %}\n    {{- "\\n\\n# Tools\\n\\nYou may call one or more functions to assist with the user query.\\n\\nYou are provided with function signatures within <tools></tools> XML tags:\\n<tools>" }}\n    {%- for tool in tools %}\n        {{- "\\n" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- "\\n</tools>\\n\\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\\n<tool_call>\\n{\\"name\\": <function-name>, \\"arguments\\": <args-json-object>}\\n</tool_call><|im_end|>\\n" }}\n{%- else %}\n    {%- if messages[0][\'role\'] == \'system\' %}\n        {{- \'<|im_start|>system\\n\' + messages[0][\'content\'] + \'<|im_end|>\\n\' }}\n    {%- else %}\n        {{- \'<|im_start|>system\\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\\n\' }}\n    {%- endif %}\n{%- endif %}\n{%- for message in messages %}\n    {%- if (message.role == "user") or (message.role == "system" and not loop.first) or (message.role == "assistant" and not message.tool_calls) %}\n        {{- \'<|im_start|>\' + message.role + \'\\n\' + message.content + \'<|im_end|>\' + \'\\n\' }}\n    {%- elif message.role == "assistant" %}\n        {{- \'<|im_start|>\' + message.role }}\n        {%- if message.content %}\n            {{- \'\\n\' + message.content }}\n        {%- endif %}\n        {%- for tool_call in message.tool_calls %}\n            {%- if tool_call.function is defined %}\n                {%- set tool_call = tool_call.function %}\n            {%- endif %}\n            {{- \'\\n<tool_call>\\n{"name": "\' }}\n            {{- tool_call.name }}\n            {{- \'", "arguments": \' }}\n            {{- tool_call.arguments | tojson }}\n            {{- \'}\\n</tool_call>\' }}\n        {%- endfor %}\n        {{- \'<|im_end|>\\n\' }}\n    {%- elif message.role == "tool" %}\n        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != "tool") %}\n            {{- \'<|im_start|>user\' }}\n        {%- endif %}\n        {{- \'\\n<tool_response>\\n\' }}\n        {{- message.content }}\n        {{- \'\\n</tool_response>\' }}\n        {%- if loop.last or (messages[loop.index0 + 1].role != "tool") %}\n            {{- \'<|im_end|>\\n\' }}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- \'<|im_start|>assistant\\n\' }}\n{%- endif %}\n', 'general.license.name': 'qwen-research', 'general.type': 'model', 'quantize.imatrix.dataset': '/training_dir/calibration_datav3.txt', 'general.base_model.0.name': 'Qwen2.5 3B', 'general.license.link': 'https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/blob/main/LICENSE', 'tokenizer.ggml.pre': 'qwen2', 'general.base_model.count': '1', 'general.base_model.0.organization': 'Qwen', 'general.size_label': '3B', 'tokenizer.ggml.add_bos_token': 'false', 'general.basename': 'Qwen2.5', 'qwen2.embedding_length': '2048', 'tokenizer.ggml.padding_token_id': '151643', 'qwen2.block_count': '36', 'general.architecture': 'qwen2', 'qwen2.context_length': '32768', 'qwen2.feed_forward_length': '11008', 'tokenizer.ggml.model': 'gpt2', 'qwen2.attention.head_count': '16', 'qwen2.rope.freq_base': '1000000.000000', 'tokenizer.ggml.eos_token_id': '151645', 'qwen2.attention.layer_norm_rms_epsilon': '0.000001', 'general.finetune': 'Instruct', 'general.file_type': '15', 'general.name': 'Qwen2.5 3B Instruct', 'tokenizer.ggml.bos_token_id': '151643'}
+Available chat formats from metadata: chat_template.default
+Using gguf chat template: {%- if tools %}
+    {{- '<|im_start|>system\n' }}
+    {%- if messages[0]['role'] == 'system' %}
+        {{- messages[0]['content'] }}
+    {%- else %}
+        {{- 'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.' }}
+    {%- endif %}
+    {{- "\n\n# Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools> XML tags:\n<tools>" }}
+    {%- for tool in tools %}
+        {{- "\n" }}
+        {{- tool | tojson }}
+    {%- endfor %}
+    {{- "\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call><|im_end|>\n" }}
+{%- else %}
+    {%- if messages[0]['role'] == 'system' %}
+        {{- '<|im_start|>system\n' + messages[0]['content'] + '<|im_end|>\n' }}
+    {%- else %}
+        {{- '<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n' }}
+    {%- endif %}
+{%- endif %}
+{%- for message in messages %}
+    {%- if (message.role == "user") or (message.role == "system" and not loop.first) or (message.role == "assistant" and not message.tool_calls) %}
+        {{- '<|im_start|>' + message.role + '\n' + message.content + '<|im_end|>' + '\n' }}
+    {%- elif message.role == "assistant" %}
+        {{- '<|im_start|>' + message.role }}
+        {%- if message.content %}
+            {{- '\n' + message.content }}
+        {%- endif %}
+        {%- for tool_call in message.tool_calls %}
+            {%- if tool_call.function is defined %}
+                {%- set tool_call = tool_call.function %}
+            {%- endif %}
+            {{- '\n<tool_call>\n{"name": "' }}
+            {{- tool_call.name }}
+            {{- '", "arguments": ' }}
+            {{- tool_call.arguments | tojson }}
+            {{- '}\n</tool_call>' }}
+        {%- endfor %}
+        {{- '<|im_end|>\n' }}
+    {%- elif message.role == "tool" %}
+        {%- if (loop.index0 == 0) or (messages[loop.index0 - 1].role != "tool") %}
+            {{- '<|im_start|>user' }}
+        {%- endif %}
+        {{- '\n<tool_response>\n' }}
+        {{- message.content }}
+        {{- '\n</tool_response>' }}
+        {%- if loop.last or (messages[loop.index0 + 1].role != "tool") %}
+            {{- '<|im_end|>\n' }}
+        {%- endif %}
+    {%- endif %}
+{%- endfor %}
+{%- if add_generation_prompt %}
+    {{- '<|im_start|>assistant\n' }}
+{%- endif %}
+
+Using chat eos_token: <|im_end|>
+Using chat bos_token: <|endoftext|>
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+🧠 Modelo cargado en 2,197 ms (CPU)
+INFO:     127.0.0.1:55282 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55286 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60414 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60422 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:48108 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:48114 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:38964 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:38974 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58330 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58338 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40710 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40718 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43978 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43988 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35432 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35440 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49388 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49390 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54432 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54446 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:41556 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57332 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57342 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:44500 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:44504 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:42602 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:42618 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54600 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54602 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:47804 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:47818 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:37140 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:37150 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52778 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52788 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49898 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49904 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40582 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40598 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59298 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59302 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50060 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50074 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55624 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55628 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45250 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45262 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45710 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45716 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49196 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49198 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:33200 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:33214 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43724 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39138 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39080 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58120 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56488 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:41076 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34666 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:42998 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:41156 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43166 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39678 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54066 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:35016 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49102 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34540 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56708 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56096 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50062 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52968 - "GET /health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36946 - "GET /health HTTP/1.1" 404 Not Found
