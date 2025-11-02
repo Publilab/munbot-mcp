@@ -47,6 +47,53 @@
         "Dónde tramitar",
         "Para qué sirve"
       ]
+    },
+    {
+      "id": "licencia transporte espacial",
+      "aliases": [
+        "licencia de transporte",
+        "licencia de chofer espacial",
+        "licencia de conductor espacial"
+      ],
+      "categoria": "certificados",
+      "respuestas": {
+        "donde": "📍 Oficina de Registro Civil Municipal, Edificio Consistorial Coruscant (nivel 1313).",
+        "horarios": "🕐 Lunes a viernes, 08:00–17:00.",
+        "requisitos": "📋 Certificado de navegación espacial, identificación planetaria, formulario completo y pago de tarifas.",
+        "costos": "💰 150 créditos galácticos.",
+        "plazos": "⏳ Entrega en 5 días hábiles.",
+        "proposito": "Habilita el transporte interplanetario de carga y pasajeros y el acceso a rutas comerciales privilegiadas."
+      },
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver costos",
+        "Ver horarios",
+        "Dónde tramitar",
+        "Para qué sirve"
+      ]
+    },
+    {
+      "id": "patente comercial intergalactica",
+      "aliases": [
+        "patente comercial",
+        "patente de negocio"
+      ],
+      "categoria": "certificados",
+      "respuestas": {
+        "donde": "📍 Oficina de Desarrollo Económico (Torre de Comercio, sector E-5377).",
+        "horarios": "🕐 Lunes a viernes, 08:00–17:00.",
+        "requisitos": "📋 Registro galáctico de empresa, identificación fiscal, certificado de buenas prácticas, formulario y pago; requiere evaluación de impacto económico.",
+        "costos": "💰 2290 créditos galácticos.",
+        "plazos": "⏳ Entrega en 5 días hábiles.",
+        "proposito": "Habilita el comercio interplanetario y la apertura de sucursales en sistemas afiliados."
+      },
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver costos",
+        "Ver horarios",
+        "Dónde tramitar",
+        "Para qué sirve"
+      ]
     }
   ]
 }

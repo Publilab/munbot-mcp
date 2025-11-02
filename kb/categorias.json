@@ -1,5 +1,7 @@
 {
   "certificados": ["cert_residencia_definitiva"],
-  "permisos": ["permiso_aterrizaje"]
+  "permisos": ["permiso_aterrizaje"],
+  "licencias": ["licencia transporte espacial"],
+  "patentes": ["patente comercial intergalactica"]
 }
 

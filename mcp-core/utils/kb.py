@@ -85,9 +85,26 @@ def load_kb() -> Tuple[Dict[str, dict], Dict[str, str], Dict[str, List[str]], Di
     for aspect, variants in (aspect_raw or {}).items():
         aspect_map[str(aspect)] = [normalize(v) for v in (variants or [])]
 
-    # Load categorias.json
+    # Load categorias.json (opcional) y normalizar claves
     cat_path = kb_dir / "categorias.json"
-    categorias = json.loads(cat_path.read_text(encoding="utf-8"))
+    try:
+        categorias_raw = json.loads(cat_path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        categorias_raw = {}
+    categorias: Dict[str, List[str]] = {}
+    for k, ids in (categorias_raw or {}).items():
+        categorias[normalize(k)] = list(dict.fromkeys(ids or []))
+
+    # Merge dinámico: asegura que todos los trámites queden indexados por su 'categoria'
+    for t in tramites:
+        tid = t.get("id")
+        cat = t.get("categoria")
+        if not tid or not isinstance(cat, str) or not cat.strip():
+            continue
+        cat_norm = normalize(cat)
+        lst = categorias.setdefault(cat_norm, [])
+        if tid not in lst:
+            lst.append(tid)
 
     return by_id, by_alias, aspect_map, categorias
 
