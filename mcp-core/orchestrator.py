@@ -130,10 +130,10 @@ from .utils.kb import load_kb, match_tramite, match_aspect, match_categoria
 
 
 import json, hashlib
-RUT_VALID_RE = re.compile(r"^\\d{7,8}-[\\dkK]$")
-MAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-PHONE_VALID_RE = re.compile(r"^\\+569\\d{8}$")
-DATE_RE = re.compile(r"^\\d{4}-\\d{2}-\\d{2}$")
+RUT_VALID_RE = re.compile(r"^\d{7,8}-[\dkK]$")
+MAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
+PHONE_VALID_RE = re.compile(r"^\+569\d{8}$")
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 def _valid_rut(s: str) -> Optional[str]:
     """Valida un RUT chileno y lo normaliza."""
