@@ -1204,12 +1204,15 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
 
     if state is None:
         _jlog(_logger, "complaint_flow.state_is_none", sid=session_id)
+        # Clean up any previous complaint state, just in case
+        context_manager.clear_complaint_state(session_id)
+        context_manager.clear_pending_field(session_id)
         context_manager.set_current_flow(session_id, "reclamo")
         context_manager.set_pending_confirmation(session_id, True)
         context_manager.update_complaint_state(session_id, "confirming")
         msg = "Puedo ayudarte a registrar tu reclamo. ¿Deseas registrarlo ahora?"
         context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False}
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Sí", "No"]}
 
     if text_norm.strip() == "cancelar":
         _jlog(_logger, "complaint_flow.cancel", sid=session_id)
@@ -1223,22 +1226,22 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
 
     if state == "confirming":
         _jlog(_logger, "complaint_flow.state_confirming", sid=session_id)
-        if any(word in text_norm.split() for word in YES_WORDS):
+        if text_norm.strip() in ["si", "sí"]:
             context_manager.update_complaint_state(session_id, "collecting_name")
             context_manager.set_pending_field(session_id, "nombre")
             msg = "Excelente, comencemos. ¿Cómo te llamas?"
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        if text_norm.strip() in NO_WORDS:
+        if text_norm.strip() == "no":
             context_manager.clear_complaint_state(session_id)
             context_manager.clear_pending_confirmation(session_id)
             context_manager.set_current_flow(session_id, None)
             msg = "Entendido, no registraré ningún reclamo."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        msg = "Solo necesito que me confirmes con un 'Sí' para continuar o 'Cancelar' para salir."
+        msg = "Por favor, responde 'Sí' o 'No'."
         context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False}
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Sí", "No"]}
 
     if state == "collecting_name":
         _jlog(_logger, "complaint_flow.state_collecting_name", sid=session_id)
