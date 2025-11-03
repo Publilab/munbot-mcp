@@ -1197,10 +1197,13 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
 
 
 def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
+    _jlog(_logger, "complaint_flow.start", sid=session_id, user_text=user_text)
     state = context_manager.get_complaint_state(session_id)
     text_norm = normalize_text(user_text)
+    _jlog(_logger, "complaint_flow.state", sid=session_id, state=state, text_norm=text_norm)
 
     if state is None:
+        _jlog(_logger, "complaint_flow.state_is_none", sid=session_id)
         context_manager.set_current_flow(session_id, "reclamo")
         context_manager.set_pending_confirmation(session_id, True)
         context_manager.update_complaint_state(session_id, "confirming")
@@ -1209,6 +1212,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         return {"respuesta": msg, "no_results": False}
 
     if text_norm.strip() == "cancelar":
+        _jlog(_logger, "complaint_flow.cancel", sid=session_id)
         context_manager.clear_pending_field(session_id)
         context_manager.clear_complaint_state(session_id)
         context_manager.clear_pending_confirmation(session_id)
@@ -1218,7 +1222,8 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         return {"respuesta": msg, "no_results": False}
 
     if state == "confirming":
-        if text_norm.strip() in YES_WORDS:
+        _jlog(_logger, "complaint_flow.state_confirming", sid=session_id)
+        if any(word in text_norm.split() for word in YES_WORDS):
             context_manager.update_complaint_state(session_id, "collecting_name")
             context_manager.set_pending_field(session_id, "nombre")
             msg = "Excelente, comencemos. ¿Cómo te llamas?"
@@ -1236,6 +1241,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         return {"respuesta": msg, "no_results": False}
 
     if state == "collecting_name":
+        _jlog(_logger, "complaint_flow.state_collecting_name", sid=session_id)
         name = user_text.strip()
         if not name or len(name.split()) < 2:
             msg = "Por favor indícame tu nombre y apellido para continuar."
@@ -1253,8 +1259,10 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         return {"respuesta": msg, "no_results": False}
 
     if state == "collecting_email":
+        _jlog(_logger, "complaint_flow.state_collecting_email", sid=session_id, user_text=user_text)
         email = _valid_email(user_text)
         if email is None:
+            _jlog(_logger, "complaint_flow.invalid_email", sid=session_id, email_provided=user_text)
             msg = "El correo no parece válido. Por favor indícalo en formato usuario@dominio.com."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
@@ -1268,6 +1276,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         return {"respuesta": msg, "no_results": False}
 
     if state == "collecting_rut":
+        _jlog(_logger, "complaint_flow.state_collecting_rut", sid=session_id)
         rut = _valid_rut(user_text)
         if rut is None:
             msg = "El RUT no tiene un formato válido. Recuerda usar el formato 12.345.678-9."
@@ -1284,6 +1293,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         return {"respuesta": msg, "no_results": False}
 
     if state == "collecting_subject":
+        _jlog(_logger, "complaint_flow.state_collecting_subject", sid=session_id)
         subject = user_text.strip()
         if len(subject) < 5:
             msg = "El asunto es muy corto. ¿Podrías resumirlo en al menos 5 caracteres?"
@@ -1300,6 +1310,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
         return {"respuesta": msg, "no_results": False}
 
     if state == "collecting_message":
+        _jlog(_logger, "complaint_flow.state_collecting_message", sid=session_id)
         mensaje = (user_text or "").strip()
         if len(mensaje) < 10:
             msg = "El mensaje es muy corto. Por favor agrega más detalles (mínimo 10 caracteres)."
@@ -1323,7 +1334,9 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
             "mensaje": full_msg,
             "categoria": "1"
         }
+        _jlog(_logger, "complaint_flow.calling_tool", sid=session_id, params=params)
         resp = call_tool_microservice("complaint-registrar_reclamo", params)
+        _jlog(_logger, "complaint_flow.tool_response", sid=session_id, response=resp)
         # Manejo de errores de validación devolviendo el slot pendiente
         if resp.get("error") and resp.get("pending_field"):
             pf = str(resp.get("pending_field"))
