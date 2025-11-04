@@ -1118,7 +1118,21 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
             return {"respuesta": msg, "no_results": False}
         context_manager.update_context_data(session_id, {"scheduler_reason": reason})
         context_manager.update_scheduler_state(session_id, "proposing_slot_1")
-        # Fall through to proposing_slot_1
+
+        # Propose a slot
+        resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": 0}, trace_id=trace_id)
+        slot = resp.get("data")
+
+        if not slot:
+            return fallback("Lo siento, no hay horas disponibles en este momento.")
+
+        slot_id = slot.get("id")
+        context_manager.update_context_data(session_id, {"proposed_slot_id": slot_id})
+        
+        fecha = slot.get("fecha")
+        hora = slot.get("hora")
+        msg = f"Tengo una hora disponible para ti el {fecha} a las {hora}. ¿Te parece bien?"
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Acepto", "Rechazo"]}
 
     if state.startswith("proposing_slot"):
         if text_norm == "rechazo":
