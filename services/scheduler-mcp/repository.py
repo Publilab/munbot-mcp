@@ -75,13 +75,17 @@ def get_first_available_block_of_month(
                 return row
             return None
 
+def get_available_blocks(
+    fecha: date,
+    hora_pattern: time,
+    trace_id: str | None = None,
+) -> List[dict]:
     """
-    Devuelve los bloques disponibles que *contienen* la hora solicitada
-    (`hora_pattern`) en la fecha indicada. Se asume que la hora ya fue
-    normalizada mediante `build_sql_pattern`.
+    Devuelve los bloques disponibles que contienen `hora_pattern` en la fecha indicada.
 
-    • Usa comparación con columnas TIME (`hora_inicio`, `hora_fin`).
-    • Ordena por `hora_inicio` ascendente.
+    - `hora_pattern` debe estar normalizada con `build_sql_pattern` (HH:MM:SS).
+    - Solo devuelve filas con `disponible = TRUE` y `confirmada = FALSE`.
+    - Ordena por `hora_inicio` ascendente.
     """
     with get_conn() as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
@@ -95,9 +99,7 @@ def get_first_available_block_of_month(
                   AND  %s::time <  hora_fin
                 ORDER BY hora_inicio
             """
-            # HH:MM:SS satisface TIME en PostgreSQL
             hora_str = hora_pattern.strftime("%H:%M:%S")
-
             audit_logger.debug(
                 json.dumps(
                     {
@@ -109,30 +111,15 @@ def get_first_available_block_of_month(
                 )
             )
             cur.execute(sql, (fecha, hora_str, hora_str))
-            if hasattr(cur, "fetchall"):
-                rows = cur.fetchall()
-                audit_logger.debug(
-                    json.dumps(
-                        {
-                            "step": "rows_fetched",
-                            "trace_id": trace_id,
-                            "rows": rows,
-                        },
-                        default=str,
-                    )
+            rows = cur.fetchall()
+            audit_logger.debug(
+                json.dumps(
+                    {
+                        "step": "rows_fetched",
+                        "trace_id": trace_id,
+                        "rows": rows,
+                    },
+                    default=str,
                 )
-                return rows
-            elif hasattr(cur, "fetchone"):
-                row = cur.fetchone()
-                audit_logger.debug(
-                    json.dumps(
-                        {
-                            "step": "rows_fetched",
-                            "trace_id": trace_id,
-                            "rows": [row] if row else [],
-                        },
-                        default=str,
-                    )
-                )
-                return [row] if row else []
-            return []
+            )
+            return rows or []
