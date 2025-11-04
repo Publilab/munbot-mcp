@@ -64,22 +64,20 @@ app.get('/webhook/wa', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
-
-  // El token que configuraste en Facebook Developers
   const VERIFY_TOKEN = process.env.META_VERIFY_TOKEN;
 
-  if (mode && token) {
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      // Token válido, responde con el challenge
-      console.log('WEBHOOK_VERIFIED');
-      res.status(200).send(challenge);
-    } else {
-      // Token inválido
-      res.sendStatus(403);
-    }
-  } else {
-    res.sendStatus(400);
+  if (!mode || !token) {
+    return res.sendStatus(400); // faltan query params
   }
+
+  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    // OK: Meta valida el webhook devolviendo el challenge tal cual
+    console.log('WEBHOOK_VERIFIED');
+    return res.status(200).send(challenge);
+  }
+
+  // Token inválido o mode inesperado
+  return res.sendStatus(403);
 });
 
 const server = createServer(app);
@@ -88,24 +86,38 @@ const wss = new WebSocket.Server({ server });
 // ======================================
 // 4. Integración WhatsApp Cloud API (Meta)
 // ======================================
-async function sendWhatsAppMessage(phoneNumber, message) {
-  if (!process.env.META_PHONE_ID || !process.env.META_TOKEN) {
-    throw new Error("Faltan credenciales de WhatsApp Cloud API");
-  }
-  // Usar URL base desde variable de entorno o un valor por defecto.
-  // Se elimina la barra final si existe para evitar dobles barras en la URL.
+async function sendWhatsAppMessage(toNumber, text) {
   const base = (process.env.WHATSAPP_API_URL || 'https://graph.facebook.com/v19.0').replace(/\/$/, '');
-  
-  const url = `${base}/${process.env.META_PHONE_ID}/messages`;
+  const phoneId = process.env.META_PHONE_ID;
+  const token   = process.env.META_TOKEN;
+
+  if (!base || !phoneId || !token) {
+    throw new Error('Faltan WHATSAPP_API_URL, META_PHONE_ID o META_TOKEN en .env');
+  }
+
+  const url = `${base}/${phoneId}/messages`;
   const payload = {
-    messaging_product: "whatsapp",
-    to: phoneNumber.replace(/\D/g, ''),  // Meta exige dígitos, ej. 56998765432
-    type: "text",
-    text: { body: message }
+    messaging_product: 'whatsapp',
+    to: normalizeTo(toNumber),       // E.164 sin '+'
+    type: 'text',
+    text: { body: text },
   };
-  return axios.post(url, payload, {
-    headers: { Authorization: `Bearer ${process.env.META_TOKEN}` }
-  });
+
+  try {
+    const r = await axios.post(url, payload, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      timeout: 15000,
+    });
+    return r.data;
+  } catch (err) {
+    console.error('[WA] Error enviando mensaje:', err?.response?.data || err.message);
+    throw err;
+  }
+}
+
+function normalizeTo(n) {
+  // Convierte "569XXXX..." o "+569XXXX..." a "569XXXX..."
+  return String(n).replace(/\D/g, '');
 }
 
 // Endpoint para enviar mensaje vía WhatsApp
@@ -287,19 +299,75 @@ app.get('/health', apiKeyMiddleware, async (req, res) => {
   });
 });
 
-// Webhook Cloud API (POST)
-app.post('/webhook/wa', (req, res) => {
-  console.log('>> Webhook recibido:', JSON.stringify(req.body, null, 2));
-  const entry = req.body.entry?.[0];
-  const change = entry?.changes?.[0];
-  const msg = change?.value?.messages?.[0];
-  if (msg && msg.from && msg.text?.body) {
-    // reenviamos al WebSocket para que Rasa procese
-    wss.clients.forEach(c =>
-      c.send(JSON.stringify({ number: `+${msg.from}`, text: msg.text.body }))
-    );
-  }
+// --- POST /webhook/wa ---
+// Recepción de eventos de WhatsApp Cloud (Meta) y respuesta vía MCP-Core
+app.post('/webhook/wa', async (req, res) => {
+  // 1) ACK inmediato para que Meta no reintente (importante: no bloquear aquí)
   res.sendStatus(200);
+
+  try {
+    const entries = req.body?.entry;
+    if (!Array.isArray(entries)) return;
+
+    for (const entry of entries) {
+      const change = entry?.changes?.[0];
+      const value = change?.value;
+
+      // Ignora notificaciones que no traen messages (p.ej. statuses)
+      const messages = value?.messages;
+      if (!Array.isArray(messages) || messages.length === 0) continue;
+
+      for (const msg of messages) {
+        const from = msg?.from; // ej. "569XXXXXXXX"
+        const type = msg?.type;
+
+        // Sólo manejamos texto en esta primera versión
+        const userText =
+          type === 'text' ? (msg?.text?.body ?? '').trim() : null;
+
+        // Evitar eco o mensajes sin remitente
+        if (!from || !userText) {
+          // Puedes loggear otros tipos: image, audio, interactive, etc.
+          console.log('[WA] Mensaje no manejado o sin texto:', { type, from });
+          continue;
+        }
+
+        // 2) Llamar al orquestador (MCP-Core)
+        const mcpUrl = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
+
+        let mcpResp;
+        try {
+          mcpResp = await axios.post(mcpUrl, {
+            pregunta: userText,
+            context: { sender: `+${from}` },
+            channel: 'whatsapp',
+          }, { timeout: 15000 });
+        } catch (err) {
+          console.error('[WA] Error llamando MCP-Core:', err?.response?.data || err.message);
+          // Mensaje genérico de fallback al usuario
+          await sendWhatsAppMessage(from, 'Estamos teniendo problemas para procesar tu mensaje. Intenta nuevamente en unos minutos.');
+          continue;
+        }
+
+        const data = mcpResp?.data || {};
+        const outs = Array.isArray(data.respuestas)
+          ? data.respuestas
+          : [data.respuesta || data.message].filter(Boolean);
+
+        // 3) Responder al usuario por WhatsApp (una o varias líneas)
+        if (outs.length === 0) {
+          await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');
+        } else {
+          for (const text of outs) {
+            // Enviar secuencialmente para mantener el orden
+            await sendWhatsAppMessage(from, String(text).slice(0, 4000)); // límite defensivo
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.error('[WA] Error procesando webhook:', e?.response?.data || e.message);
+  }
 });
 
 // ======================================
