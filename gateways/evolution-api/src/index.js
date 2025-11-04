@@ -92,7 +92,11 @@ async function sendWhatsAppMessage(phoneNumber, message) {
   if (!process.env.META_PHONE_ID || !process.env.META_TOKEN) {
     throw new Error("Faltan credenciales de WhatsApp Cloud API");
   }
-  const url = `https://graph.facebook.com/v19.0/${process.env.META_PHONE_ID}/messages`;
+  // Usar URL base desde variable de entorno o un valor por defecto.
+  // Se elimina la barra final si existe para evitar dobles barras en la URL.
+  const base = (process.env.WHATSAPP_API_URL || 'https://graph.facebook.com/v19.0').replace(/\/$/, '');
+  
+  const url = `${base}/${process.env.META_PHONE_ID}/messages`;
   const payload = {
     messaging_product: "whatsapp",
     to: phoneNumber.replace(/\D/g, ''),  // Meta exige dígitos, ej. 56998765432
