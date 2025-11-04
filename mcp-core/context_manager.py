@@ -87,6 +87,32 @@ class ConversationalContextManager:
         context = self.get_context(session_id)
         return context.get("complaint_state")
 
+    def update_scheduler_state(self, session_id: str, state: str):
+        """Actualiza el estado del scheduler en la sesión."""
+        context = self.get_context(session_id)
+        context["scheduler_state"] = state
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def clear_scheduler_state(self, session_id: str):
+        """Limpia el estado del scheduler en la sesión."""
+        context = self.get_context(session_id)
+        if "scheduler_state" in context:
+            del context["scheduler_state"]
+        self.redis_client.set(
+            f"session:{session_id}",
+            json.dumps(context),
+            ex=self.session_expiry_seconds
+        )
+
+    def get_scheduler_state(self, session_id: str) -> Optional[str]:
+        """Obtiene el estado actual del scheduler."""
+        context = self.get_context(session_id)
+        return context.get("scheduler_state")
+
     def update_pending_field(self, session_id: str, field: Optional[str]):
         """Actualiza el campo pendiente en la sesión."""
         context = self.get_context(session_id)

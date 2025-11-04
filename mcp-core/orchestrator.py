@@ -1042,158 +1042,137 @@ def _agenda_state(session_id: str) -> Dict[str, Optional[str]]:
 
 
 def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[str] = None, channel: Optional[str] = None) -> Dict[str, Any]:
-    ctx = context_manager.get_context(session_id)
-    agenda = ctx.get("agenda") or {"fecha": None, "hora": None}
-    norm = normalize_text(user_text)
+    state = context_manager.get_scheduler_state(session_id)
+    text_norm = normalize_text(user_text)
 
-    # Cancelación en cualquier momento del flujo
-    if norm.strip() in {"cancelar", "cancelar agenda"}:
-        reserva_id = ctx.get("agenda_reserva_id")
-        if reserva_id:
-            cancel_resp = call_tool_microservice(
-                "scheduler-cancelar_hora",
-                {"id_reserva": reserva_id, "motivo_cancelacion": "Usuario lo solicitó"},
-                trace_id=trace_id,
-            )
-            msg = cancel_resp.get("mensaje") or "He cancelado tu cita."
-        else:
-            msg = "De acuerdo, cancelamos el proceso de agendamiento."
-        context_manager.update_context(session_id, user_text, msg)
-        context_manager.clear_pending_confirmation(session_id)
+    if state is None:
+        context_manager.set_current_flow(session_id, "agenda")
+        context_manager.update_scheduler_state(session_id, "confirming_process")
+        msg = "El sistema de asignación de horas es automático y se asigna según la primera hora del mes disponible. Tienes derecho a rechazar la hora propuesta una vez, y el sistema te propondrá otra. Si la segunda hora es rechazada, el sistema interpretará que has declinado seguir con el proceso. ¿Aceptas continuar?"
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Acepto", "Rechazo"]}
+
+    if text_norm.strip() == "cancelar":
+        context_manager.clear_scheduler_state(session_id)
         context_manager.set_current_flow(session_id, None)
-        # Limpiar estado
-        context_manager.update_context_data(session_id, {"agenda": {"fecha": None, "hora": None}})
-        for k in (
-            "agenda_slots",
-            "agenda_pending_selection",
-            "agenda_selected_slot_id",
-            "agenda_collecting_name",
-            "agenda_collecting_email",
-            "agenda_name",
-            "agenda_email",
-            "agenda_reserva_id",
-        ):
-            context_manager.clear_context_field(session_id, k)
+        msg = "Perfecto, el proceso de agendamiento ha sido cancelado."
         return {"respuesta": msg, "no_results": False}
 
-    # Selección de slot pendiente
-    if ctx.get("agenda_pending_selection"):
-        slots = ctx.get("agenda_slots") or []
-        chosen = None
-        for s in slots[:3]:
-            hora_str = str(s.get("hora") or "")
-            if hora_str and (hora_str.split("-")[0] in norm or hora_str in user_text):
-                chosen = s
-                break
-        if not chosen:
-            msg = "No identifiqué el bloque seleccionado. Elige uno de los horarios disponibles."
-            buttons = [f"Reservar {str(s.get('hora'))}" for s in slots[:3]] + ["Cancelar agenda"]
-            context_manager.update_context(session_id, user_text, msg)
-            return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
-        context_manager.update_context_data(
-            session_id, {"agenda_selected_slot_id": chosen.get("slot_id") or chosen.get("id"), "agenda_pending_selection": False}
-        )
-        context_manager.update_context_data(session_id, {"agenda_collecting_name": True})
-        msg = "Para confirmar la reserva, ¿puedes indicarme tu nombre completo?"
-        context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+    if state == "confirming_process":
+        if text_norm == "acepto":
+            context_manager.update_scheduler_state(session_id, "collecting_name")
+            msg = "Por favor, indícame tu nombre completo."
+            return {"respuesta": msg, "no_results": False}
+        elif text_norm == "rechazo":
+            context_manager.clear_scheduler_state(session_id)
+            context_manager.set_current_flow(session_id, None)
+            msg = "Entendido, hemos cancelado el proceso."
+            return {"respuesta": msg, "no_results": False}
+        else:
+            msg = "Por favor, responde 'Acepto' o 'Rechazo'."
+            return {"respuesta": msg, "no_results": False, "suggested_replies": ["Acepto", "Rechazo"]}
 
-    # Recolección de nombre
-    if ctx.get("agenda_collecting_name"):
+    if state == "collecting_name":
         name = user_text.strip()
         if not name or len(name.split()) < 2:
-            msg = "Por favor indícame tu nombre y apellido."
-            context_manager.update_context(session_id, user_text, msg)
-            return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
-        context_manager.update_context_data(
-            session_id,
-            {"agenda_name": name, "agenda_collecting_name": False, "agenda_collecting_email": True},
-        )
-        msg = "Gracias. ¿Cuál es tu correo electrónico para enviarte la confirmación?"
-        context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
-
-    # Recolección de email y reserva
-    if ctx.get("agenda_collecting_email"):
-        email = _valid_email(user_text)
-        if email is None:
-            msg = "El correo no parece válido. Indícalo en formato usuario@dominio.com."
-            context_manager.update_context(session_id, user_text, msg)
-            return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
-        name = ctx.get("agenda_name")
-        slot_id = ctx.get("agenda_selected_slot_id")
-        if not slot_id or not name:
-            msg = "Ocurrió un problema con la selección del horario. Intentemos nuevamente."
-            context_manager.update_context(session_id, user_text, msg)
+            msg = "Por favor indícame tu nombre y apellido para continuar."
             return {"respuesta": msg, "no_results": False}
-        params = {
-            "slot_id": slot_id,
-            "usuario_nombre": name,
-            "usuario_mail": email,
-            "usuario_whatsapp": "",
-            "motivo": "cita",
-        }
-        r = call_tool_microservice("scheduler-reservar_hora", params, trace_id=trace_id)
-        if r.get("error"):
-            return fallback("No pude reservar el bloque seleccionado. Intenta con otro horario.")
-        reserva_id = r.get("id_reserva") or slot_id
-        context_manager.update_context_data(session_id, {"agenda_reserva_id": reserva_id})
-        answer = r.get("mensaje") or "Tu cita ha sido reservada."
-        try:
-            SCHEDULER_BOOKED_COUNTER.inc()
-        except Exception:
-            pass
-        _jlog(_logger, "metrics.scheduler_booked", reserva_id=reserva_id)
-        context_manager.update_context(session_id, user_text, answer)
-        # Limpiar y finalizar flujo
-        context_manager.update_context_data(session_id, {"agenda": {"fecha": None, "hora": None}})
-        for k in (
-            "agenda_slots",
-            "agenda_pending_selection",
-            "agenda_selected_slot_id",
-            "agenda_collecting_name",
-            "agenda_collecting_email",
-            "agenda_name",
-            "agenda_email",
-        ):
-            context_manager.clear_context_field(session_id, k)
-        context_manager.clear_pending_confirmation(session_id)
-        context_manager.set_current_flow(session_id, None)
-        return {"respuesta": answer, "finish": True, "no_results": False, "_resp_type": "scheduler_booked"}
+        context_manager.update_context_data(session_id, {"scheduler_name": name})
+        context_manager.update_scheduler_state(session_id, "collecting_rut")
+        msg = "Gracias. Ahora, por favor, indícame tu RUT."
+        return {"respuesta": msg, "no_results": False}
 
-    # Primera fase: obtener fecha/hora
-    fecha, hora = parse_date_time(user_text)
-    if fecha:
-        agenda["fecha"] = fecha
-    if hora:
-        agenda["hora"] = hora
-    context_manager.update_context_data(session_id, {"agenda": agenda})
+    if state == "collecting_rut":
+        rut = _valid_rut(user_text)
+        if not rut:
+            msg = "El RUT no parece válido. Por favor, indícalo en formato 12.345.678-9."
+            return {"respuesta": msg, "no_results": False}
+        context_manager.update_context_data(session_id, {"scheduler_rut": rut})
+        context_manager.update_scheduler_state(session_id, "collecting_email")
+        msg = "Gracias. ¿Cuál es tu correo electrónico?"
+        return {"respuesta": msg, "no_results": False}
 
-    if not agenda["fecha"]:
-        msg = "Para agendar una cita necesito que me indiques la fecha que te acomoda."
-        context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
-    if not agenda["hora"]:
-        msg = "Perfecto, ¿a qué hora te gustaría agendarla?"
-        context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
+    if state == "collecting_email":
+        email = _valid_email(user_text)
+        if not email:
+            msg = "El correo no parece válido. Por favor indícalo en formato usuario@dominio.com."
+            return {"respuesta": msg, "no_results": False}
+        context_manager.update_context_data(session_id, {"scheduler_email": email})
+        context_manager.update_scheduler_state(session_id, "collecting_department")
+        msg = "¿A qué departamento corresponde tu cita?"
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Alcaldía", "Departamento de Tránsito"]}
 
-    payload = {"fecha": agenda["fecha"], "hora": agenda["hora"]}
-    resp = call_tool_microservice("scheduler-listar_horas_disponibles", payload, trace_id=trace_id)
-    if resp.get("error"):
-        return fallback("No pude consultar la agenda en este momento, intenta nuevamente más tarde.")
-    data = resp.get("data") or []
-    if not data:
-        msg = "No encontré disponibilidad para esa hora. ¿Quieres intentar con otra hora o fecha?"
-        context_manager.update_context(session_id, user_text, msg)
-        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Cancelar agenda"]}
-    top = data[:3]
-    options = [f"Reservar {s.get('hora')}" for s in top]
-    options.append("Cancelar agenda")
-    context_manager.update_context_data(session_id, {"agenda_slots": top, "agenda_pending_selection": True})
-    msg = "Tengo estos bloques disponibles. Elige uno para reservar:"
-    context_manager.update_context(session_id, user_text, msg)
-    return {"respuesta": msg, "no_results": False, "suggested_replies": options}
+    if state == "collecting_department":
+        department = user_text.strip()
+        if department.lower() not in ["alcaldía", "departamento de tránsito"]:
+            msg = "Por favor, elige uno de los departamentos disponibles."
+            return {"respuesta": msg, "no_results": False, "suggested_replies": ["Alcaldía", "Departamento de Tránsito"]}
+        context_manager.update_context_data(session_id, {"scheduler_department": department})
+        context_manager.update_scheduler_state(session_id, "collecting_reason")
+        msg = "Gracias. Por favor, describe brevemente el motivo de tu cita."
+        return {"respuesta": msg, "no_results": False}
+
+    if state == "collecting_reason":
+        reason = user_text.strip()
+        if len(reason) < 5:
+            msg = "El motivo es muy corto. Por favor, descríbelo con un poco más de detalle."
+            return {"respuesta": msg, "no_results": False}
+        context_manager.update_context_data(session_id, {"scheduler_reason": reason})
+        context_manager.update_scheduler_state(session_id, "proposing_slot_1")
+        # Fall through to proposing_slot_1
+
+    if state.startswith("proposing_slot"):
+        if text_norm == "rechazo":
+            if state == "proposing_slot_1":
+                context_manager.update_scheduler_state(session_id, "proposing_slot_2")
+                # Get next available slot, needs to be implemented in scheduler-mcp
+                resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": 1}, trace_id=trace_id)
+            else: # proposing_slot_2
+                context_manager.clear_scheduler_state(session_id)
+                context_manager.set_current_flow(session_id, None)
+                return {"respuesta": "Entendido. Hemos cancelado el proceso de agendamiento.", "no_results": False}
+        elif text_norm == "acepto":
+            slot_id = context_manager.get_context_field(session_id, "proposed_slot_id")
+            # Book the slot
+            name = context_manager.get_context_field(session_id, "scheduler_name")
+            rut = context_manager.get_context_field(session_id, "scheduler_rut")
+            email = context_manager.get_context_field(session_id, "scheduler_email")
+            department = context_manager.get_context_field(session_id, "scheduler_department")
+            reason = context_manager.get_context_field(session_id, "scheduler_reason")
+            params = {
+                "slot_id": slot_id,
+                "usuario_nombre": name,
+                "usuario_rut": rut,
+                "usuario_mail": email,
+                "departamento_codigo": department,
+                "motivo": reason,
+            }
+            booking_resp = call_tool_microservice("scheduler-reservar_hora", params, trace_id=trace_id)
+            if booking_resp.get("error"):
+                return fallback("No pude reservar el bloque seleccionado. Intenta nuevamente más tarde.")
+            
+            context_manager.clear_scheduler_state(session_id)
+            context_manager.set_current_flow(session_id, None)
+            
+            confirmation_msg = f"¡Tu cita ha sido agendada con éxito!\n- Nombre: {name}\n- RUT: {rut}\n- Email: {email}\n- Departamento: {department}\n- Motivo: {reason}\n- Hora: {booking_resp.get('hora_inicio')}"
+            return {"respuesta": confirmation_msg, "no_results": False}
+        
+        # Propose a slot
+        offset = 1 if state == "proposing_slot_2" else 0
+        resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": offset}, trace_id=trace_id)
+        slot = resp.get("data")
+
+        if not slot:
+            return fallback("Lo siento, no hay horas disponibles en este momento.")
+
+        slot_id = slot.get("id")
+        context_manager.update_context_data(session_id, {"proposed_slot_id": slot_id})
+        
+        fecha = slot.get("fecha")
+        hora = slot.get("hora")
+        msg = f"Tengo una hora disponible para ti el {fecha} a las {hora}. ¿Te parece bien?"
+        return {"respuesta": msg, "no_results": False, "suggested_replies": ["Acepto", "Rechazo"]}
+
+    return fallback("Lo siento, no pude procesar tu solicitud de agendamiento en este momento.")
 
 
 def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:

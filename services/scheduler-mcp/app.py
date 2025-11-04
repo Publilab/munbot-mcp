@@ -104,6 +104,33 @@ async def tools_call(payload: dict):
     params = payload.get("params", {})
     trace_id = payload.get("trace_id")
 
+    if tool == "scheduler-get_first_available_slot":
+        from datetime import datetime
+        from repository import get_first_available_block_of_month
+
+        offset = params.get("offset", 0)
+
+        now = datetime.now()
+        month = now.month
+        year = now.year
+
+        slot = get_first_available_block_of_month(month, year, offset, trace_id=trace_id)
+        if not slot:
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+            slot = get_first_available_block_of_month(month, year, offset, trace_id=trace_id)
+
+        if not slot:
+            return {"data": None}
+
+        try:
+            data = AppointmentOut(**slot).as_dict()
+        except Exception:
+            data = slot
+        return {"data": data}
+
     if tool == "scheduler-listar_horas_disponibles":
         fecha = params.get("fecha")
         hora = params.get("hora")

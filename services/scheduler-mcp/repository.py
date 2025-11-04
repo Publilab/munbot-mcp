@@ -26,13 +26,55 @@ def build_sql_pattern(hora: time, trace_id: str | None = None) -> time:
     """Normaliza la hora para la consulta SQL."""
     return hora.replace(second=0, microsecond=0)
 
-
-@audit_step("get_available_blocks")
-def get_available_blocks(
-    fecha: date,
-    hora_pattern: time,
+@audit_step("get_first_available_block_of_month")
+def get_first_available_block_of_month(
+    month: int,
+    year: int,
+    offset: int = 0,
     trace_id: str | None = None,
-) -> List[dict]:
+) -> dict | None:
+    """
+    Devuelve el primer bloque disponible en un mes y año específicos, con un offset.
+    """
+    with get_conn() as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            sql = """
+                SELECT *
+                FROM   appointments
+                WHERE  EXTRACT(MONTH FROM fecha) = %s
+                  AND  EXTRACT(YEAR FROM fecha) = %s
+                  AND  disponible = TRUE
+                  AND  confirmada = FALSE
+                ORDER BY fecha, hora_inicio
+                LIMIT 1
+                OFFSET %s
+            """
+            audit_logger.debug(
+                json.dumps(
+                    {
+                        "step": "execute_sql",
+                        "trace_id": trace_id,
+                        "sql": sql,
+                        "params": [month, year, offset],
+                    }
+                )
+            )
+            cur.execute(sql, (month, year, offset))
+            if hasattr(cur, "fetchone"):
+                row = cur.fetchone()
+                audit_logger.debug(
+                    json.dumps(
+                        {
+                            "step": "rows_fetched",
+                            "trace_id": trace_id,
+                            "rows": [row] if row else [],
+                        },
+                        default=str,
+                    )
+                )
+                return row
+            return None
+
     """
     Devuelve los bloques disponibles que *contienen* la hora solicitada
     (`hora_pattern`) en la fecha indicada. Se asume que la hora ya fue
