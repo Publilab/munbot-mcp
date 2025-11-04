@@ -13,10 +13,9 @@ RUN apt-get update && \
 
 # 2) Copia e instala dependencias de Node
 COPY package*.json ./
-COPY .env ./
 RUN npm install --omit=dev
 
-# 3) Copia el resto del código fuente
+# 3) Copia el resto del código fuente (excluye .env vía .dockerignore)
 COPY . .
 
 # 4) Exponer el puerto de tu app
