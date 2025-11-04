@@ -360,6 +360,21 @@ def show_main_menu() -> Dict[str, Any]:
     ]
     return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
 
+def show_help_instructions() -> Dict[str, Any]:
+    """Mensaje resumido de cómo usar el bot."""
+    msg = (
+        "Te cuento cómo usar el bot:\n"
+        "- Certificados y trámites: pide por nombre (p. ej., 'permiso de aterrizaje') y te muestro requisitos, costos, horarios y dónde tramitar.\n"
+        "- Agenda: di 'agendar una cita' y te propongo horarios disponibles para reservar o cancelar.\n"
+        "- Reclamos: di 'presentar un reclamo' y te guío para registrarlo con tus datos.\n"
+        "- Menú rápido: usa los botones para navegar más rápido.\n"
+    )
+    main = show_main_menu()
+    payload = {"respuesta": msg, "no_results": False, "_resp_type": "help"}
+    if isinstance(main.get("suggested_replies"), list):
+        payload["suggested_replies"] = main["suggested_replies"]
+    return payload
+
 
 # --- Constantes para el nuevo flujo conversacional ---
 V_CONFIRM = ["Listo 👍", "Perfecto 👌", "Entendido ✅"]
@@ -445,12 +460,20 @@ GREETING_VARIANTS = ["¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?", "Hola,
 FAREWELL_VARIANTS = ["¡Hasta luego! Que tengas un buen día.", "Nos vemos. Estoy aquí 24/7 si me necesitas.", "Chao. Cuando quieras, vuelve y te ayudo.", "Perfecto, me alegra haber ayudado. Estaré por aquí cuando lo requieras.", "De acuerdo. Cierro la sesión; cuando necesites, volvemos a conversar.", "Listo. Si surge otra consulta, vuelve y la resolvemos."]
 THANKS_VARIANTS = ["De nada. ¿Te ayudo con algo más?", "Con gusto. ¿Te ayudo con algo más?", "Con mucho gusto. ¿Qué más necesitas?", "Para eso estoy. ¿Seguimos con algo más?", "Me alegra haber ayudado. ¿Algo más?", "Un gusto. ¿Deseas hacer otro trámite o consulta?", "Cuando quieras, seguimos con lo que necesites."]
 SMALLTALK_VARIANTS = {"saludo": GREETING_VARIANTS, "despedida": FAREWELL_VARIANTS, "agradecimiento": THANKS_VARIANTS}
+# Palabras/expresiones comunes para saludo y despedida (normalizadas, sin tildes)
 SMALLTALK_PATTERNS = {
+    # Saludos
     "hola",
     "buenos dias",
     "buenas tardes",
     "buenas noches",
     "saludos",
+    "hi",
+    "hello",
+    "hey",
+    "qiubo",
+    "quiubo",
+    # Despedidas
     "adios",
     "hasta luego",
     "nos vemos",
@@ -460,15 +483,50 @@ SMALLTALK_PATTERNS = {
     "hasta pronto",
     "hasta la proxima",
     "me despido",
+    # Agradecimientos
     "gracias",
     "muchas gracias",
     "te agradezco",
     "agradecido",
-    "agradecida"
+    "agradecida",
 }
+
+# Conjuntos reutilizables para lógica determinística de saludo/despedida
+GREET_PREFIXES = (
+    "hola",
+    "buenos dias",
+    "buenas tardes",
+    "buenas noches",
+    "hi",
+    "hello",
+    "hey",
+    "qiubo",
+    "quiubo",
+)
+FAREWELL_TOKENS = (
+    "adios",
+    "chao",
+    "chau",
+    "hasta luego",
+    "nos vemos",
+    "bye",
+    "hasta pronto",
+    "me despido",
+)
 
 def _is_pure_smalltalk(text: str) -> bool:
     return normalize_text(text) in SMALLTALK_PATTERNS
+
+def _detect_greeting_prefix(text: str) -> bool:
+    t = normalize_text(text)
+    for pref in GREET_PREFIXES:
+        if t.startswith(pref + " ") or t == pref or t.startswith(pref + ",") or t.startswith(pref + "!"):
+            return True
+    return False
+
+def _contains_farewell(text: str) -> bool:
+    t = normalize_text(text)
+    return any(tok in t for tok in FAREWELL_TOKENS)
 
 def _pick_smalltalk(intent: str) -> str:
     variants = SMALLTALK_VARIANTS.get(intent, [])
@@ -580,6 +638,8 @@ INTENT_MAP = {
     "saludo": "saludo",
     "despedida": "despedida",
     "agradecimiento": "agradecimiento",
+    "help": "show_help",
+    "show_help": "show_help",
     "faq": "ask_document",
     "documento": "ask_document",
     "tramite": "ask_document",
@@ -875,11 +935,35 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     norm = normalize_text(text)
     lower = norm.lower()
 
+    # Saludo si el mensaje comienza con un saludo, aunque haya más texto
+    if _detect_greeting_prefix(text):
+        return _finalize({"intent": "saludo", "sub_intent": "saludo"})
+
+    # Despedida si contiene palabras de cierre en cualquier parte de la frase
+    if _contains_farewell(text):
+        return _finalize({"intent": "despedida", "sub_intent": "despedida"})
+
+    # Instructivo/ayuda: "que haces", "como usar", "instrucciones", "manual", "tutorial", "como funciona"
+    help_tokens = (
+        "ayuda",
+        "instructivo",
+        "instrucciones",
+        "manual",
+        "tutorial",
+        "como funciona",
+        "como usar",
+        "como puedo usar",
+        "como te uso",
+        "como usarte",
+        "que haces",
+        "que puedes hacer",
+        "que sabes hacer",
+    )
+    if any(tok in lower for tok in help_tokens) or re.search(r"como\s+.*\s+usar", lower):
+        return _finalize({"intent": "help", "sub_intent": "help"})
+
+    # Smalltalk puro (solo saludo/agradecimiento/etc.)
     if _is_pure_smalltalk(lower):
-        if any(word in lower for word in ("hola", "buenos dias", "buenas tardes", "buenas noches")):
-            return _finalize({"intent": "saludo", "sub_intent": "saludo"})
-        if any(word in lower for word in ("adios", "chao", "chau", "hasta luego", "bye")):
-            return _finalize({"intent": "despedida", "sub_intent": "despedida"})
         if "gracias" in lower or "agradecid" in lower:
             return _finalize({"intent": "agradecimiento", "sub_intent": "agradecimiento"})
 
@@ -1472,6 +1556,11 @@ def handle_turn(
         context_manager.update_context(session_id, user_text, answer)
         context_manager.clear_context(session_id)
         return {"respuesta": answer, "no_results": False}
+
+    if intent_action == "show_help":
+        resp = show_help_instructions()
+        context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
+        return resp
 
     if intent_action == "agradecimiento":
         answer = _pick_smalltalk("agradecimiento") or "De nada. ¿Hay algo más en lo que pueda ayudar?"
