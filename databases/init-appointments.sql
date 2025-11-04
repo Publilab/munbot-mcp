@@ -374,9 +374,5 @@ INSERT INTO appointments (id, funcionario_nombre, funcionario_codigo, departamen
 ('C0349', 'Zam Wesell', 'FN009', '', '', '', '', '', '',TRUE, FALSE, '2026-01-02', '10:30', '10:59'),
 ('C0350', 'EV-9D9', 'FN010', '', '', '', '', '', '',TRUE, FALSE, '2026-01-02', '11:00', '11:29'),
 ('C0351', 'Nien Nunb', 'FN001', '', '', '', '', '', '',TRUE, FALSE, '2026-01-02', '11:30', '11:59'),
-('C0352', 'Greedo', 'FN002', '', '', '', '', '', '',TRUE, FALSE, '2026-01-02', '12:00', '12:30');
-
--- Ajuste de fechas: mover todo el set para comenzar el 2025-11-04
--- 2025-07-14 -> 2025-11-04 implica un desplazamiento de +113 días
-UPDATE appointments
-SET fecha = (fecha + INTERVAL '113 days')::date;
+('C0352', 'Greedo', 'FN002', '', '', '', '', '', '',TRUE, FALSE, '2026-01-02', '12:00', '12:30')
+ON CONFLICT (id) DO NOTHING;
