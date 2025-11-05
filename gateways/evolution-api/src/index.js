@@ -115,6 +115,41 @@ async function sendWhatsAppMessage(toNumber, text) {
   }
 }
 
+function extractFromAndTextBody(body) {
+  // 1) entry
+  const entry = Array.isArray(body?.entry) ? body.entry[0] : null;
+  if (!entry) return { ok: false, reason: 'missing_entry' };
+
+  // 2) changes
+  const change = Array.isArray(entry?.changes) ? entry.changes[0] : null;
+  if (!change?.value) return { ok: false, reason: 'missing_change_value' };
+
+  // 3) messages
+  const messages = Array.isArray(change.value.messages) ? change.value.messages : [];
+  if (messages.length === 0) return { ok: false, reason: 'no_messages' };
+
+  // 4) primer mensaje
+  const msg = messages[0];
+  const from = msg?.from;            // ej: "569XXXXXXXX"
+  const type = msg?.type;            // ej: "text"
+  const bodyText = type === 'text' ? (msg?.text?.body ?? '') : '';
+
+  if (!from) return { ok: false, reason: 'missing_from' };
+  if (!bodyText) return { ok: false, reason: 'missing_text_body_or_not_text_type', type };
+
+  // 5) normalización
+  const normalizedFrom = String(from).replace(/\D/g, '');
+  const normalizedText = String(bodyText).trim();
+
+  return {
+    ok: true,
+    from: normalizedFrom,        // "569XXXXXXXX"
+    rawFrom: from,               // por si quieres conservar el original
+    text: normalizedText,        // "Hola 👋"
+    type
+  };
+}
+
 function normalizeTo(n) {
   // Convierte "569XXXX..." o "+569XXXX..." a "569XXXX..."
   return String(n).replace(/\D/g, '');
@@ -302,71 +337,50 @@ app.get('/health', apiKeyMiddleware, async (req, res) => {
 // --- POST /webhook/wa ---
 // Recepción de eventos de WhatsApp Cloud (Meta) y respuesta vía MCP-Core
 app.post('/webhook/wa', async (req, res) => {
-  // 1) ACK inmediato para que Meta no reintente (importante: no bloquear aquí)
+  // 1) ACK inmediato para que Meta no reintente
   res.sendStatus(200);
 
-  try {
-    const entries = req.body?.entry;
-    if (!Array.isArray(entries)) return;
+  // 2) Extraer y validar datos con el helper
+  const messageData = extractFromAndTextBody(req.body);
 
-    for (const entry of entries) {
-      const change = entry?.changes?.[0];
-      const value = change?.value;
-
-      // Ignora notificaciones que no traen messages (p.ej. statuses)
-      const messages = value?.messages;
-      if (!Array.isArray(messages) || messages.length === 0) continue;
-
-      for (const msg of messages) {
-        const from = msg?.from; // ej. "569XXXXXXXX"
-        const type = msg?.type;
-
-        // Sólo manejamos texto en esta primera versión
-        const userText =
-          type === 'text' ? (msg?.text?.body ?? '').trim() : null;
-
-        // Evitar eco o mensajes sin remitente
-        if (!from || !userText) {
-          // Puedes loggear otros tipos: image, audio, interactive, etc.
-          console.log('[WA] Mensaje no manejado o sin texto:', { type, from });
-          continue;
-        }
-
-        // 2) Llamar al orquestador (MCP-Core)
-        const mcpUrl = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
-
-        let mcpResp;
-        try {
-          mcpResp = await axios.post(mcpUrl, {
-            pregunta: userText,
-            context: { sender: `+${from}` },
-            channel: 'whatsapp',
-          }, { timeout: 15000 });
-        } catch (err) {
-          console.error('[WA] Error llamando MCP-Core:', err?.response?.data || err.message);
-          // Mensaje genérico de fallback al usuario
-          await sendWhatsAppMessage(from, 'Estamos teniendo problemas para procesar tu mensaje. Intenta nuevamente en unos minutos.');
-          continue;
-        }
-
-        const data = mcpResp?.data || {};
-        const outs = Array.isArray(data.respuestas)
-          ? data.respuestas
-          : [data.respuesta || data.message].filter(Boolean);
-
-        // 3) Responder al usuario por WhatsApp (una o varias líneas)
-        if (outs.length === 0) {
-          await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');
-        } else {
-          for (const text of outs) {
-            // Enviar secuencialmente para mantener el orden
-            await sendWhatsAppMessage(from, String(text).slice(0, 4000)); // límite defensivo
-          }
-        }
-      }
+  if (!messageData.ok) {
+    // No logueamos 'no_messages' porque es común (p.ej. notificaciones de status)
+    if (messageData.reason !== 'no_messages') {
+      console.log(`[WA] Mensaje ignorado: ${messageData.reason}`, { type: messageData.type });
     }
-  } catch (e) {
-    console.error('[WA] Error procesando webhook:', e?.response?.data || e.message);
+    return;
+  }
+
+  const { from, text: userText } = messageData;
+
+  // 3) Llamar al orquestador (MCP-Core)
+  const mcpUrl = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
+  let mcpResp;
+
+  try {
+    mcpResp = await axios.post(mcpUrl, {
+      pregunta: userText,
+      context: { sender: `+${from}` }, // `from` ya está normalizado a solo dígitos
+      channel: 'whatsapp',
+    }, { timeout: 15000 });
+  } catch (err) {
+    console.error('[WA] Error llamando MCP-Core:', err?.response?.data || err.message);
+    await sendWhatsAppMessage(from, 'Estamos teniendo problemas para procesar tu mensaje. Intenta nuevamente en unos minutos.');
+    return;
+  }
+
+  // 4) Procesar y enviar respuesta de MCP-Core
+  const data = mcpResp?.data || {};
+  const outs = Array.isArray(data.respuestas)
+    ? data.respuestas
+    : [data.respuesta || data.message].filter(Boolean);
+
+  if (outs.length === 0) {
+    await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');
+  } else {
+    for (const text of outs) {
+      await sendWhatsAppMessage(from, String(text).slice(0, 4000));
+    }
   }
 });
 
