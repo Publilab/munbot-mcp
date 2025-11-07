@@ -46,6 +46,7 @@ services:
       - "3000:3000"
     environment:
       - MCP_URL=http://mcp-core:5000/orchestrate
+      - PORT=3000
     restart: unless-stopped
     networks:
       - munbot-net
