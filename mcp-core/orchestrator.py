@@ -375,6 +375,52 @@ def show_help_instructions() -> Dict[str, Any]:
         payload["suggested_replies"] = main["suggested_replies"]
     return payload
 
+def show_catalog() -> Dict[str, Any]:
+    """Presenta un resumen del catálogo (categorías y/o trámites destacados)."""
+    try:
+        total_tramites = len(KB_BY_ID or {})
+        categorias = list((KB_CATEGORIAS or {}).keys())
+        total_categorias = len(categorias)
+    except Exception:
+        total_tramites, total_categorias, categorias = 0, 0, []
+
+    msg_parts = []
+    if total_tramites and total_categorias:
+        msg_parts.append(
+            f"Puedo ayudarte con {total_tramites} trámites organizados en {total_categorias} categorías."
+        )
+    else:
+        msg_parts.append("Puedo ayudarte con certificados y trámites municipales.")
+
+    msg_parts.append("Elige una categoría para explorar:")
+    msg = " ".join(msg_parts)
+
+    # Sugerencias: priorizar categorías; fallback a trámites si no hay categorías
+    suggestions: list[str] = []
+    if categorias:
+        suggestions = [str(c).capitalize() for c in categorias[:6]]
+    else:
+        # Fallback: primeros 6 trámites por alias
+        try:
+            ids = list((KB_BY_ID or {}).keys())[:6]
+            suggestions = [_kb_display_name(tid) for tid in ids]
+        except Exception:
+            suggestions = []
+
+    payload = {"respuesta": msg, "no_results": False, "_resp_type": "catalog"}
+    if suggestions:
+        payload["suggested_replies"] = suggestions
+    return payload
+
+def show_sched_hours_disambiguation() -> Dict[str, Any]:
+    msg = "Para que sea preciso: ¿quieres conocer el horario de atención o agendar una cita?"
+    return {
+        "respuesta": msg,
+        "no_results": False,
+        "suggested_replies": ["Ver horario de atención", "Agendar una cita"],
+        "_resp_type": "disambiguate_sched_vs_hours",
+    }
+
 
 # --- Constantes para el nuevo flujo conversacional ---
 V_CONFIRM = ["Listo 👍", "Perfecto 👌", "Entendido ✅"]
@@ -456,7 +502,7 @@ def tokenize(text: str) -> list[str]:
     tokens = [t.strip('.,¡!¿?"').lower() for t in text.split()]
     return [t for t in tokens if t and t not in STOPWORDS]
 
-GREETING_VARIANTS = ["¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?", "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy", "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?", "Todo perfecto y listo para que me digas en que puedo ayudarte"]
+GREETING_VARIANTS = ["¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?", "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy", "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?", "Encantado de Saludarte. Todo perfecto y listo para que me digas en que puedo ayudarte"]
 FAREWELL_VARIANTS = ["¡Hasta luego! Que tengas un buen día.", "Nos vemos. Estoy aquí 24/7 si me necesitas.", "Chao. Cuando quieras, vuelve y te ayudo.", "Perfecto, me alegra haber ayudado. Estaré por aquí cuando lo requieras.", "De acuerdo. Cierro la sesión; cuando necesites, volvemos a conversar.", "Listo. Si surge otra consulta, vuelve y la resolvemos."]
 THANKS_VARIANTS = ["De nada. ¿Te ayudo con algo más?", "Con gusto. ¿Te ayudo con algo más?", "Con mucho gusto. ¿Qué más necesitas?", "Para eso estoy. ¿Seguimos con algo más?", "Me alegra haber ayudado. ¿Algo más?", "Un gusto. ¿Deseas hacer otro trámite o consulta?", "Cuando quieras, seguimos con lo que necesites."]
 SMALLTALK_VARIANTS = {"saludo": GREETING_VARIANTS, "despedida": FAREWELL_VARIANTS, "agradecimiento": THANKS_VARIANTS}
@@ -640,6 +686,9 @@ INTENT_MAP = {
     "agradecimiento": "agradecimiento",
     "help": "show_help",
     "show_help": "show_help",
+    "catalog": "show_catalog",
+    "show_catalog": "show_catalog",
+    "sched_hours_disambiguate": "sched_hours_disambiguate",
     "faq": "ask_document",
     "documento": "ask_document",
     "tramite": "ask_document",
@@ -962,6 +1011,46 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     if any(tok in lower for tok in help_tokens) or re.search(r"como\s+.*\s+usar", lower):
         return _finalize({"intent": "help", "sub_intent": "help"})
 
+    # Catálogo general de trámites/servicios: "que tramites puedo hacer", "tramites disponibles",
+    # "lista de tramites", "que servicios ofrecen", "informacion de tramites"
+    catalog_phrases = (
+        "que tramites puedo hacer",
+        "qué tramites puedo hacer",
+        "tramites disponibles",
+        "trámites disponibles",
+        "lista de tramites",
+        "lista de trámites",
+        "que servicios hay",
+        "qué servicios hay",
+        "que servicios ofrecen",
+        "qué servicios ofrecen",
+        "informacion de tramites",
+        "información de tramites",
+        "informacion sobre tramites",
+        "información sobre tramites",
+        "que tramites hay",
+        "qué tramites hay",
+        "que puedo realizar",
+        "qué puedo realizar",
+    )
+    if any(p in lower for p in catalog_phrases):
+        # Evitar colisionar con un trámite concreto (si ya reconoce un alias específico, no es catálogo)
+        try:
+            if not match_tramite(text, KB_BY_ALIAS):
+                return _finalize({"intent": "catalog", "sub_intent": "catalog"})
+        except Exception:
+            return _finalize({"intent": "catalog", "sub_intent": "catalog"})
+
+    # Heurística adicional: si menciona "tramite"/"trámite" y palabras de amplitud (lista/disponibles/servicios),
+    # y no hay match de trámite concreto, considerar catálogo
+    if ("tramite" in lower or "trámite" in lower or "servicio" in lower or "servicios" in lower):
+        if any(w in lower for w in ("lista", "disponible", "disponibles", "servicios", "ofrecen", "hay")):
+            try:
+                if not match_tramite(text, KB_BY_ALIAS):
+                    return _finalize({"intent": "catalog", "sub_intent": "catalog"})
+            except Exception:
+                return _finalize({"intent": "catalog", "sub_intent": "catalog"})
+
     # Smalltalk puro (solo saludo/agradecimiento/etc.)
     if _is_pure_smalltalk(lower):
         if "gracias" in lower or "agradecid" in lower:
@@ -970,7 +1059,43 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     if "reclamo" in lower or "denuncia" in lower:
         return _finalize({"intent": "reclamo"})
 
-    if any(word in lower for word in ("agendar", "agenda", "cita", "hora", "turno", "reservar")):
+    # Distinción clara entre "horario(s) de atención" y "agendar/reservar una hora"
+    def _mentions_hours_info(txt: str) -> bool:
+        keys = (
+            "horario", "horarios", "apertura", "cierre", "atienden", "abren",
+            "hasta que hora", "hasta qué hora", "a que hora", "a qué hora",
+        )
+        return any(k in txt for k in keys)
+
+    def _wants_appointment(txt: str) -> bool:
+        # Regex: verbo de agenda seguido cerca de objeto (cita|turno|hora)
+        verb = r"(agend\w*|reserv\w*|pedir|sacar|tomar|program\w*|coordin\w*)"
+        obj = r"(cita|turno|hora)s?"
+        if re.search(rf"\b{verb}\b.{{0,10}}\b{obj}\b", txt):
+            return True
+        # Frases fuertes de atención personal
+        personal = (
+            "necesito que me atiendan",
+            "necesito atencion personal",
+            "atencion personal",
+            "hablar con un funcionario",
+            "hablar con alguien en la municipalidad",
+            "hablar con un agente",
+            "hablar con una persona",
+            "contactar a un funcionario",
+        )
+        if any(p in txt for p in personal):
+            return True
+        # Evitar confundir "hora" con "horarios": si hay 'hora' aislada, exigir verbo de acción presente
+        if re.search(r"\bhora\b", txt) and re.search(rf"\b{verb}\b", txt):
+            return True
+        return False
+
+    # Desambiguación: señales mixtas agenda + horarios → preguntar
+    if _wants_appointment(lower) and _mentions_hours_info(lower):
+        return _finalize({"intent": "sched_hours_disambiguate"})
+
+    if _wants_appointment(lower) and not _mentions_hours_info(lower):
         return _finalize({"intent": "agenda"})
 
     if any(word in lower for word in ("permiso", "licencia", "certificado", "tramite", "trámite", "documento")):
@@ -1509,6 +1634,20 @@ def handle_turn(
     turn_count = (context_manager.get_context_field(session_id, "turn_count") or 0) + 1
     context_manager.update_context_data(session_id, {"turn_count": turn_count})
 
+    # 0) Si el sistema espera específicamente la elección de un aspecto, no evaluar intents globales
+    expecting_aspect = bool(context_manager.get_context_field(session_id, "expecting_aspect"))
+    if expecting_aspect:
+        selected = context_manager.get_selected_document(session_id) or context_manager.get_context_field(session_id, "last_tramite")
+        asp = match_aspect(user_text, KB_ASPECT_MAP)
+        if selected and asp:
+            context_manager.update_context_data(session_id, {"expecting_aspect": False})
+            return respond_direct(selected, asp, session_id, turn_count)
+        if selected:
+            # Reforzar menú de aspectos mientras esperamos una opción válida
+            menu = show_aspect_menu(selected)
+            context_manager.update_context(session_id, user_text, menu.get("respuesta", ""))
+            return menu
+
     if _wants_change_topic(user_text):
         context_manager.clear_pending_field(session_id)
         context_manager.clear_complaint_state(session_id)
@@ -1562,10 +1701,20 @@ def handle_turn(
         context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
         return resp
 
+    if intent_action == "sched_hours_disambiguate":
+        resp = show_sched_hours_disambiguation()
+        context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
+        return resp
+
     if intent_action == "agradecimiento":
         answer = _pick_smalltalk("agradecimiento") or "De nada. ¿Hay algo más en lo que pueda ayudar?"
         context_manager.update_context(session_id, user_text, answer)
         return {"respuesta": answer, "no_results": False}
+
+    if intent_action == "show_catalog":
+        resp = show_catalog()
+        context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
+        return resp
 
     if intent_action == "init_complaint" or context_manager.get_current_flow(session_id) == "reclamo":
         return handle_complaint_flow(session_id, user_text)
@@ -1590,6 +1739,8 @@ def handle_turn(
             if t_id and aspecto:
                 return respond_direct(t_id, aspecto, session_id, turn_count)
             if t_id and not aspecto:
+                # Entramos en modo selección de aspecto explícito
+                context_manager.update_context_data(session_id, {"expecting_aspect": True})
                 return show_aspect_menu(t_id)
             if cat and not t_id:
                 return show_tramites_menu(cat)
