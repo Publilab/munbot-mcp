@@ -1776,16 +1776,13 @@ def orchestrate(
         respuesta = response_payload.get("respuesta") or "Lo siento, hubo un error procesando tu solicitud."
         suggested = response_payload.get("suggested_replies")
         if channel == "whatsapp" and isinstance(suggested, list) and suggested:
-            bullets = "\n".join([f"• {str(it)}" for it in suggested])
-            extra = f"\n\n¿Necesitas algo más?\n{bullets}"
-            respuesta = f"{respuesta}{extra}"
+            # No anexar bullets si vamos a enviar 'suggested_replies' para construir botones interactivos
+            pass
         respuesta = adapt_markdown_for_channel(respuesta, channel)
         result = {"session_id": sid, "respuesta": respuesta}
 
     # Transferir claves adicionales al resultado
-    keys = ["no_results", "referencias", "finish", "pending", "escalado"]
-    if channel == "web":
-        keys.append("suggested_replies")
+    keys = ["no_results", "referencias", "finish", "pending", "escalado", "suggested_replies"]
     
     # Si es una respuesta única, se pueden añadir las sugerencias
     if "respuestas" not in result:

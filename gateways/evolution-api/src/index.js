@@ -115,6 +115,88 @@ async function sendWhatsAppMessage(toNumber, text) {
   }
 }
 
+async function sendWhatsAppInteractive(toNumber, bodyText, options) {
+  const base = (process.env.WHATSAPP_API_URL || 'https://graph.facebook.com/v19.0').replace(/\/$/, '');
+  const phoneId = process.env.META_PHONE_ID;
+  const token   = process.env.META_TOKEN;
+
+  if (!base || !phoneId || !token) {
+    throw new Error('Faltan WHATSAPP_API_URL, META_PHONE_ID o META_TOKEN en .env');
+  }
+
+  const url = `${base}/${phoneId}/messages`;
+
+  const makeId = (title, i) => String(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `opt-${i+1}`;
+  const safeOptions = (options || []).slice(0, 10).map((t, i) => ({ id: makeId(t, i), title: String(t).slice(0, 24) }));
+
+  // Usar botones (máx 3) o lista (hasta 10)
+  let payload;
+  if (safeOptions.length > 0 && safeOptions.length <= 3) {
+    payload = {
+      messaging_product: 'whatsapp',
+      to: normalizeTo(toNumber),
+      type: 'interactive',
+      interactive: {
+        type: 'button',
+        body: { text: String(bodyText).slice(0, 1024) },
+        action: {
+          buttons: safeOptions.map(o => ({ type: 'reply', reply: { id: o.id, title: o.title } }))
+        }
+      }
+    };
+  } else {
+    payload = {
+      messaging_product: 'whatsapp',
+      to: normalizeTo(toNumber),
+      type: 'interactive',
+      interactive: {
+        type: 'list',
+        header: { type: 'text', text: 'Opciones' },
+        body: { text: String(bodyText).slice(0, 1024) },
+        action: {
+          button: 'Ver opciones',
+          sections: [
+            {
+              title: 'Sugerencias',
+              rows: safeOptions.map(o => ({ id: o.id, title: o.title }))
+            }
+          ]
+        }
+      }
+    };
+  }
+
+  try {
+    const r = await axios.post(url, payload, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      timeout: 15000,
+    });
+    return r.data;
+  } catch (err) {
+    console.error('[WA] Error enviando interactivo:', err?.response?.data || err.message);
+    // Fallback: enviar texto plano si falla el interactivo
+    await sendWhatsAppMessage(toNumber, `${bodyText}\n\n${(options||[]).map(o=>`• ${o}`).join('\n')}`);
+  }
+}
+
+// Mapea IDs canónicos de botones/listas a una frase de entrada estable para el MCP
+function mapInteractiveToInput(id, title) {
+  if (!id && !title) return '';
+  const known = {
+    'certificados-y-tramites': '🗂️ Certificados y trámites',
+    'agendar-una-cita': '📅 Agendar una cita',
+    'presentar-un-reclamo': '📝 Presentar un reclamo',
+    'hablar-con-un-agente': '📞 Hablar con un agente',
+    'ver-requisitos': 'Ver requisitos',
+    'ver-costos': 'Ver costos',
+    'ver-horarios': 'Ver horarios',
+    'donde-tramitar': 'Dónde tramitar',
+    'para-que-sirve': 'Para qué sirve',
+  };
+  // Si tenemos un mapeo conocido, úsalo; si no, usa el título mostrado (más natural) o el id como fallback
+  return known[id] || title || id;
+}
+
 function extractFromAndTextBody(body) {
   // 1) entry
   const entry = Array.isArray(body?.entry) ? body.entry[0] : null;
@@ -131,8 +213,19 @@ function extractFromAndTextBody(body) {
   // 4) primer mensaje
   const msg = messages[0];
   const from = msg?.from;            // ej: "569XXXXXXXX"
-  const type = msg?.type;            // ej: "text"
-  const bodyText = type === 'text' ? (msg?.text?.body ?? '') : '';
+  const type = msg?.type;            // ej: 'text' | 'interactive'
+  let bodyText = '';
+  let choiceId = null;
+  if (type === 'text') {
+    bodyText = msg?.text?.body ?? '';
+  } else if (type === 'interactive') {
+    const br = msg?.interactive?.button_reply || {};
+    const lr = msg?.interactive?.list_reply || {};
+    choiceId = br.id || lr.id || null;
+    const title = br.title || lr.title || '';
+    // Mapear id a frase estable
+    bodyText = mapInteractiveToInput(choiceId, title);
+  }
 
   if (!from) return { ok: false, reason: 'missing_from' };
   if (!bodyText) return { ok: false, reason: 'missing_text_body_or_not_text_type', type };
@@ -143,10 +236,11 @@ function extractFromAndTextBody(body) {
 
   return {
     ok: true,
-    from: normalizedFrom,        // "569XXXXXXXX"
+    from: normalizedFrom,        // '569XXXXXXXX'
     rawFrom: from,               // por si quieres conservar el original
-    text: normalizedText,        // "Hola 👋"
-    type
+    text: normalizedText,        // Texto listo para enviar al MCP
+    type,
+    choiceId,
   };
 }
 
@@ -358,11 +452,15 @@ app.post('/webhook/wa', async (req, res) => {
   let mcpResp;
 
   try {
+    // Usar session_id estable = número de teléfono (E.164 sin '+')
+    const stableSid = `+${from}`;
+
     mcpResp = await axios.post(mcpUrl, {
       pregunta: userText,
-      context: { sender: `+${from}` }, // `from` ya está normalizado a solo dígitos
+      context: { sender: `+${from}` },
       channel: 'whatsapp',
-    }, { timeout: 15000 });
+      session_id: stableSid,
+    }, { timeout: 20000 });
   } catch (err) {
     console.error('[WA] Error llamando MCP-Core:', err?.response?.data || err.message);
     await sendWhatsAppMessage(from, 'Estamos teniendo problemas para procesar tu mensaje. Intenta nuevamente en unos minutos.');
@@ -371,16 +469,32 @@ app.post('/webhook/wa', async (req, res) => {
 
   // 4) Procesar y enviar respuesta de MCP-Core
   const data = mcpResp?.data || {};
-  const outs = Array.isArray(data.respuestas)
-    ? data.respuestas
-    : [data.respuesta || data.message].filter(Boolean);
+  const outs = Array.isArray(data.respuestas) ? data.respuestas : [];
+  const single = data.respuesta || data.message;
 
-  if (outs.length === 0) {
-    await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');
-  } else {
-    for (const text of outs) {
-      await sendWhatsAppMessage(from, String(text).slice(0, 4000));
+  if (outs.length > 0) {
+    for (const item of outs) {
+      if (item && typeof item === 'object') {
+        const txt = item.respuesta || '';
+        const sugg = Array.isArray(item.suggested_replies) ? item.suggested_replies : [];
+        if (sugg.length > 0) {
+          await sendWhatsAppInteractive(from, txt || 'Elige una opción:', sugg);
+        } else if (txt) {
+          await sendWhatsAppMessage(from, String(txt).slice(0, 4000));
+        }
+      } else if (item) {
+        await sendWhatsAppMessage(from, String(item).slice(0, 4000));
+      }
     }
+  } else if (single) {
+    const sugg = Array.isArray(data.suggested_replies) ? data.suggested_replies : [];
+    if (sugg.length > 0) {
+      await sendWhatsAppInteractive(from, String(single).slice(0, 4000), sugg);
+    } else {
+      await sendWhatsAppMessage(from, String(single).slice(0, 4000));
+    }
+  } else {
+    await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');
   }
 });
 
