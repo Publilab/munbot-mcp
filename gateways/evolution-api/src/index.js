@@ -86,6 +86,31 @@ const wss = new WebSocket.Server({ server });
 // ======================================
 // 4. Integración WhatsApp Cloud API (Meta)
 // ======================================
+// Divide texto largo en partes ≤ maxLen, procurando cortar en saltos de línea o espacios
+function splitTextForWhatsApp(text, maxLen = 4000) {
+  const t = String(text || '');
+  if (t.length <= maxLen) return [t];
+  const parts = [];
+  let remaining = t;
+  const limit = Math.max(1000, Math.min(maxLen, 4000));
+  while (remaining.length > limit) {
+    // Intentar cortar en salto de línea o espacio cercano al límite
+    let cut = remaining.lastIndexOf('\n', limit);
+    if (cut < limit * 0.6) {
+      const space = remaining.lastIndexOf(' ', limit);
+      cut = Math.max(cut, space);
+    }
+    if (cut <= 0) cut = limit; // corte duro si no hay separador conveniente
+    parts.push(remaining.slice(0, cut).trim());
+    remaining = remaining.slice(cut).trim();
+  }
+  if (remaining) parts.push(remaining);
+  if (parts.length > 1) {
+    return parts.map((p, i) => `${p}\n(${i + 1}/${parts.length})`);
+  }
+  return parts;
+}
+
 async function sendWhatsAppMessage(toNumber, text) {
   const base = (process.env.WHATSAPP_API_URL || 'https://graph.facebook.com/v19.0').replace(/\/$/, '');
   const phoneId = process.env.META_PHONE_ID;
@@ -96,19 +121,25 @@ async function sendWhatsAppMessage(toNumber, text) {
   }
 
   const url = `${base}/${phoneId}/messages`;
-  const payload = {
-    messaging_product: 'whatsapp',
-    to: normalizeTo(toNumber),       // E.164 sin '+'
-    type: 'text',
-    text: { body: text },
-  };
-
+  const segments = splitTextForWhatsApp(text, 4000);
+  let last;
   try {
-    const r = await axios.post(url, payload, {
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      timeout: 15000,
-    });
-    return r.data;
+    for (const seg of segments) {
+      const payload = {
+        messaging_product: 'whatsapp',
+        to: normalizeTo(toNumber),       // E.164 sin '+'
+        type: 'text',
+        text: { body: seg, preview_url: false },
+      };
+      const r = await axios.post(url, payload, {
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        timeout: 15000,
+      });
+      last = r.data;
+      // Pequeña pausa para mantener orden de lectura cuando hay múltiples partes
+      if (segments.length > 1) await new Promise(res => setTimeout(res, 400));
+    }
+    return last;
   } catch (err) {
     console.error('[WA] Error enviando mensaje:', err?.response?.data || err.message);
     throw err;
@@ -127,11 +158,12 @@ async function sendWhatsAppInteractive(toNumber, bodyText, options) {
   const url = `${base}/${phoneId}/messages`;
 
   const makeId = (title, i) => String(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `opt-${i+1}`;
-  const safeOptions = (options || []).slice(0, 10).map((t, i) => ({ id: makeId(t, i), title: String(t).slice(0, 24) }));
+  const optionsRaw = (options || []).slice(0, 10);
 
-  // Usar botones (máx 3) o lista (hasta 10)
+  // Usar botones (máx 3, título ≤ 20) o lista (hasta 10, título ≤ 24)
   let payload;
-  if (safeOptions.length > 0 && safeOptions.length <= 3) {
+  if (optionsRaw.length > 0 && optionsRaw.length <= 3) {
+    const buttonOptions = optionsRaw.map((t, i) => ({ id: makeId(t, i), title: String(t).slice(0, 20) }));
     payload = {
       messaging_product: 'whatsapp',
       to: normalizeTo(toNumber),
@@ -140,11 +172,12 @@ async function sendWhatsAppInteractive(toNumber, bodyText, options) {
         type: 'button',
         body: { text: String(bodyText).slice(0, 1024) },
         action: {
-          buttons: safeOptions.map(o => ({ type: 'reply', reply: { id: o.id, title: o.title } }))
+          buttons: buttonOptions.map(o => ({ type: 'reply', reply: { id: o.id, title: o.title } }))
         }
       }
     };
   } else {
+    const listOptions = optionsRaw.map((t, i) => ({ id: makeId(t, i), title: String(t).slice(0, 24) }));
     payload = {
       messaging_product: 'whatsapp',
       to: normalizeTo(toNumber),
@@ -158,7 +191,7 @@ async function sendWhatsAppInteractive(toNumber, bodyText, options) {
           sections: [
             {
               title: 'Sugerencias',
-              rows: safeOptions.map(o => ({ id: o.id, title: o.title }))
+              rows: listOptions.map(o => ({ id: o.id, title: o.title }))
             }
           ]
         }
@@ -193,8 +226,9 @@ function mapInteractiveToInput(id, title) {
     'donde-tramitar': 'Dónde tramitar',
     'para-que-sirve': 'Para qué sirve',
   };
-  // Si tenemos un mapeo conocido, úsalo; si no, usa el título mostrado (más natural) o el id como fallback
-  return known[id] || title || id;
+  // Preferir id porque el título puede estar truncado por límites de WhatsApp
+  // Si tenemos un mapeo conocido, úsalo; si no, usa id completo (slug) y como último recurso el título
+  return known[id] || id || title;
 }
 
 function extractFromAndTextBody(body) {
@@ -412,7 +446,7 @@ app.get('/', apiKeyMiddleware, (req, res) => {
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Evolution API saludable (sin autenticación)' });
 });
-app.get('/health', apiKeyMiddleware, async (req, res) => {
+app.get('/health/auth', apiKeyMiddleware, async (req, res) => {
   let historyCount = 0;
   try {
     const history = await fs.readJson(HISTORY_FILE).catch(() => []);
@@ -480,10 +514,10 @@ app.post('/webhook/wa', async (req, res) => {
         if (sugg.length > 0) {
           await sendWhatsAppInteractive(from, txt || 'Elige una opción:', sugg);
         } else if (txt) {
-          await sendWhatsAppMessage(from, String(txt).slice(0, 4000));
+          await sendWhatsAppMessage(from, String(txt));
         }
       } else if (item) {
-        await sendWhatsAppMessage(from, String(item).slice(0, 4000));
+        await sendWhatsAppMessage(from, String(item));
       }
     }
   } else if (single) {
@@ -491,7 +525,7 @@ app.post('/webhook/wa', async (req, res) => {
     if (sugg.length > 0) {
       await sendWhatsAppInteractive(from, String(single).slice(0, 4000), sugg);
     } else {
-      await sendWhatsAppMessage(from, String(single).slice(0, 4000));
+      await sendWhatsAppMessage(from, String(single));
     }
   } else {
     await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');

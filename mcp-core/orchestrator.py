@@ -412,6 +412,33 @@ def show_catalog() -> Dict[str, Any]:
         payload["suggested_replies"] = suggestions
     return payload
 
+def show_demo_tramites() -> Dict[str, Any]:
+    """Muestra los 3 trámites de la demo con un mensaje específico."""
+    msg = (
+        "En mi versión Demo puedo entregarte información específica sobre los siguientes trámites municipales. "
+        "Dime cuál te interesa y procedo a aclarar tus dudas"
+    )
+    # IDs esperados en la demo; si faltan, caer a los primeros del KB
+    demo_ids = [
+        "cert_residencia_definitiva",
+        "licencia transporte espacial",
+        "patente comercial intergalactica",
+    ]
+    names: list[str] = []
+    for tid in demo_ids:
+        if tid in (KB_BY_ID or {}):
+            names.append(_kb_display_name(tid))
+    if len(names) < 3:
+        try:
+            extra = [t for t in (KB_BY_ID or {}).keys() if t not in demo_ids][: 3 - len(names)]
+            names.extend([_kb_display_name(tid) for tid in extra])
+        except Exception:
+            pass
+    payload = {"respuesta": msg, "no_results": False, "_resp_type": "demo_catalog"}
+    if names:
+        payload["suggested_replies"] = names[:3]
+    return payload
+
 def show_sched_hours_disambiguation() -> Dict[str, Any]:
     msg = "Para que sea preciso: ¿quieres conocer el horario de atención o agendar una cita?"
     return {
@@ -688,6 +715,7 @@ INTENT_MAP = {
     "show_help": "show_help",
     "catalog": "show_catalog",
     "show_catalog": "show_catalog",
+    "demo_catalog": "show_demo_tramites",
     "sched_hours_disambiguate": "sched_hours_disambiguate",
     "faq": "ask_document",
     "documento": "ask_document",
@@ -1010,6 +1038,18 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     )
     if any(tok in lower for tok in help_tokens) or re.search(r"como\s+.*\s+usar", lower):
         return _finalize({"intent": "help", "sub_intent": "help"})
+
+    # Catálogo DEMO: "que tramites ofreces", "quiero saber que tramites ofreces", "que tramites puedo obtener" (con ruido)
+    if ("tramite" in lower or "trámite" in lower or "tramites" in lower or "trámites" in lower):
+        if any(w in lower for w in ("ofreces", "ofrece", "ofrecen", "ofrecer")) or any(
+            w in lower for w in ("puedo obtener", "puedo sacar", "puedo tramitar")
+        ):
+            try:
+                # Evitar si ya nombra un trámite concreto
+                if not match_tramite(text, KB_BY_ALIAS):
+                    return _finalize({"intent": "demo_catalog", "sub_intent": "catalog"})
+            except Exception:
+                return _finalize({"intent": "demo_catalog", "sub_intent": "catalog"})
 
     # Catálogo general de trámites/servicios: "que tramites puedo hacer", "tramites disponibles",
     # "lista de tramites", "que servicios ofrecen", "informacion de tramites"
@@ -1713,6 +1753,11 @@ def handle_turn(
 
     if intent_action == "show_catalog":
         resp = show_catalog()
+        context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
+        return resp
+
+    if intent_action == "show_demo_tramites":
+        resp = show_demo_tramites()
         context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
         return resp
 
