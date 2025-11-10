@@ -439,6 +439,30 @@ def show_demo_tramites() -> Dict[str, Any]:
         payload["suggested_replies"] = names[:3]
     return payload
 
+def show_scheduler_howto() -> Dict[str, Any]:
+    msg = (
+        "Para agendar una cita: 1) me indicas una fecha u horario, 2) te propongo bloques disponibles, 3) confirmas tus datos y la reserva.\n"
+        "¿Quieres agendar ahora?"
+    )
+    return {
+        "respuesta": msg,
+        "no_results": False,
+        "suggested_replies": ["Sí", "No"],
+        "_resp_type": "howto_scheduler",
+    }
+
+def show_complaint_howto() -> Dict[str, Any]:
+    msg = (
+        "Para registrar un reclamo: te pediré tu nombre y RUT, tu correo de contacto, el asunto y la descripción. Al final generaré el comprobante.\n"
+        "¿Quieres registrarlo ahora?"
+    )
+    return {
+        "respuesta": msg,
+        "no_results": False,
+        "suggested_replies": ["Sí", "No"],
+        "_resp_type": "howto_complaint",
+    }
+
 def show_sched_hours_disambiguation() -> Dict[str, Any]:
     msg = "Para que sea preciso: ¿quieres conocer el horario de atención o agendar una cita?"
     return {
@@ -716,6 +740,8 @@ INTENT_MAP = {
     "catalog": "show_catalog",
     "show_catalog": "show_catalog",
     "demo_catalog": "show_demo_tramites",
+    "howto_scheduler": "howto_scheduler",
+    "howto_complaint": "howto_complaint",
     "sched_hours_disambiguate": "sched_hours_disambiguate",
     "faq": "ask_document",
     "documento": "ask_document",
@@ -1090,6 +1116,25 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
                     return _finalize({"intent": "catalog", "sub_intent": "catalog"})
             except Exception:
                 return _finalize({"intent": "catalog", "sub_intent": "catalog"})
+
+    # How-to Scheduler: "como puedo agendar/Reservar una cita", "como hablar con un funcionario", etc.
+    if "como" in lower or "cómo" in lower:
+        sched_verbs = ("agend", "reserv", "program", "coordin")
+        sched_objs = ("cita", "turno", "hora")
+        talk_phrases = (
+            "hablar con un funcionario",
+            "hablar con alguien en la municipalidad",
+            "que me atienda un funcionario",
+        )
+        if any(v in lower for v in sched_verbs) and any(o in lower for o in sched_objs):
+            return _finalize({"intent": "howto_scheduler"})
+        if any(p in lower for p in talk_phrases):
+            return _finalize({"intent": "howto_scheduler"})
+
+    # How-to Complaint: "como puedo hacer/registrar/presentar un reclamo"
+    if ("como" in lower or "cómo" in lower) and ("reclamo" in lower or "reclamo" in norm):
+        if any(w in lower for w in ("hacer", "registrar", "presentar", "dejar")):
+            return _finalize({"intent": "howto_complaint"})
 
     # Smalltalk puro (solo saludo/agradecimiento/etc.)
     if _is_pure_smalltalk(lower):
@@ -1688,6 +1733,37 @@ def handle_turn(
             context_manager.update_context(session_id, user_text, menu.get("respuesta", ""))
             return menu
 
+    # 0.1) Si venimos de un how-to (info_action), interpretar Sí/No y lanzar flujo
+    info_action = context_manager.get_context_field(session_id, "info_action")
+    if info_action:
+        norm = normalize_text(user_text)
+        if norm in YES_WORDS:
+            context_manager.clear_context_field(session_id, "info_action")
+            if info_action == "init_scheduler":
+                # Arrancar flujo de agenda saltando confirmación
+                context_manager.set_current_flow(session_id, "agenda")
+                context_manager.update_scheduler_state(session_id, "confirming_process")
+                return handle_scheduler_flow(session_id, "acepto", trace_id=trace_id, channel=channel)
+            if info_action == "init_complaint":
+                # Arrancar flujo de reclamo en 'collecting_name'
+                context_manager.set_current_flow(session_id, "reclamo")
+                context_manager.update_complaint_state(session_id, "collecting_name")
+                context_manager.update_pending_field(session_id, "nombre")
+                msg = "Excelente, comencemos. ¿Cómo te llamas?"
+                context_manager.update_context(session_id, user_text, msg)
+                return {"respuesta": msg, "no_results": False}
+        elif norm in NO_WORDS:
+            context_manager.clear_context_field(session_id, "info_action")
+            main = show_main_menu()
+            context_manager.update_context(session_id, user_text, main.get("respuesta", ""))
+            return main
+        else:
+            # Re-preguntar brevemente
+            msg = "¿Deseas realizarlo ahora?"
+            payload = {"respuesta": msg, "no_results": False, "suggested_replies": ["Sí", "No"]}
+            context_manager.update_context(session_id, user_text, msg)
+            return payload
+
     if _wants_change_topic(user_text):
         context_manager.clear_pending_field(session_id)
         context_manager.clear_complaint_state(session_id)
@@ -1758,6 +1834,18 @@ def handle_turn(
 
     if intent_action == "show_demo_tramites":
         resp = show_demo_tramites()
+        context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
+        return resp
+
+    if intent_action == "howto_scheduler":
+        resp = show_scheduler_howto()
+        context_manager.update_context_data(session_id, {"info_action": "init_scheduler"})
+        context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
+        return resp
+
+    if intent_action == "howto_complaint":
+        resp = show_complaint_howto()
+        context_manager.update_context_data(session_id, {"info_action": "init_complaint"})
         context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
         return resp
 
