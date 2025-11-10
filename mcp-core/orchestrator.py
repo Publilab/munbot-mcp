@@ -269,6 +269,113 @@ except Exception as _kb_exc:  # pragma: no cover - keep app running even if KB m
     KB_BY_ID, KB_BY_ALIAS, KB_ASPECT_MAP, KB_CATEGORIAS = {}, {}, {}, {}
     _jlog(_logger, "kb.load_error", error=str(_kb_exc))
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Carga de Preguntas Frecuentes (FAQ) determinísticas
+# ─────────────────────────────────────────────────────────────────────────────
+def _load_faqs() -> dict:
+    try:
+        root = Path(__file__).resolve().parents[1]
+        faq_path = root / "kb" / "preguntas_frecuentes.json"
+        data = json.loads(faq_path.read_text(encoding="utf-8"))
+        return data or {}
+    except Exception as e:
+        _jlog(_logger, "kb.faq_load_error", error=str(e))
+        return {}
+
+KB_FAQ_RAW = _load_faqs()
+
+# Mapa genérico de sinónimos por clave FAQ (normalizado)
+FAQ_GENERIC_SYNONYMS = {
+    "tiempo_residencia": ["tiempo residencia", "anos residencia", "años residencia", "plazo residencia"],
+    "documentos_requeridos": ["documentos", "documento", "papeles", "certificados", "que documentos", "que necesito"],
+    "certificados_digitales": ["certificados digitales", "digitales"],
+    "antecedentes_penales": ["antecedentes penales", "certificado antecedentes"],
+    "plazos_y_seguimiento": ["plazo", "plazos", "demora", "cuanto demora", "seguimiento", "estado tramite", "estado tramitacion"],
+    "visa_temporal_vencida": ["visa temporal vencida", "visa vencida"],
+    "causales_rechazo": ["rechazo", "causales rechazo"],
+    # Licencia
+    "clase_licencia": ["clase licencia", "tipo licencia", "categoria licencia"],
+    "requisitos_generales": ["requisitos", "que necesito"],
+    "documentos_examen": ["documentos examen", "papeles examen"],
+    "examen_teorico": ["examen teorico", "teorico", "prueba teorica"],
+    "examen_practico": ["examen practico", "practico", "prueba practica", "circuito"],
+    "reprobado": ["reprobe", "reprobar", "reprobado", "volver rendir"],
+    # Patente comercial
+    "venta_desde_casa": ["desde casa", "por internet", "online", "ecommerce"],
+    "requisitos_local": ["requisitos local", "normas uso suelo", "sanitarias"],
+    "verificacion_direccion": ["uso suelo", "zonificacion", "direccion obras", "dom", "verificar direccion"],
+    "pago_patente": ["pago patente", "pagar", "donde pago", "cuando pago", "semestral", "enero", "julio"],
+    "inicio_sin_patente": ["inicio actividades", "sii", "sin patente"],
+    "cambio_giro": ["cambio giro", "modificacion giro"],
+}
+
+def _normalize(s: str) -> str:
+    try:
+        return normalize_text(s)
+    except Exception:
+        if not isinstance(s, str):
+            return ""
+        return s.strip().lower()
+
+def _build_faq_by_tid() -> dict:
+    by_tid: dict[str, dict] = {}
+    try:
+        for key, entry in (KB_FAQ_RAW or {}).items():
+            aliases = entry.get("aliases") or []
+            # Intentar mapear cualquier alias a un tramite_id de la KB principal
+            tid = None
+            for al in aliases:
+                try:
+                    tid = match_tramite(al, KB_BY_ALIAS)
+                    if tid:
+                        break
+                except Exception:
+                    continue
+            if not tid:
+                continue
+            faq = entry.get("faq") or {}
+            by_tid[tid] = {
+                "faq": faq,
+            }
+    except Exception as e:
+        _jlog(_logger, "kb.build_faq_index_error", error=str(e))
+    return by_tid
+
+KB_FAQ_BY_TID = _build_faq_by_tid()
+
+def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, Any]]:
+    """Devuelve respuesta de FAQ si `user_text` coincide con alguna clave FAQ del trámite.
+
+    - Usa `tramite_id` si se provee; si no, no intenta buscar (el llamador puede resolverlo por contexto).
+    - Coincide por substrings normalizados: claves FAQ, sinónimos genéricos.
+    """
+    if not tramite_id or not user_text:
+        return None
+    entry = KB_FAQ_BY_TID.get(tramite_id)
+    if not entry:
+        return None
+    faq: dict = entry.get("faq") or {}
+    if not faq:
+        return None
+    txt = _normalize(user_text)
+
+    # 1) Coincidencia directa por nombre de clave normalizado (guiones bajos → espacios)
+    for k, answer in faq.items():
+        k_norm = _normalize(k.replace("_", " "))
+        if k_norm and k_norm in txt:
+            return {"respuesta": str(answer), "no_results": False, "_resp_type": "faq"}
+
+    # 2) Coincidencia por sinónimos genéricos
+    for k, syns in FAQ_GENERIC_SYNONYMS.items():
+        if k not in faq:
+            continue
+        for s in syns:
+            s_norm = _normalize(s)
+            if s_norm and s_norm in txt:
+                return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
+
+    return None
+
 def _kb_display_name(tramite_id: str) -> str:
     t = KB_BY_ID.get(tramite_id) or {}
     aliases = t.get("aliases") or []
@@ -1871,6 +1978,15 @@ def handle_turn(
                 return respond_direct(selected, aspecto, session_id, turn_count)
             if t_id and aspecto:
                 return respond_direct(t_id, aspecto, session_id, turn_count)
+            # Intentar responder por FAQ si hay trámite pero no aspecto detectado
+            if (t_id and not aspecto) or (selected and not aspecto):
+                target = t_id or selected
+                faq_resp = check_faq(target, user_text)
+                if faq_resp:
+                    # Mantener contexto del trámite
+                    context_manager.set_selected_document(session_id, target)
+                    context_manager.update_context(session_id, user_text, faq_resp.get("respuesta", ""))
+                    return faq_resp
             if t_id and not aspecto:
                 # Entramos en modo selección de aspecto explícito
                 context_manager.update_context_data(session_id, {"expecting_aspect": True})

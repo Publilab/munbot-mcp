@@ -1,0 +1,36 @@
+{
+  "residencia_definitiva": {
+    "aliases": ["permiso de residencia", "residencia definitiva", "permiso definitivo"],
+    "faq": {
+      "tiempo_residencia": "Sí. En general, si has residido legalmente en el país durante 4 años con visas temporales consecutivas, puedes solicitar la residencia definitiva...",
+      "documentos_requeridos": "Se solicita: copia de tu cédula vigente, certificado de antecedentes para fines especiales, comprobante de domicilio y contrato laboral...",
+      "certificados_digitales": "Se aceptan certificados digitales emitidos por instituciones oficiales chilenas. Documentos extranjeros deben estar apostillados...",
+      "antecedentes_penales": "Sí. Es obligatorio presentar antecedentes penales de tu país de origen (apostillados) y también el certificado chileno...",
+      "plazos_y_seguimiento": "El tiempo de tramitación promedio es de 90 a 120 días hábiles. Puedes hacer seguimiento en línea ingresando al sitio del Servicio Nacional de Migraciones...",
+      "visa_temporal_vencida": "Puedes permanecer en el país legalmente mientras el proceso esté en trámite, siempre que hayas ingresado la solicitud antes del vencimiento.",
+      "causales_rechazo": "Las más frecuentes son: antecedentes penales, documentación incompleta, residencias interrumpidas o vencidas, y falsificación documental..."
+    }
+  },
+  "licencia_transporte": {
+    "aliases": ["licencia de conducir", "licencia profesional", "licencia transporte"],
+    "faq": {
+      "clase_licencia": "Depende del tipo de vehículo: clase A1 para taxis, A2 para transporte privado, A3 para buses de pasajeros...",
+      "requisitos_generales": "Debes tener al menos 20 años, estar en buen estado físico y mental, y haber aprobado 8° básico...",
+      "documentos_examen": "Debes presentar: cédula vigente, certificado médico, hoja de vida del conductor...",
+      "examen_teorico": "Incluye preguntas sobre normas de tránsito, señales, mecánica básica y prevención de riesgos...",
+      "examen_practico": "Es una evaluación de conducción en un circuito habilitado por la municipalidad...",
+      "reprobado": "Puedes volver a rendir el examen que reprobaste, pero deberás esperar un mínimo de 15 días hábiles..."
+    }
+  },
+  "patente_comercial": {
+    "aliases": ["patente comercial", "actividad comercial", "iniciar negocio"],
+    "faq": {
+      "venta_desde_casa": "Sí. Toda actividad económica habitual requiere patente, incluso si es desde el hogar o por internet...",
+      "requisitos_local": "Debe cumplir con las normas de uso de suelo, tener baño, ventilación, medidas sanitarias...",
+      "verificacion_direccion": "Debes consultar en la Dirección de Obras Municipales (DOM) si la zonificación permite el giro...",
+      "pago_patente": "El pago es semestral: en enero y julio de cada año. Puedes pagar en línea o en tesorería municipal...",
+      "inicio_sin_patente": "No. El inicio de actividades en el SII no reemplaza la obligación de contar con patente municipal...",
+      "cambio_giro": "Debes solicitar una modificación de giro en el municipio. Requiere revisión de zonificación y actualización del SII..."
+    }
+  }
+}
