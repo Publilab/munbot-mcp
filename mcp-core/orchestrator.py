@@ -1001,7 +1001,8 @@ def _norm_intent(label: str) -> str:
         return ""
     s = label.strip().lower()
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
-    s = re.sub(r"[\\^\\w/]+", "", s)
+    # Mantener solo caracteres de palabra y '/'; eliminar el resto
+    s = re.sub(r"[^\w/]+", "", s)
     return s
 
 
@@ -1503,12 +1504,23 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
 
     # How-to Scheduler: "como puedo agendar/Reservar una cita", "como hablar con un funcionario", etc.
     if "como" in lower or "cómo" in lower:
-        sched_verbs = ("agend", "reserv", "program", "coordin", "pedir", "sacar", "solicit", "consegu")
-        sched_objs = ("cita", "turno", "hora")
+        # Usamos raíces para cubrir conjugaciones: agendo/agendar, reservo/reservar, programo/programar, coordino/coordinar,
+        # pido/pide/pedir, saco/sacar, solicito/solicitar, consigo/conseguir
+        sched_verbs = ("agend", "reserv", "program", "coordin", "ped", "sac", "solicit", "consig")
+        # Objetos y sinónimos habituales
+        sched_objs = ("cita", "turno", "hora", "atencion")
+        # Frases fuertes de intención de atención personal (ampliadas)
         talk_phrases = (
             "hablar con un funcionario",
+            "hablar con un agente",
+            "hablar con una persona",
             "hablar con alguien en la municipalidad",
+            "hablar con alguien del municipio",
+            "hablar con alguien de la muni",
             "que me atienda un funcionario",
+            "que me atienda alguien",
+            "que me atiendan",
+            "quiero que me atiendan",
         )
         if any(v in lower for v in sched_verbs) and any(o in lower for o in sched_objs):
             return _finalize({"intent": "howto_scheduler"})
@@ -1516,8 +1528,11 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
             return _finalize({"intent": "howto_scheduler"})
 
     # Otras formas informativas sin 'cómo': "dónde pido hora", "se puede pedir hora por acá"
-    if ("donde" in lower or "dónde" in lower or "se puede" in lower) and ("hora" in lower or "cita" in lower or "turno" in lower):
-        if ("pedir" in lower or "pido" in lower or "sacar" in lower or "agendar" in lower or "reserv" in lower or "agenda" in lower):
+    if ("donde" in lower or "dónde" in lower or "se puede" in lower):
+        has_obj = any(tok in lower for tok in ("hora", "cita", "turno", "atencion"))
+        has_verb = any(tok in lower for tok in ("pedir", "pido", "pide", "sacar", "saco", "agendar", "agenda", "reserv", "reserva", "program", "coordina"))
+        talk_signal = any(tok in lower for tok in ("hablar con", "que me atiend"))
+        if (has_obj and has_verb) or talk_signal:
             return _finalize({"intent": "howto_scheduler"})
 
     # How-to Complaint: "como puedo hacer/registrar/presentar un reclamo"
