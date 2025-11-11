@@ -1,0 +1,15 @@
+confirm_variants:
+  - "Listo 👍"
+  - "Perfecto 👌"
+  - "Entendido ✅"
+
+invite_variants:
+  - "¿Quieres ver algo más de *{tramite}*?"
+  - "¿Te muestro algo más sobre *{tramite}*?"
+  - "¿Seguimos con *{tramite}*?"
+
+options_variants:
+  - "Puedo mostrarte requisitos, costos, horarios o dónde tramitar. O si quieres hacerme otra pregunta, puedes hacérmela directamente y, si está en mi base de conocimiento, con gusto la responderé."
+  - "Tengo requisitos, costos, horarios y dirección del trámite. También puedes hacerme otra pregunta directamente y, si está en mi base de conocimiento, con gusto la responderé."
+  - "Dispongo de requisitos, costos, horarios y lugar de tramitación. Si lo prefieres, puedes preguntar otra cosa y, si está en mi base de conocimiento, con gusto la responderé."
+

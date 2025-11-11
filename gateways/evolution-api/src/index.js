@@ -82,6 +82,55 @@ app.get('/webhook/wa', (req, res) => {
 
 const server = createServer(app);
 const wss = new WebSocket.Server({ server });
+const WA_DEBOUNCE_MS = parseInt(process.env.WA_DEBOUNCE_MS || '1500', 10);
+const waDebounce = new Map(); // from -> {timer, texts: []}
+
+async function processMcpAndRespond(from, userText) {
+  const mcpUrl = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
+  let mcpResp;
+  try {
+    const stableSid = `+${from}`;
+    mcpResp = await axios.post(mcpUrl, {
+      pregunta: userText,
+      context: { sender: `+${from}` },
+      channel: 'whatsapp',
+      session_id: stableSid,
+    }, { timeout: 20000 });
+  } catch (err) {
+    console.error('[WA] Error llamando MCP-Core:', err?.response?.data || err.message);
+    await sendWhatsAppMessage(from, 'Estamos teniendo problemas para procesar tu mensaje. Intenta nuevamente en unos minutos.');
+    return;
+  }
+
+  const data = mcpResp?.data || {};
+  const outs = Array.isArray(data.respuestas) ? data.respuestas : [];
+  const single = data.respuesta || data.message;
+
+  if (outs.length > 0) {
+    for (const item of outs) {
+      if (item && typeof item === 'object') {
+        const txt = item.respuesta || '';
+        const sugg = Array.isArray(item.suggested_replies) ? item.suggested_replies : [];
+        if (sugg.length > 0) {
+          await sendWhatsAppInteractive(from, txt || 'Elige una opción:', sugg);
+        } else if (txt) {
+          await sendWhatsAppMessage(from, String(txt));
+        }
+      } else if (item) {
+        await sendWhatsAppMessage(from, String(item));
+      }
+    }
+  } else if (single) {
+    const sugg = Array.isArray(data.suggested_replies) ? data.suggested_replies : [];
+    if (sugg.length > 0) {
+      await sendWhatsAppInteractive(from, String(single), sugg);
+    } else {
+      await sendWhatsAppMessage(from, String(single));
+    }
+  } else {
+    await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');
+  }
+}
 
 // ======================================
 // 4. Integración WhatsApp Cloud API (Meta)
@@ -479,57 +528,27 @@ app.post('/webhook/wa', async (req, res) => {
     return;
   }
 
-  const { from, text: userText } = messageData;
+  const { from, text: userText, type } = messageData;
 
-  // 3) Llamar al orquestador (MCP-Core)
-  const mcpUrl = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
-  let mcpResp;
-
-  try {
-    // Usar session_id estable = número de teléfono (E.164 sin '+')
-    const stableSid = `+${from}`;
-
-    mcpResp = await axios.post(mcpUrl, {
-      pregunta: userText,
-      context: { sender: `+${from}` },
-      channel: 'whatsapp',
-      session_id: stableSid,
-    }, { timeout: 20000 });
-  } catch (err) {
-    console.error('[WA] Error llamando MCP-Core:', err?.response?.data || err.message);
-    await sendWhatsAppMessage(from, 'Estamos teniendo problemas para procesar tu mensaje. Intenta nuevamente en unos minutos.');
+  // 3) Debounce/agrupación por número: juntar prefacios + pregunta
+  if (type === 'interactive') {
+    await processMcpAndRespond(from, userText);
     return;
   }
 
-  // 4) Procesar y enviar respuesta de MCP-Core
-  const data = mcpResp?.data || {};
-  const outs = Array.isArray(data.respuestas) ? data.respuestas : [];
-  const single = data.respuesta || data.message;
-
-  if (outs.length > 0) {
-    for (const item of outs) {
-      if (item && typeof item === 'object') {
-        const txt = item.respuesta || '';
-        const sugg = Array.isArray(item.suggested_replies) ? item.suggested_replies : [];
-        if (sugg.length > 0) {
-          await sendWhatsAppInteractive(from, txt || 'Elige una opción:', sugg);
-        } else if (txt) {
-          await sendWhatsAppMessage(from, String(txt));
-        }
-      } else if (item) {
-        await sendWhatsAppMessage(from, String(item));
-      }
-    }
-  } else if (single) {
-    const sugg = Array.isArray(data.suggested_replies) ? data.suggested_replies : [];
-    if (sugg.length > 0) {
-      await sendWhatsAppInteractive(from, String(single).slice(0, 4000), sugg);
-    } else {
-      await sendWhatsAppMessage(from, String(single));
-    }
-  } else {
-    await sendWhatsAppMessage(from, 'No encontré una respuesta para eso. ¿Puedes reformular tu consulta?');
+  const key = from;
+  const existing = waDebounce.get(key) || { timer: null, texts: [] };
+  existing.texts.push(userText);
+  if (existing.texts.length > 3) {
+    existing.texts = existing.texts.slice(-3);
   }
+  if (existing.timer) clearTimeout(existing.timer);
+  existing.timer = setTimeout(async () => {
+    const combined = existing.texts.join(' ').trim();
+    waDebounce.delete(key);
+    await processMcpAndRespond(from, combined);
+  }, WA_DEBOUNCE_MS);
+  waDebounce.set(key, existing);
 });
 
 // ======================================

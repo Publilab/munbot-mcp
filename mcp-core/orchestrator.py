@@ -286,7 +286,19 @@ KB_FAQ_RAW = _load_faqs()
 
 # Mapa genérico de sinónimos por clave FAQ (normalizado)
 FAQ_GENERIC_SYNONYMS = {
-    "tiempo_residencia": ["tiempo residencia", "anos residencia", "años residencia", "plazo residencia"],
+    "tiempo_residencia": [
+        "tiempo residencia",
+        "anos residencia",
+        "años residencia",
+        "plazo residencia",
+        "anos viviendo",
+        "años viviendo",
+        "tiempo viviendo",
+        "he vivido",
+        "he residido",
+        "viviendo",
+        "residir",
+    ],
     "documentos_requeridos": ["documentos", "documento", "papeles", "certificados", "que documentos", "que necesito"],
     "certificados_digitales": ["certificados digitales", "digitales"],
     "antecedentes_penales": ["antecedentes penales", "certificado antecedentes"],
@@ -343,6 +355,85 @@ def _build_faq_by_tid() -> dict:
 
 KB_FAQ_BY_TID = _build_faq_by_tid()
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Carga de triggers específicos por trámite desde config/faq_triggers.yml
+# ─────────────────────────────────────────────────────────────────────────────
+def _load_faq_triggers() -> dict:
+    try:
+        cfg_path = os.getenv("FAQ_TRIGGERS_CONFIG_PATH")
+        if not cfg_path:
+            cfg_path = str((Path(__file__).resolve().parent / "config" / "faq_triggers.yml").absolute())
+        p = Path(cfg_path)
+        if not p.exists():
+            return {}
+        import yaml  # type: ignore
+        raw = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+        return raw if isinstance(raw, dict) else {}
+    except Exception as e:
+        _jlog(_logger, "kb.faq_triggers_load_error", error=str(e))
+        return {}
+
+def _build_faq_triggers_by_tid() -> dict:
+    raw = _load_faq_triggers()
+    by_tid: dict[str, dict[str, list]] = {}
+
+    def _merge_entry(tid: str, mapping: dict):
+        if not isinstance(mapping, dict):
+            return
+        cur = by_tid.setdefault(tid, {})
+        for faq_key, patterns in (mapping or {}).items():
+            if not isinstance(patterns, list):
+                continue
+            acc = cur.setdefault(faq_key, [])
+            for p in patterns:
+                p_str = str(p).strip()
+                if not p_str:
+                    continue
+                if p_str.startswith('re:'):
+                    pat = p_str[3:].strip()
+                    try:
+                        acc.append(re.compile(pat, re.I))
+                    except Exception:
+                        continue
+                else:
+                    acc.append(_normalize(p_str))
+
+    for k, mapping in (raw or {}).items():
+        # Soportar alias por regex: claves que comienzan con 're:'
+        if isinstance(k, str) and k.startswith('re:'):
+            pat_txt = k[3:].strip()
+            try:
+                alias_re = re.compile(pat_txt, re.I)
+            except Exception:
+                continue
+            # Buscar aliases que hagan match y obtener sus tramite_ids
+            matched_tids = set()
+            for alias_norm, tid in (KB_BY_ALIAS or {}).items():
+                try:
+                    if alias_re.search(alias_norm):
+                        matched_tids.add(tid)
+                except Exception:
+                    continue
+            for tid in matched_tids:
+                _merge_entry(tid, mapping)
+            continue
+
+        # Clave normal: usar match_tramite o id directo
+        key_text = k.replace("_", " ") if isinstance(k, str) else str(k)
+        try:
+            tid = match_tramite(key_text, KB_BY_ALIAS)
+        except Exception:
+            tid = None
+        if not tid and isinstance(k, str) and k in KB_BY_ID:
+            tid = k
+        if not tid:
+            continue
+        _merge_entry(tid, mapping)
+
+    return by_tid
+
+FAQ_TRIGGERS_BY_TID = _build_faq_triggers_by_tid()
+
 def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, Any]]:
     """Devuelve respuesta de FAQ si `user_text` coincide con alguna clave FAQ del trámite.
 
@@ -365,7 +456,26 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
         if k_norm and k_norm in txt:
             return {"respuesta": str(answer), "no_results": False, "_resp_type": "faq"}
 
-    # 2) Coincidencia por sinónimos genéricos
+    # 2) Triggers específicos por trámite (desde config)
+    try:
+        trig = FAQ_TRIGGERS_BY_TID.get(tramite_id) or {}
+        for k, pats in trig.items():
+            if k not in faq:
+                continue
+            for pat in pats:
+                try:
+                    if hasattr(pat, 'search'):
+                        if pat.search(txt):
+                            return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
+                    else:
+                        if pat and pat in txt:
+                            return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
+                except Exception:
+                    continue
+    except Exception:
+        pass
+
+    # 3) Coincidencia por sinónimos genéricos
     for k, syns in FAQ_GENERIC_SYNONYMS.items():
         if k not in faq:
             continue
@@ -373,6 +483,15 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
             s_norm = _normalize(s)
             if s_norm and s_norm in txt:
                 return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
+
+    # 4) Heurística especializada: años de residencia para residencia definitiva
+    try:
+        if "residencia" in txt and ("definitiva" in txt or "permiso" in txt or "certificado" in txt):
+            if re.search(r"\b(\d+)\s*(anos|años)\b", txt):
+                if "tiempo_residencia" in faq:
+                    return {"respuesta": str(faq["tiempo_residencia"]), "no_results": False, "_resp_type": "faq"}
+    except Exception:
+        pass
 
     return None
 
@@ -457,15 +576,16 @@ def show_tramites_menu(categoria: str) -> Dict[str, Any]:
     payload["suggested_replies"] = names
     return payload
 
+MAIN_MENU_TEXT = "¿En qué puedo ayudarte?"
+MAIN_MENU_BUTTONS = [
+    "🗂️ Certificados y trámites",
+    "📅 Agendar una cita",
+    "📝 Presentar un reclamo",
+    "📞 Hablar con un agente",
+]
+
 def show_main_menu() -> Dict[str, Any]:
-    msg = "¿En qué puedo ayudarte?"
-    buttons = [
-        "🗂️ Certificados y trámites",
-        "📅 Agendar una cita",
-        "📝 Presentar un reclamo",
-        "📞 Hablar con un agente",
-    ]
-    return {"respuesta": msg, "no_results": False, "suggested_replies": buttons}
+    return {"respuesta": MAIN_MENU_TEXT, "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
 
 def show_help_instructions() -> Dict[str, Any]:
     """Mensaje resumido de cómo usar el bot."""
@@ -546,27 +666,31 @@ def show_demo_tramites() -> Dict[str, Any]:
         payload["suggested_replies"] = names[:3]
     return payload
 
+SCHED_HOWTO_TEXT = (
+    "Para agendar una cita: 1) me indicas una fecha u horario, 2) te propongo bloques disponibles, 3) confirmas tus datos y la reserva.\n"
+    "¿Quieres agendar ahora?"
+)
+SCHED_HOWTO_BUTTONS = ["Sí", "No"]
+
 def show_scheduler_howto() -> Dict[str, Any]:
-    msg = (
-        "Para agendar una cita: 1) me indicas una fecha u horario, 2) te propongo bloques disponibles, 3) confirmas tus datos y la reserva.\n"
-        "¿Quieres agendar ahora?"
-    )
     return {
-        "respuesta": msg,
+        "respuesta": SCHED_HOWTO_TEXT,
         "no_results": False,
-        "suggested_replies": ["Sí", "No"],
+        "suggested_replies": list(SCHED_HOWTO_BUTTONS),
         "_resp_type": "howto_scheduler",
     }
 
+COMPLAINT_HOWTO_TEXT = (
+    "Para registrar un reclamo: te pediré tu nombre y RUT, tu correo de contacto, el asunto y la descripción. Al final generaré el comprobante.\n"
+    "¿Quieres registrarlo ahora?"
+)
+COMPLAINT_HOWTO_BUTTONS = ["Sí", "No"]
+
 def show_complaint_howto() -> Dict[str, Any]:
-    msg = (
-        "Para registrar un reclamo: te pediré tu nombre y RUT, tu correo de contacto, el asunto y la descripción. Al final generaré el comprobante.\n"
-        "¿Quieres registrarlo ahora?"
-    )
     return {
-        "respuesta": msg,
+        "respuesta": COMPLAINT_HOWTO_TEXT,
         "no_results": False,
-        "suggested_replies": ["Sí", "No"],
+        "suggested_replies": list(COMPLAINT_HOWTO_BUTTONS),
         "_resp_type": "howto_complaint",
     }
 
@@ -588,10 +712,91 @@ V_INVITE = [
     "¿Seguimos con *{tramite}*?"
 ]
 V_OPTIONS = [
-    "Puedo mostrarte requisitos, costos, horarios o dónde tramitar.",
-    "Tengo requisitos, costos, horarios y dirección del trámite.",
-    "Dispongo de requisitos, costos, horarios y lugar de tramitación."
+    "Puedo mostrarte requisitos, costos, horarios o dónde tramitar. O si quieres hacerme otra pregunta, puedes hacérmela directamente y, si está en mi base de conocimiento, con gusto la responderé.",
+    "Tengo requisitos, costos, horarios y dirección del trámite. También puedes hacerme otra pregunta directamente y, si está en mi base de conocimiento, con gusto la responderé.",
+    "Dispongo de requisitos, costos, horarios y lugar de tramitación. Si lo prefieres, puedes preguntar otra cosa y, si está en mi base de conocimiento, con gusto la responderé."
 ]
+
+# Carga opcional de variantes desde configuración externa (YAML/JSON)
+def _override_followup_from_config():
+    try:
+        cfg_path = os.getenv("FOLLOWUP_CONFIG_PATH")
+        if not cfg_path:
+            cfg_path = str((Path(__file__).resolve().parent / "config" / "followup.yml").absolute())
+        p = Path(cfg_path)
+        if not p.exists():
+            return
+        doc = None
+        try:
+            import yaml  # type: ignore
+            doc = yaml.safe_load(p.read_text(encoding="utf-8"))
+        except Exception:
+            try:
+                doc = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+                doc = None
+        if not isinstance(doc, dict):
+            return
+        global V_CONFIRM, V_INVITE, V_OPTIONS
+        if isinstance(doc.get("confirm_variants"), list) and doc.get("confirm_variants"):
+            V_CONFIRM = [str(x) for x in doc["confirm_variants"]]
+        if isinstance(doc.get("invite_variants"), list) and doc.get("invite_variants"):
+            V_INVITE = [str(x) for x in doc["invite_variants"]]
+        if isinstance(doc.get("options_variants"), list) and doc.get("options_variants"):
+            V_OPTIONS = [str(x) for x in doc["options_variants"]]
+        _jlog(_logger, "followup.config_loaded", path=str(p))
+    except Exception as e:
+        _jlog(_logger, "followup.config_error", error=str(e))
+
+_override_followup_from_config()
+
+# Carga opcional de mensajes (menú principal y how-to) desde configuración externa
+def _override_messages_from_config():
+    try:
+        cfg_path = os.getenv("MESSAGES_CONFIG_PATH")
+        if not cfg_path:
+            cfg_path = str((Path(__file__).resolve().parent / "config" / "messages.yml").absolute())
+        p = Path(cfg_path)
+        if not p.exists():
+            return
+        doc = None
+        try:
+            import yaml  # type: ignore
+            doc = yaml.safe_load(p.read_text(encoding="utf-8"))
+        except Exception:
+            try:
+                doc = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+                doc = None
+        if not isinstance(doc, dict):
+            return
+        global MAIN_MENU_TEXT, MAIN_MENU_BUTTONS
+        global SCHED_HOWTO_TEXT, SCHED_HOWTO_BUTTONS
+        global COMPLAINT_HOWTO_TEXT, COMPLAINT_HOWTO_BUTTONS
+
+        mm = doc.get("main_menu") or {}
+        if isinstance(mm.get("text"), str):
+            MAIN_MENU_TEXT = mm["text"]
+        if isinstance(mm.get("buttons"), list) and mm.get("buttons"):
+            MAIN_MENU_BUTTONS = [str(x) for x in mm["buttons"]]
+
+        hs = doc.get("howto_scheduler") or {}
+        if isinstance(hs.get("text"), str):
+            SCHED_HOWTO_TEXT = hs["text"]
+        if isinstance(hs.get("buttons"), list) and hs.get("buttons"):
+            SCHED_HOWTO_BUTTONS = [str(x) for x in hs["buttons"]]
+
+        hc = doc.get("howto_complaint") or {}
+        if isinstance(hc.get("text"), str):
+            COMPLAINT_HOWTO_TEXT = hc["text"]
+        if isinstance(hc.get("buttons"), list) and hc.get("buttons"):
+            COMPLAINT_HOWTO_BUTTONS = [str(x) for x in hc["buttons"]]
+
+        _jlog(_logger, "messages.config_loaded", path=str(p))
+    except Exception as e:
+        _jlog(_logger, "messages.config_error", error=str(e))
+
+_override_messages_from_config()
 
 
 def graceful_close() -> Dict[str, Any]:
@@ -850,6 +1055,7 @@ INTENT_MAP = {
     "howto_scheduler": "howto_scheduler",
     "howto_complaint": "howto_complaint",
     "sched_hours_disambiguate": "sched_hours_disambiguate",
+    "await_question": "await_question",
     "faq": "ask_document",
     "documento": "ask_document",
     "tramite": "ask_document",
@@ -1223,6 +1429,20 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
                     return _finalize({"intent": "catalog", "sub_intent": "catalog"})
             except Exception:
                 return _finalize({"intent": "catalog", "sub_intent": "catalog"})
+
+    # Prefacios de pregunta: evitar menú y pasar a "Te escucho..."
+    prefacios = (
+        "quiero hacer una pregunta",
+        "tengo una pregunta",
+        "quiero hacer una consulta",
+        "tengo una consulta",
+        "tengo una duda",
+        "quiero preguntar",
+        "puedo preguntarte",
+        "quiero hacerte una pregunta",
+    )
+    if any(p in lower for p in prefacios):
+        return _finalize({"intent": "await_question"})
 
     # How-to Scheduler: "como puedo agendar/Reservar una cita", "como hablar con un funcionario", etc.
     if "como" in lower or "cómo" in lower:
@@ -1908,6 +2128,17 @@ def handle_turn(
     if feedback_resp is not None and intent_action != "saludo":
         return feedback_resp
 
+    # Si el usuario expresa un prefacio de pregunta: activar modo de espera y no mostrar menú
+    if intent_action == "await_question":
+        msg = "Te escucho, ¿cuál es tu pregunta?"
+        context_manager.update_context_data(session_id, {"awaiting_question": True})
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    # Si veníamos esperando la pregunta, limpiar el flag y procesar normalmente
+    if context_manager.get_context_field(session_id, "awaiting_question"):
+        context_manager.clear_context_field(session_id, "awaiting_question")
+
     if intent_action == "saludo":
         answer = _pick_smalltalk("saludo") or "¡Hola! ¿En qué puedo ayudarte?"
         context_manager.update_context(session_id, user_text, answer)
@@ -1964,31 +2195,35 @@ def handle_turn(
         return handle_scheduler_flow(session_id, user_text, trace_id=trace_id, channel=channel)
 
     if intent_action == "ask_document":
-        # Deterministic KB dispatcher
+        # Deterministic KB dispatcher (FAQ tiene prioridad sobre aspectos cuando hay coincidencia fuerte)
         try:
             t_id = match_tramite(user_text, KB_BY_ALIAS)
-            aspecto = match_aspect(user_text, KB_ASPECT_MAP)
-            # Considerar documento ya seleccionado en contexto si no hay match por alias
             selected = context_manager.get_selected_document(session_id)
             cat = None if t_id else match_categoria(user_text)
             if t_id:
                 context_manager.set_selected_document(session_id, t_id)
-            # Caso: ya hay documento en contexto y el usuario eligió solo el aspecto
+            target = t_id or selected
+
+            # 1) Intentar responder por FAQ primero si hay trámite objetivo
+            if target:
+                faq_resp = check_faq(target, user_text)
+                if faq_resp:
+                    context_manager.set_selected_document(session_id, target)
+                    context_manager.update_context(session_id, user_text, faq_resp.get("respuesta", ""))
+                    turn_count = context_manager.get_context_field(session_id, "turn_count") or 0
+                    follow = build_followup_prompt(target, turn_count)
+                    direct = {"respuesta": faq_resp.get("respuesta", ""), "no_results": False, "_resp_type": "faq"}
+                    return {"respuestas": [direct, follow]}
+
+            # 2) Si no hubo FAQ, evaluar aspectos
+            aspecto = match_aspect(user_text, KB_ASPECT_MAP)
             if not t_id and selected and aspecto:
                 return respond_direct(selected, aspecto, session_id, turn_count)
             if t_id and aspecto:
                 return respond_direct(t_id, aspecto, session_id, turn_count)
-            # Intentar responder por FAQ si hay trámite pero no aspecto detectado
-            if (t_id and not aspecto) or (selected and not aspecto):
-                target = t_id or selected
-                faq_resp = check_faq(target, user_text)
-                if faq_resp:
-                    # Mantener contexto del trámite
-                    context_manager.set_selected_document(session_id, target)
-                    context_manager.update_context(session_id, user_text, faq_resp.get("respuesta", ""))
-                    return faq_resp
+
+            # 3) Menús/descubrimiento
             if t_id and not aspecto:
-                # Entramos en modo selección de aspecto explícito
                 context_manager.update_context_data(session_id, {"expecting_aspect": True})
                 return show_aspect_menu(t_id)
             if cat and not t_id:

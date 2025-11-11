@@ -41,6 +41,8 @@ const io = new Server(server, {
 const MCP_URL = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
 // Aumentamos el timeout a 50 segundos para dar margen al orquestador (que tiene 30s)
 const MCP_TIMEOUT = parseInt(process.env.MCP_TIMEOUT || '50000', 10);
+// Debounce para juntar mensajes seguidos (p. ej., "Quiero hacer una pregunta" + la pregunta)
+const WEB_DEBOUNCE_MS = parseInt(process.env.WEB_DEBOUNCE_MS || '1500', 10);
 
 async function postWithRetry(payload, attempts = 3, delay = 1000) {
     let lastError;
@@ -64,49 +66,64 @@ io.on('connection', (socket) => {
     console.log('Un usuario se ha conectado');
     // Inicializar session_id por socket
     socket.sessionId = null;
+    // Estado de debounce por socket
+    socket._debounceTimer = null;
+    socket._buffer = [];
+
+    async function sendToMCP(text) {
+        // Construir el payload para el MCP. La session_id debe enviarse en la
+        // raiz del JSON para que el orquestador pueda recuperarla.
+        const payload = {
+            pregunta: text,
+            context: { sender: socket.id },
+            session_id: socket.sessionId, // USAR sessionId del socket
+            channel: 'web'
+        };
+        // Enviar el mensaje al MCP con reintentos
+        const response = await postWithRetry(payload);
+        // Actualizar el identificador de sesion si es devuelto por el MCP
+        if (response.data) {
+            socket.sessionId = response.data.session_id || socket.sessionId;
+        }
+        const data = response.data || {};
+        const hasReplies = Array.isArray(data.suggested_replies) && data.suggested_replies.length > 0;
+        const messageText = data.respuesta || data.message || 'No se recibió respuesta válida del MCP.';
+
+        if (Array.isArray(data.respuestas)) {
+            // Manejar una lista de respuestas de cualquier longitud
+            data.respuestas.forEach((botMsg, index) => {
+                setTimeout(() => {
+                    if (typeof botMsg === 'object' && botMsg !== null && botMsg.suggested_replies) {
+                        socket.emit('bot_payload', botMsg);
+                    } else if (typeof botMsg === 'object' && botMsg !== null && botMsg.respuesta) {
+                        socket.emit('bot_message', botMsg.respuesta);
+                    } else {
+                        socket.emit('bot_message', botMsg);
+                    }
+                }, index * 1200); // Pausa de 1.2 segundos entre mensajes
+            });
+        } else if (hasReplies) {
+            socket.emit('bot_payload', {
+                respuesta: messageText,
+                suggested_replies: data.suggested_replies
+            });
+        } else {
+            socket.emit('bot_message', messageText);
+        }
+    }
 
     socket.on('message', async (msg) => {
         console.log('Mensaje recibido del cliente:', msg);
         try {
-            // Construir el payload para el MCP. La session_id debe enviarse en la
-            // raiz del JSON para que el orquestador pueda recuperarla.
-            const payload = {
-                pregunta: msg,
-                context: { sender: socket.id },
-                session_id: socket.sessionId, // USAR sessionId del socket
-                channel: 'web'
-            };
-            // Enviar el mensaje al MCP con reintentos
-            const response = await postWithRetry(payload);
-            // Actualizar el identificador de sesion si es devuelto por el MCP
-            if (response.data) {
-                socket.sessionId = response.data.session_id || socket.sessionId;
-            }
-            const data = response.data || {};
-            const hasReplies = Array.isArray(data.suggested_replies) && data.suggested_replies.length > 0;
-            const messageText = data.respuesta || data.message || 'No se recibió respuesta válida del MCP.';
-
-            if (Array.isArray(data.respuestas)) {
-                // Manejar una lista de respuestas de cualquier longitud
-                data.respuestas.forEach((botMsg, index) => {
-                    setTimeout(() => {
-                        if (typeof botMsg === 'object' && botMsg !== null && botMsg.suggested_replies) {
-                            socket.emit('bot_payload', botMsg);
-                        } else if (typeof botMsg === 'object' && botMsg !== null && botMsg.respuesta) {
-                            socket.emit('bot_message', botMsg.respuesta);
-                        } else {
-                            socket.emit('bot_message', botMsg);
-                        }
-                    }, index * 1200); // Pausa de 1.2 segundos entre mensajes
-                });
-            } else if (hasReplies) {
-                socket.emit('bot_payload', {
-                    respuesta: messageText,
-                    suggested_replies: data.suggested_replies
-                });
-            } else {
-                socket.emit('bot_message', messageText);
-            }
+            // Debounce: acumular mensajes seguidos y enviarlos juntos tras un breve periodo
+            socket._buffer.push(String(msg));
+            if (socket._debounceTimer) clearTimeout(socket._debounceTimer);
+            socket._debounceTimer = setTimeout(async () => {
+                const combined = socket._buffer.join(' ').trim();
+                socket._buffer = [];
+                socket._debounceTimer = null;
+                await sendToMCP(combined);
+            }, WEB_DEBOUNCE_MS);
         } catch (error) {
             console.error('Error al comunicarse con el MCP:', error);
             socket.emit('bot_message', 'Lo siento, hubo un error procesando tu solicitud.');

@@ -1,0 +1,16 @@
+main_menu:
+  text: "¿En qué puedo ayudarte?"
+  buttons:
+    - "🗂️ Certificados y trámites"
+    - "📅 Agendar una cita"
+    - "📝 Presentar un reclamo"
+    - "📞 Hablar con un agente"
+
+howto_scheduler:
+  text: "Para agendar una cita: 1) me indicas una fecha u horario, 2) te propongo bloques disponibles, 3) confirmas tus datos y la reserva.\n¿Quieres agendar ahora?"
+  buttons: ["Sí", "No"]
+
+howto_complaint:
+  text: "Para registrar un reclamo: te pediré tu nombre y RUT, tu correo de contacto, el asunto y la descripción. Al final generaré el comprobante.\n¿Quieres registrarlo ahora?"
+  buttons: ["Sí", "No"]
+
