@@ -2211,6 +2211,9 @@ def handle_turn(
                     context_manager.set_selected_document(session_id, target)
                     context_manager.update_context(session_id, user_text, faq_resp.get("respuesta", ""))
                     turn_count = context_manager.get_context_field(session_id, "turn_count") or 0
+                    # Preparar estado de seguimiento (FOLLOWUP_GATE) como en respuestas directas
+                    context_manager.update_context_data(session_id, {"last_tramite": target, "last_aspecto": None})
+                    context_manager.set_current_flow(session_id, "FOLLOWUP_GATE")
                     follow = build_followup_prompt(target, turn_count)
                     direct = {"respuesta": faq_resp.get("respuesta", ""), "no_results": False, "_resp_type": "faq"}
                     return {"respuestas": [direct, follow]}
