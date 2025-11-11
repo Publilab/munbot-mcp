@@ -8,6 +8,10 @@ DB_DSN = os.getenv(
     "postgresql://postgres:postgres@postgres:5432/munbot"  # Ajusta al DSN real si es necesario
 )
 
+# Zona horaria para las comparaciones de CURRENT_DATE/CURRENT_TIME en Postgres
+# Fijada por defecto a Chile: America/Santiago
+SCHEDULER_TZ = os.getenv("SCHEDULER_TZ", "America/Santiago")
+
 TESTING = os.getenv("TESTING") == "1" or os.getenv("AUDIT_SCHEDULER_DEBUG") == "true"
 
 if not TESTING:
@@ -17,9 +21,19 @@ if not TESTING:
         dsn=DB_DSN,
     )
 
+    def _ensure_tz(conn):
+        try:
+            with conn.cursor() as cur:
+                cur.execute("SET TIME ZONE %s", (SCHEDULER_TZ,))
+        except Exception:
+            # No bloquear si falla; el servidor usará su TZ por defecto
+            pass
+
     def get_db():
-        """Devuelve una conexión del pool."""
-        return _pool.getconn()
+        """Devuelve una conexión del pool con TZ configurada."""
+        conn = _pool.getconn()
+        _ensure_tz(conn)
+        return conn
 
     def put_db(conn):
         _pool.putconn(conn)
@@ -27,6 +41,7 @@ if not TESTING:
     @contextmanager
     def get_conn():
         conn = _pool.getconn()
+        _ensure_tz(conn)
         try:
             yield conn
         finally:

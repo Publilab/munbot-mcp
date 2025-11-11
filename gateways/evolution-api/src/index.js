@@ -279,6 +279,8 @@ function mapInteractiveToInput(id, title) {
     'si-ver-opciones': 'Sí, ver opciones',
     'sí-ver-opciones': 'Sí, ver opciones',
     'no-gracias': 'No, gracias',
+    // How-to scheduler accept
+    'quiero-agendar-una-hora': 'Quiero agendar una hora',
   };
   // Preferir id porque el título puede estar truncado por límites de WhatsApp
   // Si tenemos un mapeo conocido, úsalo; si no, usa id completo (slug) y como último recurso el título

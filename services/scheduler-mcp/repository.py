@@ -45,6 +45,10 @@ def get_first_available_block_of_month(
                   AND  EXTRACT(YEAR FROM fecha) = %s
                   AND  disponible = TRUE
                   AND  confirmada = FALSE
+                  AND (
+                        fecha > CURRENT_DATE
+                     OR (fecha = CURRENT_DATE AND hora_inicio >= CURRENT_TIME)
+                  )
                 ORDER BY fecha, hora_inicio
                 LIMIT 1
                 OFFSET %s

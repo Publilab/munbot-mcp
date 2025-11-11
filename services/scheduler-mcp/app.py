@@ -128,7 +128,20 @@ async def tools_call(payload: dict):
         try:
             data = AppointmentOut(**slot).as_dict()
         except Exception:
-            data = slot
+            # Fallback robusto: construir 'hora' y normalizar claves mínimas
+            hi = slot.get("hora_inicio")
+            hf = slot.get("hora_fin")
+            def _tostr(x):
+                try:
+                    return x.strftime('%H:%M')
+                except Exception:
+                    return str(x)[:5] if x is not None else None
+            hora = None
+            if hi is not None and hf is not None:
+                hora = f"{_tostr(hi)}-{_tostr(hf)}"
+            data = dict(slot)
+            if hora and not data.get('hora'):
+                data['hora'] = hora
         return {"data": data}
 
     if tool == "scheduler-listar_horas_disponibles":

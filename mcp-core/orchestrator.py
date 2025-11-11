@@ -1503,7 +1503,7 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
 
     # How-to Scheduler: "como puedo agendar/Reservar una cita", "como hablar con un funcionario", etc.
     if "como" in lower or "cómo" in lower:
-        sched_verbs = ("agend", "reserv", "program", "coordin")
+        sched_verbs = ("agend", "reserv", "program", "coordin", "pedir", "sacar", "solicit", "consegu")
         sched_objs = ("cita", "turno", "hora")
         talk_phrases = (
             "hablar con un funcionario",
@@ -1513,6 +1513,11 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
         if any(v in lower for v in sched_verbs) and any(o in lower for o in sched_objs):
             return _finalize({"intent": "howto_scheduler"})
         if any(p in lower for p in talk_phrases):
+            return _finalize({"intent": "howto_scheduler"})
+
+    # Otras formas informativas sin 'cómo': "dónde pido hora", "se puede pedir hora por acá"
+    if ("donde" in lower or "dónde" in lower or "se puede" in lower) and ("hora" in lower or "cita" in lower or "turno" in lower):
+        if ("pedir" in lower or "pido" in lower or "sacar" in lower or "agendar" in lower or "reserv" in lower or "agenda" in lower):
             return _finalize({"intent": "howto_scheduler"})
 
     # How-to Complaint: "como puedo hacer/registrar/presentar un reclamo"
@@ -2124,7 +2129,17 @@ def handle_turn(
     info_action = context_manager.get_context_field(session_id, "info_action")
     if info_action:
         norm = normalize_text(user_text)
-        if norm in YES_WORDS:
+        # Aceptar 'Sí' o frases equivalentes como 'Quiero agendar una hora'
+        accept_phrases = {
+            "quiero agendar una hora",
+            "agendar una hora",
+            "quiero agendar",
+            "quiero reservar una cita",
+            "reservar una cita",
+            "quiero reservar hora",
+            "reservar hora",
+        }
+        if norm in YES_WORDS or norm in accept_phrases:
             context_manager.clear_context_field(session_id, "info_action")
             if info_action == "init_scheduler":
                 # Arrancar flujo de agenda saltando confirmación
