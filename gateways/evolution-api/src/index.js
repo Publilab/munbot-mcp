@@ -275,6 +275,10 @@ function mapInteractiveToInput(id, title) {
     'ver-horarios': 'Ver horarios',
     'donde-tramitar': 'Dónde tramitar',
     'para-que-sirve': 'Para qué sirve',
+    // Follow-up options
+    'si-ver-opciones': 'Sí, ver opciones',
+    'sí-ver-opciones': 'Sí, ver opciones',
+    'no-gracias': 'No, gracias',
   };
   // Preferir id porque el título puede estar truncado por límites de WhatsApp
   // Si tenemos un mapeo conocido, úsalo; si no, usa id completo (slug) y como último recurso el título

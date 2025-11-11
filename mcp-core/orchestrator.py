@@ -875,7 +875,7 @@ def tokenize(text: str) -> list[str]:
     tokens = [t.strip('.,¡!¿?"').lower() for t in text.split()]
     return [t for t in tokens if t and t not in STOPWORDS]
 
-GREETING_VARIANTS = ["¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?", "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy", "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?", "Encantado de Saludarte. Todo perfecto y listo para que me digas en que puedo ayudarte"]
+GREETING_VARIANTS = ["¡Hola! Soy MunBoT. ¿En qué puedo ayudarte hoy?", "Hola, un gusto saludarte. ¿Cómo puedo ayudarte? Estaría encantado de poder asistirte el día de hoy", "Hola, estoy aquí para ayudarte. Dime, ¿qué necesitas?", "Encantado de saludarte. Todo perfecto y listo para que me digas en que puedo ayudarte"]
 FAREWELL_VARIANTS = ["¡Hasta luego! Que tengas un buen día.", "Nos vemos. Estoy aquí 24/7 si me necesitas.", "Chao. Cuando quieras, vuelve y te ayudo.", "Perfecto, me alegra haber ayudado. Estaré por aquí cuando lo requieras.", "De acuerdo. Cierro la sesión; cuando necesites, volvemos a conversar.", "Listo. Si surge otra consulta, vuelve y la resolvemos."]
 THANKS_VARIANTS = ["De nada. ¿Te ayudo con algo más?", "Con gusto. ¿Te ayudo con algo más?", "Con mucho gusto. ¿Qué más necesitas?", "Para eso estoy. ¿Seguimos con algo más?", "Me alegra haber ayudado. ¿Algo más?", "Un gusto. ¿Deseas hacer otro trámite o consulta?", "Cuando quieras, seguimos con lo que necesites."]
 SMALLTALK_VARIANTS = {"saludo": GREETING_VARIANTS, "despedida": FAREWELL_VARIANTS, "agradecimiento": THANKS_VARIANTS}
@@ -933,6 +933,39 @@ FAREWELL_TOKENS = (
     "me despido",
 )
 
+# Frases de cierre de sesión (usuario terminó la interacción)
+CLOSURE_PHRASES = {
+    "eso es todo por hoy",
+    "es todo por hoy",
+    "eso seria todo",
+    "eso sería todo",
+    "ya termine",
+    "ya terminé",
+    "ya no necesito mas",
+    "ya no necesito más",
+    "no por ahora",
+    "no tengo mas preguntas",
+    "no tengo más preguntas",
+    "nada mas gracias",
+    "nada más gracias",
+    "nada mas",
+    "nada más",
+    "eso seria",
+    "eso sería",
+    "termine por ahora",
+    "terminé por ahora",
+    "ya esta",
+    "ya está",
+    "gracias es todo",
+    "hasta aqui no mas",
+    "hasta aquí no más",
+    "listo gracias",
+    "por ahora esta bien",
+    "por el momento nada mas",
+    "por el momento nada más",
+    "he terminado",
+}
+
 def _is_pure_smalltalk(text: str) -> bool:
     return normalize_text(text) in SMALLTALK_PATTERNS
 
@@ -946,6 +979,16 @@ def _detect_greeting_prefix(text: str) -> bool:
 def _contains_farewell(text: str) -> bool:
     t = normalize_text(text)
     return any(tok in t for tok in FAREWELL_TOKENS)
+
+def _is_session_close(text: str) -> bool:
+    t = normalize_text(text)
+    # Exacto o como substring
+    if t in {normalize_text(p) for p in CLOSURE_PHRASES}:
+        return True
+    for p in CLOSURE_PHRASES:
+        if normalize_text(p) in t:
+            return True
+    return False
 
 def _pick_smalltalk(intent: str) -> str:
     variants = SMALLTALK_VARIANTS.get(intent, [])
@@ -1369,6 +1412,10 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     if _contains_farewell(text):
         return _finalize({"intent": "despedida", "sub_intent": "despedida"})
 
+    # Cierre de sesión (expresiones como "Es todo por hoy", "Nada más, gracias", etc.)
+    if _is_session_close(text):
+        return _finalize({"intent": "despedida", "sub_intent": "despedida"})
+
     # Instructivo/ayuda: "que haces", "como usar", "instrucciones", "manual", "tutorial", "como funciona"
     help_tokens = (
         "ayuda",
@@ -1520,7 +1567,7 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     if _wants_appointment(lower) and not _mentions_hours_info(lower):
         return _finalize({"intent": "agenda"})
 
-    if any(word in lower for word in ("permiso", "licencia", "certificado", "tramite", "trámite", "documento")):
+    if any(word in lower for word in ("permiso", "licencia", "certificado", "tramite", "trámite", "documento", "papel", "papeles")):
         return _finalize({"intent": "documento", "sub_intent": "tramite"})
 
     if any(word in lower for word in ("informacion", "información", "municipalidad", "pregunta")):
@@ -2016,8 +2063,11 @@ def handle_followup_gate(session_id: str, user_text: str, intent_action: str) ->
 
     # Opción 2: El usuario dice "No"
     elif norm_text in NO_WORDS:
+        # Despedir y cerrar la sesión cuando el usuario declina
         context_manager.set_current_flow(session_id, None)
-        return graceful_close()
+        context_manager.clear_context(session_id)
+        bye = _pick_smalltalk("despedida") or "Hasta luego."
+        return {"respuesta": bye, "no_results": False, "finish": True}
 
     # Opción 3: El usuario pregunta directamente por otro aspecto (atajo)
     new_aspect = match_aspect(user_text, KB_ASPECT_MAP)
@@ -2112,6 +2162,21 @@ def handle_turn(
         msg = "Entendido, cambiemos de tema. ¿Sobre qué te gustaría hablar ahora?"
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
+
+    # 0.2) Atajos robustos para el follow-up aunque se pierda el estado
+    norm_follow = normalize_text(user_text)
+    if "ver opciones" in norm_follow:
+        target = context_manager.get_context_field(session_id, "last_tramite") or context_manager.get_selected_document(session_id)
+        if target:
+            # Salir de cualquier flujo y mostrar menú de aspectos del trámite actual
+            context_manager.set_current_flow(session_id, None)
+            return show_aspect_menu(target)
+    if norm_follow in NO_WORDS or norm_follow.strip() == "no gracias" or _is_session_close(user_text):
+        # Despedir y cerrar
+        context_manager.set_current_flow(session_id, None)
+        context_manager.clear_context(session_id)
+        bye = _pick_smalltalk("despedida") or "Hasta luego."
+        return {"respuesta": bye, "no_results": False, "finish": True}
 
     classification = classify_intent_remotely(user_text, trace_id=trace_id)
     entities = classification.get("entities") if isinstance(classification, dict) else None

@@ -160,6 +160,10 @@ _CATEGORY_KEYWORDS = {
         "certificados",
         "certificacion",
         "certificaciones",
+        "papel",
+        "papeles",
+        "antecedente",
+        "antecedentes",
     ],
     "permisos": [
         "permiso",
