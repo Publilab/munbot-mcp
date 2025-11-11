@@ -589,13 +589,17 @@ def show_main_menu() -> Dict[str, Any]:
 
 def show_help_instructions() -> Dict[str, Any]:
     """Mensaje resumido de cómo usar el bot."""
-    msg = (
+    # Usar texto de configuración si está disponible; de lo contrario, ofrecer un resumen por defecto
+    default_msg = (
         "Te cuento cómo usar el bot:\n"
-        "- Certificados y trámites: pide por nombre (p. ej., 'permiso de aterrizaje') y te muestro requisitos, costos, horarios y dónde tramitar.\n"
+        "- Puedes escribir tu consulta en lenguaje natural.\n"
+        "- También puedes decir 'Quiero hacer una pregunta' y luego enviar tu pregunta; el bot espera un instante y junta ambos mensajes.\n"
+        "- Certificados y trámites: pide por nombre y te muestro requisitos, costos, horarios y dónde tramitar.\n"
         "- Agenda: di 'agendar una cita' y te propongo horarios disponibles para reservar o cancelar.\n"
-        "- Reclamos: di 'presentar un reclamo' y te guío para registrarlo con tus datos.\n"
-        "- Menú rápido: usa los botones para navegar más rápido.\n"
+        "- Reclamos: di 'presentar un reclamo' y te guío para registrarlo.\n"
+        "- Para terminar una consulta y empezar otra, escribe 'adios' o 'chao'.\n"
     )
+    msg = globals().get("HELP_TEXT") or default_msg
     main = show_main_menu()
     payload = {"respuesta": msg, "no_results": False, "_resp_type": "help"}
     if isinstance(main.get("suggested_replies"), list):
@@ -773,6 +777,7 @@ def _override_messages_from_config():
         global MAIN_MENU_TEXT, MAIN_MENU_BUTTONS
         global SCHED_HOWTO_TEXT, SCHED_HOWTO_BUTTONS
         global COMPLAINT_HOWTO_TEXT, COMPLAINT_HOWTO_BUTTONS
+        global HELP_TEXT
 
         mm = doc.get("main_menu") or {}
         if isinstance(mm.get("text"), str):
@@ -791,6 +796,11 @@ def _override_messages_from_config():
             COMPLAINT_HOWTO_TEXT = hc["text"]
         if isinstance(hc.get("buttons"), list) and hc.get("buttons"):
             COMPLAINT_HOWTO_BUTTONS = [str(x) for x in hc["buttons"]]
+
+        # Help section (opcional)
+        help_doc = doc.get("help") or {}
+        if isinstance(help_doc.get("text"), str):
+            HELP_TEXT = help_doc["text"]
 
         _jlog(_logger, "messages.config_loaded", path=str(p))
     except Exception as e:

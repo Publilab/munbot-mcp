@@ -7,6 +7,13 @@
     "source": "manual"
   },
   {
+    "texto": "Que necesito para sacar el permiso de aterrizaje",
+    "esperado": "ask_document",
+    "intent_detectado": "ask_document",
+    "status": "validated",
+    "source": "manual"
+  },
+  {
     "texto": "Quiero reservar una hora para el jueves",
     "esperado": "init_scheduler",
     "intent_detectado": "init_scheduler",

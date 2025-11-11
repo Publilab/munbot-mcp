@@ -14,3 +14,11 @@ howto_complaint:
   text: "Para registrar un reclamo: te pediré tu nombre y RUT, tu correo de contacto, el asunto y la descripción. Al final generaré el comprobante.\n¿Quieres registrarlo ahora?"
   buttons: ["Sí", "No"]
 
+help:
+  text: |
+    Te cuento cómo usar el bot:
+    - Puedes escribir tu consulta en lenguaje natural (ej.: "¿Cuánto demora la residencia definitiva?").
+    - También puedes decir "Quiero hacer una pregunta" y luego enviar tu pregunta; el bot espera un instante y junta ambos mensajes para entender mejor.
+    - En WhatsApp verás botones o una lista de opciones; en Web verás botones debajo de cada respuesta.
+    - Si quieres terminar una consulta y empezar otra, escribe "adios" o "chao"; se reinicia el contexto y puedes preguntar algo distinto de inmediato.
+    - Para trámites, pide por nombre (p. ej., "certificado de residencia definitiva") y luego elige requisitos, costos, horarios o dónde tramitar.

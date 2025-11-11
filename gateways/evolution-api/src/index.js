@@ -208,10 +208,11 @@ async function sendWhatsAppInteractive(toNumber, bodyText, options) {
 
   const makeId = (title, i) => String(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `opt-${i+1}`;
   const optionsRaw = (options || []).slice(0, 10);
+  const needsList = optionsRaw.some(t => String(t).length > 20);
 
-  // Usar botones (máx 3, título ≤ 20) o lista (hasta 10, título ≤ 24)
+  // Usar botones (máx 3, título ≤ 20) cuando todas caben; si alguna excede, usar lista (hasta 10, título ≤ 24)
   let payload;
-  if (optionsRaw.length > 0 && optionsRaw.length <= 3) {
+  if (optionsRaw.length > 0 && optionsRaw.length <= 3 && !needsList) {
     const buttonOptions = optionsRaw.map((t, i) => ({ id: makeId(t, i), title: String(t).slice(0, 20) }));
     payload = {
       messaging_product: 'whatsapp',
