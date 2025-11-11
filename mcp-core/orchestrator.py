@@ -1822,6 +1822,7 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
         context_manager.update_scheduler_state(session_id, "proposing_slot_1")
 
         # Propose a slot
+        # Primer intento: offset 0
         resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": 0}, trace_id=trace_id)
         slot = resp.get("data")
 
@@ -1829,7 +1830,8 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
             return fallback("Lo siento, no hay horas disponibles en este momento.")
 
         slot_id = slot.get("id")
-        context_manager.update_context_data(session_id, {"proposed_slot_id": slot_id})
+        # Guardar offset y slot propuesto para evitar repetirlo
+        context_manager.update_context_data(session_id, {"proposed_slot_id": slot_id, "proposed_offset": 0})
         
         fecha = slot.get("fecha")
         hora = slot.get("hora")
@@ -1838,14 +1840,43 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
 
     if state.startswith("proposing_slot"):
         if text_norm == "rechazo":
-            if state == "proposing_slot_1":
-                context_manager.update_scheduler_state(session_id, "proposing_slot_2")
-                # Get next available slot, needs to be implemented in scheduler-mcp
-                resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": 1}, trace_id=trace_id)
-            else: # proposing_slot_2
+            # Calcular el siguiente offset y evitar repetir el mismo slot
+            current_offset = context_manager.get_context_field(session_id, "proposed_offset") or 0
+            last_slot_id = context_manager.get_context_field(session_id, "proposed_slot_id")
+            # Política: permitir solo dos propuestas (offset 0 y 1). Si ya rechazó la segunda, cancelar.
+            if current_offset >= 1:
                 context_manager.clear_scheduler_state(session_id)
                 context_manager.set_current_flow(session_id, None)
-                return {"respuesta": "Entendido. Hemos cancelado el proceso de agendamiento.", "no_results": False}
+                cierre = (
+                    "Lamento no poder ayudarte. Recuerda que este sistema está en su versión demo, por lo que, en un futuro "
+                    "ofreceremos un mejor sistema de asignación de horas. Si tienes alguna otra consulta, no dudes en hacérmela"
+                )
+                return {"respuesta": cierre, "no_results": False}
+
+            next_offset = current_offset + 1
+            # Pedir el siguiente slot
+            resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": next_offset}, trace_id=trace_id)
+            slot = resp.get("data")
+            if not slot:
+                context_manager.clear_scheduler_state(session_id)
+                context_manager.set_current_flow(session_id, None)
+                return {"respuesta": "Por ahora no hay más horas disponibles. Intentemos más tarde.", "no_results": False}
+            # Si es el mismo (poco probable), avanzar un offset más
+            if slot.get("id") == last_slot_id:
+                resp2 = call_tool_microservice("scheduler-get_first_available_slot", {"offset": next_offset + 1}, trace_id=trace_id)
+                slot2 = resp2.get("data")
+                if slot2:
+                    slot = slot2
+                    next_offset = next_offset + 1
+
+            # Actualizar estado/offset y slot propuesto
+            context_manager.update_scheduler_state(session_id, "proposing_slot_2")
+            context_manager.update_context_data(session_id, {"proposed_offset": next_offset, "proposed_slot_id": slot.get("id")})
+
+            fecha = slot.get("fecha")
+            hora = slot.get("hora")
+            msg = f"Tengo otra hora disponible para ti el {fecha} a las {hora}. ¿Te parece bien?"
+            return {"respuesta": msg, "no_results": False, "suggested_replies": ["Acepto", "Rechazo"]}
         elif text_norm == "acepto":
             slot_id = context_manager.get_context_field(session_id, "proposed_slot_id")
             # Book the slot
@@ -1892,9 +1923,9 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
             )
             return {"respuesta": confirmation_msg, "no_results": False}
         
-        # Propose a slot
-        offset = 1 if state == "proposing_slot_2" else 0
-        resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": offset}, trace_id=trace_id)
+        # Reforzar propuesta actual en caso de entrada no reconocida
+        current_offset = context_manager.get_context_field(session_id, "proposed_offset") or (1 if state == "proposing_slot_2" else 0)
+        resp = call_tool_microservice("scheduler-get_first_available_slot", {"offset": current_offset}, trace_id=trace_id)
         slot = resp.get("data")
 
         if not slot:
