@@ -1869,7 +1869,27 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
             context_manager.clear_scheduler_state(session_id)
             context_manager.set_current_flow(session_id, None)
             
-            confirmation_msg = f"¡Tu cita ha sido agendada con éxito!\n- Nombre: {name}\n- RUT: {rut}\n- Email: {email}\n- Departamento: {department}\n- Motivo: {reason}\n- Hora: {booking_resp.get('hora_inicio')}"
+            # Construir hora legible usando datos devueltos por scheduler-mcp
+            fecha_str = str(booking_resp.get('fecha') or '')
+            hora_compuesta = booking_resp.get('hora')
+            if not hora_compuesta:
+                hi = booking_resp.get('hora_inicio') or ''
+                hf = booking_resp.get('hora_fin') or ''
+                if hi and hf:
+                    hora_compuesta = f"{str(hi)[:5]}-{str(hf)[:5]}"
+                else:
+                    hora_compuesta = str(hi)[:5] if hi else ''
+
+            confirmation_msg = (
+                "¡Tu cita ha sido agendada con éxito!\n"
+                f"- Nombre: {name}\n"
+                f"- RUT: {rut}\n"
+                f"- Email: {email}\n"
+                f"- Departamento: {department}\n"
+                f"- Motivo: {reason}\n"
+                f"- Fecha: {fecha_str}\n"
+                f"- Hora: {hora_compuesta}"
+            )
             return {"respuesta": confirmation_msg, "no_results": False}
         
         # Propose a slot

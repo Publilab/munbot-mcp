@@ -212,7 +212,15 @@ async def tools_call(payload: dict):
                     fecha_legible=str(slot["fecha"]),
                     hora=hora_str,
                 )
-        return {"id_reserva": slot_id, "estado": "pendiente", "mensaje": "Ya reservé tu cita. Recuerda que debes ser puntual y llegar antes de la hora estipulada. Debes llevar tu documentación actualizada y tus dudas bien estructuradas para que podamos ayudarte. Te esperamos."}
+        return {
+            "id_reserva": slot_id,
+            "estado": "pendiente",
+            "mensaje": "Ya reservé tu cita. Recuerda que debes ser puntual y llegar antes de la hora estipulada. Debes llevar tu documentación actualizada y tus dudas bien estructuradas para que podamos ayudarte. Te esperamos.",
+            "fecha": str(slot.get("fecha")),
+            "hora_inicio": hi_str,
+            "hora_fin": hf_str,
+            "hora": hora_str,
+        }
 
     if tool == "scheduler-confirmar_hora":
         reserva_id = params.get("id_reserva")
