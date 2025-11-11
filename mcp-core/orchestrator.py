@@ -2305,7 +2305,11 @@ def handle_turn(
                 context_manager.update_context_data(session_id, {"expecting_aspect": True})
                 return show_aspect_menu(t_id)
             if cat and not t_id:
-                return show_tramites_menu(cat)
+                # Informar que el trámite no está en la base y sugerir alternativas de la categoría
+                msg = "No puedo procesar tu solicitud porque no está en mi base de conocimiento."
+                menu = show_tramites_menu(cat)
+                direct = {"respuesta": msg, "no_results": False, "_resp_type": "kb_miss"}
+                return {"respuestas": [direct, menu]}
             return show_main_menu()
         except Exception as e:
             _jlog(_logger, "kb.dispatch_error", error=str(e))
