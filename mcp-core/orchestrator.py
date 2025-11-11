@@ -1566,6 +1566,12 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
         return False
 
     # Desambiguación: señales mixtas agenda + horarios → preguntar
+    # Preferir explicación (how-to) si el usuario pregunta "cómo"/"dónde"/"se puede" pedir hora
+    if ("como" in lower or "cómo" in lower) and (any(v in lower for v in ("agend", "reserv", "program", "coordin", "pedir", "sacar", "solicit", "consegu")) and any(o in lower for o in ("cita", "turno", "hora"))):
+        return _finalize({"intent": "howto_scheduler"})
+    if ("donde" in lower or "dónde" in lower or "se puede" in lower) and ("hora" in lower or "cita" in lower or "turno" in lower) and ("pedir" in lower or "pido" in lower or "sacar" in lower or "agendar" in lower or "reserv" in lower or "agenda" in lower):
+        return _finalize({"intent": "howto_scheduler"})
+
     if _wants_appointment(lower) and _mentions_hours_info(lower):
         return _finalize({"intent": "sched_hours_disambiguate"})
 
