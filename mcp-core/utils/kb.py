@@ -5,11 +5,12 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 try:  # normal package import
     from ..classification_utils import ASPECT_PRIORITY
-except Exception:  # pragma: no cover - fallback when importing as top-level 'utils.kb'
+    except Exception:  # pragma: no cover - fallback when importing as top-level 'utils.kb'
     try:
         from classification_utils import ASPECT_PRIORITY  # type: ignore
     except Exception:
-        ASPECT_PRIORITY = ["donde", "requisitos", "costos", "horarios", "plazos", "proposito"]
+        # Fallback local si el import falla: favorecer requisitos por sobre donde
+        ASPECT_PRIORITY = ["requisitos", "costos", "horarios", "donde", "plazos", "proposito"]
 
 try:
     import yaml  # type: ignore
