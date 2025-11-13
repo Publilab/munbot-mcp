@@ -83,6 +83,10 @@ app.get('/webhook/wa', (req, res) => {
 const server = createServer(app);
 const wss = new WebSocket.Server({ server });
 const WA_DEBOUNCE_MS = parseInt(process.env.WA_DEBOUNCE_MS || '1500', 10);
+const WA_DEBOUNCE_EXT_MS = parseInt(process.env.WA_DEBOUNCE_EXT_MS || '2400', 10);
+const WA_SHORT_MSG_THRESHOLD = parseInt(process.env.WA_SHORT_MSG_THRESHOLD || '80', 10);
+const WA_CONNECTOR_WORDS = (process.env.WA_CONNECTOR_WORDS || 'sobre,para,y').split(',').map(w => w.trim()).filter(Boolean);
+const WA_CONNECTOR_REGEX = WA_CONNECTOR_WORDS.length ? new RegExp(`\\b(${WA_CONNECTOR_WORDS.join('|')})$`, 'i') : null;
 const waDebounce = new Map(); // from -> {timer, texts: []}
 
 async function processMcpAndRespond(from, userText) {
@@ -550,11 +554,15 @@ app.post('/webhook/wa', async (req, res) => {
     existing.texts = existing.texts.slice(-3);
   }
   if (existing.timer) clearTimeout(existing.timer);
+  const trimmed = userText.trim().toLowerCase();
+  const isShort = trimmed.length <= WA_SHORT_MSG_THRESHOLD;
+  const endsConnector = WA_CONNECTOR_REGEX ? WA_CONNECTOR_REGEX.test(trimmed) : false;
+  const delay = (isShort || endsConnector) ? WA_DEBOUNCE_EXT_MS : WA_DEBOUNCE_MS;
   existing.timer = setTimeout(async () => {
     const combined = existing.texts.join(' ').trim();
     waDebounce.delete(key);
     await processMcpAndRespond(from, combined);
-  }, WA_DEBOUNCE_MS);
+  }, delay);
   waDebounce.set(key, existing);
 });
 

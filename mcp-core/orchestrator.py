@@ -186,6 +186,8 @@ AGENT_CANARY_HEADER_KEY = os.getenv("AGENT_CANARY_HEADER_KEY", "x-agent-canary")
 AGENT_CANARY_HEADER_ON = os.getenv("AGENT_CANARY_HEADER_ON", "1")
 
 SANTIAGO_TZ = ZoneInfo("America/Santiago")
+PENDING_FRAGMENT_EXPIRY = float(os.getenv("PENDING_FRAGMENT_EXPIRY", "30"))
+PENDING_FRAGMENT_MAX = int(os.getenv("PENDING_FRAGMENT_MAX", "3"))
 
 def _should_use_canary(session_id: str | None, force_canary: bool) -> bool:
     if force_canary:
@@ -589,14 +591,28 @@ def show_tramites_menu(categoria: str) -> Dict[str, Any]:
 
 MAIN_MENU_TEXT = "No entiendo tu consulta, ¿podrías contextualizarme a qué trámite te refieres?"
 MAIN_MENU_BUTTONS = ["🗂️ Certificados y trámites"]
+SUGGEST_BUTTON_APPOINTMENT = "📅 Agendar una cita"
+SUGGEST_BUTTON_COMPLAINT = "📝 Presentar un reclamo"
 
 def show_main_menu() -> Dict[str, Any]:
     return {"respuesta": MAIN_MENU_TEXT, "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
 
-def prompt_tramite_selection(intro_text: Optional[str] = None) -> Dict[str, Any]:
+def _fallback_suggestions(user_text: Optional[str]) -> List[str]:
+    suggestions = list(MAIN_MENU_BUTTONS)
+    if user_text:
+        norm = normalize_text(user_text)
+        wants_agenda = any(tok in norm for tok in ("agend", "agenda", "cita", "turno", "hora", "reserv", "funcionario", "hablar con un funcionario"))
+        wants_complaint = any(tok in norm for tok in ("reclamo", "queja", "denuncia", "reclamar"))
+        if wants_agenda and SUGGEST_BUTTON_APPOINTMENT not in suggestions:
+            suggestions.append(SUGGEST_BUTTON_APPOINTMENT)
+        if wants_complaint and SUGGEST_BUTTON_COMPLAINT not in suggestions:
+            suggestions.append(SUGGEST_BUTTON_COMPLAINT)
+    return suggestions
+
+def prompt_tramite_selection(intro_text: Optional[str] = None, user_text: Optional[str] = None) -> Dict[str, Any]:
     """Solicita que el usuario elija uno de los trámites disponibles para fijar contexto."""
     text = intro_text or MAIN_MENU_TEXT
-    prompt = {"respuesta": text, "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
+    prompt = {"respuesta": text, "no_results": False, "suggested_replies": _fallback_suggestions(user_text)}
     menu = show_tramites_menu("certificados")
     menu["respuesta"] = "Selecciona uno de estos trámites para que pueda responder con información específica:"
     return {"respuestas": [prompt, menu]}
@@ -1397,6 +1413,22 @@ CHANGE_TOPIC_PATTERNS = {
 
 def _generate_session_id() -> str:
     return str(uuid.uuid4())
+
+
+def _should_wait_for_detail(text: str) -> bool:
+    norm = normalize_text(text)
+    if not norm or len(norm) > 200:
+        return False
+    trigger_tokens = ("informacion", "informacion", "informarme", "detalles", "saber", "info")
+    connector_tokens = ("sobre", "del", "de la", "de los", "de las")
+    if not any(tok in norm for tok in trigger_tokens):
+        return False
+    if not any(tok in norm for tok in connector_tokens):
+        return False
+    specific_terms = ("requisito", "requisitos", "costo", "costos", "horario", "horarios", "donde", "ubicacion", "tramitar")
+    if any(tok in norm for tok in specific_terms):
+        return False
+    return True
 
 
 def _heuristic_classify(text: str) -> Dict[str, Any]:
@@ -2204,6 +2236,19 @@ def handle_turn(
     force_canary: bool = False,
     channel: Optional[str] = None,
 ) -> Dict[str, Any]:
+    pending = context_manager.get_context_field(session_id, "pending_fragments")
+    if pending:
+        parts = [p for p in (pending.get("parts") or []) if p]
+        ts = pending.get("ts")
+        if parts and (not ts or time.time() - ts <= PENDING_FRAGMENT_EXPIRY):
+            combined = " ".join(parts + [user_text]).strip()
+            if combined:
+                user_text = combined
+            tramite_hint = pending.get("tramite")
+            if tramite_hint:
+                context_manager.set_selected_document(session_id, tramite_hint)
+        context_manager.clear_context_field(session_id, "pending_fragments")
+
     # Incrementar y obtener el contador de turnos de la sesión
     turn_count = (context_manager.get_context_field(session_id, "turn_count") or 0) + 1
     context_manager.update_context_data(session_id, {"turn_count": turn_count})
@@ -2253,7 +2298,7 @@ def handle_turn(
                 return {"respuesta": msg, "no_results": False}
         elif norm in NO_WORDS:
             context_manager.clear_context_field(session_id, "info_action")
-            return prompt_tramite_selection()
+            return prompt_tramite_selection(user_text=user_text)
         else:
             # Re-preguntar brevemente
             msg = "¿Deseas realizarlo ahora?"
@@ -2362,7 +2407,8 @@ def handle_turn(
 
     if intent_action == "prompt_tramite_menu":
         return prompt_tramite_selection(
-            "Puedo entregarte información específica sobre los trámites disponibles. Selecciona uno para continuar."
+            "Puedo entregarte información específica sobre los trámites disponibles. Selecciona uno para continuar.",
+            user_text=user_text,
         )
 
     if intent_action == "howto_scheduler":
@@ -2410,6 +2456,26 @@ def handle_turn(
 
             # 2) Si no hubo FAQ, evaluar aspectos
             aspecto = match_aspect(user_text, KB_ASPECT_MAP)
+            if target and not aspecto and _should_wait_for_detail(user_text):
+                pending = context_manager.get_context_field(session_id, "pending_fragments") or {}
+                parts = pending.get("parts") or []
+                parts.append(user_text)
+                if len(parts) > PENDING_FRAGMENT_MAX:
+                    parts = parts[-PENDING_FRAGMENT_MAX:]
+                context_manager.update_context_data(session_id, {
+                    "pending_fragments": {
+                        "parts": parts,
+                        "ts": time.time(),
+                        "tramite": target
+                    }
+                })
+                msg = (
+                    f"Perfecto. ¿Qué parte te interesa de *{_kb_display_name(target)}*? "
+                    "Dispongo de requisitos, costos, horarios y lugar de tramitación. "
+                    "También puedes hacerme otra pregunta directamente y la responderé."
+                )
+                context_manager.update_context(session_id, user_text, msg)
+                return {"respuesta": msg, "no_results": False}
             if not t_id and selected and aspecto:
                 return respond_direct(selected, aspecto, session_id, turn_count)
             if t_id and aspecto:
@@ -2432,7 +2498,7 @@ def handle_turn(
 
     if intent_action == "n/a":
         context_manager.increment_fallback_count(session_id)
-        return prompt_tramite_selection()
+        return prompt_tramite_selection(user_text=user_text)
 
     # Generic fallback when no action matched
     return fallback("Lo siento, no tengo información para esa consulta.")

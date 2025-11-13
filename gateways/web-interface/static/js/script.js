@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Detectar si el usuario sigue escribiendo para extender el debounce en el backend
+    messageInput.addEventListener('input', () => {
+        const hasText = messageInput.value.trim().length > 0;
+        socket.emit('typing', { hasText });
+    });
+
     // Función para enviar mensajes
     function sendMessage() {
         const message = messageInput.value.trim();
@@ -49,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage(message, 'user');
         socket.emit('message', message);
         messageInput.value = '';
+        socket.emit('typing', { hasText: false });
     }
 
     // Función para añadir mensajes al chat

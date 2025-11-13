@@ -43,6 +43,10 @@ const MCP_URL = process.env.MCP_URL || 'http://mcp-core:5000/orchestrate';
 const MCP_TIMEOUT = parseInt(process.env.MCP_TIMEOUT || '50000', 10);
 // Debounce para juntar mensajes seguidos (p. ej., "Quiero hacer una pregunta" + la pregunta)
 const WEB_DEBOUNCE_MS = parseInt(process.env.WEB_DEBOUNCE_MS || '1500', 10);
+const WEB_DEBOUNCE_EXT_MS = parseInt(process.env.WEB_DEBOUNCE_EXT_MS || '2400', 10);
+const WEB_SHORT_MSG_THRESHOLD = parseInt(process.env.WEB_SHORT_MSG_THRESHOLD || '80', 10);
+const CONNECTOR_WORDS = (process.env.WEB_CONNECTOR_WORDS || 'sobre,para,y').split(',').map(w => w.trim()).filter(Boolean);
+const CONNECTOR_REGEX = CONNECTOR_WORDS.length ? new RegExp(`\\b(${CONNECTOR_WORDS.join('|')})$`, 'i') : null;
 
 async function postWithRetry(payload, attempts = 3, delay = 1000) {
     let lastError;
@@ -69,6 +73,7 @@ io.on('connection', (socket) => {
     // Estado de debounce por socket
     socket._debounceTimer = null;
     socket._buffer = [];
+    socket._pendingDebounceMs = WEB_DEBOUNCE_MS;
 
     async function sendToMCP(text) {
         // Construir el payload para el MCP. La session_id debe enviarse en la
@@ -112,21 +117,57 @@ io.on('connection', (socket) => {
         }
     }
 
+    function needsExtendedDelay(text) {
+        const trimmed = String(text || '').trim().toLowerCase();
+        if (!trimmed) return false;
+        const isShort = trimmed.length <= WEB_SHORT_MSG_THRESHOLD;
+        const endsConnector = CONNECTOR_REGEX ? CONNECTOR_REGEX.test(trimmed) : false;
+        return isShort || endsConnector;
+    }
+
+    async function flushBuffer() {
+        const combined = socket._buffer.join(' ').trim();
+        socket._buffer = [];
+        socket._debounceTimer = null;
+        socket._pendingDebounceMs = WEB_DEBOUNCE_MS;
+        if (!combined) {
+            return;
+        }
+        await sendToMCP(combined);
+    }
+
+    function scheduleDebounce(delay) {
+        if (socket._debounceTimer) {
+            clearTimeout(socket._debounceTimer);
+        }
+        socket._pendingDebounceMs = delay;
+        socket._debounceTimer = setTimeout(async () => {
+            try {
+                await flushBuffer();
+            } catch (err) {
+                console.error('Error al enviar buffer:', err);
+                socket.emit('bot_message', 'Lo siento, hubo un error procesando tu solicitud.');
+            }
+        }, delay);
+    }
+
     socket.on('message', async (msg) => {
         console.log('Mensaje recibido del cliente:', msg);
         try {
-            // Debounce: acumular mensajes seguidos y enviarlos juntos tras un breve periodo
             socket._buffer.push(String(msg));
-            if (socket._debounceTimer) clearTimeout(socket._debounceTimer);
-            socket._debounceTimer = setTimeout(async () => {
-                const combined = socket._buffer.join(' ').trim();
-                socket._buffer = [];
-                socket._debounceTimer = null;
-                await sendToMCP(combined);
-            }, WEB_DEBOUNCE_MS);
+            const delay = needsExtendedDelay(msg) ? WEB_DEBOUNCE_EXT_MS : WEB_DEBOUNCE_MS;
+            scheduleDebounce(delay);
         } catch (error) {
             console.error('Error al comunicarse con el MCP:', error);
             socket.emit('bot_message', 'Lo siento, hubo un error procesando tu solicitud.');
+        }
+    });
+
+    socket.on('typing', (payload = {}) => {
+        const { hasText } = payload;
+        if (hasText && socket._debounceTimer) {
+            const nextDelay = socket._pendingDebounceMs || WEB_DEBOUNCE_MS;
+            scheduleDebounce(nextDelay);
         }
     });
 
