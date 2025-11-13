@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 try:  # normal package import
     from ..classification_utils import ASPECT_PRIORITY
-    except Exception:  # pragma: no cover - fallback when importing as top-level 'utils.kb'
+except Exception:  # pragma: no cover - fallback when importing as top-level 'utils.kb'
     try:
         from classification_utils import ASPECT_PRIORITY  # type: ignore
     except Exception:
