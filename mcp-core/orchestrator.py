@@ -434,29 +434,19 @@ def _build_faq_triggers_by_tid() -> dict:
 
 FAQ_TRIGGERS_BY_TID = _build_faq_triggers_by_tid()
 
-def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, Any]]:
-    """Devuelve respuesta de FAQ si `user_text` coincide con alguna clave FAQ del trámite.
-
-    - Usa `tramite_id` si se provee; si no, no intenta buscar (el llamador puede resolverlo por contexto).
-    - Coincide por substrings normalizados: claves FAQ, sinónimos genéricos.
-    """
-    if not tramite_id or not user_text:
-        return None
+def _resolve_faq_for_tid(tramite_id: str, txt: str) -> Optional[Dict[str, Any]]:
     entry = KB_FAQ_BY_TID.get(tramite_id)
     if not entry:
         return None
     faq: dict = entry.get("faq") or {}
     if not faq:
         return None
-    txt = _normalize(user_text)
 
-    # 1) Coincidencia directa por nombre de clave normalizado (guiones bajos → espacios)
     for k, answer in faq.items():
         k_norm = _normalize(k.replace("_", " "))
         if k_norm and k_norm in txt:
             return {"respuesta": str(answer), "no_results": False, "_resp_type": "faq"}
 
-    # 2) Triggers específicos por trámite (desde config)
     try:
         trig = FAQ_TRIGGERS_BY_TID.get(tramite_id) or {}
         for k, pats in trig.items():
@@ -464,7 +454,7 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
                 continue
             for pat in pats:
                 try:
-                    if hasattr(pat, 'search'):
+                    if hasattr(pat, "search"):
                         if pat.search(txt):
                             return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
                     else:
@@ -475,7 +465,6 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
     except Exception:
         pass
 
-    # 3) Coincidencia por sinónimos genéricos
     for k, syns in FAQ_GENERIC_SYNONYMS.items():
         if k not in faq:
             continue
@@ -484,7 +473,6 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
             if s_norm and s_norm in txt:
                 return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
 
-    # 4) Heurística especializada: años de residencia para residencia definitiva
     try:
         if "residencia" in txt and ("definitiva" in txt or "permiso" in txt or "certificado" in txt):
             if re.search(r"\b(\d+)\s*(anos|años)\b", txt):
@@ -492,8 +480,32 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
                     return {"respuesta": str(faq["tiempo_residencia"]), "no_results": False, "_resp_type": "faq"}
     except Exception:
         pass
-
     return None
+
+
+def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, Any]]:
+    """Devuelve respuesta de FAQ si `user_text` coincide con alguna clave FAQ.
+
+    - Usa `tramite_id` si se provee; si no, intenta inferirlo de forma determinística.
+    """
+    if not user_text:
+        return None
+    txt = _normalize(user_text)
+    if tramite_id:
+        result = _resolve_faq_for_tid(tramite_id, txt)
+        if result:
+            result["_matched_tid"] = tramite_id
+        return result
+
+    inferred: Optional[Dict[str, Any]] = None
+    for tid in KB_FAQ_BY_TID.keys():
+        res = _resolve_faq_for_tid(tid, txt)
+        if res:
+            if inferred is not None:
+                return None  # Ambigüedad: no inferir
+            res["_matched_tid"] = tid
+            inferred = res
+    return inferred
 
 def _kb_display_name(tramite_id: str) -> str:
     t = KB_BY_ID.get(tramite_id) or {}
@@ -538,14 +550,13 @@ def show_aspect_menu(tramite_id: str, exclude_aspect: Optional[str] = None) -> D
     name = _kb_display_name(tramite_id)
     buttons = offer_aspect_buttons(tramite_id)
     
-    # Excluir el aspecto ya respondido
     if exclude_aspect:
-        # Mapeo simple de aspecto a texto de botón (puede necesitar ajuste)
-        # Esto asume que el texto del botón es predecible a partir del nombre del aspecto
-        exclude_text = f"Ver {exclude_aspect}" # Asume un patrón como "Ver costos"
         buttons = [b for b in buttons if exclude_aspect not in b.lower()]
 
-    msg = f"¿Qué parte te interesa ahora de *{name}*?"
+    msg = (
+        f"Entiendo que te refieres a \"{name}\". ¿Qué parte te interesa de la información disponible en el menú para el trámite *{name}*?\n"
+        "Puedo mostrarte requisitos, costos, horarios o dónde tramitar. O si prefieres, puedes reformular tu pregunta y la responderé directamente."
+    )
     try:
         RESP_MENU_ASPECT_COUNTER.inc()
     except Exception:
@@ -576,16 +587,18 @@ def show_tramites_menu(categoria: str) -> Dict[str, Any]:
     payload["suggested_replies"] = names
     return payload
 
-MAIN_MENU_TEXT = "¿En qué puedo ayudarte?"
-MAIN_MENU_BUTTONS = [
-    "🗂️ Certificados y trámites",
-    "📅 Agendar una cita",
-    "📝 Presentar un reclamo",
-    "📞 Hablar con un agente",
-]
+MAIN_MENU_TEXT = "No entiendo tu consulta, ¿podrías contextualizarme a qué trámite te refieres?"
+MAIN_MENU_BUTTONS = ["🗂️ Certificados y trámites"]
 
 def show_main_menu() -> Dict[str, Any]:
     return {"respuesta": MAIN_MENU_TEXT, "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
+
+def prompt_tramite_selection() -> Dict[str, Any]:
+    """Solicita que el usuario elija uno de los trámites disponibles para fijar contexto."""
+    prompt = show_main_menu()
+    menu = show_tramites_menu("certificados")
+    menu["respuesta"] = "Selecciona uno de estos trámites para que pueda responder con información específica:"
+    return {"respuestas": [prompt, menu]}
 
 def show_help_instructions() -> Dict[str, Any]:
     """Mensaje resumido de cómo usar el bot."""
@@ -2228,9 +2241,7 @@ def handle_turn(
                 return {"respuesta": msg, "no_results": False}
         elif norm in NO_WORDS:
             context_manager.clear_context_field(session_id, "info_action")
-            main = show_main_menu()
-            context_manager.update_context(session_id, user_text, main.get("respuesta", ""))
-            return main
+            return prompt_tramite_selection()
         else:
             # Re-preguntar brevemente
             msg = "¿Deseas realizarlo ahora?"
@@ -2366,19 +2377,19 @@ def handle_turn(
                 context_manager.set_selected_document(session_id, t_id)
             target = t_id or selected
 
-            # 1) Intentar responder por FAQ primero si hay trámite objetivo
-            if target:
-                faq_resp = check_faq(target, user_text)
-                if faq_resp:
-                    context_manager.set_selected_document(session_id, target)
-                    context_manager.update_context(session_id, user_text, faq_resp.get("respuesta", ""))
-                    turn_count = context_manager.get_context_field(session_id, "turn_count") or 0
-                    # Preparar estado de seguimiento (FOLLOWUP_GATE) como en respuestas directas
-                    context_manager.update_context_data(session_id, {"last_tramite": target, "last_aspecto": None})
-                    context_manager.set_current_flow(session_id, "FOLLOWUP_GATE")
-                    follow = build_followup_prompt(target, turn_count)
-                    direct = {"respuesta": faq_resp.get("respuesta", ""), "no_results": False, "_resp_type": "faq"}
-                    return {"respuestas": [direct, follow]}
+            faq_resp = check_faq(target, user_text)
+            if faq_resp:
+                resolved_tid = faq_resp.pop("_matched_tid", target)
+                if resolved_tid:
+                    target = resolved_tid
+                    context_manager.set_selected_document(session_id, resolved_tid)
+                context_manager.update_context(session_id, user_text, faq_resp.get("respuesta", ""))
+                turn_count = context_manager.get_context_field(session_id, "turn_count") or 0
+                context_manager.update_context_data(session_id, {"last_tramite": target, "last_aspecto": None})
+                context_manager.set_current_flow(session_id, "FOLLOWUP_GATE")
+                follow = build_followup_prompt(target, turn_count)
+                direct = {"respuesta": faq_resp.get("respuesta", ""), "no_results": False, "_resp_type": "faq"}
+                return {"respuestas": [direct, follow]}
 
             # 2) Si no hubo FAQ, evaluar aspectos
             aspecto = match_aspect(user_text, KB_ASPECT_MAP)
@@ -2404,7 +2415,7 @@ def handle_turn(
 
     if intent_action == "n/a":
         context_manager.increment_fallback_count(session_id)
-        return fallback("Lo siento, no he entendido tu consulta. ¿Podrías reformularla?")
+        return prompt_tramite_selection()
 
     # Generic fallback when no action matched
     return fallback("Lo siento, no tengo información para esa consulta.")
