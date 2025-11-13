@@ -593,9 +593,10 @@ MAIN_MENU_BUTTONS = ["🗂️ Certificados y trámites"]
 def show_main_menu() -> Dict[str, Any]:
     return {"respuesta": MAIN_MENU_TEXT, "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
 
-def prompt_tramite_selection() -> Dict[str, Any]:
+def prompt_tramite_selection(intro_text: Optional[str] = None) -> Dict[str, Any]:
     """Solicita que el usuario elija uno de los trámites disponibles para fijar contexto."""
-    prompt = show_main_menu()
+    text = intro_text or MAIN_MENU_TEXT
+    prompt = {"respuesta": text, "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
     menu = show_tramites_menu("certificados")
     menu["respuesta"] = "Selecciona uno de estos trámites para que pueda responder con información específica:"
     return {"respuestas": [prompt, menu]}
@@ -1119,6 +1120,7 @@ INTENT_MAP = {
     "catalog": "show_catalog",
     "show_catalog": "show_catalog",
     "demo_catalog": "show_demo_tramites",
+    "info_tramite": "prompt_tramite_menu",
     "howto_scheduler": "howto_scheduler",
     "howto_complaint": "howto_complaint",
     "sched_hours_disambiguate": "sched_hours_disambiguate",
@@ -1500,6 +1502,16 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
                     return _finalize({"intent": "catalog", "sub_intent": "catalog"})
             except Exception:
                 return _finalize({"intent": "catalog", "sub_intent": "catalog"})
+
+    # Solicitudes genéricas de información sobre trámites
+    if ("informacion" in lower or "información" in lower or "informarme" in lower or "info" in lower) and (
+        "tramite" in lower or "trámite" in lower or "tramites" in lower or "trámites" in lower
+    ):
+        try:
+            if not match_tramite(text, KB_BY_ALIAS):
+                return _finalize({"intent": "info_tramite"})
+        except Exception:
+            return _finalize({"intent": "info_tramite"})
 
     # Prefacios de pregunta: evitar menú y pasar a "Te escucho..."
     prefacios = (
@@ -2347,6 +2359,11 @@ def handle_turn(
         resp = show_demo_tramites()
         context_manager.update_context(session_id, user_text, resp.get("respuesta", ""))
         return resp
+
+    if intent_action == "prompt_tramite_menu":
+        return prompt_tramite_selection(
+            "Puedo entregarte información específica sobre los trámites disponibles. Selecciona uno para continuar."
+        )
 
     if intent_action == "howto_scheduler":
         resp = show_scheduler_howto()
