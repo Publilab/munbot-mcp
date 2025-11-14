@@ -1,0 +1,211 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "civic-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "auto"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "alias": "Interacciones",
+          "datasource": {
+            "type": "postgres",
+            "uid": "civic-postgres"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\n  $__timeGroupAlias(day_bucket, '1d') AS time,\n  SUM(total_interacciones) AS value\nFROM civic_daily_kpis\nWHERE $__timeFilter(day_bucket)\nGROUP BY 1\nORDER BY 1;",
+          "refId": "A"
+        },
+        {
+          "alias": "Resueltas",
+          "datasource": {
+            "type": "postgres",
+            "uid": "civic-postgres"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\n  $__timeGroupAlias(day_bucket, '1d') AS time,\n  SUM(resolved_interactions) AS value\nFROM civic_daily_kpis\nWHERE $__timeFilter(day_bucket)\nGROUP BY 1\nORDER BY 1;",
+          "refId": "B"
+        },
+        {
+          "alias": "Fallbacks",
+          "datasource": {
+            "type": "postgres",
+            "uid": "civic-postgres"
+          },
+          "format": "time_series",
+          "rawSql": "SELECT\n  $__timeGroupAlias(day_bucket, '1d') AS time,\n  SUM(fallbacks) AS value\nFROM civic_daily_kpis\nWHERE $__timeFilter(day_bucket)\nGROUP BY 1\nORDER BY 1;",
+          "refId": "C"
+        }
+      ],
+      "title": "Interacciones cívicas (últimos días)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "civic-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 40
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "civic-postgres"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n  COALESCE(channel, 'sin canal') AS metric,\n  SUM(total_interacciones) AS value\nFROM civic_daily_kpis\nWHERE $__timeFilter(day_bucket)\nGROUP BY channel\nORDER BY value DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Distribución por canal",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "civic-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "displayMode": "auto"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 3,
+      "options": {
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "civic-postgres"
+          },
+          "format": "table",
+          "rawSql": "SELECT\n  date_trunc('day', day_bucket) AS \"Día\",\n  department AS \"Departamento\",\n  status AS \"Estado\",\n  SUM(total_eventos) AS \"Eventos\"\nFROM civic_service_summary\nWHERE $__timeFilter(day_bucket)\nGROUP BY 1, 2, 3\nORDER BY 1 DESC, 4 DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Eventos de servicios municipales",
+      "type": "table"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [
+    "munbot",
+    "municipal"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Munbot Civic Intelligence",
+  "uid": "munbot-civic"
+}

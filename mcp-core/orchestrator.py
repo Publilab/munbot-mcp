@@ -35,6 +35,7 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
 )
 
+from .analytics import civic_analytics
 from .utils.cache import make_answer_cache_key
 from .settings import (
     ANSWER_CACHE_TTL_CONTACT,
@@ -1300,6 +1301,48 @@ def adapt_markdown_for_channel(text: str, channel: Optional[str]) -> str:
     text = re.sub(r"^(.*):", lambda m: m.group(1).upper() + ":", text, flags=re.MULTILINE)
     return text
 
+
+def _infer_resolution(payload: Dict[str, Any]) -> str:
+    if payload.get("escalado"):
+        return "escalated"
+    resp_type = payload.get("_resp_type")
+    if resp_type in {"complaint_created", "appointment_confirmed"}:
+        return resp_type
+    if payload.get("finish"):
+        return "finished"
+    if payload.get("pending") or payload.get("pending_field"):
+        return "pending"
+    if payload.get("no_results"):
+        return "no_results"
+    if resp_type in {"menu_aspect", "menu_category"}:
+        return "menu"
+    if resp_type == "fallback":
+        return "fallback"
+    return "answer"
+
+
+def _summarize_response_for_analytics(result: Dict[str, Any]) -> str:
+    if "respuestas" in result:
+        parts: List[str] = []
+        for entry in result.get("respuestas", []):
+            if isinstance(entry, dict) and entry.get("respuesta"):
+                parts.append(str(entry["respuesta"]))
+            elif isinstance(entry, str):
+                parts.append(entry)
+        return "\n\n".join(p for p in parts if p).strip()
+    return str(result.get("respuesta") or "")
+
+
+def _count_suggestions_from_result(result: Dict[str, Any]) -> int:
+    if "respuestas" in result:
+        total = 0
+        for entry in result.get("respuestas", []):
+            if isinstance(entry, dict):
+                total += len(entry.get("suggested_replies") or [])
+        return total
+    return len(result.get("suggested_replies") or [])
+
+
 @audit_step("render_response")
 def format_response(data: Dict[str, Any], sid: str, trace_id=None) -> Dict[str, Any]:
     resp = {"session_id": sid}
@@ -1978,7 +2021,24 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
                 f"- Fecha: {fecha_str}\n"
                 f"- Hora: {hora_compuesta}"
             )
-            return {"respuesta": confirmation_msg, "no_results": False}
+            try:
+                SCHEDULER_BOOKED_COUNTER.inc()
+            except Exception:
+                pass
+            civic_analytics.record_service_event(
+                session_id=session_id,
+                event_type="appointment_booked",
+                reference_id=str(slot_id) if slot_id else None,
+                department=department,
+                categoria="agenda",
+                status="success",
+                extra={
+                    "fecha": fecha_str,
+                    "hora": hora_compuesta,
+                    "trace_id": trace_id,
+                },
+            )
+            return {"respuesta": confirmation_msg, "no_results": False, "finish": True, "_resp_type": "appointment_confirmed"}
         
         # Reforzar propuesta actual en caso de entrada no reconocida
         current_offset = context_manager.get_context_field(session_id, "proposed_offset") or (1 if state == "proposing_slot_2" else 0)
@@ -1999,7 +2059,7 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
     return fallback("Lo siento, no pude procesar tu solicitud de agendamiento en este momento.")
 
 
-def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
+def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[str] = None) -> Dict[str, Any]:
     _jlog(_logger, "complaint_flow.start", sid=session_id, user_text=user_text)
     state = context_manager.get_complaint_state(session_id)
     text_norm = normalize_text(user_text)
@@ -2141,7 +2201,7 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
             "categoria": "1"
         }
         _jlog(_logger, "complaint_flow.calling_tool", sid=session_id, params=params)
-        resp = call_tool_microservice("complaint-registrar_reclamo", params)
+        resp = call_tool_microservice("complaint-registrar_reclamo", params, trace_id=trace_id)
         _jlog(_logger, "complaint_flow.tool_response", sid=session_id, response=resp)
         # Manejo de errores de validación devolviendo el slot pendiente
         if resp.get("error") and resp.get("pending_field"):
@@ -2170,6 +2230,17 @@ def handle_complaint_flow(session_id: str, user_text: str) -> Dict[str, Any]:
             COMPLAINTS_CREATED_COUNTER.inc()
         except Exception:
             pass
+        complaint_id = resp.get("complaint_id") or resp.get("id")
+        civic_analytics.record_service_event(
+            session_id=session_id,
+            event_type="complaint_registered",
+            reference_id=str(complaint_id) if complaint_id else None,
+            department=str(params.get("departamento")) if params.get("departamento") else None,
+            categoria=str(params.get("categoria")) if params.get("categoria") else None,
+            priority=str(params.get("prioridad")) if params.get("prioridad") else None,
+            status="success",
+            extra={"trace_id": trace_id},
+        )
         _jlog(_logger, "metrics.complaint_created")
         context_manager.update_context(session_id, user_text, receipt)
         context_manager.clear_pending_field(session_id)
@@ -2344,6 +2415,15 @@ def handle_turn(
     processed = _process_intent_classification(classification, utterance=user_text)
     intent_action = processed["action"]
     categoria = processed["category"]
+    context_manager.update_context_data(
+        session_id,
+        {
+            "last_intent_action": intent_action,
+            "last_intent_category": categoria,
+            "last_intent_normalized": processed.get("normalized"),
+            "last_intent_raw": processed.get("raw"),
+        },
+    )
 
     # --- INICIO: Nuevo flujo de seguimiento ---
     if context_manager.get_current_flow(session_id) == "FOLLOWUP_GATE":
@@ -2424,7 +2504,7 @@ def handle_turn(
         return resp
 
     if intent_action == "init_complaint" or context_manager.get_current_flow(session_id) == "reclamo":
-        return handle_complaint_flow(session_id, user_text)
+        return handle_complaint_flow(session_id, user_text, trace_id=trace_id)
 
     if intent_action == "init_scheduler" or context_manager.get_current_flow(session_id) == "agenda":
         context_manager.set_current_flow(session_id, "agenda")
@@ -2540,10 +2620,40 @@ def orchestrate(
     # Métricas de latencia
     try:
         resp_type = str(response_payload.get("_resp_type") or "generic")
-        RESP_LATENCY.labels(type=resp_type).observe(max(0.0, time.time() - t0))
-        MET_FLOW_LAT.observe(max(0.0, time.time() - t0))
+        elapsed = max(0.0, time.time() - t0)
+        RESP_LATENCY.labels(type=resp_type).observe(elapsed)
+        MET_FLOW_LAT.observe(elapsed)
+        latency_ms = int(elapsed * 1000)
     except Exception:
-        pass
+        latency_ms = None
+
+    # Registro para reportería municipal
+    try:
+        last_tramite = context_manager.get_context_field(sid, "last_tramite") or context_manager.get_selected_document(sid)
+        civic_analytics.record_conversation_event(
+            session_id=sid,
+            user_text=_redact(user_text),
+            bot_response=_redact(_summarize_response_for_analytics(result)),
+            channel=channel,
+            intent_action=context_manager.get_context_field(sid, "last_intent_action"),
+            intent_normalized=context_manager.get_context_field(sid, "last_intent_normalized"),
+            intent_category=context_manager.get_context_field(sid, "last_intent_category"),
+            tramite_id=last_tramite,
+            response_type=response_payload.get("_resp_type") or ("multi" if "respuestas" in result else "message"),
+            resolution=_infer_resolution(response_payload),
+            fallback_used=bool(response_payload.get("_resp_type") == "fallback" or response_payload.get("no_results")),
+            escalated=bool(response_payload.get("escalado")),
+            latency_ms=latency_ms,
+            suggested_replies=_count_suggestions_from_result(result),
+            metadata={
+                "trace_id": trace_id,
+                "flow": context_manager.get_current_flow(sid),
+                "pending_field": context_manager.get_context_field(sid, "pending_field"),
+                "turn_count": context_manager.get_context_field(sid, "turn_count"),
+            },
+        )
+    except Exception as exc:  # pragma: no cover - análisis no crítico
+        _logger.debug("analytics.record_conversation_failed: %s", exc)
     return result
 
 
@@ -2553,10 +2663,12 @@ async def orchestrate_route(request: Request, payload: OrchestrateRequest):
     force_canary = headers.get(AGENT_CANARY_HEADER_KEY, "") == AGENT_CANARY_HEADER_ON
     # Aceptar tanto 'canal' como 'channel' desde gateways
     chan = payload.canal or payload.channel
+    trace_id = headers.get("x-trace-id") or headers.get("x-request-id")
     result = orchestrate(
         payload.pregunta,
         session_id=payload.session_id,
         channel=chan,
         force_canary=force_canary,
+        trace_id=trace_id,
     )
     return result
