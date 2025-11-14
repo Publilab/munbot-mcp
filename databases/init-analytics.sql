@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS civic_conversation_events (
     bot_response TEXT,
     metadata JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    day_bucket DATE GENERATED ALWAYS AS (created_at::date) STORED
+    day_bucket DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE INDEX IF NOT EXISTS idx_civic_conversation_day
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS civic_service_events (
     status TEXT,
     extra JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    day_bucket DATE GENERATED ALWAYS AS (created_at::date) STORED
+    day_bucket DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE INDEX IF NOT EXISTS idx_civic_service_day
