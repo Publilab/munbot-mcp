@@ -2549,13 +2549,18 @@ def handle_turn(
                         "tramite": target
                     }
                 })
+                context_manager.update_context_data(session_id, {"expecting_aspect": True})
+                buttons = offer_aspect_buttons(target)
                 msg = (
                     f"Perfecto. ¿Qué parte te interesa de *{_kb_display_name(target)}*? "
                     "Dispongo de requisitos, costos, horarios y lugar de tramitación. "
                     "También puedes hacerme otra pregunta directamente y la responderé."
                 )
                 context_manager.update_context(session_id, user_text, msg)
-                return {"respuesta": msg, "no_results": False}
+                payload = {"respuesta": msg, "no_results": False, "_resp_type": "menu_aspect"}
+                if buttons:
+                    payload["suggested_replies"] = buttons
+                return payload
             if not t_id and selected and aspecto:
                 return respond_direct(selected, aspecto, session_id, turn_count)
             if t_id and aspecto:
