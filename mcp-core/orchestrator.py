@@ -574,13 +574,46 @@ def _kb_tramites_of_category(cat: str) -> list[str]:
     ids = KB_CATEGORIAS.get(cat) or []
     return [str(tid) for tid in ids]
 
-def show_tramites_menu(categoria: str) -> Dict[str, Any]:
-    ids = _kb_tramites_of_category(categoria)[:6]
+
+def _detect_procedure_root(text: Optional[str]) -> Optional[str]:
+    if not text:
+        return None
+    norm = normalize_text(text)
+    for root, variants in ROOT_KEYWORDS.items():
+        for variant in variants:
+            if variant in norm:
+                return root
+    return None
+
+def _match_root_in_names(tid: str, root_word: str) -> bool:
+    data = KB_BY_ID.get(tid) or {}
+    normalized = normalize_text(root_word or "")
+    if not normalized:
+        return False
+    names = [_kb_display_name(tid)] + list(data.get("aliases") or [])
+    for name in names:
+        if normalize_text(str(name)) and normalized in normalize_text(str(name)):
+            return True
+    return False
+
+
+def show_tramites_menu(categoria: str, root_filter: Optional[str] = None) -> Dict[str, Any]:
+    ids = _kb_tramites_of_category(categoria)
+    if root_filter:
+        filtered = [tid for tid in ids if _match_root_in_names(tid, root_filter)]
+        if filtered:
+            ids = filtered
+    ids = ids[:6]
     names = [_kb_display_name(tid) for tid in ids]
     cat_disp = categoria.capitalize()
     if not ids:
         return fallback(f"No encontré trámites para la categoría '{cat_disp}'.")
-    msg = f"Estos son algunos trámites de la categoría {cat_disp}:"
+    if root_filter and len(ids) == 1:
+        msg = f"Por ahora solo dispongo de este {root_filter} en la categoría {cat_disp}:"
+    elif root_filter:
+        msg = f"Estos son los {root_filter}s disponibles en la categoría {cat_disp}:"
+    else:
+        msg = f"Estos son algunos trámites de la categoría {cat_disp}:"
     try:
         RESP_MENU_CATEGORY_COUNTER.inc()
     except Exception:
@@ -591,12 +624,28 @@ def show_tramites_menu(categoria: str) -> Dict[str, Any]:
     return payload
 
 MAIN_MENU_TEXT = "No entiendo tu consulta, ¿podrías contextualizarme a qué trámite te refieres?"
+MAIN_MENU_PROMPTS = [
+    "Veo que necesitas ayuda. Esta es la información que tengo disponible. ¿Cuál es la que estás buscando?",
+    "Si me permites guiarte, elige en el menú de botones a continuación la opción que quieras explorar.",
+    "Upps, posiblemente no encontraste la información que estabas buscando. Disculpame, pero estoy en constante crecimiento. Por el momento estos son los procedimientos que tengo disponibles",
+]
 MAIN_MENU_BUTTONS = ["🗂️ Certificados y trámites"]
+ROOT_KEYWORDS = {
+    "certificado": {"certificado", "certificados"},
+    "licencia": {"licencia", "licencias"},
+    "patente": {"patente", "patentes"},
+}
 SUGGEST_BUTTON_APPOINTMENT = "📅 Agendar una cita"
 SUGGEST_BUTTON_COMPLAINT = "📝 Presentar un reclamo"
 
+def _pick_main_menu_prompt() -> str:
+    if MAIN_MENU_PROMPTS:
+        return _RND.choice(MAIN_MENU_PROMPTS)
+    return MAIN_MENU_TEXT
+
+
 def show_main_menu() -> Dict[str, Any]:
-    return {"respuesta": MAIN_MENU_TEXT, "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
+    return {"respuesta": _pick_main_menu_prompt(), "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
 
 def _fallback_suggestions(user_text: Optional[str]) -> List[str]:
     suggestions = list(MAIN_MENU_BUTTONS)
@@ -612,7 +661,7 @@ def _fallback_suggestions(user_text: Optional[str]) -> List[str]:
 
 def prompt_tramite_selection(intro_text: Optional[str] = None, user_text: Optional[str] = None) -> Dict[str, Any]:
     """Solicita que el usuario elija uno de los trámites disponibles para fijar contexto."""
-    text = intro_text or MAIN_MENU_TEXT
+    text = intro_text or _pick_main_menu_prompt()
     prompt = {"respuesta": text, "no_results": False, "suggested_replies": _fallback_suggestions(user_text)}
     menu = show_tramites_menu("certificados")
     menu["respuesta"] = "Selecciona uno de estos trámites para que pueda responder con información específica:"
@@ -805,7 +854,7 @@ def _override_messages_from_config():
                 doc = None
         if not isinstance(doc, dict):
             return
-        global MAIN_MENU_TEXT, MAIN_MENU_BUTTONS
+        global MAIN_MENU_TEXT, MAIN_MENU_PROMPTS, MAIN_MENU_BUTTONS
         global SCHED_HOWTO_TEXT, SCHED_HOWTO_BUTTONS
         global COMPLAINT_HOWTO_TEXT, COMPLAINT_HOWTO_BUTTONS
         global HELP_TEXT
@@ -813,6 +862,8 @@ def _override_messages_from_config():
         mm = doc.get("main_menu") or {}
         if isinstance(mm.get("text"), str):
             MAIN_MENU_TEXT = mm["text"]
+        if isinstance(mm.get("prompts"), list) and mm.get("prompts"):
+            MAIN_MENU_PROMPTS = [str(x) for x in mm["prompts"] if isinstance(x, str) and x.strip()]
         if isinstance(mm.get("buttons"), list) and mm.get("buttons"):
             MAIN_MENU_BUTTONS = [str(x) for x in mm["buttons"]]
 
@@ -2573,7 +2624,8 @@ def handle_turn(
             if cat and not t_id:
                 # Informar que el trámite no está en la base y sugerir alternativas de la categoría
                 msg = "No puedo procesar tu solicitud porque no está en mi base de conocimiento."
-                menu = show_tramites_menu(cat)
+                root_hint = _detect_procedure_root(user_text)
+                menu = show_tramites_menu(cat, root_filter=root_hint)
                 direct = {"respuesta": msg, "no_results": False, "_resp_type": "kb_miss"}
                 return {"respuestas": [direct, menu]}
             return show_main_menu()
