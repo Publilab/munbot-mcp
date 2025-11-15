@@ -477,6 +477,11 @@ def _resolve_faq_for_tid(tramite_id: str, txt: str) -> Optional[Dict[str, Any]]:
                 return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
 
     try:
+        if tramite_id == "cert_residencia_definitiva":
+            needs_time = re.search(r"\b(4|cuatro)\s*(anos|años)\b", txt) or "visa temporal" in txt or "cumpli" in txt
+            mentions_topic = any(token in txt for token in ("residencia", "definitiva", "permiso", "certificado"))
+            if mentions_topic and needs_time and "tiempo_residencia" in faq:
+                return {"respuesta": str(faq["tiempo_residencia"]), "no_results": False, "_resp_type": "faq"}
         if "residencia" in txt and ("definitiva" in txt or "permiso" in txt or "certificado" in txt):
             if re.search(r"\b(\d+)\s*(anos|años)\b", txt):
                 if "tiempo_residencia" in faq:
