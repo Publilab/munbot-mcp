@@ -376,8 +376,24 @@ def _load_faq_triggers() -> dict:
         _jlog(_logger, "kb.faq_triggers_load_error", error=str(e))
         return {}
 
+
+def _load_faq_samples() -> dict:
+    try:
+        cfg_path = os.getenv("FAQ_SAMPLES_PATH")
+        if not cfg_path:
+            cfg_path = str((Path(__file__).resolve().parent.parent / "kb" / "faq_samples.json").absolute())
+        p = Path(cfg_path)
+        if not p.exists():
+            return {}
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception as e:
+        _jlog(_logger, "kb.faq_samples_load_error", error=str(e))
+        return {}
+
 def _build_faq_triggers_by_tid() -> dict:
     raw = _load_faq_triggers()
+    samples = _load_faq_samples()
     by_tid: dict[str, dict[str, list]] = {}
 
     def _merge_entry(tid: str, mapping: dict):
@@ -432,6 +448,18 @@ def _build_faq_triggers_by_tid() -> dict:
         if not tid:
             continue
         _merge_entry(tid, mapping)
+
+    for tid, mapping in (samples or {}).items():
+        if not isinstance(mapping, dict):
+            continue
+        normalized_map: dict[str, list[str]] = {}
+        for faq_key, phrases in mapping.items():
+            if isinstance(phrases, list) and phrases:
+                cleaned = [str(p).strip() for p in phrases if isinstance(p, str) and str(p).strip()]
+                if cleaned:
+                    normalized_map[faq_key] = cleaned
+        if normalized_map:
+            _merge_entry(tid, normalized_map)
 
     return by_tid
 

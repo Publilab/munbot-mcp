@@ -1,0 +1,234 @@
+{
+  "cert_residencia_definitiva": {
+    "tiempo_residencia": [
+      "¿Con 4 años viviendo en el país ya puedo pedir la residencia definitiva?",
+      "¿Si llevo vivendo varios años en el pais puedo pedir la residencia definitiva? -> Me lleva a menú del trámite",
+      "Vivo hace 4 años en Chile puedo pedir la residencia definitiva",
+      "Ya cumpli 4 años con visa temporal, ¿puedo tramitar la definitiva?",
+      "¿Puedo pedir la residencia definitiva si no me he ido del país en 4 años?",
+      "Llevo harto tiempo viviendo en Chile, ¿ya puedo hacer el trámite para quedarme definitivo?",
+      "¿Me alcanza con 4 años continuos de visa temporal para postular a la definitiva?"
+    ],
+    "documentos_requeridos": [
+      "¿Qué documentos exactos debo adjuntar y en qué formato?",
+      "Que documentos debo tener para sacar el certificado de residencia definitiva?",
+      "Que papeles debo llevar para sacar el certificado de residencia definitiva?",
+      "En que formato debo llevar los papeles para sacar el certificado de residencia definitiva?",
+      "¿Cuáles son los documentos que necesito para tramitar la residencia definitiva?",
+      "¿Qué papeles me piden para solicitar la definitiva?",
+      "¿Qué tengo que adjuntar para pedir la residencia definitiva?",
+      "Quiero sacar la residencia definitiva, ¿qué documentos necesito?",
+      "¿Qué debo adjuntar para que me acepten la solicitud del certificado de residencia definitiva?"
+    ],
+    "certificados_digitales": [
+      "¿Aceptan certificados digitales o deben ser legalizados?",
+      "¿Aceptan certificados digitales o deben ser apostillados?",
+      "¿Se aceptan papeles digitales para sacar el certificado de residencia definitiva?",
+      "¿En qué formato debo entregar los documentos para pedir la residencia definitiva?",
+      "¿Se puede llevar los documentos escaneados o tienen que ser originales para obtener el certificado de residencia definitiva?",
+      "¿Aceptan certificados digitales o deben ser legalizados para sacar la residencia definitiva?"
+    ],
+    "antecedentes_penales": [
+      "¿Necesito antecedentes penales de mi país de origen y de Chile?",
+      "¿Para sacar el certificado de residencia necesito el papel de antecedentes?",
+      "¿Para sacar el certificado de residencia necesito el certificado de antecedentes?",
+      "¿Piden antecedentes penales chilenos y del país de origen para sacar la residencia definitiva?",
+      "¿Hay que tener los papeles de antecedentes de Chile y del extranjero?",
+      "¿Se necesita el certificado de antecedentes de los dos países para este trámite?",
+      "¿Me van a pedir los antecedentes penales para la residencia definitiva?",
+      "¿El certificado de residencia definitiva exige antecedentes penales?",
+      "¿Necesito el certificado de antecedentes para fines especiales y uno del extranjero?",
+      "¿Tengo que presentar los antecedentes penales de mi país también?"
+    ],
+    "plazos_y_seguimiento": [
+      "¿Cuánto demora la respuesta de mi certificado de residencia?",
+      "¿Cómo hago seguimiento del expediente del certificado de residencia?",
+      "¿Cómo hago seguimiento en línea del certificado de residencia?",
+      "¿Cómo me informo del proceso del certificado de residencia?",
+      "¿Cuánto se demoran en responder la residencia definitiva?",
+      "¿Cuánto tiempo tengo que esperar para saber si me aprobaron la residencia?",
+      "¿Dónde puedo revisar el estado de mi solicitud de residencia definitiva?",
+      "¿Cómo puedo saber en qué va mi trámite de residencia?",
+      "¿Dónde hago seguimiento a mi expediente de residencia definitiva?",
+      "¿Por dónde se revisa el avance del trámite de residencia?",
+      "¿Cómo saber si ya está listo mi certificado de residencia definitiva?",
+      "¿Demoran mucho en entregar la residencia definitiva?",
+      "¿Cuánto hay que esperar después de enviar la solicitud?",
+      "¿Se puede hacer seguimiento online de la residencia definitiva?"
+    ],
+    "visa_temporal_vencida": [
+      "¿Qué pasa si mi visa temporal vence durante el proceso?",
+      "¿Que pasa si mi visa temporal vence mientras estoy tramitando el certificado de residencia?",
+      "¿Puedo seguir en Chile si se me vence la visa mientras tramito la residencia definitiva?",
+      "¿Qué hago si mi visa vence mientras espero la respuesta de la residencia?",
+      "¿Sigo legal si se me vence la visa durante el trámite de la definitiva?",
+      "¿Me tengo que ir si caduca mi visa antes que salga la residencia?",
+      "¿Pierdo el proceso si se me vence la visa?",
+      "¿Me pueden multar si estoy sin visa mientras tramito la definitiva?",
+      "¿Qué pasa si presento la solicitud y mi visa vence justo después?",
+      "¿Puedo quedarme en el país si ya metí la solicitud pero se venció la visa?",
+      "¿Es legal quedarse en Chile mientras se espera la residencia definitiva?"
+    ],
+    "causales_rechazo": [
+      "¿Cuáles son las causales más comunes de rechazo?",
+      "¿Por qué rechazan la residencia definitiva normalmente?",
+      "¿Cuáles son los errores más comunes por los que niegan la residencia definitiva?",
+      "¿Qué puede hacer que me rechacen la solicitud de residencia?",
+      "¿Qué motivos pueden causar el rechazo del certificado de residencia?",
+      "¿Qué cosas hay que evitar para que no me rechacen la residencia definitiva?",
+      "¿Qué problemas hacen que uno pierda el trámite de la residencia definitiva?",
+      "¿Qué revisan que podría hacer que rechacen el certificado de residencia?",
+      "¿Cuáles son los principales motivos de rechazo del certificado de residencia definitiva?",
+      "¿Me pueden rechazar la residencia definitiva por antecedentes o errores en los papeles?"
+    ]
+  },
+  "licencia_transporte": {
+    "clase_licencia": [
+      "¿Qué clase de licencia necesito para mi nave de pasajeros?",
+      "¿Qué clase de licencia tengo que sacar para llevar pasajeros?",
+      "¿Qué tipo de licencia corresponde para manejar un vehículo de pasajeros?",
+      "¿Cuál licencia necesito si voy a trabajar transportando gente?",
+      "¿Qué licencia profesional debo tener para transporte de personas?"
+    ],
+    "requisitos_generales": [
+      "¿Cuáles son los requisitos de edad, salud y escolaridad para obtener la licencia?",
+      "¿Qué edad mínima piden y qué exámenes de salud hay para sacar la licencia?",
+      "¿Qué requisitos médicos y de estudios se necesitan para la licencia?",
+      "¿Tengo que tener 20 años y octavo básico para postular para obtener la licencia?",
+      "¿Qué nivel de estudios exigen y qué chequeos médicos para tramitar la licencia?",
+      "¿Piden certificado médico y psicotécnico para obtener la licencia?",
+      "¿De qué edad en adelante puedo obtener la licencia?"
+    ],
+    "documentos_examen": [
+      "¿Qué documentos debo llevar el día del examen de la licencia?",
+      "¿Qué papeles tengo que presentar cuando vaya a rendir el examen?",
+      "¿Qué documentos me van a pedir el día del examen?",
+      "¿Debo llevar cédula, certificado médico y comprobante de pago?",
+      "¿Qué respaldo debo llevar para poder dar el examen?",
+      "¿Necesito la hoja de vida del conductor y el curso aprobado?",
+      "¿Qué cosas debo tener listas para presentarme al examen?",
+      "¿Cuáles son los documentos obligatorios para rendir?",
+      "¿Qué debo llevar exactamente al momento del examen?"
+    ],
+    "examen_teorico": [
+      "¿Qué incluye el examen teórico y cómo se evalúa?",
+      "¿De qué trata la prueba teórica y cuántas preguntas son?",
+      "¿Qué temas entran en el teórico (señales, normas, mecánica)?",
+      "¿Cómo es la evaluación del teórico y con qué puntaje se aprueba?",
+      "¿Qué incluye la prueba teórica y cuál es el mínimo para pasar?",
+      "¿Qué material debo estudiar para el examen teórico?",
+      "¿El teórico es de alternativas? ¿Qué porcentaje necesito?",
+      "¿Qué consideran en el teórico: tránsito, seguridad, mecánica?",
+      "¿Cómo corrigen el examen teórico y qué nota piden?",
+      "¿Qué parte de prevención de riesgos entra en el teórico?",
+      "¿Cuánto debo acertar para aprobar el examen teórico?"
+    ],
+    "examen_practico": [
+      "¿Cómo es el examen práctico?",
+      "¿en qué circuito se realiza?",
+      "¿En qué consiste la prueba práctica y dónde se hace?",
+      "¿Qué maniobras me van a pedir en el práctico?",
+      "¿El examen práctico es en circuito municipal o en calle?",
+      "¿Qué recorrido se usa para el práctico y qué evalúan?",
+      "¿Incluye estacionar, virajes y control del vehículo?",
+      "¿El práctico se rinde con tránsito real o solo en pista?",
+      "¿Dónde queda el circuito y cómo es la evaluación?",
+      "¿Qué espera el examinador en la prueba de manejo?",
+      "¿Cuánto dura el examen práctico y qué partes tiene?",
+      "¿Qué condiciones del circuito debo conocer antes?"
+    ],
+    "reprobado": [
+      "¿Qué pasa si repruebo uno de los exámenes?",
+      "Si me va mal, ¿puedo volver a dar la prueba? ¿Cuándo?",
+      "¿Cuánto tengo que esperar para rendir de nuevo?",
+      "¿Reagendo solo el examen que reprobé o todo de nuevo?",
+      "¿Debo pagar otra vez si repruebo una de las pruebas?",
+      "Si no paso el teórico, ¿puedo repetirlo a los 15 días?",
+      "¿Qué trámite hago para reprogramar el examen reprobado?",
+      "¿Puedo prepararme y rendir de nuevo el práctico solamente?",
+      "¿Hay un plazo mínimo para volver a intentarlo?",
+      "Si repruebo, ¿pierdo todo el proceso o solo esa parte?",
+      "¿Cómo funciona el reintento cuando uno no aprueba?"
+    ]
+  },
+  "patente_comercial": {
+    "venta_desde_casa": [
+      "¿Necesito patente para vender desde mi casa o por internet?",
+      "¿Tengo que sacar patente si vendo desde la casa?",
+      "Si vendo por internet, ¿igual necesito patente?",
+      "¿Para e-commerce también piden patente municipal?",
+      "¿Se puede vender desde el domicilio sin patente?",
+      "¿Es obligatorio tener patente si vendo por redes sociales?",
+      "¿Con ventas online igual debo tramitar patente?",
+      "¿Para negocio en casa corresponde patente?",
+      "¿Un emprendimiento desde el hogar requiere patente?",
+      "¿Si despacho a domicilio igual me exigen patente?",
+      "¿Puedo funcionar sin patente si es solo por internet?"
+    ],
+    "requisitos_local": [
+      "¿Cuáles son los requisitos mínimos del local?",
+      "¿Qué condiciones debe cumplir el local para la patente?",
+      "¿Qué exigen del lugar físico (baño, ventilación, etc.)?",
+      "¿Qué pide la muni en infraestructura para abrir?",
+      "¿Cuáles son las normas sanitarias básicas del local?",
+      "¿Se necesita informe de bomberos o algo similar?",
+      "¿Qué requisitos de seguridad y sanidad debe tener?",
+      "¿Qué revisan al inspeccionar el local?",
+      "¿Qué pide la DOM/inspección para autorizar el local?",
+      "¿El local debe cumplir algo de accesibilidad?",
+      "¿Cuáles son las mínimas condiciones del recinto?"
+    ],
+    "verificacion_direccion": [
+      "¿Cómo verifico si mi dirección permite el giro que quiero?",
+      "¿Cómo sé si mi dirección está zonificada para mi giro?",
+      "¿Dónde consulto si el giro está permitido en mi barrio?",
+      "¿La DOM me puede decir si el giro aplica en esa dirección?",
+      "¿Cómo reviso el uso de suelo para mi negocio?",
+      "¿Mi calle permite ese tipo de comercio?",
+      "¿Dónde veo si la zonificación permite mi actividad?",
+      "¿A quién le pregunto si puedo poner ese giro en mi domicilio?",
+      "¿Cómo valido que el giro es compatible con la dirección?",
+      "¿Dónde se verifica la compatibilidad del giro con el sector?",
+      "¿Se puede chequear en línea el uso de suelo del predio?"
+    ],
+    "pago_patente": [
+      "¿Cada cuánto tiempo tengo que pagar la patente?",
+      "¿Cada cuánto se paga la patente municipal?",
+      "¿La patente se paga semestral o anual?",
+      "¿En qué meses toca pagar la patente?",
+      "¿La patente se cancela en enero y julio, cierto?",
+      "¿Puedo pagar la patente online o debe ser presencial?",
+      "¿Hay recargos si me atraso en el pago de la patente?",
+      "¿Se puede prorratear la patente?",
+      "¿Cuál es el calendario de pago de la patente?",
+      "¿Cómo se calcula el pago de la patente?",
+      "¿El pago de la patente es dos veces al año?"
+    ],
+    "inicio_sin_patente": [
+      "¿Puedo iniciar actividades sin patente mientras tramito los permisos?",
+      "Puedo empezar a operar mientras saco la patente?",
+      "¿Se puede abrir primero y después tramitar la patente?",
+      "¿Sirve con solo iniciar actividades en el SII?",
+      "¿Es legal vender sin patente mientras está en trámite la patente?",
+      "¿Puedo trabajar con el comprobante de solicitud de la patente no más?",
+      "¿Me pueden fiscalizar si opero sin la patente aún?",
+      "¿Inicio actividades reemplaza la patente municipal?",
+      "¿Puedo facturar sin tener la patente lista?",
+      "¿Existe algún permiso provisorio para operar?",
+      "¿Qué pasa si abro sin la patente aprobada?"
+    ],
+    "cambio_giro": [
+      "¿Cómo cambio de giro?",
+      "¿Qué tengo que hacer para modificar el giro de la patente?",
+      "¿Cómo tramito el cambio de giro en la muni?",
+      "¿Debo actualizar primero el giro en el SII o en la municipalidad?",
+      "¿Se puede cambiar el giro manteniendo la misma patente?",
+      "¿Qué documentos piden para cambiar el giro?",
+      "¿Tengo que pedir nueva inspección para el nuevo giro?",
+      "¿Cómo actualizo la patente si cambié de actividad?",
+      "¿Es otro trámite o una modificación de la misma patente?",
+      "¿Cuánto demora el cambio de giro y cuánto cuesta?",
+      "¿Con quién veo el cambio de giro: DOM, Rentas, ambos?"
+    ]
+  }
+}
