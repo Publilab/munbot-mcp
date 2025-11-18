@@ -301,6 +301,12 @@ FAQ_GENERIC_SYNONYMS = {
         "he residido",
         "viviendo",
         "residir",
+        "cumpli 4 anos",
+        "cumpli cuatro anos",
+        "cumpli 4 anios",
+        "visa temporal",
+        "tramitar la definitiva",
+        "tramitar la residencia definitiva",
     ],
     "documentos_requeridos": ["documentos", "documento", "papeles", "certificados", "que documentos", "que necesito"],
     "certificados_digitales": ["certificados digitales", "digitales"],
@@ -314,7 +320,22 @@ FAQ_GENERIC_SYNONYMS = {
     "documentos_examen": ["documentos examen", "papeles examen"],
     "examen_teorico": ["examen teorico", "teorico", "prueba teorica"],
     "examen_practico": ["examen practico", "practico", "prueba practica", "circuito"],
-    "reprobado": ["reprobe", "reprobar", "reprobado", "volver rendir"],
+    "reprobado": [
+        "reprobe",
+        "reprobar",
+        "reprobado",
+        "volver rendir",
+        "volver a rendir",
+        "rendir de nuevo",
+        "rendir nuevamente",
+        "rendir otra vez",
+        "dar de nuevo el examen",
+        "dar nuevamente el examen",
+        "repetir el examen",
+        "cuanto esperar para rendir",
+        "esperar para rendir de nuevo",
+        "cuanto tengo que esperar para rendir de nuevo",
+    ],
     # Patente comercial
     "venta_desde_casa": ["desde casa", "por internet", "online", "ecommerce"],
     "requisitos_local": ["requisitos local", "normas uso suelo", "sanitarias"],
@@ -323,6 +344,63 @@ FAQ_GENERIC_SYNONYMS = {
     "inicio_sin_patente": ["inicio actividades", "sii", "sin patente"],
     "cambio_giro": ["cambio giro", "modificacion giro"],
 }
+def _load_faq_samples() -> dict:
+    try:
+        root = Path(__file__).resolve().parents[1]
+        samples_path = root / "kb" / "faq_samples.json"
+        return json.loads(samples_path.read_text(encoding="utf-8"))
+    except Exception as e:
+        _jlog(_logger, "kb.faq_samples_load_error", error=str(e))
+        return {}
+
+FAQ_SAMPLES_RAW = _load_faq_samples()
+FAQ_SAMPLE_TRAMITE_HINT = {
+    "cert_residencia_definitiva": "cert_residencia_definitiva",
+    "licencia_transporte": "licencia transporte espacial",
+    "patente_comercial": "patente comercial intergalactica",
+}
+
+
+def _build_faq_sample_index() -> dict:
+    index: dict[str, tuple[str, str]] = {}
+    try:
+        for raw_name, groups in (FAQ_SAMPLES_RAW or {}).items():
+            hint = FAQ_SAMPLE_TRAMITE_HINT.get(raw_name)
+            if not hint:
+                hint = match_tramite(raw_name.replace("_", " "), KB_BY_ALIAS)
+            if not hint:
+                continue
+            for key, questions in (groups or {}).items():
+                for q in questions or []:
+                    norm_q = normalize_text(q)
+                    if norm_q:
+                        index[norm_q] = (hint, key)
+    except Exception as e:
+        _jlog(_logger, "kb.faq_samples_index_error", error=str(e))
+    return index
+
+
+FAQ_SAMPLE_INDEX = _build_faq_sample_index()
+
+
+def _faq_response_from_sample(tramite_id: str, faq_key: str) -> Optional[Dict[str, Any]]:
+    faq = (KB_FAQ_BY_TID.get(tramite_id) or {}).get("faq") or {}
+    ans = faq.get(faq_key)
+    if not ans:
+        return None
+    res = {"respuesta": str(ans), "no_results": False, "_resp_type": "faq"}
+    res["_matched_tid"] = tramite_id
+    return res
+
+
+def _sample_lookup(norm_txt: str, forced_tid: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    hit = FAQ_SAMPLE_INDEX.get(norm_txt)
+    if not hit:
+        return None
+    sample_tid, sample_key = hit
+    if forced_tid and sample_tid != forced_tid:
+        return None
+    return _faq_response_from_sample(sample_tid, sample_key)
 
 def _normalize(s: str) -> str:
     try:
@@ -528,10 +606,18 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
         return None
     txt = _normalize(user_text)
     if tramite_id:
+        sample_resp = _sample_lookup(txt, forced_tid=tramite_id)
+        if sample_resp:
+            return sample_resp
         result = _resolve_faq_for_tid(tramite_id, txt)
         if result:
             result["_matched_tid"] = tramite_id
-        return result
+            return result
+        return None
+
+    sample_resp = _sample_lookup(txt)
+    if sample_resp:
+        return sample_resp
 
     inferred: Optional[Dict[str, Any]] = None
     for tid in KB_FAQ_BY_TID.keys():
@@ -541,7 +627,10 @@ def check_faq(tramite_id: Optional[str], user_text: str) -> Optional[Dict[str, A
                 return None  # Ambigüedad: no inferir
             res["_matched_tid"] = tid
             inferred = res
-    return inferred
+    if inferred:
+        return inferred
+
+    return None
 
 def _kb_display_name(tramite_id: str) -> str:
     t = KB_BY_ID.get(tramite_id) or {}
@@ -1555,6 +1644,24 @@ DOC_SPECIFIC_KEYWORDS = {
     "mail",
     "correo",
 }
+QUESTION_TOKENS = {
+    "que",
+    "qué",
+    "como",
+    "cómo",
+    "donde",
+    "dónde",
+    "cuando",
+    "cuándo",
+    "cuanto",
+    "cuánto",
+    "por que",
+    "por qué",
+    "para que",
+    "para qué",
+    "quien",
+    "quién",
+}
 DOC_PREFIXES = [
     "informacion sobre",
     "informacion del",
@@ -1583,6 +1690,25 @@ DOC_PREFIXES = [
     "me podrías informar del",
     "me gustaría saber",
 ]
+
+def _looks_like_question(text: str) -> bool:
+    if not text:
+        return False
+    if "?" in text or "¿" in text:
+        return True
+    norm = normalize_text(text)
+    if not norm:
+        return False
+    padded = f" {norm} "
+    for tok in QUESTION_TOKENS:
+        tok_norm = normalize_text(tok)
+        if not tok_norm:
+            continue
+        if padded.startswith(f" {tok_norm} "):
+            return True
+        if f" {tok_norm} " in padded:
+            return True
+    return False
 
 CHANGE_TOPIC_PATTERNS = {
     "cambiemos de tema",
@@ -2424,6 +2550,10 @@ def handle_followup_gate(session_id: str, user_text: str, intent_action: str) ->
     if match_tramite(user_text, KB_BY_ALIAS) or intent_action != "ask_document":
         context_manager.set_current_flow(session_id, None)
         # Devolver None para que handle_turn procese el mensaje desde cero
+        return None
+    if last_tramite and intent_action == "ask_document" and _looks_like_question(user_text):
+        context_manager.set_current_flow(session_id, None)
+        context_manager.set_selected_document(session_id, last_tramite)
         return None
 
     # Opción 5: Ambigüedad. Repreguntar una vez.
