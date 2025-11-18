@@ -4,6 +4,9 @@
       "id": "cert_residencia_definitiva",
       "aliases": [
         "certificado de residencia definitiva",
+        "certificado de residencia",
+        "papel de residencia",
+        "papel de residencia definitiva",
         "residencia definitiva"
       ],
       "categoria": "certificados",
@@ -28,7 +31,10 @@
       "aliases": [
         "licencia de transporte",
         "licencia de chofer espacial",
-        "licencia de conductor espacial"
+        "licencia de conductor espacial",
+        "licencia de conducir",
+        "carnet de conducir",
+        "carne de conducir"
       ],
       "categoria": "certificados",
       "respuestas": {
@@ -51,7 +57,8 @@
       "id": "patente comercial intergalactica",
       "aliases": [
         "patente comercial",
-        "patente de negocio"
+        "patente de negocio",
+        "patente"
       ],
       "categoria": "certificados",
       "respuestas": {
