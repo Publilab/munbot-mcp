@@ -2,7 +2,7 @@
   "documents": [
     {
       "name": "KB-doc_tramites.json",
-      "description": "Trámites, permisos, licencias y certificados: requisitos, dónde obtener, horarios, utilidad, penalidades y vigencia. Incluye 'permiso de aterrizaje', 'licencia de piloto', 'patente comercial'."
+      "description": "Trámites, permisos, licencias y certificados: requisitos, dónde obtener, horarios, utilidad, penalidades y vigencia. Incluye 'licencia de transporte', 'licencia de piloto', 'patente comercial'."
     },
     {
       "name": "KB-depto_info.json",

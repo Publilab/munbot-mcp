@@ -670,17 +670,19 @@ def show_tramites_menu(categoria: str, root_filter: Optional[str] = None) -> Dic
     payload["suggested_replies"] = names
     return payload
 
-MAIN_MENU_TEXT = "No entiendo tu consulta, ¿podrías contextualizarme a qué trámite te refieres?"
-MAIN_MENU_PROMPTS = [
-    "Veo que necesitas ayuda. Esta es la información que tengo disponible. ¿Cuál es la que estás buscando?",
-    "Si me permites guiarte, elige en el menú de botones a continuación la opción que quieras explorar.",
-    "Upps, posiblemente no encontraste la información que estabas buscando. Disculpame, pero estoy en constante crecimiento. Por el momento estos son los procedimientos que tengo disponibles",
-]
+MAIN_MENU_TEXT = (
+    "Veo que necesitas ayuda. Esta es la información que tengo disponible. ¿Cuál es la que estás buscando?\n"
+    "🗂️ Certificados y trámites\n"
+    "📅 Agendar una cita\n"
+    "📝 Presentar un reclamo\n"
+    "📞 Hablar con un agente"
+)
+MAIN_MENU_PROMPTS: list[str] = []
 MAIN_MENU_BUTTONS = [
     "🗂️ Certificados y trámites",
     "📅 Agendar una cita",
     "📝 Presentar un reclamo",
-    "👤 Hablar con un agente",
+    "📞 Hablar con un agente",
 ]
 ROOT_KEYWORDS = {
     "certificado": {"certificado", "certificados"},
@@ -696,7 +698,7 @@ BUTTON_DECORATIONS = {
     "certificados y tramites": "🗂️ Certificados y trámites",
     "agendar una cita": "📅 Agendar una cita",
     "presentar un reclamo": "📝 Presentar un reclamo",
-    "hablar con un agente": "👤 Hablar con un agente",
+    "hablar con un agente": "📞 Hablar con un agente",
 }
 SUGGEST_BUTTON_APPOINTMENT = "📅 Agendar una cita"
 SUGGEST_BUTTON_COMPLAINT = "📝 Presentar un reclamo"
@@ -2429,7 +2431,7 @@ def handle_followup_gate(session_id: str, user_text: str, intent_action: str) ->
     if reprompt_count < 1:
         context_manager.update_context_data(session_id, {"reprompt_count": reprompt_count + 1})
         return {
-            "respuesta": "No te he entendido. ¿Quieres ver otras opciones sobre el trámite o prefieres terminar?",
+            "respuesta": "No te he entendido. ¿Quieres ver otras opciones sobre el trámite?",
             "suggested_replies": ["Sí, ver opciones", "No, gracias"],
             "no_results": False
         }
@@ -2562,6 +2564,9 @@ def handle_turn(
             "last_intent_raw": processed.get("raw"),
         },
     )
+    hinted_tramite = match_tramite(user_text, KB_BY_ALIAS)
+    if hinted_tramite:
+        context_manager.set_selected_document(session_id, hinted_tramite)
 
     # --- INICIO: Nuevo flujo de seguimiento ---
     if context_manager.get_current_flow(session_id) == "FOLLOWUP_GATE":
@@ -2651,7 +2656,7 @@ def handle_turn(
     if intent_action == "ask_document":
         # Deterministic KB dispatcher (FAQ tiene prioridad sobre aspectos cuando hay coincidencia fuerte)
         try:
-            t_id = match_tramite(user_text, KB_BY_ALIAS)
+            t_id = hinted_tramite
             selected = context_manager.get_selected_document(session_id)
             cat = None if t_id else match_categoria(user_text)
             if t_id:

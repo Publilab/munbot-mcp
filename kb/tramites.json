@@ -1,31 +1,6 @@
 {
   "tramites": [
     {
-      "id": "permiso_aterrizaje",
-      "aliases": [
-        "permiso de aterrizaje",
-        "licencia de aterrizaje",
-        "autorizacion de aterrizaje",
-        "autorización de aterrizaje"
-      ],
-      "categoria": "permisos",
-      "respuestas": {
-        "donde": "📍 Si quieres obtener una permiso de aterrizaje debes dirigirte a:\nDepartamento de Tránsito Aéreo, ubicada en el Edificio Consistorial Coruscant (nivel 5143).",
-        "horarios": "🕐 Para obtener una permiso de aterrizaje la Oficina de Desarrollo Económico atiende de lunes a viernes, 08:00–17:00.",
-        "requisitos": "Los requisitos para obtener el permiso de aterrizaje son:\n- Cédula vigente\n- Formulario TA-27\n- Certificado médico aeronáutico",
-        "costos": "💰 El valor del permiso de aterrizaje es de 120 créditos galácticos.",
-        "plazos": "⏳ Una vez cumplido con los requisitos y la tramitación del permiso de aterrizaje, se hará entrega del documento definitivo en 3 días hábiles.",
-        "proposito": "El permiso de aterrizaje sirve para autorizar aterrizajes planificados en la jurisdicción municipal."
-      },
-      "aspect_buttons": [
-        "Ver requisitos",
-        "Ver costos",
-        "Ver horarios",
-        "Dónde tramitar",
-        "Para qué sirve"
-      ]
-    },
-    {
       "id": "cert_residencia_definitiva",
       "aliases": [
         "certificado de residencia definitiva",
@@ -97,4 +72,3 @@
     }
   ]
 }
-
