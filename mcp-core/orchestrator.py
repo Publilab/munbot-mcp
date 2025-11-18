@@ -600,12 +600,26 @@ def show_aspect_menu(tramite_id: str, exclude_aspect: Optional[str] = None) -> D
     _jlog(_logger, "metrics.menu_aspect", tramite_id=tramite_id)
     payload = {"respuesta": msg, "no_results": False, "_resp_type": "menu_aspect"}
     if buttons:
-        payload["suggested_replies"] = buttons
+        payload["suggested_replies"] = _decorate_buttons(buttons)
     return payload
 
 def _kb_tramites_of_category(cat: str) -> list[str]:
     ids = KB_CATEGORIAS.get(cat) or []
     return [str(tid) for tid in ids]
+
+
+def _decorate_buttons(labels: Optional[List[str]]) -> List[str]:
+    decorated: List[str] = []
+    if not labels:
+        return decorated
+    seen = set()
+    for label in labels:
+        mapped = BUTTON_DECORATIONS.get(normalize_text(label), label)
+        if mapped in seen:
+            continue
+        decorated.append(mapped)
+        seen.add(mapped)
+    return decorated
 
 
 def _detect_procedure_root(text: Optional[str]) -> Optional[str]:
@@ -662,11 +676,27 @@ MAIN_MENU_PROMPTS = [
     "Si me permites guiarte, elige en el menú de botones a continuación la opción que quieras explorar.",
     "Upps, posiblemente no encontraste la información que estabas buscando. Disculpame, pero estoy en constante crecimiento. Por el momento estos son los procedimientos que tengo disponibles",
 ]
-MAIN_MENU_BUTTONS = ["🗂️ Certificados y trámites"]
+MAIN_MENU_BUTTONS = [
+    "🗂️ Certificados y trámites",
+    "📅 Agendar una cita",
+    "📝 Presentar un reclamo",
+    "👤 Hablar con un agente",
+]
 ROOT_KEYWORDS = {
     "certificado": {"certificado", "certificados"},
     "licencia": {"licencia", "licencias"},
     "patente": {"patente", "patentes"},
+}
+BUTTON_DECORATIONS = {
+    "ver requisitos": "📄 Ver requisitos",
+    "ver costos": "💰 Ver costos",
+    "ver horarios": "⏰ Ver horarios",
+    "donde tramitar": "🗺️ Dónde tramitar",
+    "para que sirve": "ℹ️ Para qué sirve",
+    "certificados y tramites": "🗂️ Certificados y trámites",
+    "agendar una cita": "📅 Agendar una cita",
+    "presentar un reclamo": "📝 Presentar un reclamo",
+    "hablar con un agente": "👤 Hablar con un agente",
 }
 SUGGEST_BUTTON_APPOINTMENT = "📅 Agendar una cita"
 SUGGEST_BUTTON_COMPLAINT = "📝 Presentar un reclamo"
@@ -678,7 +708,7 @@ def _pick_main_menu_prompt() -> str:
 
 
 def show_main_menu() -> Dict[str, Any]:
-    return {"respuesta": _pick_main_menu_prompt(), "no_results": False, "suggested_replies": list(MAIN_MENU_BUTTONS)}
+    return {"respuesta": _pick_main_menu_prompt(), "no_results": False, "suggested_replies": _decorate_buttons(list(MAIN_MENU_BUTTONS))}
 
 def _fallback_suggestions(user_text: Optional[str]) -> List[str]:
     suggestions = list(MAIN_MENU_BUTTONS)
@@ -690,7 +720,7 @@ def _fallback_suggestions(user_text: Optional[str]) -> List[str]:
             suggestions.append(SUGGEST_BUTTON_APPOINTMENT)
         if wants_complaint and SUGGEST_BUTTON_COMPLAINT not in suggestions:
             suggestions.append(SUGGEST_BUTTON_COMPLAINT)
-    return suggestions
+    return _decorate_buttons(suggestions)
 
 def prompt_tramite_selection(intro_text: Optional[str] = None, user_text: Optional[str] = None) -> Dict[str, Any]:
     """Solicita que el usuario elija uno de los trámites disponibles para fijar contexto."""
@@ -2643,7 +2673,7 @@ def handle_turn(
                 context_manager.update_context(session_id, user_text, msg)
                 payload = {"respuesta": msg, "no_results": False, "_resp_type": "menu_aspect"}
                 if buttons:
-                    payload["suggested_replies"] = buttons
+                    payload["suggested_replies"] = _decorate_buttons(buttons)
                 return payload
             if not t_id and selected and aspecto:
                 return respond_direct(selected, aspecto, session_id, turn_count)
