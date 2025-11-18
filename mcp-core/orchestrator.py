@@ -1499,8 +1499,32 @@ class OrchestrateRequest(BaseModel):
     metadata: Optional[Dict[str, Any]] = None
 
 
-YES_WORDS = {"si", "sí", "claro", "por supuesto", "afirmativo", "dale"}
-NO_WORDS = {"no", "para nada", "negativo", "no gracias"}
+YES_WORDS_RAW = {"si", "sí", "claro", "por supuesto", "afirmativo", "dale"}
+NO_WORDS_RAW = {"no", "para nada", "negativo", "no gracias"}
+YES_WORDS = {normalize_text(w) for w in YES_WORDS_RAW}
+NO_WORDS = {normalize_text(w) for w in NO_WORDS_RAW}
+
+
+def _match_phrase(norm_text: str, phrases: set[str]) -> bool:
+    nt = (norm_text or "").strip()
+    if not nt:
+        return False
+    for phrase in phrases:
+        if not phrase:
+            continue
+        if nt == phrase:
+            return True
+        if nt.startswith(f"{phrase} ") or nt.startswith(f"{phrase}\n"):
+            return True
+    return False
+
+
+def _is_yes(norm_text: str) -> bool:
+    return _match_phrase(norm_text, YES_WORDS)
+
+
+def _is_no(norm_text: str) -> bool:
+    return _match_phrase(norm_text, NO_WORDS)
 DOC_SPECIFIC_KEYWORDS = {
     "requisito",
     "requisitos",
@@ -1813,9 +1837,9 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     if any(word in lower for word in ("informacion", "información", "municipalidad", "pregunta")):
         return _finalize({"intent": "faq"})
 
-    if lower.strip() in YES_WORDS:
+    if _is_yes(lower):
         return _finalize({"intent": "confirm"})
-    if lower.strip() in NO_WORDS:
+    if _is_no(lower):
         return _finalize({"intent": "deny"})
 
     return _finalize({"intent": "faq"})
@@ -1899,12 +1923,12 @@ def _handle_pending_feedback(session_id: str, user_text: str) -> Optional[Dict[s
     if not context_manager.has_feedback_pending(session_id):
         return None
     norm = normalize_text(user_text).strip()
-    if norm in YES_WORDS or norm in {"gracias"}:
+    if _is_yes(norm) or norm in {"gracias"}:
         context_manager.clear_feedback_pending(session_id)
         context_manager.reset_fallback_count(session_id)
         msg = "¡Me alegra que te haya ayudado! Si necesitas algo más, aquí estaré."
         return {"respuesta": msg, "no_results": False}
-    if norm in NO_WORDS:
+    if _is_no(norm):
         context_manager.clear_feedback_pending(session_id)
         context_manager.increment_fallback_count(session_id)
         count = context_manager.get_fallback_count(session_id)
@@ -2373,7 +2397,7 @@ def handle_followup_gate(session_id: str, user_text: str, intent_action: str) ->
     last_aspecto = context_manager.get_context_field(session_id, "last_aspecto")
 
     # Opción 1: El usuario quiere ver más opciones del mismo trámite
-    if norm_text in YES_WORDS or "ver opciones" in norm_text:
+    if _is_yes(norm_text) or "ver opciones" in norm_text:
         context_manager.set_current_flow(session_id, None) # Salir del estado FOLLOWUP
         if last_tramite:
             return show_aspect_menu(last_tramite, exclude_aspect=last_aspecto)
@@ -2381,7 +2405,7 @@ def handle_followup_gate(session_id: str, user_text: str, intent_action: str) ->
             return fallback("No recuerdo de qué trámite estábamos hablando. ¿Puedes recordármelo?")
 
     # Opción 2: El usuario dice "No"
-    elif norm_text in NO_WORDS:
+    elif _is_no(norm_text):
         # Despedir y cerrar la sesión cuando el usuario declina
         context_manager.set_current_flow(session_id, None)
         context_manager.clear_context(session_id)
@@ -2466,7 +2490,7 @@ def handle_turn(
             "quiero reservar hora",
             "reservar hora",
         }
-        if norm in YES_WORDS or norm in accept_phrases:
+        if _is_yes(norm) or norm in accept_phrases:
             context_manager.clear_context_field(session_id, "info_action")
             if info_action == "init_scheduler":
                 # Arrancar flujo de agenda saltando confirmación
@@ -2481,7 +2505,7 @@ def handle_turn(
                 msg = "Excelente, comencemos. ¿Cómo te llamas?"
                 context_manager.update_context(session_id, user_text, msg)
                 return {"respuesta": msg, "no_results": False}
-        elif norm in NO_WORDS:
+        elif _is_no(norm):
             context_manager.clear_context_field(session_id, "info_action")
             return prompt_tramite_selection(user_text=user_text)
         else:
@@ -2511,7 +2535,7 @@ def handle_turn(
             # Salir de cualquier flujo y mostrar menú de aspectos del trámite actual
             context_manager.set_current_flow(session_id, None)
             return show_aspect_menu(target)
-    if norm_follow in NO_WORDS or norm_follow.strip() == "no gracias" or _is_session_close(user_text):
+    if _is_no(norm_follow) or norm_follow.strip() == "no gracias" or _is_session_close(user_text):
         # Despedir y cerrar
         context_manager.set_current_flow(session_id, None)
         context_manager.clear_context(session_id)
