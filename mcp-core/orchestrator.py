@@ -2585,12 +2585,21 @@ def handle_turn(
     if intent_action == "await_question":
         msg = "Te escucho, ¿cuál es tu pregunta?"
         context_manager.update_context_data(session_id, {"awaiting_question": True})
+        pending_tramite = hinted_tramite or context_manager.get_selected_document(session_id)
+        if hinted_tramite:
+            context_manager.set_selected_document(session_id, hinted_tramite)
+        if pending_tramite:
+            context_manager.update_context_data(session_id, {"awaiting_question_tramite": pending_tramite})
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
 
     # Si veníamos esperando la pregunta, limpiar el flag y procesar normalmente
     if context_manager.get_context_field(session_id, "awaiting_question"):
         context_manager.clear_context_field(session_id, "awaiting_question")
+        hinted_from_wait = context_manager.get_context_field(session_id, "awaiting_question_tramite")
+        if hinted_from_wait:
+            context_manager.clear_context_field(session_id, "awaiting_question_tramite")
+            context_manager.set_selected_document(session_id, hinted_from_wait)
 
     if intent_action == "saludo":
         answer = _pick_smalltalk("saludo") or "¡Hola! ¿En qué puedo ayudarte?"
