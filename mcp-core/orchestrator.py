@@ -806,7 +806,7 @@ def _fallback_suggestions(user_text: Optional[str]) -> List[str]:
     if user_text:
         norm = normalize_text(user_text)
         wants_agenda = any(tok in norm for tok in ("agend", "agenda", "cita", "turno", "hora", "reserv", "funcionario", "hablar con un funcionario"))
-        wants_complaint = any(tok in norm for tok in ("reclamo", "queja", "denuncia", "reclamar"))
+        wants_complaint = any(tok in norm for tok in COMPLAINT_NOUNS)
         if wants_agenda and SUGGEST_BUTTON_APPOINTMENT not in suggestions:
             suggestions.append(SUGGEST_BUTTON_APPOINTMENT)
         if wants_complaint and SUGGEST_BUTTON_COMPLAINT not in suggestions:
@@ -1662,6 +1662,55 @@ QUESTION_TOKENS = {
     "quien",
     "quién",
 }
+PARTICIPATION_CATEGORY = {
+    "reclamo": "1",
+    "denuncia": "2",
+    "opinion": "3",
+    "propuesta": "4",
+}
+PARTICIPATION_LABELS = {
+    "reclamo": "reclamo",
+    "denuncia": "denuncia",
+    "opinion": "opinión",
+    "propuesta": "propuesta",
+}
+PARTICIPATION_KEYWORDS = {
+    "reclamo": {"reclamo", "reclamos", "reclamar", "queja", "quejas", "quejar", "quejarse"},
+    "denuncia": {"denuncia", "denuncias", "denunciar", "denuncie", "denuncio"},
+    "opinion": {"opinion", "opiniones", "opinar", "opino", "comentario", "comentarios", "feedback", "participacion", "participar"},
+    "propuesta": {"propuesta", "propuestas", "proponer", "propongo", "idea", "ideas", "sugerencia", "sugerencias"},
+}
+COMPLAINT_NOUNS = {kw for keywords in PARTICIPATION_KEYWORDS.values() for kw in keywords}
+COMPLAINT_VERBS = {
+    "registrar",
+    "presentar",
+    "hacer",
+    "ingresar",
+    "enviar",
+    "dejar",
+    "mandar",
+    "emitir",
+    "reportar",
+    "compartir",
+    "opinar",
+    "proponer",
+    "levantar",
+    "denunciar",
+    "reclamar",
+    "participar",
+    "expresar",
+}
+COMPLAINT_INTENT_PREFIXES = {
+    "quiero",
+    "deseo",
+    "me gustaria",
+    "me gustaría",
+    "necesito",
+    "podria",
+    "podría",
+    "preferiria",
+    "preferiría",
+}
 DOC_PREFIXES = [
     "informacion sobre",
     "informacion del",
@@ -1709,6 +1758,34 @@ def _looks_like_question(text: str) -> bool:
         if f" {tok_norm} " in padded:
             return True
     return False
+
+
+def _detect_participation_request_type(text: str) -> Optional[str]:
+    if not text:
+        return None
+    norm = normalize_text(text)
+    if not norm:
+        return None
+    matched_type: Optional[str] = None
+    matched_keyword: Optional[str] = None
+    for p_type, keywords in PARTICIPATION_KEYWORDS.items():
+        for kw in keywords:
+            if kw and kw in norm:
+                matched_type = p_type
+                matched_keyword = kw
+                break
+        if matched_type:
+            break
+    if not matched_type:
+        return None
+    action_signal = any(verb in norm for verb in COMPLAINT_VERBS) or any(
+        prefix in norm for prefix in COMPLAINT_INTENT_PREFIXES
+    )
+    if not action_signal and matched_keyword and matched_keyword.endswith(("ar", "er", "ir")):
+        action_signal = True
+    if not action_signal:
+        return None
+    return matched_type
 
 CHANGE_TOPIC_PATTERNS = {
     "cambiemos de tema",
@@ -1868,6 +1945,8 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
     if any(p in lower for p in prefacios):
         return _finalize({"intent": "await_question"})
 
+    participation_type = _detect_participation_request_type(text)
+
     # How-to Scheduler: "como puedo agendar/Reservar una cita", "como hablar con un funcionario", etc.
     if "como" in lower or "cómo" in lower:
         # Usamos raíces para cubrir conjugaciones: agendo/agendar, reservo/reservar, programo/programar, coordino/coordinar,
@@ -1901,18 +1980,17 @@ def _heuristic_classify(text: str) -> Dict[str, Any]:
         if (has_obj and has_verb) or talk_signal:
             return _finalize({"intent": "howto_scheduler"})
 
-    # How-to Complaint: "como puedo hacer/registrar/presentar un reclamo"
-    if ("como" in lower or "cómo" in lower) and ("reclamo" in lower or "reclamo" in norm):
-        if any(w in lower for w in ("hacer", "registrar", "presentar", "dejar")):
-            return _finalize({"intent": "howto_complaint"})
+    # How-to Complaint / participación ciudadana
+    if ("como" in lower or "cómo" in lower) and participation_type:
+        return _finalize({"intent": "howto_complaint", "participation_type": participation_type})
 
     # Smalltalk puro (solo saludo/agradecimiento/etc.)
     if _is_pure_smalltalk(lower):
         if "gracias" in lower or "agradecid" in lower:
             return _finalize({"intent": "agradecimiento", "sub_intent": "agradecimiento"})
 
-    if "reclamo" in lower or "denuncia" in lower:
-        return _finalize({"intent": "reclamo"})
+    if participation_type:
+        return _finalize({"intent": "reclamo", "participation_type": participation_type})
 
     # Distinción clara entre "horario(s) de atención" y "agendar/reservar una hora"
     def _mentions_hours_info(txt: str) -> bool:
@@ -2330,6 +2408,14 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
     state = context_manager.get_complaint_state(session_id)
     text_norm = normalize_text(user_text)
     _jlog(_logger, "complaint_flow.state", sid=session_id, state=state, text_norm=text_norm)
+    participation_type = context_manager.get_context_field(session_id, "complaint_type") or "reclamo"
+    label = PARTICIPATION_LABELS.get(participation_type, "reclamo")
+
+    def _attach_participation_type(data: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        comp = dict(data or {})
+        if comp.get("tipo") != participation_type:
+            comp["tipo"] = participation_type
+        return comp
 
     if state is None:
         _jlog(_logger, "complaint_flow.state_is_none", sid=session_id)
@@ -2339,7 +2425,7 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
         context_manager.set_current_flow(session_id, "reclamo")
         context_manager.set_pending_confirmation(session_id, True)
         context_manager.update_complaint_state(session_id, "confirming")
-        msg = "Puedo ayudarte a registrar tu reclamo. ¿Deseas registrarlo ahora?"
+        msg = f"Puedo ayudarte a registrar tu {label}. ¿Deseas registrarlo ahora?"
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False, "suggested_replies": ["Sí", "No"]}
 
@@ -2348,8 +2434,9 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
         context_manager.clear_pending_field(session_id)
         context_manager.clear_complaint_state(session_id)
         context_manager.clear_pending_confirmation(session_id)
+        context_manager.clear_context_field(session_id, "complaint_type")
         context_manager.set_current_flow(session_id, None)
-        msg = "Perfecto, el reclamo ha sido cancelado."
+        msg = f"Perfecto, tu {label} ha sido cancelado."
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
 
@@ -2364,8 +2451,9 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
         if text_norm.strip() == "no":
             context_manager.clear_complaint_state(session_id)
             context_manager.clear_pending_confirmation(session_id)
+            context_manager.clear_context_field(session_id, "complaint_type")
             context_manager.set_current_flow(session_id, None)
-            msg = "Entendido, no registraré ningún reclamo."
+            msg = f"Entendido, no registraré tu {label}."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
         msg = "Por favor, responde 'Sí' o 'No'."
@@ -2380,7 +2468,7 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
         # Guardar nombre
-        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp = _attach_participation_type(context_manager.get_context(session_id).get("complaint", {}))
         comp["nombre"] = name
         context_manager.update_context_data(session_id, {"complaint": comp})
         # Pedir correo de contacto
@@ -2398,7 +2486,7 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
             msg = "El correo no parece válido. Por favor indícalo en formato usuario@dominio.com."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp = _attach_participation_type(context_manager.get_context(session_id).get("complaint", {}))
         comp["mail"] = email
         context_manager.update_context_data(session_id, {"complaint": comp})
         context_manager.update_complaint_state(session_id, "collecting_rut")
@@ -2414,13 +2502,13 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
             msg = "El RUT no tiene un formato válido. Recuerda usar el formato 12.345.678-9."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp = _attach_participation_type(context_manager.get_context(session_id).get("complaint", {}))
         comp["rut"] = rut
         context_manager.update_context_data(session_id, {"complaint": comp})
         # Pedir asunto breve
         context_manager.update_complaint_state(session_id, "collecting_subject")
         context_manager.update_pending_field(session_id, "asunto")
-        msg = "Gracias. ¿Cuál es el asunto de tu reclamo? (breve)"
+        msg = f"Gracias. ¿Cuál es el asunto de tu {label}? (breve)"
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
 
@@ -2431,13 +2519,13 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
             msg = "El asunto es muy corto. ¿Podrías resumirlo en al menos 5 caracteres?"
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp = _attach_participation_type(context_manager.get_context(session_id).get("complaint", {}))
         comp["asunto"] = subject
         context_manager.update_context_data(session_id, {"complaint": comp})
         # Pedir descripción detallada
         context_manager.update_complaint_state(session_id, "collecting_message")
         context_manager.update_pending_field(session_id, "mensaje")
-        msg = "Entendido. Por favor describe tu reclamo con algunos detalles (mínimo 10 caracteres)."
+        msg = f"Entendido. Por favor describe tu {label} con algunos detalles (mínimo 10 caracteres)."
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
 
@@ -2448,7 +2536,7 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
             msg = "El mensaje es muy corto. Por favor agrega más detalles (mínimo 10 caracteres)."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
-        comp = context_manager.get_context(session_id).get("complaint", {})
+        comp = _attach_participation_type(context_manager.get_context(session_id).get("complaint", {}))
         comp["mensaje"] = mensaje
         context_manager.update_context_data(session_id, {"complaint": comp})
 
@@ -2459,12 +2547,13 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
         asunto = comp.get("asunto")
         detalle = comp.get("mensaje")
         full_msg = f"[{asunto}] {detalle}" if asunto else detalle
+        categoria = PARTICIPATION_CATEGORY.get(comp.get("tipo") or participation_type, "1")
         params = {
             "nombre": nombre,
             "rut": rut,
             "correo": mail,
             "mensaje": full_msg,
-            "categoria": "1"
+            "categoria": categoria
         }
         _jlog(_logger, "complaint_flow.calling_tool", sid=session_id, params=params)
         resp = call_tool_microservice("complaint-registrar_reclamo", params, trace_id=trace_id)
@@ -2485,13 +2574,13 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
             elif pf in {"mensaje"}:
                 context_manager.update_complaint_state(session_id, "collecting_message")
                 context_manager.update_pending_field(session_id, "mensaje")
-            msg = resp.get("respuesta") or "Faltan datos para registrar el reclamo."
+            msg = resp.get("respuesta") or f"Faltan datos para registrar tu {label}."
             context_manager.update_context(session_id, user_text, msg)
             return {"respuesta": msg, "no_results": False}
         if resp.get("error"):
-            return fallback("Ocurrió un problema al registrar tu reclamo. Intenta nuevamente más tarde.")
+            return fallback(f"Ocurrió un problema al registrar tu {label}. Intenta nuevamente más tarde.")
         # Éxito: limpiar estado y devolver recibo
-        receipt = resp.get("respuesta") or "Tu reclamo ha sido registrado."
+        receipt = resp.get("respuesta") or f"Tu {label} ha sido registrado."
         try:
             COMPLAINTS_CREATED_COUNTER.inc()
         except Exception:
@@ -2513,9 +2602,10 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
         context_manager.clear_complaint_state(session_id)
         context_manager.clear_pending_confirmation(session_id)
         context_manager.set_current_flow(session_id, None)
+        context_manager.clear_context_field(session_id, "complaint_type")
         return {"respuesta": receipt, "finish": True, "no_results": False, "_resp_type": "complaint_created"}
 
-    return fallback("Lo siento, no pude procesar tu reclamo en este momento.")
+    return fallback(f"Lo siento, no pude procesar tu {label} en este momento.")
 
 
 def handle_followup_gate(session_id: str, user_text: str, intent_action: str) -> Optional[Dict[str, Any]]:
@@ -2694,6 +2784,9 @@ def handle_turn(
             "last_intent_raw": processed.get("raw"),
         },
     )
+    participation_type = _detect_participation_request_type(user_text)
+    if participation_type:
+        context_manager.update_context_data(session_id, {"complaint_type": participation_type})
     hinted_tramite = match_tramite(user_text, KB_BY_ALIAS)
     if hinted_tramite:
         context_manager.set_selected_document(session_id, hinted_tramite)
