@@ -1,0 +1,3 @@
+intents:
+  - init_scheduler
+  - howto_scheduler

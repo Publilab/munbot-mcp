@@ -1,0 +1,11 @@
+id: ambiente
+name: "Ambiente"
+code: 3
+routing_hints:
+  - basura
+  - ruido
+  - contaminacion
+  - ambiente
+  - arbol
+  - residuos
+  - agua

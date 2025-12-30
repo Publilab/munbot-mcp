@@ -1,0 +1,7 @@
+id: faq
+description: "FAQ y tramites deterministas"
+kb_paths:
+  - kb/preguntas_frecuentes.json
+  - kb/tramites.json
+departments:
+  - apps/faq/departments/general.yml

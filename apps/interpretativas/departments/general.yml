@@ -1,0 +1,7 @@
+id: general
+name: "General"
+kb_paths: []
+routing_hints:
+  - informacion
+  - consulta
+  - estado

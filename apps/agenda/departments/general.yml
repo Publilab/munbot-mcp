@@ -1,0 +1,8 @@
+id: general
+name: "General"
+routing_hints:
+  - agenda
+  - agendar
+  - cita
+  - hora
+  - reservar

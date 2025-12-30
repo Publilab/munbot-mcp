@@ -1,0 +1,11 @@
+id: obras
+name: "Obras"
+code: 2
+routing_hints:
+  - bache
+  - calle
+  - vereda
+  - luminaria
+  - obra
+  - reparacion
+  - infraestructura

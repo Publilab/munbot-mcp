@@ -1,0 +1,10 @@
+id: seguridad
+name: "Seguridad"
+code: 1
+routing_hints:
+  - robo
+  - asalto
+  - violencia
+  - seguridad
+  - policia
+  - delito

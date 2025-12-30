@@ -1,0 +1,50 @@
+version: 1
+apps:
+  - id: faq
+    type: kb
+    priority: 10
+    enabled: true
+    entrypoint: apps/faq/app.yml
+    intents:
+      - faq
+      - tramite
+      - documento
+      - ask_document
+    routing:
+      mode: deterministic_then_semantic
+      confidence_threshold: 0.78
+
+  - id: interpretativas
+    type: nlu
+    priority: 20
+    enabled: true
+    entrypoint: apps/interpretativas/app.yml
+    intents:
+      - consulta_informativa
+      - consulta_estado
+    routing:
+      mode: semantic
+      confidence_threshold: 0.70
+
+  - id: reclamos
+    type: workflow
+    priority: 30
+    enabled: true
+    entrypoint: apps/reclamos/app.yml
+    intents:
+      - init_complaint
+    routing:
+      mode: rule_based
+      confidence_threshold: 0.80
+
+  - id: agenda
+    type: workflow
+    priority: 40
+    enabled: true
+    entrypoint: apps/agenda/app.yml
+    intents:
+      - init_scheduler
+      - howto_scheduler
+    routing:
+      mode: rule_based
+      confidence_threshold: 0.85

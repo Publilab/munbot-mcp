@@ -1,0 +1,24 @@
+intents:
+  saludo:
+    - hola
+    - buenos dias
+    - buenas tardes
+    - buenas noches
+  despedida:
+    - adios
+    - hasta luego
+    - chao
+  agradecimiento:
+    - gracias
+    - muchas gracias
+  confirm:
+    - si
+    - ok
+    - de acuerdo
+  deny:
+    - no
+    - no gracias
+    - no quiero
+  smalltalk:
+    - como estas
+    - que tal

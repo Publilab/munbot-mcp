@@ -1,0 +1,5 @@
+id: interpretativas
+description: "Consultas abiertas con NLU"
+kb_paths: []
+departments:
+  - apps/interpretativas/departments/general.yml

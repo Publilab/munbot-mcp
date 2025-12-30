@@ -1,0 +1,11 @@
+id: general
+name: "General"
+kb_paths:
+  - kb/preguntas_frecuentes.json
+  - kb/tramites.json
+routing_hints:
+  - faq
+  - tramite
+  - certificado
+  - permiso
+  - licencia

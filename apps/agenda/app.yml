@@ -1,0 +1,8 @@
+id: agenda
+description: "Agendamiento de horas"
+service:
+  service_id: scheduler-mcp
+  base_url: http://scheduler-mcp:6001/tools/call
+  tool_prefix: scheduler-
+departments:
+  - apps/agenda/departments/general.yml
