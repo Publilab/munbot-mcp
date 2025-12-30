@@ -1,8 +1,10 @@
 id: general
 name: "General"
 kb_paths:
-  - kb/preguntas_frecuentes.json
-  - kb/tramites.json
+  - apps/faq/kb/general/preguntas_frecuentes.json
+  - apps/faq/kb/general/tramites.json
+  - apps/faq/kb/general/categorias.json
+  - apps/faq/kb/general/aspect_map.yml
 routing_hints:
   - faq
   - tramite

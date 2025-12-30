@@ -3,7 +3,7 @@ description: "Recepcion y gestion de reclamos"
 service:
   service_id: complaints-mcp
   base_url: http://complaints-mcp:7000/tools/call
-  tool_prefix: complaints-
+  tool_prefix: complaint-
 departments:
   - apps/reclamos/departments/seguridad.yml
   - apps/reclamos/departments/obras.yml

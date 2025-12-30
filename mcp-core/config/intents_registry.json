@@ -2,6 +2,9 @@
   "canonical": [
     "faq", "tramite", "documento", "ask_document",
     "init_scheduler", "init_complaint",
+    "help", "catalog", "demo_catalog", "info_tramite", "await_question",
+    "howto_scheduler", "howto_complaint", "sched_hours_disambiguate",
+    "confirm", "deny",
     "smalltalk", "saludo", "despedida", "agradecimiento", "n/a"
   ],
   "aliases": {
@@ -9,12 +12,16 @@
     "tramite":   ["trámite", "requisitos", "pasos", "documentos", "plazos"],
     "documento": ["ordenanza", "articulo", "normativa", "decreto", "vigencia"],
     "ask_document": ["documento", "tramite", "trámite", "documentos", "informacion", "información", "requisitos", "datos"],
-    "init_scheduler": ["agendar", "reservar hora", "cita", "agendamiento"],
+    "init_scheduler": ["agendar", "reservar hora", "cita", "agendamiento", "agenda"],
     "init_complaint": ["reclamo", "denuncia", "queja"],
+    "help": ["ayuda", "como usar", "cómo usar", "instrucciones"],
+    "catalog": ["catalogo", "catálogo", "menu", "menú"],
     "smalltalk": ["hola", "gracias", "adios"],
     "saludo": ["hola", "buenos dias", "buenas tardes", "buenas noches"],
     "despedida": ["adios", "hasta luego", "bye"],
     "agradecimiento": ["gracias", "muchas gracias"],
+    "confirm": ["si", "sí", "ok", "de acuerdo", "acepto"],
+    "deny": ["no", "no gracias", "rechazo"],
     "n/a": ["desconocido", "na"]
   }
 }

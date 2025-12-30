@@ -2,7 +2,7 @@ import json
 import re
 import unicodedata
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, Iterable, List, Tuple, Optional
 try:  # normal package import
     from ..classification_utils import ASPECT_PRIORITY
 except Exception:  # pragma: no cover - fallback when importing as top-level 'utils.kb'
@@ -41,7 +41,29 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1].parent
 
 
-def load_kb() -> Tuple[Dict[str, dict], Dict[str, str], Dict[str, List[str]], Dict[str, List[str]]]:
+def _resolve_path(root: Path, path: Path | str) -> Path:
+    p = Path(path)
+    if not p.is_absolute():
+        p = root / p
+    return p
+
+
+def _load_tramites_from_paths(paths: Iterable[Path | str], root: Path) -> List[dict]:
+    tramites: List[dict] = []
+    for raw_path in paths:
+        path = _resolve_path(root, raw_path)
+        if not path.exists():
+            continue
+        data = json.loads(path.read_text(encoding="utf-8"))
+        tramites.extend(data.get("tramites", []) or [])
+    return tramites
+
+
+def load_kb(
+    tramites_paths: Optional[List[Path | str]] = None,
+    categorias_path: Optional[Path | str] = None,
+    aspect_map_path: Optional[Path | str] = None,
+) -> Tuple[Dict[str, dict], Dict[str, str], Dict[str, List[str]], Dict[str, List[str]]]:
     """
     Load deterministic KB files from repo-level kb/ and build indexes.
 
@@ -54,10 +76,13 @@ def load_kb() -> Tuple[Dict[str, dict], Dict[str, str], Dict[str, List[str]], Di
     root = _repo_root()
     kb_dir = root / "kb"
 
-    # Load tramites.json
-    tramites_path = kb_dir / "tramites.json"
-    data = json.loads(tramites_path.read_text(encoding="utf-8"))
-    tramites: List[dict] = data.get("tramites", [])
+    # Load tramites.json (o lista de archivos)
+    if tramites_paths:
+        tramites = _load_tramites_from_paths(tramites_paths, root)
+    else:
+        tramites_path = kb_dir / "tramites.json"
+        data = json.loads(tramites_path.read_text(encoding="utf-8"))
+        tramites = data.get("tramites", [])
 
     by_id: Dict[str, dict] = {}
     by_alias: Dict[str, str] = {}
@@ -75,7 +100,7 @@ def load_kb() -> Tuple[Dict[str, dict], Dict[str, str], Dict[str, List[str]], Di
                 by_alias[key] = tid
 
     # Load aspect map (YAML)
-    aspect_path = kb_dir / "aspect_map.yml"
+    aspect_path = _resolve_path(root, aspect_map_path) if aspect_map_path else kb_dir / "aspect_map.yml"
     global yaml  # ensure ref from outer scope
     if yaml is None:  # pragma: no cover
         import importlib
@@ -87,7 +112,7 @@ def load_kb() -> Tuple[Dict[str, dict], Dict[str, str], Dict[str, List[str]], Di
         aspect_map[str(aspect)] = [normalize(v) for v in (variants or [])]
 
     # Load categorias.json (opcional) y normalizar claves
-    cat_path = kb_dir / "categorias.json"
+    cat_path = _resolve_path(root, categorias_path) if categorias_path else kb_dir / "categorias.json"
     try:
         categorias_raw = json.loads(cat_path.read_text(encoding="utf-8"))
     except FileNotFoundError:

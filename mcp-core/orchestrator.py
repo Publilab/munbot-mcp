@@ -128,7 +128,65 @@ from datetime import datetime, date
 from .utils.text import normalize_text
 from .utils.kb import load_kb, match_tramite, match_aspect, match_categoria
 
+try:
+    from .utils.app_registry import (
+        load_registry as _load_app_registry,
+        load_global_intents as _load_global_intents,
+        list_apps as _list_apps,
+        load_app_config as _load_app_config,
+    )
+except Exception:  # pragma: no cover - optional config
+    _load_app_registry = None
+    _load_global_intents = None
+    _list_apps = None
+    _load_app_config = None
 
+APP_REGISTRY = {}
+GLOBAL_INTENTS_CFG = {}
+if _load_app_registry:
+    try:
+        APP_REGISTRY = _load_app_registry()
+    except Exception:
+        APP_REGISTRY = {}
+if _load_global_intents:
+    try:
+        GLOBAL_INTENTS_CFG = _load_global_intents()
+    except Exception:
+        GLOBAL_INTENTS_CFG = {}
+
+def _collect_app_kb_paths(app_id: str) -> List[str]:
+    if not app_id or not _load_app_config:
+        return []
+    try:
+        app_cfg = _load_app_config(app_id, registry=APP_REGISTRY) or {}
+    except Exception:
+        return []
+    paths: List[str] = []
+    for raw in (app_cfg.get("kb_paths") or []):
+        if isinstance(raw, str) and raw.strip():
+            paths.append(raw)
+    for dept in (app_cfg.get("departments") or []):
+        if not isinstance(dept, dict):
+            continue
+        for raw in (dept.get("kb_paths") or []):
+            if isinstance(raw, str) and raw.strip():
+                paths.append(raw)
+    # Deduplicate while preserving order
+    seen = set()
+    dedup: List[str] = []
+    for path in paths:
+        if path in seen:
+            continue
+        seen.add(path)
+        dedup.append(path)
+    return dedup
+
+
+FAQ_KB_PATHS = _collect_app_kb_paths("faq")
+FAQ_FAQ_PATHS = [p for p in FAQ_KB_PATHS if "preguntas_frecuentes" in p]
+FAQ_TRAMITES_PATHS = [p for p in FAQ_KB_PATHS if p.endswith("tramites.json")]
+FAQ_CATEGORIAS_PATH = next((p for p in FAQ_KB_PATHS if p.endswith("categorias.json")), None)
+FAQ_ASPECT_MAP_PATH = next((p for p in FAQ_KB_PATHS if p.endswith("aspect_map.yml")), None)
 
 import json, hashlib
 RUT_VALID_RE = re.compile(r"^\d{7,8}-[\dkK]$")
@@ -267,7 +325,11 @@ if not audit_logger.handlers:
 
 # ===== Deterministic KB (tramites/aspectos/categorías) =====
 try:
-    KB_BY_ID, KB_BY_ALIAS, KB_ASPECT_MAP, KB_CATEGORIAS = load_kb()
+    KB_BY_ID, KB_BY_ALIAS, KB_ASPECT_MAP, KB_CATEGORIAS = load_kb(
+        tramites_paths=FAQ_TRAMITES_PATHS or None,
+        categorias_path=FAQ_CATEGORIAS_PATH,
+        aspect_map_path=FAQ_ASPECT_MAP_PATH,
+    )
 except Exception as _kb_exc:  # pragma: no cover - keep app running even if KB missing
     KB_BY_ID, KB_BY_ALIAS, KB_ASPECT_MAP, KB_CATEGORIAS = {}, {}, {}, {}
     _jlog(_logger, "kb.load_error", error=str(_kb_exc))
@@ -278,6 +340,18 @@ except Exception as _kb_exc:  # pragma: no cover - keep app running even if KB m
 def _load_faqs() -> dict:
     try:
         root = Path(__file__).resolve().parents[1]
+        if FAQ_FAQ_PATHS:
+            merged: Dict[str, Any] = {}
+            for rel in FAQ_FAQ_PATHS:
+                path = Path(rel)
+                if not path.is_absolute():
+                    path = root / rel
+                if not path.exists():
+                    continue
+                data = json.loads(path.read_text(encoding="utf-8")) or {}
+                if isinstance(data, dict):
+                    merged.update(data)
+            return merged
         faq_path = root / "kb" / "preguntas_frecuentes.json"
         data = json.loads(faq_path.read_text(encoding="utf-8"))
         return data or {}
@@ -1242,6 +1316,99 @@ def _norm_intent(label: str) -> str:
     return s
 
 
+def _build_intent_app_map(registry: Optional[Dict[str, Any]]) -> Dict[str, str]:
+    mapping: Dict[str, str] = {}
+    if not registry or not _list_apps:
+        return mapping
+    for app in _list_apps(registry):
+        app_id = app.get("id")
+        if not app_id:
+            continue
+        for intent in app.get("intents") or []:
+            key = _norm_intent(str(intent))
+            if key:
+                mapping[key] = app_id
+    return mapping
+
+
+_INTENT_APP_MAP = _build_intent_app_map(APP_REGISTRY)
+_APP_CONFIG_CACHE: Dict[str, Dict[str, Any]] = {}
+
+
+def _resolve_app_for_intent(intent: str) -> Optional[str]:
+    norm = _norm_intent(intent)
+    if not norm:
+        return None
+    return _INTENT_APP_MAP.get(norm)
+
+
+def _get_app_config(app_id: str) -> Dict[str, Any]:
+    if not app_id:
+        return {}
+    cached = _APP_CONFIG_CACHE.get(app_id)
+    if cached is not None:
+        return cached
+    if not _load_app_config:
+        _APP_CONFIG_CACHE[app_id] = {}
+        return {}
+    cfg = _load_app_config(app_id, registry=APP_REGISTRY) or {}
+    _APP_CONFIG_CACHE[app_id] = cfg
+    return cfg
+
+
+def _resolve_department_hint(app_id: Optional[str], text: str) -> Optional[Dict[str, Any]]:
+    if not app_id or not text:
+        return None
+    app_cfg = _get_app_config(app_id)
+    departments = app_cfg.get("departments") or []
+    if not isinstance(departments, list):
+        return None
+    norm_text = normalize_text(text)
+    for dept in departments:
+        if not isinstance(dept, dict):
+            continue
+        hints = dept.get("routing_hints") or []
+        for hint in hints:
+            if not isinstance(hint, str):
+                continue
+            hint_norm = normalize_text(hint)
+            if hint_norm and hint_norm in norm_text:
+                return dept
+    return None
+
+
+def _is_app_enabled(app_id: str) -> bool:
+    if not app_id or not _list_apps:
+        return True
+    for app in _list_apps(APP_REGISTRY):
+        if app.get("id") == app_id:
+            return bool(app.get("enabled", True))
+    return True
+
+
+def _build_tool_service_map() -> Dict[str, str]:
+    mapping: Dict[str, str] = {}
+    if not _list_apps:
+        return mapping
+    for app in _list_apps(APP_REGISTRY):
+        app_id = app.get("id")
+        if not app_id:
+            continue
+        cfg = _get_app_config(app_id)
+        service = cfg.get("service") if isinstance(cfg, dict) else None
+        if not isinstance(service, dict):
+            continue
+        prefix = service.get("tool_prefix")
+        base_url = service.get("base_url")
+        if isinstance(prefix, str) and prefix and isinstance(base_url, str) and base_url:
+            mapping[prefix] = base_url
+    return mapping
+
+
+_TOOL_SERVICE_MAP = _build_tool_service_map()
+_TOOL_SERVICE_PREFIXES = sorted(_TOOL_SERVICE_MAP.keys(), key=len, reverse=True)
+
+
 def _record_intent_sample(
     text: Optional[str],
     detected_intent: str,
@@ -1354,6 +1521,8 @@ INTENT_MAP = {
     "init_scheduler": "init_scheduler",
     "init_complaint": "init_complaint",
     "reclamo": "init_complaint",
+    "confirm": "confirm",
+    "deny": "deny",
     "n/a": "n/a",
 }
 
@@ -1590,10 +1759,18 @@ class OrchestrateRequest(BaseModel):
     metadata: Optional[Dict[str, Any]] = None
 
 
+def _extract_global_intent_phrases(intent_key: str) -> set[str]:
+    intents = GLOBAL_INTENTS_CFG.get("intents") if isinstance(GLOBAL_INTENTS_CFG, dict) else {}
+    if not isinstance(intents, dict):
+        return set()
+    raw_list = intents.get(intent_key) or []
+    return {normalize_text(p) for p in raw_list if isinstance(p, str) and p.strip()}
+
+
 YES_WORDS_RAW = {"si", "sí", "claro", "por supuesto", "afirmativo", "dale"}
 NO_WORDS_RAW = {"no", "para nada", "negativo", "no gracias"}
-YES_WORDS = {normalize_text(w) for w in YES_WORDS_RAW}
-NO_WORDS = {normalize_text(w) for w in NO_WORDS_RAW}
+YES_WORDS = {normalize_text(w) for w in YES_WORDS_RAW} | _extract_global_intent_phrases("confirm")
+NO_WORDS = {normalize_text(w) for w in NO_WORDS_RAW} | _extract_global_intent_phrases("deny")
 
 
 def _match_phrase(norm_text: str, phrases: set[str]) -> bool:
@@ -2155,10 +2332,15 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional
     params = dict(params or {})
 
     service_url = None
-    if tool.startswith("scheduler-"):
-        service_url = MICROSERVICES.get("scheduler-mcp")
-    elif tool.startswith("complaint-"):
-        service_url = MICROSERVICES.get("complaints-mcp")
+    for prefix in _TOOL_SERVICE_PREFIXES:
+        if tool.startswith(prefix):
+            service_url = _TOOL_SERVICE_MAP.get(prefix)
+            break
+    if not service_url:
+        if tool.startswith("scheduler-"):
+            service_url = MICROSERVICES.get("scheduler-mcp")
+        elif tool.startswith("complaint-"):
+            service_url = MICROSERVICES.get("complaints-mcp")
 
     if not service_url:
         return {"error": f"tool_not_supported_{tool}"}
@@ -2555,6 +2737,16 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
             "mensaje": full_msg,
             "categoria": categoria
         }
+        dept_code = context_manager.get_context_field(session_id, "last_department_code")
+        if isinstance(dept_code, int):
+            params["departamento"] = dept_code
+        elif isinstance(dept_code, str) and dept_code.isdigit():
+            params["departamento"] = int(dept_code)
+        dept_code = context_manager.get_context_field(session_id, "last_department_code")
+        if isinstance(dept_code, int):
+            params["departamento"] = dept_code
+        elif isinstance(dept_code, str) and dept_code.isdigit():
+            params["departamento"] = int(dept_code)
         _jlog(_logger, "complaint_flow.calling_tool", sid=session_id, params=params)
         resp = call_tool_microservice("complaint-registrar_reclamo", params, trace_id=trace_id)
         _jlog(_logger, "complaint_flow.tool_response", sid=session_id, response=resp)
@@ -2775,15 +2967,26 @@ def handle_turn(
     processed = _process_intent_classification(classification, utterance=user_text)
     intent_action = processed["action"]
     categoria = processed["category"]
-    context_manager.update_context_data(
-        session_id,
-        {
-            "last_intent_action": intent_action,
-            "last_intent_category": categoria,
-            "last_intent_normalized": processed.get("normalized"),
-            "last_intent_raw": processed.get("raw"),
-        },
-    )
+    intent_key = intent_action if intent_action != "n/a" else (processed.get("normalized") or "")
+    app_id = _resolve_app_for_intent(intent_key)
+    dept_info = _resolve_department_hint(app_id, user_text) if app_id else None
+    context_update = {
+        "last_intent_action": intent_action,
+        "last_intent_category": categoria,
+        "last_intent_normalized": processed.get("normalized"),
+        "last_intent_raw": processed.get("raw"),
+    }
+    if app_id:
+        context_update["last_app"] = app_id
+    if dept_info:
+        context_update["last_department"] = dept_info.get("id")
+        context_update["last_department_code"] = dept_info.get("code")
+        context_update["last_department_name"] = dept_info.get("name")
+    context_manager.update_context_data(session_id, context_update)
+    if app_id and not _is_app_enabled(app_id):
+        msg = "Esta funcionalidad no está disponible en este momento."
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
     participation_type = _detect_participation_request_type(user_text)
     if participation_type:
         context_manager.update_context_data(session_id, {"complaint_type": participation_type})
@@ -2884,6 +3087,9 @@ def handle_turn(
     if intent_action == "init_scheduler" or context_manager.get_current_flow(session_id) == "agenda":
         context_manager.set_current_flow(session_id, "agenda")
         return handle_scheduler_flow(session_id, user_text, trace_id=trace_id, channel=channel)
+
+    if intent_action in {"confirm", "deny"}:
+        return prompt_tramite_selection(user_text=user_text)
 
     if intent_action == "ask_document":
         # Deterministic KB dispatcher (FAQ tiene prioridad sobre aspectos cuando hay coincidencia fuerte)
@@ -3031,6 +3237,9 @@ def orchestrate(
                 "flow": context_manager.get_current_flow(sid),
                 "pending_field": context_manager.get_context_field(sid, "pending_field"),
                 "turn_count": context_manager.get_context_field(sid, "turn_count"),
+                "app_id": context_manager.get_context_field(sid, "last_app"),
+                "department_id": context_manager.get_context_field(sid, "last_department"),
+                "department_code": context_manager.get_context_field(sid, "last_department_code"),
             },
         )
     except Exception as exc:  # pragma: no cover - análisis no crítico
