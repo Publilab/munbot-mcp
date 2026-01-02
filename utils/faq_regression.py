@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Recorre docs/reporte FAQS.txt y verifica que cada pregunta dispare la respuesta
-correcta según la FAQ configurada en kb/preguntas_frecuentes.json.
+correcta según la FAQ configurada en apps/faq/kb/general/preguntas_frecuentes.json.
 
 Uso:
     python utils/faq_regression.py
@@ -20,8 +20,24 @@ import sys
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from mcp_core import orchestrator
-from mcp_core.utils.kb import match_aspect
+import importlib.util
+import types
+
+package = types.ModuleType("mcp_core")
+package.__path__ = [str(REPO_ROOT / "mcp-core")]
+sys.modules["mcp_core"] = package
+
+spec = importlib.util.spec_from_file_location(
+    "mcp_core.orchestrator",
+    REPO_ROOT / "mcp-core" / "orchestrator.py",
+)
+if spec is None or spec.loader is None:
+    raise RuntimeError("No se pudo cargar mcp-core/orchestrator.py")
+orchestrator = importlib.util.module_from_spec(spec)
+sys.modules["mcp_core.orchestrator"] = orchestrator
+spec.loader.exec_module(orchestrator)
+
+match_aspect = orchestrator.match_aspect
 
 REPORT_PATH = REPO_ROOT / "docs" / "reporte FAQS.txt"
 

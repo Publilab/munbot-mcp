@@ -65,7 +65,7 @@ def load_kb(
     aspect_map_path: Optional[Path | str] = None,
 ) -> Tuple[Dict[str, dict], Dict[str, str], Dict[str, List[str]], Dict[str, List[str]]]:
     """
-    Load deterministic KB files from repo-level kb/ and build indexes.
+    Load deterministic KB files from configured paths and build indexes.
 
     Returns a tuple: (by_id, by_alias, aspect_map, categorias)
       - by_id:        tramite_id -> tramite dict

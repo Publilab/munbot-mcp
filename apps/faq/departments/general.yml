@@ -5,6 +5,7 @@ kb_paths:
   - apps/faq/kb/general/tramites.json
   - apps/faq/kb/general/categorias.json
   - apps/faq/kb/general/aspect_map.yml
+  - apps/faq/kb/general/faq_samples.json
 routing_hints:
   - faq
   - tramite

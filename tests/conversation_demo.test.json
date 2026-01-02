@@ -70,7 +70,6 @@
     "web": "El front muestra suggested_replies como botones. Al hacer clic se envía el texto literal.
              Verificar que los textos y botones coincidan con lo esperado en cada paso.",
     "whatsapp": "El orquestador concatena suggested_replies como viñetas (•). Responder escribiendo ‘Ver requisitos’ o el texto del ítem.",
-    "kb": "Respuestas tomadas de kb/tramites.json. Ejemplos: costos= ‘💰 32 créditos galácticos’, requisitos incluyen ‘formulario CRD-001’."
+    "kb": "Respuestas tomadas de apps/faq/kb/general/tramites.json. Ejemplos: costos= ‘💰 32 créditos galácticos’, requisitos incluyen ‘formulario CRD-001’."
   }
 }
-

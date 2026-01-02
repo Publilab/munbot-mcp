@@ -187,6 +187,7 @@ FAQ_FAQ_PATHS = [p for p in FAQ_KB_PATHS if "preguntas_frecuentes" in p]
 FAQ_TRAMITES_PATHS = [p for p in FAQ_KB_PATHS if p.endswith("tramites.json")]
 FAQ_CATEGORIAS_PATH = next((p for p in FAQ_KB_PATHS if p.endswith("categorias.json")), None)
 FAQ_ASPECT_MAP_PATH = next((p for p in FAQ_KB_PATHS if p.endswith("aspect_map.yml")), None)
+FAQ_SAMPLES_PATH = next((p for p in FAQ_KB_PATHS if p.endswith("faq_samples.json")), None)
 
 import json, hashlib
 RUT_VALID_RE = re.compile(r"^\d{7,8}-[\dkK]$")
@@ -420,14 +421,22 @@ FAQ_GENERIC_SYNONYMS = {
 }
 def _load_faq_samples() -> dict:
     try:
-        root = Path(__file__).resolve().parents[1]
-        samples_path = root / "kb" / "faq_samples.json"
-        return json.loads(samples_path.read_text(encoding="utf-8"))
+        cfg_path = os.getenv("FAQ_SAMPLES_PATH")
+        if not cfg_path and FAQ_SAMPLES_PATH:
+            cfg_path = FAQ_SAMPLES_PATH
+        if not cfg_path:
+            cfg_path = str((Path(__file__).resolve().parent.parent / "kb" / "faq_samples.json").absolute())
+        p = Path(cfg_path)
+        if not p.exists():
+            return {}
+        data = json.loads(p.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
     except Exception as e:
         _jlog(_logger, "kb.faq_samples_load_error", error=str(e))
         return {}
 
 FAQ_SAMPLES_RAW = _load_faq_samples()
+
 FAQ_SAMPLE_TRAMITE_HINT = {
     "cert_residencia_definitiva": "cert_residencia_definitiva",
     "licencia_transporte": "licencia transporte espacial",
@@ -528,20 +537,6 @@ def _load_faq_triggers() -> dict:
         _jlog(_logger, "kb.faq_triggers_load_error", error=str(e))
         return {}
 
-
-def _load_faq_samples() -> dict:
-    try:
-        cfg_path = os.getenv("FAQ_SAMPLES_PATH")
-        if not cfg_path:
-            cfg_path = str((Path(__file__).resolve().parent.parent / "kb" / "faq_samples.json").absolute())
-        p = Path(cfg_path)
-        if not p.exists():
-            return {}
-        data = json.loads(p.read_text(encoding="utf-8"))
-        return data if isinstance(data, dict) else {}
-    except Exception as e:
-        _jlog(_logger, "kb.faq_samples_load_error", error=str(e))
-        return {}
 
 def _build_faq_triggers_by_tid() -> dict:
     raw = _load_faq_triggers()
