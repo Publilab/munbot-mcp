@@ -1,0 +1,59 @@
+Checklist corregido para aplicar en el código según docs/100.400-REINGENIERIA MUNBOT.md
+
+1) Base de arquitectura (apps + core)
+- Definir taxonomía canónica app → departamento → trámite/intents.
+- Consolidar core oficial (mcp-core) y eliminar duplicados.
+- Crear/actualizar apps/registry.yml con apps, prioridades, thresholds, enabled.
+- Crear apps/*/app.yml y apps/*/departments/*.yml con rutas KB, hints, tools.
+
+2) KB y datos por app/departamento
+- Estructurar KB en apps/<app>/kb/<depto>/.
+- Mantener versionado de KB (ids estables, aliases, categorías, samples).
+- Actualizar faq_samples.json y aspect_map.yml por departamento.
+- Validar contenido oficial y tono institucional (Owner Municipal).
+
+3) Routing determinista + gates
+- Orquestador: cargar registry, intents globales y KB por app/depto.
+- Implementar gating por app y deshabilitación segura (feature flags).
+- Desambiguación explícita cuando score medio o empate.
+
+4) ML en “shadow mode”
+- Integrar clasificador jerárquico app → depto/trámite en modo sombra.
+- Registrar scores y compararlos con determinista sin afectar producción.
+- Definir umbrales de confianza y reglas de promoción.
+
+5) Búsqueda semántica + reranking
+- Crear índice de embeddings por app/depto con metadata.
+- Recuperación top-k + cross-encoder reranker.
+- Umbrales de score para respuesta, desambiguación o fallback.
+
+6) RAG controlado
+- Recuperar fragmentos exactos de KB.
+- Respuesta plantillada con citación de fuente.
+- LLM solo en offline/triage o bajo feature flag (sin runtime libre).
+
+7) NER / slot filling + validadores
+- Extraer entidades con ML (fecha, lugar, motivo, etc.).
+- Validar RUT/email/fecha con reglas actuales.
+- Reducir pasos fallidos en agenda y reclamos.
+
+8) Dataset continuo + gobernanza
+- Log estructurado: input → decision → score → fuente → outcome.
+- Redacción PII antes de dataset (Ley 19.628).
+- Pipeline de labels y revisión humana (no autoentrenamiento 100%).
+- Versionado de modelos/datasets/umbrales con rollback.
+
+9) Observabilidad y SLO
+- Métricas: fallback rate, error rate, p95 latency, éxito de agenda/reclamos.
+- Dashboard mínimo + alertas + circuit breakers (KB-only, rerank off).
+- Reportes mensuales con top gaps y fricciones.
+
+10) QA y regresión
+- Suite de regresión por app/depto (>=200 utterances por depto).
+- Pruebas de desambiguación, fallback y degradación.
+- Validación previa a release (staging → canary → prod).
+
+11) Producción y escalamiento
+- Rollback probado en minutos.
+- Escalado horizontal de mcp-core y servicios críticos.
+- Gates de expansión por depto (SLO cumplidos 2 semanas).
