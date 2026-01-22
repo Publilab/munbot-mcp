@@ -1,0 +1,275 @@
+{
+  "version": "1.1.1",
+  "descripcion": "Tránsito — SOAP (Seguro Obligatorio de Accidentes Personales): definición, obligatoriedad, cobertura, indemnizaciones, beneficiarios, exclusiones, documentos y plazos. (incluye vigencia SOAP para Permiso de Circulación).",
+  "tramites": [
+    {
+      "id": "soap-definicion_obligatoriedad",
+      "aliases": [
+        "qué es el soap",
+        "soap qué significa",
+        "seguro obligatorio soap",
+        "es obligatorio el soap",
+        "para qué sirve el soap",
+        "sin soap puedo sacar permiso de circulación",
+        "qué pasa si ando sin soap",
+        "hay que portar el soap"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "soap",
+      "sub_tipo_licencia": "general",
+      "definicion_licencia": [
+        "SOAP: Seguro Obligatorio de Accidentes Personales causados por vehículos motorizados.",
+        "Es un requisito legal asociado a la circulación y al permiso de circulación.",
+        "Debe existir un certificado vigente y portarse en el vehículo."
+      ],
+      "respuestas": {
+        "proposito": "El SOAP es el seguro obligatorio de accidentes personales asociados a la circulación de vehículos motorizados. Su finalidad es garantizar indemnizaciones a las víctimas por muerte o lesiones, independiente de quién tenga la responsabilidad del accidente.",
+        "requisitos": {
+          "generales": [
+            "Todo vehículo motorizado que transite por vías públicas debe contar con SOAP vigente.",
+            "La obligación de contratarlo recae, como regla general, en el propietario del vehículo."
+          ],
+          "casos_especiales": [
+            "Si el vehículo utiliza remolque/semirremolque que deba inscribirse, puede haber exigencias adicionales (placa y/o seguro), según corresponda."
+          ]
+        },
+        "documentacion": [
+          "Certificado/póliza SOAP vigente (formato físico o digital, según emisión de la aseguradora).",
+          "El certificado debe portarse siempre en el vehículo."
+        ],
+        "plazos": [
+          "El certificado debe estar vigente al momento de circular.",
+          "Para efectos prácticos municipales, se exige para obtener/renovar el permiso de circulación."
+        ],
+        "donde": "Se contrata con compañías aseguradoras autorizadas. En la práctica suele contratarse en línea o en puntos de venta de aseguradoras.",
+        "costos": "El costo no está fijado por la ley: varía por aseguradora, tipo de vehículo y condiciones comerciales."
+      },
+      "fuentes": [
+        "Ley 18.490 (SOAP) — arts. 1, 13, 24, 25, 30, 31",
+        "Ley 18.290 (Ley de Tránsito) — art. 45 (certificado SOAP vigente y porte obligatorio)"
+      ],
+      "bordes": [
+        "No inventar precios del seguro: el valor depende de la aseguradora, tipo de vehículo y condiciones comerciales.",
+        "No afirmar multas o sanciones específicas sin la ordenanza/localidad o norma aplicable: si preguntan por montos, derivar a JPL/Carabineros o fuentes oficiales.",
+        "Recordar: el SOAP cubre accidentes personales (personas), no daños materiales al vehículo u objetos."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentos",
+        "Ver plazos",
+        "Dónde contratar",
+        "Ver costos"
+      ]
+    },
+    {
+      "id": "soap-cobertura_indemnizaciones",
+      "aliases": [
+        "soap qué cubre",
+        "cobertura soap",
+        "montos soap",
+        "cuánto paga el soap",
+        "soap cubre al conductor",
+        "soap cubre pasajeros",
+        "soap cubre peatones",
+        "soap cubre daños del auto"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "soap",
+      "sub_tipo_licencia": "general",
+      "definicion_licencia": [
+        "Cobertura del SOAP: personas involucradas en un accidente donde intervenga el vehículo asegurado.",
+        "Incluye conductor, pasajeros y terceros afectados (por regla general).",
+        "Indemnizaciones en unidades de fomento (UF)."
+      ],
+      "respuestas": {
+        "cobertura": {
+          "a_quien_cubre": [
+            "Conductor del vehículo.",
+            "Personas transportadas en el vehículo.",
+            "Terceros afectados (por ejemplo, peatones u ocupantes de otro vehículo)."
+          ],
+          "que_cubre": [
+            "Muerte.",
+            "Incapacidad permanente (total o parcial).",
+            "Gastos médicos y hospitalarios asociados a las lesiones."
+          ],
+          "que_no_cubre": [
+            "Daños materiales al vehículo (o a objetos).",
+            "Gastos y perjuicios patrimoniales distintos de los personales (salvo lo señalado en la ley para gastos médicos)."
+          ]
+        },
+        "indemnizaciones": [
+          "Muerte: hasta 300 UF.",
+          "Incapacidad permanente total: hasta 300 UF.",
+          "Incapacidad permanente parcial: hasta 200 UF (según porcentaje/clasificación de la póliza).",
+          "Gastos médicos y hospitalarios: hasta 300 UF (según condiciones de póliza).",
+          "Las incapacidades temporales no generan una indemnización adicional distinta del ítem de gastos médicos."
+        ],
+        "plazos": [
+          "Los montos se expresan en UF; el valor en pesos depende del valor UF vigente al momento del pago/gestión."
+        ]
+      },
+      "fuentes": [
+        "Ley 18.490 (SOAP) — arts. 24 y 25",
+        "Ley 18.490 (SOAP) — art. 31 (exclusiones principales)"
+      ],
+      "bordes": [
+        "No inventar precios del seguro: el valor depende de la aseguradora, tipo de vehículo y condiciones comerciales.",
+        "No afirmar multas o sanciones específicas sin la ordenanza/localidad o norma aplicable: si preguntan por montos, derivar a JPL/Carabineros o fuentes oficiales.",
+        "Recordar: el SOAP cubre accidentes personales (personas), no daños materiales al vehículo u objetos."
+      ],
+      "aspect_buttons": [
+        "Ver coberturas",
+        "Ver indemnizaciones",
+        "Ver plazos"
+      ]
+    },
+    {
+      "id": "soap-beneficiarios_exclusiones",
+      "aliases": [
+        "quién cobra el soap",
+        "beneficiarios soap",
+        "soap beneficiario cónyuge hijos",
+        "exclusiones soap",
+        "soap no cubre",
+        "soap carreras de autos",
+        "soap fuera de chile"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "soap",
+      "sub_tipo_licencia": "general",
+      "definicion_licencia": [
+        "Beneficiarios del SOAP: orden de precedencia (en caso de muerte).",
+        "Exclusiones: situaciones que la ley deja fuera de cobertura.",
+        "Esto ayuda a evitar expectativas erróneas en atención ciudadana."
+      ],
+      "respuestas": {
+        "beneficiarios": {
+          "muerte_orden_precedencia": [
+            "Cónyuge sobreviviente.",
+            "Hijos menores de edad (legítimos, naturales o adoptivos).",
+            "Otros beneficiarios según continuidad del orden legal indicado en la norma (cuando aplique)."
+          ],
+          "nota": "El orden completo puede requerir revisión del texto legal completo si hay dudas específicas."
+        },
+        "exclusiones": [
+          "Accidentes ocurridos en carreras de automóviles u otras competencias de vehículos motorizados.",
+          "Hechos ocurridos fuera del territorio nacional.",
+          "Guerras, sismos u otros casos fortuitos enteramente extraños a la circulación del vehículo (según la norma).",
+          "Suicidio y lesiones autoinferidas."
+        ],
+        "proposito": "Estas reglas ayudan a determinar si corresponde la cobertura del SOAP y a quién se paga en caso de fallecimiento."
+      },
+      "fuentes": [
+        "Ley 18.490 (SOAP) — art. 31 (beneficiarios y exclusiones)"
+      ],
+      "bordes": [
+        "No inventar precios del seguro: el valor depende de la aseguradora, tipo de vehículo y condiciones comerciales.",
+        "No afirmar multas o sanciones específicas sin la ordenanza/localidad o norma aplicable: si preguntan por montos, derivar a JPL/Carabineros o fuentes oficiales.",
+        "Recordar: el SOAP cubre accidentes personales (personas), no daños materiales al vehículo u objetos.",
+        "En casos complejos (sucesiones, beneficiarios múltiples), derivar a la aseguradora y/o asesoría jurídica del interesado."
+      ],
+      "aspect_buttons": [
+        "Ver beneficiarios",
+        "Ver exclusiones"
+      ]
+    },
+    {
+      "id": "soap-accidente_cobro_documentos_plazos",
+      "aliases": [
+        "cómo cobrar el soap",
+        "qué hacer para cobrar soap",
+        "documentos para cobrar el soap",
+        "denunciar accidente para soap",
+        "plazo para cobrar soap",
+        "certificado carabineros soap",
+        "certificado defunción soap",
+        "comprobantes gastos médicos soap"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "soap",
+      "sub_tipo_licencia": "general",
+      "definicion_licencia": [
+        "Procedimiento práctico: reunir antecedentes y presentarlos al asegurador para indemnización.",
+        "La ley enumera documentos típicos para respaldar el pago.",
+        "Existe un plazo para ejercer acciones de cobro."
+      ],
+      "respuestas": {
+        "que_hacer_en_accidente": [
+          "En caso de accidente con lesionados o fallecidos, dar aviso a la autoridad competente (Carabineros) y obtener el parte/constancia correspondiente.",
+          "Conservar y recopilar antecedentes médicos y gastos asociados a la atención."
+        ],
+        "documentacion": {
+          "para_indemnizacion": [
+            "Certificado de Carabineros con los datos del accidente (según parte enviado al tribunal).",
+            "En caso de muerte: certificado de defunción y documentos que acrediten la calidad de beneficiario.",
+            "En caso de incapacidad: certificado que acredite la naturaleza y grado de la incapacidad.",
+            "Comprobantes de gastos médicos/hospitalarios vinculados a las lesiones."
+          ]
+        },
+        "plazos": [
+          "La ley contempla un plazo para perseguir el pago de indemnizaciones (referido a la ocurrencia del accidente).",
+          "Recomendación operativa: iniciar gestión con la aseguradora lo antes posible y no esperar el límite."
+        ],
+        "donde": "El cobro/gestión se realiza ante la compañía aseguradora que emitió el SOAP del vehículo involucrado."
+      },
+      "fuentes": [
+        "Ley 18.490 (SOAP) — arts. 13 y 30"
+      ],
+      "bordes": [
+        "No inventar precios del seguro: el valor depende de la aseguradora, tipo de vehículo y condiciones comerciales.",
+        "No afirmar multas o sanciones específicas sin la ordenanza/localidad o norma aplicable: si preguntan por montos, derivar a JPL/Carabineros o fuentes oficiales.",
+        "Recordar: el SOAP cubre accidentes personales (personas), no daños materiales al vehículo u objetos.",
+        "No prometer aprobación del pago: la aseguradora evalúa antecedentes, cobertura y exclusiones.",
+        "Si el caso implica investigación de lesiones/cobertura, indicar que el asegurador puede requerir peritajes o exámenes según la norma."
+      ],
+      "aspect_buttons": [
+        "Qué hacer en un accidente",
+        "Ver documentos",
+        "Ver plazos",
+        "Dónde cobrar"
+      ]
+    },
+    {
+      "id": "soap-vigencia_para_permiso_circulacion",
+      "aliases": [
+        "¿Hasta cuándo sirve el SOAP para el permiso de circulación?",
+        "vigencia SOAP",
+        "SOAP vence el 31 de marzo",
+        "¿Debo tener SOAP vigente para pagar el permiso?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "soap",
+      "sub_tipo_licencia": [
+        "vigencia"
+      ],
+      "definicion_licencia": [
+        "El SOAP se contrata por año y se exige como requisito para el Permiso de Circulación.",
+        "En la práctica, el SOAP debe estar vigente al momento de tramitar/pagar el permiso."
+      ],
+      "respuestas": {
+        "respuesta_corta": "Sí: necesitas un SOAP vigente para pagar el Permiso de Circulación. Revisa la vigencia exacta indicada en tu póliza/certificado.",
+        "detalle": [
+          "El certificado SOAP indica fechas de inicio y término de cobertura.",
+          "Al pagar el permiso, la municipalidad suele verificar vigencia (y otros documentos como revisión técnica)."
+        ],
+        "errores_comunes": [
+          "Creer que el SOAP “del año pasado” sirve para pagar el permiso del año actual.",
+          "Confundir SOAP con seguro automotriz voluntario (no son lo mismo)."
+        ]
+      },
+      "fuentes": [
+        "Ley 18.490 (SOAP) y requisitos operativos del Permiso de Circulación (DL 3.063/1979 y normativa aplicable)"
+      ],
+      "bordes": [
+        "No inferir vigencia sin ver el certificado; si el usuario indica fechas, validar coherencia.",
+        "No recomendar circular sin documentación vigente."
+      ],
+      "aspect_buttons": [
+        "Respuesta corta",
+        "Detalle",
+        "Errores comunes"
+      ]
+    }
+  ]
+}

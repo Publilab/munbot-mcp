@@ -1,0 +1,401 @@
+{
+  "version": "1.0.1",
+  "descripcion": "Regularización de deudas/multas asociadas a TAG/telepeaje y su impacto en Permiso de Circulación (Tránsito v1). Basado en Ley 21.213 (artículo transitorio) y marco vigente (Ley 21.547), con foco en orientación al ciudadano. (ampliado con certificación de multas empadronadas y distinción conductor/vehículo).",
+  "tramites": [
+    {
+      "id": "regdeu-multas_tag",
+      "parent_id": null,
+      "aliases": [
+        "Tengo multas TAG, ¿cómo las regularizo?",
+        "¿Cómo pago multas por TAG para sacar permiso de circulación?",
+        "Me salen multas por autopista, ¿qué hago?",
+        "¿Cómo regularizo deudas de TAG o peajes?",
+        "¿Cómo eliminar multas TAG del registro de multas impagas?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "multas_tag",
+      "definicion_licencia": [
+        "Regularización de multas asociadas al no pago de TAG/telepeaje (multas empadronadas) anotadas en el Registro de Multas de Tránsito No Pagadas, para poder renovar o pagar atrasado el permiso de circulación."
+      ],
+      "respuestas": {
+        "que_es": "Existe un mecanismo legal para extinguir (rebajar) multas asociadas al no pago de TAG/telepeaje y permitir renovar el permiso de circulación. En términos generales, el beneficio opera al momento de renovar o pagar atrasado el permiso de circulación en la municipalidad, pagando el menor monto entre el 20% del total de las multas asociadas a la misma patente o 100 UTM (según corresponda al régimen vigente).",
+        "cuando_aplica": "Aplica a multas anotadas en el Registro de Multas de Tránsito No Pagadas (multas empadronadas asociadas a una patente). La ley identifica, entre otras, multas vinculadas a circular sin medio de cobro habilitado (art. 114 Ley de Tránsito) y a no pagar la tarifa/peaje en obras concesionadas (art. 42 Ley de Concesiones).",
+        "como_funciona": "El propietario del vehículo regulariza al renovar/pagar atrasado el permiso de circulación: (1) se verifica el listado de multas asociadas a la patente, (2) se paga al contado o se suscribe un convenio de pago (si corresponde), (3) pagada la primera cuota (o el pago total), las multas se eliminan del Registro para permitir la obtención del permiso, y (4) el convenio sigue vigente hasta completar las cuotas pactadas.",
+        "que_hace_munbot": "MunBoT puede: guiarte para verificar si tu vehículo tiene multas en el Registro, explicar el mecanismo de regularización, y orientarte sobre la documentación típica exigida al renovar el permiso de circulación (padrón, revisión técnica, SOAP, etc.), según lo que defina la municipalidad."
+      },
+      "fuentes": [
+        "Ley 21.213 (artículo transitorio: beneficio hasta 31-12-2021 para multas informadas hasta 30-11-2019).",
+        "Ley 21.547 (beneficio y sitio electrónico unificado de tarifas/peajes; reglas de convenio y efectos en Registro de Multas).",
+        "ChileAtiende: Certificado de Multas de Tránsito No Pagadas (Registro Civil)."
+      ],
+      "bordes": [
+        "Los requisitos operativos exactos (dónde se firma el convenio, documentos solicitados, flujo interno) pueden variar por municipalidad; el bot entrega orientación general y deriva a los canales oficiales cuando aplique.",
+        "Los montos expresados en UTM varían con el valor mensual de la UTM; el bot no calcula montos exactos sin datos oficiales del usuario.",
+        "Este contenido es informativo y no reemplaza asesoría legal."
+      ],
+      "aspect_buttons": [
+        "¿Qué es?",
+        "¿Cuándo aplica?",
+        "¿Cómo regularizo?",
+        "¿Dónde reviso mis multas?",
+        "¿Puedo pagar en cuotas?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-consultar_multas",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Dónde veo las multas de tránsito no pagadas?",
+        "¿Cómo saco el certificado de multas impagas?",
+        "¿Cómo saber si tengo multas por patente?",
+        "Certificado de multas impagas por patente"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "registro_multas",
+      "definicion_licencia": [
+        "Consulta de multas anotadas en el Registro de Multas de Tránsito No Pagadas (RMTNP) para verificar si bloquean el permiso de circulación."
+      ],
+      "respuestas": {
+        "como_consultar": "Puedes consultar si un vehículo tiene multas de tránsito no pagadas a través del Certificado de Multas de Tránsito No Pagadas del Registro Civil (disponible en línea en ChileAtiende). Ese certificado indica si existen multas empadronadas asociadas a la patente.",
+        "por_que_importa": "Para renovar el permiso de circulación, el vehículo no debe tener deudas por multas de tránsito no pagadas anotadas en el Registro; por eso, este paso es clave antes de iniciar el trámite."
+      },
+      "fuentes": [
+        "ChileAtiende: Certificado de Multas de Tránsito No Pagadas."
+      ],
+      "bordes": [
+        "El certificado muestra multas empadronadas (asociadas a la patente). Si necesitas detalle de una causa o Juzgado, la municipalidad o el JPL pueden orientar con el número de causa."
+      ],
+      "aspect_buttons": [
+        "¿Cómo consulto?",
+        "¿Por qué importa?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-monto_beneficio",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Cuánto tengo que pagar para regularizar las multas TAG?",
+        "¿Es verdad que se paga el 20% de la deuda TAG?",
+        "¿Qué significa pagar 100 UTM?",
+        "¿Se condona el 80%?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "monto_beneficio",
+      "definicion_licencia": [
+        "Regla de cálculo del beneficio: pago del menor monto entre 20% del total de multas asociadas a una patente o un tope en UTM, según el régimen vigente."
+      ],
+      "respuestas": {
+        "regla_general": "El beneficio consiste en extinguir las multas pagando el menor monto entre: (a) el 20% del importe total de las multas asociadas a una misma patente, o (b) un tope expresado en UTM (por ejemplo, 100 UTM), según lo establezca la normativa aplicable.",
+        "nota_vigencia": "En el régimen transitorio original (Ley 21.213), el beneficio aplicó a multas informadas al Registro hasta el 30-11-2019 y con plazo hasta el 31-12-2021. En la normativa posterior (Ley 21.547), se contempla el beneficio para multas TAG y se amplía/ordena su operación (incluyendo la posibilidad de pactar cuotas).",
+        "que_no_cubre": "El beneficio se aplica a las multas objeto del mecanismo (TAG/telepeaje) asociadas a la patente. Otras multas distintas, y permisos de circulación de años anteriores adeudados, deben regularizarse aparte para renovar."
+      },
+      "fuentes": [
+        "Ley 21.213, artículo transitorio.",
+        "Ley 21.547 (beneficio para usuarios).",
+        "Guía Ley Fácil BCN: Regularización de deudas de carreteras y autopistas (pago de TAG)."
+      ],
+      "bordes": [
+        "El monto exacto depende del listado de multas y del valor de la UTM del mes; para cifras exactas se requiere la liquidación municipal o el listado oficial de multas."
+      ],
+      "aspect_buttons": [
+        "¿Cuál es la regla?",
+        "¿Qué cubre?",
+        "¿Qué no cubre?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-convenio_pago",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Puedo pagar las multas TAG en cuotas?",
+        "¿Cómo firmo un convenio de pago por multas TAG?",
+        "¿Cuántas cuotas permite el convenio?",
+        "Convenio de pago multas tag municipalidad"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "convenio_pago",
+      "definicion_licencia": [
+        "Convenio de pago con la municipalidad al renovar/pagar atrasado el permiso de circulación, permitiendo pagar el monto del beneficio en cuotas (sin intereses) y eliminando multas del Registro tras pagar la primera cuota."
+      ],
+      "respuestas": {
+        "quien_puede": "Debe suscribirlo la persona a cuyo nombre esté inscrito el vehículo (propietario).",
+        "cuando": "El convenio se suscribe simultáneamente con la renovación o pago atrasado del permiso de circulación.",
+        "cuotas": "El pago puede pactarse en cuotas mensuales expresadas en UTM, sin intereses, debiendo pagarse la primera cuota al momento de suscribir el convenio. (La cantidad máxima de cuotas depende del régimen aplicable; por ejemplo, la Ley 21.213 contempló hasta 24 cuotas y la Ley 21.547 contempla hasta 48 cuotas).",
+        "efecto_registro": "Pagada la primera cuota, las multas se eliminan del Registro de Multas de Tránsito No Pagadas para permitir la renovación o pago atrasado del permiso de circulación."
+      },
+      "fuentes": [
+        "Ley 21.213, artículo transitorio (convenio y primera cuota).",
+        "Ley 21.547 (convenio y efectos en Registro; número máximo de cuotas)."
+      ],
+      "bordes": [
+        "El detalle operativo (dónde se firma y paga) puede variar: algunas municipalidades lo gestionan en Tránsito/Permisos de Circulación, otras vía Tesorería municipal."
+      ],
+      "aspect_buttons": [
+        "¿Quién firma?",
+        "¿Cuándo se firma?",
+        "¿Cuántas cuotas?",
+        "¿Qué pasa con el registro?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-pago_contado",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Puedo pagar todo de una vez y no firmar convenio?",
+        "Pago en una cuota multas tag",
+        "¿Se requiere convenio si pago al contado?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "pago_contado",
+      "definicion_licencia": [
+        "Pago del monto del beneficio en una sola cuota en forma simultánea con la renovación o pago atrasado del permiso de circulación (sin necesidad de suscribir convenio)."
+      ],
+      "respuestas": {
+        "regla": "Si el pago del monto del beneficio se realiza en una sola cuota, en forma simultánea con la renovación o pago atrasado del permiso de circulación, la normativa contempla que no sea necesario suscribir el convenio (según el régimen aplicable).",
+        "efecto": "Al pagar, se gestiona la eliminación de las multas del Registro para permitir la obtención del permiso, siempre que se cumplan los demás requisitos (permisos anteriores, otras multas no cubiertas, etc.)."
+      },
+      "fuentes": [
+        "Ley 21.268 (modifica artículo transitorio de Ley 21.213: pago en una cuota sin convenio).",
+        "Ley 21.547 (reglas de pago al contado y convenio)."
+      ],
+      "bordes": [
+        "Confirma en la municipalidad el flujo exacto (pago en caja/tesorería, requisitos de documentación y validaciones)."
+      ],
+      "aspect_buttons": [
+        "¿Puedo pagar al contado?",
+        "¿Qué efecto tiene?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-incumplimiento_convenio",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Qué pasa si me atraso en el convenio de pago?",
+        "Perdí el convenio de multas tag",
+        "¿Se vuelven a inscribir las multas?",
+        "¿Cuándo se deja sin efecto el convenio?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "incumplimiento",
+      "definicion_licencia": [
+        "Efectos del incumplimiento del convenio: pérdida del beneficio, re-inscripción de multas en el Registro y nuevo bloqueo para el permiso de circulación."
+      ],
+      "respuestas": {
+        "regla_general": "Si no se pagan oportunamente cuotas acumuladas o hay un retardo relevante en el pago (según el criterio definido por la ley aplicable), el convenio y la extinción de las multas pueden quedar sin efecto. En ese caso, las multas se vuelven a inscribir en el Registro de Multas de Tránsito No Pagadas por el saldo impago.",
+        "consecuencia": "Al re-inscribirse, el vehículo puede volver a quedar impedido de renovar el permiso de circulación hasta regularizar nuevamente."
+      },
+      "fuentes": [
+        "Ley 21.547 (condiciones de pérdida del convenio y re-inscripción en el Registro)."
+      ],
+      "bordes": [
+        "Los plazos exactos de mora y causales de término del convenio dependen de la ley vigente y del texto del convenio suscrito con la municipalidad."
+      ],
+      "aspect_buttons": [
+        "¿Qué pasa si me atraso?",
+        "¿Cuál es la consecuencia?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-permiso_circulacion_relacion",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Por qué las multas tag me bloquean el permiso de circulación?",
+        "No puedo sacar permiso por multas de autopista",
+        "¿Qué multas bloquean el permiso?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "permiso_circulacion",
+      "definicion_licencia": [
+        "Relación entre multas empadronadas anotadas en el Registro de Multas y la posibilidad de renovar el permiso de circulación."
+      ],
+      "respuestas": {
+        "por_que_bloquea": "Cuando una multa empadronada está anotada en el Registro de Multas de Tránsito No Pagadas, el vehículo no puede renovar el permiso de circulación hasta pagar o regularizar esas multas (o extinguirlas mediante el mecanismo legal aplicable).",
+        "que_multas": "El Registro incluye multas empadronadas (asociadas a la patente, por ejemplo, detectadas por cámaras). En el caso de TAG/telepeaje, el beneficio de regularización se refiere a multas vinculadas a ese ámbito (según la ley aplicable)."
+      },
+      "fuentes": [
+        "ChileAtiende: Certificado de Multas de Tránsito No Pagadas.",
+        "Guía Ley Fácil BCN: Regularización de deudas de carreteras y autopistas (pago de TAG)."
+      ],
+      "bordes": [
+        "Si tienes otras causales de bloqueo (revisión técnica vencida, SOAP vencido, permisos anteriores adeudados), debes regularizarlas aparte."
+      ],
+      "aspect_buttons": [
+        "¿Por qué bloquea?",
+        "¿Qué multas?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-beneficio_21213_historia",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Sigue vigente la Ley 21.213 para multas TAG?",
+        "¿Hasta cuándo era el beneficio del 20% por multas tag?",
+        "Ley 21.213 multas tag plazo"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "vigencia",
+      "definicion_licencia": [
+        "Aclaración de vigencia del beneficio transitorio original de la Ley 21.213 y la necesidad de revisar normativa posterior."
+      ],
+      "respuestas": {
+        "vigencia": "El artículo transitorio de la Ley 21.213 estableció un beneficio con plazo hasta el 31 de diciembre de 2021 para ciertas multas informadas al Registro hasta el 30 de noviembre de 2019. Para situaciones actuales, es importante verificar el marco vigente (por ejemplo, Ley 21.547) y los procedimientos municipales actualizados.",
+        "recomendacion": "Si tu situación es actual (multas recientes), consulta el certificado del Registro y pregunta en tu municipalidad por el procedimiento vigente para regularización de multas TAG."
+      },
+      "fuentes": [
+        "Ley 21.213, artículo transitorio.",
+        "Guía Ley Fácil BCN: Regularización de deudas de carreteras y autopistas (pago de TAG).",
+        "Ley 21.547."
+      ],
+      "bordes": [
+        "MunBoT entrega orientación general, pero la confirmación de vigencia y condiciones se hace con fuentes oficiales y la municipalidad."
+      ],
+      "aspect_buttons": [
+        "¿Sigue vigente?",
+        "¿Qué hago hoy?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-documentos_tipicos",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Qué documentos necesito para regularizar multas TAG?",
+        "¿Qué me piden para firmar un convenio por multas tag?",
+        "Documentos para convenio multas tag"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "documentos",
+      "definicion_licencia": [
+        "Documentación típica que suelen solicitar las municipalidades para gestionar la regularización de multas TAG vinculada al permiso de circulación."
+      ],
+      "respuestas": {
+        "documentos_tipicos": "En la práctica municipal, para tramitar el permiso de circulación y regularizar multas asociadas, suelen solicitar: cédula de identidad del propietario, padrón del vehículo y documentación vigente exigida para el permiso (revisión técnica y gases/homologación, SOAP, y otros que correspondan).",
+        "nota": "La exigencia exacta puede variar por municipalidad; MunBoT entrega una lista orientativa y recomienda confirmar con el Departamento de Tránsito/Permisos de Circulación."
+      },
+      "fuentes": [
+        "Requisitos generales para permiso de circulación definidos por normativa municipal y prácticas administrativas (varían por municipalidad).",
+        "Ley 21.213 y Ley 21.547 (mecanismo de regularización vinculado a la renovación/pago atrasado del permiso)."
+      ],
+      "bordes": [
+        "Lista orientativa: no reemplaza la validación de requisitos específicos de la municipalidad.",
+        "En casos especiales (representación, cambio de propietario, leasing), pueden requerirse documentos adicionales."
+      ],
+      "aspect_buttons": [
+        "¿Qué documentos?",
+        "¿Varía por comuna?"
+      ]
+    },
+    {
+      "id": "regdeu-multas_tag-que_multas_incluye",
+      "parent_id": "regdeu-multas_tag",
+      "aliases": [
+        "¿Qué tipo de multas se pueden regularizar con este beneficio?",
+        "¿Incluye multas por circular sin TAG?",
+        "¿Incluye multas por no pagar peaje?",
+        "¿Incluye otras multas distintas al TAG?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "regularizacion_deudas",
+      "sub_tipo_licencia": "alcance",
+      "definicion_licencia": [
+        "Alcance del beneficio: multas vinculadas a TAG/telepeaje asociadas a una misma patente, según tipologías legales."
+      ],
+      "respuestas": {
+        "incluye": "El beneficio se refiere a multas asociadas al uso de autopistas/caminos con cobro electrónico o concesionados, vinculadas al no pago del TAG/telepeaje. En la discusión normativa se mencionan multas por circular sin medio de cobro habilitado (art. 114 Ley de Tránsito) y multas originadas por no pagar la tarifa o peaje en obras concesionadas (art. 42 Ley de Concesiones).",
+        "no_incluye": "No aplica automáticamente a otras multas de tránsito distintas al ámbito TAG/peajes. Esas deben pagarse o regularizarse por su vía correspondiente para poder renovar el permiso de circulación."
+      },
+      "fuentes": [
+        "MOP: información institucional sobre proyecto/beneficio de multas TAG.",
+        "Ley 21.547 (beneficio y su alcance).",
+        "Guía Ley Fácil BCN: Regularización de deudas de carreteras y autopistas (pago de TAG)."
+      ],
+      "bordes": [
+        "El listado exacto de multas elegibles se determina por las anotaciones en el Registro y por la clasificación legal asociada a esas multas."
+      ],
+      "aspect_buttons": [
+        "¿Qué incluye?",
+        "¿Qué no incluye?"
+      ]
+    },
+    {
+      "id": "regdeu-certificado_multas_empadronadas",
+      "aliases": [
+        "certificado de multas empadronadas",
+        "¿Qué es el certificado de multas para permiso de circulación?",
+        "multas impagas impiden permiso",
+        "¿qué multas aparecen empadronadas?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "deudas_multas",
+      "sub_tipo_licencia": [
+        "certificados"
+      ],
+      "definicion_licencia": [
+        "Para tramitar el Permiso de Circulación, se suele verificar si el vehículo registra multas anotadas/empadronadas que impidan el pago.",
+        "El “certificado de multas” es un antecedente para conocer bloqueos por multas asociadas al vehículo."
+      ],
+      "respuestas": {
+        "para_que_sirve": "Conocer si existen multas empadronadas asociadas a la patente/vehículo que puedan bloquear el pago del permiso.",
+        "puntos_clave": [
+          "No todas las infracciones se reflejan de inmediato; depende de anotación/registro.",
+          "Si existen multas empadronadas, normalmente se debe regularizar (pago o convenio, según corresponda) antes de completar el permiso."
+        ],
+        "consejo": "Si el usuario no sabe si tiene multas, lo más eficiente es consultar con la patente y RUT del propietario en los canales habilitados por el municipio/autoridad competente."
+      },
+      "fuentes": [
+        "DL 3.063/1979 (Rentas Municipales) y prácticas de verificación de multas empadronadas para Permiso de Circulación; normativa aplicable del JPL y registros"
+      ],
+      "bordes": [
+        "No afirmar que una multa “no existe” si el usuario no consultó en el sistema oficial.",
+        "No asesorar sobre impugnación; derivar a Juzgado de Policía Local si corresponde."
+      ],
+      "aspect_buttons": [
+        "Para qué sirve",
+        "Puntos clave",
+        "Consejo"
+      ]
+    },
+    {
+      "id": "regdeu-hoja_de_vida_y_multas_relacion",
+      "aliases": [
+        "hoja de vida del conductor y multas",
+        "¿la hoja de vida muestra multas del vehículo?",
+        "multas del conductor vs multas empadronadas"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "deudas_multas",
+      "sub_tipo_licencia": [
+        "diferencias"
+      ],
+      "definicion_licencia": [
+        "Hay dos “mundos” que se confunden: (1) historial del conductor (hoja de vida) y (2) multas empadronadas asociadas al vehículo/patente.",
+        "Para Permiso de Circulación, lo decisivo suele ser el estado de multas empadronadas del vehículo."
+      ],
+      "respuestas": {
+        "diferencia": {
+          "conductor": "Registra antecedentes asociados a la persona conductora (según certificado).",
+          "vehiculo": "Registra multas asociadas a la patente/vehículo (empadronadas) que pueden bloquear el permiso."
+        },
+        "como_abordarlo": "Si la consulta es por “permiso bloqueado”, concentrarse en multas empadronadas del vehículo; si es por antecedentes laborales, concentrarse en hoja de vida del conductor."
+      },
+      "fuentes": [
+        "Práctica administrativa de Tránsito y JPL; documentación pública institucional"
+      ],
+      "bordes": [
+        "Evitar diagnósticos: pedir patente y tipo de consulta (permiso vs antecedentes personales)."
+      ],
+      "aspect_buttons": [
+        "Diferencia",
+        "Cómo abordarlo"
+      ]
+    }
+  ]
+}

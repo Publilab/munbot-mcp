@@ -1,0 +1,1803 @@
+{
+  "version": "1.1.1",
+  "descripcion": "Trámites de licencias de conducir (Tránsito v1) basados en Ley 18.290 (actualizado con entradas operativas generales para renovación/bloqueo/duplicado/HDV/licencia digital).",
+  "tramites": [
+    {
+      "id": "liccond-obtencion_profesional",
+      "aliases": [
+        "obtener licencia profesional",
+        "sacar licencia profesional",
+        "sacar licencia profesional por primera vez",
+        "obtener licencia profesional por primera vez",
+        "licencia profesional clase A",
+        "licencia clase A",
+        "licencia A1 A2 A3 A4 A5",
+        "postular a licencia profesional",
+        "licencia profesional de conducir"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "Licencia profesional Clase A.",
+        "Habilita para conducir vehículos de transporte de pasajeros, vehículos de carga, ambulancias y carrobombas.",
+        "La licencia profesional habilita también para conducir vehículos de Clase B."
+      ],
+      "respuestas": {
+        "donde": "Puedes agendar una hora haciéndomelo saber en un mensaje en este mismo chat, o bien, puedes solicitar una cita para rendir las pruebas correspondientes en el departamento de tránsito de la municipalidad",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Acreditar conocimientos teóricos y prácticos de conducción, así como de las disposiciones legales y reglamentarias que rigen al tránsito público.",
+            "Poseer cédula nacional de identidad o de extranjería vigente, con letras o dígitos verificadores.",
+            "Acreditar, mediante declaración jurada, que no es consumidor de drogas, estupefacientes o sustancias psicotrópicas prohibidas que alteren o modifiquen la plenitud de las capacidades físicas o psíquicas."
+          ],
+          "especiales_profesional": [
+            "Tener como mínimo 20 años de edad.",
+            "Acreditar haber estado en posesión de la licencia clase B o inferior a la solicitada durante dos años.",
+            "Aprobar los cursos teóricos y prácticos impartidos por escuelas de conductores profesionales reconocidas por el Estado.",
+            "Ser egresado de enseñanza básica (o examen de equivalencia de estudios para fines laborales)."
+          ]
+        },
+        "documentacion": [
+          "Cédula nacional de identidad o de extranjería vigente.",
+          "Certificado de estudios.",
+          "Licencia clase B o de nivel inferior a la que desea obtener.",
+          "Certificado de formación profesional.",
+          "Declaración jurada de no consumo de drogas, estupefacientes o sustancias psicotrópicas prohibidas.",
+          "Certificado de antecedentes para fines especiales (si corresponde).",
+          "Comprobante de domicilio.",
+          "Certificado médico de idoneidad física y psíquica."
+        ],
+        "plazos": "Si la licencia es denegada por causales subsanables, la solicitud no puede renovarse hasta 30 días después de la primera denegatoria y 6 meses después de cada nueva denegación.",
+        "horarios": "El horario de atención del Departamento de Tránsito local es de 8:30 a 12:45 y 13:45 a 17:45 de Lunes a Viernes.",
+        "costos": "El costo de la licencia depende del tipo al que corresponda su solicitud. Si quieres saber el costo exacto, indícame qué clase de licencia profesional deseas obtener (A1, A2, A3, A4 o A5) y te proporcionaré el valor vigente.",
+        "proposito": "Habilita para conducir la clase profesional correspondiente (A1–A5).",
+        "tipos_licencia": {
+          "A1": "Para conducir taxis.",
+          "A2": "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor.",
+          "A3": "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos.",
+          "A4": "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos.",
+          "A5": "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 11, 12, 13, 16"
+      ],
+      "bordes": [
+        "No diagnosticar rechazos ni sanciones; derivar a Tránsito.",
+        "No inventar horarios o costos sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-obtencion_profesional_A1",
+      "parent_id": "liccond-obtencion_profesional",
+      "aliases": [
+        "obtener licencia de conducir A1",
+        "sacar licencia de conducir A1",
+        "licencia profesional A1",
+        "licencia clase A1",
+        "licencia A-1",
+        "licencia para taxis"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A1",
+      "definicion_licencia": [
+        "Esta licencia te habilita para conducir taxis."
+      ],
+      "respuestas": {
+        "donde": "Puedes solicitar una cita para rendir las pruebas correspondientes en el departamento de tránsito de la municipalidad, o bien, puedes agendar una hora haciéndomelo saber en un mensaje.",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Acreditar conocimientos teóricos y prácticos de conducción, así como de las disposiciones legales y reglamentarias que rigen al tránsito público.",
+            "Poseer cédula nacional de identidad o de extranjería vigente, con letras o dígitos verificadores.",
+            "Acreditar, mediante declaración jurada, que no es consumidor de drogas, estupefacientes o sustancias psicotrópicas prohibidas que alteren o modifiquen la plenitud de las capacidades físicas o psíquicas."
+          ],
+          "especiales_profesional": [
+            "Tener como mínimo 20 años de edad.",
+            "Acreditar haber estado en posesión de la licencia clase B durante dos años.",
+            "Aprobar los cursos teóricos y prácticos impartidos por escuelas de conductores profesionales reconocidas por el Estado.",
+            "Ser egresado de enseñanza básica (o examen de equivalencia de estudios para fines laborales)."
+          ],
+          "especiales_subtipo": [
+            "Para obtener la licencia A1 debe estar en posesión de la licencia clase B durante al menos dos años."
+          ]
+        },
+        "documentacion": [
+          "Cédula nacional de identidad o de extranjería vigente.",
+          "Certificado de estudios.",
+          "Licencia clase B o de nivel inferior a la que desea obtener.",
+          "Certificado de formación profesional.",
+          "Declaración jurada de no consumo de drogas, estupefacientes o sustancias psicotrópicas prohibidas.",
+          "Certificado de antecedentes para fines especiales (si corresponde).",
+          "Comprobante de domicilio.",
+          "Certificado médico de idoneidad física y psíquica."
+        ],
+        "plazos": "Si la licencia es denegada por causales subsanables, la solicitud no puede renovarse hasta 30 días después de la primera denegatoria y 6 meses después de cada nueva denegación.",
+        "horarios": "El horario de atención del Departamento de Tránsito local es de 8:30 a 12:45 y 13:45 a 17:45 de Lunes a Viernes.",
+        "costos": "El costo de la licencia tipo A1 es de $1.000 (mil) pesos.",
+        "proposito": "Conducir taxis (licencia profesional clase A-1).",
+        "tipos_licencia": {
+          "A1": "Para conducir taxis."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 11, 12, 13, 16"
+      ],
+      "bordes": [
+        "No diagnosticar rechazos ni sanciones; derivar a Tránsito.",
+        "No inventar horarios o costos sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-obtencion_profesional_A2",
+      "parent_id": "liccond-obtencion_profesional",
+      "aliases": [
+        "obtener licencia de conducir A2",
+        "sacar licencia de conducir A2",
+        "licencia profesional A2",
+        "licencia clase A2",
+        "licencia A-2",
+        "licencia transporte de pasajeros 10 a 17 asientos",
+        "licencia para ambulancias"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A2",
+      "definicion_licencia": [
+        "Esta licencia te habilita para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+      ],
+      "respuestas": {
+        "donde": "Puedes agendar una hora haciéndomelo saber en un mensaje en este mismo chat, o bien, puedes solicitar una cita para rendir las pruebas correspondientes en el departamento de tránsito de la municipalidad",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Acreditar conocimientos teóricos y prácticos de conducción, así como de las disposiciones legales y reglamentarias que rigen al tránsito público.",
+            "Poseer cédula nacional de identidad o de extranjería vigente, con letras o dígitos verificadores.",
+            "Acreditar, mediante declaración jurada, que no es consumidor de drogas, estupefacientes o sustancias psicotrópicas prohibidas que alteren o modifiquen la plenitud de las capacidades físicas o psíquicas."
+          ],
+          "especiales_profesional": [
+            "Tener como mínimo 20 años de edad.",
+            "Acreditar haber estado en posesión de la licencia clase B durante dos años.",
+            "Aprobar los cursos teóricos y prácticos impartidos por escuelas de conductores profesionales reconocidas por el Estado.",
+            "Ser egresado de enseñanza básica (o examen de equivalencia de estudios para fines laborales)."
+          ],
+          "especiales_subtipo": []
+        },
+        "documentacion": [
+          "Cédula nacional de identidad o de extranjería vigente.",
+          "Certificado de estudios.",
+          "Licencia clase B o de nivel inferior a la que desea obtener.",
+          "Certificado de formación profesional.",
+          "Declaración jurada de no consumo de drogas, estupefacientes o sustancias psicotrópicas prohibidas.",
+          "Certificado de antecedentes para fines especiales (si corresponde).",
+          "Comprobante de domicilio.",
+          "Certificado médico de idoneidad física y psíquica."
+        ],
+        "plazos": "Si la licencia es denegada por causales subsanables, la solicitud no puede renovarse hasta 30 días después de la primera denegatoria y 6 meses después de cada nueva denegación.",
+        "horarios": "El horario de atención del Departamento de Tránsito local es de 8:30 a 12:45 y 13:45 a 17:45 de Lunes a Viernes.",
+        "costos": "El costo de la licencia A2 es de $15.000 (quince mil) pesos.",
+        "proposito": "Conducir taxis, ambulancias y transporte público o privado de pasajeros con capacidad de 10 a 17 asientos (licencia profesional clase A-2).",
+        "tipos_licencia": {
+          "A2": "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 11, 12, 13, 16"
+      ],
+      "bordes": [
+        "No diagnosticar rechazos ni sanciones; derivar a Tránsito.",
+        "No inventar horarios o costos sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-obtencion_profesional_A3",
+      "parent_id": "liccond-obtencion_profesional",
+      "aliases": [
+        "obtener licencia de conducir A3",
+        "sacar licencia de conducir A3",
+        "licencia profesional A3",
+        "licencia clase A3",
+        "licencia A-3",
+        "licencia transporte remunerado de escolares"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A3",
+      "definicion_licencia": [
+        "Esta licencia te habilita para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+      ],
+      "respuestas": {
+        "donde": "Puedes agendar una hora haciéndomelo saber en un mensaje en este mismo chat, o bien, puedes solicitar una cita para rendir las pruebas correspondientes en el departamento de tránsito de la municipalidad",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Acreditar conocimientos teóricos y prácticos de conducción, así como de las disposiciones legales y reglamentarias que rigen al tránsito público.",
+            "Poseer cédula nacional de identidad o de extranjería vigente, con letras o dígitos verificadores.",
+            "Acreditar, mediante declaración jurada, que no es consumidor de drogas, estupefacientes o sustancias psicotrópicas prohibidas que alteren o modifiquen la plenitud de las capacidades físicas o psíquicas."
+          ],
+          "especiales_profesional": [
+            "Tener como mínimo 20 años de edad.",
+            "Acreditar haber estado en posesión de la licencia clase B durante dos años.",
+            "Aprobar los cursos teóricos y prácticos impartidos por escuelas de conductores profesionales reconocidas por el Estado.",
+            "Ser egresado de enseñanza básica (o examen de equivalencia de estudios para fines laborales)."
+          ],
+          "especiales_subtipo": [
+            "Acreditar haber estado en posesión, durante a lo menos dos años, de la licencia Clase A-2 o Clase A-1."
+          ]
+        },
+        "documentacion": [
+          "Cédula nacional de identidad o de extranjería vigente.",
+          "Certificado de estudios.",
+          "Licencia clase B o de nivel inferior a la que desea obtener.",
+          "Certificado de formación profesional.",
+          "Declaración jurada de no consumo de drogas, estupefacientes o sustancias psicotrópicas prohibidas.",
+          "Certificado de antecedentes para fines especiales (si corresponde).",
+          "Comprobante de domicilio.",
+          "Certificado médico de idoneidad física y psíquica."
+        ],
+        "plazos": "Si la licencia es denegada por causales subsanables, la solicitud no puede renovarse hasta 30 días después de la primera denegatoria y 6 meses después de cada nueva denegación.",
+        "horarios": "El horario de atención del Departamento de Tránsito local es de 8:30 a 12:45 y 13:45 a 17:45 de Lunes a Viernes.",
+        "costos": "El costo de la licencia A3 es de $20.000 (veinte mil) pesos",
+        "proposito": "Conducir taxis, transporte escolar, ambulancias y transporte de personas sin limitación de asientos (licencia profesional clase A-3).",
+        "tipos_licencia": {
+          "A3": "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 11, 12, 13, 16"
+      ],
+      "bordes": [
+        "No diagnosticar rechazos ni sanciones; derivar a Tránsito.",
+        "No inventar horarios o costos sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-obtencion_profesional_A4",
+      "parent_id": "liccond-obtencion_profesional",
+      "aliases": [
+        "obtener licencia de conducir A4",
+        "sacar licencia de conducir A4",
+        "licencia profesional A4",
+        "licencia clase A4",
+        "licencia A-4",
+        "licencia transporte de carga sobre 3500 kg"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A4",
+      "definicion_licencia": [
+        "Esta licencia te habilita para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "donde": "Puedes agendar una hora haciéndomelo saber en un mensaje en este mismo chat, o bien, puedes solicitar una cita para rendir las pruebas correspondientes en el departamento de tránsito de la municipalidad",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Acreditar conocimientos teóricos y prácticos de conducción, así como de las disposiciones legales y reglamentarias que rigen al tránsito público.",
+            "Poseer cédula nacional de identidad o de extranjería vigente, con letras o dígitos verificadores.",
+            "Acreditar, mediante declaración jurada, que no es consumidor de drogas, estupefacientes o sustancias psicotrópicas prohibidas que alteren o modifiquen la plenitud de las capacidades físicas o psíquicas."
+          ],
+          "especiales_profesional": [
+            "Tener como mínimo 20 años de edad.",
+            "Acreditar haber estado en posesión de la licencia clase B durante dos años.",
+            "Aprobar los cursos teóricos y prácticos impartidos por escuelas de conductores profesionales reconocidas por el Estado.",
+            "Ser egresado de enseñanza básica (o examen de equivalencia de estudios para fines laborales)."
+          ],
+          "especiales_subtipo": []
+        },
+        "documentacion": [
+          "Cédula nacional de identidad o de extranjería vigente.",
+          "Certificado de estudios.",
+          "Licencia clase B o de nivel inferior a la que desea obtener.",
+          "Certificado de formación profesional.",
+          "Declaración jurada de no consumo de drogas, estupefacientes o sustancias psicotrópicas prohibidas.",
+          "Certificado de antecedentes para fines especiales (si corresponde).",
+          "Comprobante de domicilio.",
+          "Certificado médico de idoneidad física y psíquica."
+        ],
+        "plazos": "Si la licencia es denegada por causales subsanables, la solicitud no puede renovarse hasta 30 días después de la primera denegatoria y 6 meses después de cada nueva denegación.",
+        "horarios": "El horario de atención del Departamento de Tránsito local es de 8:30 a 12:45 y 13:45 a 17:45 de Lunes a Viernes.",
+        "costos": "El costo de la licencia depende del tipo. Si quieres saber el valor exacto de la licencia A4, indícamelo y te proporcionaré el valor vigente.",
+        "proposito": "Conducir vehículos simples de transporte de carga con peso bruto vehicular superior a 3.500 kg (licencia profesional clase A-4).",
+        "tipos_licencia": {
+          "A4": "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 11, 12, 13, 16"
+      ],
+      "bordes": [
+        "No diagnosticar rechazos ni sanciones; derivar a Tránsito.",
+        "No inventar horarios o costos sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-obtencion_profesional_A5",
+      "parent_id": "liccond-obtencion_profesional",
+      "aliases": [
+        "obtener licencia de conducir A5",
+        "sacar licencia de conducir A5",
+        "licencia profesional A5",
+        "licencia clase A5",
+        "licencia A-5",
+        "licencia transporte de carga articulada"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A5",
+      "definicion_licencia": [
+        "Clase A-5: Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "donde": "Puedes agendar una hora haciéndomelo saber en un mensaje en este mismo chat, o bien, puedes solicitar una cita para rendir las pruebas correspondientes en el departamento de tránsito de la municipalidad",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Acreditar conocimientos teóricos y prácticos de conducción, así como de las disposiciones legales y reglamentarias que rigen al tránsito público.",
+            "Poseer cédula nacional de identidad o de extranjería vigente, con letras o dígitos verificadores.",
+            "Acreditar, mediante declaración jurada, que no es consumidor de drogas, estupefacientes o sustancias psicotrópicas prohibidas que alteren o modifiquen la plenitud de las capacidades físicas o psíquicas."
+          ],
+          "especiales_profesional": [
+            "Tener como mínimo 20 años de edad.",
+            "Acreditar haber estado en posesión de la licencia clase B durante dos años.",
+            "Aprobar los cursos teóricos y prácticos impartidos por escuelas de conductores profesionales reconocidas por el Estado.",
+            "Ser egresado de enseñanza básica (o examen de equivalencia de estudios para fines laborales)."
+          ],
+          "especiales_subtipo": [
+            "Acreditar haber estado en posesión, durante a lo menos dos años, de la licencia Clase A-4."
+          ]
+        },
+        "documentacion": [
+          "Cédula nacional de identidad o de extranjería vigente.",
+          "Certificado de estudios.",
+          "Licencia clase B o de nivel inferior a la que desea obtener.",
+          "Certificado de formación profesional.",
+          "Declaración jurada de no consumo de drogas, estupefacientes o sustancias psicotrópicas prohibidas.",
+          "Certificado de antecedentes para fines especiales (si corresponde).",
+          "Comprobante de domicilio.",
+          "Certificado médico de idoneidad física y psíquica."
+        ],
+        "plazos": "Si la licencia es denegada por causales subsanables, la solicitud no puede renovarse hasta 30 días después de la primera denegatoria y 6 meses después de cada nueva denegación.",
+        "horarios": "El horario de atención del Departamento de Tránsito local es de 8:30 a 12:45 y 13:45 a 17:45 de Lunes a Viernes.",
+        "costos": "El costo de la licencia depende del tipo. Si quieres saber el valor exacto de la licencia A5, indícamelo y te proporcionaré el valor vigente.",
+        "proposito": "Conducir vehículos simples o articulados de transporte de carga con peso bruto vehicular superior a 3.500 kg (licencia profesional clase A-5).",
+        "tipos_licencia": {
+          "A5": "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 11, 12, 13, 16"
+      ],
+      "bordes": [
+        "No diagnosticar rechazos ni sanciones; derivar a Tránsito.",
+        "No inventar horarios o costos sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "licencia_conducir_renovacion",
+      "aliases": [
+        "renovar licencia de conducir",
+        "revalidar licencia",
+        "renovación licencia",
+        "reacreditación licencia",
+        "control de licencia"
+      ],
+      "categoria": "transito",
+      "respuestas": {
+        "donde": "La renovación se realiza en el Departamento de Tránsito de una municipalidad autorizada. En general, se recomienda tu municipalidad de residencia. (Ley 18.290, art. 11).",
+        "requisitos": "La licencia no profesional B/C o especial debe reacreditarse cada 6 años. La licencia profesional debe reacreditarse cada 4 años. Se exige idoneidad moral, física y psíquica y exámenes correspondientes. (Ley 18.290, art. 18, 14).",
+        "plazos": "El control debe efectuarse, a más tardar, en la fecha de cumpleaños de su titular (o el día hábil siguiente). (Ley 18.290, art. 19).",
+        "horarios": "Los horarios dependen de cada municipalidad. Consulta el Departamento de Tránsito local.",
+        "costos": "El arancel es definido por cada municipalidad. Verifica el valor vigente en tu municipio.",
+        "proposito": "Mantener vigente la licencia acreditando requisitos de idoneidad y exámenes según la clase."
+      },
+      "fuentes": [
+        "Ley 18.290, art. 11, 14, 18, 19"
+      ],
+      "bordes": [
+        "No evaluar aptitud médica ni sanciones; derivar a Tránsito.",
+        "No inventar horarios o costos sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios"
+      ]
+    },
+    {
+      "id": "liccond-renovacion_profesional",
+      "aliases": [
+        "renovar licencia profesional",
+        "renovación licencia profesional",
+        "revalidar licencia profesional",
+        "control licencia profesional",
+        "reacreditar licencia profesional clase A",
+        "renovar licencia clase A",
+        "renovar licencia A1 A2 A3 A4 A5"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "Reacreditación (control) de licencia profesional Clase A.",
+        "Permite mantener vigente la licencia acreditando requisitos de idoneidad y exámenes que correspondan."
+      ],
+      "respuestas": {
+        "donde": "La renovación (control) se realiza en el Departamento de Tránsito y Transporte Público Municipal de una municipalidad autorizada. En general, se recomienda tramitar en la municipalidad de tu domicilio.",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Presentar cédula de identidad vigente.",
+            "Rendir los exámenes y controles que correspondan según evaluación municipal (p. ej., examen médico y otros controles aplicables)."
+          ],
+          "especiales_profesional": [
+            "La licencia profesional debe reacreditarse cada 4 años."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Licencia profesional vigente (si la tienes físicamente).",
+          "Antecedentes adicionales que solicite la municipalidad para verificar idoneidad (según normativa y procedimiento local)."
+        ],
+        "plazos": "El control debe efectuarse, a más tardar, en la fecha de cumpleaños de su titular (o el día hábil siguiente).",
+        "horarios": "Los horarios dependen de cada municipalidad. Consulta el Departamento de Tránsito local.",
+        "costos": "El arancel es definido por cada municipalidad. Verifica el valor vigente en tu municipio.",
+        "proposito": "Mantener vigente la licencia profesional Clase A (A1–A5).",
+        "procedimiento": [
+          "Solicitar hora para control/renovación en Tránsito.",
+          "Presentar documentación requerida.",
+          "Rendir exámenes/controles que correspondan.",
+          "Pago de derechos municipales y emisión/actualización de la licencia."
+        ]
+      },
+      "fuentes": [
+        "Ley 18.290, art. 18 y 19 (vigencia/control de licencias; reacreditación profesional cada 4 años)."
+      ],
+      "bordes": [
+        "No evaluar aptitud médica ni sanciones: el resultado lo determina la municipalidad/autoridad competente.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-renovacion_profesional_A1",
+      "parent_id": "liccond-renovacion_profesional",
+      "aliases": [
+        "renovar licencia A1",
+        "renovar licencia A-1",
+        "revalidar licencia A1",
+        "reacreditar licencia A1",
+        "control licencia A1",
+        "renovación licencia profesional A1",
+        "renovar licencia profesional A-1"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A1",
+      "definicion_licencia": [
+        "Renovación (control) de licencia profesional A1.",
+        "Para conducir taxis."
+      ],
+      "respuestas": {
+        "donde": "La renovación (control) se realiza en el Departamento de Tránsito y Transporte Público Municipal de una municipalidad autorizada. En general, se recomienda tramitar en la municipalidad de tu domicilio.",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Presentar cédula de identidad vigente.",
+            "Rendir los exámenes y controles que correspondan según evaluación municipal (p. ej., examen médico y otros controles aplicables)."
+          ],
+          "especiales_profesional": [
+            "La licencia profesional debe reacreditarse cada 4 años."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Licencia profesional vigente (si la tienes físicamente).",
+          "Antecedentes adicionales que solicite la municipalidad para verificar idoneidad (según normativa y procedimiento local)."
+        ],
+        "plazos": "El control debe efectuarse, a más tardar, en la fecha de cumpleaños de su titular (o el día hábil siguiente).",
+        "horarios": "Los horarios dependen de cada municipalidad. Consulta el Departamento de Tránsito local.",
+        "costos": "El arancel es definido por cada municipalidad. Verifica el valor vigente en tu municipio.",
+        "proposito": "Mantener vigente la licencia profesional A1.",
+        "procedimiento": [
+          "Solicitar hora para control/renovación en Tránsito.",
+          "Presentar documentación requerida.",
+          "Rendir exámenes/controles que correspondan.",
+          "Pago de derechos municipales y emisión/actualización de la licencia."
+        ],
+        "tipos_licencia": {
+          "A1": "Para conducir taxis."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 18 y 19 (vigencia/control de licencias; reacreditación profesional cada 4 años)."
+      ],
+      "bordes": [
+        "No evaluar aptitud médica ni sanciones: el resultado lo determina la municipalidad/autoridad competente.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-renovacion_profesional_A2",
+      "parent_id": "liccond-renovacion_profesional",
+      "aliases": [
+        "renovar licencia A2",
+        "renovar licencia A-2",
+        "revalidar licencia A2",
+        "reacreditar licencia A2",
+        "control licencia A2",
+        "renovación licencia profesional A2",
+        "renovar licencia profesional A-2"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A2",
+      "definicion_licencia": [
+        "Renovación (control) de licencia profesional A2.",
+        "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+      ],
+      "respuestas": {
+        "donde": "La renovación (control) se realiza en el Departamento de Tránsito y Transporte Público Municipal de una municipalidad autorizada. En general, se recomienda tramitar en la municipalidad de tu domicilio.",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Presentar cédula de identidad vigente.",
+            "Rendir los exámenes y controles que correspondan según evaluación municipal (p. ej., examen médico y otros controles aplicables)."
+          ],
+          "especiales_profesional": [
+            "La licencia profesional debe reacreditarse cada 4 años."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Licencia profesional vigente (si la tienes físicamente).",
+          "Antecedentes adicionales que solicite la municipalidad para verificar idoneidad (según normativa y procedimiento local)."
+        ],
+        "plazos": "El control debe efectuarse, a más tardar, en la fecha de cumpleaños de su titular (o el día hábil siguiente).",
+        "horarios": "Los horarios dependen de cada municipalidad. Consulta el Departamento de Tránsito local.",
+        "costos": "El arancel es definido por cada municipalidad. Verifica el valor vigente en tu municipio.",
+        "proposito": "Mantener vigente la licencia profesional A2.",
+        "procedimiento": [
+          "Solicitar hora para control/renovación en Tránsito.",
+          "Presentar documentación requerida.",
+          "Rendir exámenes/controles que correspondan.",
+          "Pago de derechos municipales y emisión/actualización de la licencia."
+        ],
+        "tipos_licencia": {
+          "A2": "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 18 y 19 (vigencia/control de licencias; reacreditación profesional cada 4 años)."
+      ],
+      "bordes": [
+        "No evaluar aptitud médica ni sanciones: el resultado lo determina la municipalidad/autoridad competente.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-renovacion_profesional_A3",
+      "parent_id": "liccond-renovacion_profesional",
+      "aliases": [
+        "renovar licencia A3",
+        "renovar licencia A-3",
+        "revalidar licencia A3",
+        "reacreditar licencia A3",
+        "control licencia A3",
+        "renovación licencia profesional A3",
+        "renovar licencia profesional A-3"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A3",
+      "definicion_licencia": [
+        "Renovación (control) de licencia profesional A3.",
+        "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+      ],
+      "respuestas": {
+        "donde": "La renovación (control) se realiza en el Departamento de Tránsito y Transporte Público Municipal de una municipalidad autorizada. En general, se recomienda tramitar en la municipalidad de tu domicilio.",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Presentar cédula de identidad vigente.",
+            "Rendir los exámenes y controles que correspondan según evaluación municipal (p. ej., examen médico y otros controles aplicables)."
+          ],
+          "especiales_profesional": [
+            "La licencia profesional debe reacreditarse cada 4 años."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Licencia profesional vigente (si la tienes físicamente).",
+          "Antecedentes adicionales que solicite la municipalidad para verificar idoneidad (según normativa y procedimiento local)."
+        ],
+        "plazos": "El control debe efectuarse, a más tardar, en la fecha de cumpleaños de su titular (o el día hábil siguiente).",
+        "horarios": "Los horarios dependen de cada municipalidad. Consulta el Departamento de Tránsito local.",
+        "costos": "El arancel es definido por cada municipalidad. Verifica el valor vigente en tu municipio.",
+        "proposito": "Mantener vigente la licencia profesional A3.",
+        "procedimiento": [
+          "Solicitar hora para control/renovación en Tránsito.",
+          "Presentar documentación requerida.",
+          "Rendir exámenes/controles que correspondan.",
+          "Pago de derechos municipales y emisión/actualización de la licencia."
+        ],
+        "tipos_licencia": {
+          "A3": "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 18 y 19 (vigencia/control de licencias; reacreditación profesional cada 4 años)."
+      ],
+      "bordes": [
+        "No evaluar aptitud médica ni sanciones: el resultado lo determina la municipalidad/autoridad competente.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-renovacion_profesional_A4",
+      "parent_id": "liccond-renovacion_profesional",
+      "aliases": [
+        "renovar licencia A4",
+        "renovar licencia A-4",
+        "revalidar licencia A4",
+        "reacreditar licencia A4",
+        "control licencia A4",
+        "renovación licencia profesional A4",
+        "renovar licencia profesional A-4"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A4",
+      "definicion_licencia": [
+        "Renovación (control) de licencia profesional A4.",
+        "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "donde": "La renovación (control) se realiza en el Departamento de Tránsito y Transporte Público Municipal de una municipalidad autorizada. En general, se recomienda tramitar en la municipalidad de tu domicilio.",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Presentar cédula de identidad vigente.",
+            "Rendir los exámenes y controles que correspondan según evaluación municipal (p. ej., examen médico y otros controles aplicables)."
+          ],
+          "especiales_profesional": [
+            "La licencia profesional debe reacreditarse cada 4 años."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Licencia profesional vigente (si la tienes físicamente).",
+          "Antecedentes adicionales que solicite la municipalidad para verificar idoneidad (según normativa y procedimiento local)."
+        ],
+        "plazos": "El control debe efectuarse, a más tardar, en la fecha de cumpleaños de su titular (o el día hábil siguiente).",
+        "horarios": "Los horarios dependen de cada municipalidad. Consulta el Departamento de Tránsito local.",
+        "costos": "El arancel es definido por cada municipalidad. Verifica el valor vigente en tu municipio.",
+        "proposito": "Mantener vigente la licencia profesional A4.",
+        "procedimiento": [
+          "Solicitar hora para control/renovación en Tránsito.",
+          "Presentar documentación requerida.",
+          "Rendir exámenes/controles que correspondan.",
+          "Pago de derechos municipales y emisión/actualización de la licencia."
+        ],
+        "tipos_licencia": {
+          "A4": "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 18 y 19 (vigencia/control de licencias; reacreditación profesional cada 4 años)."
+      ],
+      "bordes": [
+        "No evaluar aptitud médica ni sanciones: el resultado lo determina la municipalidad/autoridad competente.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-renovacion_profesional_A5",
+      "parent_id": "liccond-renovacion_profesional",
+      "aliases": [
+        "renovar licencia A5",
+        "renovar licencia A-5",
+        "revalidar licencia A5",
+        "reacreditar licencia A5",
+        "control licencia A5",
+        "renovación licencia profesional A5",
+        "renovar licencia profesional A-5"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A5",
+      "definicion_licencia": [
+        "Renovación (control) de licencia profesional A5.",
+        "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "donde": "La renovación (control) se realiza en el Departamento de Tránsito y Transporte Público Municipal de una municipalidad autorizada. En general, se recomienda tramitar en la municipalidad de tu domicilio.",
+        "requisitos": {
+          "generales": [
+            "Acreditar idoneidad moral, física y psíquica.",
+            "Presentar cédula de identidad vigente.",
+            "Rendir los exámenes y controles que correspondan según evaluación municipal (p. ej., examen médico y otros controles aplicables)."
+          ],
+          "especiales_profesional": [
+            "La licencia profesional debe reacreditarse cada 4 años."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Licencia profesional vigente (si la tienes físicamente).",
+          "Antecedentes adicionales que solicite la municipalidad para verificar idoneidad (según normativa y procedimiento local)."
+        ],
+        "plazos": "El control debe efectuarse, a más tardar, en la fecha de cumpleaños de su titular (o el día hábil siguiente).",
+        "horarios": "Los horarios dependen de cada municipalidad. Consulta el Departamento de Tránsito local.",
+        "costos": "El arancel es definido por cada municipalidad. Verifica el valor vigente en tu municipio.",
+        "proposito": "Mantener vigente la licencia profesional A5.",
+        "procedimiento": [
+          "Solicitar hora para control/renovación en Tránsito.",
+          "Presentar documentación requerida.",
+          "Rendir exámenes/controles que correspondan.",
+          "Pago de derechos municipales y emisión/actualización de la licencia."
+        ],
+        "tipos_licencia": {
+          "A5": "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 18 y 19 (vigencia/control de licencias; reacreditación profesional cada 4 años)."
+      ],
+      "bordes": [
+        "No evaluar aptitud médica ni sanciones: el resultado lo determina la municipalidad/autoridad competente.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios",
+        "Agendar una cita"
+      ]
+    },
+    {
+      "id": "liccond-duplicado_profesional",
+      "aliases": [
+        "duplicado licencia profesional",
+        "reponer licencia profesional",
+        "segunda copia licencia profesional",
+        "duplicado licencia clase A",
+        "duplicado licencia A1 A2 A3 A4 A5",
+        "se me perdió la licencia profesional",
+        "me robaron la licencia profesional"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "Solicitud de duplicado de licencia profesional Clase A.",
+        "Aplica en caso de extravío o destrucción total o parcial del documento."
+      ],
+      "respuestas": {
+        "donde": "El duplicado debe solicitarlo su titular en el Departamento de Tránsito y Transporte Público Municipal que otorgó la licencia o el que corresponda a su domicilio.",
+        "requisitos": {
+          "condiciones": [
+            "Solo procede duplicado en caso de extravío o destrucción total o parcial de la licencia."
+          ],
+          "verificaciones": [
+            "Acompañar un informe del Registro Nacional de Conductores que acredite que la licencia extraviada o destruida no esté cancelada o suspendida."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Informe/certificado del Registro Nacional de Conductores (según exigencia).",
+          "Antecedentes adicionales que exija la municipalidad para tramitar el duplicado (p. ej., declaración por extravío/robo si corresponde)."
+        ],
+        "plazos": "Depende de la disponibilidad de atención y del flujo interno municipal; consulta en Tránsito.",
+        "horarios": "Depende de cada municipalidad.",
+        "costos": "El arancel del duplicado lo define la municipalidad. Consulta el valor vigente.",
+        "proposito": "Obtener un documento de reemplazo que indique 'DUPLICADO' y mantenga las anotaciones de la licencia original.",
+        "procedimiento": [
+          "Solicitar hora o presentarse según modalidad municipal.",
+          "Presentar cédula y antecedentes requeridos (incluye informe del Registro Nacional de Conductores).",
+          "Pago de derechos municipales.",
+          "Emisión y entrega del duplicado."
+        ]
+      },
+      "fuentes": [
+        "Ley 18.290, art. 29 (duplicado por extravío o destrucción; requisitos y trámite)."
+      ],
+      "bordes": [
+        "No confirmar en línea si una licencia está cancelada o suspendida: eso se verifica con el Registro Nacional de Conductores y Tránsito.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios"
+      ]
+    },
+    {
+      "id": "liccond-duplicado_profesional_A1",
+      "parent_id": "liccond-duplicado_profesional",
+      "aliases": [
+        "duplicado licencia A1",
+        "duplicado licencia A-1",
+        "se me perdió la licencia A1",
+        "me robaron la licencia A1",
+        "reponer licencia A1",
+        "segunda copia licencia A1",
+        "duplicado licencia profesional A1"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A1",
+      "definicion_licencia": [
+        "Duplicado de licencia profesional A1.",
+        "Para conducir taxis."
+      ],
+      "respuestas": {
+        "donde": "El duplicado debe solicitarlo su titular en el Departamento de Tránsito y Transporte Público Municipal que otorgó la licencia o el que corresponda a su domicilio.",
+        "requisitos": {
+          "condiciones": [
+            "Solo procede duplicado en caso de extravío o destrucción total o parcial de la licencia."
+          ],
+          "verificaciones": [
+            "Acompañar un informe del Registro Nacional de Conductores que acredite que la licencia extraviada o destruida no esté cancelada o suspendida."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Informe/certificado del Registro Nacional de Conductores (según exigencia).",
+          "Antecedentes adicionales que exija la municipalidad para tramitar el duplicado (p. ej., declaración por extravío/robo si corresponde)."
+        ],
+        "plazos": "Depende de la disponibilidad de atención y del flujo interno municipal; consulta en Tránsito.",
+        "horarios": "Depende de cada municipalidad.",
+        "costos": "El arancel del duplicado lo define la municipalidad. Consulta el valor vigente.",
+        "proposito": "Obtener duplicado de la licencia profesional A1.",
+        "procedimiento": [
+          "Solicitar hora o presentarse según modalidad municipal.",
+          "Presentar cédula y antecedentes requeridos (incluye informe del Registro Nacional de Conductores).",
+          "Pago de derechos municipales.",
+          "Emisión y entrega del duplicado."
+        ],
+        "tipos_licencia": {
+          "A1": "Para conducir taxis."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 29 (duplicado por extravío o destrucción; requisitos y trámite)."
+      ],
+      "bordes": [
+        "No confirmar en línea si una licencia está cancelada o suspendida: eso se verifica con el Registro Nacional de Conductores y Tránsito.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios"
+      ]
+    },
+    {
+      "id": "liccond-duplicado_profesional_A2",
+      "parent_id": "liccond-duplicado_profesional",
+      "aliases": [
+        "duplicado licencia A2",
+        "duplicado licencia A-2",
+        "se me perdió la licencia A2",
+        "me robaron la licencia A2",
+        "reponer licencia A2",
+        "segunda copia licencia A2",
+        "duplicado licencia profesional A2"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A2",
+      "definicion_licencia": [
+        "Duplicado de licencia profesional A2.",
+        "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+      ],
+      "respuestas": {
+        "donde": "El duplicado debe solicitarlo su titular en el Departamento de Tránsito y Transporte Público Municipal que otorgó la licencia o el que corresponda a su domicilio.",
+        "requisitos": {
+          "condiciones": [
+            "Solo procede duplicado en caso de extravío o destrucción total o parcial de la licencia."
+          ],
+          "verificaciones": [
+            "Acompañar un informe del Registro Nacional de Conductores que acredite que la licencia extraviada o destruida no esté cancelada o suspendida."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Informe/certificado del Registro Nacional de Conductores (según exigencia).",
+          "Antecedentes adicionales que exija la municipalidad para tramitar el duplicado (p. ej., declaración por extravío/robo si corresponde)."
+        ],
+        "plazos": "Depende de la disponibilidad de atención y del flujo interno municipal; consulta en Tránsito.",
+        "horarios": "Depende de cada municipalidad.",
+        "costos": "El arancel del duplicado lo define la municipalidad. Consulta el valor vigente.",
+        "proposito": "Obtener duplicado de la licencia profesional A2.",
+        "procedimiento": [
+          "Solicitar hora o presentarse según modalidad municipal.",
+          "Presentar cédula y antecedentes requeridos (incluye informe del Registro Nacional de Conductores).",
+          "Pago de derechos municipales.",
+          "Emisión y entrega del duplicado."
+        ],
+        "tipos_licencia": {
+          "A2": "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 29 (duplicado por extravío o destrucción; requisitos y trámite)."
+      ],
+      "bordes": [
+        "No confirmar en línea si una licencia está cancelada o suspendida: eso se verifica con el Registro Nacional de Conductores y Tránsito.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios"
+      ]
+    },
+    {
+      "id": "liccond-duplicado_profesional_A3",
+      "parent_id": "liccond-duplicado_profesional",
+      "aliases": [
+        "duplicado licencia A3",
+        "duplicado licencia A-3",
+        "se me perdió la licencia A3",
+        "me robaron la licencia A3",
+        "reponer licencia A3",
+        "segunda copia licencia A3",
+        "duplicado licencia profesional A3"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A3",
+      "definicion_licencia": [
+        "Duplicado de licencia profesional A3.",
+        "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+      ],
+      "respuestas": {
+        "donde": "El duplicado debe solicitarlo su titular en el Departamento de Tránsito y Transporte Público Municipal que otorgó la licencia o el que corresponda a su domicilio.",
+        "requisitos": {
+          "condiciones": [
+            "Solo procede duplicado en caso de extravío o destrucción total o parcial de la licencia."
+          ],
+          "verificaciones": [
+            "Acompañar un informe del Registro Nacional de Conductores que acredite que la licencia extraviada o destruida no esté cancelada o suspendida."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Informe/certificado del Registro Nacional de Conductores (según exigencia).",
+          "Antecedentes adicionales que exija la municipalidad para tramitar el duplicado (p. ej., declaración por extravío/robo si corresponde)."
+        ],
+        "plazos": "Depende de la disponibilidad de atención y del flujo interno municipal; consulta en Tránsito.",
+        "horarios": "Depende de cada municipalidad.",
+        "costos": "El arancel del duplicado lo define la municipalidad. Consulta el valor vigente.",
+        "proposito": "Obtener duplicado de la licencia profesional A3.",
+        "procedimiento": [
+          "Solicitar hora o presentarse según modalidad municipal.",
+          "Presentar cédula y antecedentes requeridos (incluye informe del Registro Nacional de Conductores).",
+          "Pago de derechos municipales.",
+          "Emisión y entrega del duplicado."
+        ],
+        "tipos_licencia": {
+          "A3": "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 29 (duplicado por extravío o destrucción; requisitos y trámite)."
+      ],
+      "bordes": [
+        "No confirmar en línea si una licencia está cancelada o suspendida: eso se verifica con el Registro Nacional de Conductores y Tránsito.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios"
+      ]
+    },
+    {
+      "id": "liccond-duplicado_profesional_A4",
+      "parent_id": "liccond-duplicado_profesional",
+      "aliases": [
+        "duplicado licencia A4",
+        "duplicado licencia A-4",
+        "se me perdió la licencia A4",
+        "me robaron la licencia A4",
+        "reponer licencia A4",
+        "segunda copia licencia A4",
+        "duplicado licencia profesional A4"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A4",
+      "definicion_licencia": [
+        "Duplicado de licencia profesional A4.",
+        "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "donde": "El duplicado debe solicitarlo su titular en el Departamento de Tránsito y Transporte Público Municipal que otorgó la licencia o el que corresponda a su domicilio.",
+        "requisitos": {
+          "condiciones": [
+            "Solo procede duplicado en caso de extravío o destrucción total o parcial de la licencia."
+          ],
+          "verificaciones": [
+            "Acompañar un informe del Registro Nacional de Conductores que acredite que la licencia extraviada o destruida no esté cancelada o suspendida."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Informe/certificado del Registro Nacional de Conductores (según exigencia).",
+          "Antecedentes adicionales que exija la municipalidad para tramitar el duplicado (p. ej., declaración por extravío/robo si corresponde)."
+        ],
+        "plazos": "Depende de la disponibilidad de atención y del flujo interno municipal; consulta en Tránsito.",
+        "horarios": "Depende de cada municipalidad.",
+        "costos": "El arancel del duplicado lo define la municipalidad. Consulta el valor vigente.",
+        "proposito": "Obtener duplicado de la licencia profesional A4.",
+        "procedimiento": [
+          "Solicitar hora o presentarse según modalidad municipal.",
+          "Presentar cédula y antecedentes requeridos (incluye informe del Registro Nacional de Conductores).",
+          "Pago de derechos municipales.",
+          "Emisión y entrega del duplicado."
+        ],
+        "tipos_licencia": {
+          "A4": "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 29 (duplicado por extravío o destrucción; requisitos y trámite)."
+      ],
+      "bordes": [
+        "No confirmar en línea si una licencia está cancelada o suspendida: eso se verifica con el Registro Nacional de Conductores y Tránsito.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios"
+      ]
+    },
+    {
+      "id": "liccond-duplicado_profesional_A5",
+      "parent_id": "liccond-duplicado_profesional",
+      "aliases": [
+        "duplicado licencia A5",
+        "duplicado licencia A-5",
+        "se me perdió la licencia A5",
+        "me robaron la licencia A5",
+        "reponer licencia A5",
+        "segunda copia licencia A5",
+        "duplicado licencia profesional A5"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A5",
+      "definicion_licencia": [
+        "Duplicado de licencia profesional A5.",
+        "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "donde": "El duplicado debe solicitarlo su titular en el Departamento de Tránsito y Transporte Público Municipal que otorgó la licencia o el que corresponda a su domicilio.",
+        "requisitos": {
+          "condiciones": [
+            "Solo procede duplicado en caso de extravío o destrucción total o parcial de la licencia."
+          ],
+          "verificaciones": [
+            "Acompañar un informe del Registro Nacional de Conductores que acredite que la licencia extraviada o destruida no esté cancelada o suspendida."
+          ]
+        },
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Informe/certificado del Registro Nacional de Conductores (según exigencia).",
+          "Antecedentes adicionales que exija la municipalidad para tramitar el duplicado (p. ej., declaración por extravío/robo si corresponde)."
+        ],
+        "plazos": "Depende de la disponibilidad de atención y del flujo interno municipal; consulta en Tránsito.",
+        "horarios": "Depende de cada municipalidad.",
+        "costos": "El arancel del duplicado lo define la municipalidad. Consulta el valor vigente.",
+        "proposito": "Obtener duplicado de la licencia profesional A5.",
+        "procedimiento": [
+          "Solicitar hora o presentarse según modalidad municipal.",
+          "Presentar cédula y antecedentes requeridos (incluye informe del Registro Nacional de Conductores).",
+          "Pago de derechos municipales.",
+          "Emisión y entrega del duplicado."
+        ],
+        "tipos_licencia": {
+          "A5": "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "Ley 18.290, art. 29 (duplicado por extravío o destrucción; requisitos y trámite)."
+      ],
+      "bordes": [
+        "No confirmar en línea si una licencia está cancelada o suspendida: eso se verifica con el Registro Nacional de Conductores y Tránsito.",
+        "No inventar costos u horarios sin fuente municipal vigente."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Dónde tramitar",
+        "Ver costos",
+        "Ver horarios"
+      ]
+    },
+    {
+      "id": "liccond-bloqueo_profesional",
+      "aliases": [
+        "bloqueo licencia profesional",
+        "bloquear licencia profesional",
+        "licencia profesional bloqueada",
+        "bloqueo por pérdida licencia",
+        "bloqueo por robo licencia",
+        "bloqueo licencia clase A"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "Bloqueo de licencia de conducir (documento) por extravío o robo.",
+        "El bloqueo busca evitar el mal uso del documento por terceros."
+      ],
+      "respuestas": {
+        "que_es": "El bloqueo es un trámite para informar que tu licencia está perdida o robada, de modo que no se haga un mal uso del documento.",
+        "donde": "En general, el bloqueo se gestiona a través del Servicio de Registro Civil e Identificación (canal en línea o presencial según disponibilidad) y/o los canales que la autoridad disponga.",
+        "tipos": [
+          "Bloqueo temporal (si existe esa opción en el canal de trámite).",
+          "Bloqueo definitivo (si corresponde según procedimiento)."
+        ],
+        "que_hacer_luego": [
+          "Si necesitas seguir conduciendo y tu licencia no está disponible, consulta en Tránsito el procedimiento aplicable (por ejemplo, duplicado si procede).",
+          "Para reponer el documento, revisa el trámite de duplicado."
+        ],
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Antecedentes solicitados por el canal de bloqueo (según procedimiento vigente)."
+        ],
+        "bordes_operativos": [
+          "MunBot no puede verificar en línea el estado real del bloqueo; debe consultarse en el canal oficial."
+        ]
+      },
+      "fuentes": [
+        "ChileAtiende / Registro Civil: Bloqueo de licencia de conducir (procedimiento vigente)."
+      ],
+      "bordes": [
+        "No afirmar que una licencia quedó bloqueada: solo orientar al canal oficial.",
+        "No confundir 'bloqueo por extravío' con 'suspensión/cancelación' por sanción."
+      ],
+      "aspect_buttons": [
+        "Qué es",
+        "Dónde bloquear",
+        "Qué hacer después",
+        "Ver documentación"
+      ]
+    },
+    {
+      "id": "liccond-bloqueo_profesional_A1",
+      "parent_id": "liccond-bloqueo_profesional",
+      "aliases": [
+        "bloquear licencia A1",
+        "bloqueo licencia A1",
+        "licencia A1 bloqueada",
+        "bloqueo por extravío licencia A1",
+        "bloquear licencia profesional A1"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A1",
+      "definicion_licencia": [
+        "Bloqueo de licencia profesional A1 por extravío o robo.",
+        "Para conducir taxis."
+      ],
+      "respuestas": {
+        "que_es": "El bloqueo es un trámite para informar que tu licencia está perdida o robada, de modo que no se haga un mal uso del documento.",
+        "donde": "En general, el bloqueo se gestiona a través del Servicio de Registro Civil e Identificación (canal en línea o presencial según disponibilidad) y/o los canales que la autoridad disponga.",
+        "tipos": [
+          "Bloqueo temporal (si existe esa opción en el canal de trámite).",
+          "Bloqueo definitivo (si corresponde según procedimiento)."
+        ],
+        "que_hacer_luego": [
+          "Si necesitas seguir conduciendo y tu licencia no está disponible, consulta en Tránsito el procedimiento aplicable (por ejemplo, duplicado si procede).",
+          "Para reponer el documento, revisa el trámite de duplicado."
+        ],
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Antecedentes solicitados por el canal de bloqueo (según procedimiento vigente)."
+        ],
+        "bordes_operativos": [
+          "MunBot no puede verificar en línea el estado real del bloqueo; debe consultarse en el canal oficial."
+        ],
+        "tipos_licencia": {
+          "A1": "Para conducir taxis."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende / Registro Civil: Bloqueo de licencia de conducir (procedimiento vigente)."
+      ],
+      "bordes": [
+        "No afirmar que una licencia quedó bloqueada: solo orientar al canal oficial.",
+        "No confundir 'bloqueo por extravío' con 'suspensión/cancelación' por sanción."
+      ],
+      "aspect_buttons": [
+        "Qué es",
+        "Dónde bloquear",
+        "Qué hacer después",
+        "Ver documentación"
+      ]
+    },
+    {
+      "id": "liccond-bloqueo_profesional_A2",
+      "parent_id": "liccond-bloqueo_profesional",
+      "aliases": [
+        "bloquear licencia A2",
+        "bloqueo licencia A2",
+        "licencia A2 bloqueada",
+        "bloqueo por extravío licencia A2",
+        "bloquear licencia profesional A2"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A2",
+      "definicion_licencia": [
+        "Bloqueo de licencia profesional A2 por extravío o robo.",
+        "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+      ],
+      "respuestas": {
+        "que_es": "El bloqueo es un trámite para informar que tu licencia está perdida o robada, de modo que no se haga un mal uso del documento.",
+        "donde": "En general, el bloqueo se gestiona a través del Servicio de Registro Civil e Identificación (canal en línea o presencial según disponibilidad) y/o los canales que la autoridad disponga.",
+        "tipos": [
+          "Bloqueo temporal (si existe esa opción en el canal de trámite).",
+          "Bloqueo definitivo (si corresponde según procedimiento)."
+        ],
+        "que_hacer_luego": [
+          "Si necesitas seguir conduciendo y tu licencia no está disponible, consulta en Tránsito el procedimiento aplicable (por ejemplo, duplicado si procede).",
+          "Para reponer el documento, revisa el trámite de duplicado."
+        ],
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Antecedentes solicitados por el canal de bloqueo (según procedimiento vigente)."
+        ],
+        "bordes_operativos": [
+          "MunBot no puede verificar en línea el estado real del bloqueo; debe consultarse en el canal oficial."
+        ],
+        "tipos_licencia": {
+          "A2": "Para conducir indistintamente taxis, ambulancias o vehículos motorizados de transporte público y privado de personas con capacidad de diez a diecisiete asientos, excluido el conductor."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende / Registro Civil: Bloqueo de licencia de conducir (procedimiento vigente)."
+      ],
+      "bordes": [
+        "No afirmar que una licencia quedó bloqueada: solo orientar al canal oficial.",
+        "No confundir 'bloqueo por extravío' con 'suspensión/cancelación' por sanción."
+      ],
+      "aspect_buttons": [
+        "Qué es",
+        "Dónde bloquear",
+        "Qué hacer después",
+        "Ver documentación"
+      ]
+    },
+    {
+      "id": "liccond-bloqueo_profesional_A3",
+      "parent_id": "liccond-bloqueo_profesional",
+      "aliases": [
+        "bloquear licencia A3",
+        "bloqueo licencia A3",
+        "licencia A3 bloqueada",
+        "bloqueo por extravío licencia A3",
+        "bloquear licencia profesional A3"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A3",
+      "definicion_licencia": [
+        "Bloqueo de licencia profesional A3 por extravío o robo.",
+        "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+      ],
+      "respuestas": {
+        "que_es": "El bloqueo es un trámite para informar que tu licencia está perdida o robada, de modo que no se haga un mal uso del documento.",
+        "donde": "En general, el bloqueo se gestiona a través del Servicio de Registro Civil e Identificación (canal en línea o presencial según disponibilidad) y/o los canales que la autoridad disponga.",
+        "tipos": [
+          "Bloqueo temporal (si existe esa opción en el canal de trámite).",
+          "Bloqueo definitivo (si corresponde según procedimiento)."
+        ],
+        "que_hacer_luego": [
+          "Si necesitas seguir conduciendo y tu licencia no está disponible, consulta en Tránsito el procedimiento aplicable (por ejemplo, duplicado si procede).",
+          "Para reponer el documento, revisa el trámite de duplicado."
+        ],
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Antecedentes solicitados por el canal de bloqueo (según procedimiento vigente)."
+        ],
+        "bordes_operativos": [
+          "MunBot no puede verificar en línea el estado real del bloqueo; debe consultarse en el canal oficial."
+        ],
+        "tipos_licencia": {
+          "A3": "Para conducir indistintamente taxis, vehículos de transporte remunerado de escolares, ambulancias o vehículos motorizados de transporte público y privado de personas sin limitación de capacidad de asientos."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende / Registro Civil: Bloqueo de licencia de conducir (procedimiento vigente)."
+      ],
+      "bordes": [
+        "No afirmar que una licencia quedó bloqueada: solo orientar al canal oficial.",
+        "No confundir 'bloqueo por extravío' con 'suspensión/cancelación' por sanción."
+      ],
+      "aspect_buttons": [
+        "Qué es",
+        "Dónde bloquear",
+        "Qué hacer después",
+        "Ver documentación"
+      ]
+    },
+    {
+      "id": "liccond-bloqueo_profesional_A4",
+      "parent_id": "liccond-bloqueo_profesional",
+      "aliases": [
+        "bloquear licencia A4",
+        "bloqueo licencia A4",
+        "licencia A4 bloqueada",
+        "bloqueo por extravío licencia A4",
+        "bloquear licencia profesional A4"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A4",
+      "definicion_licencia": [
+        "Bloqueo de licencia profesional A4 por extravío o robo.",
+        "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "que_es": "El bloqueo es un trámite para informar que tu licencia está perdida o robada, de modo que no se haga un mal uso del documento.",
+        "donde": "En general, el bloqueo se gestiona a través del Servicio de Registro Civil e Identificación (canal en línea o presencial según disponibilidad) y/o los canales que la autoridad disponga.",
+        "tipos": [
+          "Bloqueo temporal (si existe esa opción en el canal de trámite).",
+          "Bloqueo definitivo (si corresponde según procedimiento)."
+        ],
+        "que_hacer_luego": [
+          "Si necesitas seguir conduciendo y tu licencia no está disponible, consulta en Tránsito el procedimiento aplicable (por ejemplo, duplicado si procede).",
+          "Para reponer el documento, revisa el trámite de duplicado."
+        ],
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Antecedentes solicitados por el canal de bloqueo (según procedimiento vigente)."
+        ],
+        "bordes_operativos": [
+          "MunBot no puede verificar en línea el estado real del bloqueo; debe consultarse en el canal oficial."
+        ],
+        "tipos_licencia": {
+          "A4": "Para conducir vehículos simples destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende / Registro Civil: Bloqueo de licencia de conducir (procedimiento vigente)."
+      ],
+      "bordes": [
+        "No afirmar que una licencia quedó bloqueada: solo orientar al canal oficial.",
+        "No confundir 'bloqueo por extravío' con 'suspensión/cancelación' por sanción."
+      ],
+      "aspect_buttons": [
+        "Qué es",
+        "Dónde bloquear",
+        "Qué hacer después",
+        "Ver documentación"
+      ]
+    },
+    {
+      "id": "liccond-bloqueo_profesional_A5",
+      "parent_id": "liccond-bloqueo_profesional",
+      "aliases": [
+        "bloquear licencia A5",
+        "bloqueo licencia A5",
+        "licencia A5 bloqueada",
+        "bloqueo por extravío licencia A5",
+        "bloquear licencia profesional A5"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": "A5",
+      "definicion_licencia": [
+        "Bloqueo de licencia profesional A5 por extravío o robo.",
+        "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+      ],
+      "respuestas": {
+        "que_es": "El bloqueo es un trámite para informar que tu licencia está perdida o robada, de modo que no se haga un mal uso del documento.",
+        "donde": "En general, el bloqueo se gestiona a través del Servicio de Registro Civil e Identificación (canal en línea o presencial según disponibilidad) y/o los canales que la autoridad disponga.",
+        "tipos": [
+          "Bloqueo temporal (si existe esa opción en el canal de trámite).",
+          "Bloqueo definitivo (si corresponde según procedimiento)."
+        ],
+        "que_hacer_luego": [
+          "Si necesitas seguir conduciendo y tu licencia no está disponible, consulta en Tránsito el procedimiento aplicable (por ejemplo, duplicado si procede).",
+          "Para reponer el documento, revisa el trámite de duplicado."
+        ],
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Antecedentes solicitados por el canal de bloqueo (según procedimiento vigente)."
+        ],
+        "bordes_operativos": [
+          "MunBot no puede verificar en línea el estado real del bloqueo; debe consultarse en el canal oficial."
+        ],
+        "tipos_licencia": {
+          "A5": "Para conducir todo tipo de vehículos motorizados, simples o articulados, destinados al transporte de carga cuyo Peso Bruto Vehicular sea superior a 3.500 kilogramos."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende / Registro Civil: Bloqueo de licencia de conducir (procedimiento vigente)."
+      ],
+      "bordes": [
+        "No afirmar que una licencia quedó bloqueada: solo orientar al canal oficial.",
+        "No confundir 'bloqueo por extravío' con 'suspensión/cancelación' por sanción."
+      ],
+      "aspect_buttons": [
+        "Qué es",
+        "Dónde bloquear",
+        "Qué hacer después",
+        "Ver documentación"
+      ]
+    },
+    {
+      "id": "liccond-renovacion_donde_tramitar_profesional",
+      "aliases": [
+        "¿Puedo renovar la licencia profesional en otra municipalidad?",
+        "renovar licencia A en otra comuna",
+        "¿debo renovar donde la saqué?",
+        "renovar licencia profesional fuera de mi comuna"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "La renovación de licencias de conducir se realiza ante Direcciones/Departamentos de Tránsito municipales.",
+        "En la práctica, muchas municipalidades permiten tramitar renovación aunque la licencia original se haya otorgado en otra comuna, sujeto a disponibilidad y reglas locales (cupos, prioridad a residentes, agenda)."
+      ],
+      "respuestas": {
+        "respuesta_corta": "En general sí: puedes renovar en una municipalidad distinta, pero la disponibilidad de cupos y la priorización (por ejemplo, residentes) depende de cada comuna.",
+        "que_hacer": [
+          "Confirmar si la municipalidad donde quieres renovar recibe personas de otras comunas (muchas lo hacen, otras priorizan residentes).",
+          "Agendar hora si el trámite funciona por cupos/agenda.",
+          "Llevar tu cédula vigente y tu licencia actual (si la tienes)."
+        ],
+        "bordes_operativos": [
+          "Si tu licencia está retenida/bloqueada o hay un proceso judicial, la municipalidad puede exigirte regularizar primero.",
+          "Si tu licencia está vencida hace mucho tiempo o hay condiciones médicas, podrían solicitar evaluaciones adicionales."
+        ]
+      },
+      "fuentes": [
+        "Ley 18.290 (requisitos generales y facultades municipales; revisar normativa municipal y disponibilidad local)"
+      ],
+      "bordes": [
+        "No prometer cupos, costos ni requisitos adicionales sin fuente municipal vigente.",
+        "Si el usuario indica comuna específica, sugerir confirmar agenda/cupos con esa municipalidad."
+      ],
+      "aspect_buttons": [
+        "Respuesta corta",
+        "Qué hacer",
+        "Casos límite"
+      ]
+    },
+    {
+      "id": "liccond-bloqueo_diferencias_profesional",
+      "aliases": [
+        "bloquear licencia profesional",
+        "¿qué significa bloquear la licencia?",
+        "bloqueo temporal vs definitivo licencia",
+        "me robaron la licencia, ¿la bloqueo?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "El 'bloqueo' es una medida administrativa para invalidar el uso de una licencia en situaciones como extravío/robo, retención por autoridad o resolución judicial.",
+        "Puede existir un bloqueo por seguridad documental (evitar uso por terceros) y bloqueos derivados de medidas legales/sancionatorias."
+      ],
+      "respuestas": {
+        "para_que_sirve": "Evita que un tercero use tu licencia extraviada/robada y ayuda a que el trámite de duplicado sea más seguro.",
+        "tipos": {
+          "bloqueo_por_extravio_robo": "Medida práctica para resguardar el documento y tramitar duplicado.",
+          "bloqueo_por_sancion_o_orden": "Deriva de una resolución/medida; requiere regularización según corresponda."
+        },
+        "que_hacer_si_robo": [
+          "Registrar el hecho (constancia/denuncia, según práctica local).",
+          "Solicitar bloqueo/registro de extravío si la municipalidad lo exige o recomienda.",
+          "Tramitar duplicado en la municipalidad cuando corresponda."
+        ],
+        "alerta": "Si el bloqueo está asociado a una sanción o resolución, no se soluciona solo con 'duplicado': hay que regularizar la causa."
+      },
+      "fuentes": [
+        "Prácticas municipales de Tránsito; Ley 18.290 (denegación/otorgamiento/controles) y normativa local aplicable"
+      ],
+      "bordes": [
+        "No prometer que 'bloquear' levanta sanciones o causas judiciales.",
+        "Si el usuario reporta retención por Carabineros/JPL, derivar a regularización."
+      ],
+      "aspect_buttons": [
+        "Para qué sirve",
+        "Tipos",
+        "Qué hacer si robo",
+        "Alerta"
+      ]
+    },
+    {
+      "id": "liccond-duplicado_extravio_robo_profesional",
+      "aliases": [
+        "duplicado licencia profesional",
+        "reponer licencia A perdida",
+        "me robaron la licencia A, ¿cómo saco duplicado?",
+        "duplicado por extravío licencia profesional"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "El duplicado corresponde a la reemisión de una licencia vigente (o con vencimiento reciente) cuando el documento se extravía, roba o deteriora.",
+        "El detalle exacto de documentos/costos depende de la municipalidad."
+      ],
+      "respuestas": {
+        "pasos_tipicos": [
+          "Identificar el motivo: extravío, robo o deterioro.",
+          "Según práctica local: presentar constancia/denuncia (si aplica) y/o solicitar bloqueo por seguridad.",
+          "Solicitar duplicado en el Departamento de Tránsito.",
+          "Retirar el documento según plazos del municipio."
+        ],
+        "documentos_tipicos": [
+          "Cédula de identidad vigente.",
+          "Licencia deteriorada (si aplica).",
+          "Constancia/denuncia por robo o extravío (si la municipalidad lo pide)."
+        ],
+        "nota": "Si la licencia está vencida o con bloqueo por sanción, el trámite puede transformarse en renovación/regularización en vez de duplicado simple."
+      },
+      "fuentes": [
+        "Práctica municipal de Tránsito; normativa local (costos/plazos) y Ley 18.290 en cuanto a control de licencias"
+      ],
+      "bordes": [
+        "No inventar costos ni plazos; pedir comuna para información exacta.",
+        "Si el usuario reporta 'licencia retenida', no sugerir duplicado: derivar a regularización."
+      ],
+      "aspect_buttons": [
+        "Pasos típicos",
+        "Documentos típicos",
+        "Nota"
+      ]
+    },
+    {
+      "id": "liccond-hoja_vida_conductor_para_licencias",
+      "aliases": [
+        "hoja de vida del conductor",
+        "¿qué es la hoja de vida del conductor?",
+        "¿para qué sirve la hoja de vida?",
+        "cómo obtener hoja de vida conductor"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "La Hoja de Vida del Conductor es un certificado que consolida antecedentes de conducción registrados (por ejemplo, infracciones anotadas y otros datos asociados al historial).",
+        "Se usa con frecuencia para trámites, empleadores y validaciones."
+      ],
+      "respuestas": {
+        "para_que_sirve": [
+          "Acreditar historial de infracciones/anotaciones para fines laborales.",
+          "Apoyar evaluaciones internas (p. ej., empresas de transporte).",
+          "Orientar al usuario sobre su situación antes de iniciar trámites."
+        ],
+        "donde_se_solicita": "Se solicita a través de los canales habilitados por el Registro Civil u organismos que correspondan (según disponibilidad vigente).",
+        "nota": "No reemplaza certificaciones judiciales ni resuelve multas: solo informa lo que está registrado."
+      },
+      "fuentes": [
+        "Registro Civil (certificados asociados a conductor/vehículo) y normativa de tránsito aplicable"
+      ],
+      "bordes": [
+        "No afirmar contenidos específicos del certificado sin que el usuario lo aporte.",
+        "Si el usuario pregunta por multas/causas, derivar a consulta formal correspondiente."
+      ],
+      "aspect_buttons": [
+        "Para qué sirve",
+        "Dónde se solicita",
+        "Nota"
+      ]
+    },
+    {
+      "id": "liccond-licencia_digital_info_general",
+      "aliases": [
+        "licencia digital",
+        "¿existe licencia de conducir digital en Chile?",
+        "cómo usar licencia digital",
+        "app licencia digital"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "profesional",
+      "sub_tipo_licencia": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "definicion_licencia": [
+        "La licencia digital es una modalidad que busca complementar el documento físico con una versión electrónica verificable.",
+        "Su disponibilidad puede ser gradual por regiones/comunas y depende de implementaciones institucionales."
+      ],
+      "respuestas": {
+        "idea_clave": "Tómalo como un complemento (no asumas que reemplaza completamente la física en todo contexto).",
+        "que_hacer": [
+          "Verificar si tu región/comuna tiene habilitada la licencia digital.",
+          "Seguir el proceso de activación indicado por la autoridad (cuando aplique)."
+        ],
+        "nota": "Si no está habilitada en tu zona, sigues usando la licencia física."
+      },
+      "fuentes": [
+        "Información pública institucional sobre licencias digitales (implementación gradual; confirmar cobertura vigente por región/comuna)"
+      ],
+      "bordes": [
+        "No asegurar disponibilidad nacional sin confirmación.",
+        "Si el usuario necesita uso inmediato para fiscalización, priorizar licencia física vigente."
+      ],
+      "aspect_buttons": [
+        "Idea clave",
+        "Qué hacer",
+        "Nota"
+      ]
+    }
+  ],
+  "metadata": {
+    "updated_at": "2026-01-13",
+    "notes": "Añadidas entradas por subtipo para renovación, duplicado y bloqueo de licencias profesionales A1–A5; normalizados requisitos A2. | Ajustados aliases de 'licencia_conducir_renovacion' para evitar colisión con renovación profesional A1–A5."
+  }
+}

@@ -1,0 +1,461 @@
+{
+  "version": "1.1",
+  "descripcion": "FAQs y guías de procedimiento para el Departamento de Tránsito: actuación y pasos típicos ante denuncias/partes y Juzgados de Policía Local (Ley 18.287). Enfocado a orientar al usuario y recolectar datos mínimos para derivación/seguimiento interno. (ampliado con exhorto, consulta de causas y fiscalización tecnológica).",
+  "tramites": [
+    {
+      "id": "ACTPOL-JPL-000",
+      "aliases": [
+        "¿Qué es el Juzgado de Policía Local?",
+        "Me llegó una citación al JPL, ¿qué significa?",
+        "¿Dónde se ven las multas de tránsito?",
+        "¿Cómo funciona el procedimiento del JPL?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "El Juzgado de Policía Local (JPL) conoce y resuelve infracciones y contravenciones, incluyendo muchas infracciones a la Ley de Tránsito.",
+        "El procedimiento suele iniciarse por una denuncia/parte (Carabineros o inspectores autorizados) y puede incluir citación a audiencia, pago, descargos y resolución.",
+        "El objetivo del bot es orientarte, pedirte los datos mínimos (patente, fecha, comuna, número de parte) y guiarte al canal correcto (pago, consulta o descargos)."
+      ],
+      "respuestas": {
+        "que_es": "El JPL es el tribunal que tramita y sanciona, entre otras, infracciones a la Ley de Tránsito y a normas municipales, aplicando el procedimiento de la Ley 18.287.",
+        "como_se_inicia": "Normalmente por denuncia/parte cursado por Carabineros o inspectores autorizados. La denuncia puede incluir citación para comparecer.",
+        "datos_minimos_que_pide_el_bot": "Patente, comuna y lugar, fecha/hora del parte, número de citación/parte (si existe), y un breve relato de lo ocurrido."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), artículos 3, 5, 6, 18, 21, 22, 23 y 33 (versión vigente)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": [
+        "Me cursaron un parte",
+        "Pagar multa",
+        "No puedo ir a la citación",
+        "Presentar descargos",
+        "Exhorto (otra comuna)"
+      ]
+    },
+    {
+      "id": "ACTPOL-JPL-010",
+      "aliases": [
+        "Me sacaron un parte, ¿qué hago?",
+        "Me dejaron una citación en el parabrisas, ¿sirve?",
+        "¿Qué información trae un parte de Carabineros?",
+        "¿Qué datos necesito para revisar una multa?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "La denuncia/parte es el acto con que la autoridad deja constancia de una infracción y, en muchos casos, cita a comparecer al JPL.",
+        "En tránsito, es clave conservar la copia: se usa para pagar dentro de plazo, pedir exhorto o presentar descargos.",
+        "MunBoT debe pedir datos estructurados para ubicar el caso con precisión."
+      ],
+      "respuestas": {
+        "informacion_clave": "El parte/citación normalmente identifica la infracción (norma), lugar y fecha, y el tribunal o comuna competente; además, puede señalar fecha de comparecencia.",
+        "que_hacer": "Guarda la copia del parte/citación. Con esos datos, decide si: (a) pagas dentro de plazo acogiendo beneficios si aplican; (b) compareces; o (c) presentas descargos/exhorto según corresponda.",
+        "datos_para_entregar_a_munbot": "Patente, número de citación/parte, fecha y lugar de la infracción, comuna, y si te retuvieron licencia u otro documento."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), artículos 3, 5, 6, 18, 21, 22, 23 y 33 (versión vigente)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": [
+        "¿Puedo pagar sin ir?",
+        "Exhorto",
+        "No puedo ir",
+        "Me retuvieron la licencia"
+      ]
+    },
+    {
+      "id": "ACTPOL-JPL-020",
+      "aliases": [
+        "¿Puedo pagar la multa sin ir al juzgado?",
+        "¿Cómo pago con descuento 25%?",
+        "Me citaron pero quiero pagar nomás, ¿se puede?",
+        "¿Dónde se paga la multa del parte?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "La Ley 18.287 permite, en ciertos casos, terminar la causa sin ir al JPL si aceptas la infracción y pagas dentro de un plazo breve.",
+        "En infracciones de tránsito graves/menos graves/leves que no causaron lesiones o daños, puedes pagar dentro del quinto día desde la denuncia y acceder a una rebaja.",
+        "El bot debe validar que el caso calza, pedir la copia de citación/parte y dirigir al pago en Tesorería Municipal o entidad recaudadora convenida."
+      ],
+      "respuestas": {
+        "cuando_aplica": "Cuando se trata de infracciones de tránsito graves, menos graves o leves (y de normas de transporte terrestre) que no hayan causado lesiones ni daños. En esos casos, el denunciado puede eximirse de comparecer si acepta la infracción y la multa.",
+        "beneficio": "Si pagas la multa dentro del quinto día desde la denuncia (presentando la copia de la citación/parte), la ley contempla una rebaja del 25% del valor de la multa aplicable en ese procedimiento.",
+        "donde_pagar": "En la Tesorería Municipal del lugar donde se cometió la infracción, o en la entidad recaudadora con convenio con esa municipalidad.",
+        "que_pide_munbot": "Número de parte/citación, patente, fecha de la denuncia, comuna del hecho, y si la licencia quedó retenida (para orientar su devolución contra comprobante de pago).",
+        "excepciones_importantes": "Hay infracciones excluidas de este mecanismo (la propia ley menciona excepciones específicas). Si hay lesiones/daños, o si el tipo de infracción está excluida, corresponde seguir citación/comparecencia."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 22 (incisos sobre pago dentro de quinto día, rebaja 25% y devolución de licencia contra comprobante)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": [
+        "Rebaja 25%: ¿aplica a mi caso?",
+        "¿Qué plazo tengo?",
+        "¿Cómo recupero la licencia?"
+      ]
+    },
+    {
+      "id": "ACTPOL-JPL-030",
+      "aliases": [
+        "No puedo ir al juzgado, ¿qué pasa?",
+        "¿Qué pasa si falto a la citación?",
+        "No me presenté al JPL, ¿me multan igual?",
+        "¿Cómo me notifican si no fui?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "Si no compareces, el tribunal puede seguir el procedimiento y dictar resolución con los antecedentes disponibles.",
+        "En materias de tránsito, la ley prevé mecanismos de notificación y conducción del procedimiento cuando el denunciado no asiste.",
+        "Operativamente, MunBoT debe ofrecer alternativas: exhorto (si aplica), reprogramación si el JPL lo permite, o instrucciones para consultar estado de la causa."
+      ],
+      "respuestas": {
+        "regla_general": "La citación es un acto formal; no asistir te deja en desventaja para explicar tu versión y puede llevar a que la causa avance sin tus descargos.",
+        "en_transito": "Para ciertas infracciones de tránsito, si no compareces, el juez puede ordenar que se te notifique personalmente en el domicilio que figure en el Registro de Vehículos Motorizados, para continuar con el procedimiento.",
+        "que_hace_munbot": "Pedir patente y comuna, fecha/parte, verificar si la infracción ocurrió en otra comuna (para sugerir exhorto), y orientarte sobre canales de consulta del JPL/municipio."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 3 (incisos sobre citación y notificación en infracciones de tránsito cuando no comparece el denunciado)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": []
+    },
+    {
+      "id": "ACTPOL-JPL-040",
+      "aliases": [
+        "Me sacaron un parte en otra comuna, ¿puedo hacer el trámite acá?",
+        "¿Qué es un exhorto en el JPL?",
+        "La infracción fue lejos, ¿tengo que viajar?",
+        "¿Puedo presentar mis descargos en mi comuna?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "La ley contempla que, en casos como infracciones de tránsito, puedas solicitar que ciertas actuaciones se realicen vía exhorto a un JPL de tu domicilio.",
+        "Esto reduce fricción y mejora la experiencia, especialmente en usuarios de comunas rurales.",
+        "MunBoT debe detectar: comuna del hecho vs comuna del usuario, y ofrecer la ruta 'exhorto'."
+      ],
+      "respuestas": {
+        "cuando_aplica": "Si el tribunal competente está en un lugar distante de tu domicilio (por ejemplo, infracciones de tránsito en otra comuna), puedes pedir que se exhorte al JPL de tu domicilio para realizar actuaciones (como rendir declaración/presentar descargos).",
+        "como_se_solicita": "Con la citación/parte y tus datos de domicilio. En algunos casos el tribunal puede pedir documentos de respaldo. El detalle operativo depende del JPL.",
+        "documentos_datos": "Copia de citación/parte, identificación del denunciado, domicilio actualizado, y antecedentes que sustenten tus descargos.",
+        "que_hace_munbot": "Recolectar datos mínimos y entregar una guía de pasos y requisitos típicos, además de recordatorios de plazo."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 5 (exhorto en materias de tránsito y procedimiento asociado)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": []
+    },
+    {
+      "id": "ACTPOL-JPL-050",
+      "aliases": [
+        "¿Puedo apelar una multa del JPL?",
+        "¿Cómo pido rebaja de una multa?",
+        "Me llegó una resolución con multa, ¿puedo reclamar?",
+        "Quiero que revisen el monto, ¿qué hago?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "La reposición es un mecanismo previsto para pedir al mismo tribunal que revise una multa antes de pagarla, si hay antecedentes que demuestren improcedencia o exceso.",
+        "Tiene plazo: se ejerce dentro de 30 días desde la notificación de la resolución condenatoria.",
+        "MunBoT debe orientar sobre el plazo y pedir los antecedentes mínimos para preparar una solicitud."
+      ],
+      "respuestas": {
+        "que_es": "Recurso para solicitar al JPL que deje sin efecto o modere una multa, antes de ser pagada, cuando existan antecedentes que lo justifiquen.",
+        "plazo": "Dentro de los 30 días siguientes a la notificación de la resolución condenatoria.",
+        "que_necesitas": "Copia de la resolución/notificación, copia del parte/citación, y tus antecedentes/argumentos (por ejemplo: error en patente/fecha, circunstancias, prueba documental).",
+        "que_hace_munbot": "Checklist de documentos y datos, recordatorio de plazo, y guía de redacción básica (sin reemplazar asesoría legal)."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 21 (reposición y plazo de 30 días)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": []
+    },
+    {
+      "id": "ACTPOL-JPL-060",
+      "aliases": [
+        "¿Dónde pago la multa del juzgado?",
+        "Pagué la multa, ¿cómo lo acredito?",
+        "Me retuvieron la licencia, ¿cómo la recupero?",
+        "¿Cuánto tiempo tengo para pagar?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "El pago de multas del JPL se entera en Tesorería Municipal (o entidad convenida) y genera un comprobante que se remite al tribunal.",
+        "En ciertos procedimientos de tránsito, la devolución de licencia retenida se vincula al comprobante de pago.",
+        "MunBoT debe enfatizar el comprobante y registrar el estado 'pagado' con su folio, para trazabilidad."
+      ],
+      "respuestas": {
+        "plazo_general": "Regla general: la multa se paga en Tesorería Municipal dentro del plazo legal indicado en el procedimiento (la ley fija un plazo base y contempla escenarios especiales como el pago dentro de quinto día para eximirse de comparecer).",
+        "comprobante": "La Tesorería emite recibo; un ejemplar es para el infractor y otro se remite al tribunal para agregarlo a la causa.",
+        "licencia_retenida": "Si tu licencia quedó retenida y el caso calza con el procedimiento de pago dentro de plazo, el JPL o la unidad de Carabineros que la tenga puede devolverla contra el comprobante de pago (según corresponda).",
+        "datos_que_pide_munbot": "Patente, número de parte/citación, comuna del hecho, fecha, monto, y folio/fecha del pago (si ya pagaste)."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 22 (pago en Tesorería, recibos, y devolución de licencia contra comprobante en hipótesis reguladas)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": []
+    },
+    {
+      "id": "ACTPOL-JPL-070",
+      "aliases": [
+        "No pagué la multa, ¿qué pasa?",
+        "¿Me pueden detener por una multa impaga?",
+        "¿Qué es la reclusión por multa?",
+        "¿Qué medidas puede decretar el juzgado?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "Si transcurre el plazo sin acreditarse el pago, el tribunal puede decretar medidas de apremio/sustitución previstas por la ley.",
+        "El objetivo práctico del bot es mover al usuario a regularizar y evitar escalamiento del problema (multas impagas que bloquean trámites, p. ej. permiso de circulación)."
+      ],
+      "respuestas": {
+        "regla": "Si no acreditas el pago dentro del plazo, el tribunal puede decretar medidas de sustitución y apremio conforme a la ley (por ejemplo, modalidades de reclusión según reglas de conversión).",
+        "que_hacer": "Verifica el estado de la causa y regulariza el pago. Si crees que hay error, revisa si procede reposición dentro de plazo.",
+        "que_hace_munbot": "Orientar a consulta de estado, recordar plazos, y guiar a regularización; registrar que se trata de un caso 'riesgo: impago'."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 23 (medidas de sustitución y apremio por no pago)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": []
+    },
+    {
+      "id": "ACTPOL-JPL-080",
+      "aliases": [
+        "¿Me pueden notificar por correo electrónico?",
+        "No vivo en la dirección antigua, ¿cómo me notifican?",
+        "¿Puedo pedir notificación electrónica en el JPL?",
+        "¿Qué pasa si no me llega la carta?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "La normativa permite que, a solicitud de parte, el tribunal pueda aceptar notificaciones por medios electrónicos si cuenta con medios idóneos y no genera indefensión.",
+        "Esto es relevante para usuarios con domicilios desactualizados: reduce fallos de notificación y sorpresas.",
+        "MunBoT debe proponer esta opción, recolectar el email y advertir que requiere aceptación del tribunal."
+      ],
+      "respuestas": {
+        "idea_clave": "Cualquiera de las partes puede solicitar notificación electrónica para sí; el tribunal puede aceptarla si es eficaz, cuenta con medios y no causa indefensión.",
+        "cuando_conviene": "Si tu domicilio registral está desactualizado o te mueves entre comunas, para reducir riesgo de 'no me enteré'.",
+        "limitacion": "No es automático: depende de que el tribunal lo acepte y de su capacidad operativa.",
+        "que_hace_munbot": "Validar email, registrar preferencia del usuario y entregar instrucción de cómo solicitarla al JPL (modelo simple de solicitud)."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 18 (notificaciones) y sus modificaciones para habilitar notificación electrónica (Ley 21.241)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": []
+    },
+    {
+      "id": "ACTPOL-JPL-090",
+      "aliases": [
+        "¿Puedo apelar una multa del juzgado de policía local?",
+        "¿Las multas de tránsito se pueden apelar?",
+        "¿Qué recurso tengo contra la sentencia?",
+        "¿Puedo ir a la Corte?"
+      ],
+      "categoria": "Tránsito > Procedimiento JPL",
+      "tipo_licencia": "transito",
+      "sub_tipo_licencia": "actuacion_policia_local_jpl",
+      "definicion_licencia": [
+        "En JPL hay reglas específicas sobre recursos. No todo es apelable: en ciertas infracciones de tránsito que solo imponen multa, la sentencia puede ser inapelable.",
+        "El bot debe manejar expectativas: orientar sobre reposición (art. 21) y señalar que la apelación depende del tipo de infracción/resolución."
+      ],
+      "respuestas": {
+        "regla_general": "Existen recursos en el procedimiento, pero su procedencia depende de la materia y del tipo de resolución.",
+        "en_transito": "La ley contempla que, tratándose de infracciones a la Ley de Tránsito en que solo se aplique multa, la sentencia puede ser inapelable (con excepciones según el caso).",
+        "alternativa_practica": "Si tu objetivo es corregir un error o el monto, suele ser más directo evaluar reposición dentro de plazo, aportando antecedentes.",
+        "que_hace_munbot": "Recoger antecedentes (tipo de infracción, resolución, fechas) y entregar orientación de alto nivel, recomendando confirmar con el propio JPL."
+      },
+      "fuentes": [
+        "Ley 18.287 (BCN LeyChile), art. 33 (reglas de apelación e inapelabilidad en hipótesis de Ley de Tránsito con solo multa)."
+      ],
+      "bordes": [
+        "La información es orientativa y puede variar según el Juzgado de Policía Local y la municipalidad.",
+        "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
+        "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
+      ],
+      "aspect_buttons": []
+    },
+    {
+      "id": "ACTPOL-JPL-100",
+      "aliases": [
+        "exhorto",
+        "¿puedo pagar una multa de otra comuna en mi comuna?",
+        "pago de multa fuera de la comuna",
+        "traslado de parte a otro juzgado"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "jpl",
+      "sub_tipo_licencia": [
+        "exhorto"
+      ],
+      "definicion_licencia": [
+        "El “exhorto” es un mecanismo judicial/administrativo que permite realizar ciertas actuaciones en una comuna distinta a la del Juzgado de origen, según corresponda y sea aceptado por las partes.",
+        "En materia de infracciones de tránsito, se usa a veces para facilitar trámites al usuario cuando el parte/citación pertenece a otra comuna."
+      ],
+      "respuestas": {
+        "cuando_aplica": [
+          "Cuando la citación/causa está radicada en un Juzgado de otra comuna y se busca gestionar pago o actuaciones desde la comuna de residencia (según aceptación y procedimiento aplicable)."
+        ],
+        "que_hacer": [
+          "Reunir antecedentes del parte o causa (número, juzgado de origen, fecha).",
+          "Consultar en el Juzgado de Policía Local de tu comuna si tramitan exhortos para ese caso.",
+          "Seguir el procedimiento indicado por el tribunal (puede requerir solicitudes formales)."
+        ],
+        "nota": "No todos los casos califican; depende del tribunal y del estado de la causa."
+      },
+      "fuentes": [
+        "Procedimientos del Juzgado de Policía Local y normativa procesal aplicable; práctica local (varía por comuna)"
+      ],
+      "bordes": [
+        "No garantizar que un exhorto será aceptado; siempre es caso a caso.",
+        "Si el usuario quiere impugnar una multa, derivar al JPL correspondiente."
+      ],
+      "aspect_buttons": [
+        "Cuándo aplica",
+        "Qué hacer",
+        "Nota"
+      ]
+    },
+    {
+      "id": "ACTPOL-JPL-110",
+      "aliases": [
+        "consultar estado de una multa",
+        "¿cómo sé si tengo una causa en el juzgado?",
+        "revisar partes de tránsito",
+        "buscar número de citación"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "jpl",
+      "sub_tipo_licencia": [
+        "consulta"
+      ],
+      "definicion_licencia": [
+        "Muchas consultas ciudadanas son de “estado”: si existe citación, si hay causa abierta, si la multa está pagada o si está empadronada.",
+        "El canal exacto depende de cada JPL/municipalidad y de la interoperabilidad vigente."
+      ],
+      "respuestas": {
+        "datos_minimos": [
+          "Patente del vehículo (si aplica).",
+          "RUT del propietario/denunciado (según el caso).",
+          "Número de parte/citación si lo tienes."
+        ],
+        "canales": [
+          "Consulta en el JPL correspondiente (presencial/telefónica/online si está habilitado).",
+          "Consulta municipal cuando el sistema esté integrado a tránsito/permiso."
+        ],
+        "resultado_posible": [
+          "Causa no registrada aún (en tránsito entre fiscalización y juzgado).",
+          "Causa registrada, con estado y opciones (pago/comparecencia)."
+        ]
+      },
+      "fuentes": [
+        "Práctica JPL/municipal y registros de infracciones; varía por comuna"
+      ],
+      "bordes": [
+        "No afirmar estado sin consulta en sistemas oficiales.",
+        "Si el usuario no tiene datos mínimos, pedirlos antes de orientar."
+      ],
+      "aspect_buttons": [
+        "Datos mínimos",
+        "Canales",
+        "Resultados posibles"
+      ]
+    },
+    {
+      "id": "ACTPOL-JPL-120",
+      "aliases": [
+        "multas por cámara",
+        "infracción por fotorradar",
+        "me llegó un parte por cámara",
+        "¿son válidas las multas por cámaras?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "jpl",
+      "sub_tipo_licencia": [
+        "fiscalizacion_tecnologica"
+      ],
+      "definicion_licencia": [
+        "La fiscalización puede apoyarse en medios tecnológicos según la normativa aplicable y los procedimientos de notificación/prueba.",
+        "Lo relevante para el usuario es entender: (1) cómo se notifica, (2) cómo se paga o se reclama, y (3) qué antecedentes se requieren."
+      ],
+      "respuestas": {
+        "orientacion": [
+          "Revisar la notificación: fecha, lugar, infracción imputada y tribunal competente.",
+          "Si no estás de acuerdo, la vía es comparecer/reclamar según citación en el JPL.",
+          "Si aceptas, seguir las instrucciones de pago y conservar comprobantes."
+        ],
+        "dato_clave": "La validez concreta depende del caso, la forma de notificación y la prueba; el JPL es quien resuelve.",
+        "consejo": "Para orientar con precisión, pide al usuario: comuna de la infracción, tipo de notificación (carta, citación, etc.) y número de parte."
+      },
+      "fuentes": [
+        "Normativa de tránsito y procedimientos del JPL; práctica y regulación local sobre fiscalización (varía por comuna)"
+      ],
+      "bordes": [
+        "No dar opinión legal definitiva sobre validez; derivar al JPL.",
+        "No aconsejar evasión; orientar a regularizar."
+      ],
+      "aspect_buttons": [
+        "Orientación",
+        "Dato clave",
+        "Consejo"
+      ]
+    }
+  ]
+}

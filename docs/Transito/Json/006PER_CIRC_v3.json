@@ -1,0 +1,991 @@
+{
+  "version": "1.2",
+  "descripcion": "FAQ/KB — Permiso de Circulación (Chile). Preguntas frecuentes y casos complejos para el Departamento de Tránsito. Fuentes primarias: ChileAtiende/BCN/SII y referencias municipales. (ampliado: tasación fiscal, multas empadronadas y primer permiso de vehículo nuevo; ajuste de fuentes en 'vehículo no circula').",
+  "tramites": [
+    {
+      "id": "permcirc-que_es",
+      "aliases": [
+        "¿Qué es el permiso de circulación?",
+        "¿Para qué sirve el permiso de circulación?",
+        "¿Quién debe pagar el permiso de circulación?",
+        "¿El permiso de circulación es obligatorio?",
+        "¿Qué pasa si ando sin permiso de circulación?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "general"
+      ],
+      "definicion_licencia": [
+        "El Permiso de Circulación es el pago anual obligatorio para que un vehículo motorizado pueda circular legalmente en Chile.",
+        "Se tramita ante municipalidades y habilita a transitar en todo el territorio nacional una vez otorgado.",
+        "Se exige portar el permiso (junto con otros documentos) y su incumplimiento puede generar multas y/o retiro del vehículo según fiscalización."
+      ],
+      "respuestas": {
+        "proposito": "Permitir la circulación legal del vehículo durante el año correspondiente; constituye un impuesto/ingreso municipal regulado por normativa nacional.",
+        "donde": "Se paga en una municipalidad (presencial o en línea según disponibilidad). En general puedes elegir la municipalidad donde pagarlo; confirma si necesitas registrar el vehículo en esa comuna para efectos administrativos.",
+        "requisitos": [
+          "Ser propietario/a o representante autorizado/a del vehículo.",
+          "Tener al día los documentos exigidos (ej.: SOAP, revisión técnica u homologación, permiso anterior, padrón).",
+          "No registrar impedimentos por multas anotadas o bloqueos aplicables."
+        ],
+        "documentacion": [
+          "Depende de si el vehículo es nuevo o usado y del tipo de vehículo. Ver módulos de 'requisitos' específicos."
+        ],
+        "plazos": [
+          "Los plazos varían por tipo de vehículo. En general hay un periodo anual principal (vehículos livianos) y otros periodos (taxis/buses; carga/otros)."
+        ],
+        "horarios": "Varía por municipalidad y canal (web/presencial).",
+        "costos": "El monto depende de la tasación fiscal definida por el SII y de la categoría del vehículo. Algunos pagos pueden hacerse en dos cuotas (cuando aplica).",
+        "tipos_licencia": {
+          "livianos_particulares": "Autos particulares, camionetas, motos y otros (ver plazos).",
+          "taxis_buses": "Vehículos de transporte de pasajeros (ver plazos).",
+          "carga_y_otros": "Vehículos de carga y maquinaria/otros (ver plazos)."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende — Permiso de circulación (ficha 9611, actualización 2025-08-19)",
+        "BCN Ley Fácil — Permiso de circulación (consulta 2026)",
+        "DL 3.063/1979 (Rentas Municipales) — habilitación nacional del permiso (BCN LeyChile)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-plazos-livianos",
+      "aliases": [
+        "¿Hasta cuándo puedo pagar el permiso de circulación de mi auto?",
+        "¿Cuál es el plazo para pagar el permiso de circulación de vehículo particular?",
+        "¿Cuándo se paga el permiso de circulación de una camioneta?",
+        "¿Cuándo se paga el permiso de circulación de una moto?",
+        "¿Se puede pagar en dos cuotas? ¿Cuándo vence la segunda?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "livianos_particulares"
+      ],
+      "definicion_licencia": [
+        "Plazos de pago para automóviles particulares y otros vehículos livianos (según clasificación oficial).",
+        "Incluye opción de pago en dos cuotas cuando corresponde."
+      ],
+      "respuestas": {
+        "proposito": "Informar el calendario de pago aplicable a vehículos livianos de uso particular.",
+        "donde": "En municipalidades (presencial/online según comuna).",
+        "requisitos": [
+          "Mantener documentación vigente (SOAP y revisión técnica u homologación).",
+          "No registrar multas anotadas que impidan renovar.",
+          "Si optas por dos cuotas, aplican condiciones (p. ej., no tener deudas que inhabiliten el beneficio)."
+        ],
+        "documentacion": [
+          "Vehículo usado: permiso anterior, SOAP vigente, revisión técnica u homologación, padrón.",
+          "Vehículo nuevo: factura de compra y antecedentes de inscripción, además de SOAP."
+        ],
+        "plazos": [
+          "Del 1 de febrero al 31 de marzo: automóviles particulares y varios tipos de vehículos livianos (según listado oficial).",
+          "Si pagas en dos cuotas (cuando aplica): 1ª cuota hasta el 31 de marzo (50%) y 2ª cuota hasta el 31 de agosto; la 2ª cuota puede incluir recargo asociado a IPC según normativa."
+        ],
+        "horarios": "Varía por municipalidad y canal.",
+        "costos": "Se calcula según tasación fiscal del SII y categoría del vehículo; si pagas en cuotas, la 2ª cuota puede incluir reajuste.",
+        "tipos_licencia": {
+          "incluye": "Autos particulares, motocicletas, furgones, camionetas y otros (ver listado oficial ChileAtiende).",
+          "nota": "Para taxis/buses y carga/otros existen plazos distintos."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende — Permiso de circulación (plazos por tipo de vehículo)",
+        "BCN Ley Fácil — Permiso de circulación (pago en dos cuotas y fechas)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-plazos-taxis-buses",
+      "aliases": [
+        "¿Cuándo se paga el permiso de circulación de un taxi?",
+        "¿Hasta cuándo puedo pagar el permiso de circulación de un bus?",
+        "¿Cuál es el plazo para taxis y buses?",
+        "¿Qué pasa si pago fuera de plazo como taxi?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "taxis_buses"
+      ],
+      "definicion_licencia": [
+        "Plazos de pago para taxis, buses y vehículos de transporte de pasajeros (según resumen normativo de servicio público)."
+      ],
+      "respuestas": {
+        "proposito": "Definir el plazo de pago para transporte de pasajeros (taxis y buses).",
+        "donde": "Municipalidades (presencial/online según comuna).",
+        "requisitos": [
+          "Documentación al día (SOAP; revisión técnica u homologación; padrón; permiso anterior si corresponde).",
+          "No registrar impedimentos por multas anotadas."
+        ],
+        "documentacion": [
+          "Permiso anterior (si corresponde), revisión técnica/homologación, SOAP vigente, padrón.",
+          "Otros antecedentes pueden variar por tipo de servicio y comuna."
+        ],
+        "plazos": [
+          "Plazo general informado para taxis y buses: hasta el 31 de mayo (confirmar en tu municipalidad por variaciones operativas)."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Según tasación fiscal del SII y categoría del vehículo.",
+        "tipos_licencia": {
+          "taxis": "Servicio remunerado de pasajeros.",
+          "buses": "Transporte público y otros buses según categoría."
+        }
+      },
+      "fuentes": [
+        "BCN Ley Fácil — Permiso de circulación (plazos por tipo: taxis y buses)",
+        "ChileAtiende — Permiso de circulación (plazos por tipo de vehículo)",
+        "Emol — notas informativas 2026 (plazos por tipo; corroboración periodística)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-plazos-carga-otros",
+      "aliases": [
+        "¿Cuándo se paga el permiso de circulación de un camión?",
+        "¿Hasta cuándo puedo pagar el permiso de circulación de un vehículo de carga?",
+        "¿Cuál es el plazo para tractores, maquinaria o motos?",
+        "¿Los vehículos de carga pagan en septiembre?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "carga_y_otros"
+      ],
+      "definicion_licencia": [
+        "Plazos de pago para vehículos de carga, motonetas/motos y otras categorías (según resúmenes oficiales).",
+        "Este punto suele generar confusión porque no todos los vehículos siguen el calendario Feb–Mar."
+      ],
+      "respuestas": {
+        "proposito": "Aclarar plazos para categorías no livianas y/o de carga.",
+        "donde": "Municipalidades (presencial/online según comuna).",
+        "requisitos": [
+          "Documentación al día (SOAP; revisión técnica u homologación; padrón; permiso anterior si corresponde).",
+          "Verificar si hay plazos especiales o exigencias adicionales por tipo de vehículo."
+        ],
+        "documentacion": [
+          "Permiso anterior (si corresponde), revisión técnica/homologación, SOAP vigente, padrón.",
+          "Otros antecedentes pueden variar por categoría."
+        ],
+        "plazos": [
+          "Resumen frecuente: vehículos de carga y varias categorías (incluyendo maquinaria/otros) tienen plazo hasta el 30 de septiembre (confirmar con municipalidad).",
+          "Ojo: algunas fuentes agrupan 'motos' con livianos (Feb–Mar); por eso conviene confirmar el tipo exacto y el calendario oficial aplicable."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Según tasación fiscal del SII y categoría.",
+        "tipos_licencia": {
+          "carga": "Camiones, tractocamiones, vehículos de carga según clasificación.",
+          "otros": "Tractores agrícolas/industriales y máquinas automotrices (según clasificaciones informativas)."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende — Permiso de circulación (plazos por tipo de vehículo)",
+        "BCN Ley Fácil — Permiso de circulación (plazos por tipo; confirma variaciones)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-requisitos-usado",
+      "aliases": [
+        "¿Qué documentos necesito para pagar el permiso de circulación?",
+        "¿Qué papeles necesito para renovar el permiso de circulación?",
+        "¿Qué necesito si mi vehículo es usado?",
+        "¿Se necesita padrón para permiso de circulación?",
+        "¿El SOAP debe estar vigente hasta cuándo?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "vehiculo_usado"
+      ],
+      "definicion_licencia": [
+        "Requisitos y documentación típica para renovar/pagar el permiso de circulación de un vehículo usado.",
+        "La lista puede variar por municipio, pero existe un núcleo común de exigencias."
+      ],
+      "respuestas": {
+        "proposito": "Listar requisitos estándar para vehículo usado y reducir rechazos por documentación incompleta.",
+        "donde": "Municipalidad (presencial u online).",
+        "requisitos": [
+          "Permiso de circulación anterior (si corresponde).",
+          "Revisión técnica vigente o certificado de homologación (si corresponde).",
+          "SOAP vigente que cubra el período de vigencia del permiso.",
+          "Padrón / tarjeta de dominio del Registro Civil.",
+          "No registrar multas anotadas que bloqueen la renovación (según consultas al Registro de Multas No Pagadas)."
+        ],
+        "documentacion": [
+          "Permiso de circulación anterior.",
+          "Revisión técnica vigente o certificado de homologación (si corresponde).",
+          "Póliza SOAP vigente.",
+          "Padrón (Certificado de inscripción) del Registro Civil.",
+          "En algunos casos, copia de cédula/mandato si paga un tercero (según municipalidad)."
+        ],
+        "plazos": [
+          "Depende del tipo de vehículo (ver módulos de plazos)."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Según tasación fiscal del SII.",
+        "tipos_licencia": {
+          "usado": "Vehículo con permiso anterior o historial de circulación."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende — Permiso de circulación (documentos para vehículos usados)",
+        "Municipalidades (ej.: Curacaví, Lo Barnechea) — listados de documentos (referencial, puede variar)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-requisitos-nuevo",
+      "aliases": [
+        "¿Qué necesito para sacar el permiso de circulación por primera vez?",
+        "Compré un auto nuevo, ¿qué documentos piden para el permiso?",
+        "¿Para un vehículo nuevo se necesita revisión técnica?",
+        "¿Qué es el certificado de homologación y cuándo aplica?",
+        "¿Qué pasa si el vehículo es 0 km?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "vehiculo_nuevo"
+      ],
+      "definicion_licencia": [
+        "Requisitos y documentación típica para obtener el permiso de circulación por primera vez (vehículo nuevo)."
+      ],
+      "respuestas": {
+        "proposito": "Aclarar requisitos cuando no existe permiso anterior.",
+        "donde": "Municipalidad (presencial u online según comuna).",
+        "requisitos": [
+          "Factura de compra (con copia).",
+          "Antecedentes/constancia de inscripción en el Registro Civil (padrón o constancia equivalente, según etapa de inscripción).",
+          "SOAP vigente (debe cubrir el período de vigencia del permiso).",
+          "Certificado de homologación si corresponde (en lugar de revisión técnica en algunos casos)."
+        ],
+        "documentacion": [
+          "Factura de compra (original/copia según municipalidad).",
+          "Inscripción/constancia del Registro Civil (padrón si ya está emitido).",
+          "SOAP vigente.",
+          "Certificado de homologación cuando aplique."
+        ],
+        "plazos": [
+          "Depende del tipo de vehículo (ver módulos de plazos)."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Según tasación fiscal del SII para el año y categoría.",
+        "tipos_licencia": {
+          "nuevo": "Primera obtención (sin permiso anterior)."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende — Permiso de circulación (documentos para vehículos nuevos)",
+        "Municipalidades (ej.: Lo Barnechea) — requisitos para primera obtención (referencial)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-dos-cuotas",
+      "aliases": [
+        "¿Puedo pagar el permiso de circulación en cuotas?",
+        "¿Cuándo se paga la segunda cuota del permiso de circulación?",
+        "¿La segunda cuota tiene recargo?",
+        "¿Dónde pago la segunda cuota?",
+        "¿Se puede pagar en cuotas si tengo deudas?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "pago_en_cuotas"
+      ],
+      "definicion_licencia": [
+        "Reglas generales para pagar el permiso de circulación en dos cuotas (cuando aplica)."
+      ],
+      "respuestas": {
+        "proposito": "Explicar el pago en dos cuotas y sus condiciones para evitar confusiones.",
+        "donde": "Primera cuota y segunda cuota se pagan en municipalidad; la segunda suele pagarse en el mismo municipio donde pagaste la primera (según prácticas municipales).",
+        "requisitos": [
+          "La modalidad de dos cuotas aplica típicamente a automóviles (confirmar categoría).",
+          "Generalmente se exige no tener deudas que inhabiliten el beneficio de cuotas (confirmar en municipalidad)."
+        ],
+        "documentacion": [
+          "Misma documentación del permiso (SOAP, revisión técnica/homologación, etc.) al momento de pagar la primera cuota."
+        ],
+        "plazos": [
+          "1ª cuota: hasta el 31 de marzo (50%).",
+          "2ª cuota: hasta el 31 de agosto.",
+          "La 2ª cuota puede incluir recargo (por ejemplo, asociado a IPC de un periodo definido)."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "La suma de ambas cuotas corresponde al permiso anual; la 2ª cuota puede incorporar reajuste/recargo según norma.",
+        "tipos_licencia": {
+          "nota": "Para taxis/buses y carga/otros, usualmente se paga en un solo periodo (confirmar caso)."
+        }
+      },
+      "fuentes": [
+        "BCN Ley Fácil — Permiso de circulación (cuotas, fechas y recargo)",
+        "Municipalidades (ej.: Municipalidad de Santiago) — guía de pago en dos cuotas (referencial)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-valor-calculo",
+      "aliases": [
+        "¿Cómo se calcula el valor del permiso de circulación?",
+        "¿Dónde puedo ver el valor del permiso de circulación?",
+        "¿Qué es la tasación fiscal del SII?",
+        "¿El permiso de circulación depende del avalúo?",
+        "¿Hay un mínimo que se paga?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "calculo_valor"
+      ],
+      "definicion_licencia": [
+        "El valor del permiso de circulación depende de la tasación fiscal que publica el SII para cada categoría y modelo.",
+        "Existen reglas de cálculo y mínimos, y se usan valores como la UTM del mes de enero del año correspondiente."
+      ],
+      "respuestas": {
+        "proposito": "Explicar de dónde sale el valor y cómo consultarlo oficialmente.",
+        "donde": "Consulta oficial en el sitio del SII (tasación fiscal de vehículos) y/o en la plataforma municipal al pagar.",
+        "requisitos": [
+          "Conocer datos del vehículo (patente, marca/modelo/año o código SII) para consultar la tasación.",
+          "Si el vehículo no aparece o hay discrepancias, consultar al SII o a la municipalidad."
+        ],
+        "documentacion": [
+          "No requiere documentos físicos para la consulta en línea; para pagar sí se exigen los documentos del permiso."
+        ],
+        "plazos": [
+          "La consulta puede hacerse en cualquier momento; el pago debe hacerse dentro del periodo anual correspondiente."
+        ],
+        "horarios": "Consulta online 24/7; pago depende del canal municipal.",
+        "costos": [
+          "El SII publica la tasación fiscal; el permiso se calcula con tasas aplicables.",
+          "Existe un mínimo legal (por ejemplo, no inferior a 0,5 UTM en ciertos casos).",
+          "La UTM de referencia suele ser la de enero del año correspondiente."
+        ],
+        "tipos_licencia": {
+          "consulta": "SII — Tasación fiscal de vehículos y permisos (por categoría)."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende — Tasación fiscal de vehículos (remite al SII)",
+        "SII — Preguntas frecuentes: ¿Cómo se calcula el valor del Permiso de Circulación?"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-multas-impiden",
+      "aliases": [
+        "Tengo multas, ¿puedo sacar el permiso de circulación?",
+        "¿Qué multas bloquean el permiso de circulación?",
+        "¿Qué es el Registro de Multas de Tránsito No Pagadas?",
+        "¿Cómo sé si tengo multas anotadas?",
+        "¿Qué hago si aparece una multa que no reconozco?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "multas_y_bloqueos"
+      ],
+      "definicion_licencia": [
+        "Las multas anotadas en el Registro de Multas de Tránsito No Pagadas pueden impedir la renovación/pago del permiso de circulación.",
+        "El control de multas es un gate típico del trámite."
+      ],
+      "respuestas": {
+        "proposito": "Explicar el bloqueo por multas y orientar pasos básicos de regularización.",
+        "donde": "Consulta/regularización depende del tipo de multa: Juzgado de Policía Local, concesionarias (TAG) y/o municipalidad según corresponda.",
+        "requisitos": [
+          "Para renovar/pagar, normalmente debes regularizar multas anotadas o acogerte a mecanismos legales vigentes cuando existan (p. ej., convenios específicos)."
+        ],
+        "documentacion": [
+          "Comprobante de pago/regularización de multas (cuando corresponda).",
+          "Antecedentes del vehículo (patente) para verificar registros."
+        ],
+        "plazos": [
+          "El bloqueo se revisa al momento del pago. La regularización puede tomar tiempo (depende del organismo)."
+        ],
+        "horarios": "Varía por organismo (JPL/municipalidad/concesionaria).",
+        "costos": "Depende de la multa y de si existe beneficio legal vigente.",
+        "tipos_licencia": {
+          "tag": "Multas por TAG / peaje infractor pueden anotarse y bloquear.",
+          "transito": "Multas de tránsito (JPL) anotadas pueden bloquear."
+        }
+      },
+      "fuentes": [
+        "BCN Ley Fácil — Permiso de circulación (condiciones y pagos)",
+        "Portal LeyChile — Ley 21.547 (beneficio transitorio multas TAG; ver módulo específico)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-tag-ley21547",
+      "aliases": [
+        "Tengo multas por TAG, ¿puedo sacar el permiso de circulación?",
+        "¿Existe rebaja del 80% por multas TAG?",
+        "¿Puedo hacer convenio por multas TAG para sacar el permiso?",
+        "¿Cuántas cuotas permite el convenio TAG?",
+        "¿Qué pasa con el registro de multas cuando pago la primera cuota?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "tag_ley_21547"
+      ],
+      "definicion_licencia": [
+        "La Ley 21.547 estableció un beneficio transitorio para rebajar multas asociadas a TAG/telepeaje y permitir regularización mediante pago o convenio.",
+        "Una regla práctica relevante: pagada la primera cuota del convenio, las multas pueden eliminarse del registro para efectos de permitir la renovación/pago del permiso (bajo condiciones de la ley)."
+      ],
+      "respuestas": {
+        "proposito": "Orientar sobre el beneficio legal de regularización de multas TAG y su relación con el permiso de circulación.",
+        "donde": "En municipalidades que implementen el mecanismo de convenio/pago asociado al beneficio, siguiendo la ley y ordenanzas/procedimientos locales.",
+        "requisitos": [
+          "Que la multa esté dentro del supuesto del beneficio y anotada en el registro correspondiente.",
+          "Suscribir convenio (si aplica) y pagar la primera cuota, o pagar en una sola cuota junto con el permiso.",
+          "Cumplir con pagos posteriores; el atraso puede dejar sin efecto el convenio y reactivar la anotación."
+        ],
+        "documentacion": [
+          "Identificación del propietario.",
+          "Datos del vehículo (patente).",
+          "Documentación del permiso (SOAP, revisión técnica/homologación, etc.)."
+        ],
+        "plazos": [
+          "Los beneficios son transitorios y pueden tener vigencia acotada; confirmar estado vigente y plazos actuales en la municipalidad."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Rebaja legal (80% del monto de la multa, según ley) y posibilidad de convenio en cuotas (hasta 48 según guías municipales/ACHM).",
+        "tipos_licencia": {
+          "cuotas": "Convenio hasta 48 cuotas (expresadas en UTM, según aplicación del beneficio).",
+          "efecto_registro": "Pagada la primera cuota, se elimina del registro para efectos del permiso (mientras el convenio esté vigente)."
+        }
+      },
+      "fuentes": [
+        "Ley 21.547 (BCN LeyChile) y material de apoyo municipal/ACHM sobre aplicación",
+        "BCN LeyChile — texto legal y efectos en Registro de Multas No Pagadas"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-pagar-en-otra-comuna",
+      "aliases": [
+        "¿Puedo pagar el permiso de circulación en otra comuna?",
+        "Vivo en una comuna distinta, ¿puedo sacar el permiso donde quiero?",
+        "¿El permiso que pago en una municipalidad sirve para todo Chile?",
+        "¿Tengo que pagarlo donde está inscrito mi vehículo?",
+        "¿Puedo cambiar la municipalidad donde pago el permiso?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "eleccion_municipalidad"
+      ],
+      "definicion_licencia": [
+        "En general, el permiso se paga en una municipalidad, habilitando a circular en todo Chile.",
+        "Existen reglas administrativas para el registro/comuna de pago, pero el permiso tiene validez nacional."
+      ],
+      "respuestas": {
+        "proposito": "Aclarar la regla de validez nacional y la posibilidad de elegir municipalidad de pago.",
+        "donde": "Municipalidad de tu elección, siguiendo reglas de registro de permisos y procedimientos locales.",
+        "requisitos": [
+          "Contar con documentos exigidos para el permiso.",
+          "Si cambias de municipalidad, puede requerirse ajuste/registro en el sistema de permisos (según normativa e instrucciones)."
+        ],
+        "documentacion": [
+          "Documentación del permiso (SOAP, revisión técnica/homologación, padrón, permiso anterior, etc.)."
+        ],
+        "plazos": [
+          "Dentro del periodo anual según tipo de vehículo."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Según tasación del SII.",
+        "tipos_licencia": {
+          "validez": "Otorgado por una municipalidad, habilita a transitar en todo el territorio nacional."
+        }
+      },
+      "fuentes": [
+        "DL 3.063/1979 (BCN LeyChile) — habilitación nacional del permiso",
+        "Contraloría — Instrucciones sobre permisos de circulación (documento de referencia)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-vehiculo-no-circula",
+      "aliases": [
+        "Mi vehículo no va a circular este año, ¿igual debo pagar permiso?",
+        "¿Cómo me eximo del permiso de circulación?",
+        "¿Qué es la declaración jurada por vehículo fuera de circulación?",
+        "¿Hasta cuándo puedo presentar la declaración de no circulación?",
+        "¿Se paga algo aunque no circule?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "vehiculo_fuera_circulacion"
+      ],
+      "definicion_licencia": [
+        "Existen mecanismos (declaración jurada simple) para eximirse del pago del permiso cuando el vehículo no circula, según normativa y ordenanzas municipales.",
+        "Los requisitos, plazos y derechos municipales asociados pueden variar por comuna."
+      ],
+      "respuestas": {
+        "proposito": "Orientar sobre el caso 'vehículo no circula' y evitar que el usuario suponga que basta con no usar el auto.",
+        "donde": "En el Departamento de Tránsito/municipalidad donde corresponda registrar la declaración (según comuna).",
+        "requisitos": [
+          "Presentar declaración jurada simple con motivo (ej.: fallas mecánicas graves, robo, juicio u otro).",
+          "Aportar identificación del propietario y antecedentes del vehículo.",
+          "Cumplir con el plazo que fije la normativa/ordenanza local (muchas comunas señalan plazo hacia fin de año, como referencia)."
+        ],
+        "documentacion": [
+          "Cédula de identidad del propietario.",
+          "Antecedentes del vehículo (patente, padrón).",
+          "Formulario de declaración jurada (según municipalidad)."
+        ],
+        "plazos": [
+          "El plazo y forma de presentación dependen de cada municipalidad; muchas comunas informan cierre hacia fines de noviembre para exención del año siguiente (referencial)."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Puede existir un derecho municipal asociado a la tramitación (depende de la comuna).",
+        "tipos_licencia": {
+          "nota": "Si existen deudas de años anteriores, la exención no necesariamente borra deuda previa; consultar caso."
+        }
+      },
+      "fuentes": [
+        "DL 3.063/1979 (Rentas Municipales) y normativa/ordenanzas municipales sobre declaración de no circulación (varía por comuna)",
+        "Procedimientos municipales (formularios y plazos locales)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-revision-tecnica",
+      "aliases": [
+        "Tengo la revisión técnica vencida, ¿puedo pagar el permiso de circulación?",
+        "¿Puedo pagar el permiso sin revisión técnica?",
+        "¿Qué pasa si no tengo revisión técnica pero necesito circular?",
+        "¿La homologación reemplaza la revisión técnica?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "revision_tecnica_homologacion"
+      ],
+      "definicion_licencia": [
+        "Para pagar/renovar el permiso de circulación normalmente se exige revisión técnica vigente (y, cuando corresponda, análisis de gases) o un certificado de homologación.",
+        "Si la revisión está vencida, la municipalidad suele rechazar el trámite hasta regularizar."
+      ],
+      "respuestas": {
+        "proposito": "Evitar que el usuario intente pagar sin el documento clave y orientar el orden correcto del trámite.",
+        "donde": "La revisión técnica se regulariza en Plantas de Revisión Técnica (PRT) autorizadas; luego se paga el permiso en la municipalidad.",
+        "requisitos": [
+          "Revisión técnica vigente o certificado de homologación (si aplica a tu vehículo).",
+          "SOAP vigente y demás documentos del permiso."
+        ],
+        "documentacion": [
+          "Certificado de revisión técnica vigente (o certificado de homologación).",
+          "SOAP vigente.",
+          "Padrón y permiso anterior (si corresponde)."
+        ],
+        "plazos": [
+          "El permiso se paga dentro de los periodos anuales; la revisión debe estar vigente al momento de pagar."
+        ],
+        "horarios": "PRT y municipalidad según disponibilidad.",
+        "costos": "El costo de revisión técnica depende de la PRT; el permiso depende de tasación SII.",
+        "tipos_licencia": {
+          "homologacion": "Algunos vehículos (por ejemplo, nuevos) pueden requerir o admitir homologación según caso."
+        }
+      },
+      "fuentes": [
+        "ChileAtiende — Permiso de circulación (exige revisión técnica/homologación y SOAP)",
+        "Municipalidades — requisitos de renovación (referencial; varía por comuna)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-pago-atrasado",
+      "aliases": [
+        "¿Qué pasa si pago el permiso de circulación atrasado?",
+        "Se me pasó la fecha del permiso, ¿qué debo hacer?",
+        "¿Hay multa o intereses por pagar tarde?",
+        "¿Me pueden sacar el auto por no tener permiso?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "pago_fuera_plazo"
+      ],
+      "definicion_licencia": [
+        "Pagar el permiso fuera de plazo suele generar recargos, multas e intereses; además, circular sin permiso vigente puede ser sancionado.",
+        "El detalle del cálculo del recargo y el procedimiento puede variar por municipalidad."
+      ],
+      "respuestas": {
+        "proposito": "Reducir riesgo de sanciones y orientar regularización inmediata.",
+        "donde": "Municipalidad (pago) y, si hubo infracción/fiscalización, el Juzgado de Policía Local.",
+        "requisitos": [
+          "Regularizar documentos (SOAP y revisión técnica/homologación).",
+          "Pagar el permiso con recargos aplicables y resolver multas anotadas si existieran."
+        ],
+        "documentacion": [
+          "Misma documentación exigida para el permiso (SOAP, revisión técnica/homologación, padrón, etc.)."
+        ],
+        "plazos": [
+          "Mientras más rápido regularices, menor exposición a fiscalización y acumulación de recargos."
+        ],
+        "horarios": "Varía por municipalidad.",
+        "costos": "Puede incluir recargos por mora y multas por circular sin permiso; el cálculo exacto depende de la normativa aplicable y gestión municipal.",
+        "tipos_licencia": {
+          "nota": "Si el vehículo fue fiscalizado, además del pago puede haber procedimiento ante JPL."
+        }
+      },
+      "fuentes": [
+        "BCN Ley Fácil — Permiso de circulación (consecuencias por no renovar)",
+        "Notas informativas de medios nacionales (El País Chile; BioBioChile) sobre sanciones y recargos (referencial)"
+      ],
+      "bordes": [
+        "No inventar valores, horarios, descuentos o requisitos locales sin fuente municipal vigente.",
+        "No entregar asesoría legal; si hay casos excepcionales (embargos, juicios, vehículos robados), derivar al Departamento de Tránsito/Juzgado de Policía Local según corresponda.",
+        "Si la información depende del tipo de vehículo o de la comuna, pedir aclaración (tipo de vehículo y comuna donde pagará) antes de responder con precisión."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-valor-comercial-autofact",
+      "aliases": [
+        "¿Dónde puedo consultar el valor comercial del vehículo por patente?",
+        "¿Cómo saber el valor comercial de un auto por patente?",
+        "¿Cómo saber el valor de la patente (valor comercial del vehículo) para el permiso de circulación?",
+        "¿Dónde puedo ver el valor del permiso de circulación por patente?",
+        "¿Hay alguna página para consultar el valor del permiso por patente?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "consulta_valor_referencial"
+      ],
+      "respuestas": {
+        "proposito": "Orientar a una consulta referencial del valor comercial del vehículo y del valor del permiso de circulación usando una herramienta de terceros, dejando claro cuál es la fuente oficial.",
+        "resumen": "Para una referencia rápida, puedes consultar por patente en Autofact (servicio privado) el valor del permiso de circulación y/o un rango de valor comercial. Para el valor oficial que se usa como base imponible del permiso, la fuente de referencia es la tasación fiscal del SII.",
+        "pasos": [
+          "Consulta referencial (Autofact): entra a https://www.autofact.cl/ y usa la herramienta de consulta por patente para ver el 'valor del permiso de circulación' y/o un rango de 'valor comercial'.",
+          "Consulta oficial (SII): revisa la tasación fiscal del vehículo en el portal de Tasación de Vehículos del SII; ese valor es la base imponible del permiso de circulación.",
+          "Si hay diferencias: en caso de discrepancias, prevalece la tasación/criterio oficial del SII y la validación municipal al momento de pagar el permiso."
+        ],
+        "requisitos": [
+          "Patente del vehículo (o datos como marca, modelo y año si la herramienta lo permite)."
+        ],
+        "nota_importante": [
+          "Autofact es un servicio privado; úsalo como referencia. La tasación fiscal del SII es la referencia oficial para el cálculo del permiso.",
+          "No inventar montos ni descuentos: el valor final puede variar por IPC, redondeos o reglas del periodo y validaciones del municipio."
+        ],
+        "tipos_licencia": {
+          "referencial": "Autofact (https://www.autofact.cl/) — consulta por patente: valor permiso / valor comercial.",
+          "oficial": "SII — Tasación fiscal de vehículos (base imponible del permiso)."
+        }
+      },
+      "fuentes": [
+        "Autofact — Herramientas gratuitas: consulta por patente / valor permiso de circulación",
+        "Autofact — Valores Permiso de Circulación (consulta por patente o datos del vehículo)",
+        "SII — Consulta Tasación de vehículos (tasación fiscal y permisos)",
+        "SII — Portal Tasación Fiscal (base imponible del permiso de circulación)"
+      ],
+      "bordes": [
+        "Autofact es un servicio privado: no es fuente oficial para el cálculo. Usar solo como referencia informativa.",
+        "Si la consulta es para cálculo oficial o hay discrepancias, derivar a Tasación SII y/o al Departamento de Tránsito municipal.",
+        "No inventar valores, costos, descuentos ni recargos; dependen del periodo anual y validaciones del municipio."
+      ],
+      "aspect_buttons": [
+        "Ver requisitos",
+        "Ver documentación",
+        "Ver plazos",
+        "Cómo pagar",
+        "Ver costos",
+        "Casos especiales"
+      ]
+    },
+    {
+      "id": "permcirc-tasacion_fiscal_sii",
+      "aliases": [
+        "tasación fiscal permiso de circulación",
+        "¿cómo se calcula el valor del permiso?",
+        "tabla SII permiso de circulación",
+        "¿dónde veo la tasación de mi vehículo?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "valor_tasacion"
+      ],
+      "definicion_licencia": [
+        "El monto del Permiso de Circulación se relaciona con la tasación fiscal del vehículo (según clasificación y tablas vigentes).",
+        "La tasación fiscal es distinta del “valor comercial” y se publica/actualiza según criterios oficiales."
+      ],
+      "respuestas": {
+        "respuesta_corta": "El permiso se calcula usando la tasación fiscal (tablas oficiales) y la categoría del vehículo. Para saber el monto exacto, necesitas la tasación correspondiente a tu modelo/año.",
+        "como_hacerlo": [
+          "Identifica tipo de vehículo (auto, camioneta, moto, etc.), marca, modelo y año.",
+          "Consulta la tasación fiscal vigente (tablas oficiales) para ese vehículo.",
+          "Con esa tasación, el sistema municipal calcula el permiso y, si aplica, permite pago en una o dos cuotas."
+        ],
+        "nota": "Si el usuario tiene un caso especial (vehículo nuevo, importación, homologación), la tasación puede venir de documentos de inscripción/homologación; se resuelve caso a caso."
+      },
+      "fuentes": [
+        "DL 3.063/1979 (Rentas Municipales) y tablas de tasación fiscal vigentes (SII)"
+      ],
+      "bordes": [
+        "No inventar valores; pedir marca/modelo/año y, si es posible, comuna/canal de pago.",
+        "Si hay discrepancia con el sistema municipal, derivar a Tránsito para revisión."
+      ],
+      "aspect_buttons": [
+        "Respuesta corta",
+        "Cómo hacerlo",
+        "Nota"
+      ]
+    },
+    {
+      "id": "permcirc-certificado_multas_empadronadas",
+      "aliases": [
+        "certificado de multas permiso de circulación",
+        "¿qué significa multas empadronadas?",
+        "¿por qué no me deja pagar el permiso por multas?",
+        "multas anotadas impiden permiso"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "bloqueos_multas"
+      ],
+      "definicion_licencia": [
+        "Las multas empadronadas/anotadas al vehículo pueden bloquear el pago del Permiso de Circulación.",
+        "La municipalidad suele verificar esto automáticamente o mediante certificados/consultas de registro."
+      ],
+      "respuestas": {
+        "que_pasa": [
+          "Si existen multas empadronadas, el sistema puede impedir completar el trámite hasta regularizar.",
+          "La regularización puede ser pago total o mecanismos habilitados (según tipo de multa y tribunal)."
+        ],
+        "que_hacer": [
+          "Consultar el detalle de multas asociadas a la patente.",
+          "Pagar/regularizar según instrucciones del JPL/municipalidad.",
+          "Reintentar el pago del permiso cuando el registro se actualice."
+        ],
+        "nota": "Si el usuario cree que es un error, debe pedir revisión con antecedentes (patente, comprobantes, etc.)."
+      },
+      "fuentes": [
+        "DL 3.063/1979 (Rentas Municipales) y prácticas de control de multas empadronadas; JPL/registro"
+      ],
+      "bordes": [
+        "No asegurar que “convenio siempre aplica”; depende del caso.",
+        "No dar asesoría legal; derivar al JPL cuando corresponda."
+      ],
+      "aspect_buttons": [
+        "Qué pasa",
+        "Qué hacer",
+        "Nota"
+      ]
+    },
+    {
+      "id": "permcirc-vehiculo_nuevo_primer_permiso",
+      "aliases": [
+        "permiso de circulación vehículo nuevo",
+        "primer permiso de circulación",
+        "auto nuevo: ¿cómo se calcula el permiso?",
+        "¿se paga proporcional si compré el auto a mitad de año?"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "vehiculo_nuevo"
+      ],
+      "definicion_licencia": [
+        "En vehículos nuevos, el primer permiso puede depender de la fecha de inscripción/compra y de los documentos del vehículo.",
+        "Algunos casos consideran proporcionalidad según el periodo del año (según normativa y práctica)."
+      ],
+      "respuestas": {
+        "documentos_tipicos": [
+          "Factura o documento de compra (si aplica).",
+          "Padrón/inscripción del vehículo o certificado equivalente.",
+          "SOAP vigente.",
+          "Revisión técnica/homologación si corresponde según tipo de vehículo."
+        ],
+        "que_hacer": [
+          "Indicar que es vehículo nuevo y el mes/año de compra/inscripción.",
+          "Confirmar si el permiso se calcula proporcional o anual según el caso y el sistema municipal.",
+          "Pagar en la municipalidad por canal habilitado."
+        ],
+        "nota": "Los detalles exactos dependen de categoría del vehículo y de la documentación; pedir comuna y tipo de vehículo para orientar sin errores."
+      },
+      "fuentes": [
+        "DL 3.063/1979 (Rentas Municipales) y procedimientos municipales; reglas operativas pueden variar"
+      ],
+      "bordes": [
+        "No afirmar proporcionalidad universal sin confirmar el caso.",
+        "Pedir datos mínimos: tipo, marca/modelo/año y comuna."
+      ],
+      "aspect_buttons": [
+        "Documentos típicos",
+        "Qué hacer",
+        "Nota"
+      ]
+    }
+  ]
+}

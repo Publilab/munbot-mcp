@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "descripcion": "Reserva de hora / atención (solo información + derivación a app de agendamiento oficial).",
+  "tramites": [
+    {
+      "id": "reserva-hora-atencion",
+      "aliases": [
+        "reservar hora",
+        "reserva de hora",
+        "agendar hora",
+        "solicitar hora",
+        "pedir cita",
+        "app de agendamiento de horas"
+      ],
+      "categoria": "transito",
+      "tipo_atencion": "agenda_oficial",
+      "definicion": [
+        "Solicitud de información para reservar hora y derivación a la app de agendamiento oficial del municipio."
+      ],
+      "respuestas": {
+        "donde": "Para reservar hora debes usar la app de agendamiento oficial de la municipalidad correspondiente.",
+        "instrucciones_app": [
+          "Escribe a nuestro número de Whatsapp, Facebook Messenger o el Chatbot de nuestra página web indicandonos que quieres solicitar una hora (o entra desde el botón \"Agendar hora).",
+          "Ingresa al sistema con tu clave secreta o crea una cuenta nueva si no tienes.",
+          "Sigue las instrucciones y danos los datos que solicitemos.",
+          "Ingresa los datos del titular y la información solicitada por la app.",
+          "Elige una fecha y hora disponible.",
+          "Confirma la reserva y guarda el comprobante o folio."
+        ],
+        "requisitos": [
+          "Contar con cédula de identidad vigente.",
+          "Tener claros los datos del trámite, del titular y un medio de contacto."
+        ],
+        "documentacion": [
+          "Cédula de identidad vigente.",
+          "Antecedentes del trámite (si aplica)."
+        ],
+        "plazos": "La disponibilidad de horas depende del calendario de la app de agendamiento oficial.",
+        "horarios": "Los horarios dependen de la disponibilidad publicada en la app de agendamiento oficial.",
+        "costos": "La reserva de hora no tiene costo; el trámite asociado puede tener arancel.",
+        "proposito": "Orientar y derivar a la app de agendamiento oficial para reservar hora.",
+        "derivacion": "Derivar a la app de agendamiento oficial de la municipalidad. Si no existe, informar canales oficiales disponibles."
+      },
+      "fuentes": [
+        "App de agendamiento oficial municipal (confirmar disponibilidad y canales)."
+      ],
+      "bordes": [
+        "No inventar enlaces, teléfonos ni direcciones.",
+        "No confirmar reservas; solo derivar a la app de agendamiento de horas."
+      ],
+      "aspect_buttons": [
+        "Agendar hora",
+        "Ver requisitos",
+        "Ver horarios"
+      ]
+    }
+  ]
+}
