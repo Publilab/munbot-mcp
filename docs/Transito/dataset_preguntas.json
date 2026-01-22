@@ -1,0 +1,2402 @@
+[
+  {
+    "utterance": "Tengo multas TAG, ¿cómo las regularizo?",
+    "label": "regdeu-multas_tag",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cómo pago multas por TAG para sacar permiso de circulación?",
+    "label": "regdeu-multas_tag",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "Me salen multas por autopista, ¿qué hago?",
+    "label": "regdeu-multas_tag",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cómo regularizo deudas de TAG o peajes?",
+    "label": "regdeu-multas_tag",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cómo eliminar multas TAG del registro de multas impagas?",
+    "label": "regdeu-multas_tag",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Dónde veo las multas de tránsito no pagadas?",
+    "label": "regdeu-multas_tag-consultar_multas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cómo saco el certificado de multas impagas?",
+    "label": "regdeu-multas_tag-consultar_multas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cómo saber si tengo multas por patente?",
+    "label": "regdeu-multas_tag-consultar_multas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "Certificado de multas impagas por patente",
+    "label": "regdeu-multas_tag-consultar_multas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cuánto tengo que pagar para regularizar las multas TAG?",
+    "label": "regdeu-multas_tag-monto_beneficio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Es verdad que se paga el 20% de la deuda TAG?",
+    "label": "regdeu-multas_tag-monto_beneficio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué significa pagar 100 UTM?",
+    "label": "regdeu-multas_tag-monto_beneficio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Se condona el 80%?",
+    "label": "regdeu-multas_tag-monto_beneficio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Puedo pagar las multas TAG en cuotas?",
+    "label": "regdeu-multas_tag-convenio_pago",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cómo firmo un convenio de pago por multas TAG?",
+    "label": "regdeu-multas_tag-convenio_pago",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cuántas cuotas permite el convenio?",
+    "label": "regdeu-multas_tag-convenio_pago",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "Convenio de pago multas tag municipalidad",
+    "label": "regdeu-multas_tag-convenio_pago",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Puedo pagar todo de una vez y no firmar convenio?",
+    "label": "regdeu-multas_tag-pago_contado",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "Pago en una cuota multas tag",
+    "label": "regdeu-multas_tag-pago_contado",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Se requiere convenio si pago al contado?",
+    "label": "regdeu-multas_tag-pago_contado",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué pasa si me atraso en el convenio de pago?",
+    "label": "regdeu-multas_tag-incumplimiento_convenio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "Perdí el convenio de multas tag",
+    "label": "regdeu-multas_tag-incumplimiento_convenio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Se vuelven a inscribir las multas?",
+    "label": "regdeu-multas_tag-incumplimiento_convenio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Cuándo se deja sin efecto el convenio?",
+    "label": "regdeu-multas_tag-incumplimiento_convenio",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Por qué las multas tag me bloquean el permiso de circulación?",
+    "label": "regdeu-multas_tag-permiso_circulacion_relacion",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "No puedo sacar permiso por multas de autopista",
+    "label": "regdeu-multas_tag-permiso_circulacion_relacion",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué multas bloquean el permiso?",
+    "label": "regdeu-multas_tag-permiso_circulacion_relacion",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Sigue vigente la Ley 21.213 para multas TAG?",
+    "label": "regdeu-multas_tag-beneficio_21213_historia",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Hasta cuándo era el beneficio del 20% por multas tag?",
+    "label": "regdeu-multas_tag-beneficio_21213_historia",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "Ley 21.213 multas tag plazo",
+    "label": "regdeu-multas_tag-beneficio_21213_historia",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué documentos necesito para regularizar multas TAG?",
+    "label": "regdeu-multas_tag-documentos_tipicos",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué me piden para firmar un convenio por multas tag?",
+    "label": "regdeu-multas_tag-documentos_tipicos",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "Documentos para convenio multas tag",
+    "label": "regdeu-multas_tag-documentos_tipicos",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué tipo de multas se pueden regularizar con este beneficio?",
+    "label": "regdeu-multas_tag-que_multas_incluye",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Incluye multas por circular sin TAG?",
+    "label": "regdeu-multas_tag-que_multas_incluye",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Incluye multas por no pagar peaje?",
+    "label": "regdeu-multas_tag-que_multas_incluye",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Incluye otras multas distintas al TAG?",
+    "label": "regdeu-multas_tag-que_multas_incluye",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "certificado de multas empadronadas",
+    "label": "regdeu-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué es el certificado de multas para permiso de circulación?",
+    "label": "regdeu-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "multas impagas impiden permiso",
+    "label": "regdeu-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿qué multas aparecen empadronadas?",
+    "label": "regdeu-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "hoja de vida del conductor y multas",
+    "label": "regdeu-hoja_de_vida_y_multas_relacion",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿la hoja de vida muestra multas del vehículo?",
+    "label": "regdeu-hoja_de_vida_y_multas_relacion",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "multas del conductor vs multas empadronadas",
+    "label": "regdeu-hoja_de_vida_y_multas_relacion",
+    "type": "faq",
+    "source_file": "004REG_DEU.json"
+  },
+  {
+    "utterance": "¿Qué es el Juzgado de Policía Local?",
+    "label": "ACTPOL-JPL-000",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Me llegó una citación al JPL, ¿qué significa?",
+    "label": "ACTPOL-JPL-000",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Dónde se ven las multas de tránsito?",
+    "label": "ACTPOL-JPL-000",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Cómo funciona el procedimiento del JPL?",
+    "label": "ACTPOL-JPL-000",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Me sacaron un parte, ¿qué hago?",
+    "label": "ACTPOL-JPL-010",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Me dejaron una citación en el parabrisas, ¿sirve?",
+    "label": "ACTPOL-JPL-010",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué información trae un parte de Carabineros?",
+    "label": "ACTPOL-JPL-010",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué datos necesito para revisar una multa?",
+    "label": "ACTPOL-JPL-010",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Puedo pagar la multa sin ir al juzgado?",
+    "label": "ACTPOL-JPL-020",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Cómo pago con descuento 25%?",
+    "label": "ACTPOL-JPL-020",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Me citaron pero quiero pagar nomás, ¿se puede?",
+    "label": "ACTPOL-JPL-020",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Dónde se paga la multa del parte?",
+    "label": "ACTPOL-JPL-020",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "No puedo ir al juzgado, ¿qué pasa?",
+    "label": "ACTPOL-JPL-030",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué pasa si falto a la citación?",
+    "label": "ACTPOL-JPL-030",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "No me presenté al JPL, ¿me multan igual?",
+    "label": "ACTPOL-JPL-030",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Cómo me notifican si no fui?",
+    "label": "ACTPOL-JPL-030",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Me sacaron un parte en otra comuna, ¿puedo hacer el trámite acá?",
+    "label": "ACTPOL-JPL-040",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué es un exhorto en el JPL?",
+    "label": "ACTPOL-JPL-040",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "La infracción fue lejos, ¿tengo que viajar?",
+    "label": "ACTPOL-JPL-040",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Puedo presentar mis descargos en mi comuna?",
+    "label": "ACTPOL-JPL-040",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Puedo apelar una multa del JPL?",
+    "label": "ACTPOL-JPL-050",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Cómo pido rebaja de una multa?",
+    "label": "ACTPOL-JPL-050",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Me llegó una resolución con multa, ¿puedo reclamar?",
+    "label": "ACTPOL-JPL-050",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Quiero que revisen el monto, ¿qué hago?",
+    "label": "ACTPOL-JPL-050",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Dónde pago la multa del juzgado?",
+    "label": "ACTPOL-JPL-060",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Pagué la multa, ¿cómo lo acredito?",
+    "label": "ACTPOL-JPL-060",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "Me retuvieron la licencia, ¿cómo la recupero?",
+    "label": "ACTPOL-JPL-060",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Cuánto tiempo tengo para pagar?",
+    "label": "ACTPOL-JPL-060",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "No pagué la multa, ¿qué pasa?",
+    "label": "ACTPOL-JPL-070",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Me pueden detener por una multa impaga?",
+    "label": "ACTPOL-JPL-070",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué es la reclusión por multa?",
+    "label": "ACTPOL-JPL-070",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué medidas puede decretar el juzgado?",
+    "label": "ACTPOL-JPL-070",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Me pueden notificar por correo electrónico?",
+    "label": "ACTPOL-JPL-080",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "No vivo en la dirección antigua, ¿cómo me notifican?",
+    "label": "ACTPOL-JPL-080",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Puedo pedir notificación electrónica en el JPL?",
+    "label": "ACTPOL-JPL-080",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué pasa si no me llega la carta?",
+    "label": "ACTPOL-JPL-080",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Puedo apelar una multa del juzgado de policía local?",
+    "label": "ACTPOL-JPL-090",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Las multas de tránsito se pueden apelar?",
+    "label": "ACTPOL-JPL-090",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Qué recurso tengo contra la sentencia?",
+    "label": "ACTPOL-JPL-090",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿Puedo ir a la Corte?",
+    "label": "ACTPOL-JPL-090",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "exhorto",
+    "label": "ACTPOL-JPL-100",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿puedo pagar una multa de otra comuna en mi comuna?",
+    "label": "ACTPOL-JPL-100",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "pago de multa fuera de la comuna",
+    "label": "ACTPOL-JPL-100",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "traslado de parte a otro juzgado",
+    "label": "ACTPOL-JPL-100",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "consultar estado de una multa",
+    "label": "ACTPOL-JPL-110",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿cómo sé si tengo una causa en el juzgado?",
+    "label": "ACTPOL-JPL-110",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "revisar partes de tránsito",
+    "label": "ACTPOL-JPL-110",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "buscar número de citación",
+    "label": "ACTPOL-JPL-110",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "multas por cámara",
+    "label": "ACTPOL-JPL-120",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "infracción por fotorradar",
+    "label": "ACTPOL-JPL-120",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "me llegó un parte por cámara",
+    "label": "ACTPOL-JPL-120",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "¿son válidas las multas por cámaras?",
+    "label": "ACTPOL-JPL-120",
+    "type": "faq",
+    "source_file": "005ACT_POL.json"
+  },
+  {
+    "utterance": "reservar hora",
+    "label": "reserva-hora-atencion",
+    "type": "agenda",
+    "source_file": "002RESERV-HORA.json"
+  },
+  {
+    "utterance": "reserva de hora",
+    "label": "reserva-hora-atencion",
+    "type": "agenda",
+    "source_file": "002RESERV-HORA.json"
+  },
+  {
+    "utterance": "agendar hora",
+    "label": "reserva-hora-atencion",
+    "type": "agenda",
+    "source_file": "002RESERV-HORA.json"
+  },
+  {
+    "utterance": "solicitar hora",
+    "label": "reserva-hora-atencion",
+    "type": "agenda",
+    "source_file": "002RESERV-HORA.json"
+  },
+  {
+    "utterance": "pedir cita",
+    "label": "reserva-hora-atencion",
+    "type": "agenda",
+    "source_file": "002RESERV-HORA.json"
+  },
+  {
+    "utterance": "app de agendamiento de horas",
+    "label": "reserva-hora-atencion",
+    "type": "agenda",
+    "source_file": "002RESERV-HORA.json"
+  },
+  {
+    "utterance": "qué es el soap",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap qué significa",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "seguro obligatorio soap",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "es obligatorio el soap",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "para qué sirve el soap",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "sin soap puedo sacar permiso de circulación",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "qué pasa si ando sin soap",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "hay que portar el soap",
+    "label": "soap-definicion_obligatoriedad",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap qué cubre",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "cobertura soap",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "montos soap",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "cuánto paga el soap",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap cubre al conductor",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap cubre pasajeros",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap cubre peatones",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap cubre daños del auto",
+    "label": "soap-cobertura_indemnizaciones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "quién cobra el soap",
+    "label": "soap-beneficiarios_exclusiones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "beneficiarios soap",
+    "label": "soap-beneficiarios_exclusiones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap beneficiario cónyuge hijos",
+    "label": "soap-beneficiarios_exclusiones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "exclusiones soap",
+    "label": "soap-beneficiarios_exclusiones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap no cubre",
+    "label": "soap-beneficiarios_exclusiones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap carreras de autos",
+    "label": "soap-beneficiarios_exclusiones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "soap fuera de chile",
+    "label": "soap-beneficiarios_exclusiones",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "cómo cobrar el soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "qué hacer para cobrar soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "documentos para cobrar el soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "denunciar accidente para soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "plazo para cobrar soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "certificado carabineros soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "certificado defunción soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "comprobantes gastos médicos soap",
+    "label": "soap-accidente_cobro_documentos_plazos",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "¿Hasta cuándo sirve el SOAP para el permiso de circulación?",
+    "label": "soap-vigencia_para_permiso_circulacion",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "vigencia SOAP",
+    "label": "soap-vigencia_para_permiso_circulacion",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "SOAP vence el 31 de marzo",
+    "label": "soap-vigencia_para_permiso_circulacion",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "¿Debo tener SOAP vigente para pagar el permiso?",
+    "label": "soap-vigencia_para_permiso_circulacion",
+    "type": "faq",
+    "source_file": "003SOAP.json"
+  },
+  {
+    "utterance": "¿Qué es el permiso de circulación?",
+    "label": "permcirc-que_es",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Para qué sirve el permiso de circulación?",
+    "label": "permcirc-que_es",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Quién debe pagar el permiso de circulación?",
+    "label": "permcirc-que_es",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿El permiso de circulación es obligatorio?",
+    "label": "permcirc-que_es",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué pasa si ando sin permiso de circulación?",
+    "label": "permcirc-que_es",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Hasta cuándo puedo pagar el permiso de circulación de mi auto?",
+    "label": "permcirc-plazos-livianos",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuál es el plazo para pagar el permiso de circulación de vehículo particular?",
+    "label": "permcirc-plazos-livianos",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuándo se paga el permiso de circulación de una camioneta?",
+    "label": "permcirc-plazos-livianos",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuándo se paga el permiso de circulación de una moto?",
+    "label": "permcirc-plazos-livianos",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Se puede pagar en dos cuotas? ¿Cuándo vence la segunda?",
+    "label": "permcirc-plazos-livianos",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuándo se paga el permiso de circulación de un taxi?",
+    "label": "permcirc-plazos-taxis-buses",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Hasta cuándo puedo pagar el permiso de circulación de un bus?",
+    "label": "permcirc-plazos-taxis-buses",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuál es el plazo para taxis y buses?",
+    "label": "permcirc-plazos-taxis-buses",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué pasa si pago fuera de plazo como taxi?",
+    "label": "permcirc-plazos-taxis-buses",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuándo se paga el permiso de circulación de un camión?",
+    "label": "permcirc-plazos-carga-otros",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Hasta cuándo puedo pagar el permiso de circulación de un vehículo de carga?",
+    "label": "permcirc-plazos-carga-otros",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuál es el plazo para tractores, maquinaria o motos?",
+    "label": "permcirc-plazos-carga-otros",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Los vehículos de carga pagan en septiembre?",
+    "label": "permcirc-plazos-carga-otros",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué documentos necesito para pagar el permiso de circulación?",
+    "label": "permcirc-requisitos-usado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué papeles necesito para renovar el permiso de circulación?",
+    "label": "permcirc-requisitos-usado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué necesito si mi vehículo es usado?",
+    "label": "permcirc-requisitos-usado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Se necesita padrón para permiso de circulación?",
+    "label": "permcirc-requisitos-usado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿El SOAP debe estar vigente hasta cuándo?",
+    "label": "permcirc-requisitos-usado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué necesito para sacar el permiso de circulación por primera vez?",
+    "label": "permcirc-requisitos-nuevo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "Compré un auto nuevo, ¿qué documentos piden para el permiso?",
+    "label": "permcirc-requisitos-nuevo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Para un vehículo nuevo se necesita revisión técnica?",
+    "label": "permcirc-requisitos-nuevo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué es el certificado de homologación y cuándo aplica?",
+    "label": "permcirc-requisitos-nuevo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué pasa si el vehículo es 0 km?",
+    "label": "permcirc-requisitos-nuevo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Puedo pagar el permiso de circulación en cuotas?",
+    "label": "permcirc-dos-cuotas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuándo se paga la segunda cuota del permiso de circulación?",
+    "label": "permcirc-dos-cuotas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿La segunda cuota tiene recargo?",
+    "label": "permcirc-dos-cuotas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Dónde pago la segunda cuota?",
+    "label": "permcirc-dos-cuotas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Se puede pagar en cuotas si tengo deudas?",
+    "label": "permcirc-dos-cuotas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cómo se calcula el valor del permiso de circulación?",
+    "label": "permcirc-valor-calculo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Dónde puedo ver el valor del permiso de circulación?",
+    "label": "permcirc-valor-calculo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué es la tasación fiscal del SII?",
+    "label": "permcirc-valor-calculo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿El permiso de circulación depende del avalúo?",
+    "label": "permcirc-valor-calculo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Hay un mínimo que se paga?",
+    "label": "permcirc-valor-calculo",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "Tengo multas, ¿puedo sacar el permiso de circulación?",
+    "label": "permcirc-multas-impiden",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué multas bloquean el permiso de circulación?",
+    "label": "permcirc-multas-impiden",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué es el Registro de Multas de Tránsito No Pagadas?",
+    "label": "permcirc-multas-impiden",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cómo sé si tengo multas anotadas?",
+    "label": "permcirc-multas-impiden",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué hago si aparece una multa que no reconozco?",
+    "label": "permcirc-multas-impiden",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "Tengo multas por TAG, ¿puedo sacar el permiso de circulación?",
+    "label": "permcirc-tag-ley21547",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Existe rebaja del 80% por multas TAG?",
+    "label": "permcirc-tag-ley21547",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Puedo hacer convenio por multas TAG para sacar el permiso?",
+    "label": "permcirc-tag-ley21547",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cuántas cuotas permite el convenio TAG?",
+    "label": "permcirc-tag-ley21547",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué pasa con el registro de multas cuando pago la primera cuota?",
+    "label": "permcirc-tag-ley21547",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Puedo pagar el permiso de circulación en otra comuna?",
+    "label": "permcirc-pagar-en-otra-comuna",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "Vivo en una comuna distinta, ¿puedo sacar el permiso donde quiero?",
+    "label": "permcirc-pagar-en-otra-comuna",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿El permiso que pago en una municipalidad sirve para todo Chile?",
+    "label": "permcirc-pagar-en-otra-comuna",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Tengo que pagarlo donde está inscrito mi vehículo?",
+    "label": "permcirc-pagar-en-otra-comuna",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Puedo cambiar la municipalidad donde pago el permiso?",
+    "label": "permcirc-pagar-en-otra-comuna",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "Mi vehículo no va a circular este año, ¿igual debo pagar permiso?",
+    "label": "permcirc-vehiculo-no-circula",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cómo me eximo del permiso de circulación?",
+    "label": "permcirc-vehiculo-no-circula",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué es la declaración jurada por vehículo fuera de circulación?",
+    "label": "permcirc-vehiculo-no-circula",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Hasta cuándo puedo presentar la declaración de no circulación?",
+    "label": "permcirc-vehiculo-no-circula",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Se paga algo aunque no circule?",
+    "label": "permcirc-vehiculo-no-circula",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "Tengo la revisión técnica vencida, ¿puedo pagar el permiso de circulación?",
+    "label": "permcirc-revision-tecnica",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Puedo pagar el permiso sin revisión técnica?",
+    "label": "permcirc-revision-tecnica",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué pasa si no tengo revisión técnica pero necesito circular?",
+    "label": "permcirc-revision-tecnica",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿La homologación reemplaza la revisión técnica?",
+    "label": "permcirc-revision-tecnica",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Qué pasa si pago el permiso de circulación atrasado?",
+    "label": "permcirc-pago-atrasado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "Se me pasó la fecha del permiso, ¿qué debo hacer?",
+    "label": "permcirc-pago-atrasado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Hay multa o intereses por pagar tarde?",
+    "label": "permcirc-pago-atrasado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Me pueden sacar el auto por no tener permiso?",
+    "label": "permcirc-pago-atrasado",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Dónde puedo consultar el valor comercial del vehículo por patente?",
+    "label": "permcirc-valor-comercial-autofact",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cómo saber el valor comercial de un auto por patente?",
+    "label": "permcirc-valor-comercial-autofact",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Cómo saber el valor de la patente (valor comercial del vehículo) para el permiso de circulación?",
+    "label": "permcirc-valor-comercial-autofact",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Dónde puedo ver el valor del permiso de circulación por patente?",
+    "label": "permcirc-valor-comercial-autofact",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿Hay alguna página para consultar el valor del permiso por patente?",
+    "label": "permcirc-valor-comercial-autofact",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "tasación fiscal permiso de circulación",
+    "label": "permcirc-tasacion_fiscal_sii",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿cómo se calcula el valor del permiso?",
+    "label": "permcirc-tasacion_fiscal_sii",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "tabla SII permiso de circulación",
+    "label": "permcirc-tasacion_fiscal_sii",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿dónde veo la tasación de mi vehículo?",
+    "label": "permcirc-tasacion_fiscal_sii",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "certificado de multas permiso de circulación",
+    "label": "permcirc-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿qué significa multas empadronadas?",
+    "label": "permcirc-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿por qué no me deja pagar el permiso por multas?",
+    "label": "permcirc-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "multas anotadas impiden permiso",
+    "label": "permcirc-certificado_multas_empadronadas",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "permiso de circulación vehículo nuevo",
+    "label": "permcirc-vehiculo_nuevo_primer_permiso",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "primer permiso de circulación",
+    "label": "permcirc-vehiculo_nuevo_primer_permiso",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "auto nuevo: ¿cómo se calcula el permiso?",
+    "label": "permcirc-vehiculo_nuevo_primer_permiso",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "¿se paga proporcional si compré el auto a mitad de año?",
+    "label": "permcirc-vehiculo_nuevo_primer_permiso",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "obtener licencia profesional",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "sacar licencia profesional",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "sacar licencia profesional por primera vez",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "obtener licencia profesional por primera vez",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional clase A",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia clase A",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A1 A2 A3 A4 A5",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "postular a licencia profesional",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional de conducir",
+    "label": "liccond-obtencion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "obtener licencia de conducir A1",
+    "label": "liccond-obtencion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "sacar licencia de conducir A1",
+    "label": "liccond-obtencion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional A1",
+    "label": "liccond-obtencion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia clase A1",
+    "label": "liccond-obtencion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A-1",
+    "label": "liccond-obtencion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia para taxis",
+    "label": "liccond-obtencion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "obtener licencia de conducir A2",
+    "label": "liccond-obtencion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "sacar licencia de conducir A2",
+    "label": "liccond-obtencion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional A2",
+    "label": "liccond-obtencion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia clase A2",
+    "label": "liccond-obtencion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A-2",
+    "label": "liccond-obtencion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia transporte de pasajeros 10 a 17 asientos",
+    "label": "liccond-obtencion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia para ambulancias",
+    "label": "liccond-obtencion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "obtener licencia de conducir A3",
+    "label": "liccond-obtencion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "sacar licencia de conducir A3",
+    "label": "liccond-obtencion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional A3",
+    "label": "liccond-obtencion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia clase A3",
+    "label": "liccond-obtencion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A-3",
+    "label": "liccond-obtencion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia transporte remunerado de escolares",
+    "label": "liccond-obtencion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "obtener licencia de conducir A4",
+    "label": "liccond-obtencion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "sacar licencia de conducir A4",
+    "label": "liccond-obtencion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional A4",
+    "label": "liccond-obtencion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia clase A4",
+    "label": "liccond-obtencion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A-4",
+    "label": "liccond-obtencion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia transporte de carga sobre 3500 kg",
+    "label": "liccond-obtencion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "obtener licencia de conducir A5",
+    "label": "liccond-obtencion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "sacar licencia de conducir A5",
+    "label": "liccond-obtencion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional A5",
+    "label": "liccond-obtencion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia clase A5",
+    "label": "liccond-obtencion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A-5",
+    "label": "liccond-obtencion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia transporte de carga articulada",
+    "label": "liccond-obtencion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia de conducir",
+    "label": "licencia_conducir_renovacion",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "revalidar licencia",
+    "label": "licencia_conducir_renovacion",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovación licencia",
+    "label": "licencia_conducir_renovacion",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reacreditación licencia",
+    "label": "licencia_conducir_renovacion",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "control de licencia",
+    "label": "licencia_conducir_renovacion",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia profesional",
+    "label": "liccond-renovacion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovación licencia profesional",
+    "label": "liccond-renovacion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "revalidar licencia profesional",
+    "label": "liccond-renovacion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "control licencia profesional",
+    "label": "liccond-renovacion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reacreditar licencia profesional clase A",
+    "label": "liccond-renovacion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia clase A",
+    "label": "liccond-renovacion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A1 A2 A3 A4 A5",
+    "label": "liccond-renovacion_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A1",
+    "label": "liccond-renovacion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A-1",
+    "label": "liccond-renovacion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "revalidar licencia A1",
+    "label": "liccond-renovacion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reacreditar licencia A1",
+    "label": "liccond-renovacion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "control licencia A1",
+    "label": "liccond-renovacion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovación licencia profesional A1",
+    "label": "liccond-renovacion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia profesional A-1",
+    "label": "liccond-renovacion_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A2",
+    "label": "liccond-renovacion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A-2",
+    "label": "liccond-renovacion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "revalidar licencia A2",
+    "label": "liccond-renovacion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reacreditar licencia A2",
+    "label": "liccond-renovacion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "control licencia A2",
+    "label": "liccond-renovacion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovación licencia profesional A2",
+    "label": "liccond-renovacion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia profesional A-2",
+    "label": "liccond-renovacion_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A3",
+    "label": "liccond-renovacion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A-3",
+    "label": "liccond-renovacion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "revalidar licencia A3",
+    "label": "liccond-renovacion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reacreditar licencia A3",
+    "label": "liccond-renovacion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "control licencia A3",
+    "label": "liccond-renovacion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovación licencia profesional A3",
+    "label": "liccond-renovacion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia profesional A-3",
+    "label": "liccond-renovacion_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A4",
+    "label": "liccond-renovacion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A-4",
+    "label": "liccond-renovacion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "revalidar licencia A4",
+    "label": "liccond-renovacion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reacreditar licencia A4",
+    "label": "liccond-renovacion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "control licencia A4",
+    "label": "liccond-renovacion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovación licencia profesional A4",
+    "label": "liccond-renovacion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia profesional A-4",
+    "label": "liccond-renovacion_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A5",
+    "label": "liccond-renovacion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A-5",
+    "label": "liccond-renovacion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "revalidar licencia A5",
+    "label": "liccond-renovacion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reacreditar licencia A5",
+    "label": "liccond-renovacion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "control licencia A5",
+    "label": "liccond-renovacion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovación licencia profesional A5",
+    "label": "liccond-renovacion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia profesional A-5",
+    "label": "liccond-renovacion_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia profesional",
+    "label": "liccond-duplicado_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reponer licencia profesional",
+    "label": "liccond-duplicado_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "segunda copia licencia profesional",
+    "label": "liccond-duplicado_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia clase A",
+    "label": "liccond-duplicado_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A1 A2 A3 A4 A5",
+    "label": "liccond-duplicado_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "se me perdió la licencia profesional",
+    "label": "liccond-duplicado_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia profesional",
+    "label": "liccond-duplicado_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A1",
+    "label": "liccond-duplicado_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A-1",
+    "label": "liccond-duplicado_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "se me perdió la licencia A1",
+    "label": "liccond-duplicado_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia A1",
+    "label": "liccond-duplicado_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reponer licencia A1",
+    "label": "liccond-duplicado_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "segunda copia licencia A1",
+    "label": "liccond-duplicado_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia profesional A1",
+    "label": "liccond-duplicado_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A2",
+    "label": "liccond-duplicado_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A-2",
+    "label": "liccond-duplicado_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "se me perdió la licencia A2",
+    "label": "liccond-duplicado_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia A2",
+    "label": "liccond-duplicado_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reponer licencia A2",
+    "label": "liccond-duplicado_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "segunda copia licencia A2",
+    "label": "liccond-duplicado_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia profesional A2",
+    "label": "liccond-duplicado_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A3",
+    "label": "liccond-duplicado_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A-3",
+    "label": "liccond-duplicado_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "se me perdió la licencia A3",
+    "label": "liccond-duplicado_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia A3",
+    "label": "liccond-duplicado_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reponer licencia A3",
+    "label": "liccond-duplicado_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "segunda copia licencia A3",
+    "label": "liccond-duplicado_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia profesional A3",
+    "label": "liccond-duplicado_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A4",
+    "label": "liccond-duplicado_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A-4",
+    "label": "liccond-duplicado_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "se me perdió la licencia A4",
+    "label": "liccond-duplicado_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia A4",
+    "label": "liccond-duplicado_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reponer licencia A4",
+    "label": "liccond-duplicado_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "segunda copia licencia A4",
+    "label": "liccond-duplicado_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia profesional A4",
+    "label": "liccond-duplicado_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A5",
+    "label": "liccond-duplicado_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia A-5",
+    "label": "liccond-duplicado_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "se me perdió la licencia A5",
+    "label": "liccond-duplicado_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia A5",
+    "label": "liccond-duplicado_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reponer licencia A5",
+    "label": "liccond-duplicado_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "segunda copia licencia A5",
+    "label": "liccond-duplicado_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia profesional A5",
+    "label": "liccond-duplicado_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo licencia profesional",
+    "label": "liccond-bloqueo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia profesional",
+    "label": "liccond-bloqueo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia profesional bloqueada",
+    "label": "liccond-bloqueo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo por pérdida licencia",
+    "label": "liccond-bloqueo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo por robo licencia",
+    "label": "liccond-bloqueo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo licencia clase A",
+    "label": "liccond-bloqueo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia A1",
+    "label": "liccond-bloqueo_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo licencia A1",
+    "label": "liccond-bloqueo_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A1 bloqueada",
+    "label": "liccond-bloqueo_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo por extravío licencia A1",
+    "label": "liccond-bloqueo_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia profesional A1",
+    "label": "liccond-bloqueo_profesional_A1",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia A2",
+    "label": "liccond-bloqueo_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo licencia A2",
+    "label": "liccond-bloqueo_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A2 bloqueada",
+    "label": "liccond-bloqueo_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo por extravío licencia A2",
+    "label": "liccond-bloqueo_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia profesional A2",
+    "label": "liccond-bloqueo_profesional_A2",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia A3",
+    "label": "liccond-bloqueo_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo licencia A3",
+    "label": "liccond-bloqueo_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A3 bloqueada",
+    "label": "liccond-bloqueo_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo por extravío licencia A3",
+    "label": "liccond-bloqueo_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia profesional A3",
+    "label": "liccond-bloqueo_profesional_A3",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia A4",
+    "label": "liccond-bloqueo_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo licencia A4",
+    "label": "liccond-bloqueo_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A4 bloqueada",
+    "label": "liccond-bloqueo_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo por extravío licencia A4",
+    "label": "liccond-bloqueo_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia profesional A4",
+    "label": "liccond-bloqueo_profesional_A4",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia A5",
+    "label": "liccond-bloqueo_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo licencia A5",
+    "label": "liccond-bloqueo_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia A5 bloqueada",
+    "label": "liccond-bloqueo_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo por extravío licencia A5",
+    "label": "liccond-bloqueo_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia profesional A5",
+    "label": "liccond-bloqueo_profesional_A5",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "¿Puedo renovar la licencia profesional en otra municipalidad?",
+    "label": "liccond-renovacion_donde_tramitar_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia A en otra comuna",
+    "label": "liccond-renovacion_donde_tramitar_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "¿debo renovar donde la saqué?",
+    "label": "liccond-renovacion_donde_tramitar_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "renovar licencia profesional fuera de mi comuna",
+    "label": "liccond-renovacion_donde_tramitar_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloquear licencia profesional",
+    "label": "liccond-bloqueo_diferencias_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "¿qué significa bloquear la licencia?",
+    "label": "liccond-bloqueo_diferencias_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "bloqueo temporal vs definitivo licencia",
+    "label": "liccond-bloqueo_diferencias_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia, ¿la bloqueo?",
+    "label": "liccond-bloqueo_diferencias_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado licencia profesional",
+    "label": "liccond-duplicado_extravio_robo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "reponer licencia A perdida",
+    "label": "liccond-duplicado_extravio_robo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "me robaron la licencia A, ¿cómo saco duplicado?",
+    "label": "liccond-duplicado_extravio_robo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "duplicado por extravío licencia profesional",
+    "label": "liccond-duplicado_extravio_robo_profesional",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "hoja de vida del conductor",
+    "label": "liccond-hoja_vida_conductor_para_licencias",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "¿qué es la hoja de vida del conductor?",
+    "label": "liccond-hoja_vida_conductor_para_licencias",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "¿para qué sirve la hoja de vida?",
+    "label": "liccond-hoja_vida_conductor_para_licencias",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "cómo obtener hoja de vida conductor",
+    "label": "liccond-hoja_vida_conductor_para_licencias",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "licencia digital",
+    "label": "liccond-licencia_digital_info_general",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "¿existe licencia de conducir digital en Chile?",
+    "label": "liccond-licencia_digital_info_general",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "cómo usar licencia digital",
+    "label": "liccond-licencia_digital_info_general",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  },
+  {
+    "utterance": "app licencia digital",
+    "label": "liccond-licencia_digital_info_general",
+    "type": "faq",
+    "source_file": "001LIC_TRANS_LICENCIAS.json"
+  }
+]
