@@ -6,3 +6,4 @@ service:
   tool_prefix: scheduler-
 departments:
   - apps/agenda/departments/general.yml
+  - apps/agenda/departments/transito.yml

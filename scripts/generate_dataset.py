@@ -52,8 +52,14 @@ if __name__ == "__main__":
         output_path = sys.argv[2]
     else:
         # Defaults
-        base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../docs/Transito/Json")
-        output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../docs/Transito/dataset_preguntas.json")
+        base_dir = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "../apps/faq/kb/transito",
+        )
+        output_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "../apps/faq/kb/transito/datasets/dataset_preguntas.json",
+        )
 
     if not os.path.exists(base_dir):
         print(f"❌ Input directory not found: {base_dir}")

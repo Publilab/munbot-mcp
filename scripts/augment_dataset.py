@@ -5,6 +5,7 @@ Expands each intent from ~5 examples to 30+ with linguistic variations
 """
 
 import json
+import os
 import random
 import re
 from typing import List, Dict
@@ -181,8 +182,23 @@ def augment_dataset(input_file: str, output_file: str, target_per_label: int = 3
     print(f"   Total examples: {len(augmented)} (was {len(dataset)})")
 
 if __name__ == "__main__":
-    input_path = sys.argv[1] if len(sys.argv) > 1 else "docs/Transito/dataset_preguntas.json"
-    output_path = sys.argv[2] if len(sys.argv) > 2 else "docs/Transito/dataset_preguntas_augmented.json"
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    input_path = (
+        sys.argv[1]
+        if len(sys.argv) > 1
+        else os.path.join(
+            script_dir,
+            "../apps/faq/kb/transito/datasets/dataset_preguntas.json",
+        )
+    )
+    output_path = (
+        sys.argv[2]
+        if len(sys.argv) > 2
+        else os.path.join(
+            script_dir,
+            "../apps/faq/kb/transito/datasets/dataset_preguntas_augmented.json",
+        )
+    )
     target = int(sys.argv[3]) if len(sys.argv) > 3 else 30
     
     augment_dataset(input_path, output_path, target)

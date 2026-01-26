@@ -1,0 +1,15 @@
+id: transito
+name: "Transito"
+routing_hints:
+  - reclamo
+  - denuncia
+  - transito
+  - semaforo
+  - senalizacion
+  - demarcacion
+  - parquimetro
+  - estacionamiento
+  - lomos de toro
+  - reductores
+  - cruce
+  - seguridad vial

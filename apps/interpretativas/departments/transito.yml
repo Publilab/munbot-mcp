@@ -1,0 +1,19 @@
+id: transito
+name: "Transito"
+routing_hints:
+  - transito
+  - licencia
+  - conducir
+  - permiso
+  - circulacion
+  - multas
+  - multa
+  - tag
+  - soap
+  - parquimetro
+  - estacionamiento
+  - jpl
+  - juzgado
+  - parte
+  - citacion
+  - reclamo

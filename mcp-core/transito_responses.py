@@ -50,11 +50,11 @@ class TransitoResponses:
         Initialize response builder with KB directory.
         
         Args:
-            kb_directory: Path to docs/Transito/Json folder
+            kb_directory: Path to apps/faq/kb/transito folder
         """
         if kb_directory is None:
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            kb_directory = os.path.join(base_dir, "docs", "Transito", "Json")
+            kb_directory = os.path.join(base_dir, "apps", "faq", "kb", "transito")
         
         self.kb_directory = kb_directory
         self.knowledge_base: Dict[str, Dict] = {}  # intent_id -> full record
@@ -198,13 +198,19 @@ class TransitoResponses:
         
         return aspects
     
-    def format_for_chat(self, response: TransitoResponse, include_buttons: bool = True) -> str:
+    def format_for_chat(
+        self,
+        response: TransitoResponse,
+        include_buttons: bool = True,
+        include_sources: bool = False,
+    ) -> str:
         """
         Format response for chat display.
         
         Args:
             response: TransitoResponse object
             include_buttons: Whether to include suggested action buttons
+            include_sources: Whether to include source citations in the chat text
             
         Returns:
             Formatted string for chat
@@ -214,8 +220,8 @@ class TransitoResponses:
         # Main response
         lines.append(response.main_response)
         
-        # Source citation
-        if response.fuentes:
+        # Source citation (hidden by default for Tránsito v1)
+        if include_sources and response.fuentes:
             lines.append("")
             lines.append(f"📚 *Fuente: {', '.join(response.fuentes)}*")
         

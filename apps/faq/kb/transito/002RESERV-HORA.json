@@ -18,12 +18,11 @@
         "Solicitud de información para reservar hora y derivación a la app de agendamiento oficial del municipio."
       ],
       "respuestas": {
-        "donde": "Para reservar hora debes usar la app de agendamiento oficial de la municipalidad correspondiente.",
+        "donde": "Para reservar hora usa la app oficial Vecino Digital de la municipalidad: https://quintadetilcoco.vecinodigital.cl/Vecino_Digital/",
         "instrucciones_app": [
-          "Escribe a nuestro número de Whatsapp, Facebook Messenger o el Chatbot de nuestra página web indicandonos que quieres solicitar una hora (o entra desde el botón \"Agendar hora).",
-          "Ingresa al sistema con tu clave secreta o crea una cuenta nueva si no tienes.",
-          "Sigue las instrucciones y danos los datos que solicitemos.",
-          "Ingresa los datos del titular y la información solicitada por la app.",
+          "Ingresa al portal Vecino Digital: https://quintadetilcoco.vecinodigital.cl/Vecino_Digital/",
+          "Selecciona el trámite de Tránsito que necesitas.",
+          "Completa los datos solicitados.",
           "Elige una fecha y hora disponible.",
           "Confirma la reserva y guarda el comprobante o folio."
         ],
@@ -39,7 +38,7 @@
         "horarios": "Los horarios dependen de la disponibilidad publicada en la app de agendamiento oficial.",
         "costos": "La reserva de hora no tiene costo; el trámite asociado puede tener arancel.",
         "proposito": "Orientar y derivar a la app de agendamiento oficial para reservar hora.",
-        "derivacion": "Derivar a la app de agendamiento oficial de la municipalidad. Si no existe, informar canales oficiales disponibles."
+        "derivacion": "Si tienes problemas con el portal, consulta atención presencial o canales oficiales de la municipalidad."
       },
       "fuentes": [
         "App de agendamiento oficial municipal (confirmar disponibilidad y canales)."

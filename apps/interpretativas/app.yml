@@ -3,3 +3,4 @@ description: "Consultas abiertas con NLU"
 kb_paths: []
 departments:
   - apps/interpretativas/departments/general.yml
+  - apps/interpretativas/departments/transito.yml

@@ -1,0 +1,12 @@
+id: transito
+name: "Transito"
+routing_hints:
+  - agenda
+  - agendar
+  - hora
+  - reservar
+  - cita
+  - licencia
+  - examen
+  - renovar
+  - transito

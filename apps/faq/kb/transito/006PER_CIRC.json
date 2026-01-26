@@ -986,6 +986,40 @@
         "Qué hacer",
         "Nota"
       ]
+    },
+    {
+      "id": "permcirc-pago-online",
+      "aliases": [
+        "¿Cómo pagar el permiso de circulación en línea?",
+        "pago online permiso de circulación",
+        "pagar permiso de circulación por internet",
+        "link permiso de circulación",
+        "pago en línea permiso de circulación"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": [
+        "pago_en_linea"
+      ],
+      "definicion_licencia": [
+        "Acceso al portal oficial de pagos en línea de la municipalidad."
+      ],
+      "respuestas": {
+        "pago_en_linea": "Portal oficial de pago en línea: https://quintadetilcoco.vecinodigital.cl/Vecino_Digital/",
+        "donde": "Portal oficial de pago en línea: https://quintadetilcoco.vecinodigital.cl/Vecino_Digital/",
+        "proposito": "Derivar al portal oficial para pagar el permiso de circulación en línea."
+      },
+      "fuentes": [
+        "Portal oficial de pagos municipal (Vecino Digital)."
+      ],
+      "bordes": [
+        "No solicitar datos personales ni pagos fuera del portal oficial.",
+        "No inventar otros enlaces o canales."
+      ],
+      "aspect_buttons": [
+        "Ir al portal",
+        "Cómo pagar"
+      ]
     }
   ]
 }

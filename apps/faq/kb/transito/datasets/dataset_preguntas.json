@@ -1,5 +1,53 @@
 [
   {
+    "utterance": "parquimetro",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
+    "utterance": "parquímetro",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
+    "utterance": "estacionamientos con cobro",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
+    "utterance": "ticket de estacionamiento",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
+    "utterance": "no pude pagar el parquimetro",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
+    "utterance": "calles con parquimetro",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
+    "utterance": "zonas de estacionamiento",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
+    "utterance": "horarios de parquimetro",
+    "label": "estac-parquimetros-info",
+    "type": "faq",
+    "source_file": "007ESTAC_PARQ.json"
+  },
+  {
     "utterance": "Tengo multas TAG, ¿cómo las regularizo?",
     "label": "regdeu-multas_tag",
     "type": "faq",
@@ -1320,6 +1368,36 @@
     "source_file": "006PER_CIRC.json"
   },
   {
+    "utterance": "¿Cómo pagar el permiso de circulación en línea?",
+    "label": "permcirc-pago-online",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "pago online permiso de circulación",
+    "label": "permcirc-pago-online",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "pagar permiso de circulación por internet",
+    "label": "permcirc-pago-online",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "link permiso de circulación",
+    "label": "permcirc-pago-online",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
+    "utterance": "pago en línea permiso de circulación",
+    "label": "permcirc-pago-online",
+    "type": "faq",
+    "source_file": "006PER_CIRC.json"
+  },
+  {
     "utterance": "obtener licencia profesional",
     "label": "liccond-obtencion_profesional",
     "type": "faq",
@@ -2304,12 +2382,6 @@
     "source_file": "001LIC_TRANS_LICENCIAS.json"
   },
   {
-    "utterance": "bloquear licencia profesional",
-    "label": "liccond-bloqueo_diferencias_profesional",
-    "type": "faq",
-    "source_file": "001LIC_TRANS_LICENCIAS.json"
-  },
-  {
     "utterance": "¿qué significa bloquear la licencia?",
     "label": "liccond-bloqueo_diferencias_profesional",
     "type": "faq",
@@ -2324,12 +2396,6 @@
   {
     "utterance": "me robaron la licencia, ¿la bloqueo?",
     "label": "liccond-bloqueo_diferencias_profesional",
-    "type": "faq",
-    "source_file": "001LIC_TRANS_LICENCIAS.json"
-  },
-  {
-    "utterance": "duplicado licencia profesional",
-    "label": "liccond-duplicado_extravio_robo_profesional",
     "type": "faq",
     "source_file": "001LIC_TRANS_LICENCIAS.json"
   },

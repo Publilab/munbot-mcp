@@ -36,9 +36,17 @@ class TransitoRouter:
             dataset_path: Path to the augmented dataset JSON file
         """
         if dataset_path is None:
-            # Default path relative to mcp-core
+            # Default path relative to repo root
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            dataset_path = os.path.join(base_dir, "docs", "Transito", "dataset_preguntas_augmented.json")
+            dataset_path = os.path.join(
+                base_dir,
+                "apps",
+                "faq",
+                "kb",
+                "transito",
+                "datasets",
+                "dataset_preguntas_augmented.json",
+            )
         
         self.dataset_path = dataset_path
         self.utterances: List[Dict] = []

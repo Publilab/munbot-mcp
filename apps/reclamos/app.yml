@@ -9,3 +9,4 @@ departments:
   - apps/reclamos/departments/obras.yml
   - apps/reclamos/departments/ambiente.yml
   - apps/reclamos/departments/otros.yml
+  - apps/reclamos/departments/transito.yml

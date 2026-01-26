@@ -1,0 +1,27 @@
+id: transito
+name: "Transito"
+kb_paths:
+  - apps/faq/kb/transito/001LIC_TRANS_LICENCIAS.json
+  - apps/faq/kb/transito/002RESERV-HORA.json
+  - apps/faq/kb/transito/003SOAP.json
+  - apps/faq/kb/transito/004REG_DEU.json
+  - apps/faq/kb/transito/005ACT_POL.json
+  - apps/faq/kb/transito/006PER_CIRC.json
+  - apps/faq/kb/transito/007ESTAC_PARQ.json
+routing_hints:
+  - transito
+  - licencia
+  - conducir
+  - permiso
+  - circulacion
+  - multas
+  - multa
+  - tag
+  - soap
+  - parquimetro
+  - estacionamiento
+  - jpl
+  - juzgado
+  - parte
+  - citacion
+  - reclamo

@@ -6,11 +6,11 @@
 ## Resultados
 
 ### Estadísticas
-- **Ejemplos originales**: 400
-- **Ejemplos augmentados**: 890 nuevos
-- **Total final**: 1,290 ejemplos
-- **Labels únicos**: 79
-- **Promedio por label**: 16.3 ejemplos (antes: 5.1)
+- **Ejemplos originales**: 411
+- **Ejemplos augmentados**: 919 nuevos
+- **Total final**: 1,330 ejemplos
+- **Labels únicos**: 81
+- **Promedio por label**: 16.4 ejemplos (antes: 5.1)
 
 ### Técnicas de Augmentación Aplicadas
 
@@ -63,21 +63,21 @@
 
 | Label | Original | Final | Diferencia |
 |-------|----------|-------|-----------|
-| liccond-renovacion_profesional_A5 | 7 | 27 | +20 |
-| liccond-renovacion_profesional_A1 | 7 | 24 | +17 |
-| liccond-duplicado_profesional_A2 | 7 | 22 | +15 |
-| liccond-obtencion_profesional_A1 | 6 | 22 | +16 |
-| liccond-obtencion_profesional_A5 | 6 | 22 | +16 |
-| liccond-renovacion_profesional | 7 | 22 | +15 |
-| ACTPOL-JPL-020 | 4 | 21 | +17 |
+| permcirc-pago-online | 5 | 26 | +21 |
+| liccond-obtencion_profesional | 9 | 24 | +15 |
+| liccond-duplicado_profesional_A2 | 7 | 24 | +17 |
+| liccond-obtencion_profesional_A2 | 7 | 23 | +16 |
+| permcirc-tasacion_fiscal_sii | 4 | 22 | +18 |
+| liccond-duplicado_profesional_A5 | 7 | 22 | +15 |
+| liccond-obtencion_profesional_A4 | 6 | 21 | +15 |
+| liccond-renovacion_profesional_A1 | 7 | 21 | +14 |
 | liccond-renovacion_profesional_A4 | 7 | 21 | +14 |
-| liccond-obtencion_profesional | 9 | 21 | +12 |
-| liccond-obtencion_profesional_A2 | 7 | 21 | +14 |
+| liccond-duplicado_profesional_A4 | 7 | 21 | +14 |
 
 ## Próximos Pasos
 
 1. ✅ **Validación completada**: JSON válido, IDs únicos
-2. ✅ **Dataset augmentado**: 1,290 ejemplos
+2. ✅ **Dataset augmentado**: 1,330 ejemplos
 3. 🔄 **Siguiente**: Implementar Router Determinista
    - Cargar dataset augmentado
    - Matching fuzzy con RapidFuzz

@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "descripcion": "Estacionamientos y parquimetros (contenido en preparacion para Transito v1).",
+  "tramites": [
+    {
+      "id": "estac-parquimetros-info",
+      "aliases": [
+        "parquimetro",
+        "parquímetro",
+        "estacionamientos con cobro",
+        "ticket de estacionamiento",
+        "no pude pagar el parquimetro",
+        "calles con parquimetro",
+        "zonas de estacionamiento",
+        "horarios de parquimetro"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "estacionamientos_parquimetros",
+      "sub_tipo_licencia": [
+        "informacion_general"
+      ],
+      "definicion_licencia": [
+        "Informacion general sobre estacionamientos con cobro y parquimetros.",
+        "El contenido detallado se encuentra en preparacion y se publicara cuando el municipio lo valide."
+      ],
+      "respuestas": {
+        "donde": "Este tema esta en preparacion. Para informacion vigente, consulta en la Direccion de Transito o canales oficiales de la municipalidad.",
+        "estado": "En preparacion: valores, horarios, sectores y pasos de pago seran publicados oficialmente.",
+        "proposito": "Derivar a canales oficiales mientras se publica la informacion detallada."
+      },
+      "fuentes": [
+        "Informacion municipal pendiente de publicacion oficial."
+      ],
+      "bordes": [
+        "No inventar valores, horarios, sectores o reglas de fiscalizacion.",
+        "No entregar informacion que no haya sido publicada oficialmente por la municipalidad."
+      ],
+      "aspect_buttons": [
+        "Consultar en oficina",
+        "Estado del servicio"
+      ]
+    }
+  ]
+}

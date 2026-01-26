@@ -10,7 +10,7 @@ El checklist destaca la importancia de:
 -   **Base de Datos FAQ (KB)**: Estructurada, canónica y con fuentes validadas.
 -   **Manejo de Respuestas**: Respuestas breves, institucionales y trazables.
 
-## Análisis de Archivos JSON (`docs/Transito`)
+## Análisis de Archivos JSON (`apps/faq/kb/transito`)
 Se han identificado los siguientes archivos fuente que alimentarán este modelo:
 
 ### 1. `001LIC_TRANS_LICENCIAS.json` (FAQ / Trámites)
@@ -36,12 +36,12 @@ Avancemos en las siguientes tareas para cumplir con la etapa de "Modelo Determin
 Para responder a "¿Cómo lo harías?":
 
 1.  **Definición de Esquema (Schema Definition)**:
-    -   Crearemos interfaces estrictas (TypeScript/Zod) para `FAQItem` (Simples) y `ComplexFlowItem` (Complejas).
+    -   Usaremos modelos estrictos en Python (Pydantic) para `FAQItem` (Simples) y `ComplexFlowItem` (Complejas).
     -   **FAQ**: Debe tener `respuestas` con campos de contenido (`requisitos`, `plazos`, etc.).
     -   **Compleja**: Debe tener `tipo_atencion` definido y `instrucciones_app` o `derivacion`.
 
 2.  **Validación Automática**:
-    -   Crear un script de validación (`scripts/validate_knowledge_base.ts`) que recorra `docs/Transito/Json/*.json`.
+    -   Crear un script de validación (`scripts/validate_knowledge_base.py`) que recorra `apps/faq/kb/transito/*.json`.
     -   Verificar unicidad de `id`.
     -   Verificar que `aliases` no chocan entre sí (ambigüedad).
 

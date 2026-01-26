@@ -123,7 +123,10 @@ if __name__ == "__main__":
         base_dir = sys.argv[1]
     else:
         # Fallback to hardcoded absolute path if needed, or relative to script
-        base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../docs/Transito/Json")
+        base_dir = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "../apps/faq/kb/transito",
+        )
         
     print(f"Checking directory: {base_dir}")
     if not os.path.exists(base_dir):

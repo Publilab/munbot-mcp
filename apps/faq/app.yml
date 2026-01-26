@@ -8,3 +8,4 @@ kb_paths:
   - apps/faq/kb/general/faq_samples.json
 departments:
   - apps/faq/departments/general.yml
+  - apps/faq/departments/transito.yml
