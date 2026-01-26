@@ -50,34 +50,42 @@ class TransitoResponses:
         Initialize response builder with KB directory.
         
         Args:
-            kb_directory: Path to apps/faq/kb/transito folder
+            kb_directory: Path to KB folder or list of KB folders
         """
         if kb_directory is None:
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            kb_directory = os.path.join(base_dir, "apps", "faq", "kb", "transito")
-        
-        self.kb_directory = kb_directory
+            kb_directories = [
+                os.path.join(base_dir, "apps", "faq", "kb", "transito"),
+                os.path.join(base_dir, "apps", "agenda", "kb", "transito"),
+            ]
+        elif isinstance(kb_directory, list):
+            kb_directories = kb_directory
+        else:
+            kb_directories = [kb_directory]
+
+        self.kb_directories = kb_directories
         self.knowledge_base: Dict[str, Dict] = {}  # intent_id -> full record
         self._load_knowledge_base()
     
     def _load_knowledge_base(self):
         """Load all KB JSON files into memory"""
-        json_files = glob.glob(os.path.join(self.kb_directory, "*.json"))
-        
-        for file_path in json_files:
-            try:
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                
-                tramites = data.get('tramites', [])
-                for tramite in tramites:
-                    intent_id = tramite.get('id')
-                    if intent_id:
-                        self.knowledge_base[intent_id] = tramite
-                        
-            except Exception as e:
-                print(f"[TransitoResponses] Error loading {file_path}: {e}")
-        
+        for kb_directory in self.kb_directories:
+            json_files = glob.glob(os.path.join(kb_directory, "*.json"))
+
+            for file_path in json_files:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+
+                    tramites = data.get('tramites', [])
+                    for tramite in tramites:
+                        intent_id = tramite.get('id')
+                        if intent_id:
+                            self.knowledge_base[intent_id] = tramite
+
+                except Exception as e:
+                    print(f"[TransitoResponses] Error loading {file_path}: {e}")
+
         print(f"[TransitoResponses] Loaded {len(self.knowledge_base)} intents from KB")
     
     def get_response(self, intent_id: str, user_query: str = None) -> Optional[TransitoResponse]:

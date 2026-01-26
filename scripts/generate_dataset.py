@@ -4,11 +4,18 @@ import glob
 import sys
 from typing import List, Dict
 
-def generate_dataset(base_path: str, output_file: str):
-    json_files = glob.glob(os.path.join(base_path, "*.json"))
+def generate_dataset(base_paths, output_file: str):
+    if isinstance(base_paths, str):
+        base_paths = [base_paths]
+
+    json_files = []
+    for base_path in base_paths:
+        json_files.extend(glob.glob(os.path.join(base_path, "*.json")))
+
     dataset = []
-    
-    print(f"Generating dataset from {len(json_files)} files in {base_path}")
+
+    joined_paths = ", ".join(base_paths)
+    print(f"Generating dataset from {len(json_files)} files in {joined_paths}")
     
     for file_path in json_files:
         try:
@@ -48,21 +55,28 @@ def generate_dataset(base_path: str, output_file: str):
 
 if __name__ == "__main__":
     if len(sys.argv) > 2:
-        base_dir = sys.argv[1]
-        output_path = sys.argv[2]
-    else:
-        # Defaults
-        base_dir = os.path.join(
+        base_dirs = sys.argv[1:-1]
+        output_path = sys.argv[-1]
+    elif len(sys.argv) > 1:
+        base_dirs = [sys.argv[1]]
+        output_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
-            "../apps/faq/kb/transito",
+            "../apps/faq/kb/transito/datasets/dataset_preguntas.json",
         )
+    else:
+        # Defaults: FAQ + Agenda only
+        base_dirs = [
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "../apps/faq/kb/transito"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "../apps/agenda/kb/transito"),
+        ]
         output_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "../apps/faq/kb/transito/datasets/dataset_preguntas.json",
         )
 
-    if not os.path.exists(base_dir):
-        print(f"❌ Input directory not found: {base_dir}")
-        exit(1)
-        
-    generate_dataset(base_dir, output_path)
+    for base_dir in base_dirs:
+        if not os.path.exists(base_dir):
+            print(f"❌ Input directory not found: {base_dir}")
+            exit(1)
+
+    generate_dataset(base_dirs, output_path)

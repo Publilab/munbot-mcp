@@ -1,16 +1,16 @@
 # Data Augmentation Summary - Transit Chatbot Dataset
 
 **Fecha**: 2026-01-22  
-**Objetivo**: Expandir el dataset de 400 a ~1,300 ejemplos con patrones chilenos
+**Objetivo**: Expandir el dataset de FAQ + Agenda con patrones chilenos
 
 ## Resultados
 
 ### Estadísticas
-- **Ejemplos originales**: 411
-- **Ejemplos augmentados**: 919 nuevos
-- **Total final**: 1,330 ejemplos
-- **Labels únicos**: 81
-- **Promedio por label**: 16.4 ejemplos (antes: 5.1)
+- **Ejemplos originales**: 272
+- **Ejemplos augmentados**: 604 nuevos
+- **Total final**: 876 ejemplos
+- **Labels únicos**: 50
+- **Promedio por label**: 17.5 ejemplos (antes: 5.4)
 
 ### Técnicas de Augmentación Aplicadas
 
@@ -63,21 +63,21 @@
 
 | Label | Original | Final | Diferencia |
 |-------|----------|-------|-----------|
-| permcirc-pago-online | 5 | 26 | +21 |
-| liccond-obtencion_profesional | 9 | 24 | +15 |
+| liccond-duplicado_profesional_A3 | 7 | 25 | +18 |
+| liccond-bloqueo_profesional | 6 | 25 | +19 |
 | liccond-duplicado_profesional_A2 | 7 | 24 | +17 |
-| liccond-obtencion_profesional_A2 | 7 | 23 | +16 |
-| permcirc-tasacion_fiscal_sii | 4 | 22 | +18 |
-| liccond-duplicado_profesional_A5 | 7 | 22 | +15 |
-| liccond-obtencion_profesional_A4 | 6 | 21 | +15 |
-| liccond-renovacion_profesional_A1 | 7 | 21 | +14 |
-| liccond-renovacion_profesional_A4 | 7 | 21 | +14 |
-| liccond-duplicado_profesional_A4 | 7 | 21 | +14 |
+| liccond-bloqueo_profesional_A4 | 5 | 22 | +17 |
+| permcirc-que_es | 5 | 21 | +16 |
+| liccond-obtencion_profesional_A2 | 7 | 21 | +14 |
+| permcirc-multas-impiden | 5 | 20 | +15 |
+| permcirc-pago-online | 5 | 20 | +15 |
+| liccond-obtencion_profesional_A4 | 6 | 20 | +14 |
+| liccond-renovacion_profesional_A5 | 7 | 20 | +13 |
 
 ## Próximos Pasos
 
 1. ✅ **Validación completada**: JSON válido, IDs únicos
-2. ✅ **Dataset augmentado**: 1,330 ejemplos
+2. ✅ **Dataset augmentado**: 876 ejemplos
 3. 🔄 **Siguiente**: Implementar Router Determinista
    - Cargar dataset augmentado
    - Matching fuzzy con RapidFuzz

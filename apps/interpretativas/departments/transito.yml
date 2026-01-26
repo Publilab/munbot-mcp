@@ -1,5 +1,10 @@
 id: transito
 name: "Transito"
+kb_paths:
+  - apps/interpretativas/kb/transito/003SOAP.json
+  - apps/interpretativas/kb/transito/004REG_DEU.json
+  - apps/interpretativas/kb/transito/005ACT_POL.json
+  - apps/interpretativas/kb/transito/007ESTAC_PARQ.json
 routing_hints:
   - transito
   - licencia

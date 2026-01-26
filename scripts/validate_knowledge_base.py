@@ -44,8 +44,13 @@ class KnowledgeBaseFile(BaseModel):
 
 # --- Validation Logic ---
 
-def validate_files(base_path: str):
-    json_files = glob.glob(os.path.join(base_path, "*.json"))
+def validate_files(base_paths: Union[str, List[str]]):
+    if isinstance(base_paths, str):
+        base_paths = [base_paths]
+
+    json_files = []
+    for base_path in base_paths:
+        json_files.extend(glob.glob(os.path.join(base_path, "*.json")))
     
     all_ids = {} # id -> file_path
     all_aliases = {} # alias -> id
@@ -53,7 +58,8 @@ def validate_files(base_path: str):
     errors = []
     warnings = []
     
-    print(f"Found {len(json_files)} JSON files in {base_path}")
+    joined_paths = ", ".join(base_paths)
+    print(f"Found {len(json_files)} JSON files in {joined_paths}")
     
     for file_path in json_files:
         file_name = os.path.basename(file_path)
@@ -118,21 +124,25 @@ def validate_files(base_path: str):
 import sys
 
 if __name__ == "__main__":
-    # Use argument or default to absolute path
+    # Use arguments or default to known KB directories
     if len(sys.argv) > 1:
-        base_dir = sys.argv[1]
+        base_dirs = sys.argv[1:]
     else:
-        # Fallback to hardcoded absolute path if needed, or relative to script
-        base_dir = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../apps/faq/kb/transito",
-        )
-        
-    print(f"Checking directory: {base_dir}")
-    if not os.path.exists(base_dir):
-        print(f"❌ Directory not found: {base_dir}")
-        exit(1)
-        
-    success = validate_files(base_dir)
+        base_dirs = [
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "../apps/faq/kb/transito"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "../apps/agenda/kb/transito"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "../apps/interpretativas/kb/transito"),
+        ]
+
+    for base_dir in base_dirs:
+        if not os.path.exists(base_dir):
+            print(f"❌ Directory not found: {base_dir}")
+            exit(1)
+
+    print("Checking directories:")
+    for base_dir in base_dirs:
+        print(f"  - {base_dir}")
+
+    success = validate_files(base_dirs)
     if not success:
         exit(1)

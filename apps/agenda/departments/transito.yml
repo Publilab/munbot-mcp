@@ -1,5 +1,7 @@
 id: transito
 name: "Transito"
+kb_paths:
+  - apps/agenda/kb/transito/002RESERV-HORA.json
 routing_hints:
   - agenda
   - agendar

@@ -12,16 +12,16 @@
 | Tarea | Estado | Resultado |
 |-------|--------|-----------|
 | Análisis del checklist de reingeniería | ✅ | Identificadas 2 apps: FAQ y Agenda |
-| Inspección de JSONs en `apps/faq/kb/transito/` | ✅ | 7 archivos, 81 trámites |
+| Inspección de JSONs (FAQ + Agenda) | ✅ | 3 archivos, 50 trámites |
 | Script de validación con Pydantic | ✅ | [validate_knowledge_base.py](file:///Volumes/PubliLab-EXHD/Publilab/Projects/PubliLab/GitHub/munbot-mcp/scripts/validate_knowledge_base.py) |
-| Generación de dataset plano | ✅ | 411 ejemplos iniciales |
-| Data Augmentation chileno | ✅ | 1,330 ejemplos finales |
+| Generación de dataset plano | ✅ | 272 ejemplos iniciales |
+| Data Augmentation chileno | ✅ | 876 ejemplos finales |
 
 **Archivos creados:**
 - `scripts/validate_knowledge_base.py` - Validación de esquema JSON
 - `scripts/generate_dataset.py` - Extractor de aliases a dataset plano
 - `scripts/augment_dataset.py` - Ampliación con variaciones chilenas
-- `apps/faq/kb/transito/datasets/dataset_preguntas_augmented.json` - Dataset final (1,330 ejemplos)
+- `apps/faq/kb/transito/datasets/dataset_preguntas_augmented.json` - Dataset final (876 ejemplos)
 
 ---
 
@@ -49,9 +49,9 @@ mcp-core/
 
 | Métrica | Valor |
 |---------|-------|
-| Utterances en dataset | 1,330 |
-| Intents únicos | 81 |
-| Promedio utterances/intent | 16.4 |
+| Utterances en dataset | 876 |
+| Intents únicos | 50 |
+| Promedio utterances/intent | 17.5 |
 | Threshold FAQ | 70% |
 | Threshold Agenda | 75% |
 | Precisión en tests | 100% (5/5 tránsito, 1/1 no-tránsito rechazado) |
@@ -110,11 +110,16 @@ munbot-mcp/
 ├── apps/
 │   └── faq/
 │       └── kb/
-│           └── transito/            # KB Transito
+│           └── transito/            # KB Transito (FAQ)
 │               ├── datasets/
-│               │   ├── dataset_preguntas.json           # Dataset base (411)
-│               │   └── dataset_preguntas_augmented.json  # Dataset ampliado (1,330) ⭐
+│               │   ├── dataset_preguntas.json           # Dataset base (272)
+│               │   └── dataset_preguntas_augmented.json  # Dataset ampliado (876) ⭐
 │               └── *.json           # Tramites/FAQ Transito
+├── apps/
+│   ├── agenda/
+│   │   └── kb/transito/             # KB Agenda (002RESERV-HORA.json)
+│   └── interpretativas/
+│       └── kb/transito/             # KB Interpretativas (003/004/005/007)
 ├── scripts/
 │   ├── validate_knowledge_base.py   # Validador Pydantic ⭐
 │   ├── generate_dataset.py          # Generador de dataset ⭐
