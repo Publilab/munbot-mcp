@@ -5,6 +5,8 @@ El objetivo de esta etapa es implementar un **Modelo Determinista** inicial para
 1.  **FAQ / Informacional**: Preguntas sobre requisitos, documentos, costos, plazos de trámites (ej. Licencias).
 2.  **Preguntas Complejas / Flujos**: Interacciones que requieren pasos o derivación a sistemas externos (ej. Agendamiento de horas, Reclamos).
 
+**Nota**: Las **Preguntas Interpretativas** (leyes, reglamentos y textos extensos) se implementan en una fase aparte con recuperación semántica y RAG controlado. Este plan cubre FAQ + Agenda deterministas y deja explícita la fase interpretativas.
+
 El checklist destaca la importancia de:
 -   **Routing Determinista**: Distinguir con alta precisión entre una pregunta de FAQ y una intención de Agendamiento.
 -   **Base de Datos FAQ (KB)**: Estructurada, canónica y con fuentes validadas.
@@ -64,6 +66,18 @@ Para responder a "¿Cómo lo harías?":
     -   Respetar "bordes" (no inventar info).
     -   Incluir "Aspect Buttons" sugeridos (ej. "Ver costos", "Agendar") para guiar la conversación.
 
+## Fase Interpretativas (RAG controlado)
+
+**Objetivo**: responder consultas abiertas usando búsqueda semántica + reranking + recuperación de documentos oficiales.
+
+**Componentes**:
+- Índice semántico Q&A (aliases interpretativas).
+- Índice semántico de documentos (leyes/decretos/ordenanzas).
+- Reranker y umbrales de confianza (respuesta directa, desambiguación, fallback).
+- Caché semántico y cola de curación para preguntas nuevas.
+
+**Estado**: Implementado en `mcp-core/interpretativas_engine.py` y `mcp-core/utils/semantic_index.py`.
+
 ## Próximos Pasos Inmediatos
 1.  Confirmar si la estructura de los JSON actuales es definitiva para esta etapa.
-2.  Comenzar con la implementación del **Loader** y el **Router básico** usando estos dos archivos como piloto.
+2.  Probar el flujo determinista + interpretativas end-to-end y calibrar umbrales.

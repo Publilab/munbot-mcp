@@ -1,7 +1,7 @@
-# Resumen de Implementación: Chatbot Tránsito - Modelo Determinista
+# Resumen de Implementación: Chatbot Tránsito - Modelo Determinista + Interpretativas
 
 **Fecha**: 2026-01-22  
-**Sesión**: Análisis, estructuración y desarrollo del modelo FAQ + Agenda
+**Sesión**: Modelo determinista (FAQ + Agenda) + pipeline interpretativas (semántico + RAG controlado)
 
 ---
 
@@ -11,7 +11,7 @@
 
 | Tarea | Estado | Resultado |
 |-------|--------|-----------|
-| Análisis del checklist de reingeniería | ✅ | Identificadas 2 apps: FAQ y Agenda |
+| Definición de separación | ✅ | FAQ + Agenda deterministas; Interpretativas aparte |
 | Inspección de JSONs (FAQ + Agenda) | ✅ | 3 archivos, 50 trámites |
 | Script de validación con Pydantic | ✅ | [validate_knowledge_base.py](file:///Volumes/PubliLab-EXHD/Publilab/Projects/PubliLab/GitHub/munbot-mcp/scripts/validate_knowledge_base.py) |
 | Generación de dataset plano | ✅ | 272 ejemplos iniciales |
@@ -58,21 +58,41 @@ mcp-core/
 
 ---
 
+### Fase 3: Interpretativas (Semántica + RAG controlado)
+
+| Tarea | Estado | Resultado |
+|-------|--------|-----------|
+| Índice semántico Q&A | ✅ | `mcp-core/utils/semantic_index.py` |
+| Pipeline interpretativas | ✅ | `mcp-core/interpretativas_engine.py` |
+| Integración en Orchestrator | ✅ | Fallback a interpretativas cuando FAQ no responde |
+| Índice documental (docs oficiales) | ✅ | `doc_paths` en `apps/interpretativas/departments/transito.yml` |
+| Caché semántico + pendientes | ✅ | `databases/interpretativas/*.jsonl` |
+
+**Componentes nuevos:**
+
+```
+mcp-core/
+├── interpretativas_engine.py  # Pipeline interpretativas (QA + documentos + RAG)
+└── utils/semantic_index.py    # Embeddings + búsqueda + rerank
+```
+
+---
+
 ## ❌ Trabajo Pendiente
 
 ### Inmediato (para MVP funcional)
 
 | Tarea | Prioridad | Esfuerzo |
 |-------|-----------|----------|
-| Integrar con `orchestrator.py` | 🔴 Alta | 1-2 horas |
-| Probar flujo end-to-end | 🔴 Alta | 1 hora |
+| Probar flujo end-to-end (FAQ + interpretativas) | 🔴 Alta | 1-2 horas |
+| Ajuste de umbrales (QA/doc) en producción | 🔴 Alta | 1 hora |
 
 ### Siguientes pasos (post-MVP)
 
 | Tarea | Prioridad | Descripción |
 |-------|-----------|-------------|
 | Agregar más utterances reales | 🟡 Media | Recopilar de logs/usuarios |
-| Implementar logging estructurado | 🟡 Media | Para análisis de gaps |
+| Afinar logs de curación interpretativas | 🟡 Media | Revisar pendientes y auto-caché |
 | Detector de sub-aspecto | 🟡 Media | Mejorar extracción de "¿cuánto cuesta?" vs "¿qué requisitos?" |
 | Dashboard de métricas | 🟢 Baja | Fallback rate, top queries |
 | Soporte multi-departamento | 🟢 Baja | Arquitectura para escalar a otras direcciones |
@@ -136,9 +156,9 @@ munbot-mcp/
 
 ## 🎯 Siguiente Acción Recomendada
 
-**Integrar con el Orchestrator existente** modificando `mcp-core/orchestrator.py` para:
+**Integrar el determinista con el Orchestrator existente** modificando `mcp-core/orchestrator.py` para:
 1. Detectar si la query es de Tránsito usando `router.is_transit_query()`
 2. Llamar a `process_transit_query()` si aplica
 3. Retornar la respuesta formateada
 
-¿Proceder con la integración?
+Interpretativas ya están implementadas con búsqueda semántica y RAG controlado. Queda calibrar umbrales y hacer pruebas end-to-end.

@@ -2297,6 +2297,95 @@ def _map_collection_for_category(category: Optional[str]) -> Optional[str]:
     return None
 
 
+def _resolve_interpretativas_department(session_id: str, user_text: str) -> Optional[str]:
+    dept_info = _resolve_department_hint("interpretativas", user_text)
+    if dept_info and dept_info.get("id"):
+        return dept_info.get("id")
+    last = context_manager.get_context_field(session_id, "last_department")
+    if last:
+        return str(last)
+    return None
+
+
+def _clear_interpretativas_pending(session_id: str) -> None:
+    context_manager.clear_context_field(session_id, "interp_options")
+    context_manager.clear_context_field(session_id, "interp_dept")
+
+
+def _handle_interpretativas_choice(session_id: str, user_text: str) -> Optional[Dict[str, Any]]:
+    options = context_manager.get_context_field(session_id, "interp_options")
+    if not options:
+        return None
+    norm = normalize_text(user_text)
+    if norm in {"ninguna", "ninguno", "otra", "otro", "ninguna de esas", "ninguno de esos"}:
+        _clear_interpretativas_pending(session_id)
+        msg = "Perfecto. ¿Puedes darme más detalles o indicar el tema exacto?"
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+    selected = None
+    if norm.isdigit():
+        idx = int(norm) - 1
+        if 0 <= idx < len(options):
+            selected = options[idx]
+    if not selected:
+        for opt in options:
+            label = normalize_text(opt.get("label", ""))
+            if label and (label in norm or norm in label):
+                selected = opt
+                break
+    if not selected:
+        msg = "No logré identificar la opción. Puedes responder con el número o el texto exacto."
+        context_manager.update_context(session_id, user_text, msg)
+        return {"respuesta": msg, "no_results": False}
+
+    dept_id = context_manager.get_context_field(session_id, "interp_dept")
+    _clear_interpretativas_pending(session_id)
+    try:
+        from .interpretativas_engine import get_engine, to_payload
+    except Exception:
+        return None
+    engine = get_engine()
+    resp = engine.get_entry_response(dept_id, selected.get("id"), user_text)
+    payload = to_payload(resp)
+    if payload.get("respuesta"):
+        context_manager.update_context(session_id, user_text, payload.get("respuesta"))
+    context_manager.update_context_data(session_id, {
+        "last_app": "interpretativas",
+        "last_tramite": selected.get("id"),
+        "last_department": dept_id,
+    })
+    return payload
+
+
+def _run_interpretativas_pipeline(session_id: str, user_text: str) -> Optional[Dict[str, Any]]:
+    try:
+        from .interpretativas_engine import get_engine, to_payload
+    except Exception:
+        return None
+    engine = get_engine()
+    dept_id = _resolve_interpretativas_department(session_id, user_text)
+    resp = engine.handle(user_text, dept_id=dept_id)
+    if resp is None:
+        return None
+    payload = to_payload(resp)
+    if resp.status == "clarify" and resp.payload.get("options"):
+        context_manager.update_context_data(session_id, {
+            "interp_options": resp.payload.get("options"),
+            "interp_dept": dept_id,
+        })
+    if payload.get("respuesta"):
+        context_manager.update_context(session_id, user_text, payload.get("respuesta"))
+    if resp.status == "answered":
+        context_manager.update_context_data(session_id, {
+            "last_app": "interpretativas",
+            "last_tramite": resp.match_id,
+            "last_department": dept_id,
+        })
+    elif resp.status in {"fallback"}:
+        context_manager.increment_fallback_count(session_id)
+    return payload
+
+
 def _handle_pending_feedback(session_id: str, user_text: str) -> Optional[Dict[str, Any]]:
     if not context_manager.has_feedback_pending(session_id):
         return None
@@ -2930,11 +3019,16 @@ def handle_turn(
         context_manager.clear_pending_confirmation(session_id)
         context_manager.set_current_flow(session_id, None)
         context_manager.clear_doc_clarification(session_id)
+        _clear_interpretativas_pending(session_id)
         context_manager.clear_selected_document(session_id)
         context_manager.clear_entities(session_id)
         msg = "Entendido, cambiemos de tema. ¿Sobre qué te gustaría hablar ahora?"
         context_manager.update_context(session_id, user_text, msg)
         return {"respuesta": msg, "no_results": False}
+
+    interp_choice = _handle_interpretativas_choice(session_id, user_text)
+    if interp_choice is not None:
+        return interp_choice
 
     # 0.2) Atajos robustos para el follow-up aunque se pierda el estado
     norm_follow = normalize_text(user_text)
@@ -3146,6 +3240,14 @@ def handle_turn(
             if t_id and not aspecto:
                 context_manager.update_context_data(session_id, {"expecting_aspect": True})
                 return show_aspect_menu(t_id)
+
+            interp_payload = _run_interpretativas_pipeline(session_id, user_text)
+            if interp_payload is not None:
+                if not interp_payload.get("no_results"):
+                    return interp_payload
+                if not (cat and not t_id):
+                    return interp_payload
+
             if cat and not t_id:
                 # Informar que el trámite no está en la base y sugerir alternativas de la categoría
                 msg = "No puedo procesar tu solicitud porque no está en mi base de conocimiento."
@@ -3153,6 +3255,8 @@ def handle_turn(
                 menu = show_tramites_menu(cat, root_filter=root_hint)
                 direct = {"respuesta": msg, "no_results": False, "_resp_type": "kb_miss"}
                 return {"respuestas": [direct, menu]}
+            if interp_payload is not None:
+                return interp_payload
             return show_main_menu()
         except Exception as e:
             _jlog(_logger, "kb.dispatch_error", error=str(e))
