@@ -54,4 +54,10 @@ INTERP_LLM_MODE = _getenv_str("INTERP_LLM_MODE", "off")
 INTERP_LLM_MODEL_PATH = _getenv_str("INTERP_LLM_MODEL_PATH", "")
 INTERP_LLM_MAX_TOKENS = _getenv_int("INTERP_LLM_MAX_TOKENS", 512)
 INTERP_LLM_TEMPERATURE = _getenv_float("INTERP_LLM_TEMPERATURE", 0.2)
+INTERP_LLM_API_KEY = _getenv_str("INTERP_LLM_API_KEY", "")
+INTERP_LLM_MODEL = _getenv_str("INTERP_LLM_MODEL", "gemini-2.0-flash-lite")
+INTERP_LLM_ENDPOINT = _getenv_str(
+    "INTERP_LLM_ENDPOINT",
+    "https://generativelanguage.googleapis.com/v1beta/models",
+)
 INTERP_INCLUDE_SOURCES = _getenv_int("INTERP_INCLUDE_SOURCES", 0)

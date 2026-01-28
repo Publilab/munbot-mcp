@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import time
+import requests
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -19,9 +20,12 @@ try:
         INTERP_EMBED_MODEL,
         INTERP_INCLUDE_SOURCES,
         INTERP_LLM_MAX_TOKENS,
+        INTERP_LLM_MODEL,
         INTERP_LLM_MODEL_PATH,
         INTERP_LLM_MODE,
         INTERP_LLM_TEMPERATURE,
+        INTERP_LLM_API_KEY,
+        INTERP_LLM_ENDPOINT,
         INTERP_QA_DISAMBIGUATE,
         INTERP_QA_THRESHOLD,
         INTERP_QA_TOP_K,
@@ -52,9 +56,12 @@ except Exception:  # pragma: no cover - fallback for direct execution
         INTERP_EMBED_MODEL,
         INTERP_INCLUDE_SOURCES,
         INTERP_LLM_MAX_TOKENS,
+        INTERP_LLM_MODEL,
         INTERP_LLM_MODEL_PATH,
         INTERP_LLM_MODE,
         INTERP_LLM_TEMPERATURE,
+        INTERP_LLM_API_KEY,
+        INTERP_LLM_ENDPOINT,
         INTERP_QA_DISAMBIGUATE,
         INTERP_QA_THRESHOLD,
         INTERP_QA_TOP_K,
@@ -238,6 +245,49 @@ class _LlamaCppClient:
             return None
 
 
+class _GeminiClient:
+    def __init__(self, api_key: str, model: str, endpoint: str, max_tokens: int, temperature: float):
+        self._api_key = api_key
+        self._model = model
+        self._endpoint = endpoint.rstrip("/")
+        self._max_tokens = max_tokens
+        self._temperature = temperature
+
+    def ready(self) -> bool:
+        return bool(self._api_key and self._model)
+
+    def generate(self, prompt: str) -> Optional[str]:
+        if not self.ready():
+            return None
+        url = f"{self._endpoint}/{self._model}:generateContent?key={self._api_key}"
+        payload = {
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [{"text": prompt}],
+                }
+            ],
+            "generationConfig": {
+                "temperature": self._temperature,
+                "maxOutputTokens": self._max_tokens,
+            },
+        }
+        try:
+            resp = requests.post(url, json=payload, timeout=30)
+            if not resp.ok:
+                return None
+            data = resp.json()
+            candidates = data.get("candidates") or []
+            if not candidates:
+                return None
+            parts = (candidates[0].get("content") or {}).get("parts") or []
+            if not parts:
+                return None
+            return (parts[0].get("text") or "").strip()
+        except Exception:
+            return None
+
+
 class InterpretativasEngine:
     def __init__(self) -> None:
         self._registry = load_registry()
@@ -253,6 +303,16 @@ class InterpretativasEngine:
         self._llm = None
         if INTERP_LLM_MODE == "llama_cpp" and INTERP_LLM_MODEL_PATH:
             client = _LlamaCppClient(INTERP_LLM_MODEL_PATH, INTERP_LLM_MAX_TOKENS, INTERP_LLM_TEMPERATURE)
+            if client.ready():
+                self._llm = client
+        if INTERP_LLM_MODE == "gemini" and INTERP_LLM_API_KEY:
+            client = _GeminiClient(
+                api_key=INTERP_LLM_API_KEY,
+                model=INTERP_LLM_MODEL,
+                endpoint=INTERP_LLM_ENDPOINT,
+                max_tokens=INTERP_LLM_MAX_TOKENS,
+                temperature=INTERP_LLM_TEMPERATURE,
+            )
             if client.ready():
                 self._llm = client
 
@@ -395,6 +455,7 @@ class InterpretativasEngine:
             return "No encontré información suficiente en los documentos disponibles."
         if self._llm is None:
             return self._template_from_chunks(chunks)
+        start = time.time()
         context_lines = []
         for idx, chunk in enumerate(chunks[:3], start=1):
             context_lines.append(f"[Fragmento {idx}] {chunk.get('text', '')}")
@@ -408,7 +469,15 @@ class InterpretativasEngine:
         )
         generated = self._llm.generate(prompt)
         if not generated:
+            _logger.warning(
+                "interpretativas.llm_empty_response",
+                extra={"latency_ms": int((time.time() - start) * 1000)},
+            )
             return self._template_from_chunks(chunks)
+        _logger.info(
+            "interpretativas.llm_response_ok",
+            extra={"latency_ms": int((time.time() - start) * 1000)},
+        )
         return generated
 
     def _collect_cache_entries(self, dept_id: str) -> List[Dict[str, Any]]:

@@ -47,6 +47,9 @@ from .settings import (
     KB_COLLECTION_FAQ,
     KB_COLLECTION_TRAMITES,
     KB_COLLECTION_NORMATIVA,
+    INTERP_LLM_API_KEY,
+    INTERP_LLM_ENDPOINT,
+    INTERP_LLM_MODEL,
 )
 
 _logger = logging.getLogger("orchestrator")
@@ -104,6 +107,9 @@ def _jlog(logger, event, **fields):
         logger.info(f"{event} - {data}")
 
 _jlog(_logger, "features.boot", agent_mode=AGENT_MODE, kb_category_aware=KB_CATEGORY_AWARE)
+
+LLM_TRIAGE_ENABLED = _getenv_bool("LLM_TRIAGE_ENABLED", False)
+LLM_TRIAGE_THRESHOLD = float(os.getenv("LLM_TRIAGE_THRESHOLD", "0.55"))
 
 try:
     from .utils.human import registrar_evento_humano
@@ -2264,6 +2270,43 @@ def _extract_document_name(text: str) -> str:
     return working
 
 
+def _gemini_triage_intent(text: str, trace_id: Optional[str] = None) -> Optional[str]:
+    if not LLM_TRIAGE_ENABLED:
+        return None
+    if not INTERP_LLM_API_KEY:
+        return None
+    if not text:
+        return None
+    url = f"{INTERP_LLM_ENDPOINT.rstrip('/')}/{INTERP_LLM_MODEL}:generateContent?key={INTERP_LLM_API_KEY}"
+    prompt = (
+        "Clasifica la intención del mensaje en UNA de estas etiquetas: faq, agenda, reclamo, interpretativa.\n"
+        "Responde solo con la etiqueta, en minúsculas.\n\n"
+        f"Mensaje: {text}"
+    )
+    payload = {
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.0, "maxOutputTokens": 8},
+    }
+    try:
+        resp = requests.post(url, json=payload, timeout=20)
+        if not resp.ok:
+            _jlog(_logger, "triage.llm_error", status=resp.status_code, trace_id=trace_id)
+            return None
+        data = resp.json()
+        candidates = data.get("candidates") or []
+        if not candidates:
+            return None
+        parts = (candidates[0].get("content") or {}).get("parts") or []
+        if not parts:
+            return None
+        label = (parts[0].get("text") or "").strip().lower()
+        if label not in {"faq", "agenda", "reclamo", "interpretativa"}:
+            return None
+        return label
+    except Exception:
+        return None
+
+
 def _needs_specific_info(text: str, has_context: bool = False) -> bool:
     if not text:
         return True
@@ -3054,6 +3097,21 @@ def handle_turn(
         if stored_entities and isinstance(classification, dict):
             classification["entities"] = stored_entities
     processed = _process_intent_classification(classification, utterance=user_text)
+    if processed["action"] == "ask_document":
+        # Optional LLM triage when deterministic routing is unsure (no strong hint)
+        hinted_tramite_triage = match_tramite(user_text, KB_BY_ALIAS)
+        if LLM_TRIAGE_ENABLED and not hinted_tramite_triage:
+            triage_label = _gemini_triage_intent(user_text, trace_id=trace_id)
+            if triage_label and triage_label != "faq":
+                _jlog(_logger, "triage.llm_override", from_intent="faq", to_intent=triage_label, trace_id=trace_id)
+                if triage_label == "agenda":
+                    processed["action"] = "init_scheduler"
+                    processed["normalized"] = "agenda"
+                elif triage_label == "reclamo":
+                    processed["action"] = "init_complaint"
+                    processed["normalized"] = "reclamo"
+                elif triage_label == "interpretativa":
+                    context_manager.update_context_data(session_id, {"triage_interpretativa": True})
     intent_action = processed["action"]
     categoria = processed["category"]
     intent_key = intent_action if intent_action != "n/a" else (processed.get("normalized") or "")
@@ -3241,7 +3299,10 @@ def handle_turn(
                 context_manager.update_context_data(session_id, {"expecting_aspect": True})
                 return show_aspect_menu(t_id)
 
-            interp_payload = _run_interpretativas_pipeline(session_id, user_text)
+            triage_interp = bool(context_manager.get_context_field(session_id, "triage_interpretativa"))
+            if triage_interp:
+                context_manager.clear_context_field(session_id, "triage_interpretativa")
+            interp_payload = _run_interpretativas_pipeline(session_id, user_text) if (triage_interp or not cat) else None
             if interp_payload is not None:
                 if not interp_payload.get("no_results"):
                     return interp_payload
