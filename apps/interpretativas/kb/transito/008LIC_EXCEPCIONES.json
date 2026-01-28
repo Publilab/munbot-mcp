@@ -1,0 +1,121 @@
+{
+  "version": "1.0.0",
+  "descripcion": "Tránsito — Casos especiales de licencias: observaciones, transmisión automática, licencias prorrogadas y renovación en otra comuna.",
+  "tramites": [
+    {
+      "id": "lic-excepciones-observaciones_licencia",
+      "aliases": [
+        "qué significa esta observación en mi licencia",
+        "observaciones en mi licencia",
+        "restricciones en la licencia",
+        "mi licencia tiene una observación",
+        "qué significan las anotaciones en la licencia"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "licencias",
+      "sub_tipo_licencia": "observaciones",
+      "respuestas": {
+        "que_es": "Las observaciones en la licencia indican restricciones o condiciones especiales (por ejemplo, uso de lentes).",
+        "como_proceder": "El significado exacto depende del código o texto. Indícame la observación específica para orientarte y confirma en la Dirección de Tránsito.",
+        "que_hace_munbot": "MunBoT entrega orientación general y deriva a la Dirección de Tránsito para confirmación oficial."
+      },
+      "fuentes": [
+        "DS 170 (Reglamento de Otorgamiento de Licencias) — ficha resumen y observaciones (carencias de aptitud)."
+      ],
+      "bordes": [
+        "No inventar el significado exacto de códigos si no están definidos en la base oficial.",
+        "Si el usuario no entrega el código exacto, pedirlo antes de responder."
+      ],
+      "aspect_buttons": [
+        "¿Qué significa?",
+        "¿Cómo proceder?",
+        "Entregar código"
+      ]
+    },
+    {
+      "id": "lic-excepciones-examen_automatico",
+      "aliases": [
+        "se puede rendir el examen práctico en automático",
+        "puedo dar la prueba en auto automático",
+        "examen práctico con transmisión automática",
+        "licencia en auto automático"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "licencias",
+      "sub_tipo_licencia": "examen_practico",
+      "respuestas": {
+        "que_es": "La ley exige examen práctico, pero no fija el tipo de transmisión. La aplicación concreta puede variar por municipio.",
+        "como_proceder": "Confirma en tu municipalidad si aceptan transmisión automática y si genera observaciones. El vehículo debe tener su documentación al día.",
+        "que_hace_munbot": "MunBoT orienta y deriva a la Dirección de Tránsito para confirmación oficial."
+      },
+      "fuentes": [
+        "Ley 18.290 (Ley de Tránsito) — Art. 13 (exámenes teóricos y prácticos requeridos)."
+      ],
+      "bordes": [
+        "No afirmar si está permitido o no sin confirmación oficial local.",
+        "Si se requiere, derivar a la oficina de Tránsito para confirmación."
+      ],
+      "aspect_buttons": [
+        "¿Está permitido?",
+        "¿Qué restricciones?",
+        "Derivar a Tránsito"
+      ]
+    },
+    {
+      "id": "lic-excepciones-licencia_prorrogada_extranjero",
+      "aliases": [
+        "puedo conducir en el extranjero con mi licencia chilena prorrogada",
+        "licencia prorrogada en el extranjero",
+        "licencia chilena prorrogada sirve fuera de chile",
+        "puedo manejar fuera de chile con licencia prorrogada"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "licencias",
+      "sub_tipo_licencia": "prorroga_extranjero",
+      "respuestas": {
+        "que_es": "La ley reconoce licencia o permiso internacional vigente. La validez de prórrogas locales depende del país de destino.",
+        "como_proceder": "Antes de viajar, consulta con el consulado o autoridad del país de destino. Puede exigirse licencia internacional.",
+        "que_hace_munbot": "MunBoT orienta y recomienda confirmar con autoridad extranjera."
+      },
+      "fuentes": [
+        "Ley 18.290 (Ley de Tránsito) — Art. 5 (licencia o permiso internacional)."
+      ],
+      "bordes": [
+        "No asegurar validez internacional de prórrogas sin confirmación oficial.",
+        "Derivar a consulado o autoridad extranjera correspondiente."
+      ],
+      "aspect_buttons": [
+        "¿Qué aplica?",
+        "¿Dónde consultar?"
+      ]
+    },
+    {
+      "id": "lic-excepciones-renovar_otra_comuna",
+      "aliases": [
+        "puedo renovar mi licencia en otra comuna",
+        "renovar licencia en comuna distinta",
+        "renovar licencia fuera de la comuna",
+        "licencia emitida en otra comuna renovación"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "licencias",
+      "sub_tipo_licencia": "renovacion_comuna",
+      "respuestas": {
+        "que_es": "La ley señala que la licencia se solicita en la municipalidad de la comuna de residencia.",
+        "como_proceder": "Confirma requisitos de domicilio y el procedimiento para solicitar antecedentes a la comuna de origen.",
+        "que_hace_munbot": "MunBoT orienta y deriva a la Dirección de Tránsito local."
+      },
+      "fuentes": [
+        "Ley 18.290 (Ley de Tránsito) — Art. 11 (licencia en comuna de residencia)."
+      ],
+      "bordes": [
+        "No afirmar disponibilidad de renovación sin política local.",
+        "Derivar a Tránsito para confirmar requisitos de domicilio."
+      ],
+      "aspect_buttons": [
+        "¿Qué requisitos?",
+        "Derivar a Tránsito"
+      ]
+    }
+  ]
+}

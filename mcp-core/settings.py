@@ -32,8 +32,8 @@ KB_COLLECTION_NORMATIVA  = _getenv_str("KB_COLLECTION_NORMATIVA", "normativa")
 
 # === Interpretativas (pipeline semántico + RAG controlado) ===
 INTERP_QA_TOP_K = _getenv_int("INTERP_QA_TOP_K", 5)
-INTERP_QA_THRESHOLD = _getenv_float("INTERP_QA_THRESHOLD", 0.78)
-INTERP_QA_DISAMBIGUATE = _getenv_float("INTERP_QA_DISAMBIGUATE", 0.62)
+INTERP_QA_THRESHOLD = _getenv_float("INTERP_QA_THRESHOLD", 0.62)
+INTERP_QA_DISAMBIGUATE = _getenv_float("INTERP_QA_DISAMBIGUATE", 0.55)
 
 INTERP_DOC_TOP_K = _getenv_int("INTERP_DOC_TOP_K", 6)
 INTERP_DOC_THRESHOLD = _getenv_float("INTERP_DOC_THRESHOLD", 0.70)

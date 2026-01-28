@@ -1,0 +1,146 @@
+{
+  "version": "1.0.0",
+  "descripcion": "Tránsito — Casos especiales de permiso de circulación y cambios de datos/propiedad.",
+  "tramites": [
+    {
+      "id": "permesp-vehiculo_no_circula",
+      "aliases": [
+        "mi vehículo no va a circular todo el año",
+        "auto no circula todo el año",
+        "qué hago si mi vehículo no circulará",
+        "no voy a usar el auto este año"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": "no_circula",
+      "respuestas": {
+        "que_es": "La ley contempla que no se exige el impuesto si el vehículo estuvo fuera de circulación uno o más años completos, acreditado con declaración jurada simple.",
+        "como_proceder": "La declaración se entrega a la municipalidad a más tardar el 30 de noviembre del año correspondiente. Confirma formato y trámite local.",
+        "que_hace_munbot": "MunBoT orienta con el criterio legal general y deriva al canal municipal."
+      },
+      "fuentes": [
+        "DL 3.063 (Ley de Rentas Municipales) — inciso sobre vehículo fuera de circulación y declaración jurada (pág. 9)."
+      ],
+      "bordes": [
+        "No afirmar exenciones sin respaldo oficial.",
+        "Derivar a la municipalidad para confirmación."
+      ],
+      "aspect_buttons": [
+        "¿Qué aplica?",
+        "Derivar a municipalidad"
+      ]
+    },
+    {
+      "id": "permesp-cambio_datos_vehiculo",
+      "aliases": [
+        "cambiar datos del vehículo en el permiso de circulación",
+        "cambiar color o modelo en el permiso",
+        "actualizar datos del permiso de circulación",
+        "modificar datos del vehículo en el permiso"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": "cambio_datos",
+      "respuestas": {
+        "que_es": "Los cambios de datos del vehículo deben reflejarse en documentos oficiales y pueden exigir actualización en el permiso.",
+        "como_proceder": "Actualiza primero el padrón u otro documento del vehículo y luego presenta los antecedentes en la municipalidad.",
+        "que_hace_munbot": "MunBoT orienta de forma general; la municipalidad confirma documentación exacta."
+      },
+      "fuentes": [
+        "DL 3.063 (Ley de Rentas Municipales) — Art. 21 (registro de permisos y cambio de inscripción para pago)."
+      ],
+      "bordes": [
+        "No afirmar documentos específicos sin respaldo oficial.",
+        "Derivar a Tránsito para lista de requisitos."
+      ],
+      "aspect_buttons": [
+        "¿Qué documentos?",
+        "Derivar a Tránsito"
+      ]
+    },
+    {
+      "id": "permesp-cambio_propietario",
+      "aliases": [
+        "acreditar cambio de propietario para renovar permiso",
+        "cambio de propietario y permiso de circulación",
+        "cómo acredito el cambio de propietario",
+        "vehículo cambiado de dueño y permiso"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": "cambio_propietario",
+      "respuestas": {
+        "que_es": "Para transferir un vehículo se debe acreditar el pago del último permiso de circulación.",
+        "como_proceder": "Regulariza el pago antes del traspaso y confirma en la municipalidad el procedimiento de actualización.",
+        "que_hace_munbot": "MunBoT orienta con el criterio legal general y deriva a Tránsito."
+      },
+      "fuentes": [
+        "DL 3.063 (Ley de Rentas Municipales) — exigencia de pago del último permiso para transferencias (pág. 17)."
+      ],
+      "bordes": [
+        "No afirmar documentos específicos sin respaldo oficial.",
+        "Derivar a Tránsito para confirmación."
+      ],
+      "aspect_buttons": [
+        "¿Qué documentos?",
+        "Derivar a Tránsito"
+      ]
+    },
+    {
+      "id": "permesp-venta_vehiculo_sigue_a_nombre",
+      "aliases": [
+        "vendí mi vehículo y aún aparece a mi nombre",
+        "auto vendido sigue a mi nombre en permiso",
+        "vehículo vendido y figura a mi nombre",
+        "ya vendí el auto pero sigue a mi nombre"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": "venta_vehiculo",
+      "respuestas": {
+        "que_es": "Si el vehículo vendido sigue a tu nombre, el traspaso probablemente no está registrado.",
+        "como_proceder": "Regulariza el traspaso y acredita el pago del último permiso de circulación.",
+        "que_hace_munbot": "MunBoT explica el criterio general y deriva al canal municipal."
+      },
+      "fuentes": [
+        "DL 3.063 (Ley de Rentas Municipales) — exigencia de pago del último permiso para transferencias (pág. 17)."
+      ],
+      "bordes": [
+        "No asumir estado legal del traspaso sin verificación oficial.",
+        "Derivar a Tránsito o Registro Civil según corresponda."
+      ],
+      "aspect_buttons": [
+        "¿Cómo regularizar?",
+        "Derivar a Tránsito"
+      ]
+    },
+    {
+      "id": "permesp-transferir_permiso_vehiculo",
+      "aliases": [
+        "puedo transferir el permiso de circulación a otro vehículo",
+        "transferir permiso a otro auto",
+        "pasar permiso de circulación a otro vehículo",
+        "se puede traspasar el permiso"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "permiso_circulacion",
+      "sub_tipo_licencia": "transferencia_permiso",
+      "respuestas": {
+        "que_es": "El permiso habilita al vehículo a transitar en todo el país y no se traslada a otro vehículo.",
+        "como_proceder": "Para otro vehículo debes tramitar un permiso nuevo. Si cambias de comuna, solicita el cambio de inscripción al pagar.",
+        "que_hace_munbot": "MunBoT orienta y deriva a la municipalidad."
+      },
+      "fuentes": [
+        "DL 3.063 (Ley de Rentas Municipales) — Art. 21 (permiso habilita al vehículo; cambio de inscripción para pago)."
+      ],
+      "bordes": [
+        "No afirmar excepciones sin respaldo oficial.",
+        "Derivar a Tránsito para confirmación."
+      ],
+      "aspect_buttons": [
+        "¿Es posible?",
+        "Derivar a Tránsito"
+      ]
+    }
+  ]
+}

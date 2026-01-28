@@ -5,12 +5,18 @@ kb_paths:
   - apps/interpretativas/kb/transito/004REG_DEU.json
   - apps/interpretativas/kb/transito/005ACT_POL.json
   - apps/interpretativas/kb/transito/007ESTAC_PARQ.json
+  - apps/interpretativas/kb/transito/008LIC_EXCEPCIONES.json
+  - apps/interpretativas/kb/transito/009PERM_ESPECIALES.json
+  - apps/interpretativas/kb/transito/010OBRAS_TRANSITO.json
 doc_paths:
   - docs/Transito/Base Documents/L18.290-Transito.txt
   - docs/Transito/Base Documents/Dec170 - Reg. Otorgamiento Licencias.txt
   - docs/Transito/Base Documents/18.490 - Soap.txt
   - docs/Transito/Base Documents/18.287 - Actuacion Policia Local.txt
   - docs/Transito/Base Documents/21.213 - Regularizacion de Deudas.txt
+  - docs/Transito/Base Documents/Decreto-200_05-NOV-2012.pdf
+  - docs/Transito/Base Documents/17800_ordenanza_n_10_sobre_derechos_municipales_y_concesiones_permisos_y_servicios.pdf
+  - docs/Transito/Base Documents/DL-3063_29-DIC-1979.pdf
 routing_hints:
   - transito
   - licencia

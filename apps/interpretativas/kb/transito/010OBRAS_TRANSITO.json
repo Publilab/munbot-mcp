@@ -1,0 +1,64 @@
+{
+  "version": "1.0.0",
+  "descripcion": "Tránsito — Solicitudes vecinales: reductores de velocidad y estacionamientos reservados.",
+  "tramites": [
+    {
+      "id": "obras-redutores_lomos_toro",
+      "aliases": [
+        "cómo solicitar lomos de toro",
+        "reductor de velocidad en mi barrio",
+        "solicitar lomo de toro",
+        "instalación de lomos de toro",
+        "reductores de velocidad"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "infraestructura_vial",
+      "sub_tipo_licencia": "reductores_velocidad",
+      "respuestas": {
+        "que_es": "Los lomos de toro y resaltos reductores están regulados por el Decreto 200, que define tipos y requisitos.",
+        "como_proceder": "La instalación requiere evaluación técnica y reglas de ubicación. Ingresa una solicitud formal a la municipalidad.",
+        "que_hace_munbot": "MunBoT orienta y deriva al canal municipal correspondiente."
+      },
+      "fuentes": [
+        "DS 200 (Reglamento de Resaltos Reductores de Velocidad) — Art. 1, 2, 5, 8, 11, 17."
+      ],
+      "bordes": [
+        "No prometer instalación ni plazos sin evaluación técnica.",
+        "Derivar a la municipalidad para el ingreso formal."
+      ],
+      "aspect_buttons": [
+        "¿Cómo solicitar?",
+        "Derivar a municipalidad"
+      ]
+    },
+    {
+      "id": "obras-estacionamiento_discapacidad",
+      "aliases": [
+        "estacionamiento reservado discapacidad frente a mi casa",
+        "estacionamiento para personas con discapacidad",
+        "solicitar estacionamiento reservado discapacidad",
+        "espacio reservado para discapacidad",
+        "estacionamiento exclusivo discapacidad"
+      ],
+      "categoria": "transito",
+      "tipo_licencia": "infraestructura_vial",
+      "sub_tipo_licencia": "estacionamiento_reservado",
+      "respuestas": {
+        "que_es": "La ordenanza municipal contempla el derecho a solicitar un espacio reservado de estacionamiento en BNUP.",
+        "como_proceder": "La señalética debe ajustarse al reglamento de señalización vigente y la solicitud se gestiona en la Dirección de Tránsito.",
+        "que_hace_munbot": "MunBoT orienta y deriva a la municipalidad para requisitos exactos."
+      },
+      "fuentes": [
+        "Ordenanza N°10 sobre Derechos Municipales y Concesiones — Art. 5 (espacio reservado de estacionamiento en BNUP y señalética)."
+      ],
+      "bordes": [
+        "No asegurar aprobación sin evaluación municipal.",
+        "Derivar a la oficina correspondiente para requisitos."
+      ],
+      "aspect_buttons": [
+        "¿Qué necesito?",
+        "Derivar a municipalidad"
+      ]
+    }
+  ]
+}
