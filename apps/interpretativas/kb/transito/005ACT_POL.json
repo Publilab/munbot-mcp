@@ -37,7 +37,12 @@
         "No puedo ir a la citación",
         "Presentar descargos",
         "Exhorto (otra comuna)"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-010",
@@ -73,7 +78,12 @@
         "Exhorto",
         "No puedo ir",
         "Me retuvieron la licencia"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-020",
@@ -110,7 +120,12 @@
         "Rebaja 25%: ¿aplica a mi caso?",
         "¿Qué plazo tengo?",
         "¿Cómo recupero la licencia?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-030",
@@ -141,7 +156,12 @@
         "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
         "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
       ],
-      "aspect_buttons": []
+      "aspect_buttons": [],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-040",
@@ -173,7 +193,12 @@
         "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
         "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
       ],
-      "aspect_buttons": []
+      "aspect_buttons": [],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-050",
@@ -205,7 +230,12 @@
         "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
         "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
       ],
-      "aspect_buttons": []
+      "aspect_buttons": [],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-060",
@@ -237,7 +267,12 @@
         "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
         "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
       ],
-      "aspect_buttons": []
+      "aspect_buttons": [],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-070",
@@ -267,7 +302,12 @@
         "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
         "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
       ],
-      "aspect_buttons": []
+      "aspect_buttons": [],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-080",
@@ -299,7 +339,12 @@
         "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
         "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
       ],
-      "aspect_buttons": []
+      "aspect_buttons": [],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-090",
@@ -330,7 +375,12 @@
         "Si hay accidente con lesiones, daños relevantes o hechos que configuren delito, corresponde seguir instrucciones de la autoridad y/o asesoría legal.",
         "Para trámites específicos (pago online, horarios, convenios), confirmar en el sitio/tesorería de tu municipalidad o JPL."
       ],
-      "aspect_buttons": []
+      "aspect_buttons": [],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-100",
@@ -371,7 +421,12 @@
         "Cuándo aplica",
         "Qué hacer",
         "Nota"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-110",
@@ -416,7 +471,12 @@
         "Datos mínimos",
         "Canales",
         "Resultados posibles"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "ACTPOL-JPL-120",
@@ -455,7 +515,15 @@
         "Orientación",
         "Dato clave",
         "Consejo"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     }
-  ]
+  ],
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

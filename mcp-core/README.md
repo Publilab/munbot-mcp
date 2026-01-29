@@ -30,7 +30,6 @@ queries about:
 Example queries:
 
 ```
-¿Para qué sirve el Certificado de Residencia?
 ¿Cuál es la vigencia de la Licencia de Transporte Espacial?
 ¿Teléfono de contacto para el Certificado Registro de Carga?
 ```

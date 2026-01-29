@@ -370,31 +370,6 @@ KB_FAQ_RAW = _load_faqs()
 
 # Mapa genérico de sinónimos por clave FAQ (normalizado)
 FAQ_GENERIC_SYNONYMS = {
-    "tiempo_residencia": [
-        "tiempo residencia",
-        "anos residencia",
-        "años residencia",
-        "plazo residencia",
-        "anos viviendo",
-        "años viviendo",
-        "tiempo viviendo",
-        "he vivido",
-        "he residido",
-        "viviendo",
-        "residir",
-        "cumpli 4 anos",
-        "cumpli cuatro anos",
-        "cumpli 4 anios",
-        "visa temporal",
-        "tramitar la definitiva",
-        "tramitar la residencia definitiva",
-    ],
-    "documentos_requeridos": ["documentos", "documento", "papeles", "certificados", "que documentos", "que necesito"],
-    "certificados_digitales": ["certificados digitales", "digitales"],
-    "antecedentes_penales": ["antecedentes penales", "certificado antecedentes"],
-    "plazos_y_seguimiento": ["plazo", "plazos", "demora", "cuanto demora", "seguimiento", "estado tramite", "estado tramitacion"],
-    "visa_temporal_vencida": ["visa temporal vencida", "visa vencida"],
-    "causales_rechazo": ["rechazo", "causales rechazo"],
     # Licencia
     "clase_licencia": ["clase licencia", "tipo licencia", "categoria licencia"],
     "requisitos_generales": ["requisitos", "que necesito"],
@@ -444,7 +419,6 @@ def _load_faq_samples() -> dict:
 FAQ_SAMPLES_RAW = _load_faq_samples()
 
 FAQ_SAMPLE_TRAMITE_HINT = {
-    "cert_residencia_definitiva": "cert_residencia_definitiva",
     "licencia_transporte": "licencia transporte espacial",
     "patente_comercial": "patente comercial intergalactica",
 }
@@ -657,18 +631,6 @@ def _resolve_faq_for_tid(tramite_id: str, txt: str) -> Optional[Dict[str, Any]]:
             if s_norm and s_norm in txt:
                 return {"respuesta": str(faq[k]), "no_results": False, "_resp_type": "faq"}
 
-    try:
-        if tramite_id == "cert_residencia_definitiva":
-            needs_time = re.search(r"\b(4|cuatro)\s*(anos|años)\b", txt) or "visa temporal" in txt or "cumpli" in txt
-            mentions_topic = any(token in txt for token in ("residencia", "definitiva", "permiso", "certificado"))
-            if mentions_topic and needs_time and "tiempo_residencia" in faq:
-                return {"respuesta": str(faq["tiempo_residencia"]), "no_results": False, "_resp_type": "faq"}
-        if "residencia" in txt and ("definitiva" in txt or "permiso" in txt or "certificado" in txt):
-            if re.search(r"\b(\d+)\s*(anos|años)\b", txt):
-                if "tiempo_residencia" in faq:
-                    return {"respuesta": str(faq["tiempo_residencia"]), "no_results": False, "_resp_type": "faq"}
-    except Exception:
-        pass
     return None
 
 
@@ -960,7 +922,6 @@ def show_demo_tramites() -> Dict[str, Any]:
     )
     # IDs esperados en la demo; si faltan, caer a los primeros del KB
     demo_ids = [
-        "cert_residencia_definitiva",
         "licencia transporte espacial",
         "patente comercial intergalactica",
     ]

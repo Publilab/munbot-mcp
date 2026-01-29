@@ -29,7 +29,12 @@
       "aspect_buttons": [
         "¿Cómo solicitar?",
         "Derivar a municipalidad"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Decreto 200 (Resaltos/Lomos de toro)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "obras-estacionamiento_discapacidad",
@@ -58,7 +63,15 @@
       "aspect_buttons": [
         "¿Qué necesito?",
         "Derivar a municipalidad"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Decreto 200 (Resaltos/Lomos de toro)",
+      "entry_vigencia": "2027-01-29"
     }
-  ]
+  ],
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

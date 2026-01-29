@@ -38,7 +38,15 @@
       "aspect_buttons": [
         "Consultar en oficina",
         "Estado del servicio"
-      ]
+      ],
+      "entry_status": "observacion",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Fuente local pendiente",
+      "entry_vigencia": "2027-01-29"
     }
-  ]
+  ],
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

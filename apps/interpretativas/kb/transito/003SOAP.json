@@ -59,7 +59,12 @@
         "Ver plazos",
         "Dónde contratar",
         "Ver costos"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.490 (SOAP)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "soap-cobertura_indemnizaciones",
@@ -122,7 +127,12 @@
         "Ver coberturas",
         "Ver indemnizaciones",
         "Ver plazos"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.490 (SOAP)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "soap-beneficiarios_exclusiones",
@@ -172,7 +182,12 @@
       "aspect_buttons": [
         "Ver beneficiarios",
         "Ver exclusiones"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.490 (SOAP)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "soap-accidente_cobro_documentos_plazos",
@@ -228,7 +243,12 @@
         "Ver documentos",
         "Ver plazos",
         "Dónde cobrar"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.490 (SOAP)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "soap-vigencia_para_permiso_circulacion",
@@ -269,7 +289,15 @@
         "Respuesta corta",
         "Detalle",
         "Errores comunes"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.490 (SOAP)",
+      "entry_vigencia": "2027-01-29"
     }
-  ]
+  ],
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

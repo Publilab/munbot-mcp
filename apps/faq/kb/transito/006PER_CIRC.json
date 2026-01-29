@@ -60,7 +60,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-plazos-livianos",
@@ -119,7 +124,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-plazos-taxis-buses",
@@ -175,7 +185,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-plazos-carga-otros",
@@ -232,7 +247,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-requisitos-usado",
@@ -294,7 +314,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-requisitos-nuevo",
@@ -353,7 +378,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-dos-cuotas",
@@ -409,7 +439,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-valor-calculo",
@@ -468,7 +503,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-multas-impiden",
@@ -524,7 +564,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-tag-ley21547",
@@ -583,7 +628,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-pagar-en-otra-comuna",
@@ -638,7 +688,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-vehiculo-no-circula",
@@ -696,7 +751,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-revision-tecnica",
@@ -752,7 +812,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-pago-atrasado",
@@ -806,7 +871,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-valor-comercial-autofact",
@@ -860,7 +930,12 @@
         "Cómo pagar",
         "Ver costos",
         "Casos especiales"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-tasacion_fiscal_sii",
@@ -899,7 +974,12 @@
         "Respuesta corta",
         "Cómo hacerlo",
         "Nota"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-certificado_multas_empadronadas",
@@ -941,7 +1021,12 @@
         "Qué pasa",
         "Qué hacer",
         "Nota"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-vehiculo_nuevo_primer_permiso",
@@ -985,7 +1070,12 @@
         "Documentos típicos",
         "Qué hacer",
         "Nota"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permcirc-pago-online",
@@ -1019,7 +1109,15 @@
       "aspect_buttons": [
         "Ir al portal",
         "Cómo pagar"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "DL 3.063 (Rentas Municipales)",
+      "entry_vigencia": "2027-01-29"
     }
-  ]
+  ],
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

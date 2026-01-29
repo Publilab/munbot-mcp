@@ -28,7 +28,12 @@
       "aspect_buttons": [
         "¿Qué aplica?",
         "Derivar a municipalidad"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ordenanza N°10 (Derechos Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permesp-cambio_datos_vehiculo",
@@ -56,7 +61,12 @@
       "aspect_buttons": [
         "¿Qué documentos?",
         "Derivar a Tránsito"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ordenanza N°10 (Derechos Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permesp-cambio_propietario",
@@ -84,7 +94,12 @@
       "aspect_buttons": [
         "¿Qué documentos?",
         "Derivar a Tránsito"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ordenanza N°10 (Derechos Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permesp-venta_vehiculo_sigue_a_nombre",
@@ -112,7 +127,12 @@
       "aspect_buttons": [
         "¿Cómo regularizar?",
         "Derivar a Tránsito"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ordenanza N°10 (Derechos Municipales)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "permesp-transferir_permiso_vehiculo",
@@ -140,7 +160,15 @@
       "aspect_buttons": [
         "¿Es posible?",
         "Derivar a Tránsito"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ordenanza N°10 (Derechos Municipales)",
+      "entry_vigencia": "2027-01-29"
     }
-  ]
+  ],
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

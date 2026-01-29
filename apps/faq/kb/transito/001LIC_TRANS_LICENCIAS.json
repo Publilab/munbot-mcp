@@ -81,7 +81,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-obtencion_profesional_A1",
@@ -151,7 +156,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-obtencion_profesional_A2",
@@ -220,7 +230,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-obtencion_profesional_A3",
@@ -290,7 +305,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-obtencion_profesional_A4",
@@ -358,7 +378,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-obtencion_profesional_A5",
@@ -428,7 +453,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "licencia_conducir_renovacion",
@@ -461,7 +491,12 @@
         "Dónde tramitar",
         "Ver costos",
         "Ver horarios"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-renovacion_profesional",
@@ -530,7 +565,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-renovacion_profesional_A1",
@@ -597,7 +637,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-renovacion_profesional_A2",
@@ -664,7 +709,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-renovacion_profesional_A3",
@@ -731,7 +781,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-renovacion_profesional_A4",
@@ -798,7 +853,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-renovacion_profesional_A5",
@@ -865,7 +925,12 @@
         "Ver costos",
         "Ver horarios",
         "Agendar una cita"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-duplicado_profesional",
@@ -930,7 +995,12 @@
         "Dónde tramitar",
         "Ver costos",
         "Ver horarios"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-duplicado_profesional_A1",
@@ -993,7 +1063,12 @@
         "Dónde tramitar",
         "Ver costos",
         "Ver horarios"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-duplicado_profesional_A2",
@@ -1056,7 +1131,12 @@
         "Dónde tramitar",
         "Ver costos",
         "Ver horarios"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-duplicado_profesional_A3",
@@ -1119,7 +1199,12 @@
         "Dónde tramitar",
         "Ver costos",
         "Ver horarios"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-duplicado_profesional_A4",
@@ -1182,7 +1267,12 @@
         "Dónde tramitar",
         "Ver costos",
         "Ver horarios"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-duplicado_profesional_A5",
@@ -1245,7 +1335,12 @@
         "Dónde tramitar",
         "Ver costos",
         "Ver horarios"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-bloqueo_profesional",
@@ -1301,7 +1396,12 @@
         "Dónde bloquear",
         "Qué hacer después",
         "Ver documentación"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-bloqueo_profesional_A1",
@@ -1354,7 +1454,12 @@
         "Dónde bloquear",
         "Qué hacer después",
         "Ver documentación"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-bloqueo_profesional_A2",
@@ -1407,7 +1512,12 @@
         "Dónde bloquear",
         "Qué hacer después",
         "Ver documentación"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-bloqueo_profesional_A3",
@@ -1460,7 +1570,12 @@
         "Dónde bloquear",
         "Qué hacer después",
         "Ver documentación"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-bloqueo_profesional_A4",
@@ -1513,7 +1628,12 @@
         "Dónde bloquear",
         "Qué hacer después",
         "Ver documentación"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-bloqueo_profesional_A5",
@@ -1566,7 +1686,12 @@
         "Dónde bloquear",
         "Qué hacer después",
         "Ver documentación"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-renovacion_donde_tramitar_profesional",
@@ -1612,7 +1737,12 @@
         "Respuesta corta",
         "Qué hacer",
         "Casos límite"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-bloqueo_diferencias_profesional",
@@ -1659,7 +1789,12 @@
         "Tipos",
         "Qué hacer si robo",
         "Alerta"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-duplicado_extravio_robo_profesional",
@@ -1706,7 +1841,12 @@
         "Pasos típicos",
         "Documentos típicos",
         "Nota"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-hoja_vida_conductor_para_licencias",
@@ -1749,7 +1889,12 @@
         "Para qué sirve",
         "Dónde se solicita",
         "Nota"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "liccond-licencia_digital_info_general",
@@ -1791,11 +1936,19 @@
         "Idea clave",
         "Qué hacer",
         "Nota"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 18.290; Decreto 170 (Otorgamiento Licencias)",
+      "entry_vigencia": "2027-01-29"
     }
   ],
   "metadata": {
     "updated_at": "2026-01-13",
     "notes": "Añadidas entradas por subtipo para renovación, duplicado y bloqueo de licencias profesionales A1–A5; normalizados requisitos A2. | Ajustados aliases de 'licencia_conducir_renovacion' para evitar colisión con renovación profesional A1–A5."
-  }
+  },
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

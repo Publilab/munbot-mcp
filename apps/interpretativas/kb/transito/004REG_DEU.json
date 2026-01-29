@@ -40,7 +40,12 @@
         "¿Cómo regularizo?",
         "¿Dónde reviso mis multas?",
         "¿Puedo pagar en cuotas?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-consultar_multas",
@@ -70,7 +75,12 @@
       "aspect_buttons": [
         "¿Cómo consulto?",
         "¿Por qué importa?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-monto_beneficio",
@@ -104,7 +114,12 @@
         "¿Cuál es la regla?",
         "¿Qué cubre?",
         "¿Qué no cubre?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-convenio_pago",
@@ -139,7 +154,12 @@
         "¿Cuándo se firma?",
         "¿Cuántas cuotas?",
         "¿Qué pasa con el registro?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-pago_contado",
@@ -169,7 +189,12 @@
       "aspect_buttons": [
         "¿Puedo pagar al contado?",
         "¿Qué efecto tiene?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-incumplimiento_convenio",
@@ -199,7 +224,12 @@
       "aspect_buttons": [
         "¿Qué pasa si me atraso?",
         "¿Cuál es la consecuencia?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-permiso_circulacion_relacion",
@@ -229,7 +259,12 @@
       "aspect_buttons": [
         "¿Por qué bloquea?",
         "¿Qué multas?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-beneficio_21213_historia",
@@ -260,7 +295,12 @@
       "aspect_buttons": [
         "¿Sigue vigente?",
         "¿Qué hago hoy?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-documentos_tipicos",
@@ -291,7 +331,12 @@
       "aspect_buttons": [
         "¿Qué documentos?",
         "¿Varía por comuna?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-multas_tag-que_multas_incluye",
@@ -323,7 +368,12 @@
       "aspect_buttons": [
         "¿Qué incluye?",
         "¿Qué no incluye?"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-certificado_multas_empadronadas",
@@ -361,7 +411,12 @@
         "Para qué sirve",
         "Puntos clave",
         "Consejo"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     },
     {
       "id": "regdeu-hoja_de_vida_y_multas_relacion",
@@ -395,7 +450,15 @@
       "aspect_buttons": [
         "Diferencia",
         "Cómo abordarlo"
-      ]
+      ],
+      "entry_status": "draft",
+      "entry_updated_at": "2026-01-29",
+      "entry_approved_by": "Director de Tránsito",
+      "entry_source": "Ley 21.213; Ley 18.287 (Juzgados Policía Local)",
+      "entry_vigencia": "2027-01-29"
     }
-  ]
+  ],
+  "status": "draft",
+  "updated_at": "2026-01-29",
+  "approved_by": "Director de Tránsito"
 }

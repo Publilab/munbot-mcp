@@ -1,32 +1,6 @@
 {
   "tramites": [
     {
-      "id": "cert_residencia_definitiva",
-      "aliases": [
-        "certificado de residencia definitiva",
-        "certificado de residencia",
-        "papel de residencia",
-        "papel de residencia definitiva",
-        "residencia definitiva"
-      ],
-      "categoria": "certificados",
-      "respuestas": {
-        "donde": "📍 Para obtener un certificado de residencia definitiva debes dirigirte a:\nOficina de Registro Civil Municipal, ubicada en el Edificio Consistorial Coruscant (nivel 1313).",
-        "horarios": "🕐 La Oficina de Registro Civil Municipal atiende de lunes a viernes, 08:00–17:00.",
-        "requisitos": "Los requisitos para el certificado de residencia definitiva son:\n- Cédula vigente\n- Formulario CRD-001\n- 2 testigos con domicilio en la comuna",
-        "costos": "💰 El valor de la certificado de residencia definitiva es de 32 créditos galácticos.",
-        "plazos": "⏳ Una vez cumplido con los requisitos y la tramitación del certificado de residencia definitiva, se hará entrega del documento definitivo en 5 días hábiles.",
-        "proposito": "El certificado de residencia definitiva acredita domicilio permanente para trámites municipales."
-      },
-      "aspect_buttons": [
-        "Ver requisitos",
-        "Ver costos",
-        "Ver horarios",
-        "Dónde tramitar",
-        "Para qué sirve"
-      ]
-    },
-    {
       "id": "licencia transporte espacial",
       "aliases": [
         "licencia de transporte",

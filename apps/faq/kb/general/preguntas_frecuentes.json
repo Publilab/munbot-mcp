@@ -1,18 +1,10 @@
 {
-  "residencia_definitiva": {
-    "aliases": ["permiso de residencia", "residencia definitiva", "permiso definitivo"],
-    "faq": {
-      "tiempo_residencia": "Sí. En general, si has residido legalmente en el país durante 4 años con visas temporales consecutivas, puedes solicitar la residencia definitiva. Asegúrate de no haber salido del país por más de 180 días acumulados en ese período.",
-      "documentos_requeridos": "Se solicita copia de tu cédula vigente, certificado de antecedentes para fines especiales, comprobante de domicilio y contrato laboral. Deben estar en formato PDF, legibles y actualizados.",
-      "certificados_digitales": "Se aceptan certificados digitales emitidos por instituciones oficiales chilenas. Documentos extranjeros deben estar apostillados o legalizados por vía consular.",
-      "antecedentes_penales": "Sí. Es obligatorio presentar antecedentes penales de tu país de origen (apostillados) y también el certificado de antecedentes para fines especiales emitido en Chile.",
-      "plazos_y_seguimiento": "El tiempo de tramitación promedio es de 90 a 120 días hábiles. Puedes hacer seguimiento en línea ingresando al sitio web del Servicio Nacional de Migraciones con tu número de expediente.",
-      "visa_temporal_vencida": "Puedes permanecer en el país legalmente mientras el proceso de residencia definitiva esté en trámite, siempre que hayas ingresado la solicitud antes del vencimiento.",
-      "causales_rechazo": "Las más frecuentes son: antecedentes penales, documentación incompleta, residencias interrumpidas o vencidas, y falsificación documental. Verifica todos los requisitos antes de enviar."
-    }
-  },
   "licencia_transporte": {
-    "aliases": ["licencia de conducir", "licencia profesional", "licencia transporte"],
+    "aliases": [
+      "licencia de conducir",
+      "licencia profesional",
+      "licencia transporte"
+    ],
     "faq": {
       "clase_licencia": "Depende del tipo de vehículo: clase A1 para taxis, A2 para transporte privado, A3 para buses de pasajeros. Revisa en tránsito según el vehículo y uso.",
       "requisitos_generales": "Debes tener al menos 20 años, estar en buen estado físico y mental, y haber aprobado 8° básico. Se exige un certificado médico y psicotécnico.",
@@ -23,7 +15,11 @@
     }
   },
   "patente_comercial": {
-    "aliases": ["patente comercial", "actividad comercial", "iniciar negocio"],
+    "aliases": [
+      "patente comercial",
+      "actividad comercial",
+      "iniciar negocio"
+    ],
     "faq": {
       "venta_desde_casa": "Sí. Toda actividad económica habitual requiere patente, incluso si es desde el hogar o vía e-commerce. En algunos casos puedes optar por patente provisoria.",
       "requisitos_local": "Debe cumplir con las normas de uso de suelo, tener baño, ventilación, medidas sanitarias y autorización de bomberos si aplica. El informe de inspección es obligatorio.",
