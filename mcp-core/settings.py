@@ -61,3 +61,8 @@ INTERP_LLM_ENDPOINT = _getenv_str(
     "https://generativelanguage.googleapis.com/v1beta/models",
 )
 INTERP_INCLUDE_SOURCES = _getenv_int("INTERP_INCLUDE_SOURCES", 0)
+
+# === Runtime flags (degradación) ===
+FAQ_ONLY_MODE = _getenv_int("FAQ_ONLY_MODE", 0)
+EMBEDDINGS_ENABLED = _getenv_int("EMBEDDINGS_ENABLED", 1)
+RERANK_ENABLED = _getenv_int("RERANK_ENABLED", 1)

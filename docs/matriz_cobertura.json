@@ -1,0 +1,352 @@
+[
+  {
+    "pregunta": "¿qué significa bloquear la licencia?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "bloqueo licencia profesional",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "bloquear licencia A1",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "bloquear licencia A2",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "bloquear licencia A3",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "bloquear licencia A4",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "bloquear licencia A5",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "reponer licencia A perdida",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "duplicado licencia profesional",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "duplicado licencia A1",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "duplicado licencia A2",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "duplicado licencia A3",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "duplicado licencia A4",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "duplicado licencia A5",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "hoja de vida del conductor",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "licencia digital",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "obtener licencia profesional",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "obtener licencia de conducir A1",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "obtener licencia de conducir A2",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "obtener licencia de conducir A3",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "obtener licencia de conducir A4",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "obtener licencia de conducir A5",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Puedo renovar la licencia profesional en otra municipalidad?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "renovar licencia profesional",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "renovar licencia A1",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "renovar licencia A2",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "renovar licencia A3",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "renovar licencia A4",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "renovar licencia A5",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "renovar licencia de conducir",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "certificado de multas permiso de circulación",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Puedo pagar el permiso de circulación en cuotas?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "Tengo multas, ¿puedo sacar el permiso de circulación?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Puedo pagar el permiso de circulación en otra comuna?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Qué pasa si pago el permiso de circulación atrasado?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Cómo pagar el permiso de circulación en línea?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Cuándo se paga el permiso de circulación de un camión?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Hasta cuándo puedo pagar el permiso de circulación de mi auto?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Cuándo se paga el permiso de circulación de un taxi?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Qué es el permiso de circulación?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Qué necesito para sacar el permiso de circulación por primera vez?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Qué documentos necesito para pagar el permiso de circulación?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "Tengo la revisión técnica vencida, ¿puedo pagar el permiso de circulación?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "Tengo multas por TAG, ¿puedo sacar el permiso de circulación?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "tasación fiscal permiso de circulación",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Cómo se calcula el valor del permiso de circulación?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "¿Dónde puedo consultar el valor comercial del vehículo por patente?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "Mi vehículo no va a circular este año, ¿igual debo pagar permiso?",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "permiso de circulación vehículo nuevo",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  },
+  {
+    "pregunta": "reservar hora",
+    "tiene_respuesta": "no",
+    "tipo": "FAQ",
+    "fuente": "Fuente local pendiente",
+    "estado": "no validada"
+  }
+]

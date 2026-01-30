@@ -32,6 +32,8 @@ try:
         INTERP_RERANK_BACKEND,
         INTERP_RERANK_MODEL,
         INTERP_RERANK_TOP_K,
+        EMBEDDINGS_ENABLED,
+        RERANK_ENABLED,
     )
     from .utils.app_registry import load_app_config, load_registry
     from .utils.semantic_index import (
@@ -68,6 +70,8 @@ except Exception:  # pragma: no cover - fallback for direct execution
         INTERP_RERANK_BACKEND,
         INTERP_RERANK_MODEL,
         INTERP_RERANK_TOP_K,
+        EMBEDDINGS_ENABLED,
+        RERANK_ENABLED,
     )
     from utils.app_registry import load_app_config, load_registry  # type: ignore
     from utils.semantic_index import (  # type: ignore
@@ -295,6 +299,8 @@ class InterpretativasEngine:
         self._dept_cfgs = {
             d.get("id"): d for d in (self._app_cfg.get("departments") or []) if isinstance(d, dict)
         }
+        self._embeddings_enabled = bool(EMBEDDINGS_ENABLED)
+        self._rerank_enabled = bool(RERANK_ENABLED)
         self._embedder = build_embedder(INTERP_EMBED_BACKEND, INTERP_EMBED_MODEL, INTERP_EMBED_DIM)
         self._reranker = build_reranker(INTERP_RERANK_BACKEND, INTERP_RERANK_MODEL)
         self._qa_indices: Dict[str, SemanticIndex] = {}
@@ -406,6 +412,8 @@ class InterpretativasEngine:
         return self._build_doc_index(dept_id)
 
     def _rerank(self, query: str, hits: List[SearchHit]) -> List[SearchHit]:
+        if not self._rerank_enabled:
+            return hits
         if not hits:
             return []
         scored: List[Tuple[SearchHit, float]] = []
@@ -550,6 +558,16 @@ class InterpretativasEngine:
         dept_id = self._get_dept_id(dept_id)
         if not dept_id:
             return None
+        if not self._embeddings_enabled:
+            return InterpretativaResponse(
+                status="fallback",
+                respuesta="No encontré una respuesta oficial para esa consulta. ¿Podrías dar más detalles?",
+                suggested_replies=[],
+                sources=[],
+                score=0.0,
+                match_id=None,
+                payload={"stage": "embeddings_off"},
+            )
         qa_index = self._get_qa_index(dept_id)
         hits = qa_index.search(question, top_k=INTERP_QA_TOP_K)
         reranked = self._rerank(question, hits)

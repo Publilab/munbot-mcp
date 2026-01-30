@@ -50,6 +50,7 @@ from .settings import (
     INTERP_LLM_API_KEY,
     INTERP_LLM_ENDPOINT,
     INTERP_LLM_MODEL,
+    FAQ_ONLY_MODE,
 )
 
 _logger = logging.getLogger("orchestrator")
@@ -1119,6 +1120,7 @@ HEURISTIC_FALLBACK_COUNTER = Counter("munbot_intent_heuristic_total", "Intencion
 MET_INTENT_NA = Counter("munbot_intent_na_total", "Intenciones n/a", registry=PROM_REGISTRY)
 MET_FLOW_LAT = Histogram("munbot_orchestrate_duration_seconds", "Duración de orchestrate", buckets=(0.05, 0.1, 0.2, 0.5, 1, 2, 4, 8), registry=PROM_REGISTRY)
 MET_SUCCESS_BY_CAT = Counter("munbot_success_by_category_total", "Respuestas exitosas por categoría", ["categoria"], registry=PROM_REGISTRY)
+DISAMBIGUATION_COUNTER = Counter("munbot_disambiguation_total", "Desambiguaciones activadas", ["categoria"], registry=PROM_REGISTRY)
 
 # === Minimal demo counters ===
 RESP_DIRECT_COUNTER = Counter("responses_direct_total", "Respuestas directas desde KB", registry=PROM_REGISTRY)
@@ -1127,6 +1129,8 @@ RESP_MENU_CATEGORY_COUNTER = Counter("responses_menu_category_total", "Menús de
 FALLBACK_MIN_COUNTER = Counter("fallback_total", "Fallbacks activados (mínimo)", registry=PROM_REGISTRY)
 COMPLAINTS_CREATED_COUNTER = Counter("complaints_created_total", "Reclamos registrados", registry=PROM_REGISTRY)
 SCHEDULER_BOOKED_COUNTER = Counter("scheduler_booked_total", "Citas reservadas", registry=PROM_REGISTRY)
+COMPLAINTS_ATTEMPTS_COUNTER = Counter("complaints_attempt_total", "Intentos de reclamo", registry=PROM_REGISTRY)
+SCHEDULER_ATTEMPTS_COUNTER = Counter("scheduler_attempt_total", "Intentos de agenda", registry=PROM_REGISTRY)
 
 # Latencia por tipo de respuesta (usar en p90 por tipo)
 RESP_LATENCY = Histogram(
@@ -2362,6 +2366,8 @@ def _handle_interpretativas_choice(session_id: str, user_text: str) -> Optional[
 
 
 def _run_interpretativas_pipeline(session_id: str, user_text: str) -> Optional[Dict[str, Any]]:
+    if FAQ_ONLY_MODE:
+        return None
     try:
         from .interpretativas_engine import get_engine, to_payload
     except Exception:
@@ -2431,6 +2437,10 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional
             service_url = MICROSERVICES.get("complaints-mcp")
 
     if not service_url:
+        try:
+            ERROR_COUNTER.labels(tool, "unknown").inc()
+        except Exception:
+            pass
         return {"error": f"tool_not_supported_{tool}"}
 
     payload = {"tool": tool, "params": params}
@@ -2441,6 +2451,10 @@ def call_tool_microservice(tool: str, params: Dict[str, Any], trace_id: Optional
         resp.raise_for_status()
         return resp.json()
     except requests.RequestException as exc:  # pragma: no cover - network
+        try:
+            ERROR_COUNTER.labels(tool, "unknown").inc()
+        except Exception:
+            pass
         _jlog(_logger, "tools.error", tool=tool, error=str(exc))
         return {"error": str(exc)}
 
@@ -2464,6 +2478,10 @@ def handle_scheduler_flow(session_id: str, user_text: str, trace_id: Optional[st
     if state is None:
         context_manager.set_current_flow(session_id, "agenda")
         context_manager.update_scheduler_state(session_id, "confirming_process")
+        try:
+            SCHEDULER_ATTEMPTS_COUNTER.inc()
+        except Exception:
+            pass
         msg = "El sistema de asignación de horas es automático y se asigna según la primera hora del mes disponible. Tienes derecho a rechazar la hora propuesta una vez, y el sistema te propondrá otra. Si la segunda hora es rechazada, el sistema interpretará que has declinado seguir con el proceso. ¿Aceptas continuar?"
         return {"respuesta": msg, "no_results": False, "suggested_replies": ["Acepto", "Rechazo"]}
 
@@ -2693,6 +2711,10 @@ def handle_complaint_flow(session_id: str, user_text: str, trace_id: Optional[st
         context_manager.clear_complaint_state(session_id)
         context_manager.clear_pending_field(session_id)
         context_manager.set_current_flow(session_id, "reclamo")
+        try:
+            COMPLAINTS_ATTEMPTS_COUNTER.inc()
+        except Exception:
+            pass
         context_manager.set_pending_confirmation(session_id, True)
         context_manager.update_complaint_state(session_id, "confirming")
         msg = f"Puedo ayudarte a registrar tu {label}. ¿Deseas registrarlo ahora?"
@@ -3334,6 +3356,20 @@ def orchestrate(
         latency_ms = int(elapsed * 1000)
     except Exception:
         latency_ms = None
+
+    # Métricas de volumen y calidad
+    try:
+        intent_label = context_manager.get_context_field(sid, "last_intent_normalized") or "unknown"
+        category_label = context_manager.get_context_field(sid, "last_intent_category") or "unknown"
+        REQUEST_COUNTER.labels(intent_label, category_label).inc()
+        if response_payload.get("escalado"):
+            HUMAN_ESCALATION_COUNTER.inc()
+        if resp_type in {"clarify", "disambiguate", "disambiguate_sched_vs_hours"}:
+            DISAMBIGUATION_COUNTER.labels(category_label).inc()
+        if resp_type != "fallback" and not response_payload.get("no_results"):
+            MET_SUCCESS_BY_CAT.labels(category_label).inc()
+    except Exception:
+        pass
 
     # Registro para reportería municipal
     try:

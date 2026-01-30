@@ -1,0 +1,974 @@
+[
+  {
+    "id_faq": "liccond-bloqueo_diferencias_profesional",
+    "pregunta_canonica": "¿qué significa bloquear la licencia?",
+    "variantes": [
+      "¿qué significa bloquear la licencia?",
+      "bloqueo temporal vs definitivo licencia",
+      "me robaron la licencia, ¿la bloqueo?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-bloqueo_profesional",
+    "pregunta_canonica": "bloqueo licencia profesional",
+    "variantes": [
+      "bloqueo licencia profesional",
+      "bloquear licencia profesional",
+      "licencia profesional bloqueada",
+      "bloqueo por pérdida licencia",
+      "bloqueo por robo licencia",
+      "bloqueo licencia clase A"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-bloqueo_profesional_A1",
+    "pregunta_canonica": "bloquear licencia A1",
+    "variantes": [
+      "bloquear licencia A1",
+      "bloqueo licencia A1",
+      "licencia A1 bloqueada",
+      "bloqueo por extravío licencia A1",
+      "bloquear licencia profesional A1"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-bloqueo_profesional_A2",
+    "pregunta_canonica": "bloquear licencia A2",
+    "variantes": [
+      "bloquear licencia A2",
+      "bloqueo licencia A2",
+      "licencia A2 bloqueada",
+      "bloqueo por extravío licencia A2",
+      "bloquear licencia profesional A2"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-bloqueo_profesional_A3",
+    "pregunta_canonica": "bloquear licencia A3",
+    "variantes": [
+      "bloquear licencia A3",
+      "bloqueo licencia A3",
+      "licencia A3 bloqueada",
+      "bloqueo por extravío licencia A3",
+      "bloquear licencia profesional A3"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-bloqueo_profesional_A4",
+    "pregunta_canonica": "bloquear licencia A4",
+    "variantes": [
+      "bloquear licencia A4",
+      "bloqueo licencia A4",
+      "licencia A4 bloqueada",
+      "bloqueo por extravío licencia A4",
+      "bloquear licencia profesional A4"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-bloqueo_profesional_A5",
+    "pregunta_canonica": "bloquear licencia A5",
+    "variantes": [
+      "bloquear licencia A5",
+      "bloqueo licencia A5",
+      "licencia A5 bloqueada",
+      "bloqueo por extravío licencia A5",
+      "bloquear licencia profesional A5"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-duplicado_extravio_robo_profesional",
+    "pregunta_canonica": "reponer licencia A perdida",
+    "variantes": [
+      "reponer licencia A perdida",
+      "me robaron la licencia A, ¿cómo saco duplicado?",
+      "duplicado por extravío licencia profesional"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-duplicado_profesional",
+    "pregunta_canonica": "duplicado licencia profesional",
+    "variantes": [
+      "duplicado licencia profesional",
+      "reponer licencia profesional",
+      "segunda copia licencia profesional",
+      "duplicado licencia clase A",
+      "duplicado licencia A1 A2 A3 A4 A5",
+      "se me perdió la licencia profesional",
+      "me robaron la licencia profesional"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-duplicado_profesional_A1",
+    "pregunta_canonica": "duplicado licencia A1",
+    "variantes": [
+      "duplicado licencia A1",
+      "duplicado licencia A-1",
+      "se me perdió la licencia A1",
+      "me robaron la licencia A1",
+      "reponer licencia A1",
+      "segunda copia licencia A1",
+      "duplicado licencia profesional A1"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-duplicado_profesional_A2",
+    "pregunta_canonica": "duplicado licencia A2",
+    "variantes": [
+      "duplicado licencia A2",
+      "duplicado licencia A-2",
+      "se me perdió la licencia A2",
+      "me robaron la licencia A2",
+      "reponer licencia A2",
+      "segunda copia licencia A2",
+      "duplicado licencia profesional A2"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-duplicado_profesional_A3",
+    "pregunta_canonica": "duplicado licencia A3",
+    "variantes": [
+      "duplicado licencia A3",
+      "duplicado licencia A-3",
+      "se me perdió la licencia A3",
+      "me robaron la licencia A3",
+      "reponer licencia A3",
+      "segunda copia licencia A3",
+      "duplicado licencia profesional A3"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-duplicado_profesional_A4",
+    "pregunta_canonica": "duplicado licencia A4",
+    "variantes": [
+      "duplicado licencia A4",
+      "duplicado licencia A-4",
+      "se me perdió la licencia A4",
+      "me robaron la licencia A4",
+      "reponer licencia A4",
+      "segunda copia licencia A4",
+      "duplicado licencia profesional A4"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-duplicado_profesional_A5",
+    "pregunta_canonica": "duplicado licencia A5",
+    "variantes": [
+      "duplicado licencia A5",
+      "duplicado licencia A-5",
+      "se me perdió la licencia A5",
+      "me robaron la licencia A5",
+      "reponer licencia A5",
+      "segunda copia licencia A5",
+      "duplicado licencia profesional A5"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-hoja_vida_conductor_para_licencias",
+    "pregunta_canonica": "hoja de vida del conductor",
+    "variantes": [
+      "hoja de vida del conductor",
+      "¿qué es la hoja de vida del conductor?",
+      "¿para qué sirve la hoja de vida?",
+      "cómo obtener hoja de vida conductor"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-licencia_digital_info_general",
+    "pregunta_canonica": "licencia digital",
+    "variantes": [
+      "licencia digital",
+      "¿existe licencia de conducir digital en Chile?",
+      "cómo usar licencia digital",
+      "app licencia digital"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-obtencion_profesional",
+    "pregunta_canonica": "obtener licencia profesional",
+    "variantes": [
+      "obtener licencia profesional",
+      "sacar licencia profesional",
+      "sacar licencia profesional por primera vez",
+      "obtener licencia profesional por primera vez",
+      "licencia profesional clase A",
+      "licencia clase A",
+      "licencia A1 A2 A3 A4 A5",
+      "postular a licencia profesional",
+      "licencia profesional de conducir"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-obtencion_profesional_A1",
+    "pregunta_canonica": "obtener licencia de conducir A1",
+    "variantes": [
+      "obtener licencia de conducir A1",
+      "sacar licencia de conducir A1",
+      "licencia profesional A1",
+      "licencia clase A1",
+      "licencia A-1",
+      "licencia para taxis"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-obtencion_profesional_A2",
+    "pregunta_canonica": "obtener licencia de conducir A2",
+    "variantes": [
+      "obtener licencia de conducir A2",
+      "sacar licencia de conducir A2",
+      "licencia profesional A2",
+      "licencia clase A2",
+      "licencia A-2",
+      "licencia transporte de pasajeros 10 a 17 asientos",
+      "licencia para ambulancias"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-obtencion_profesional_A3",
+    "pregunta_canonica": "obtener licencia de conducir A3",
+    "variantes": [
+      "obtener licencia de conducir A3",
+      "sacar licencia de conducir A3",
+      "licencia profesional A3",
+      "licencia clase A3",
+      "licencia A-3",
+      "licencia transporte remunerado de escolares"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-obtencion_profesional_A4",
+    "pregunta_canonica": "obtener licencia de conducir A4",
+    "variantes": [
+      "obtener licencia de conducir A4",
+      "sacar licencia de conducir A4",
+      "licencia profesional A4",
+      "licencia clase A4",
+      "licencia A-4",
+      "licencia transporte de carga sobre 3500 kg"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-obtencion_profesional_A5",
+    "pregunta_canonica": "obtener licencia de conducir A5",
+    "variantes": [
+      "obtener licencia de conducir A5",
+      "sacar licencia de conducir A5",
+      "licencia profesional A5",
+      "licencia clase A5",
+      "licencia A-5",
+      "licencia transporte de carga articulada"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-renovacion_donde_tramitar_profesional",
+    "pregunta_canonica": "¿Puedo renovar la licencia profesional en otra municipalidad?",
+    "variantes": [
+      "¿Puedo renovar la licencia profesional en otra municipalidad?",
+      "renovar licencia A en otra comuna",
+      "¿debo renovar donde la saqué?",
+      "renovar licencia profesional fuera de mi comuna"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-renovacion_profesional",
+    "pregunta_canonica": "renovar licencia profesional",
+    "variantes": [
+      "renovar licencia profesional",
+      "renovación licencia profesional",
+      "revalidar licencia profesional",
+      "control licencia profesional",
+      "reacreditar licencia profesional clase A",
+      "renovar licencia clase A",
+      "renovar licencia A1 A2 A3 A4 A5"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-renovacion_profesional_A1",
+    "pregunta_canonica": "renovar licencia A1",
+    "variantes": [
+      "renovar licencia A1",
+      "renovar licencia A-1",
+      "revalidar licencia A1",
+      "reacreditar licencia A1",
+      "control licencia A1",
+      "renovación licencia profesional A1",
+      "renovar licencia profesional A-1"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-renovacion_profesional_A2",
+    "pregunta_canonica": "renovar licencia A2",
+    "variantes": [
+      "renovar licencia A2",
+      "renovar licencia A-2",
+      "revalidar licencia A2",
+      "reacreditar licencia A2",
+      "control licencia A2",
+      "renovación licencia profesional A2",
+      "renovar licencia profesional A-2"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-renovacion_profesional_A3",
+    "pregunta_canonica": "renovar licencia A3",
+    "variantes": [
+      "renovar licencia A3",
+      "renovar licencia A-3",
+      "revalidar licencia A3",
+      "reacreditar licencia A3",
+      "control licencia A3",
+      "renovación licencia profesional A3",
+      "renovar licencia profesional A-3"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-renovacion_profesional_A4",
+    "pregunta_canonica": "renovar licencia A4",
+    "variantes": [
+      "renovar licencia A4",
+      "renovar licencia A-4",
+      "revalidar licencia A4",
+      "reacreditar licencia A4",
+      "control licencia A4",
+      "renovación licencia profesional A4",
+      "renovar licencia profesional A-4"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "liccond-renovacion_profesional_A5",
+    "pregunta_canonica": "renovar licencia A5",
+    "variantes": [
+      "renovar licencia A5",
+      "renovar licencia A-5",
+      "revalidar licencia A5",
+      "reacreditar licencia A5",
+      "control licencia A5",
+      "renovación licencia profesional A5",
+      "renovar licencia profesional A-5"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "licencia_conducir_renovacion",
+    "pregunta_canonica": "renovar licencia de conducir",
+    "variantes": [
+      "renovar licencia de conducir",
+      "revalidar licencia",
+      "renovación licencia",
+      "reacreditación licencia",
+      "control de licencia"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-certificado_multas_empadronadas",
+    "pregunta_canonica": "certificado de multas permiso de circulación",
+    "variantes": [
+      "certificado de multas permiso de circulación",
+      "¿qué significa multas empadronadas?",
+      "¿por qué no me deja pagar el permiso por multas?",
+      "multas anotadas impiden permiso"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-dos-cuotas",
+    "pregunta_canonica": "¿Puedo pagar el permiso de circulación en cuotas?",
+    "variantes": [
+      "¿Puedo pagar el permiso de circulación en cuotas?",
+      "¿Cuándo se paga la segunda cuota del permiso de circulación?",
+      "¿La segunda cuota tiene recargo?",
+      "¿Dónde pago la segunda cuota?",
+      "¿Se puede pagar en cuotas si tengo deudas?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-multas-impiden",
+    "pregunta_canonica": "Tengo multas, ¿puedo sacar el permiso de circulación?",
+    "variantes": [
+      "Tengo multas, ¿puedo sacar el permiso de circulación?",
+      "¿Qué multas bloquean el permiso de circulación?",
+      "¿Qué es el Registro de Multas de Tránsito No Pagadas?",
+      "¿Cómo sé si tengo multas anotadas?",
+      "¿Qué hago si aparece una multa que no reconozco?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-pagar-en-otra-comuna",
+    "pregunta_canonica": "¿Puedo pagar el permiso de circulación en otra comuna?",
+    "variantes": [
+      "¿Puedo pagar el permiso de circulación en otra comuna?",
+      "Vivo en una comuna distinta, ¿puedo sacar el permiso donde quiero?",
+      "¿El permiso que pago en una municipalidad sirve para todo Chile?",
+      "¿Tengo que pagarlo donde está inscrito mi vehículo?",
+      "¿Puedo cambiar la municipalidad donde pago el permiso?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-pago-atrasado",
+    "pregunta_canonica": "¿Qué pasa si pago el permiso de circulación atrasado?",
+    "variantes": [
+      "¿Qué pasa si pago el permiso de circulación atrasado?",
+      "Se me pasó la fecha del permiso, ¿qué debo hacer?",
+      "¿Hay multa o intereses por pagar tarde?",
+      "¿Me pueden sacar el auto por no tener permiso?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-pago-online",
+    "pregunta_canonica": "¿Cómo pagar el permiso de circulación en línea?",
+    "variantes": [
+      "¿Cómo pagar el permiso de circulación en línea?",
+      "pago online permiso de circulación",
+      "pagar permiso de circulación por internet",
+      "link permiso de circulación",
+      "pago en línea permiso de circulación"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-plazos-carga-otros",
+    "pregunta_canonica": "¿Cuándo se paga el permiso de circulación de un camión?",
+    "variantes": [
+      "¿Cuándo se paga el permiso de circulación de un camión?",
+      "¿Hasta cuándo puedo pagar el permiso de circulación de un vehículo de carga?",
+      "¿Cuál es el plazo para tractores, maquinaria o motos?",
+      "¿Los vehículos de carga pagan en septiembre?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-plazos-livianos",
+    "pregunta_canonica": "¿Hasta cuándo puedo pagar el permiso de circulación de mi auto?",
+    "variantes": [
+      "¿Hasta cuándo puedo pagar el permiso de circulación de mi auto?",
+      "¿Cuál es el plazo para pagar el permiso de circulación de vehículo particular?",
+      "¿Cuándo se paga el permiso de circulación de una camioneta?",
+      "¿Cuándo se paga el permiso de circulación de una moto?",
+      "¿Se puede pagar en dos cuotas? ¿Cuándo vence la segunda?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-plazos-taxis-buses",
+    "pregunta_canonica": "¿Cuándo se paga el permiso de circulación de un taxi?",
+    "variantes": [
+      "¿Cuándo se paga el permiso de circulación de un taxi?",
+      "¿Hasta cuándo puedo pagar el permiso de circulación de un bus?",
+      "¿Cuál es el plazo para taxis y buses?",
+      "¿Qué pasa si pago fuera de plazo como taxi?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-que_es",
+    "pregunta_canonica": "¿Qué es el permiso de circulación?",
+    "variantes": [
+      "¿Qué es el permiso de circulación?",
+      "¿Para qué sirve el permiso de circulación?",
+      "¿Quién debe pagar el permiso de circulación?",
+      "¿El permiso de circulación es obligatorio?",
+      "¿Qué pasa si ando sin permiso de circulación?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-requisitos-nuevo",
+    "pregunta_canonica": "¿Qué necesito para sacar el permiso de circulación por primera vez?",
+    "variantes": [
+      "¿Qué necesito para sacar el permiso de circulación por primera vez?",
+      "Compré un auto nuevo, ¿qué documentos piden para el permiso?",
+      "¿Para un vehículo nuevo se necesita revisión técnica?",
+      "¿Qué es el certificado de homologación y cuándo aplica?",
+      "¿Qué pasa si el vehículo es 0 km?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-requisitos-usado",
+    "pregunta_canonica": "¿Qué documentos necesito para pagar el permiso de circulación?",
+    "variantes": [
+      "¿Qué documentos necesito para pagar el permiso de circulación?",
+      "¿Qué papeles necesito para renovar el permiso de circulación?",
+      "¿Qué necesito si mi vehículo es usado?",
+      "¿Se necesita padrón para permiso de circulación?",
+      "¿El SOAP debe estar vigente hasta cuándo?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-revision-tecnica",
+    "pregunta_canonica": "Tengo la revisión técnica vencida, ¿puedo pagar el permiso de circulación?",
+    "variantes": [
+      "Tengo la revisión técnica vencida, ¿puedo pagar el permiso de circulación?",
+      "¿Puedo pagar el permiso sin revisión técnica?",
+      "¿Qué pasa si no tengo revisión técnica pero necesito circular?",
+      "¿La homologación reemplaza la revisión técnica?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-tag-ley21547",
+    "pregunta_canonica": "Tengo multas por TAG, ¿puedo sacar el permiso de circulación?",
+    "variantes": [
+      "Tengo multas por TAG, ¿puedo sacar el permiso de circulación?",
+      "¿Existe rebaja del 80% por multas TAG?",
+      "¿Puedo hacer convenio por multas TAG para sacar el permiso?",
+      "¿Cuántas cuotas permite el convenio TAG?",
+      "¿Qué pasa con el registro de multas cuando pago la primera cuota?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-tasacion_fiscal_sii",
+    "pregunta_canonica": "tasación fiscal permiso de circulación",
+    "variantes": [
+      "tasación fiscal permiso de circulación",
+      "¿cómo se calcula el valor del permiso?",
+      "tabla SII permiso de circulación",
+      "¿dónde veo la tasación de mi vehículo?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-valor-calculo",
+    "pregunta_canonica": "¿Cómo se calcula el valor del permiso de circulación?",
+    "variantes": [
+      "¿Cómo se calcula el valor del permiso de circulación?",
+      "¿Dónde puedo ver el valor del permiso de circulación?",
+      "¿Qué es la tasación fiscal del SII?",
+      "¿El permiso de circulación depende del avalúo?",
+      "¿Hay un mínimo que se paga?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-valor-comercial-autofact",
+    "pregunta_canonica": "¿Dónde puedo consultar el valor comercial del vehículo por patente?",
+    "variantes": [
+      "¿Dónde puedo consultar el valor comercial del vehículo por patente?",
+      "¿Cómo saber el valor comercial de un auto por patente?",
+      "¿Cómo saber el valor de la patente (valor comercial del vehículo) para el permiso de circulación?",
+      "¿Dónde puedo ver el valor del permiso de circulación por patente?",
+      "¿Hay alguna página para consultar el valor del permiso por patente?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-vehiculo-no-circula",
+    "pregunta_canonica": "Mi vehículo no va a circular este año, ¿igual debo pagar permiso?",
+    "variantes": [
+      "Mi vehículo no va a circular este año, ¿igual debo pagar permiso?",
+      "¿Cómo me eximo del permiso de circulación?",
+      "¿Qué es la declaración jurada por vehículo fuera de circulación?",
+      "¿Hasta cuándo puedo presentar la declaración de no circulación?",
+      "¿Se paga algo aunque no circule?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "permcirc-vehiculo_nuevo_primer_permiso",
+    "pregunta_canonica": "permiso de circulación vehículo nuevo",
+    "variantes": [
+      "permiso de circulación vehículo nuevo",
+      "primer permiso de circulación",
+      "auto nuevo: ¿cómo se calcula el permiso?",
+      "¿se paga proporcional si compré el auto a mitad de año?"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "faq"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  },
+  {
+    "id_faq": "reserva-hora-atencion",
+    "pregunta_canonica": "reservar hora",
+    "variantes": [
+      "reservar hora",
+      "reserva de hora",
+      "agendar hora",
+      "solicitar hora",
+      "pedir cita",
+      "app de agendamiento de horas"
+    ],
+    "respuesta_oficial": "",
+    "fuente": "Fuente local pendiente",
+    "tags": [
+      "agenda"
+    ],
+    "vigencia": "2027-01-29",
+    "ultima_revision": "2026-01-29",
+    "owner_aprobador": "Director de Tránsito"
+  }
+]

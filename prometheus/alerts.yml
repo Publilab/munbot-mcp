@@ -1,0 +1,29 @@
+groups:
+  - name: munbot-alerts
+    rules:
+      - alert: MunbotHighFallbackRate
+        expr: rate(munbot_fallbacks_total[5m]) / rate(munbot_requests_total[5m]) > 0.10
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Fallback rate alto en MunBoT"
+          description: "Fallback rate > 10% por 10m."
+
+      - alert: MunbotHighErrorRate
+        expr: rate(mcp_microservice_errors_total[5m]) / rate(munbot_requests_total[5m]) > 0.02
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Error rate alto en microservicios"
+          description: "Errores > 2% por 10m."
+
+      - alert: MunbotHighLatencyP95
+        expr: histogram_quantile(0.95, sum(rate(munbot_response_duration_seconds_bucket[5m])) by (le)) > 2.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latencia p95 alta"
+          description: "p95 > 2.5s por 10m."
